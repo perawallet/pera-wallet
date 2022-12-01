@@ -196,6 +196,7 @@ extension AccountExportFlowCoordinator {
             draft: exportAccountDraft,
             qrExportInformations: qrExportInformations
         )
+
         let encryptedContent = encryptedAccountDraft.encryptedContent
 
         /// <note>

@@ -30,10 +30,11 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
             case .empty(let item):
                 switch item {
                 case .loading:
-                    return collectionView.dequeue(
+                    let cell = collectionView.dequeue(
                         HomeLoadingCell.self,
                         at: indexPath
                     )
+                    return cell
                 case .noContent:
                     let cell = collectionView.dequeue(
                         NoContentWithActionCell.self,
@@ -54,10 +55,11 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                     cell.bindData(portfolioItem)
                     return cell
                 case .quickActions:
-                    return collectionView.dequeue(
+                    let cell = collectionView.dequeue(
                         HomeQuickActionsCell.self,
                         at: indexPath
                     )
+                    return cell
                 }
             case .announcement(let item):
                 if item.isGeneric {

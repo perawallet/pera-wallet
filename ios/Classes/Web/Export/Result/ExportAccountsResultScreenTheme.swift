@@ -32,7 +32,7 @@ struct ExportAccountsResultScreenTheme:
             .backgroundColor(Colors.Defaults.background)
         ]
         self.context = ExportAccountsResultViewTheme(family)
-        self.contextEdgeInsets = (72, 24, 8, 24)
+        self.contextEdgeInsets = (72, 0, 8, 0)
         self.closeAction = [
             .title("title-close".localized),
             .titleColor([ .normal(Colors.Button.Primary.text) ]),

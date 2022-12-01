@@ -112,7 +112,7 @@ extension AssetPreviewViewModel {
         let placeholderText = TextFormatter.assetShortName.format(title)
         let placeholder = AssetListItemViewModel.getPlaceholder(
             placeholderText,
-            with: AssetListItemViewModel.TextAttributes(
+            with: TextAttributes(
                 font: Fonts.DMSans.regular.make(13),
                 lineHeightMultiplier: 1.18
             )

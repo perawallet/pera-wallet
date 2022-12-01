@@ -799,7 +799,6 @@ extension CollectibleListLocalDataController {
                 }
 
                 userDefaults.set(newValue?.rawValue, forKey: filterKey)
-                userDefaults.synchronize()
             }
         }
 

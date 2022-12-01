@@ -19,6 +19,10 @@ import UIKit
 import MacaroonUIKit
 
 final class ExportsAccountsResultScreen: BaseScrollViewController  {
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+
     typealias EventHandler = (Event, ExportsAccountsResultScreen) -> Void
 
     var eventHandler: EventHandler?
@@ -43,6 +47,12 @@ final class ExportsAccountsResultScreen: BaseScrollViewController  {
         super.prepareLayout()
 
         addUI()
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
     override func addFooter() {

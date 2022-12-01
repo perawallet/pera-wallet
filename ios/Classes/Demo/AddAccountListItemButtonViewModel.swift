@@ -24,8 +24,8 @@ struct AddAccountListItemButtonViewModel: ListItemButtonViewModel {
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-plus-24"
-        self.title = Self.getTitle("account-options-add-account-title".localized)
-        self.subtitle = nil
+        icon = "icon-plus-24"
+        title = Self.getTitle("account-options-add-account-title".localized)
+        subtitle = nil
     }
 }

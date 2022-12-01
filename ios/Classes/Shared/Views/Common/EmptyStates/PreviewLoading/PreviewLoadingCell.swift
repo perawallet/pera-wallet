@@ -19,15 +19,15 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class PreviewLoadingCell: BaseCollectionViewCell<PreviewLoadingView> {
+final class PreviewLoadingCell: CollectionCell<PreviewLoadingView> {
+    static let theme = PreviewLoadingViewCommonTheme()
+
     override init(
         frame: CGRect
     ) {
-        super.init(
-            frame: frame
-        )
+        super.init(frame: frame)
 
-        contextView.customize(PreviewLoadingViewCommonTheme())
+        contextView.customize(Self.theme)
     }
 }
 

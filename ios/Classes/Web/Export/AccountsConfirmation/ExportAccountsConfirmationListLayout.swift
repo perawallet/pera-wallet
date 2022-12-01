@@ -125,7 +125,7 @@ extension ExportAccountsConfirmationListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountCellItem item: AccountPreviewViewModel,
+        sizeForAccountCellItem item: AccountListItemViewModel,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = ExportAccountsConfirmationListAccountCell.reuseIdentifier
@@ -135,13 +135,13 @@ extension ExportAccountsConfirmationListLayout {
         }
 
         let width = listView.bounds.width
-        let sampleAccountListItem = CustomAccountPreview(
+        let sampleAccountListItem = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
         )
-        let sampleAccountItem = AccountPreviewViewModel(sampleAccountListItem)
+        let sampleAccountItem = AccountListItemViewModel(sampleAccountListItem)
         let newSize = ExportAccountsConfirmationListAccountCell.calculatePreferredSize(
             sampleAccountItem,
             for: ExportAccountsConfirmationListAccountCell.theme,

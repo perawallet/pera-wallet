@@ -40,7 +40,7 @@ enum ReceiveCollectibleAccountListItem: Hashable {
     case empty(ReceiveCollectibleAccountListEmptyItem)
     case info
     case header(ReceiveCollectibleAccountListHeaderViewModel)
-    case account(AccountPreviewViewModel)
+    case account(AccountListItemViewModel)
 }
 
 enum ReceiveCollectibleAccountListEmptyItem: Hashable {

@@ -167,6 +167,9 @@
 "asa-about-asa-id" = "ASA-ID";
 
 /* (No Comment) */
+"asa-about-asa-open-with-browser" = "Mit Browser öffnen";
+
+/* (No Comment) */
 "asa-about-asa-project-website" = "Projekt-Website";
 
 /* (No Comment) */
@@ -876,6 +879,9 @@
 
 /* (No Comment) */
 "ledger-approval-message" = "Bitte verifizieren Sie die Kontoadresse auf Ihrem Ledger-Gerät (%@)";
+
+/* (No Comment) */
+"ledger-approval-sign-message" = "Bitte überprüfen und signieren Sie die Transaktion auf Ihrem Ledger-Gerät %@.";
 
 /* MARK: Ledger Approval */
 "ledger-approval-title" = "Ledger-Genehmigung";
@@ -1912,6 +1918,204 @@
 /* MARK: Story */
 "story-copy-address-title" = "Drücken und halten Sie, um die Adresse zu kopieren.";
 
+/* / MARK: Swap Account Selection */
+"swap-account-selection-header-description" = "Wählen Sie ein Konto aus, um den Tausch durchzuführen";
+
+/* (No Comment) */
+"swap-alert-body" = "Pera Wallet bietet jetzt eine einfache und schnelle Möglichkeit, Assets zu tauschen.";
+
+/* (No Comment) */
+"swap-alert-primary-action" = "Tauschen ausprobieren";
+
+/* MARK: - Swap Alert */
+"swap-alert-title" = "In Pera tauschen";
+
+/* (No Comment) */
+"swap-amount-percentage-max" = "MAX";
+
+/* (No Comment) */
+"swap-amount-percentage-placeholder" = "Benutzerdefinierten Prozentsatz einstellen";
+
+/* / MARK: Swap Adjust Amount */
+"swap-amount-percentage-title" = "Guthaben-Prozentsatz";
+
+/* (No Comment) */
+"swap-amount-percentage-validation-error-limitExceeded" = "Der Prozentsatz muss zwischen %@ und %@ liegen.";
+
+/* (No Comment) */
+"swap-asset-algo-min-balance-error" = "Das Algo-Guthaben ist zu niedrig. Das Mindestguthaben sollte %@ betragen.";
+
+/* (No Comment) */
+"swap-asset-amount-title-balance" = "Guthaben: %@";
+
+/* / MARK: Swap Asset */
+"swap-asset-choose-title" = "Asset wählen";
+
+/* (No Comment) */
+"swap-asset-fee-unavailable-error" = "Die Tausch-Gebühr kann im Moment nicht abgerufen werden.";
+
+/* (No Comment) */
+"swap-asset-from" = "Tauschen von";
+
+/* (No Comment) */
+"swap-asset-min-balance-error" = "%@ -Guthaben ist nicht ausreichend.";
+
+/* (No Comment) */
+"swap-asset-min-balance-error-fee" = "Das Konto verfügt nicht über genügend Algo-Guthaben, um die Transaktionsgebühren zu decken.";
+
+/* (No Comment) */
+"swap-asset-min-balance-error-without-amount" = "Das Konto hat nicht genügend Guthaben für diese Transaktion.";
+
+/* (No Comment) */
+"swap-asset-not-available" = "Asset ist nicht verfügbar.";
+
+/* (No Comment) */
+"swap-asset-pool-search-error" = "Wir können im Moment keine Assets anzeigen. Bitte versuchen Sie es erneut.";
+
+/* (No Comment) */
+"swap-asset-to" = "Tauschen in";
+
+/* (No Comment) */
+"swap-confirm-exchange-fee-detail" = "Dies ist die Gebühr, die Ihnen von der dezentralen Börse berechnet wird. Sie wird automatisch von dem Betrag, den Sie senden, abgezogen und in den Mindestbetrag, den Sie erhalten, eingerechnet. Es handelt sich nicht um eine zusätzliche Gebühr, die aufgeschlagen wird.";
+
+/* (No Comment) */
+"swap-confirm-exchange-fee-title" = "Börsengebühr";
+
+/* (No Comment) */
+"swap-confirm-failed-title" = "Tausch ist fehlgeschlagen";
+
+/* (No Comment) */
+"swap-confirm-minimum-received-title" = "Mindestens erhalten";
+
+/* (No Comment) */
+"swap-confirm-pera-fee-title" = "Pera-Gebühr";
+
+/* (No Comment) */
+"swap-confirm-price-info" = "%@ pro %@";
+
+/* (No Comment) */
+"swap-confirm-slippage-updated-title" = "Slippage-Toleranzwert aktualisiert!";
+
+/* (No Comment) */
+"swap-confirm-summary-title" = "Tausch-Zusammenfassung";
+
+/* / MARK: Swap Confirm Asset */
+"swap-confirm-title" = "Tausch bestätigen";
+
+/* (No Comment) */
+"swap-confirm-total-fee-title" = "Tauschgebühr insgesamt";
+
+/* (No Comment) */
+"swap-confirm-view-summary-title" = "Tausch-Zusammenfassung anzeigen";
+
+/* MARK: Swap Error */
+"swap-error-failed-title" = "%@ Tausch ist fehlgeschlagen";
+
+/* (No Comment) */
+"swap-error-go-home" = "Zu Startseite gehen";
+
+/* (No Comment) */
+"swap-error-unexpected-detail" = "Es ist ein unerwarteter Fehler aufgetreten. Versuchen Sie es später erneut.";
+
+/* (No Comment) */
+"swap-flow-start-min-balance-error-detail" = "Dieses Konto verfügt nicht über das erforderliche Mindestguthaben von %@ für einen Tauschvorgang.";
+
+/* (No Comment) */
+"swap-flow-start-min-balance-error-title" = "Mindestguthaben";
+
+/* (No Comment) */
+"swap-introduction-body" = "Pera Wallet bietet eine einfache und schnelle Möglichkeit, Assets zu tauschen. Der Tausch ermöglicht den Austausch einer ASA gegen ein anderes mit Hilfe eines Smart Contracts zu Marktgebühren.";
+
+/* (No Comment) */
+"swap-introduction-powered-by-title" = "Unterstützt von";
+
+/* (No Comment) */
+"swap-introduction-primary-action-title" = "Tausch beginnen";
+
+/* (No Comment) */
+"swap-introduction-terms-of-service" = "Wenn Sie fortfahren, stimmen Sie den Nutzungsbedingungen unseres Tausch-Partners zu.";
+
+/* (No Comment) */
+"swap-introduction-terms-of-service-hyperlink" = "Nutzungsbedingungen";
+
+/* / MARK: Swap Introduction */
+"swap-introduction-title" = "In Pera tauschen";
+
+/* (No Comment) */
+"swap-loading-detail" = "Sie erhalten mindestens %@ oder die Transaktion wird rückgängig gemacht.";
+
+/* MARK: Swap Loading */
+"swap-loading-title" = "Die Transaktion wird gesendet";
+
+/* (No Comment) */
+"swap-price-impact-info-body" = "Preisauswirkung ist der Einfluss Ihres Handels auf den Marktpreis des Asset-Paars. Sie korreliert direkt mit der Höhe der Liquidität im Pool.";
+
+/* / MARK: Swap Price Impact Info */
+"swap-price-impact-info-title" = "Preisauswirkung";
+
+/* (No Comment) */
+"swap-price-impact-title" = "Preisauswirkung";
+
+/* (No Comment) */
+"swap-price-impact-warning-message" = "Vorsicht! Die Kursauswirkung ist größer als 5%, was bedeutet, dass die Liquidität dieses Pools gering sein könnte. Bitte vergewissern Sie sich, dass Sie die Konsequenzen verstehen, bevor Sie den Tausch bestätigen.";
+
+/* (No Comment) */
+"swap-sign-with-ledger-action-title" = "Transaktionen signieren";
+
+/* (No Comment) */
+"swap-sign-with-ledger-body" = "Wir haben festgestellt, dass Sie ein Ledger-Gerät mit diesem Konto verwenden. Sie müssen die %@-Transaktionen einzeln mit Ihrem Hardware-Token signieren.";
+
+/* (No Comment) */
+"swap-sign-with-ledger-body-highlighted" = "Sie müssen die %@-Transaktionen einzeln signieren";
+
+/* / MARK: Swap Sign With Ledger Process */
+"swap-sign-with-ledger-process-title" = "Abmeldung von %@ von %@...";
+
+/* / MARK: Swap Sign With Ledger */
+"swap-sign-with-ledger-title" = "Mit Ledger signieren";
+
+/* (No Comment) */
+"swap-slippage-percentage-custom" = "Benutzerdefiniert";
+
+/* (No Comment) */
+"swap-slippage-percentage-validation-error-limitExceeded" = "Der Prozentsatz muss zwischen %@ und %@ liegen.";
+
+/* (No Comment) */
+"swap-slippage-placeholder" = "Benutzerdefinierten Slippage einstellen";
+
+/* / MARK: Swap Slippage */
+"swap-slippage-title" = "Slippage-Toleranz";
+
+/* (No Comment) */
+"swap-slippage-tolerance-info-body" = "Slippage ist die Preisdifferenz zwischen dem Zeitpunkt, an dem Sie eine Transaktion einreichen, und dem Zeitpunkt, an dem die Transaktion in der Blockchain bestätigt wird. Wenn die Slippage-Rate über den hier eingestellten Toleranzprozentsatz hinausgeht, wird die Transaktion automatisch abgebrochen, um Sie vor Wertverlust zu schützen.";
+
+/* / MARK: Swap Slippage Tolerance Info */
+"swap-slippage-tolerance-info-title" = "Slippage-Toleranz";
+
+/* (No Comment) */
+"swap-success-detail" = "Sie haben %@ im Austausch für %@ erhalten";
+
+/* MARK: Swap Success */
+"swap-success-title" = "%@ Swap abgeschlossen";
+
+/* (No Comment) */
+"swap-success-view-explorer" = "Transaktionsdetails im AlgoExplorer anzeigen";
+
+/* (No Comment) */
+"swap-success-view-summary" = "Tausch-Zusammenfassung anzeigen";
+
+/* (No Comment) */
+"swap-summary-network-fee-title" = "Netzwerkgebühr";
+
+/* (No Comment) */
+"swap-summary-opt-in-fee-title" = "Opt-in-Gebühr";
+
+/* (No Comment) */
+"swap-summary-paid-title" = "Bezahlt";
+
+/* MARK: Swap Summary */
+"swap-summary-received-title" = "Empfangen";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Nutzungsbedingungen";
 
@@ -2057,6 +2261,9 @@
 "title-keep" = "Behalten";
 
 /* (No Comment) */
+"title-later" = "Später";
+
+/* (No Comment) */
 "title-learn-more" = "Mehr erfahren";
 
 /* (No Comment) */
@@ -2153,6 +2360,9 @@
 "title-save" = "Speichern";
 
 /* (No Comment) */
+"title-select-account" = "Konto auswählen";
+
+/* (No Comment) */
 "title-select-all" = "Alle auswählen";
 
 /* (No Comment) */
@@ -2201,10 +2411,19 @@
 "title-step-4" = "Schritt 4";
 
 /* (No Comment) */
+"title-swap" = "Tauschen";
+
+/* (No Comment) */
 "title-testnet" = "TESTNET";
 
 /* (No Comment) */
+"title-to" = "An";
+
+/* (No Comment) */
 "title-total-supply" = "Gesamtangebot";
+
+/* (No Comment) */
+"title-try-again" = "Erneut versuchen";
 
 /* (No Comment) */
 "title-unknown" = "Unbenannt";
@@ -2387,7 +2606,7 @@
 "transaction-menu-copy-note" = "Notiz kopieren";
 
 /* (No Comment) */
-"transaction-option-list-add-asset-subtitle" = "Opt-in für ein ASA oder NFT";
+"transaction-option-list-add-asset-subtitle" = "Opt-in zu einem ASA oder NFT von diesem Konto aus";
 
 /* (No Comment) */
 "transaction-option-list-add-asset-title" = "Asset hinzufügen";
@@ -2405,7 +2624,10 @@
 "transaction-option-list-scan-qr-code-subtitle" = "Verwenden Sie WalletConnect oder scannen Sie eine Kontoadresse";
 
 /* (No Comment) */
-"transaction-option-list-send-subtitle" = "Algo oder ASA auf ein anderes Konto";
+"transaction-option-list-send-subtitle" = "Algo oder ASA auf ein anderes Konto übertragen";
+
+/* (No Comment) */
+"transaction-option-list-swap-subtitle" = "Konvertieren zwischen beliebten ASA-Paaren";
 
 /* (No Comment) */
 "transaction-request-signing-alert-title" = "Sind Sie sicher?";

@@ -43,7 +43,6 @@ final class ScanQRFlowCoordinator:
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     private unowned let presentingScreen: UIViewController
-
     private let analytics: ALGAnalytics
     private let api: ALGAPI
     private let bannerController: BannerController

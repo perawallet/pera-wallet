@@ -28,6 +28,7 @@ protocol AppLaunchController: AnyObject {
     func becomeActive()
     func resignActive()
     func enterBackground()
+    func terminate()
 
     func launchOnboarding()
     func launchMain(completion: (() -> Void)?)

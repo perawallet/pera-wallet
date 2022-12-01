@@ -383,7 +383,7 @@ extension ExportAccountListScreen {
 
         let index = indexPath.row.advanced(by: -1)
         let isSelected = dataController.isAccountSelected(at: index)
-        
+
         cell.accessory = isSelected ? .selected : .unselected
     }
 }

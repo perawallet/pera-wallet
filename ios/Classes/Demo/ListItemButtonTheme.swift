@@ -25,6 +25,10 @@ struct ListItemButtonTheme:
     var icon: ImageStyle
     var iconContentEdgeInsets: LayoutOffset
     var iconAlignment: ListItemButton.IconViewAlignment
+    var badge: ViewStyle
+    var badgeSize: LayoutSize
+    var badgeCorner: Corner
+    var badgeContentEdgeInsets: NSDirectionalEdgeInsets
     var contentMinHeight: LayoutMetric?
     var contentVerticalPaddings: LayoutVerticalPaddings
     var title: TextStyle
@@ -43,6 +47,17 @@ struct ListItemButtonTheme:
         ]
         self.iconContentEdgeInsets = (20, 0)
         self.iconAlignment = .centered
+        self.badge = [
+            .backgroundColor(Colors.Helpers.negative)
+        ]
+        self.badgeSize = (4, 4)
+        self.badgeCorner = Corner(radius: badgeSize.h / 2)
+        self.badgeContentEdgeInsets = NSDirectionalEdgeInsets(
+            top: 6,
+            leading: 0,
+            bottom: 0,
+            trailing: 19
+        )
         self.contentMinHeight = 36
         self.contentVerticalPaddings = (12, 12)
         self.title = [

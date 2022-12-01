@@ -34,7 +34,7 @@ enum SelectAccountListViewSection:
 }
 
 enum SelectAccountListViewItem: Hashable {
-    case account(AccountPreviewViewModel, AccountHandle)
+    case account(AccountListItemViewModel, AccountHandle)
     case empty(SelectAccountListEmptyItem)
 }
 

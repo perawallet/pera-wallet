@@ -21,64 +21,54 @@ import UIKit
 struct AccountQuickActionsViewTheme:
     StyleSheet,
     LayoutSheet {
-    var maxContentHorizontalInsets: LayoutHorizontalPaddings
     var spacingBetweenActions: LayoutMetric
-    var buyAlgoAction: AccountQuickActionViewTheme
-    var sendAction: AccountQuickActionViewTheme
-    var addressAction: AccountQuickActionViewTheme
-    var moreAction: AccountQuickActionViewTheme
+    var actionWidth: LayoutMetric
+    var actionSpacingBetweenIconAndTitle: LayoutMetric
+    var buyAction: ButtonStyle
+    var swapAction: ButtonStyle
+    var swapBadge: BadgeButtonTheme
+    var swapBadgeEdgeInsets: NSDirectionalEdgeInsets
+    var sendAction: ButtonStyle
+    var moreAction: ButtonStyle
 
-    init(
-        _ family: LayoutFamily
-    ) {
-        self.maxContentHorizontalInsets = (12, 12)
-        self.spacingBetweenActions = 5
-
-        var buyAlgoAction = AccountQuickActionViewTheme(family)
-        buyAlgoAction.icon = "buy-algo-icon"
-        buyAlgoAction.title = "quick-actions-buy-algo-title".localized
-        self.buyAlgoAction = buyAlgoAction
-
-        var sendAction = AccountQuickActionViewTheme(family)
-        sendAction.icon = "send-icon"
-        sendAction.title = "quick-actions-send-title".localized
-        self.sendAction = sendAction
-
-        var addressAction = AccountQuickActionViewTheme(family)
-        addressAction.icon = "address-icon"
-        addressAction.title = "quick-actions-address-title".localized
-        self.addressAction = addressAction
-
-        var moreAction = AccountQuickActionViewTheme(family)
-        moreAction.icon = "more-icon"
-        moreAction.title = "quick-actions-more-title".localized
-        self.moreAction = moreAction
+    init(_ family: LayoutFamily) {
+        self.spacingBetweenActions = 16
+        self.actionSpacingBetweenIconAndTitle = 12
+        self.actionWidth = 64
+        self.buyAction = [
+            .icon(Self.makeActionIcon(icon: "buy-algo-icon")),
+            .title(Self.makeActionTitle(title: "quick-actions-buy-algo-title".localized))
+        ]
+        self.swapAction = [
+            .icon(Self.makeActionIcon(icon: "swap-icon")),
+            .title(Self.makeActionTitle(title: "title-swap".localized))
+        ]
+        self.swapBadge = BadgeButtonTheme()
+        self.swapBadgeEdgeInsets = NSDirectionalEdgeInsets(
+            top: 9,
+            leading: 0,
+            bottom: 0,
+            trailing: 16
+        )
+        self.sendAction = [
+            .icon(Self.makeActionIcon(icon: "send-icon")),
+            .title(Self.makeActionTitle(title: "quick-actions-send-title".localized))
+        ]
+        self.moreAction = [
+            .icon(Self.makeActionIcon(icon: "more-icon")),
+            .title(Self.makeActionTitle(title: "quick-actions-more-title".localized))
+        ]
     }
 }
 
-struct AccountQuickActionViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var icon: Image? {
-        didSet { style.icon = icon.unwrap { [ .normal($0) ] } }
-    }
-    var title: String? {
-        didSet { style.title = title }
+extension AccountQuickActionsViewTheme {
+    private static func makeActionIcon(icon: Image) -> StateImageGroup {
+        return [ .normal(icon), .highlighted(icon) ]
     }
 
-    private(set) var style: ButtonStyle
-
-    let width: CGFloat
-
-    static let spacingBetweenIconAndTitle: CGFloat = 15
-
-    init(
-        _ family: LayoutFamily
-    ) {
-        self.width = 64
-        self.style = [
-            .font(Fonts.DMSans.regular.make(13)),
-            .titleColor([ .normal(Colors.Text.main) ])
-        ]
+    private static func makeActionTitle(title: String) -> Text {
+        var attributes = Typography.footnoteRegularAttributes(alignment: .center)
+        attributes.insert(.textColor(Colors.Text.main))
+        return TextSet(title.attributed(attributes))
     }
 }

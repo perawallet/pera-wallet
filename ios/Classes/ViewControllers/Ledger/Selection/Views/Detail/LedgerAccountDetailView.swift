@@ -29,7 +29,7 @@ final class LedgerAccountDetailView: View {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.contentInset)
-        collectionView.register(AccountPreviewCell.self)
+        collectionView.register(AccountListItemCell.self)
         collectionView.register(AssetListItemCell.self)
         collectionView.register(header: LedgerAccountDetailSectionHeaderReusableView.self)
         return collectionView

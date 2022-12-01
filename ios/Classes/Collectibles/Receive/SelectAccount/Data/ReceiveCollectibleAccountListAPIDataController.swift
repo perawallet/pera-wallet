@@ -120,9 +120,9 @@ extension ReceiveCollectibleAccountListAPIDataController {
                         currency: currency,
                         currencyFormatter: self.currencyFormatter
                     )
-                    let accountPreviewViewModel = AccountPreviewViewModel(accountPortfolioItem)
+                    let accountListItemViewModel = AccountListItemViewModel(accountPortfolioItem)
                     let cellItem: ReceiveCollectibleAccountListItem = .account(
-                        accountPreviewViewModel
+                        accountListItemViewModel
                     )
 
                     accounts.append($0)

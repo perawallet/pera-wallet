@@ -55,7 +55,7 @@ final class AccountSelectScreenDataSource: UICollectionViewDiffableDataSource<Ac
                     return header
                 case .accountCell(let viewModel), .searchAccountCell(let viewModel), .matchedAccountCell(let viewModel):
                     let cell = collectionView.dequeue(
-                        AccountPreviewCell.self,
+                        AccountListItemCell.self,
                         at: indexPath
                     )
                     cell.bindData(viewModel)
@@ -75,7 +75,7 @@ final class AccountSelectScreenDataSource: UICollectionViewDiffableDataSource<Ac
             TitleHeaderCell.self,
             NoContentCell.self,
             LoadingCell.self,
-            AccountPreviewCell.self,
+            AccountListItemCell.self,
             SelectContactCell.self
         ].forEach {
             collectionView.register($0)

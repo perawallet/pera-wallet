@@ -24,8 +24,8 @@ struct ViewPassphraseListItemButtonViewModel: ListItemButtonViewModel {
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-options-view-passphrase"
-        self.title = Self.getTitle("options-view-passphrase".localized)
-        self.subtitle = nil
+        icon = "icon-options-view-passphrase"
+        title = Self.getTitle("options-view-passphrase".localized)
+        subtitle = nil
     }
 }

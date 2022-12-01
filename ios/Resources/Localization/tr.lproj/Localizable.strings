@@ -53,7 +53,7 @@
 "account-select-search-empty-detail" = "Farklı bir hesap adı ile deneyin";
 
 /* (No Comment) */
-"account-select-search-empty-title" = "Hesap bulunamadı";
+"account-select-search-empty-title" = "Hesap Bulunamadı";
 
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "Bir hesap oluşturmak istiyorum";
@@ -165,6 +165,9 @@
 
 /* MARK: ASA About */
 "asa-about-asa-id" = "ASA Kimliği";
+
+/* (No Comment) */
+"asa-about-asa-open-with-browser" = "Tarayıcı ile Aç";
 
 /* (No Comment) */
 "asa-about-asa-project-website" = "Projenin web sitesi";
@@ -876,6 +879,9 @@
 
 /* (No Comment) */
 "ledger-approval-message" = "Lütfen hesap adresini Ledger cihazınızda doğrulayın (%@)";
+
+/* (No Comment) */
+"ledger-approval-sign-message" = "Lütfen işlemi %@ adlı Ledger cihazınızda önizleyin ve imzalayın.";
 
 /* MARK: Ledger Approval */
 "ledger-approval-title" = "Ledger Onayı";
@@ -1912,6 +1918,204 @@
 /* MARK: Story */
 "story-copy-address-title" = "\"Adresi Kopyala\" seçeneğine basılı tutun";
 
+/* / MARK: Swap Account Selection */
+"swap-account-selection-header-description" = "Takas yapmak için bir hesap seçin";
+
+/* (No Comment) */
+"swap-alert-body" = "Pera Wallet artık varlıkları takas etmenin kolay ve hızlı bir yolunu sunuyor.";
+
+/* (No Comment) */
+"swap-alert-primary-action" = "Takası Deneyin";
+
+/* MARK: - Swap Alert */
+"swap-alert-title" = "Pera'da Takas Yapın";
+
+/* (No Comment) */
+"swap-amount-percentage-max" = "MAKS";
+
+/* (No Comment) */
+"swap-amount-percentage-placeholder" = "Özel Yüzde Belirleyin";
+
+/* / MARK: Swap Adjust Amount */
+"swap-amount-percentage-title" = "Bakiye Yüzdesi";
+
+/* (No Comment) */
+"swap-amount-percentage-validation-error-limitExceeded" = "Yüzde, %@ ile %@ değerleri arasında olmalıdır.";
+
+/* (No Comment) */
+"swap-asset-algo-min-balance-error" = "Algo bakiyesi çok düşük. Minimum bakiye %@ olmalıdır.";
+
+/* (No Comment) */
+"swap-asset-amount-title-balance" = "Bakiye: %@";
+
+/* / MARK: Swap Asset */
+"swap-asset-choose-title" = "Bir varlık seçin";
+
+/* (No Comment) */
+"swap-asset-fee-unavailable-error" = "Takas ücreti şu anda getirilemedi.";
+
+/* (No Comment) */
+"swap-asset-from" = "Takas Kaynağı";
+
+/* (No Comment) */
+"swap-asset-min-balance-error" = "%@ bakiyesi yeterli değil.";
+
+/* (No Comment) */
+"swap-asset-min-balance-error-fee" = "Hesapta bu işlem ücretini karşılamak için yeterli bakiye bulunmuyor.";
+
+/* (No Comment) */
+"swap-asset-min-balance-error-without-amount" = "Hesapta bu işlem için yeterli bakiye bulunmuyor.";
+
+/* (No Comment) */
+"swap-asset-not-available" = "Varlık mevcut değil.";
+
+/* (No Comment) */
+"swap-asset-pool-search-error" = "Varlıkları şu anda gösteremiyoruz. Lütfen tekrar deneyin.";
+
+/* (No Comment) */
+"swap-asset-to" = "Takas Hedefi";
+
+/* (No Comment) */
+"swap-confirm-exchange-fee-detail" = "Bu ücret, merkeziyetsiz borsanın sizden talep ettiği ücrettir. Gönderim yaptığınız miktardan otomatik olarak düşülür ve alınan minimum miktara dahil edilir. Üzerine bir ek ücret alınmaz.";
+
+/* (No Comment) */
+"swap-confirm-exchange-fee-title" = "Dönüştürme Ücreti";
+
+/* (No Comment) */
+"swap-confirm-failed-title" = "Takas Başarısız";
+
+/* (No Comment) */
+"swap-confirm-minimum-received-title" = "Minimum Alınan";
+
+/* (No Comment) */
+"swap-confirm-pera-fee-title" = "Pera Ücreti";
+
+/* (No Comment) */
+"swap-confirm-price-info" = "%@/%@";
+
+/* (No Comment) */
+"swap-confirm-slippage-updated-title" = "Slipaj Tolerans değeri güncellendi!";
+
+/* (No Comment) */
+"swap-confirm-summary-title" = "Takas Özeti";
+
+/* / MARK: Swap Confirm Asset */
+"swap-confirm-title" = "Takası Onayla";
+
+/* (No Comment) */
+"swap-confirm-total-fee-title" = "Toplam Takas Ücreti";
+
+/* (No Comment) */
+"swap-confirm-view-summary-title" = "Takas Özetini Görüntüle";
+
+/* MARK: Swap Error */
+"swap-error-failed-title" = "%@ takası başarısız oldu";
+
+/* (No Comment) */
+"swap-error-go-home" = "Ana Sayfaya Git";
+
+/* (No Comment) */
+"swap-error-unexpected-detail" = "Beklenmedik bir hatayla karşılaştık. Daha sonra tekrar deneyin.";
+
+/* (No Comment) */
+"swap-flow-start-min-balance-error-detail" = "Bu hesapta takas işlemi için gerekli olan %@ miktarındaki minimum bakiye bulunmuyor.";
+
+/* (No Comment) */
+"swap-flow-start-min-balance-error-title" = "Minimum Bakiye";
+
+/* (No Comment) */
+"swap-introduction-body" = "Pera Wallet varlıkları takas etmenin kolay ve hızlı bir yolunu sunuyor. Takas işlemi sayesinde bir ASA'yı akıllı sözleşme kullanarak başka bir ASA'ya piyasa fiyatları üzerinden dönüştürebilirsiniz.";
+
+/* (No Comment) */
+"swap-introduction-powered-by-title" = "Destekleyen:";
+
+/* (No Comment) */
+"swap-introduction-primary-action-title" = "Takasa Başlayın";
+
+/* (No Comment) */
+"swap-introduction-terms-of-service" = "Devam ederek takas ortağımızın Hizmet Koşullarını kabul ediyorsunuz";
+
+/* (No Comment) */
+"swap-introduction-terms-of-service-hyperlink" = "Hizmet Koşulları";
+
+/* / MARK: Swap Introduction */
+"swap-introduction-title" = "Pera'da Takas Yapın";
+
+/* (No Comment) */
+"swap-loading-detail" = "En az %@ alacaksınız veya işlem geri alınacak.";
+
+/* MARK: Swap Loading */
+"swap-loading-title" = "İşlem gönderiliyor";
+
+/* (No Comment) */
+"swap-price-impact-info-body" = "Fiyat etkisi, gerçekleştirdiğiniz işlemin varlık çiftinin piyasa fiyatı üzerindeki etkisidir. Havuzdaki likidite miktarı ile doğrudan ilişkilidir.";
+
+/* / MARK: Swap Price Impact Info */
+"swap-price-impact-info-title" = "Fiyat Etkisi";
+
+/* (No Comment) */
+"swap-price-impact-title" = "Fiyat Etkisi";
+
+/* (No Comment) */
+"swap-price-impact-warning-message" = "Dikkat! Fiyat etkisi %5'in üzerinde. Bu durum, bu havuzdaki likiditenin düşük olabileceği anlamına geliyor. Takas işlemine devam etmeden önce lütfen işlemin neden olabileceği sonuçları anladığınızdan emin olun.";
+
+/* (No Comment) */
+"swap-sign-with-ledger-action-title" = "İşlemleri İmzalayın";
+
+/* (No Comment) */
+"swap-sign-with-ledger-body" = "Bu hesapla bir Ledger cihazı kullandığınızı tespit ettik. Donanım belirtecinizi kullanarak %@ işlemlerini birer birer imzalamanız gerekecek.";
+
+/* (No Comment) */
+"swap-sign-with-ledger-body-highlighted" = "%@ işlemlerini birer birer imzalamanız gerekecek.";
+
+/* / MARK: Swap Sign With Ledger Process */
+"swap-sign-with-ledger-process-title" = "%@/%@ tanesi imzalanıyor...";
+
+/* / MARK: Swap Sign With Ledger */
+"swap-sign-with-ledger-title" = "Ledger ile imzalayın";
+
+/* (No Comment) */
+"swap-slippage-percentage-custom" = "Özel";
+
+/* (No Comment) */
+"swap-slippage-percentage-validation-error-limitExceeded" = "Yüzde, %@ ile %@ değerleri arasında olmalıdır.";
+
+/* (No Comment) */
+"swap-slippage-placeholder" = "Özel Slipaj Belirleyin";
+
+/* / MARK: Swap Slippage */
+"swap-slippage-title" = "Slipaj Toleransı";
+
+/* (No Comment) */
+"swap-slippage-tolerance-info-body" = "Slipaj, işlemi gönderdiğiniz zamanki fiyat ile işlemin blok zinciri üzerinde onaylandığı zamanki fiyat arasındaki fiyat farkıdır. Slipaj oranı burada belirlediğiniz tolerans oranının üzerine çıkarsa, değer kaybı yaşamanızın önüne geçmek adına işlem otomatik olarak iptal edilecektir.";
+
+/* / MARK: Swap Slippage Tolerance Info */
+"swap-slippage-tolerance-info-title" = "Slipaj Toleransı";
+
+/* (No Comment) */
+"swap-success-detail" = "%@ karşılığında %@ aldınız";
+
+/* MARK: Swap Success */
+"swap-success-title" = "%@ takası tamamlandı";
+
+/* (No Comment) */
+"swap-success-view-explorer" = "İşlem Ayrıntılarını AlgoExplorer'da Görüntüleyin";
+
+/* (No Comment) */
+"swap-success-view-summary" = "Takas Özetini Görüntüle";
+
+/* (No Comment) */
+"swap-summary-network-fee-title" = "Ağ Ücreti";
+
+/* (No Comment) */
+"swap-summary-opt-in-fee-title" = "Katılım Ücreti";
+
+/* (No Comment) */
+"swap-summary-paid-title" = "Ödendi";
+
+/* MARK: Swap Summary */
+"swap-summary-received-title" = "Alındı";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Koşullar ve Hizmetler";
 
@@ -2057,6 +2261,9 @@
 "title-keep" = "Koru";
 
 /* (No Comment) */
+"title-later" = "Daha sonra";
+
+/* (No Comment) */
 "title-learn-more" = "Daha Fazla Bilgi";
 
 /* (No Comment) */
@@ -2153,6 +2360,9 @@
 "title-save" = "Kaydet";
 
 /* (No Comment) */
+"title-select-account" = "Hesap Seç";
+
+/* (No Comment) */
 "title-select-all" = "Tümünü seçin";
 
 /* (No Comment) */
@@ -2201,10 +2411,19 @@
 "title-step-4" = "4. Adım";
 
 /* (No Comment) */
+"title-swap" = "Takas Yap";
+
+/* (No Comment) */
 "title-testnet" = "TESTNET";
 
 /* (No Comment) */
+"title-to" = "Alıcı";
+
+/* (No Comment) */
 "title-total-supply" = "Toplam Arz";
+
+/* (No Comment) */
+"title-try-again" = "Tekrar Dene";
 
 /* (No Comment) */
 "title-unknown" = "Adsız";
@@ -2387,7 +2606,7 @@
 "transaction-menu-copy-note" = "Notu Kopyala";
 
 /* (No Comment) */
-"transaction-option-list-add-asset-subtitle" = "Bir ASA veya NFT'ye Katılın";
+"transaction-option-list-add-asset-subtitle" = "Bu hesaptan bir ASA'ya veya NFT'ye katılım sağlayın";
 
 /* (No Comment) */
 "transaction-option-list-add-asset-title" = "Varlık Ekle";
@@ -2405,7 +2624,10 @@
 "transaction-option-list-scan-qr-code-subtitle" = "WalletConnect'i kullanın veya hesap adresini tarayın";
 
 /* (No Comment) */
-"transaction-option-list-send-subtitle" = "Başka bir hesaba Algo veya diğer ASA";
+"transaction-option-list-send-subtitle" = "Başka bir hesaba Algo veya herhangi bir ASA transfer edin";
+
+/* (No Comment) */
+"transaction-option-list-swap-subtitle" = "Popüler ASA çiftlerini birbirine dönüştürün";
 
 /* (No Comment) */
 "transaction-request-signing-alert-title" = "Emin misiniz?";
@@ -2906,10 +3128,10 @@
 "web-export-account-confirmation-list-description-singular" = "Pera Web'e güvenli bir biçimde aktarmak üzere olduğunuz hesap:";
 
 /* (No Comment) */
-"web-export-account-list-description" = "Parolarınızı Pera Web Wallet ile paylaşmak ve içe aktarmak üzeresiniz!\nTarafınızdan talep edilmeyen hiçbir isteği kabul etmeyin.";
+"web-export-account-list-description" = "Parolanızı Pera Web Wallet ile paylaşmak ve içe aktarmak üzeresiniz!\nTarafınızdan talep edilmeyen hiçbir isteği kabul etmeyin.";
 
 /* (No Comment) */
-"web-export-account-list-description-highlighted" = "Parolarınızı Pera Web Wallet ile paylaşmak ve içe aktarmak üzeresiniz!";
+"web-export-account-list-description-highlighted" = "Parolanızı Pera Web Wallet ile paylaşmak ve içe aktarmak üzeresiniz!";
 
 /* (No Comment) */
 "web-export-account-list-no-content-body" = "Dışa aktarılabilecek nitelikte hiçbir hesap bulamadık.";

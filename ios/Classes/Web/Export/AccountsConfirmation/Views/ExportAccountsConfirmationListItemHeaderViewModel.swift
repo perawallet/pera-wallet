@@ -27,7 +27,6 @@ struct ExportAccountsConfirmationListItemHeaderViewModel:
 
     init(hasSingularAccount: Bool) {
         self.hasSingularAccount = hasSingularAccount
-
         bindTitle()
         bindTitleStyle()
     }

@@ -36,6 +36,7 @@ final class LottieImageView: View {
 extension LottieImageView {
     func addAnimationView() {
         animationView.contentMode = .scaleAspectFit
+        animationView.backgroundBehavior = .pauseAndRestore
 
         prepareWholeScreenLayoutFor(animationView)
     }

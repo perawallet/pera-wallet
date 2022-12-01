@@ -22,10 +22,19 @@ import MacaroonUtils
 
 final class HomeViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout {
-    private lazy var storyTransition = AlertUITransition(presentingViewController: self)
+    UICollectionViewDelegateFlowLayout,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+
+    private lazy var alertPresenter = AlertPresenter(
+        presentingScreen: self,
+        session: session!,
+        sharedDataController: sharedDataController,
+        items: alertItems
+    )
 
     private lazy var navigationView = HomePortfolioNavigationView()
 
@@ -37,28 +46,39 @@ final class HomeViewController:
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
-    private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(
+
+    private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
+        presentingScreen: self,
+        api: api!,
+        session: session!
+    )
+
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        dataStore: swapDataStore,
+        analytics: analytics,
+        api: api!,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!,
+        presentingScreen: self
+    )
+    private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController
     )
-    private lazy var receiveTransactionFlowCoordinator =
-        ReceiveTransactionFlowCoordinator(presentingScreen: self)
-    private lazy var scanQRFlowCoordinator =
-        ScanQRFlowCoordinator(
-            analytics: analytics,
-            api: api!,
-            bannerController: bannerController!,
-            loadingController: loadingController!,
-            presentingScreen: self,
-            session: session!,
-            sharedDataController: sharedDataController
-        )
+    private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(
+        analytics: analytics,
+        api: api!,
+        bannerController: bannerController!,
+        loadingController: loadingController!,
+        presentingScreen: self,
+        session: session!,
+        sharedDataController: sharedDataController
+    )
 
     private let copyToClipboardController: CopyToClipboardController
 
     private let onceWhenViewDidAppear = Once()
-    private let storyOnceWhenViewDidAppear = Once()
 
     override var analyticsScreen: ALGAnalyticsScreen? {
         return .init(name: .accountList)
@@ -78,17 +98,27 @@ final class HomeViewController:
     
     private var totalPortfolioValue: PortfolioValue?
 
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
     private let dataController: HomeDataController
 
     init(
+        swapDataStore: SwapDataStore,
         dataController: HomeDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
+        self.swapDataStore = swapDataStore
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
+    }
+
+    deinit {
+        stopObservingNotifications()
     }
 
     override func configureNavigationBarAppearance() {
@@ -127,7 +157,9 @@ final class HomeViewController:
                     animatingDifferences: true
                 )
 
-                self.presentCopyAddressStoryIfNeeded()
+                if totalPortfolioItem != nil {
+                    self.alertPresenter.presentIfNeeded()
+                }
             }
         }
         dataController.load()
@@ -182,6 +214,12 @@ final class HomeViewController:
         let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
         loadingCell?.stopAnimating()
     }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+
+        observeWhenUserIsOnboardedToSwap()
+    }
 }
 
 extension HomeViewController {
@@ -191,7 +229,10 @@ extension HomeViewController {
                 return
             }
 
-            self.open(.notifications, by: .push)
+            self.open(
+                .notifications,
+                by: .push
+            )
         }
 
         rightBarButtonItems = [notificationBarButtonItem]
@@ -359,17 +400,19 @@ extension HomeViewController {
             self.buyAlgoFlowCoordinator.launch()
         }
 
+        cell.startObserving(event: .swap) {
+            [weak self] in
+            guard let self = self else { return }
+            self.analytics.track(.recordHomeScreen(type: .swap))
+            self.swapAssetFlowCoordinator.launch(account: nil)
+        }
+
         cell.startObserving(event: .send) {
             [weak self] in
             guard let self = self else { return }
             self.sendTransactionFlowCoordinator.launch()
         }
 
-        cell.startObserving(event: .receive) {
-            [weak self] in
-            guard let self = self else { return }
-            self.receiveTransactionFlowCoordinator.launch()
-        }
 
         cell.startObserving(event: .scanQR) {
             [weak self] in
@@ -470,6 +513,24 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
+    private func observeWhenUserIsOnboardedToSwap() {
+        observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
+            [weak self] notification in
+            guard let self = self else { return }
+
+            guard
+                let indexPath = self.listDataSource.indexPath(for: .portfolio(.quickActions)),
+                let cell = self.listView.cellForItem(at: indexPath) as? HomeQuickActionsCell
+            else {
+                return
+            }
+
+            cell.isSwapBadgeVisible = false
+        }
+    }
+}
+
+extension HomeViewController {
     private func requestAppReview() {
         asyncMain(afterDuration: 1.0) {
             AlgorandAppStoreReviewer().requestReviewIfAppropriate()
@@ -504,55 +565,6 @@ extension HomeViewController {
                 passcodeSettingDisplayStore.disableAskingPasscode()
             }
         }
-    }
-}
-
-extension HomeViewController {
-    private func presentCopyAddressStoryIfNeeded() {
-        /// note: If any screen presented on top of home screen, it will prevent opening story screen here
-        guard sharedDataController.isAvailable, presentedViewController == nil else {
-            return
-        }
-        
-        storyOnceWhenViewDidAppear.execute { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.presentCopyAddressStory()
-        }
-    }
-    
-    private func presentCopyAddressStory() {
-        guard let session = session,
-              session.hasAuthentication() else {
-            return
-        }
-
-        var copyAddressDisplayStore = CopyAddressDisplayStore()
-
-        if !copyAddressDisplayStore.shouldAskForCopyAddress(sharedDataController.accountCollection.count) {
-            return
-        }
-
-        copyAddressDisplayStore.increaseAppOpenCount()
-
-        let eventHandler: CopyAddressStoryScreen.EventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .close:
-                self.dismiss(animated: true)
-            }
-        }
-
-        self.storyTransition.perform(
-            .copyAddressStory(
-                eventHandler: eventHandler
-            ),
-            by: .presentWithoutNavigationController
-        )
     }
 }
 
@@ -642,8 +654,11 @@ extension HomeViewController {
             case .loading:
                 setListBackgroundVisible(true)
 
-                let loadingCell = cell as? HomeLoadingCell
-                loadingCell?.startAnimating()
+                let cell = cell as! HomeLoadingCell
+
+                cell.isSwapBadgeVisible = !isOnboardedToSwap
+
+                cell.startAnimating()
             case .noContent:
                 setListBackgroundVisible(false)
                 linkInteractors(cell as! NoContentWithActionCell)
@@ -658,7 +673,11 @@ extension HomeViewController {
                     for: portfolioItem
                 )
             case .quickActions:
-                linkInteractors(cell as! HomeQuickActionsCell)
+                let cell = cell as! HomeQuickActionsCell
+
+                cell.isSwapBadgeVisible = !isOnboardedToSwap
+
+                linkInteractors(cell)
             }
         case .announcement(let item):
             if item.isGeneric {
@@ -677,6 +696,12 @@ extension HomeViewController {
                 break
             }
         }
+    }
+
+    private var isOnboardedToSwap: Bool {
+        let swapDisplayStore = SwapDisplayStore()
+        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+        return isOnboardedToSwap
     }
     
     func collectionView(
@@ -1002,24 +1027,27 @@ struct PasscodeSettingDisplayStore: Storable {
     }
 }
 
-struct CopyAddressDisplayStore: Storable {
-    typealias Object = Any
-
-    let accountLimit = 1
-    let appOpenCountCopyAddress = 2
-
-    private let appOpenCountKey = "com.algorand.algorand.copy.address.count.key"
-    private let dontAskAgainKey = "com.algorand.algorand.copy.address.dont.ask.again"
-
-    var appOpenCount: Int {
-        return userDefaults.integer(forKey: appOpenCountKey)
+extension HomeViewController {
+    /// <note>
+    /// Sort by order to be presented.
+    private var alertItems: [any AlertItem] {
+        return [
+            makeCopyAddressIntroductionAlertItem(),
+            makeSwapIntroductionAlertItem(),
+        ]
     }
 
-    mutating func increaseAppOpenCount() {
-        userDefaults.set(appOpenCount + 1, forKey: appOpenCountKey)
+    private func makeSwapIntroductionAlertItem() -> any AlertItem {
+        return SwapIntroductionAlertItem(delegate: swapAssetFlowCoordinator)
     }
-    
-    func shouldAskForCopyAddress(_ addressCount: Int) -> Bool {
-        return addressCount >= accountLimit && appOpenCount < appOpenCountCopyAddress
+
+    private func makeCopyAddressIntroductionAlertItem() -> any AlertItem {
+        return CopyAddressIntroductionAlertItem(delegate: self)
+    }
+}
+
+extension HomeViewController: CopyAddressIntroductionAlertItemDelegate {
+    func copyAddressIntroductionAlertItemDidPerformGotIt(_ item: CopyAddressIntroductionAlertItem) {
+        dismiss(animated: true)
     }
 }

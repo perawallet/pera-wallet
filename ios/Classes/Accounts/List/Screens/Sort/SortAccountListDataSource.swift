@@ -46,7 +46,7 @@ final class SortAccountListDataSource:
                 return cell
             case .reordering(let item):
                 let cell = collectionView.dequeue(
-                    AccountOrderingPreviewCell.self,
+                    AccountOrderingListItemCell.self,
                     at: indexPath
                 )
                 cell.bindData(item)
@@ -76,7 +76,7 @@ final class SortAccountListDataSource:
 
         [
             SingleSelectionCell.self,
-            AccountOrderingPreviewCell.self
+            AccountOrderingListItemCell.self
         ].forEach {
             collectionView.register($0)
         }

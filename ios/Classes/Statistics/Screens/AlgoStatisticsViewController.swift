@@ -36,7 +36,7 @@ final class AlgoStatisticsViewController:
     private var algoPriceTimeFrameOptions: [AlgoPriceTimeFrameSelection] = []
 
     private var chartEntries: [AlgoUSDPrice]?
-    private var selectedTimeInterval: AlgoPriceTimeFrameSelection = .lastDay
+    private var selectedTimeInterval: AlgoPriceTimeFrameSelection = .lastYear
         
     private let dataController: AlgoStatisticsDataController
     

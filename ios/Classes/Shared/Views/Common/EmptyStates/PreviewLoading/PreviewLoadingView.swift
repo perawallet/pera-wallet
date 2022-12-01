@@ -55,6 +55,28 @@ final class PreviewLoadingView:
     func linkInteractors() {
         isUserInteractionEnabled = false
     }
+
+    class func calculatePreferredSize(
+        for theme: PreviewLoadingViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        let width = size.width
+        let titleHeight =
+            theme.titleViewSize.h +
+            theme.titleMargin.top
+        let subtitleHeight =
+            theme.subtitleViewSize.h +
+            theme.subtitleMargin.top +
+            theme.subtitleMargin.bottom
+        let supplementaryHeight = theme.supplementaryViewSize.h
+        let imageHeight = theme.imageViewSize.h
+
+        let textContentHeight = titleHeight + subtitleHeight
+        let contentHeight = max(textContentHeight.ceil(), supplementaryHeight.ceil())
+        let preferredHeight = max(imageHeight.ceil(), contentHeight)
+
+        return CGSize((width, min(preferredHeight.ceil(), size.height)))
+    }
 }
 
 extension PreviewLoadingView {

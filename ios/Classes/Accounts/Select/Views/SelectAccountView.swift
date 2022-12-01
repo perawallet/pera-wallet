@@ -23,16 +23,19 @@ import MacaroonUIKit
 final class SelectAccountView: View {
     private lazy var theme = SelectAccountViewTheme()
     private(set) lazy var searchInputView = SearchInputView()
+    private lazy var clipboardCanvasView = UIView()
     private(set) lazy var clipboardView = AccountClipboardView()
 
     private(set) lazy var listView: UICollectionView = {
-        let flowLayout = AccountSelectScreenListLayout.build()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.backgroundColor = theme.backgroundColor.uiColor
-        collectionView.contentInset = UIEdgeInsets(theme.contentInset)
-        collectionView.keyboardDismissMode = .onDrag
-        collectionView.showsHorizontalScrollIndicator = false
+        let collectionViewLayout = ExportAccountsConfirmationListLayout.build()
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: collectionViewLayout
+        )
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.keyboardDismissMode = .onDrag
+        collectionView.backgroundColor = .clear
         return collectionView
     }()
 
@@ -42,62 +45,73 @@ final class SelectAccountView: View {
         super.init(frame: frame)
 
         customize(theme)
-        linkInteractors()
     }
 
     func customize(_ theme: SelectAccountViewTheme) {
-        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-
+        addBackground(theme)
         addSearchInputView(theme)
-        addClipboardView(theme)
         addListView(theme)
+        addClipboardView(theme)
     }
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
-
-    func displayClipboard(isVisible: Bool) {
-        clipboardView.isHidden = !isVisible
-
-        clipboardView.snp.updateConstraints {
-            $0.height.equalTo(isVisible ? theme.clipboardHeight : 0)
-        }
-
-        listView.contentInset = isVisible ? UIEdgeInsets(theme.contentInset) : .zero
-    }
 }
 
 extension SelectAccountView {
+    private func addBackground(_ theme: SelectAccountViewTheme) {
+        customizeAppearance(theme.background)
+    }
+
     private func addSearchInputView(_ theme: SelectAccountViewTheme) {
         searchInputView.customize(theme.searchInputViewTheme)
 
         addSubview(searchInputView)
         searchInputView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.topInset)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top == theme.searchInputViewTopPadding
+            $0.leading == theme.horizontalPadding
+            $0.trailing == theme.horizontalPadding
         }
     }
 
     private func addClipboardView(_ theme: SelectAccountViewTheme) {
+        clipboardCanvasView.customizeAppearance(theme.background)
+
+        addSubview(clipboardCanvasView)
+        clipboardCanvasView.snp.makeConstraints {
+            $0.top == searchInputView.snp.bottom
+            $0.leading == theme.horizontalPadding
+            $0.trailing == theme.horizontalPadding
+        }
+
         clipboardView.customize(theme.clipboardTheme)
 
-        addSubview(clipboardView)
+        clipboardCanvasView.addSubview(clipboardView)
         clipboardView.snp.makeConstraints {
-            $0.top.equalTo(searchInputView.snp.bottom).offset(theme.clipboardTopInset)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.height.equalTo(theme.clipboardHeight)
+            $0.setPaddings(theme.clipboardPaddings)
         }
     }
 
     private func addListView(_ theme: SelectAccountViewTheme) {
         addSubview(listView)
         listView.snp.makeConstraints {
-            $0.top.equalTo(clipboardView.snp.bottom)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.bottom.equalToSuperview()
+            $0.top == searchInputView.snp.bottom
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
         }
 
         listView.backgroundView = contentStateView
+    }
+}
+
+extension SelectAccountView {
+    func displayClipboard(isVisible: Bool) {
+        clipboardCanvasView.isHidden = !isVisible
+
+        UIView.animate(withDuration: 0.3) {
+            self.listView.contentInset.top = isVisible ? self.theme.contentInsetTopForClipboard : 0
+        }
     }
 }

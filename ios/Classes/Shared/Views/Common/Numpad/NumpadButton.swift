@@ -58,7 +58,7 @@ final class NumpadButton: UIButton, ViewComposable {
             break
         case .decimalSeparator:
             customizeAppearance(theme.button)
-            customizeBaseAppearance(title: Locale.preferred.decimalSeparator ?? ".")
+            customizeBaseAppearance(title: Locale.current.decimalSeparator ?? ".")
         }
     }
 

@@ -40,12 +40,14 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
         self.textInputMinHeight = 48
         self.textInputMask = []
         self.placeholder = [
-            .font(Fonts.DMSans.regular.make(15, .body)),
+            .font(Typography.bodyRegular()),
             .textOverflow(SingleLineFittingText()),
             .textColor(Colors.Text.grayLighter),
             .text(placeholder)
         ]
         self.floatingPlaceholder = [
+            .font(Typography.footnoteRegular()),
+            .textOverflow(SingleLineFittingText()),
             .textColor(Colors.Text.grayLighter),
             .text(
                 (floatingPlaceholder ?? placeholder).footnoteRegular()

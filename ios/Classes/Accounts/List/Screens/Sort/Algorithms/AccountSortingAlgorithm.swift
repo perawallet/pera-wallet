@@ -28,3 +28,29 @@ protocol AccountSortingAlgorithm {
         otherAccount: AccountHandle
     ) -> Bool
 }
+
+protocol AssetFilterAlgorithm {
+    func getFormula(asset: Asset) -> Bool
+}
+
+struct AssetZeroBalanceFilterAlgorithm: AssetFilterAlgorithm {
+    func getFormula(
+        asset: Asset
+    ) -> Bool {
+        return asset.amount > 0
+    }
+}
+
+struct AssetExcludeFilterAlgorithm: AssetFilterAlgorithm {
+    private let excludedList: [Asset]
+
+    init(excludedList: [Asset]) {
+        self.excludedList = excludedList
+    }
+
+    func getFormula(
+        asset: Asset
+    ) -> Bool {
+        return excludedList.contains { $0.id != asset.id }
+    }
+}

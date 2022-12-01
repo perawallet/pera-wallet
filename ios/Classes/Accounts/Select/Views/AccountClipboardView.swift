@@ -20,7 +20,10 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class AccountClipboardView: View, TripleShadowDrawable, ViewModelBindable {
+final class AccountClipboardView:
+    View,
+    TripleShadowDrawable,
+    ViewModelBindable {
 
     var thirdShadow: MacaroonUIKit.Shadow?
     var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
@@ -32,10 +35,34 @@ final class AccountClipboardView: View, TripleShadowDrawable, ViewModelBindable 
     private lazy var addressLabel = UILabel()
     private lazy var copyIconView = UIImageView()
 
+    override func preferredUserInterfaceStyleDidChange() {
+        super.preferredUserInterfaceStyleDidChange()
+
+        drawAppearance(
+            secondShadow: secondShadow
+        )
+        drawAppearance(
+            thirdShadow: thirdShadow
+        )
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if let secondShadow = secondShadow {
+            updateOnLayoutSubviews(
+                secondShadow: secondShadow
+            )
+        }
+
+        if let thirdShadow = thirdShadow {
+            updateOnLayoutSubviews(
+                thirdShadow: thirdShadow
+            )
+        }
+    }
+
     func customize(_ theme: AccountClipboardViewTheme) {
-        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        draw(corner: theme.containerCorner)
-        draw(border: theme.containerBorder)
         draw(shadow: theme.containerFirstShadow)
         draw(secondShadow: theme.containerSecondShadow)
         draw(thirdShadow: theme.containerThirdShadow)

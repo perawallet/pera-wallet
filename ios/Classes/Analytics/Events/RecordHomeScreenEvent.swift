@@ -35,6 +35,7 @@ extension RecordHomeScreenEvent {
         case qrScan
         case qrScanConnected
         case buyAlgo
+        case swap
         case tapAccounts
         case visitGovernance
 
@@ -48,6 +49,8 @@ extension RecordHomeScreenEvent {
                 return .qrConnectedInHome
             case .buyAlgo:
                 return .tapBuyAlgoInHome
+            case .swap:
+                return .tapSwapInHome
             case .tapAccounts:
                 return .createAccountInHomeScreen /// <todo>: It will be replaced the actual event when event created
             case .visitGovernance:

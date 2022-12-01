@@ -98,13 +98,13 @@ extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
 
 extension LedgerAccountDetailDataSource {
     func cellForLedgerAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
+        let cell = collectionView.dequeue(AccountListItemCell.self, at: indexPath)
         let accountNameViewModel = AccountNameViewModel(account: account)
-        let preview = CustomAccountPreview(
+        let item = CustomAccountListItem(
             accountNameViewModel,
             address: account.address
         )
-        cell.bindData(AccountPreviewViewModel(preview))
+        cell.bindData(AccountListItemViewModel(item))
         return cell
     }
 
@@ -115,23 +115,23 @@ extension LedgerAccountDetailDataSource {
     }
 
     func cellForRekeyedAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
+        let cell = collectionView.dequeue(AccountListItemCell.self, at: indexPath)
 
         if account.isRekeyed() {
             let accountNameViewModel = AuthAccountNameViewModel(account)
-            let preview = CustomAccountPreview(
+            let item = CustomAccountListItem(
                 accountNameViewModel,
                 address: account.address
             )
-            cell.bindData(AccountPreviewViewModel(preview))
+            cell.bindData(AccountListItemViewModel(item))
         } else {
             let rekeyedAccount = rekeyedAccounts[indexPath.row]
             let accountNameViewModel = AccountNameViewModel(account: rekeyedAccount)
-            let preview = CustomAccountPreview(
+            let item = CustomAccountListItem(
                 accountNameViewModel,
                 address: rekeyedAccount.address
             )
-            cell.bindData(AccountPreviewViewModel(preview))
+            cell.bindData(AccountListItemViewModel(item))
         }
         return cell
     }

@@ -74,15 +74,14 @@ final class EditContactViewController: BaseScrollViewController {
 
 extension EditContactViewController {
     private func addBarButtons() {
-         let saveBarButtonItem = ALGBarButtonItem(kind: .done) {
-             if let keyedValues = self.parseFieldsForContact() {
-                 self.edit(self.contact, with: keyedValues)
-             }
-         }
+        let saveBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Text.main.uiColor)) {
+            if let keyedValues = self.parseFieldsForContact() {
+                self.edit(self.contact, with: keyedValues)
+            }
+        }
 
-         rightBarButtonItems = [saveBarButtonItem]
+        rightBarButtonItems = [saveBarButtonItem]
      }
-
 }
 
 extension EditContactViewController: EditContactViewDelegate {

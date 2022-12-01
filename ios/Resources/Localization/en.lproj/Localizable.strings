@@ -77,12 +77,20 @@
 "title-total-supply" = "Total Supply";
 "title-about-with-param" = "ABOUT %@";
 "title-csv" = "CSV";
+"title-swap" = "Swap";
+"title-later" = "Later";
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
 "title-disclaimer" = "DISCLAIMER";
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
+"title-select-all" = "Select all";
+"title-unselect-all" = "Unselect all";
+"title-disclaimer" = "DISCLAIMER";
+"title-select-account" = "Select Account";
+"title-to" = "To";
+"title-try-again" = "Try Again";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -580,6 +588,7 @@
 "ledger-approval-message" = "Please verify the account address on your Ledger device (%@)";
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
+"ledger-approval-sign-message" = "Please review and sign the transaction on your Ledger device %@.";
 
 // MARK: Terms and Services
 "terms-and-services-title" = "Terms and Services";
@@ -969,7 +978,7 @@
 "account-select-header-accounts-title" = "My Accounts";
 "account-select-header-contacts-title" = "Contacts";
 "account-select-header-search-title" = "Search or enter wallet address";
-"account-select-search-empty-title" = "No account found";
+"account-select-search-empty-title" = "No Account Found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
 
@@ -1112,19 +1121,20 @@
 //MARK: QuickActions
 "quick-actions-buy-algo-title" = "Buy ALGO";
 "quick-actions-send-title" = "Send";
-"quick-actions-receive-title" = "Receive";
 "quick-actions-scan-qr-title" = "Scan QR";
 "quick-actions-address-title" = "Address";
+"quick-actions-receive-title" = "Receive";
 "quick-actions-more-title" = "More";
 
 // MARK: Transaction Options
 "transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
-"transaction-option-list-send-subtitle" = "Algo or any ASA to another account";
+"transaction-option-list-swap-subtitle" = "Convert between popular ASA pairs";
+"transaction-option-list-send-subtitle" = "Transfer Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";
 "transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";
 "transaction-option-list-more-subtitle" = "Show more actions";
 "transaction-option-list-add-asset-title" = "Add Asset";
-"transaction-option-list-add-asset-subtitle" = "Opt-in for an ASA or NFT";
+"transaction-option-list-add-asset-subtitle" = "Opt-in to an ASA or NFT from this account";
 
 // MARK: Sort Account List
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
@@ -1170,6 +1180,102 @@
 "verification-info-body-second-highlight" = "to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
 "verification-info-body-third-highlight" = "ASA Verification is not an endorsement of the project.";
 
+// MARK: - Swap Alert
+"swap-alert-title" = "Swap in Pera";
+"swap-alert-body" = "Pera Wallet now provides an easy and fast way to swap assets.";
+"swap-alert-primary-action" = "Try Swap";
+
+/// MARK: Swap Introduction
+"swap-introduction-title" = "Swap in Pera";
+"swap-introduction-body" = "Pera Wallet provides an easy and fast way to swap assets. Swapping allows an ASA to be exchanged with another one using a smart contract, at market fees.";
+"swap-introduction-primary-action-title" = "Start Swapping";
+"swap-introduction-powered-by-title" = "Powered by";
+"swap-introduction-terms-of-service" = "By continuing, you agree to our swap partner’s Terms of Service";
+"swap-introduction-terms-of-service-hyperlink" = "Terms of Service";
+
+/// MARK: Swap Account Selection
+"swap-account-selection-header-description" = "Select an account to make the swap";
+"swap-flow-start-min-balance-error-title" = "Minimum Balance";
+"swap-flow-start-min-balance-error-detail" = "This account doesn't have the required minimum balance of %@ for a swap operation.";
+
+/// MARK: Swap Sign With Ledger
+"swap-sign-with-ledger-title" = "Sign with Ledger";
+"swap-sign-with-ledger-body" = "We’ve detected that you are using a Ledger device with this account. You will need to sign %@ transactions one by one using your hardware token.";
+"swap-sign-with-ledger-body-highlighted" = "You will need to sign %@ transactions one by one";
+"swap-sign-with-ledger-action-title" = "Sign Transactions";
+
+/// MARK: Swap Sign With Ledger Process
+"swap-sign-with-ledger-process-title" = "Signing %@ out of %@...";
+
+/// MARK: Swap Asset
+"swap-asset-choose-title" = "Choose an asset";
+"swap-asset-amount-title-balance" = "Balance: %@";
+"swap-asset-pool-search-error" = "We can't show assets right now. Please try again.";
+"swap-asset-from" = "Swap From";
+"swap-asset-to" = "Swap To";
+"swap-asset-not-available" = "Asset is not available.";
+"swap-asset-algo-min-balance-error" = "Algo balance is too low. The minimum balance should be %@.";
+"swap-asset-min-balance-error" = "%@ balance is not sufficient.";
+"swap-asset-fee-unavailable-error" = "Swap fee could not be fetched right now.";
+"swap-asset-min-balance-error-without-amount" = "Account doesn't have enough balance for this transaction.";
+"swap-asset-min-balance-error-fee" = "Account doesn't have enough Algo balance to cover transaction fees.";
+
+/// MARK: Swap Adjust Amount
+"swap-amount-percentage-title" = "Balance Percentage";
+"swap-amount-percentage-placeholder" = "Set Custom Percentage";
+"swap-amount-percentage-max" = "MAX";
+"swap-amount-percentage-validation-error-limitExceeded" = "Percentage must be between %@ and %@.";
+
+/// MARK: Swap Price Impact Info
+"swap-price-impact-info-title" = "Price Impact";
+"swap-price-impact-info-body" = "Price impact is the influence of your trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
+"swap-price-impact-warning-message" = "Caution! Price impact is greater than 5%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.";
+
+/// MARK: Swap Slippage Tolerance Info
+"swap-slippage-tolerance-info-title" = "Slippage Tolerance";
+"swap-slippage-tolerance-info-body" = "Slippage is the price difference between when you submit a transaction and when the transaction is confirmed on the blockchain. If slippage rate goes over the tolerance percentage you set here, transaction will be cancelled automatically to protect you from value loss.";
+
+/// MARK: Swap Slippage
+"swap-slippage-title" = "Slippage Tolerance";
+"swap-slippage-placeholder" = "Set Custom Slippage";
+"swap-slippage-percentage-custom" = "Custom";
+"swap-slippage-percentage-validation-error-limitExceeded" = "Percentage must be between %@ and %@.";
+
+/// MARK: Swap Confirm Asset
+"swap-confirm-title" = "Confirm Swap";
+"swap-price-impact-title" = "Price Impact";
+"swap-confirm-minimum-received-title" = "Minimum Received";
+"swap-confirm-total-fee-title" = "Total Swap Fee";
+"swap-confirm-view-summary-title" = "View Swap Summary";
+"swap-confirm-exchange-fee-title" = "Exchange Fee";
+"swap-confirm-pera-fee-title" = "Pera Fee";
+"swap-confirm-exchange-fee-detail" = "This is the fee charged to you by the decentralized exchange. It's automatically deducted from the amount you send and factored into the minimum received amount. It won't be an additional charge on top.";
+"swap-confirm-summary-title" = "Swap Summary";
+"swap-confirm-failed-title" = "Swap Has Failed";
+"swap-confirm-price-info" = "%@ per %@";
+"swap-confirm-slippage-updated-title" = "Slippage Tolerance value updated!";
+
+// MARK: Swap Loading
+"swap-loading-title" = "Sending the transaction";
+"swap-loading-detail" = "You will receive at least %@ or the transaction will revert.";
+
+// MARK: Swap Success
+"swap-success-title" = "%@ swap completed";
+"swap-success-detail" = "You received %@ in exchange for %@";
+"swap-success-view-explorer" = "View Transaction Detail in AlgoExplorer";
+"swap-success-view-summary" = "View Swap Summary";
+
+// MARK: Swap Summary
+"swap-summary-received-title" = "Received";
+"swap-summary-paid-title" = "Paid";
+"swap-summary-network-fee-title" = "Network Fee";
+"swap-summary-opt-in-fee-title" = "Opt-in Fee";
+
+// MARK: Swap Error
+"swap-error-failed-title" = "%@ swap has failed";
+"swap-error-go-home" = "Go to Homepage";
+"swap-error-unexpected-detail" = "We encountered an unexpected error, try again later.";
+
 // MARK: Total Supply
 "asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
 
@@ -1180,6 +1286,7 @@
 "asa-about-asa-show-on" = "Show on";
 "asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
 "asa-about-asa-project-website" = "Project website";
+"asa-about-asa-open-with-browser" = "Open with Browser";
 
 // MARK: Web Export
 "web-export-account-list-title" = "Export to Pera Web";

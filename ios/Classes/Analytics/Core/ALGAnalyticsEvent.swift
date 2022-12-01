@@ -62,6 +62,11 @@ enum ALGAnalyticsEventName:
     case showQRCopy
     case showQRShare
     case showQRShareComplete
+    case swapAssetFailed
+    case swapBannerLater
+    case swapBannerTry
+    case swapCompleted
+    case swapFailed
     case tapAssetsInAccountDetail
     case tapAlgoPriceMenu
     case tapBuyAlgoInAccountDetail
@@ -70,6 +75,7 @@ enum ALGAnalyticsEventName:
     case tapBuyAlgoInMoonpay
     case tapBuyAlgoTab
     case tapCollectiblesInAccountDetail
+    case tapConfirmSwap
     case tapDownloadTransactionInHistory
     case tapFilterTransactionInHistory
     case tapGovernanceBanner
@@ -79,6 +85,11 @@ enum ALGAnalyticsEventName:
     case tapReceiveTab
     case tapSendInDetail
     case tapSendTab
+    case tapSwapInAccountDetail
+    case tapSwapInAlgoDetail
+    case tapSwapInHome
+    case tapSwapInSwapScreen
+    case tapSwapInQuickAction
     case tapQRInHome
     case wcSessionApproved
     case wcSessionDisconnected
@@ -97,10 +108,14 @@ extension ALGAnalyticsEventName {
         case .tapCollectiblesInAccountDetail: rawName = "accountscr_collectibles_tap"
         case .tapHistoryInAccountDetail: rawName = "accountscr_history_tap"
         case .tapBuyAlgoInAccountDetail: rawName = "accountscr_tapmenu_algo_buy_tap"
+        case .tapSwapInAccountDetail: rawName = "accountscr_swap_click"
+        case .tapSwapInAlgoDetail : rawName = "algoasadetail_swap_click"
         case .showAssetDetail: rawName = "asset_detail_asset"
         case .changeAssetDetail: rawName = "asset_detail_asset_change"
         case .addAsset: rawName = "assetscr_asset_add"
         case .manageAsset: rawName = "assetscr_assets_manage"
+        case .swapBannerLater: rawName = "banner_swap_later"
+        case .swapBannerTry: rawName = "banner_swap_tryswap"
         case .tapBuyAlgoInBottomsheet: rawName = "bottommenu_algo_buy_tap"
         case .changeCurrency: rawName = "currency_change"
         case .tapGovernanceBanner: rawName = "homescr_visitgovernance"
@@ -108,6 +123,7 @@ extension ALGAnalyticsEventName {
         case .tapFilterTransactionInHistory: rawName = "historyscr_transactions_filter"
         case .createAccountInHomeScreen: rawName = "homescr_account_add"
         case .tapBuyAlgoInHome: rawName = "homescr_algo_buy_tap"
+        case .tapSwapInHome: rawName = "homescr_swap_click"
         case .tapQRInHome: rawName = "homescr_qr_scan"
         case .qrConnectedInHome: rawName = "homescr_qr_scan_connected"
         case .changeLanguage: rawName = "language_change"
@@ -133,6 +149,11 @@ extension ALGAnalyticsEventName {
         case .onboardWelcomeScreenAccountRecover: rawName = "onb_welcome_account_recover"
         case .registerAccount: rawName = "register"
         case .rekeyAccount: rawName = "rekey"
+        case .swapCompleted: rawName = "swapscr_assets_completed"
+        case .swapFailed: rawName = "swapscr_assets_failed"
+        case .tapConfirmSwap: rawName = "swapscr_assets_confirm"
+        case .swapAssetFailed: rawName = "swapscr_assets_failed"
+        case .tapSwapInSwapScreen: rawName = "swapscr_assets_swap"
         case .tapReceiveInDetail: rawName = "tap_asset_detail_receive"
         case .tapSendInDetail: rawName = "tap_asset_detail_send"
         case .showQRCopy: rawName = "tap_show_qr_copy"
@@ -142,6 +163,7 @@ extension ALGAnalyticsEventName {
         case .tapReceiveTab: rawName = "tap_tab_receive"
         case .tapSendTab: rawName = "tap_tab_send"
         case .completeTransaction: rawName = "transaction"
+        case .tapSwapInQuickAction: rawName = "quickaction_swap_click"
         case .wcSessionApproved: rawName = "wc_session_approved"
         case .wcSessionDisconnected: rawName = "wc_session_disconnected"
         case .wcSessionRejected: rawName = "wc_session_rejected"

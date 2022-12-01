@@ -363,9 +363,6 @@ extension SendTransactionScreen {
     private func addAccountView() {
         accountView.customize(AssetListItemTheme())
 
-        accountContainerView.draw(corner: theme.accountContainerCorner)
-        accountContainerView.drawAppearance(border: theme.accountContainerBorder)
-
         accountContainerView.drawAppearance(shadow: theme.accountContainerFirstShadow)
         accountContainerView.drawAppearance(secondShadow: theme.accountContainerSecondShadow)
         accountContainerView.drawAppearance(thirdShadow: theme.accountContainerThirdShadow)
@@ -410,16 +407,7 @@ extension SendTransactionScreen {
         maxButton.setTitle("send-transaction-max-button-title".localized, for: .normal)
 
         maxButton.customize(TransactionShadowButtonTheme())
-        maxButton.drawAppearance(border: theme.accountContainerBorder)
-        maxButton.draw(shadow: theme.accountContainerFirstShadow)
-        maxButton.draw(secondShadow: theme.accountContainerSecondShadow)
-        maxButton.draw(thirdShadow: theme.accountContainerThirdShadow)
-
         noteButton.customize(TransactionShadowButtonTheme())
-        noteButton.drawAppearance(border: theme.accountContainerBorder)
-        noteButton.draw(shadow: theme.accountContainerFirstShadow)
-        noteButton.draw(secondShadow: theme.accountContainerSecondShadow)
-        noteButton.draw(thirdShadow: theme.accountContainerThirdShadow)
 
         stackView.addArrangedSubview(noteButton)
         stackView.addArrangedSubview(maxButton)
@@ -674,7 +662,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
                 return
             }
 
-            let decimalSeparator = Locale.preferred.decimalSeparator?.first ?? "."
+            let decimalSeparator = Locale.current.decimalSeparator?.first ?? "."
 
             if amount.contains(decimalSeparator) {
                 return

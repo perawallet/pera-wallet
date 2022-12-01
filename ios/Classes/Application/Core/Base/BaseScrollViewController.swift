@@ -137,6 +137,11 @@ extension BottomSheetScrollPresentable where Self: BaseScrollViewController {
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .defaultLow
         )
-        return contentSize.height
+        let footerSize = footerView.systemLayoutSizeFitting(
+            targetSize,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .defaultLow
+        )
+        return contentSize.height + footerSize.height
     }
 }

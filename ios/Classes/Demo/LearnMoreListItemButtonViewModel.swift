@@ -23,8 +23,8 @@ struct LearnMoreListItemButtonViewModel: ListItemButtonViewModel {
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-info-black-24"
-        self.title = Self.getTitle("title-learn-more".localized)
-        self.subtitle = nil
+        icon = "icon-info-black-24"
+        title = Self.getTitle("title-learn-more".localized)
+        subtitle = nil
     }
 }

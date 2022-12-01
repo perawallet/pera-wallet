@@ -96,3 +96,15 @@ extension Array {
             }
         }
 }
+
+extension Array where Element == Data? {
+    func findEmptyElementIndexes() -> [Index] {
+        var indexes = [Index]()
+
+        for (index, item) in enumerated() where item == nil || item?.count == 0 {
+            indexes.append(index)
+        }
+
+        return indexes
+    }
+}

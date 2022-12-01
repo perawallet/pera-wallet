@@ -37,7 +37,7 @@ final class SortAccountListViewController:
         return collectionView
     }()
 
-    private var movingAccountOrderingPreviewCellIndexPath: IndexPath?
+    private var movingAccountOrderingListItemCellIndexPath: IndexPath?
 
     private lazy var listLayout = SortAccountListLayout(
         listDataSource: listDataSource
@@ -98,7 +98,7 @@ final class SortAccountListViewController:
 
 extension SortAccountListViewController {
     private func addBarButtons() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Link.primary.uiColor)) {
             [weak self] in
             guard let self = self else {
                 return
@@ -149,7 +149,7 @@ extension SortAccountListViewController {
                 return
             }
 
-            movingAccountOrderingPreviewCellIndexPath = targetIndexPath
+            movingAccountOrderingListItemCellIndexPath = targetIndexPath
 
             listView.beginInteractiveMovementForItem(
                 at: targetIndexPath
@@ -167,7 +167,7 @@ extension SortAccountListViewController {
             listView.endInteractiveMovement()
             listView.isUserInteractionEnabled = true
 
-            guard let targetIndexPath = movingAccountOrderingPreviewCellIndexPath else {
+            guard let targetIndexPath = movingAccountOrderingListItemCellIndexPath else {
                 return
             }
 
@@ -179,7 +179,7 @@ extension SortAccountListViewController {
             listView.cancelInteractiveMovement()
             listView.isUserInteractionEnabled = true
 
-            guard let targetIndexPath = movingAccountOrderingPreviewCellIndexPath else {
+            guard let targetIndexPath = movingAccountOrderingListItemCellIndexPath else {
                 return
             }
 
@@ -198,7 +198,7 @@ extension SortAccountListViewController {
     ) {
         let cell = listView.cellForItem(
             at: indexPath
-        ) as? AccountOrderingPreviewCell
+        ) as? AccountOrderingListItemCell
 
         cell?.recustomizeAppearanceOnMove(
             isMoving: isMoving
@@ -284,12 +284,12 @@ extension SortAccountListViewController {
         toProposedIndexPath proposedIndexPath: IndexPath
     ) -> IndexPath {
         if currentIndexPath.section != proposedIndexPath.section {
-            movingAccountOrderingPreviewCellIndexPath = currentIndexPath
+            movingAccountOrderingListItemCellIndexPath = currentIndexPath
 
             return currentIndexPath
         }
 
-        movingAccountOrderingPreviewCellIndexPath = proposedIndexPath
+        movingAccountOrderingListItemCellIndexPath = proposedIndexPath
 
         return proposedIndexPath
     }

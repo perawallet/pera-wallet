@@ -21,7 +21,7 @@ import UIKit
 struct ExportAccountListItemCellTheme:
     StyleSheet,
     LayoutSheet {
-    var context: AccountPreviewViewTheme
+    var context: AccountListItemViewTheme
     var contextEdgeInsets: LayoutPaddings
     var spacingBetweenContextAndAccessory: LayoutMetric
     var accessorySize: LayoutSize
@@ -30,7 +30,7 @@ struct ExportAccountListItemCellTheme:
     var separator: Separator
 
     init(_ family: LayoutFamily) {
-        self.context = AccountPreviewViewTheme(family)
+        self.context = AccountListItemViewTheme(family)
         self.contextEdgeInsets = (14, 24, 14, 24)
         self.spacingBetweenContextAndAccessory = 20
         self.accessorySize = (24, 24)

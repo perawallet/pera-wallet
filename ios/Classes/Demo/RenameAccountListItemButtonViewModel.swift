@@ -23,8 +23,8 @@ struct RenameAccountListItemButtonViewModel: ListItemButtonViewModel {
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-edit-account"
-        self.title = Self.getTitle("options-edit-account-name".localized)
-        self.subtitle = nil
+        icon = "icon-edit-account"
+        title = Self.getTitle("options-edit-account-name".localized)
+        subtitle = nil
     }
 }

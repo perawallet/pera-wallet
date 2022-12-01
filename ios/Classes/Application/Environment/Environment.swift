@@ -101,6 +101,7 @@ class Environment {
 
 enum AlgorandWeb: String {
     case algorand = "https://www.algorand.com"
+    case peraWebApp = "https://wallet.perawallet.app"
     case termsAndServices = "https://www.perawallet.app/terms-and-services/"
     case privacyPolicy = "https://www.perawallet.app/privacy-policy/"
     case support = "https://perawallet.app/support/"
@@ -114,14 +115,16 @@ enum AlgorandWeb: String {
     case governence = "https://governance.algorand.foundation/"
     case peraBlogLaunchAnnouncement = "https://perawallet.app/blog/launch-announcement/"
     case asaVerificationSupport = "https://explorer.perawallet.app/asa-verification/"
-    case peraWebApp = "https://web.perawallet.app"
+    case tinymanTermsOfService = "https://tinyman.org/terms-of-service"
+    case tinymanSwapMain = "https://app.tinyman.org/#/swap?asset_in=0"
+    case tinymanSwap = "http://perawallet.app/support/swap/"
 
     var presentation: String {
         switch self {
+        case .peraWebApp:
+            return "wallet.perawallet.app"
         case .support:
             return "www.perawallet.app/support/"
-        case .peraWebApp:
-            return "web.perawallet.app"
         default:
             return self.rawValue
         }
@@ -130,6 +133,7 @@ enum AlgorandWeb: String {
     enum AlgoExplorer {
         case address(isMainnet: Bool, param: String)
         case asset(isMainnet: Bool, param: String)
+        case group(isMainnet: Bool, param: String)
         
         var link: URL? {
             switch self {
@@ -141,6 +145,10 @@ enum AlgorandWeb: String {
                 return isMainnet
                     ? URL(string: "https://algoexplorer.io/asset/\(param)")
                     : URL(string: "https://testnet.algoexplorer.io/asset/\(param)")
+            case .group(let isMainnet, let param):
+                return isMainnet
+                    ? URL(string: "https://algoexplorer.io/tx/group/\(param)")
+                    : URL(string: "https://testnet.algoexplorer.io/tx/group/\(param)")
             }
         }
     }

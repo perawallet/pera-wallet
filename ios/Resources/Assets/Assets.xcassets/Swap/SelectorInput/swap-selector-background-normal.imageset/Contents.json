@@ -1,0 +1,47 @@
+{
+  "images" : [
+    {
+      "filename" : "Frame 6777.pdf",
+      "idiom" : "universal",
+      "resizing" : {
+        "cap-insets" : {
+          "left" : 18,
+          "right" : 18
+        },
+        "center" : {
+          "mode" : "tile",
+          "width" : 1
+        },
+        "mode" : "3-part-horizontal"
+      }
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Group 6831.pdf",
+      "idiom" : "universal",
+      "resizing" : {
+        "cap-insets" : {
+          "left" : 18,
+          "right" : 18
+        },
+        "center" : {
+          "mode" : "tile",
+          "width" : 1
+        },
+        "mode" : "3-part-horizontal"
+      }
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

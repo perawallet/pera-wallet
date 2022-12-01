@@ -282,10 +282,7 @@ extension TransactionDetailViewController {
 
         var isDisplayedCopyAddressTooltip: Bool {
             get { userDefaults.bool(forKey: isDisplayedCopyAddressTooltipKey) }
-            set {
-                userDefaults.set(newValue, forKey: isDisplayedCopyAddressTooltipKey)
-                userDefaults.synchronize()
-            }
+            set { userDefaults.set(newValue, forKey: isDisplayedCopyAddressTooltipKey) }
         }
 
         private let isDisplayedCopyAddressTooltipKey =

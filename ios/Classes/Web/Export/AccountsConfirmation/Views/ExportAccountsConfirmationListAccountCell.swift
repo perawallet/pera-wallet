@@ -19,13 +19,13 @@ import MacaroonUIKit
 import UIKit
 
 final class ExportAccountsConfirmationListAccountCell:
-    CollectionCell<AccountPreviewView>,
+    CollectionCell<AccountListItemView>,
     ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
         return (14, 24, 14, 24)
     }
 
-    static let theme = AccountPreviewViewTheme()
+    static let theme = AccountListItemViewTheme()
 
     override init(
         frame: CGRect

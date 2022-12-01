@@ -21,33 +21,33 @@ import MacaroonUIKit
 import UIKit
 
 struct SelectAccountViewTheme: StyleSheet, LayoutSheet {
-    let backgroundColor: Color
+    let background: ViewStyle
     let searchInputViewTheme: SearchInputViewTheme
     let clipboardTheme: AccountClipboardViewTheme
     let nextButtonStyle: ButtonPrimaryTheme
-    let topInset: LayoutMetric
+    let searchInputViewTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let cellSpacing: LayoutMetric
-    let contentInset: LayoutPaddings
-    let clipboardHeight: LayoutMetric
-    let clipboardTopInset: LayoutMetric
+    let contentInsetTopForClipboard: LayoutMetric
+    let clipboardPaddings: LayoutPaddings
     let nextButtonHeight: LayoutMetric
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.background
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
         self.searchInputViewTheme = QRSearchInputViewTheme(
             placeholder: "account-select-header-search-title".localized,
             family: family
         )
         self.clipboardTheme = AccountClipboardViewTheme(family)
         self.nextButtonStyle = ButtonPrimaryTheme(family)
-        self.topInset = 22
+        self.searchInputViewTopPadding = 16
         self.horizontalPadding = 24
         self.cellSpacing = 0
-        self.contentInset = (28, 0, 0, 0)
-        self.clipboardHeight = 96
-        self.clipboardTopInset = 24
+        self.contentInsetTopForClipboard = 112
+        self.clipboardPaddings = (20, 0, 0, 0)
         self.nextButtonHeight = 50
         self.bottomInset = 16
     }

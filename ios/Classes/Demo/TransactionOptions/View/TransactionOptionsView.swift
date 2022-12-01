@@ -24,16 +24,12 @@ final class TransactionOptionsView:
     View,
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .buyAlgo: TargetActionInteraction(),
-        .send: TargetActionInteraction(),
-        .receive: TargetActionInteraction(),
-        .scanQRCode: TargetActionInteraction(),
-        .close: GestureInteraction()
+        .performClose: GestureInteraction()
     ]
 
     private lazy var backgroundView = MacaroonUIKit.BaseView()
     private lazy var contentView = MacaroonUIKit.BaseView()
-    private lazy var contextView = VStackView()
+    private lazy var contextView = TransactionOptionsContextView(actions: actions)
 
     private var backgroundStartStyle: ViewStyle = []
     private var backgroundEndStyle: ViewStyle = []
@@ -41,9 +37,9 @@ final class TransactionOptionsView:
     private var contentStartLayout: [Constraint] = []
     private var contentEndLayout: [Constraint] = []
 
-    private let actions: [Action]
+    private var actions: [TransactionOptionListAction]
 
-    init(actions: [Action] = Action.allCases) {
+    init(actions: [TransactionOptionListAction]) {
         self.actions = actions
         super.init(frame: .zero)
     }
@@ -94,7 +90,7 @@ extension TransactionOptionsView {
         updateBackground(for: .start)
         
         startPublishing(
-            event: .close,
+            event: .performClose,
             for: backgroundView
         )
     }
@@ -168,96 +164,22 @@ extension TransactionOptionsView {
     private func addContext(
         _ theme: TransactionOptionsViewTheme
     ) {
+        contextView.customize(theme)
+
         contentView.addSubview(contextView)
-        contextView.spacing = theme.spacingBetweenActions
-        contextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
-            top: theme.contentPaddings.top + theme.contentSafeAreaInsets.top,
-            leading: theme.contentPaddings.leading + theme.contentSafeAreaInsets.left,
-            bottom: theme.contentPaddings.bottom + theme.contentSafeAreaInsets.bottom,
-            trailing: theme.contentPaddings.trailing + theme.contentSafeAreaInsets.right
-        )
-        contextView.insetsLayoutMarginsFromSafeArea = false
-        contextView.isLayoutMarginsRelativeArrangement = true
         contextView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing == 0
+            $0.setPaddings()
         }
-        
-        addButtons(theme)
-    }
-
-    private func addButtons(
-        _ theme: TransactionOptionsViewTheme
-    ) {
-        actions.forEach {
-            switch $0 {
-            case .buyAlgo:
-                addButton(
-                    theme: theme.button,
-                    viewModel: BuyAlgoTransactionOptionListItemButtonViewModel(),
-                    event: .buyAlgo
-                )
-            case .send:
-                addButton(
-                    theme: theme.button,
-                    viewModel: SendTransactionOptionListItemButtonViewModel(),
-                    event: .send
-                )
-            case .receive:
-                addButton(
-                    theme: theme.button,
-                    viewModel: ReceiveTransactionOptionListItemButtonViewModel(),
-                    event: .receive
-                )
-            case .scanQRCode:
-                addButton(
-                    theme: theme.button,
-                    viewModel: ScanQRCodeTransactionOptionListItemButtonViewModel(),
-                    event: .scanQRCode
-                )
-            }
-        }
-    }
-
-    private func addButton(
-        theme: ListItemButtonTheme,
-        viewModel: TransactionOptionListItemButtonViewModel,
-        event: Event
-    ) {
-        let button = ListItemButton()
-        
-        button.customize(theme)
-        button.bindData(viewModel)
-
-        contextView.addArrangedSubview(button)
-
-        startPublishing(
-            event: event,
-            for: button
-        )
     }
 }
 
 extension TransactionOptionsView {
-    enum Action: CaseIterable {
-        case buyAlgo
-        case send
-        case receive
-        case scanQRCode
-    }
-
     enum Position {
         case start
         case end
     }
-    
+
     enum Event {
-        case buyAlgo
-        case send
-        case receive
-        case scanQRCode
-        case close
+        case performClose
     }
 }

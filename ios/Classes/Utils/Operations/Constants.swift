@@ -21,6 +21,8 @@ enum Constants {
         static let collectibleDetailSnapshot = "collectibleDetailSnapshot"
         static let manageAssetListSnapshot = "manageAssetListSnapshot"
         static let collectibleListSnapshot = "collectibleListSnapshot"
+        static let swapPoolAssetSnapshot = "swapPoolAssetSnapshot"
+        static let swapLocalAssetSnapshot = "swapLocalAssetSnapshot"
     }
 
     enum Notification {

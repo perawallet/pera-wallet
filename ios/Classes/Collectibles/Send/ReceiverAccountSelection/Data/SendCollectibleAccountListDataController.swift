@@ -41,7 +41,7 @@ enum SendCollectibleAccountListSection:
 enum SendCollectibleAccountListItem: Hashable {
     case empty(ReceiveCollectibleAssetListEmptyItem)
     case header(SendCollectibleAccountListHeaderViewModel)
-    case account(viewModel: AccountPreviewViewModel, isPreviouslySelected: Bool)
+    case account(viewModel: AccountListItemViewModel, isPreviouslySelected: Bool)
     case contact(viewModel: ContactsViewModel, isPreviouslySelected: Bool)
 }
 

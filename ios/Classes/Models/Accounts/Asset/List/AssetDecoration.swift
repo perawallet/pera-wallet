@@ -44,6 +44,10 @@ final class AssetDecoration: ALGEntityModel {
         return collectible != nil
     }
 
+    var isAlgo: Bool {
+        return id == 0
+    }
+
     init(
         _ apiModel: APIModel = APIModel()
     ) {

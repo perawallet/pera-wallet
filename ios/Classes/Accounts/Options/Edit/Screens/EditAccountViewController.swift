@@ -70,7 +70,7 @@ final class EditAccountViewController: BaseViewController {
 
 extension EditAccountViewController {
     private func addBarButtons() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .done) {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Text.main.uiColor)) {
             [weak self] in
 
             guard let self = self else {

@@ -29,19 +29,19 @@ struct AssetDiscordListItemViewModel: GroupedListItemButtonItemViewModel {
 }
 
 private struct AssetDiscordListItemButtonViewModel: ListItemButtonViewModel {
-    var icon: Image?
-    var title: EditText?
-    var subtitle: EditText?
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
     var accessory: Image?
 
     init() {
-        self.icon = "icon-discord"
-        self.title = .attributedString(
+        icon = "icon-discord"
+        title = .attributedString(
             "social-media-platform-discord"
                 .localized
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
-        self.subtitle = nil
-        self.accessory = "icon-external-link"
+        subtitle = nil
+        accessory = "icon-external-link"
     }
 }

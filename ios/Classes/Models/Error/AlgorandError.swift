@@ -30,16 +30,15 @@ final class AlgorandError: ALGAPIModel {
 }
 
 extension AlgorandError {
-    enum ErrorType: String {
-        case deviceAlreadyExists = "DeviceAlreadyExistsException"
-    }
-}
-
-extension AlgorandError {
     private enum CodingKeys:
         String,
         CodingKey {
         case type
         case message = "fallback_message"
     }
+}
+
+enum APIErrorType: String {
+    case deviceAlreadyExists = "DeviceAlreadyExistsException"
+    case tinymanExcessAmount = "TinymanExcessAmountError"
 }

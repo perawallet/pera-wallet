@@ -50,45 +50,38 @@ class WCAssetConfigTransactionItemView: TripleShadowView {
     }
     
     func configureAppearance() {
-        backgroundColor = Colors.Defaults.background.uiColor
-        layer.cornerRadius = 12.0
-
-        let accountContainerCorner = Corner(radius: 4)
-        let accountContainerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
-
         let accountContainerFirstShadow = MacaroonUIKit.Shadow(
-            color: Colors.Shadows.Cards.shadow1.uiColor,
+            color: Colors.Shadows.Cards.shadow3.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
-            offset: (0, 2),
-            radius: 4,
+            offset: (0, 0),
+            radius: 0,
+            spread: 1,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
-
         let accountContainerSecondShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow2.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
+            spread: 0,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         let accountContainerThirdShadow = MacaroonUIKit.Shadow(
-            color: Colors.Shadows.Cards.shadow3.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
-            offset: (0, 0),
-            radius: 0,
+            offset: (0, 2),
+            radius: 4,
+            spread: -1,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
-
-        draw(corner: accountContainerCorner)
-        drawAppearance(border: accountContainerBorder)
-
+        
         drawAppearance(shadow: accountContainerFirstShadow)
         drawAppearance(secondShadow: accountContainerSecondShadow)
         drawAppearance(thirdShadow: accountContainerThirdShadow)

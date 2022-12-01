@@ -253,7 +253,7 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountCellItem item: AccountPreviewViewModel,
+        sizeForAccountCellItem item: AccountListItemViewModel,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = HomeAccountCell.reuseIdentifier
@@ -266,13 +266,13 @@ extension HomeListLayout {
             listView,
             forSectionAt: section
         )
-        let sampleAccountPreview = CustomAccountPreview(
+        let sampleAccountListItem = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
         )
-        let sampleAccountItem = AccountPreviewViewModel(sampleAccountPreview)
+        let sampleAccountItem = AccountListItemViewModel(sampleAccountListItem)
         let newSize = HomeAccountCell.calculatePreferredSize(
             sampleAccountItem,
             for: HomeAccountCell.theme,

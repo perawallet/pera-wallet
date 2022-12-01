@@ -71,7 +71,7 @@ extension ExportAccountsConfirmationListLocalDataController {
         accounts
             .map { account in
                 let draft = IconWithShortAddressDraft(account)
-                let viewModel = AccountPreviewViewModel(draft)
+                let viewModel = AccountListItemViewModel(draft)
 
                 let item =  ExportAccountsConfirmationListAccountCellItemIdentifier(
                     model: account,

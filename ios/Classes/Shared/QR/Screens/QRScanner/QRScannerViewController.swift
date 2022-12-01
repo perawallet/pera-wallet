@@ -334,6 +334,10 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 captureSession = nil
                 closeScreen()
                 delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
+            } else if let qrExportInformations = try? JSONDecoder().decode(QRExportInformations.self, from: qrStringData) {
+                captureSession = nil
+                closeScreen()
+                delegate?.qrScannerViewController(self, didRead: qrExportInformations, completionHandler: nil)
             } else {
                 delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
                 return

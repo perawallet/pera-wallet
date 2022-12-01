@@ -41,6 +41,7 @@ class RootViewController: UIViewController {
     }
 
     private lazy var mainContainer = TabBarController(
+        swapDataStore: SwapDataLocalStore(),
         analytics: appConfiguration.analytics,
         api: appConfiguration.api,
         bannerController: appConfiguration.bannerController,
@@ -100,6 +101,7 @@ extension RootViewController {
         )
 
         let homeViewController = HomeViewController(
+            swapDataStore: SwapDataLocalStore(),
             dataController: HomeAPIDataController(
                 appConfiguration.sharedDataController,
                 announcementDataController: announcementAPIDataController

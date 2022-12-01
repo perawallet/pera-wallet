@@ -85,7 +85,6 @@ final class ExportAccountsDomainConfirmationScreen:
         super.configureNavigationBar()
 
         navigationBarLargeTitleController.title = "web-export-accounts-domain-confirmation-title".localized
-
         let offset = theme.contextEdgeInsets.top - theme.navigationBarEdgeInset.top
         navigationBarLargeTitleController.additionalScrollEdgeOffset = offset
     }

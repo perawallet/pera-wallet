@@ -167,6 +167,9 @@
 "asa-about-asa-id" = "ASA ID";
 
 /* (No Comment) */
+"asa-about-asa-open-with-browser" = "브라우저로 열기";
+
+/* (No Comment) */
 "asa-about-asa-project-website" = "프로젝트 웹사이트";
 
 /* (No Comment) */
@@ -876,6 +879,9 @@
 
 /* (No Comment) */
 "ledger-approval-message" = "Ledger 기기(%@)에서 계정 주소를 확인해 주세요";
+
+/* (No Comment) */
+"ledger-approval-sign-message" = "Ledger 기기 %@에서 트랜잭션을 검토하고 서명해 주세요.";
 
 /* MARK: Ledger Approval */
 "ledger-approval-title" = "Ledger 승인";
@@ -1912,6 +1918,204 @@
 /* MARK: Story */
 "story-copy-address-title" = "길게 눌러 \"주소 복사\"";
 
+/* / MARK: Swap Account Selection */
+"swap-account-selection-header-description" = "스왑할 계정을 선택하세요";
+
+/* (No Comment) */
+"swap-alert-body" = "Pera Wallet은 자산을 쉽고 빠르게 스왑할 수 있는 방법을 제공합니다.";
+
+/* (No Comment) */
+"swap-alert-primary-action" = "스왑해보기";
+
+/* MARK: - Swap Alert */
+"swap-alert-title" = "Pera에서 스왑";
+
+/* (No Comment) */
+"swap-amount-percentage-max" = "최대";
+
+/* (No Comment) */
+"swap-amount-percentage-placeholder" = "사용자 지정 백분율 설정";
+
+/* / MARK: Swap Adjust Amount */
+"swap-amount-percentage-title" = "잔액 백분율";
+
+/* (No Comment) */
+"swap-amount-percentage-validation-error-limitExceeded" = "백분율은 %@ - %@ 사이여야 합니다.";
+
+/* (No Comment) */
+"swap-asset-algo-min-balance-error" = "알고 잔액이 부족합니다. 최소 잔액이 %@ 이상이어야 합니다.";
+
+/* (No Comment) */
+"swap-asset-amount-title-balance" = "잔액: %@";
+
+/* / MARK: Swap Asset */
+"swap-asset-choose-title" = "자산을 선택하세요";
+
+/* (No Comment) */
+"swap-asset-fee-unavailable-error" = "현재 스왑 수수료를 가져올 수 없습니다.";
+
+/* (No Comment) */
+"swap-asset-from" = "스왑으로 보낼 자산";
+
+/* (No Comment) */
+"swap-asset-min-balance-error" = "%@ 잔액이 부족합니다.";
+
+/* (No Comment) */
+"swap-asset-min-balance-error-fee" = "계정에 트랜잭션 수수료를 충당할 알고 잔액이 부족합니다.";
+
+/* (No Comment) */
+"swap-asset-min-balance-error-without-amount" = "계정에 트랜잭션을 수행할 잔액이 부족합니다.";
+
+/* (No Comment) */
+"swap-asset-not-available" = "자산을 사용할 수 없습니다";
+
+/* (No Comment) */
+"swap-asset-pool-search-error" = "현재 자산을 표시할 수 없습니다. 다시 시도해 주세요.";
+
+/* (No Comment) */
+"swap-asset-to" = "스왑해서 받을 자산";
+
+/* (No Comment) */
+"swap-confirm-exchange-fee-detail" = "이것은 탈중앙화 거래소에서 부과하는 수수료입니다. 보내는 금액에서 자동으로 차감되어 최소 수신 금액에 반영됩니다. 여기에서 추가 비용이 더 청구되지 않습니다.";
+
+/* (No Comment) */
+"swap-confirm-exchange-fee-title" = "거래소 수수료";
+
+/* (No Comment) */
+"swap-confirm-failed-title" = "스왑 실패";
+
+/* (No Comment) */
+"swap-confirm-minimum-received-title" = "최소 수령";
+
+/* (No Comment) */
+"swap-confirm-pera-fee-title" = "Pera 수수료";
+
+/* (No Comment) */
+"swap-confirm-price-info" = "%@ 당 %@";
+
+/* (No Comment) */
+"swap-confirm-slippage-updated-title" = "슬리피지 허용 값이 업데이트되었습니다!";
+
+/* (No Comment) */
+"swap-confirm-summary-title" = "스왑 요약";
+
+/* / MARK: Swap Confirm Asset */
+"swap-confirm-title" = "스왑 확인";
+
+/* (No Comment) */
+"swap-confirm-total-fee-title" = "총 스왑 수수료";
+
+/* (No Comment) */
+"swap-confirm-view-summary-title" = "스왑 요약 보기";
+
+/* MARK: Swap Error */
+"swap-error-failed-title" = "%@ 스왑이 실패했습니다";
+
+/* (No Comment) */
+"swap-error-go-home" = "홈페이지로 이동";
+
+/* (No Comment) */
+"swap-error-unexpected-detail" = "예상치 못한 오류가 발생했습니다. 나중에 다시 시도해 주세요.";
+
+/* (No Comment) */
+"swap-flow-start-min-balance-error-detail" = "계정에 스왑 작업에 필요한 최소 잔액이(%@) 없습니다.";
+
+/* (No Comment) */
+"swap-flow-start-min-balance-error-title" = "최소 잔액";
+
+/* (No Comment) */
+"swap-introduction-body" = "Pera Wallet은 자산을 쉽고 빠르게 스왑할 수 있는 방법을 제공합니다. 스왑을 통해 시장 수수료만 내고 스마트 컨트랙트를 사용하여 ASA와 다른 ASA와 교환할 수 있습니다.";
+
+/* (No Comment) */
+"swap-introduction-powered-by-title" = "제공:";
+
+/* (No Comment) */
+"swap-introduction-primary-action-title" = "스왑 시작";
+
+/* (No Comment) */
+"swap-introduction-terms-of-service" = "계속하면 스왑 파트너의 서비스 약관에 동의하시게 됩니다.";
+
+/* (No Comment) */
+"swap-introduction-terms-of-service-hyperlink" = "이용 약관";
+
+/* / MARK: Swap Introduction */
+"swap-introduction-title" = "Pera에서 스왑";
+
+/* (No Comment) */
+"swap-loading-detail" = "최소 %@ 이상 수신해야 합니다, 그렇지 않는 경우 트랜잭션이 취소됩니다.";
+
+/* MARK: Swap Loading */
+"swap-loading-title" = "트랜잭션 전송 중";
+
+/* (No Comment) */
+"swap-price-impact-info-body" = "가격 영향(Price impact)은 자산 쌍의 시장 가격에 사용자의 거래가 미치는 영향을 말합니다. 이는 풀의 유동성과 직접적인 관련이 있습니다.";
+
+/* / MARK: Swap Price Impact Info */
+"swap-price-impact-info-title" = "가격 영향";
+
+/* (No Comment) */
+"swap-price-impact-title" = "가격 영향";
+
+/* (No Comment) */
+"swap-price-impact-warning-message" = "주의! 가격 영향이 5%보다 큽니다. 풀의 유동성이 낮을 수 있다는 점에 유의하세요. 스왑을 진행하기 전에 결과를 이해했는지 확인하시기 바랍니다.";
+
+/* (No Comment) */
+"swap-sign-with-ledger-action-title" = "트랜잭션 서명";
+
+/* (No Comment) */
+"swap-sign-with-ledger-body" = "계정에서 Ledger 기기를 사용 중이신 것으로 나타났습니다. 하드웨어 토큰을 사용하여 트랜잭션 %@건에 하나하나 서명하셔야 합니다.";
+
+/* (No Comment) */
+"swap-sign-with-ledger-body-highlighted" = "%@ 트랜잭션에 하나씩 서명해야 합니다.";
+
+/* / MARK: Swap Sign With Ledger Process */
+"swap-sign-with-ledger-process-title" = "%@/%@ 서명 중...";
+
+/* / MARK: Swap Sign With Ledger */
+"swap-sign-with-ledger-title" = "Ledger로 서명하기";
+
+/* (No Comment) */
+"swap-slippage-percentage-custom" = "사용자 설정";
+
+/* (No Comment) */
+"swap-slippage-percentage-validation-error-limitExceeded" = "잔액 백분율은 %@ - %@ 사이여야 합니다.";
+
+/* (No Comment) */
+"swap-slippage-placeholder" = "사용자 지정 슬리피지 설정";
+
+/* / MARK: Swap Slippage */
+"swap-slippage-title" = "슬리피지 허용";
+
+/* (No Comment) */
+"swap-slippage-tolerance-info-body" = "슬리피지(Slippage)는 트랜잭션을 제출한 시점과 블록체인에서 트랜잭션이 확정된 시점의 가격 차이를 말합니다. 슬리피지 비율이 여기에서 설정한 허용 범위를 초과하면 트랜잭션을 자동 취소하여 가치 손실을 방지합니다.";
+
+/* / MARK: Swap Slippage Tolerance Info */
+"swap-slippage-tolerance-info-title" = "슬리피지 허용";
+
+/* (No Comment) */
+"swap-success-detail" = "%@을(를) 받았습니다(%@ 교환)";
+
+/* MARK: Swap Success */
+"swap-success-title" = "%@ 스왑 완료";
+
+/* (No Comment) */
+"swap-success-view-explorer" = "AlgoExplorer에서 트랜잭션 정보 보기";
+
+/* (No Comment) */
+"swap-success-view-summary" = "스왑 요약 보기";
+
+/* (No Comment) */
+"swap-summary-network-fee-title" = "네트워크 수수료";
+
+/* (No Comment) */
+"swap-summary-opt-in-fee-title" = "옵트인 수수료";
+
+/* (No Comment) */
+"swap-summary-paid-title" = "지급 완료";
+
+/* MARK: Swap Summary */
+"swap-summary-received-title" = "수신 완료";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "이용 약관";
 
@@ -2057,6 +2261,9 @@
 "title-keep" = "유지";
 
 /* (No Comment) */
+"title-later" = "나중에 하기";
+
+/* (No Comment) */
 "title-learn-more" = "더 알아보기";
 
 /* (No Comment) */
@@ -2153,6 +2360,9 @@
 "title-save" = "저장";
 
 /* (No Comment) */
+"title-select-account" = "금액 선택";
+
+/* (No Comment) */
 "title-select-all" = "전체 선택";
 
 /* (No Comment) */
@@ -2201,10 +2411,19 @@
 "title-step-4" = "4단계";
 
 /* (No Comment) */
+"title-swap" = "스왑";
+
+/* (No Comment) */
 "title-testnet" = "테스트넷";
 
 /* (No Comment) */
+"title-to" = "대상";
+
+/* (No Comment) */
 "title-total-supply" = "총 공급량";
+
+/* (No Comment) */
+"title-try-again" = "다시 시도해 주세요";
 
 /* (No Comment) */
 "title-unknown" = "이름 없음";
@@ -2405,7 +2624,10 @@
 "transaction-option-list-scan-qr-code-subtitle" = "WalletConnect을 사용하거나 계정 주소를 스캔";
 
 /* (No Comment) */
-"transaction-option-list-send-subtitle" = "알고 또는 ASA를 다른 계정으로";
+"transaction-option-list-send-subtitle" = "알고 또는 ASA를 다른 계정으로 전송";
+
+/* (No Comment) */
+"transaction-option-list-swap-subtitle" = "인기 ASA 쌍 사이의 전환";
 
 /* (No Comment) */
 "transaction-request-signing-alert-title" = "계속 진행하시겠습니까?";

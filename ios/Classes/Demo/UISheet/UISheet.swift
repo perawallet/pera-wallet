@@ -18,15 +18,18 @@ import Foundation
 import MacaroonUIKit
 
 final class UISheet {
+    let image: Image?
     let title: TextProvider?
     let body: TextProvider?
 
     private(set) var actions: [UISheetAction] = []
 
     init(
-        title: TextProvider?,
-        body: TextProvider?
+        image: Image? = nil,
+        title: TextProvider? = nil,
+        body: TextProvider? = nil
     ) {
+        self.image = image
         self.title = title
         self.body = body
     }

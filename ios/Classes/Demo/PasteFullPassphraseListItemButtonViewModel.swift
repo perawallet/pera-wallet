@@ -23,8 +23,8 @@ struct PasteFullPassphraseListItemButtonViewModel: ListItemButtonViewModel {
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-paste"
-        self.title = Self.getTitle("title-paste-passphrase".localized)
-        self.subtitle = nil
+        icon = "icon-paste"
+        title = Self.getTitle("title-paste-passphrase".localized)
+        subtitle = nil
     }
 }

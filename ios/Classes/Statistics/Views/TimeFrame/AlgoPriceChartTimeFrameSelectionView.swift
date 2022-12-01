@@ -118,7 +118,7 @@ extension AlgoPriceChartTimeFrameSelectionView {
             contentView.addArrangedSubview(optionView)
         }
 
-        (contentView.arrangedSubviews.first as? UIControl)?.isSelected = true
+        (contentView.arrangedSubviews[safe: 3] as? UIControl)?.isSelected = true
     }
     
     private func updateOptionsForSelection(

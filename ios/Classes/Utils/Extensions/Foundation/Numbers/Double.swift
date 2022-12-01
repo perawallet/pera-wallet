@@ -45,11 +45,23 @@ extension Decimal {
     func toFractionStringForLabel(fraction: Int) -> String? {
         return Formatter.separatorWith(fraction: fraction).string(from: NSDecimalNumber(decimal: self))
     }
+
+    var toPercentage: String? {
+        return Formatter.percentageFormatter.string(from: NSDecimalNumber(decimal: self))
+    }
+
+    func toPercentageWith(fractions value: Int) -> String? {
+        return Formatter.percentageWith(fraction: value).string(from: NSDecimalNumber(decimal: self))
+    }
 }
 
 extension Double {
     var toPercentage: String? {
         return Formatter.percentageFormatter.string(from: NSNumber(value: self))
+    }
+
+    func toPercentageWith(fractions value: Int) -> String? {
+        return Formatter.percentageWith(fraction: value).string(from: NSNumber(value: self))
     }
 
     func round(to places: Int) -> Double {

@@ -66,7 +66,8 @@ extension Data {
     }
     
     var isLedgerTransactionCancelledError: Bool {
-        toHexString() == LedgerMessage.Response.ledgerTransactionCancelled
+        return toHexString() == LedgerMessage.Response.ledgerTransactionCancelled ||
+            toHexString() == LedgerMessage.Response.ledgerTransactionCancelledOldVersion
     }
 
     var hasNextPageForLedgerResponse: Bool {

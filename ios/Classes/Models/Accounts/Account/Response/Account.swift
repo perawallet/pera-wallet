@@ -160,6 +160,10 @@ final class Account: ALGEntityModel {
     }
 
     subscript (assetId: AssetID) -> Asset? {
+        if assetId == algo.id {
+            return algo
+        }
+        
         if let index = standardAssetsIndexer[assetId] {
             return standardAssets?[safe: index]
         }

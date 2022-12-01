@@ -466,6 +466,7 @@ class Router:
                 toastPresentationController: appConfiguration.toastPresentationController
             )
             let aViewController = ASADetailScreen(
+                swapDataStore: SwapDataLocalStore(),
                 dataController: dataController,
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
@@ -595,6 +596,7 @@ class Router:
         case let .accountDetail(accountHandle, eventHandler):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
+                swapDataStore: SwapDataLocalStore(),
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
@@ -885,8 +887,6 @@ class Router:
             let aViewController = WCMainTransactionScreen(draft: draft, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
-        case .transactionFloatingActionButton:
-            viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
             let currencyFormatter = CurrencyFormatter()
             let dataSource = WCMainTransactionDataSource(
@@ -1008,10 +1008,6 @@ class Router:
             viewController = buyAlgoHomeScreen
         case let .buyAlgoTransaction(buyAlgoParams):
             viewController = BuyAlgoTransactionViewController(buyAlgoParams: buyAlgoParams, configuration: configuration)
-        case .copyAddressStory(let eventHandler):
-            let screen = CopyAddressStoryScreen(configuration: configuration)
-            screen.eventHandler = eventHandler
-            viewController = screen
         case .transactionOptions(let delegate):
             let aViewController = TransactionOptionsScreen(configuration: configuration)
             aViewController.delegate = delegate
@@ -1038,6 +1034,100 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
+        case .swapAsset(let dataStore, let swapController, let coordinator):
+            let dataController = SwapAssetAPIDataController(
+                dataStore: dataStore,
+                swapController: swapController,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController
+            )
+
+            viewController = SwapAssetScreen(
+                dataStore: dataStore,
+                dataController: dataController,
+                coordinator: coordinator,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration
+            )
+        case .swapAccountSelection(let eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
+
+            let listView: UICollectionView = {
+                let collectionViewLayout = SwapAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = SwapAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = SwapAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<SwapAccountSelectionListSectionIdentifier, SwapAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: SwapAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
+        case .swapSignWithLedgerProcess(let transactionSigner, let draft, let eventHandler):
+            viewController = SignWithLedgerProcessScreen(
+                transactionSigner: transactionSigner,
+                draft: draft,
+                eventHandler: eventHandler
+            )
+        case .loading(let viewModel, let theme):
+            viewController = LoadingScreen(
+                viewModel: viewModel,
+                theme: theme,
+                configuration: configuration
+            )
+        case .error(let viewModel, let theme):
+            viewController = ErrorScreen(
+                viewModel: viewModel,
+                theme: theme,
+                configuration: configuration
+            )
+        case .swapSuccess(let swapController, let theme):
+            viewController = SwapAssetSuccessScreen(
+                swapController: swapController,
+                theme: theme,
+                configuration: configuration
+            )
+        case .swapSummary(let swapController, let theme):
+            viewController = SwapSummaryScreen(
+                swapController: swapController,
+                theme: theme,
+                configuration: configuration
+            )
+        case .alert(let alert):
+            viewController = AlertScreen(alert: alert)
+        case .swapIntroduction(let draft, let eventHandler):
+            let aViewController = SwapIntroductionScreen(draft: draft)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
         case .optInAsset(let draft, let eventHandler):
@@ -1103,6 +1193,46 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .selectAsset(let dataController, let coordinator, let title, let theme):
+            let aViewController = SelectAssetScreen(
+                dataController: dataController,
+                coordinator: coordinator,
+                theme: theme,
+                configuration: configuration
+            )
+
+            aViewController.title = title
+            viewController = aViewController
+        case .confirmSwap(let dataStore, let dataController, let eventHandler, let theme):
+            let screen = ConfirmSwapScreen(
+                dataStore: dataStore,
+                dataController: dataController,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                theme: theme,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .editSwapAmount(let dataStore, let eventHandler):
+            let aViewController = EditSwapAmountScreen(
+                dataStore: dataStore,
+                dataProvider: EditSwapAmountLocalDataProvider(dataStore: dataStore),
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
+        case .editSwapSlippage(let dataStore, let eventHandler):
+            let aViewController = EditSwapSlippageScreen(
+                dataStore: dataStore,
+                dataProvider: EditSwapSlippageToleranceLocalDataProvider(dataStore: dataStore),
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
         case .exportAccountsResult(let accounts, let eventHandler):
             let screen = ExportsAccountsResultScreen(configuration: configuration, accounts: accounts)
             screen.eventHandler = eventHandler

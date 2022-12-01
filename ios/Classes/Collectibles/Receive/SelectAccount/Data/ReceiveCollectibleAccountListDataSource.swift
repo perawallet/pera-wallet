@@ -64,7 +64,7 @@ final class ReceiveCollectibleAccountListDataSource:
                 return cell
             case .account(let item):
                 let cell = collectionView.dequeue(
-                    AccountPreviewCell.self,
+                    AccountListItemCell.self,
                     at: indexPath
                 )
                 cell.bindData(
@@ -79,7 +79,7 @@ final class ReceiveCollectibleAccountListDataSource:
             NoContentCell.self,
             ReceiveCollectibleInfoBoxCell.self,
             TitleSupplementaryCell.self,
-            AccountPreviewCell.self,
+            AccountListItemCell.self,
         ].forEach {
             collectionView.register($0)
         }

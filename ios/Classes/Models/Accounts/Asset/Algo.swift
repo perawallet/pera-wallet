@@ -17,7 +17,7 @@
 import Foundation
 
 final class Algo: Asset {
-    let id: AssetID = -1
+    let id: AssetID = 0
     var amount: UInt64
     let isFrozen: Bool? = nil
     let isDeleted: Bool? = false
@@ -40,7 +40,7 @@ final class Algo: Asset {
     let twitterURL: URL?
 
     let naming: AssetNaming = AssetNaming(
-        id: -1,
+        id: 0,
         name: "Algo",
         unitName: "ALGO"
     )

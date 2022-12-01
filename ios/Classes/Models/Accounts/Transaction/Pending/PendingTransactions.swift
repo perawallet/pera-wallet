@@ -36,7 +36,9 @@ final class PendingTransaction:
     let sender: String?
     let type: TransactionType?
     let assetID: Int64?
-    
+    let confirmedRound: Int64?
+    let poolError: String?
+
     var amount: UInt64 {
         return assetAmount ?? algosAmount ?? 0
     }
@@ -62,6 +64,8 @@ final class PendingTransaction:
         self.sender = apiModel.txn?.snd
         self.type = apiModel.txn?.type
         self.assetID = apiModel.txn?.xaid
+        self.confirmedRound = apiModel.confirmedRound
+        self.poolError = apiModel.poolError
     }
 
     func encode() -> APIModel {
@@ -81,6 +85,8 @@ final class PendingTransaction:
         var apiModel = APIModel()
         apiModel.sig = signature
         apiModel.txn = transaction
+        apiModel.confirmedRound = confirmedRound
+        apiModel.poolError = poolError
         return apiModel
     }
     
@@ -93,6 +99,8 @@ final class PendingTransaction:
         hasher.combine(lv)
         hasher.combine(fv)
         hasher.combine(assetID)
+        hasher.combine(poolError)
+        hasher.combine(confirmedRound)
     }
     
     static func == (lhs: PendingTransaction, rhs: PendingTransaction) -> Bool {
@@ -115,6 +123,38 @@ extension PendingTransaction {
         type == .assetTransfer &&
         sender == address
     }
+
+    /// <note>
+    /// Transaction committed -> committed round > 0
+    /// Still in the pool -> committed round = 0 & pool error = ""
+    /// Removed from the pool due to error -> committed round = 0 & pool error != ""
+    /// https://developer.algorand.org/docs/rest-apis/algod/v2/#pendingtransactionresponse
+    func getTransactionStatus() -> Status {
+        if let confirmedRound,
+           confirmedRound > 0 {
+            return .completed
+        }
+
+        if let poolError,
+           let confirmedRound,
+           confirmedRound == 0 {
+            if !poolError.isEmpty {
+                return .failed
+            }
+
+            return .inProgress
+        }
+
+        return .inProgress
+    }
+}
+
+extension PendingTransaction {
+    enum Status {
+        case inProgress
+        case completed
+        case failed
+    }
 }
 
 extension PendingTransaction {
@@ -123,6 +163,8 @@ extension PendingTransaction {
         var txn: TransactionDetail?
         var lsig: LogicSignature?
         var msig: MultiSignature?
+        var confirmedRound: Int64?
+        var poolError: String?
         
         var signature: String? {
             sig ?? lsig?.l ?? msig?.signature
@@ -133,6 +175,8 @@ extension PendingTransaction {
             self.txn = nil
             self.lsig = nil
             self.msig = nil
+            self.confirmedRound = nil
+            self.poolError = nil
         }
     }
 }
@@ -145,6 +189,8 @@ extension PendingTransaction.APIModel {
         case txn
         case lsig
         case msig
+        case confirmedRound = "confirmed-round"
+        case poolError = "pool-error"
     }
 }
 

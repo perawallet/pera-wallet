@@ -23,8 +23,8 @@ struct SortListItemButtonViewModel: ListItemButtonViewModel {
     let subtitle: EditText?
 
     init() {
-        self.icon = "icon-options-sort"
-        self.title = Self.getTitle("options-sort-title".localized)
-        self.subtitle = nil
+        icon = "icon-options-sort"
+        title = Self.getTitle("options-sort-title".localized)
+        subtitle = nil
     }
 }

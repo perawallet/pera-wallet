@@ -49,7 +49,7 @@ struct TransactionSearchQuery: ObjectQuery {
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
         if let id = id {
-            params.append(.init(.transactionDetailId, id))
+            params.append(.init(.transactionDetailID, id))
         }
         return params
     }

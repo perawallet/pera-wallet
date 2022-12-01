@@ -552,12 +552,12 @@ extension Typography {
 // MARK: - Footnote
 
 extension Typography {
-    static func footnoteHeadingAttributes(
+    static func footnoteHeadingMediumAttributes(
         alignment: NSTextAlignment = .left,
         lineBreakMode: NSLineBreakMode = .byWordWrapping,
         supportsDynamicType: Bool = false
     ) -> TextAttributeGroup {
-        let font = Self.footnoteHeading(supportsDynamicType: supportsDynamicType)
+        let font = Self.footnoteHeadingMedium(supportsDynamicType: supportsDynamicType)
         let lineHeightMultiplier = 1.18
 
         return [
@@ -572,7 +572,7 @@ extension Typography {
         ]
     }
 
-    static func footnoteHeading(
+    static func footnoteHeadingMedium(
         supportsDynamicType: Bool = false
     ) -> UIFont {
         let size = 13

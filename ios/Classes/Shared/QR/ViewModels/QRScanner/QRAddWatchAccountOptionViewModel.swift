@@ -23,8 +23,8 @@ struct QRAddWatchAccountOptionViewModel: QRScanOptionListItemButtonViewModel {
     let subtitle: EditText?
 
     init() {
-        self.icon = "icon-qr-option-watch"
-        self.title = Self.getTitle("qr-scan-option-add-watch".localized)
-        self.subtitle = nil
+        icon = "icon-qr-option-watch"
+        title = Self.getTitle("qr-scan-option-add-watch".localized)
+        subtitle = nil
     }
 }

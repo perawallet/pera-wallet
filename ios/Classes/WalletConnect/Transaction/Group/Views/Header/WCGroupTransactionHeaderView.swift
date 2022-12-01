@@ -46,6 +46,7 @@ extension WCGroupTransactionHeaderView {
         groupIDLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
 }
@@ -61,5 +62,6 @@ extension WCGroupTransactionHeaderView {
         let topInset: CGFloat = 8.0
         let horizontalInset: CGFloat = 20.0
         let titleTopInset: CGFloat = 28.0
+        let bottomInset: CGFloat = 8
     }
 }

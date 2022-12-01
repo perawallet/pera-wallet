@@ -23,13 +23,8 @@ import UserNotifications
 
 class PushNotificationController: NSObject {
     var token: String? {
-        get {
-            return UserDefaults.standard.string(forKey: Persistence.DefaultsDeviceTokenKey)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: Persistence.DefaultsDeviceTokenKey)
-            UserDefaults.standard.synchronize()
-        }
+        get { UserDefaults.standard.string(forKey: Persistence.DefaultsDeviceTokenKey) }
+        set { UserDefaults.standard.set(newValue, forKey: Persistence.DefaultsDeviceTokenKey) }
     }
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -102,7 +97,7 @@ extension PushNotificationController {
                 handler?(nil)
             case let .failure(apiError, apiErrorDetail):
                 if let errorType = apiErrorDetail?.type,
-                   errorType == AlgorandError.ErrorType.deviceAlreadyExists.rawValue {
+                   errorType == APIErrorType.deviceAlreadyExists.rawValue {
                     self.registerDevice(for: user, completion: handler)
                 } else {
                     let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)

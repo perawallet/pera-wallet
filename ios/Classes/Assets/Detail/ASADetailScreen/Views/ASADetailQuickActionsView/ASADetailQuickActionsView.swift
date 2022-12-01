@@ -25,6 +25,7 @@ final class ASADetailQuickActionsView:
     var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
         .layoutChanged: UIBlockInteraction(),
         .buy: TargetActionInteraction(),
+        .swap: TargetActionInteraction(),
         .send: TargetActionInteraction(),
         .receive: TargetActionInteraction()
     ]
@@ -33,7 +34,8 @@ final class ASADetailQuickActionsView:
 
     private lazy var contentView = HStackView()
     private lazy var buyActionView = makeActionView()
-    private lazy var sendActionView = makeActionView()
+    private lazy var swapActionView = makeBadgeActionView()
+    private lazy var sendActionView =  makeActionView()
     private lazy var receiveActionView = makeActionView()
 
     private var lastContentSize: CGSize = .zero
@@ -41,12 +43,16 @@ final class ASADetailQuickActionsView:
 
     func customize(_ theme: ASADetailQuickActionsViewTheme) {
         self.theme = theme
+
         addContent(theme)
     }
 
     func bindData(_ viewModel: ASADetailQuickActionsViewModel?) {
         let isBuyActionAvailable = viewModel?.isBuyActionAvailable ?? true
         buyActionView.isHidden = !isBuyActionAvailable
+
+        let isSwapBadgeVisible = viewModel?.isSwapBadgeVisible ?? false
+        swapActionView.isBadgeVisible = isSwapBadgeVisible
     }
 
     static func calculatePreferredSize(
@@ -76,6 +82,18 @@ extension ASADetailQuickActionsView {
         let titleAdjustmentY = theme.actionSpacingBetweenIconAndTitle
         return MacaroonUIKit.Button(.imageAtTopmost(padding: 0, titleAdjustmentY: titleAdjustmentY))
     }
+
+    private func makeBadgeActionView() -> BadgeButton {
+        let titleAdjustmentY = theme.actionSpacingBetweenIconAndTitle
+        let swapBadgeEdgeInsets = theme.swapBadgeEdgeInsets
+        return BadgeButton(
+            badgePosition: .topTrailing(swapBadgeEdgeInsets),
+            .imageAtTopmost(
+                padding: 0,
+                titleAdjustmentY: titleAdjustmentY
+            )
+        )
+    }
 }
 
 extension ASADetailQuickActionsView {
@@ -92,6 +110,7 @@ extension ASADetailQuickActionsView {
         }
 
         addBuyAction(theme)
+        addSwapAction(theme)
         addSendAction(theme)
         addReceiveAction(theme)
     }
@@ -108,6 +127,22 @@ extension ASADetailQuickActionsView {
         startPublishing(
             event: .buy,
             for: buyActionView
+        )
+    }
+
+    private func addSwapAction(_ theme: ASADetailQuickActionsViewTheme) {
+        swapActionView.customize(theme: theme.swapBadge)
+        swapActionView.customizeAppearance(theme.swapAction)
+        customizeAction(
+            swapActionView,
+            theme
+        )
+
+        contentView.addArrangedSubview(swapActionView)
+
+        startPublishing(
+            event: .swap,
+            for: swapActionView
         )
     }
 
@@ -145,9 +180,8 @@ extension ASADetailQuickActionsView {
         _ actionView: MacaroonUIKit.Button,
         _ theme: ASADetailQuickActionsViewTheme
     ) {
-        actionView.fitToIntrinsicSize()
         actionView.snp.makeConstraints {
-            $0.greaterThanWidth(theme.actionMinWidth)
+            $0.fitToWidth(theme.actionWidth)
         }
     }
 }
@@ -170,6 +204,7 @@ extension ASADetailQuickActionsView {
     enum Event {
         case layoutChanged
         case buy
+        case swap
         case send
         case receive
     }

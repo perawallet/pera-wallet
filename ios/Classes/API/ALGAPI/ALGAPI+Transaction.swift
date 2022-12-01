@@ -48,7 +48,7 @@ extension ALGAPI {
     @discardableResult
     func sendTransaction(
         _ transactionData: Data,
-        onCompleted handler: @escaping (Response.ModelResult<TransactionID>) -> Void
+        onCompleted handler: @escaping (Response.Result<TransactionID, IndexerError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.algod(network))
@@ -89,6 +89,19 @@ extension ALGAPI {
         return EndpointBuilder(api: self)
             .base(.algod(network))
             .path(.pendingAccountTransactions, args: address)
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
+    func getPendingTransaction(
+        _ id: TxnID,
+        onCompleted handler: @escaping ( Response.Result<PendingTransaction, IndexerError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.algod(network))
+            .path(.pendingTransaction, args: id)
             .method(.get)
             .completionHandler(handler)
             .execute()

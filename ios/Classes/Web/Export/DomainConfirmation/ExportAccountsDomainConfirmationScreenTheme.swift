@@ -20,7 +20,6 @@ import MacaroonUIKit
 struct ExportAccountsDomainConfirmationScreenTheme:
     LayoutSheet,
     StyleSheet {
-
     let background: ViewStyle
     var body: TextStyle
     let spacingBetweenBodyAndDomainInput: LayoutMetric

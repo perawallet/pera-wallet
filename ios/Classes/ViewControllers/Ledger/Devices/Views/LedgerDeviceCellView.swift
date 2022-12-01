@@ -29,8 +29,34 @@ final class LedgerDeviceCellView: View, TripleShadowDrawable {
     private lazy var deviceNameLabel = UILabel()
     private lazy var arrowImageView = UIImageView()
 
+    override func preferredUserInterfaceStyleDidChange() {
+        super.preferredUserInterfaceStyleDidChange()
+
+        drawAppearance(
+            secondShadow: secondShadow
+        )
+        drawAppearance(
+            thirdShadow: thirdShadow
+        )
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if let secondShadow = secondShadow {
+            updateOnLayoutSubviews(
+                secondShadow: secondShadow
+            )
+        }
+
+        if let thirdShadow = thirdShadow {
+            updateOnLayoutSubviews(
+                thirdShadow: thirdShadow
+            )
+        }
+    }
+
     func customize(_ theme: LedgerDeviceCellViewTheme) {
-        drawAppearance(corner: theme.corner)
         drawAppearance(shadow: theme.firstShadow)
         drawAppearance(secondShadow: theme.secondShadow)
         drawAppearance(thirdShadow: theme.thirdShadow)

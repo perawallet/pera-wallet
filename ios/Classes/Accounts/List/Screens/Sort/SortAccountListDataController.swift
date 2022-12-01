@@ -44,7 +44,7 @@ enum SortAccountListSection:
 
 enum SortAccountListItem: Hashable {
     case sortOption(SelectionValue<SingleSelectionViewModel>)
-    case reordering(AccountPreviewViewModel)
+    case reordering(AccountListItemViewModel)
 }
 
 enum SortAccountListDataControllerEvent {

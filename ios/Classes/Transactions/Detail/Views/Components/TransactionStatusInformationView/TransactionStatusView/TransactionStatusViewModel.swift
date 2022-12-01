@@ -36,14 +36,14 @@ extension TransactionStatusViewModel {
         case .completed:
             statusLabelTitle = "transaction-detail-completed".localized
             statusLabelTextColor = Colors.Helpers.positive
-            backgroundColor = Colors.Helpers.positive.uiColor.withAlphaComponent(0.1)
+            backgroundColor = Colors.Helpers.positiveLighter
         case .pending:
             statusLabelTitle = "transaction-detail-pending".localized
             statusLabelTextColor = Colors.Text.gray
         case .failed:
             statusLabelTitle = "transaction-detail-failed".localized
             statusLabelTextColor = Colors.Helpers.negative
-            backgroundColor = Colors.Helpers.negative.uiColor.withAlphaComponent(0.1)
+            backgroundColor = Colors.Helpers.negativeLighter
         }
     }
 }

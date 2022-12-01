@@ -23,11 +23,11 @@ struct RemoveAccountListItemButtonViewModel: ListItemButtonViewModel {
     let subtitle: EditText?
     
     init() {
-        self.icon = "icon-remove-account"
-        self.title = Self.getTitle(
+        icon = "icon-remove-account"
+        title = Self.getTitle(
             "options-remove-account".localized,
             Colors.Helpers.negative
         )
-        self.subtitle = nil
+        subtitle = nil
     }
 }

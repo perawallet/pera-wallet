@@ -58,10 +58,10 @@ enum AccountSelectEmptyItem: Hashable {
 
 enum AccountSelectAccountItem: Hashable {
     case header(SelectAccountHeaderViewModel)
-    case accountCell(AccountPreviewViewModel)
+    case accountCell(AccountListItemViewModel)
     case contactCell(ContactsViewModel)
-    case searchAccountCell(AccountPreviewViewModel)
-    case matchedAccountCell(AccountPreviewViewModel)
+    case searchAccountCell(AccountListItemViewModel)
+    case matchedAccountCell(AccountListItemViewModel)
 }
 
 enum AccountSelectScreenListDataControllerEvent {

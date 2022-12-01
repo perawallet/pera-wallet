@@ -22,6 +22,7 @@ import SnapKit
 final class WCConnectionAccountSelectionView:
     Control,
     ViewModelBindable {
+    private lazy var contentView = TripleShadowView()
     private lazy var typeImageView = UIImageView()
     private lazy var nameLabel = UILabel()
     private lazy var detailLabel = UILabel()
@@ -34,7 +35,10 @@ final class WCConnectionAccountSelectionView:
     private let configuration: Configuration
     private let theme: WCConnectionAccountSelectionViewTheme
 
-    init(theme: WCConnectionAccountSelectionViewTheme, configurationHandler: (inout Configuration) -> Void = { _ in }) {
+    init(
+        theme: WCConnectionAccountSelectionViewTheme,
+        configurationHandler: (inout Configuration) -> Void = { _ in }
+    ) {
         self.theme = theme
         var configuration = Configuration()
         configurationHandler(&configuration)
@@ -46,10 +50,13 @@ final class WCConnectionAccountSelectionView:
     }
 
     func customize(_ theme: WCConnectionAccountSelectionViewTheme) {
-        drawAppearance(shadow: Shadows.primaryShadow.create())
-
+        addContent()
         addTypeImageView(theme)
-        if configuration.showsArrowImageView { addArrowImageView(theme) }
+
+        if configuration.showsArrowImageView {
+            addArrowImageView(theme)
+        }
+
         addNameLabel(theme)
         addDetailLabel(theme)
     }
@@ -62,23 +69,29 @@ final class WCConnectionAccountSelectionView:
         detailLabel.text = viewModel?.subtitle
     }
 
-    func prepareLayout(_ layoutSheet: LayoutSheet) { }
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
-    
-    override func preferredUserInterfaceStyleDidChange() {
-        super.preferredUserInterfaceStyleDidChange()
-        
-        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        drawAppearance(shadow: Shadows.primaryShadow.create())
-    }
 }
 
 extension WCConnectionAccountSelectionView {
+    private func addContent() {
+        contentView.isUserInteractionEnabled = false
+
+        contentView.drawAppearance(shadow: theme.firstShadow)
+        contentView.drawAppearance(secondShadow: theme.secondShadow)
+        contentView.drawAppearance(thirdShadow: theme.thirdShadow)
+
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.edges == 0
+        }
+    }
+
     private func addTypeImageView(_ theme: WCConnectionAccountSelectionViewTheme) {
         typeImageView.customizeAppearance(theme.iconImage)
 
-        addSubview(typeImageView)
+        contentView.addSubview(typeImageView)
         typeImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
             $0.centerY.equalToSuperview()
@@ -89,7 +102,7 @@ extension WCConnectionAccountSelectionView {
     private func addArrowImageView(_ theme: WCConnectionAccountSelectionViewTheme) {
         arrowImageView.customizeAppearance(theme.arrowImage)
 
-        addSubview(arrowImageView)
+        contentView.addSubview(arrowImageView)
         arrowImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.fitToSize(theme.arrowIconSize)
@@ -100,7 +113,7 @@ extension WCConnectionAccountSelectionView {
     private func addNameLabel(_ theme: WCConnectionAccountSelectionViewTheme) {
         nameLabel.customizeAppearance(theme.title)
 
-        addSubview(nameLabel)
+        contentView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints {
             $0.leading.equalTo(typeImageView.snp.trailing).offset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.verticalInset)
@@ -112,7 +125,7 @@ extension WCConnectionAccountSelectionView {
     private func addDetailLabel(_ theme: WCConnectionAccountSelectionViewTheme) {
         detailLabel.customizeAppearance(theme.secondaryTitle)
 
-        addSubview(detailLabel)
+        contentView.addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom)
             $0.leading.equalTo(nameLabel.snp.leading)

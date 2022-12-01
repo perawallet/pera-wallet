@@ -23,11 +23,11 @@ struct RemoveAssetsListItemButtonViewModel: ListItemButtonViewModel {
     let subtitle: EditText?
 
     init() {
-        self.icon = "icon-asset-delete"
-        self.title = Self.getTitle(
+        icon = "icon-asset-delete"
+        title = Self.getTitle(
             "asset-remove-title".localized,
             Colors.Helpers.negative
         )
-        self.subtitle = nil
+        subtitle = nil
     }
 }

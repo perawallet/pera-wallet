@@ -33,32 +33,77 @@ final class TabBarController: TabBarContainer {
     }
 
     private lazy var toggleTransactionOptionsActionView = Button()
+
+    private lazy var buyAlgoAction = TransactionOptionListAction(
+        viewModel: BuyAlgoTransactionOptionListItemButtonViewModel()
+    ) {
+        [weak self] _ in
+        guard let self = self else { return }
+        self.navigateToBuyAlgo()
+    }
+
+    private lazy var swapActionViewModel = createSwapActionViewModel()
+    private lazy var swapAction = createSwapListAction()
+
+    private lazy var sendAction = TransactionOptionListAction(
+        viewModel: SendTransactionOptionListItemButtonViewModel()
+    ) {
+        [weak self] _ in
+        guard let self = self else { return }
+        self.navigateToSendTransaction()
+    }
+
+    private lazy var receiveAction = TransactionOptionListAction(
+        viewModel: ReceiveTransactionOptionListItemButtonViewModel()
+    ) {
+        [weak self] _ in
+        guard let self = self else { return }
+        self.navigateToReceiveTransaction()
+    }
+
+    private lazy var scanQRCodeAction = TransactionOptionListAction(
+        viewModel: ScanQRCodeTransactionOptionListItemButtonViewModel()
+    ) {
+        [weak self] _ in
+        guard let self = self else { return }
+        self.navigateToQRScanner()
+    }
+
     private lazy var transactionOptionsView = createTransactionOptions()
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
-    private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        dataStore: swapDataStore,
+        analytics: analytics,
+        api: api,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController,
+        presentingScreen: self
+    )
+    private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController
     )
-    private lazy var receiveTransactionFlowCoordinator =
-        ReceiveTransactionFlowCoordinator(presentingScreen: self)
-    private lazy var scanQRFlowCoordinator =
-        ScanQRFlowCoordinator(
-            analytics: analytics,
-            api: api,
-            bannerController: bannerController,
-            loadingController: loadingController,
-            presentingScreen: self,
-            session: session,
-            sharedDataController: sharedDataController
-        )
+    private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(
+        analytics: analytics,
+        api: api,
+        bannerController: bannerController,
+        loadingController: loadingController,
+        presentingScreen: self,
+        session: session,
+        sharedDataController: sharedDataController
+    )
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
 
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
     private let analytics: ALGAnalytics
     private let api: ALGAPI
     private let bannerController: BannerController
@@ -67,6 +112,7 @@ final class TabBarController: TabBarContainer {
     private let sharedDataController: SharedDataController
 
     init(
+        swapDataStore: SwapDataStore,
         analytics: ALGAnalytics,
         api: ALGAPI,
         bannerController: BannerController,
@@ -74,6 +120,7 @@ final class TabBarController: TabBarContainer {
         session: Session,
         sharedDataController: SharedDataController
     ) {
+        self.swapDataStore = swapDataStore
         self.analytics = analytics
         self.api = api
         self.bannerController = bannerController
@@ -123,6 +170,7 @@ final class TabBarController: TabBarContainer {
         super.setListeners()
 
         self.sharedDataController.add(self)
+        observeWhenUserIsOnboardedToSwap()
     }
 }
 
@@ -173,36 +221,25 @@ extension TabBarController {
 
     private func createTransactionOptions() -> TransactionOptionsView {
         var theme = TransactionOptionsViewTheme()
-        theme.contentSafeAreaInsets =
-            UIEdgeInsets(top: 0, left: 0, bottom: tabBar.bounds.height, right: 0)
+        theme.contentSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: tabBar.bounds.height, right: 0)
 
-        let aView = TransactionOptionsView()
+        let aView = TransactionOptionsView(
+            actions: [
+                buyAlgoAction,
+                swapAction,
+                sendAction,
+                receiveAction,
+                scanQRCodeAction
+            ]
+        )
         aView.customize(theme)
-        aView.startObserving(event: .buyAlgo) {
-            [weak self] in
-            guard let self = self else { return }
-            self.navigateToBuyAlgo()
-        }
-        aView.startObserving(event: .send) {
-            [weak self] in
-            guard let self = self else { return }
-            self.navigateToSendTransaction()
-        }
-        aView.startObserving(event: .receive) {
-            [weak self] in
-            guard let self = self else { return }
-            self.navigateToReceiveTransaction()
-        }
-        aView.startObserving(event: .scanQRCode) {
-            [weak self] in
-            guard let self = self else { return }
-            self.navigateToQRScanner()
-        }
-        aView.startObserving(event: .close) {
+
+        aView.startObserving(event: .performClose) {
             [weak self] in
             guard let self = self else { return }
             self.toggleTransactionOptions()
         }
+
         return aView
     }
 
@@ -300,6 +337,13 @@ extension TabBarController {
 }
 
 extension TabBarController {
+    private func navigateToSwapAssetFlow() {
+        toggleTransactionOptions()
+        swapAssetFlowCoordinator.launch(account: nil)
+
+        analytics.track(.tapSwapInQuickAction())
+    }
+
     private func navigateToSendTransaction() {
         toggleTransactionOptions()
         sendTransactionFlowCoordinator.launch()
@@ -324,7 +368,46 @@ extension TabBarController {
     private func navigateToQRScanner() {
         toggleTransactionOptions()
         scanQRFlowCoordinator.launch()
+    }
+}
 
+extension TabBarController {
+    private func observeWhenUserIsOnboardedToSwap() {
+        observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
+            [weak self] _ in
+            guard let self = self else { return }
+
+            self.updateSwapAction()
+        }
+    }
+
+    private func updateSwapAction() {
+        swapActionViewModel = createSwapActionViewModel()
+        swapAction = createSwapListAction()
+        transactionOptionsView = createTransactionOptions()
+    }
+
+    private func createSwapActionViewModel() -> SwapTransactionOptionListItemButtonViewModel {
+        let swapDisplayStore = SwapDisplayStore()
+        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+        return SwapTransactionOptionListItemButtonViewModel(isBadgeVisible: !isOnboardedToSwap)
+    }
+
+    private func createSwapListAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            viewModel: swapActionViewModel
+        ) {
+            [weak self] actionView in
+            guard let self = self else { return }
+
+            let swapDisplayStore = SwapDisplayStore()
+            let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+
+            self.swapActionViewModel.bindIsBadgeVisible(!isOnboardedToSwap)
+            actionView.bindData(self.swapActionViewModel)
+
+            self.navigateToSwapAssetFlow()
+        }
     }
 }
 

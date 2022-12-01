@@ -40,7 +40,7 @@ struct ASADetailLoadingViewTheme:
     var sendActionTitle: TextProvider
     var receiveActionIcon: Image
     var receiveActionTitle: TextProvider
-    var quickActionMinWidth: LayoutMetric
+    var quickActionWidth: LayoutMetric
     var spacingBetweenQuickActionIconAndTitle: LayoutMetric
     var spacingBetweenQuickActionsAndPageBar: LayoutMetric
     var pageBarStyle: PageBarStyleSheet
@@ -90,7 +90,7 @@ struct ASADetailLoadingViewTheme:
             .localized
             .attributed(quickActionTitleAttributes)
 
-        self.quickActionMinWidth = 64
+        self.quickActionWidth = 64
         self.spacingBetweenQuickActionIconAndTitle = 12
         self.spacingBetweenQuickActionsAndPageBar = 36
         self.pageBarStyle = PageBarCommonStyleSheet()

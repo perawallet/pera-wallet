@@ -35,6 +35,12 @@ final class HomeLoadingView:
     private lazy var accountsHeaderView = ManagementItemView()
     private lazy var accountsView = VStackView()
     private lazy var backgroundView = UIView()
+
+    var isSwapBadgeVisible: Bool = false {
+        didSet {
+            quickActionsView.isSwapBadgeVisible = isSwapBadgeVisible
+        }
+    }
     
     override init(
         frame: CGRect

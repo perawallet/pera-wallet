@@ -156,7 +156,7 @@ extension ReceiveCollectibleAccountListLayout {
             headerHeight +
             headerSectionVerticalInsets +
             accountsSectionTopInset +
-            AccountPreviewCell.contextPaddings.top
+            AccountListItemCell.contextPaddings.top
 
             insets.top = topInset
             insets.bottom = 8
@@ -245,25 +245,25 @@ extension ReceiveCollectibleAccountListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountCellItem item: AccountPreviewViewModel?
+        sizeForAccountCellItem item: AccountListItemViewModel?
     ) -> CGSize {
-        let sizeCacheIdentifier = AccountPreviewCell.reuseIdentifier
+        let sizeCacheIdentifier = AccountListItemCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
         let width = calculateContentWidth(for: listView)
-        let sampleAccountPreview = CustomAccountPreview(
+        let sampleAccountListItem = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
         )
-        let sampleAccountItem = AccountPreviewViewModel(sampleAccountPreview)
-        let newSize = AccountPreviewCell.calculatePreferredSize(
+        let sampleAccountItem = AccountListItemViewModel(sampleAccountListItem)
+        let newSize = AccountListItemCell.calculatePreferredSize(
             sampleAccountItem,
-            for: AccountPreviewCell.theme,
+            for: AccountListItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

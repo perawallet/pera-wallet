@@ -55,7 +55,7 @@ final class SendCollectibleAccountListDataSource:
                 return cell
             case .account(let item, let isPreviouslySelected):
                 let cell = collectionView.dequeue(
-                    SendCollectibleAccountPreviewCell.self,
+                    SendCollectibleAccountListItemCell.self,
                     at: indexPath
                 )
                 cell.bindData(
@@ -80,7 +80,7 @@ final class SendCollectibleAccountListDataSource:
             PreviewLoadingCell.self,
             NoContentCell.self,
             SendCollectibleAccountListTitleSupplementaryCell.self,
-            SendCollectibleAccountPreviewCell.self,
+            SendCollectibleAccountListItemCell.self,
             SendCollectibleContactCell.self
         ].forEach {
             collectionView.register($0)

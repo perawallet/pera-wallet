@@ -42,6 +42,13 @@ extension AccountNameTitleViewModel {
             bindSubtitle(draft)
             return
         }
+
+        if let draft = model as? AccountNameTitleDraft {
+            bindTitle(draft)
+            bindIcon(draft)
+            bindSubtitle(draft)
+            return
+        }
     }
 }
 
@@ -109,7 +116,44 @@ extension AccountNameTitleViewModel {
     }
 }
 
+// MARK: - AccountNameTitleDraft
+extension AccountNameTitleViewModel {
+    mutating func bindTitle(_ draft: AccountNameTitleDraft) {
+        self.title = draft.title.bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+
+    mutating func bindIcon(_ draft: AccountNameTitleDraft) {
+        let image = draft.account.typeImage
+        let resizedImage =
+            image
+                .convert(to: CGSize((16, 16)))
+                .unwrap(or: image)
+
+        icon = [
+            .image(resizedImage),
+            .contentMode(.left)
+        ]
+    }
+
+    mutating func bindSubtitle(_ draft: AccountNameTitleDraft) {
+        let subtitle = AccountNaming.getPrimaryName(for: draft.account)
+
+        self.subtitle = subtitle.footnoteRegular(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+}
+
 struct SendTransactionAccountNameTitleDraft {
     let transactionMode: TransactionMode
+    let account: Account
+}
+
+struct AccountNameTitleDraft {
+    let title: String
     let account: Account
 }

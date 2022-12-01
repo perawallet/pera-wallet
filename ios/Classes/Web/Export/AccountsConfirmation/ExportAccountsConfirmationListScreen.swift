@@ -21,7 +21,6 @@ final class ExportAccountsConfirmationListScreen:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
     NavigationBarLargeTitleConfigurable {
-
     typealias EventHandler = (Event, ExportAccountsConfirmationListScreen) -> Void
 
     var eventHandler: EventHandler?

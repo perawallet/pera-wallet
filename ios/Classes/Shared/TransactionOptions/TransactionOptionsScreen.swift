@@ -23,91 +23,110 @@ import UIKit
 final class TransactionOptionsScreen:
     BaseScrollViewController,
     BottomSheetScrollPresentable {
-
     weak var delegate: TransactionOptionsScreenDelegate?
 
     override var shouldShowNavigationBar: Bool {
         return false
     }
 
-    private lazy var contextView = TransactionOptionsContextView(actions: [.buyAlgo, .send, .receive, .addAsset, .more])
+    private lazy var contextView = TransactionOptionsContextView(actions: composeActions())
+
+    private let theme: TransactionOptionsScreenTheme
+
+    init(
+        theme: TransactionOptionsScreenTheme = .init(),
+        configuration: ViewControllerConfiguration
+    ) {
+        self.theme = theme
+        super.init(configuration: configuration)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        build()
-    }
 
-    override func configureAppearance() {
-        super.configureAppearance()
-
-        view.customizeAppearance([.backgroundColor(Colors.Defaults.background)])
-    }
-
-    private func build() {
         addContext()
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-
-        contextView.startObserving(event: .buyAlgo) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.delegate?.transactionOptionsScreenDidBuyAlgo(self)
-        }
-
-        contextView.startObserving(event: .send) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.delegate?.transactionOptionsScreenDidSend(self)
-        }
-
-        contextView.startObserving(event: .receive) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.delegate?.transactionOptionsScreenDidReceive(self)
-        }
-
-        contextView.startObserving(event: .addAsset) {
-            [unowned self] in
-
-            self.delegate?.transactionOptionsScreenDidAddAsset(self)
-        }
-
-        contextView.startObserving(event: .more) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.delegate?.transactionOptionsScreenDidMore(self)
-        }
     }
 }
 
 extension TransactionOptionsScreen {
     private func addContext() {
-        addActions()
-    }
+        contextView.customize(theme.context)
 
-    private func addActions() {
-        contextView.customize(TransactionOptionsViewTheme())
         contentView.addSubview(contextView)
         contextView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.trailing == 0
-            $0.bottom <= 0
+            $0.setPaddings()
         }
+    }
+}
+
+extension TransactionOptionsScreen {
+    private func composeActions() -> [TransactionOptionListAction] {
+        let buyAlgoAction = TransactionOptionListAction(
+            viewModel: BuyAlgoTransactionOptionListItemButtonViewModel()
+        ) {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.transactionOptionsScreenDidBuyAlgo(self)
+        }
+
+        let swapDisplayStore = SwapDisplayStore()
+        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+
+        var swapActionViewModel = SwapTransactionOptionListItemButtonViewModel(isBadgeVisible: !isOnboardedToSwap)
+        let swapAction = TransactionOptionListAction(
+            viewModel: swapActionViewModel
+        ) {
+            [weak self] actionView in
+            guard let self = self else { return }
+
+            if !isOnboardedToSwap {
+                swapActionViewModel.bindIsBadgeVisible(false)
+                actionView.bindData(swapActionViewModel)
+            }
+
+            self.delegate?.transactionOptionsScreenDidSwap(self)
+        }
+
+        let sendAction = TransactionOptionListAction(
+            viewModel: SendTransactionOptionListItemButtonViewModel()
+        ) {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.transactionOptionsScreenDidSend(self)
+        }
+
+        let receiveAction = TransactionOptionListAction(
+            viewModel: ReceiveTransactionOptionListItemButtonViewModel()
+        ) {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.transactionOptionsScreenDidReceive(self)
+        }
+
+        let addAssetAction = TransactionOptionListAction(
+            viewModel: AddAssetTransactionOptionListActionViewModel()
+        ) {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.transactionOptionsScreenDidAddAsset(self)
+        }
+
+        let moreAction = TransactionOptionListAction(
+            viewModel: MoreTransactionOptionListItemButtonViewModel()
+        ) {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.transactionOptionsScreenDidMore(self)
+        }
+
+        return [
+            buyAlgoAction,
+            swapAction,
+            sendAction,
+            receiveAction,
+            addAssetAction,
+            moreAction
+        ]
     }
 }
 
@@ -115,10 +134,12 @@ protocol TransactionOptionsScreenDelegate: AnyObject {
     func transactionOptionsScreenDidBuyAlgo(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
+    func transactionOptionsScreenDidSwap(
+        _ transactionOptionsScreen: TransactionOptionsScreen
+    )
     func transactionOptionsScreenDidSend(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
-
     func transactionOptionsScreenDidReceive(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )

@@ -50,56 +50,99 @@ extension AccountSelectScreenListLayout {
             return CGSize((collectionView.bounds.width, 0))
         }
 
-        return listView(collectionView, layout: collectionViewLayout, sizeForAccountItem: itemIdentifier)
-    }
-}
-
-extension AccountSelectScreenListLayout {
-    private func listView(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountItem item: AccountSelectItem
-    ) -> CGSize {
-        switch item {
+        switch itemIdentifier {
         case .empty(let emptyItem):
             switch emptyItem {
             case .loading:
+                let width = calculateContentWidth(
+                    for: collectionView,
+                    forSectionAt: indexPath.section
+                )
                 return CGSize(
-                    width: calculateContentWidth(listView),
+                    width: width,
                     height: theme.cellHeight
                 )
             case .noContent(let noContentItem):
+                let width = calculateContentWidth(
+                    for: collectionView,
+                    forSectionAt: indexPath.section
+                )
                 return NoContentCell.calculatePreferredSize(
                     noContentItem,
                     for: NoContentCell.theme,
-                    fittingIn: CGSize((calculateContentWidth(listView), .greatestFiniteMagnitude))
+                    fittingIn: CGSize((width, .greatestFiniteMagnitude))
                 )
             }
 
         case .account(let cellItem):
             switch cellItem {
             case .header:
+                let width = calculateContentWidth(
+                    for: collectionView,
+                    forSectionAt: indexPath.section
+                )
                 return CGSize(
-                    width: calculateContentWidth(listView),
+                    width: width,
                     height: theme.headerHeight
                 )
-            case .accountCell, .contactCell, .searchAccountCell, .matchedAccountCell:
+            case .accountCell,
+                 .contactCell,
+                 .searchAccountCell,
+                 .matchedAccountCell:
+                let width = calculateContentWidth(
+                    for: collectionView,
+                    forSectionAt: indexPath.section
+                )
                 return CGSize(
-                    width: calculateContentWidth(listView),
+                    width: width,
                     height: theme.cellHeight
                 )
             }
+        }
+    }
 
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: section] else {
+            return .zero
+        }
+
+        switch listSection {
+        case .empty:
+            return .zero
+        case .matched,
+             .accounts,
+             .contacts,
+             .searchResult:
+            return UIEdgeInsets(
+                top: 36,
+                left: 24,
+                bottom: 0,
+                right: 24
+            )
         }
     }
 }
 
 extension AccountSelectScreenListLayout {
     private func calculateContentWidth(
-        _ collectionView: UICollectionView
+        for listView: UICollectionView,
+        forSectionAt section: Int
     ) -> LayoutMetric {
+        let sectionInset = self.collectionView(
+            listView,
+            layout: listView.collectionViewLayout,
+            insetForSectionAt: section
+        )
         return
-            collectionView.bounds.width -
-            collectionView.contentInset.horizontal
+            listView.bounds.width -
+            listView.contentInset.horizontal -
+            sectionInset.left -
+            sectionInset.right
     }
 }

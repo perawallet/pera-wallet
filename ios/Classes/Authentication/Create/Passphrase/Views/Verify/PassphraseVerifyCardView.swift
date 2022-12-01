@@ -125,7 +125,6 @@ extension PassphraseVerifyCardView {
     }
     
     private func addContainerView(_ theme: PassphraseVerifyCardViewTheme) {
-        containerView.draw(corner: theme.containerViewCorner)
         containerView.draw(shadow: theme.containerViewFirstShadow)
         containerView.draw(secondShadow: theme.containerViewSecondShadow)
         containerView.draw(thirdShadow: theme.containerViewThirdShadow)

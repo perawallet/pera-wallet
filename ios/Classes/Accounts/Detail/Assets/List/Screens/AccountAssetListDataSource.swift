@@ -66,10 +66,11 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 cell.bindData(item)
                 return cell
             case .quickActions:
-                return collectionView.dequeue(
+                let cell = collectionView.dequeue(
                     AccountQuickActionsCell.self,
                     at: indexPath
                 )
+                return cell
             case .empty(let item):
                 let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
                 cell.bindData(item)

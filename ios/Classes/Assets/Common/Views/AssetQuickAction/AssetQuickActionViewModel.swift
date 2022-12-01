@@ -186,31 +186,32 @@ extension AssetQuickActionViewModel {
 extension AssetQuickActionViewModel {
     private func bindButtonShadows() {
         self.buttonFirstShadow = MacaroonUIKit.Shadow(
-            color: Colors.Shadows.Cards.shadow1.uiColor,
+            color: Colors.Shadows.Cards.shadow3.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
-            offset: (0, 2),
-            radius: 4,
+            offset: (0, 0),
+            radius: 0,
+            spread: 1,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
-
         self.buttonSecondShadow = MacaroonUIKit.Shadow(
             color: Colors.Shadows.Cards.shadow2.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
+            spread: 0,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
-
         self.buttonThirdShadow = MacaroonUIKit.Shadow(
-            color: Colors.Shadows.Cards.shadow3.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
             fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
-            offset: (0, 0),
-            radius: 0,
+            offset: (0, 2),
+            radius: 4,
+            spread: -1,
             cornerRadii: (4, 4),
             corners: .allCorners
         )

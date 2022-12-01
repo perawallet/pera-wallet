@@ -15,14 +15,26 @@
 //   ALGActiveLabel.swift
 
 import ActiveLabel
+import MacaroonUIKit
 
-final class ALGActiveLabel: ActiveLabel {}
+final class ALGActiveLabel: ActiveLabel {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if bounds.isEmpty {
+            return
+        }
+
+        preferredMaxLayoutWidth = bounds.width
+    }
+}
 
 enum ALGActiveType {
     case mention
     case hashtag
     case url
     case email
+    case word(String)
     case custom(pattern: String)
 
     var mapped: ActiveType {
@@ -31,7 +43,45 @@ enum ALGActiveType {
         case .hashtag: return .hashtag
         case .url: return .url
         case .email: return .email
+        case .word(let word): return .custom(pattern: "\\s\(word)\\b") /// <note> Regex that looks for `word`
         case .custom(let pattern): return .custom(pattern: pattern)
+        }
+    }
+}
+
+extension ALGActiveLabel {
+    func attachHyperlink(
+        _ hyperlink: ALGActiveType,
+        to text: TextProvider,
+        attributes: TextAttributeGroup,
+        handler: @escaping () -> Void
+    ) {
+        customize { label in
+            text.load(in: label)
+
+            let activeType = hyperlink.mapped
+
+            label.enabledTypes = label.enabledTypes + [ activeType ]
+
+            label.configureLinkAttribute = {
+                type, someAttributes, _ in
+
+                var mutableAttributes = someAttributes
+
+                switch type {
+                case activeType:
+                    attributes.asSystemAttributes().forEach {
+                        mutableAttributes[$0.key] = $0.value
+                    }
+                default: break
+                }
+
+                return mutableAttributes
+            }
+
+            label.handleCustomTap(for: activeType) { _ in
+                handler()
+            }
         }
     }
 }

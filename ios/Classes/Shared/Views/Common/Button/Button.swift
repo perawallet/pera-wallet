@@ -36,6 +36,33 @@ final class Button: MacaroonUIKit.Button, TripleShadowDrawable {
         }
     }
 
+    override func preferredUserInterfaceStyleDidChange() {
+        super.preferredUserInterfaceStyleDidChange()
+
+        drawAppearance(
+            secondShadow: secondShadow
+        )
+        drawAppearance(
+            thirdShadow: thirdShadow
+        )
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if let secondShadow = secondShadow {
+            updateOnLayoutSubviews(
+                secondShadow: secondShadow
+            )
+        }
+
+        if let thirdShadow = thirdShadow {
+            updateOnLayoutSubviews(
+                thirdShadow: thirdShadow
+            )
+        }
+    }
+
     func customize(_ theme: ButtonTheme) {
         self.theme = theme
 

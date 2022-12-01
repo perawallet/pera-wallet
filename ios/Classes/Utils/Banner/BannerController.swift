@@ -35,7 +35,8 @@ final class BannerController: MacaroonBanner.BannerController {
     func presentErrorBanner(
         title: String,
         message: String,
-        icon: UIImage? = "icon-info-24".uiImage
+        icon: UIImage? = "icon-info-24".uiImage,
+        _ completion: (() -> Void)? = nil
     ) {
         let bannerView = makeErrorBanner()
         let draft = BannerDraft(
@@ -47,6 +48,10 @@ final class BannerController: MacaroonBanner.BannerController {
         bannerView.bindData(
             BannerErrorViewModel(draft)
         )
+
+        bannerView.startObserving(event: .performAction) {
+            completion?()
+        }
 
         enqueue(bannerView)
     }

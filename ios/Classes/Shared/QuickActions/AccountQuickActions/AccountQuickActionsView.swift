@@ -25,117 +25,147 @@ final class AccountQuickActionsView:
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .buyAlgo: TargetActionInteraction(),
+        .swap: TargetActionInteraction(),
         .send: TargetActionInteraction(),
-        .address: TargetActionInteraction(),
         .more: TargetActionInteraction()
     ]
 
-    private lazy var contentView = MacaroonUIKit.BaseView()
-    private lazy var actionsView = HStackView()
+    private lazy var contentView = HStackView()
+    private lazy var buyActionView = makeActionView()
+    private lazy var swapActionView = makeBadgeActionView()
+    private lazy var sendActionView =  makeActionView()
+    private lazy var moreActionView = makeActionView()
 
-    func customize(
-        _ theme: AccountQuickActionsViewTheme
-    ) {
+    private var theme: AccountQuickActionsViewTheme!
+
+    var isSwapBadgeVisible: Bool = false {
+        didSet {
+            swapActionView.isBadgeVisible = isSwapBadgeVisible
+        }
+    }
+
+    func customize(_ theme: AccountQuickActionsViewTheme) {
+        self.theme = theme
+
         addActions(theme)
     }
 
-    func customizeAppearance(
-        _ styleSheet: NoStyleSheet
-    ) {}
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func prepareLayout(
-        _ layoutSheet: NoLayoutSheet
-    ) {}
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     class func calculatePreferredSize(
         for theme: AccountQuickActionsViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
-        let maxActionSize = CGSize(width: size.width, height: .greatestFiniteMagnitude)
+        let maxActionSize = CGSize((size.width, .greatestFiniteMagnitude))
         let buyActionSize = calculateActionPreferredSize(
-            for: theme.buyAlgoAction,
+            theme,
+            for: theme.buyAction,
             fittingIn: maxActionSize
         )
         let sendActionSize = calculateActionPreferredSize(
+            theme,
             for: theme.sendAction,
             fittingIn: maxActionSize
         )
-        let addressActionSize = calculateActionPreferredSize(
-            for: theme.addressAction,
+        let swapActionSize = calculateActionPreferredSize(
+            theme,
+            for: theme.swapAction,
             fittingIn: maxActionSize
         )
         let moreActionSize = calculateActionPreferredSize(
+            theme,
             for: theme.moreAction,
             fittingIn: maxActionSize
         )
         let preferredHeight = [
             buyActionSize.height,
+            swapActionSize.height,
             sendActionSize.height,
-            addressActionSize.height,
             moreActionSize.height
         ].max()!
-        return CGSize(width: size.width, height: min(preferredHeight.ceil(), size.height))
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 
     class func calculateActionPreferredSize(
-        for theme: AccountQuickActionViewTheme,
+        _ theme: AccountQuickActionsViewTheme,
+        for actionStyle: ButtonStyle,
         fittingIn size: CGSize
     ) -> CGSize {
-        let font = theme.style.font?.uiFont
-        let maxWidth = min(theme.width, size.width)
-        let iconSize = theme.icon?.uiImage.size
-        let titleSize = theme.title?.boundingSize(
-            attributes: .font(font),
+        let width = theme.actionWidth
+        let iconSize = actionStyle.icon?.first?.uiImage.size ?? .zero
+        let titleSize = actionStyle.title?.text.boundingSize(
             multiline: true,
-            fittingSize: CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
-        )
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        ) ?? .zero
         let preferredHeight =
-            (iconSize?.height ?? 48) +
-            HomeQuickActionViewTheme.spacingBetweenIconAndTitle +
-            (titleSize?.height ?? 20)
-        return CGSize(width: maxWidth, height: min(preferredHeight.ceil(), size.height))
+            iconSize.height +
+            theme.actionSpacingBetweenIconAndTitle +
+            titleSize.height
+        return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
-
 extension AccountQuickActionsView {
-    private func addActions(
-        _ theme: AccountQuickActionsViewTheme
-    ) {
-        addSubview(actionsView)
-        actionsView.distribution = .equalSpacing
-        actionsView.spacing = theme.spacingBetweenActions
-        actionsView.snp.makeConstraints {
+    private func addActions(_ theme: AccountQuickActionsViewTheme) {
+        addSubview(contentView)
+        contentView.distribution = .fillEqually
+        contentView.alignment = .top
+        contentView.spacing = theme.spacingBetweenActions
+        contentView.snp.makeConstraints {
             $0.centerX == 0
             $0.top == 0
-            $0.leading <= theme.maxContentHorizontalInsets.leading
+            $0.leading >= 0
             $0.bottom == 0
-            $0.trailing >= theme.maxContentHorizontalInsets.trailing
+            $0.trailing <= 0
         }
 
         addBuyAction(theme)
+        addSwapAction(theme)
         addSendAction(theme)
-        addAddressAction(theme)
         addMoreAction(theme)
     }
 
-    private func addBuyAction(
-        _ theme: AccountQuickActionsViewTheme
-    ) {
-        let buyAlgoActionView = createAction(theme.buyAlgoAction)
-        actionsView.addArrangedSubview(buyAlgoActionView)
+    private func addBuyAction(_ theme: AccountQuickActionsViewTheme) {
+        buyActionView.customizeAppearance(theme.buyAction)
+        customizeAction(
+            buyActionView,
+            theme
+        )
+
+        contentView.addArrangedSubview(buyActionView)
 
         startPublishing(
             event: .buyAlgo,
-            for: buyAlgoActionView
+            for: buyActionView
         )
     }
 
-    private func addSendAction(
-        _ theme: AccountQuickActionsViewTheme
-    ) {
-        let sendActionView = createAction(theme.sendAction)
-        actionsView.addArrangedSubview(sendActionView)
+    private func addSwapAction(_ theme: AccountQuickActionsViewTheme) {
+        swapActionView.customize(theme: theme.swapBadge)
+        swapActionView.customizeAppearance(theme.swapAction)
+        customizeAction(
+            swapActionView,
+            theme
+        )
+
+        contentView.addArrangedSubview(swapActionView)
+
+        startPublishing(
+            event: .swap,
+            for: swapActionView
+        )
+    }
+
+    private func addSendAction(_ theme: AccountQuickActionsViewTheme) {
+        sendActionView.customizeAppearance(theme.sendAction)
+        customizeAction(
+            sendActionView,
+            theme
+        )
+
+        contentView.addArrangedSubview(sendActionView)
 
         startPublishing(
             event: .send,
@@ -143,23 +173,14 @@ extension AccountQuickActionsView {
         )
     }
 
-    private func addAddressAction(
-        _ theme: AccountQuickActionsViewTheme
-    ) {
-        let addressActionView = createAction(theme.addressAction)
-        actionsView.addArrangedSubview(addressActionView)
-
-        startPublishing(
-            event: .address,
-            for: addressActionView
+    private func addMoreAction(_ theme: AccountQuickActionsViewTheme) {
+        moreActionView.customizeAppearance(theme.moreAction)
+        customizeAction(
+            moreActionView,
+            theme
         )
-    }
 
-    private func addMoreAction(
-        _ theme: AccountQuickActionsViewTheme
-    ) {
-        let moreActionView = createAction(theme.moreAction)
-        actionsView.addArrangedSubview(moreActionView)
+        contentView.addArrangedSubview(moreActionView)
 
         startPublishing(
             event: .more,
@@ -167,28 +188,43 @@ extension AccountQuickActionsView {
         )
     }
 
-    private func createAction(
-        _ theme: AccountQuickActionViewTheme
-    ) -> UIControl {
-        let actionView = MacaroonUIKit.Button(
+    private func customizeAction(
+        _ actionView: MacaroonUIKit.Button,
+        _ theme: AccountQuickActionsViewTheme
+    ) {
+        actionView.snp.makeConstraints {
+            $0.fitToWidth(theme.actionWidth)
+        }
+    }
+}
+
+extension AccountQuickActionsView {
+    private func makeActionView() -> MacaroonUIKit.Button {
+        let titleAdjustmentY = theme.actionSpacingBetweenIconAndTitle
+        return MacaroonUIKit.Button(.imageAtTopmost(
+            padding: 0,
+            titleAdjustmentY: titleAdjustmentY)
+        )
+    }
+
+    private func makeBadgeActionView() -> BadgeButton {
+        let titleAdjustmentY = theme.actionSpacingBetweenIconAndTitle
+        let swapBadgeEdgeInsets = theme.swapBadgeEdgeInsets
+        return BadgeButton(
+            badgePosition: .topTrailing(swapBadgeEdgeInsets),
             .imageAtTopmost(
                 padding: 0,
-                titleAdjustmentY: AccountQuickActionViewTheme.spacingBetweenIconAndTitle
+                titleAdjustmentY: titleAdjustmentY
             )
         )
-        actionView.customizeAppearance(theme.style)
-        actionView.snp.makeConstraints {
-            $0.fitToWidth(theme.width)
-        }
-        return actionView
     }
 }
 
 extension AccountQuickActionsView {
     enum Event {
         case buyAlgo
+        case swap
         case send
-        case address
         case more
     }
 }

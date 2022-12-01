@@ -147,7 +147,6 @@ indirect enum Screen {
     case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft, transactionController: TransactionController)
     case wcMainTransactionScreen(draft: WalletConnectRequestDraft, delegate: WCMainTransactionScreenDelegate)
-    case transactionFloatingActionButton
     case wcSingleTransactionScreen(
         transactions: [WCTransaction],
         transactionRequest: WalletConnectRequest,
@@ -188,7 +187,6 @@ indirect enum Screen {
         delegate: BuyAlgoHomeScreenDelegate?
     )
     case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
-    case copyAddressStory(eventHandler: CopyAddressStoryScreen.EventHandler)
     case transactionOptions(delegate: TransactionOptionsScreenDelegate?)
     case qrScanOptions(
         address: PublicKey,
@@ -201,6 +199,38 @@ indirect enum Screen {
     case innerTransactionList(
         dataController: InnerTransactionListDataController,
         eventHandler: InnerTransactionListViewController.EventHandler
+    )
+    case swapAsset(
+        dataStore: SwapAmountPercentageStore & SwapMutableAmountPercentageStore,
+        swapController: SwapController,
+        coordinator: SwapAssetFlowCoordinator
+    )
+    case swapAccountSelection(eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler)
+    case swapSignWithLedgerProcess(
+        transactionSigner: SwapTransactionSigner,
+        draft: SignWithLedgerProcessDraft,
+        eventHandler: SignWithLedgerProcessScreen.EventHandler
+    )
+    case loading(
+        viewModel: LoadingScreenViewModel,
+        theme: LoadingScreenTheme = .init()
+    )
+    case error(
+        viewModel: ErrorScreenViewModel,
+        theme: ErrorScreenTheme = .init()
+    )
+    case swapSuccess(
+        swapController: SwapController,
+        theme: SwapAssetSuccessScreenTheme = .init()
+    )
+    case swapSummary(
+        swapController: SwapController,
+        theme: SwapSummaryScreenTheme = .init()
+    )
+    case alert(alert: Alert)
+    case swapIntroduction(
+        draft: SwapIntroductionDraft,
+        eventHandler: EventHandler<SwapIntroductionEvent>
     )
     case optInAsset(
         draft: OptInAssetDraft,
@@ -234,6 +264,29 @@ indirect enum Screen {
     case exportAccountsConfirmationList(
         selectedAccounts: [Account],
         eventHandler: ExportAccountsConfirmationListScreen.EventHandler
+    )
+    case selectAsset(
+        dataController: SelectAssetDataController,
+        coordinator: SwapAssetFlowCoordinator?,
+        title: String,
+        theme: SelectAssetScreenTheme = .init()
+    )
+    case confirmSwap(
+        dataStore: SwapSlippageTolerancePercentageStore,
+        dataController: ConfirmSwapDataController,
+        eventHandler: EventHandler<ConfirmSwapScreen.Event>,
+        theme: ConfirmSwapScreenTheme = .init()
+    )
+    /// <todo>
+    /// We should find a way to define the EventHandler decoupled to the actual screen when we
+    /// refactor the routing mechanism.
+    case editSwapAmount(
+        dataStore: SwapAmountPercentageStore & SwapMutableAmountPercentageStore,
+        eventHandler: EditSwapAmountScreen.EventHandler
+    )
+    case editSwapSlippage(
+        dataStore: SwapSlippageTolerancePercentageStore & SwapMutableSlippageTolerancePercentageStore,
+        eventHandler: EditSwapSlippageScreen.EventHandler
     )
     case exportAccountsResult(
         accounts: [Account],

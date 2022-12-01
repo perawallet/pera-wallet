@@ -37,7 +37,8 @@ enum LedgerMessage {
     
     enum Response {
         static let ledgerError = "6e00"
-        static let ledgerTransactionCancelled = "6985"
+        static let ledgerTransactionCancelledOldVersion = "6985"
+        static let ledgerTransactionCancelled = "6986"
         static let nextPage = "9000"
     }
     

@@ -19,15 +19,24 @@ import MacaroonUIKit
 import UIKit
 
 struct ASADetailQuickActionsViewModel: ViewModel {
-    var isBuyActionAvailable = true
+    private(set) var isBuyActionAvailable = true
+    private(set) var isSwapBadgeVisible = false
 
-    init(asset: Asset) {
+    init(
+        asset: Asset,
+        isSwapBadgeVisible: Bool
+    ) {
         bindBuyActionAvailable(asset: asset)
+        bindIsSwapBadgeVisible(isSwapBadgeVisible: isSwapBadgeVisible)
     }
 }
 
 extension ASADetailQuickActionsViewModel {
     mutating func bindBuyActionAvailable(asset: Asset) {
         isBuyActionAvailable = asset.isAlgo
+    }
+
+    mutating func bindIsSwapBadgeVisible(isSwapBadgeVisible: Bool) {
+        self.isSwapBadgeVisible = isSwapBadgeVisible
     }
 }

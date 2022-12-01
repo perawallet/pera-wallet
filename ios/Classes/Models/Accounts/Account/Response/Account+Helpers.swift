@@ -148,6 +148,29 @@ extension Account {
     func nonDeletedAssets() -> [ALGAsset]? {
         return assets?.filter { !($0.isDeleted ?? true) }
     }
+
+    /// <todo> This will be moved to a single place when the tickets on v5.4.2 is handled.
+    func calculateMinBalance() -> UInt64 {
+        let assetCount = (assets?.count ?? 0) + 1
+        let createdAppAmount = minimumTransactionMicroAlgosLimit * UInt64(totalCreatedApps)
+        let localStateAmount = minimumTransactionMicroAlgosLimit * UInt64(appsLocalState?.count ?? 0)
+        let totalSchemaValueAmount = totalNumIntConstantForMinimumAmount * UInt64(appsTotalSchema?.intValue ?? 0)
+        let byteSliceAmount = byteSliceConstantForMinimumAmount * UInt64(appsTotalSchema?.byteSliceCount ?? 0)
+        let extraPagesAmount = minimumTransactionMicroAlgosLimit * UInt64(appsTotalExtraPages ?? 0)
+
+        let applicationRelatedMinimumAmount =
+            createdAppAmount +
+            localStateAmount +
+            totalSchemaValueAmount +
+            byteSliceAmount +
+            extraPagesAmount
+
+        let minBalance =
+            (minimumTransactionMicroAlgosLimit * UInt64(assetCount)) +
+            applicationRelatedMinimumAmount
+
+        return minBalance
+    }
 }
 
 extension Account {
@@ -205,6 +228,10 @@ extension Account {
             return "icon-ledger-account".uiImage
         }
         return "icon-standard-account".uiImage
+    }
+
+    func isOptedIn(to asset: AssetID) -> Bool {
+        return self[asset] != nil || asset == algo.id
     }
 
     func isOwner(of asset: AssetID) -> Bool {

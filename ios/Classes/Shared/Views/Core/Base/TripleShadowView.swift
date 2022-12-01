@@ -15,21 +15,47 @@
 //
 //   TripleShadowView.swift
 
-
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-class TripleShadowView: View, TripleShadowDrawable {
-    var thirdShadow: MacaroonUIKit.Shadow?
-    var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
-
+class TripleShadowView:
+    View,
+    TripleShadowDrawable {
     var secondShadow: MacaroonUIKit.Shadow?
     var secondShadowLayer: CAShapeLayer = CAShapeLayer()
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {
+    var thirdShadow: MacaroonUIKit.Shadow?
+    var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
+
+    override func preferredUserInterfaceStyleDidChange() {
+        super.preferredUserInterfaceStyleDidChange()
+        
+        drawAppearance(
+            secondShadow: secondShadow
+        )
+        drawAppearance(
+            thirdShadow: thirdShadow
+        )
     }
 
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if let secondShadow = secondShadow {
+            updateOnLayoutSubviews(
+                secondShadow: secondShadow
+            )
+        }
+
+        if let thirdShadow = thirdShadow {
+            updateOnLayoutSubviews(
+                thirdShadow: thirdShadow
+            )
+        }
     }
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }

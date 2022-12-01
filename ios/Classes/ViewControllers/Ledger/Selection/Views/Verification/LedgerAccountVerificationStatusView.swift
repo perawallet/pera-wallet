@@ -18,7 +18,9 @@
 import UIKit
 import MacaroonUIKit
 
-final class LedgerAccountVerificationStatusView: View, TripleShadowDrawable {
+final class LedgerAccountVerificationStatusView:
+    View,
+    TripleShadowDrawable {
     var thirdShadow: MacaroonUIKit.Shadow?
     var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
 
@@ -31,12 +33,42 @@ final class LedgerAccountVerificationStatusView: View, TripleShadowDrawable {
     private lazy var statusLabel = UILabel()
     private lazy var addressLabel = UILabel()
 
+    override func preferredUserInterfaceStyleDidChange() {
+        super.preferredUserInterfaceStyleDidChange()
+
+        drawAppearance(
+            secondShadow: secondShadow
+        )
+        drawAppearance(
+            thirdShadow: thirdShadow
+        )
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if let secondShadow = secondShadow {
+            updateOnLayoutSubviews(
+                secondShadow: secondShadow
+            )
+        }
+
+        if let thirdShadow = thirdShadow {
+            updateOnLayoutSubviews(
+                thirdShadow: thirdShadow
+            )
+        }
+    }
+
     func customize(_ theme: LedgerAccountVerificationStatusViewTheme) {
-        draw(corner: theme.corner)
+        drawAppearance(corner: theme.corner)
+        drawAppearance(shadow: theme.firstShadow)
+        drawAppearance(secondShadow: theme.secondShadow)
+        drawAppearance(thirdShadow: theme.thirdShadow)
 
         addIndicatorView(theme)
-        addVerticalStackView(theme)
         addImageView(theme)
+        addVerticalStackView(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -52,6 +84,17 @@ extension LedgerAccountVerificationStatusView {
         indicatorView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
             $0.centerY.equalToSuperview()
+            $0.fitToSize(theme.imageSize)
+        }
+    }
+
+    private func addImageView(_ theme: LedgerAccountVerificationStatusViewTheme) {
+        addSubview(imageView)
+
+        imageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.centerY.equalToSuperview()
+            $0.fitToSize(theme.imageSize)
         }
     }
 
@@ -81,16 +124,6 @@ extension LedgerAccountVerificationStatusView {
         addressLabel.customizeAppearance(theme.addressLabel)
 
         verticalStackView.addArrangedSubview(addressLabel)
-    }
-    
-    private func addImageView(_ theme: LedgerAccountVerificationStatusViewTheme) {
-        addSubview(imageView)
-
-        imageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
-            $0.centerY.equalToSuperview()
-            $0.fitToSize(theme.imageSize)
-        }
     }
 }
 

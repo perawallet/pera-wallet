@@ -19,10 +19,8 @@ import CommonCrypto
 import CryptoSwift
 import AlgoSDK
 
-
 final class Cryptor {
     typealias EncryptionData = (data: Data?, error: EncryptionError?)
-
     let key: String
 
     init(key: String) {

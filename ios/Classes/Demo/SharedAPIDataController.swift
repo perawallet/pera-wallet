@@ -432,26 +432,17 @@ extension SharedAPIDataController {
 
         var accountSortingAlgorithmName: String? {
             get { userDefaults.string(forKey: accountSortingAlgorithmNameKey) }
-            set {
-                userDefaults.set(newValue, forKey: accountSortingAlgorithmNameKey)
-                userDefaults.synchronize()
-            }
+            set { userDefaults.set(newValue, forKey: accountSortingAlgorithmNameKey) }
         }
 
         var collectibleSortingAlgorithmName: String? {
             get { userDefaults.string(forKey: collectibleSortingAlgorithmNameKey) }
-            set {
-                userDefaults.set(newValue, forKey: collectibleSortingAlgorithmNameKey)
-                userDefaults.synchronize()
-            }
+            set { userDefaults.set(newValue, forKey: collectibleSortingAlgorithmNameKey) }
         }
 
         var accountAssetSortingAlgorithmName: String? {
             get { userDefaults.string(forKey: accountAssetSortingAlgorithmNameKey) }
-            set {
-                userDefaults.set(newValue, forKey: accountAssetSortingAlgorithmNameKey)
-                userDefaults.synchronize()
-            }
+            set { userDefaults.set(newValue, forKey: accountAssetSortingAlgorithmNameKey) }
         }
 
         private let accountSortingAlgorithmNameKey = "cache.key.accountSortingAlgorithmName"

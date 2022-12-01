@@ -18,12 +18,16 @@
 import Foundation
 import MacaroonForm
 import MacaroonUIKit
+import MacaroonUtils
 import UIKit
 
 final class AccountAssetListViewController:
     BaseViewController,
     SearchBarItemCellDelegate,
-    MacaroonForm.KeyboardControllerDataSource {
+    MacaroonForm.KeyboardControllerDataSource,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -82,6 +86,8 @@ final class AccountAssetListViewController:
 
     deinit {
         keyboardController.deactivate()
+
+        stopObservingNotifications()
     }
 
     override func viewDidLoad() {
@@ -147,7 +153,10 @@ final class AccountAssetListViewController:
 
     override func linkInteractors() {
         super.linkInteractors()
+
         listView.delegate = self
+
+        observeWhenUserIsOnboardedToSwap()
     }
 
     func reloadData() {
@@ -254,6 +263,10 @@ extension AccountAssetListViewController {
     }
 
     private func updateSafeAreaWhenViewDidLayoutSubviews() {
+        if keyboardController.isKeyboardVisible {
+            return
+        }
+
         if !canAccessAccountActionsMenu() {
             additionalSafeAreaInsets.bottom = 0
             return
@@ -295,7 +308,7 @@ extension AccountAssetListViewController {
     }
 
     private func updateAccountActionsMenuActionWhenViewDidLayoutSubviews() {
-        accountActionsMenuActionView.isHidden = !canAccessAccountActionsMenu()
+        accountActionsMenuActionView.isHidden = keyboardController.isKeyboardVisible || !canAccessAccountActionsMenu()
     }
 
     @objc
@@ -389,6 +402,10 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
 
+            let swapDisplayStore = SwapDisplayStore()
+            let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+            item.isSwapBadgeVisible = !isOnboardedToSwap
+
             positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
             item.startObserving(event: .buyAlgo) {
@@ -400,6 +417,15 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 self.eventHandler?(.buyAlgo)
             }
 
+            item.startObserving(event: .swap) {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.eventHandler?(.swap)
+            }
+
             item.startObserving(event: .send) {
                 [weak self] in
                 guard let self = self else {
@@ -407,15 +433,6 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 }
 
                 self.eventHandler?(.send)
-            }
-
-            item.startObserving(event: .address) {
-                [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                self.eventHandler?(.address)
             }
 
             item.startObserving(event: .more) {
@@ -551,6 +568,24 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             view: cell,
             backgroundColor: Colors.Defaults.background.uiColor
         )
+    }
+}
+
+extension AccountAssetListViewController {
+    private func observeWhenUserIsOnboardedToSwap() {
+        observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
+            [weak self] _ in
+            guard let self = self else { return }
+
+            guard
+                let indexPath = self.listDataSource.indexPath(for: .quickActions),
+                let cell = self.listView.cellForItem(at: indexPath) as? AccountQuickActionsCell
+            else {
+                return
+            }
+
+            cell.isSwapBadgeVisible = false
+        }
     }
 }
 
@@ -726,8 +761,8 @@ extension AccountAssetListViewController {
         case manageAssets(isWatchAccount: Bool)
         case addAsset
         case buyAlgo
+        case swap
         case send
-        case address
         case more
         case transactionOption
     }

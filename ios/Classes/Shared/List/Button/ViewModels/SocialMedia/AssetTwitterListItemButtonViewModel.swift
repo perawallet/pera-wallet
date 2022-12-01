@@ -29,19 +29,19 @@ struct AssetTwitterListItemViewModel: GroupedListItemButtonItemViewModel {
 }
 
 private struct AssetTwitterListItemButtonViewModel: ListItemButtonViewModel {
-    var icon: Image?
-    var title: EditText?
-    var subtitle: EditText?
-    var accessory: Image?
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+    let accessory: Image?
 
     init() {
-        self.icon = "icon-twitter"
-        self.title = .attributedString(
+        icon = "icon-twitter"
+        title = .attributedString(
             "social-media-platform-twitter"
                 .localized
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
-        self.subtitle = nil
-        self.accessory = "icon-external-link"
+        subtitle = nil
+        accessory = "icon-external-link"
     }
 }

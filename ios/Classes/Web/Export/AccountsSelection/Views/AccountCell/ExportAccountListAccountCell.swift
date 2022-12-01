@@ -19,7 +19,7 @@ import UIKit
 import MacaroonUIKit
 
 final class ExportAccountListAccountCell:
-    CollectionCell<AccountPreviewView>,
+    CollectionCell<AccountListItemView>,
     ViewModelBindable  {
     var accessory: ExportAccountListItemAccessory = .unselected {
         didSet { updateAccessoryIfNeeded(old: oldValue) }
@@ -53,7 +53,7 @@ final class ExportAccountListAccountCell:
     }
 
     static func calculatePreferredSize(
-        _ viewModel: AccountPreviewViewModel?,
+        _ viewModel: AccountListItemViewModel?,
         for theme: ExportAccountListItemCellTheme,
         fittingIn size: CGSize
     ) -> CGSize {

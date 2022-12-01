@@ -45,7 +45,7 @@ extension AssetAboutSectionViewModel {
         param: String,
         textColor: Color = Colors.Text.grayLighter
     ) -> TextProvider {
-        var attributes: TextAttributeGroup = Typography.footnoteHeadingAttributes(
+        var attributes: TextAttributeGroup = Typography.footnoteHeadingMediumAttributes(
             lineBreakMode: .byTruncatingTail
         )
         

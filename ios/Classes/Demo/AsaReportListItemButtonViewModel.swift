@@ -23,11 +23,11 @@ struct AsaReportListItemButtonViewModel: ListItemButtonViewModel {
     let subtitle: EditText?
 
     init(_ asset: Asset) {
-        self.icon = "icon-asset-report"
-        self.title = Self.getTitle(
+        icon = "icon-asset-report"
+        title = Self.getTitle(
             "asa-verification-suspicious-report".localized(asset.naming.unitName ?? ""),
             Colors.Helpers.negative
         )
-        self.subtitle = nil
+        subtitle = nil
     }
 }

@@ -23,16 +23,35 @@ extension Formatter {
     
     static let percentageFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.locale = Locale.preferred
+        formatter.locale = .current
         formatter.numberStyle = .percent
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
         return formatter
     }()
+
+    static let percentageInputFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.locale = .current
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        formatter.notANumberSymbol = ""
+        return formatter
+    }()
+
+    static func percentageWith(fraction value: Int) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.locale = .current
+        formatter.numberStyle = .percent
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = value
+        return formatter
+    }
     
     static func separatorWith(fraction value: Int, suffix: String? = nil) -> NumberFormatter {
         let formatter = NumberFormatter()
-        formatter.locale = Locale.preferred
+        formatter.locale = .current
         formatter.currencySymbol = ""
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = value == 0 ? 0 : 2
@@ -49,7 +68,7 @@ extension Formatter {
     
     static let numberWithAutoSeparator: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.locale = Locale.preferred
+        formatter.locale = .current
         formatter.currencySymbol = ""
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 0
@@ -59,11 +78,26 @@ extension Formatter {
 
     static func numberWithAutoSeparator(fraction value: Int) -> NumberFormatter {
         let formatter = NumberFormatter()
-        formatter.locale = Locale.preferred
+        formatter.locale = .current
         formatter.currencySymbol = ""
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = value
+        return formatter
+    }
+
+    static func decimalFormatter(
+        maximumFractionDigits: Int,
+        groupingSeparator: String? = nil
+    ) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.locale = .current
+        if let groupingSeparator {
+            formatter.groupingSeparator = groupingSeparator
+        }
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = maximumFractionDigits
         return formatter
     }
 }

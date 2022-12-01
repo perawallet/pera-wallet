@@ -155,16 +155,16 @@ extension SendCollectibleAccountListLayout {
         }
 
         let width = calculateContentWidth(for: listView)
-        let sampleAccountPreview = CustomAccountPreview(
+        let sampleAccountListItem = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: nil
         )
-        let sampleAccountItem = AccountPreviewViewModel(sampleAccountPreview)
-        let newSize = SendCollectibleAccountPreviewCell.calculatePreferredSize(
+        let sampleAccountItem = AccountListItemViewModel(sampleAccountListItem)
+        let newSize = SendCollectibleAccountListItemCell.calculatePreferredSize(
             sampleAccountItem,
-            for: SendCollectibleAccountPreviewCell.theme,
+            for: SendCollectibleAccountListItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -199,25 +199,25 @@ extension SendCollectibleAccountListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountItem item: AccountPreviewViewModel?
+        sizeForAccountItem item: AccountListItemViewModel?
     ) -> CGSize {
-        let sizeCacheIdentifier = SendCollectibleAccountPreviewCell.reuseIdentifier
+        let sizeCacheIdentifier = SendCollectibleAccountListItemCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
         let width = listView.bounds.width
-        let sampleAccountPreview = CustomAccountPreview(
+        let sampleAccountListItem = CustomAccountListItem(
             address: "someAlgorandAddress",
             icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: nil
         )
-        let sampleAccountItem = AccountPreviewViewModel(sampleAccountPreview)
-        let newSize = SendCollectibleAccountPreviewCell.calculatePreferredSize(
+        let sampleAccountItem = AccountListItemViewModel(sampleAccountListItem)
+        let newSize = SendCollectibleAccountListItemCell.calculatePreferredSize(
             sampleAccountItem,
-            for: SendCollectibleAccountPreviewCell.theme,
+            for: SendCollectibleAccountListItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

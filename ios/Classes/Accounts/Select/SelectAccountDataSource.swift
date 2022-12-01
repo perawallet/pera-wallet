@@ -46,7 +46,7 @@ final class SelectAccountDataSource: UICollectionViewDiffableDataSource<SelectAc
                 }
             case .account(let item, _):
                 let cell = collectionView.dequeue(
-                    AccountPreviewCell.self,
+                    AccountListItemCell.self,
                     at: indexPath
                 )
                 cell.bindData(
@@ -58,7 +58,7 @@ final class SelectAccountDataSource: UICollectionViewDiffableDataSource<SelectAc
 
         [
             PreviewLoadingCell.self,
-            AccountPreviewCell.self,
+            AccountListItemCell.self,
             NoContentCell.self
         ].forEach {
             collectionView.register($0)

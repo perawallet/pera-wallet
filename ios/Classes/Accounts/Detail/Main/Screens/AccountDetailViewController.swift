@@ -46,14 +46,23 @@ final class AccountDetailViewController: PageContainer {
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
-    private lazy var sendTransactionFlowCoordinator =
-    SendTransactionFlowCoordinator(
+    private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        dataStore: swapDataStore,
+        analytics: analytics,
+        api: api!,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController!,
+        presentingScreen: self
+    )
+    private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
         account: accountHandle.value
     )
-    private lazy var receiveTransactionFlowCoordinator =
-    ReceiveTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
+    private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(
+        presentingScreen: self,
+        account: accountHandle.value
+    )
 
     private lazy var localAuthenticator = LocalAuthenticator()
 
@@ -61,14 +70,20 @@ final class AccountDetailViewController: PageContainer {
 
     private var accountHandle: AccountHandle
 
+    /// <todo>
+    /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
+    /// routing approach hasn't been refactored yet.
+    private let swapDataStore: SwapDataStore
     private let copyToClipboardController: CopyToClipboardController
 
     init(
         accountHandle: AccountHandle,
+        swapDataStore: SwapDataStore,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.accountHandle = accountHandle
+        self.swapDataStore = swapDataStore
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
@@ -166,14 +181,15 @@ extension AccountDetailViewController {
                 let draft = BuyAlgoDraft()
                 draft.address = self.accountHandle.value.address
                 self.buyAlgoFlowCoordinator.launch(draft: draft)
+            case .swap:
+                self.assetListScreen.endEditing()
+                self.analytics.track(.recordAccountDetailScreen(type: .swap))
+
+                self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
             case .send:
                 self.assetListScreen.endEditing()
 
                 self.sendTransactionFlowCoordinator.launch()
-            case .address:
-                self.assetListScreen.endEditing()
-
-                self.receiveTransactionFlowCoordinator.launch()
             case .more:
                 self.assetListScreen.endEditing()
 
@@ -205,6 +221,16 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
             buyAlgoDraft.address = self?.accountHandle.value.address
             
             self?.buyAlgoFlowCoordinator.launch(draft: buyAlgoDraft)
+        }
+    }
+
+    func transactionOptionsScreenDidSwap(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.analytics.track(.recordAccountDetailScreen(type: .swap))
+            self.swapAssetFlowCoordinator.launch(account: self.accountHandle.value)
         }
     }
 

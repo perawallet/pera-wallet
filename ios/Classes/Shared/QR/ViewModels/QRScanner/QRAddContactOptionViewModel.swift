@@ -23,8 +23,8 @@ struct QRAddContactOptionViewModel: QRScanOptionListItemButtonViewModel {
     let subtitle: EditText?
 
     init() {
-        self.icon = "icon-qr-option-contact"
-        self.title = Self.getTitle("qr-scan-option-add-contact".localized)
-        self.subtitle = nil
+        icon = "icon-qr-option-contact"
+        title = Self.getTitle("qr-scan-option-add-contact".localized)
+        subtitle = nil
     }
 }

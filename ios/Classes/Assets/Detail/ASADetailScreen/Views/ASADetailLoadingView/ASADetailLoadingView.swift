@@ -172,7 +172,7 @@ extension ASADetailLoadingView {
     ) {
         let view = UIView()
         view.snp.makeConstraints {
-            $0.greaterThanWidth(theme.quickActionMinWidth)
+            $0.fitToWidth(theme.quickActionWidth)
         }
 
         let iconView = UIImageView()

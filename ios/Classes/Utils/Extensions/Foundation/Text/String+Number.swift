@@ -24,7 +24,7 @@ extension String {
 
     /// <note> Number formatters are not able to get the decimal values properly sometimes.
     var decimalAmount: Decimal? {
-        let locale = Locale.preferred
+        let locale = Locale.current
         return Decimal(string: without(locale.groupingSeparator ?? ","), locale: locale)
     }
 
@@ -41,7 +41,7 @@ extension String {
     }
 
     func decimalStrings() -> String? {
-        let separator = Locale.preferred.decimalSeparator?.first ?? "."
+        let separator = Locale.current.decimalSeparator?.first ?? "."
         let separated = self.split(separator: separator)
 
         if separated.count > 1 {

@@ -19,10 +19,14 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import MacaroonUtils
 
-final class AccountSelectScreen: BaseViewController {
+final class AccountSelectScreen:
+    BaseViewController,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     typealias EventHandler = (Event) -> Void
-
     var eventHandler: EventHandler?
 
     private lazy var assetDetailTitleView = AssetDetailTitleView()
@@ -78,8 +82,26 @@ final class AccountSelectScreen: BaseViewController {
         accountView.listView.dataSource = listDataSource
 
         accountView.clipboardView.addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: #selector(didTapCopy))
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(didTapCopyAddress)
+            )
         )
+
+        observe(notification: UIPasteboard.changedNotification) {
+            [weak self] _ in
+            guard let self = self else { return }
+
+            self.displayClipboardIfNeeded()
+        }
+
+        observeWhenApplicationWillEnterForeground {
+            [weak self] _ in
+            guard let self = self else { return }
+
+            self.displayClipboardIfNeeded()
+        }
+
         transactionController.delegate = self
     }
 
@@ -91,13 +113,7 @@ final class AccountSelectScreen: BaseViewController {
     override func bindData() {
         super.bindData()
 
-        guard let address = UIPasteboard.general.validAddress else {
-            accountView.displayClipboard(isVisible: false)
-            return
-        }
-
-        accountView.displayClipboard(isVisible: true)
-        accountView.clipboardView.bindData(AccountClipboardViewModel(address))
+        displayClipboardIfNeeded()
     }
 
     override func viewDidLoad() {
@@ -348,8 +364,21 @@ extension AccountSelectScreen: TransactionControllerDelegate {
 }
 
 extension AccountSelectScreen {
+    private func displayClipboardIfNeeded() {
+        let address = UIPasteboard.general.validAddress
+        let isVisible = address != nil
+
+        if isVisible {
+            accountView.clipboardView.bindData(
+                AccountClipboardViewModel(address!)
+            )
+        }
+
+        accountView.displayClipboard(isVisible: isVisible)
+    }
+
     @objc
-    private func didTapCopy() {
+    private func didTapCopyAddress() {
         if let address = UIPasteboard.general.validAddress {
             accountView.searchInputView.setText(address)
         }
@@ -403,6 +432,14 @@ extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
             collectionView,
             layout: collectionViewLayout,
             sizeForItemAt: indexPath
+        )
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
         )
     }
 
