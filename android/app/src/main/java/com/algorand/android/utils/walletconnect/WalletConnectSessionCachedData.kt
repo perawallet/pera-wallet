@@ -30,8 +30,22 @@ class WalletConnectSessionCachedData(
 
     private var callback: Callback? = null
 
+    private var retryCount: Int = INITIAL_RETRY_COUNT
+
     init {
         session.addCallback(this)
+    }
+
+    fun setRetryCount(count: Int) {
+        synchronized(this) {
+            retryCount = count
+        }
+    }
+
+    fun getRetryCount(): Int {
+        synchronized(this) {
+            return retryCount
+        }
     }
 
     fun addCallback(callback: Callback) {
@@ -58,7 +72,7 @@ class WalletConnectSessionCachedData(
         Log.e(logTag, "onStatus -> $status")
         when (status) {
             Session.Status.Connected -> callback?.onSessionConnected(sessionId)
-            Session.Status.Disconnected -> callback?.onSessionDisconnected(sessionId)
+            is Session.Status.Disconnected -> callback?.onSessionDisconnected(sessionId, status.isSessionDeletionNeeded)
             Session.Status.Approved -> callback?.onSessionApproved(sessionId)
             is Session.Status.Error -> callback?.onSessionError(sessionId, status)
             else -> {
@@ -70,6 +84,8 @@ class WalletConnectSessionCachedData(
     companion object {
 
         private val logTag = WalletConnectSessionCachedData::class.java.simpleName
+
+        const val INITIAL_RETRY_COUNT = 0
 
         fun create(
             session: WCSession,
@@ -88,7 +104,7 @@ class WalletConnectSessionCachedData(
         fun onCustomRequest(sessionId: Long, call: Session.MethodCall.Custom)
 
         fun onSessionConnected(sessionId: Long)
-        fun onSessionDisconnected(sessionId: Long)
+        fun onSessionDisconnected(sessionId: Long, isSessionDeletionNeeded: Boolean)
         fun onSessionApproved(sessionId: Long)
         fun onSessionError(sessionId: Long, error: Session.Status.Error)
     }

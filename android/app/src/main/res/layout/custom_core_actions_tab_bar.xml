@@ -97,6 +97,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginBottom="@dimen/spacing_xsmall"
+        android:enabled="false"
         app:backgroundTint="@color/button_helper_bg"
         app:icon="@drawable/ic_pera"
         app:iconTint="@color/button_helper_pera_icon"

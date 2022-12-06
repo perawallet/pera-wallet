@@ -56,6 +56,10 @@ class CoreActionsTabBarView @JvmOverloads constructor(
         this.listener = listener
     }
 
+    fun setCoreActionButtonEnabled(isEnabled: Boolean) {
+        binding.coreActionsButton.isEnabled = isEnabled
+    }
+
     private fun startHidingAnimation() {
         transitionToStart()
         isCoreActionsOpened = false

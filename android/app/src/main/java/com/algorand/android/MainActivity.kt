@@ -143,6 +143,7 @@ class MainActivity :
 
     private val assetSetupCompletedObserver = Observer<AccountCacheStatus> {
         isAssetSetupCompleted = it == AccountCacheStatus.DONE
+        binding.coreActionsTabBarView.setCoreActionButtonEnabled(it == AccountCacheStatus.DONE)
     }
 
     private val autoLockManagerObserver = Observer<Event<Any>> {

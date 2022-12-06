@@ -37,4 +37,8 @@ interface WalletConnectClient {
     fun approveRequest(sessionId: Long, requestId: Long, payload: Any)
 
     fun getWalletConnectSession(sessionId: Long): WalletConnectSession?
+
+    fun getSessionRetryCount(sessionId: Long): Int
+    fun setSessionRetryCount(sessionId: Long, retryCount: Int)
+    fun clearSessionRetryCount(sessionId: Long)
 }

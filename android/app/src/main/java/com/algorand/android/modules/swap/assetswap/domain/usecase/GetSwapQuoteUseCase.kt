@@ -110,8 +110,9 @@ class GetSwapQuoteUseCase @Inject constructor(
                 price = swapQuoteDto.price.toFloatOrZero(),
                 priceImpact = swapQuoteDto.priceImpact.toFloatOrZero() * PRICE_IMPACT_RESPONSE_MULTIPLIER,
                 peraFeeAmount = swapQuoteDto.peraFeeAmount?.movePointLeft(ALGO_DECIMALS) ?: defaultPeraSwapFee,
-                exchangeFeeAmount = swapQuoteDto.exchangeFeeAmount?.movePointLeft(ALGO_DECIMALS)
-                    ?: defaultExchangeSwapFee,
+                exchangeFeeAmount = swapQuoteDto.exchangeFeeAmount?.movePointLeft(
+                    swapQuoteDto.assetInAssetDetail?.fractionDecimals ?: DEFAULT_ASSET_DECIMAL_FOR_SWAP
+                ) ?: defaultExchangeSwapFee,
                 swapperAddress = swapperAddress ?: return null
             )
         }

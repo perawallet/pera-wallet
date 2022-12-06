@@ -35,11 +35,17 @@ import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.Resource.Error.Annotated
 import com.algorand.android.utils.exception.InvalidWalletConnectUrlException
+import com.algorand.android.utils.exception.WalletConnectException
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Error
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Success
 import java.io.EOFException
+import java.net.ConnectException
 import java.net.ProtocolException
+import java.net.SocketException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
+import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -145,6 +151,7 @@ class WalletConnectManager @Inject constructor(
         override fun onSessionApproved(sessionId: Long, session: WalletConnectSession) {
             coroutineScope?.launch(Dispatchers.IO) {
                 insertWCSSession(session)
+                walletConnectClient.clearSessionRetryCount(sessionId)
                 subscribeWalletConnectSession(session)
             }
         }
@@ -155,6 +162,7 @@ class WalletConnectManager @Inject constructor(
                 if (session != null) {
                     val sessionEntity = walletConnectMapper.createWCSessionEntity(session)
                     walletConnectRepository.setConnectedSession(sessionEntity)
+                    walletConnectClient.clearSessionRetryCount(sessionId)
                     subscribeWalletConnectSession(session)
                 }
             }
@@ -392,12 +400,23 @@ class WalletConnectManager @Inject constructor(
                     delay(RECONNECTION_DELAY)
                     reconnectToDisconnectedSession(sessionId)
                 }
+                is ConnectException,
+                is UnknownHostException,
+                is SocketTimeoutException,
+                is TimeoutException,
+                is SocketException -> {
+                    addSessionAndDeleteIfNeed(sessionId)
+                }
+                else -> {
+                    recordException(WalletConnectException(throwable = error.throwable.cause ?: error.throwable))
+                }
             }
         }
     }
 
     private suspend fun reconnectToDisconnectedSession(sessionId: Long) {
         val sessionEntity = walletConnectRepository.getSessionById(sessionId) ?: return
+        increaseSessionRetryCount(sessionId)
         val disconnectedSessionMeta = sessionEntity.wcSession
         walletConnectClient.connect(
             sessionId = sessionId,
@@ -412,6 +431,26 @@ class WalletConnectManager @Inject constructor(
 
     private fun stopSessionConnectionTimer() {
         sessionConnectionTimer.cancel()
+    }
+
+    private suspend fun addSessionAndDeleteIfNeed(sessionId: Long) {
+        if (isSessionRetryCountExceeded(sessionId)) {
+            val sessionEntity = walletConnectRepository.getSessionById(sessionId) ?: return
+            killSession(walletConnectMapper.createWalletConnectSession(sessionEntity))
+        } else {
+            delay(RE_CONNECT_SESSION_TIME_INTERVAL)
+            reconnectToDisconnectedSession(sessionId)
+        }
+    }
+
+    private fun isSessionRetryCountExceeded(sessionId: Long): Boolean {
+        val currentSessionRetryCount = walletConnectClient.getSessionRetryCount(sessionId)
+        return currentSessionRetryCount > SESSION_RECONNECT_MAX_RETRY_COUNT
+    }
+
+    private fun increaseSessionRetryCount(sessionId: Long) {
+        val increasedRetryCount = walletConnectClient.getSessionRetryCount(sessionId).inc()
+        walletConnectClient.setSessionRetryCount(sessionId, increasedRetryCount)
     }
 
     override fun onCreate(owner: LifecycleOwner) {
@@ -437,5 +476,7 @@ class WalletConnectManager @Inject constructor(
 
     companion object {
         private const val RECONNECTION_DELAY = 100L
+        private const val SESSION_RECONNECT_MAX_RETRY_COUNT = 20
+        private const val RE_CONNECT_SESSION_TIME_INTERVAL = 3_000L
     }
 }

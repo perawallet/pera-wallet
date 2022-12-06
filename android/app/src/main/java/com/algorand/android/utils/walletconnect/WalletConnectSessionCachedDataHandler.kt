@@ -12,6 +12,8 @@
 
 package com.algorand.android.utils.walletconnect
 
+import com.algorand.android.utils.popIfOrNull
+import com.algorand.android.utils.walletconnect.WalletConnectSessionCachedData.Companion.INITIAL_RETRY_COUNT
 import javax.inject.Inject
 
 class WalletConnectSessionCachedDataHandler @Inject constructor() {
@@ -27,12 +29,17 @@ class WalletConnectSessionCachedDataHandler @Inject constructor() {
     }
 
     fun addNewCachedData(sessionCachedData: WalletConnectSessionCachedData) {
+        val cachedSession: WalletConnectSessionCachedData? = getConnectedSessions { sessions ->
+            sessions.popIfOrNull { it.sessionId == sessionCachedData.sessionId }
+        }
+        val safeRetryCount = cachedSession?.getRetryCount() ?: INITIAL_RETRY_COUNT
+        sessionCachedData.setRetryCount(safeRetryCount)
         getConnectedSessions { sessions -> sessions.add(sessionCachedData) }
     }
 
     fun deleteCachedData(sessionId: Long, onCacheDeleted: (WalletConnectSessionCachedData) -> Unit) {
         val sessionIndex = getConnectedSessions { sessions -> sessions.indexOfFirst { it.sessionId == sessionId } }
-        if (sessionIndex != -1) {
+        if (sessionIndex != ITEM_NOT_FOUND_INDEX) {
             getConnectedSessions { it.removeAt(sessionIndex).also { onCacheDeleted(it) } }
         }
     }
@@ -42,5 +49,9 @@ class WalletConnectSessionCachedDataHandler @Inject constructor() {
         return synchronized(this) {
             action(connectedSessions)
         }
+    }
+
+    companion object {
+        private const val ITEM_NOT_FOUND_INDEX = -1
     }
 }

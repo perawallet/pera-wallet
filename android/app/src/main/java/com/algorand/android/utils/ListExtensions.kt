@@ -31,3 +31,9 @@ fun List<Number>.toQueryString(): String {
 fun List<*>.toCsvString(): String {
     return joinToString(",")
 }
+
+fun <T> MutableList<T>.popIfOrNull(predicate: (T) -> Boolean): T? {
+    val element = firstOrNull { predicate(it) } ?: return null
+    remove(element)
+    return element
+}

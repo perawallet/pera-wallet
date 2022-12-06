@@ -16,6 +16,7 @@ import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSessionMeta
 import com.algorand.android.models.WalletConnectTransactionErrorResponse
 import com.algorand.android.utils.exception.InvalidWalletConnectUrlException
+import com.algorand.android.utils.walletconnect.WalletConnectSessionCachedData.Companion.INITIAL_RETRY_COUNT
 import org.walletconnect.Session
 import org.walletconnect.Session.MethodCall.Custom
 import org.walletconnect.Session.MethodCall.SessionRequest
@@ -55,8 +56,10 @@ class WCWalletConnectClient(
             listener?.onConnected(sessionId, getWalletConnectSession(sessionId))
         }
 
-        override fun onSessionDisconnected(sessionId: Long) {
-            deleteSessionById(sessionId)
+        override fun onSessionDisconnected(sessionId: Long, isSessionDeletionNeeded: Boolean) {
+            if (isSessionDeletionNeeded) {
+                deleteSessionById(sessionId)
+            }
             listener?.onDisconnected(sessionId)
         }
 
@@ -83,7 +86,6 @@ class WCWalletConnectClient(
         sessionMeta: WalletConnectSessionMeta,
         fallbackBrowserGroupResponse: String?
     ) {
-        if (sessionCachedDataHandler.isSessionCached(sessionMeta.topic)) return
         val session = sessionBuilder.createSession(sessionId, sessionMeta, fallbackBrowserGroupResponse) ?: return
         connectToSession(session)
     }
@@ -135,6 +137,20 @@ class WCWalletConnectClient(
     override fun getWalletConnectSession(sessionId: Long): WalletConnectSession? {
         val sessionCacheData = sessionCachedDataHandler.getCachedDataById(sessionId) ?: return null
         return walletConnectMapper.createWalletConnectSession(sessionCacheData)
+    }
+
+    override fun getSessionRetryCount(sessionId: Long): Int {
+        val sessionCacheData = sessionCachedDataHandler.getCachedDataById(sessionId)
+        return sessionCacheData?.getRetryCount() ?: INITIAL_RETRY_COUNT
+    }
+
+    override fun setSessionRetryCount(sessionId: Long, retryCount: Int) {
+        val sessionCacheData = sessionCachedDataHandler.getCachedDataById(sessionId) ?: return
+        sessionCacheData.setRetryCount(retryCount)
+    }
+
+    override fun clearSessionRetryCount(sessionId: Long) {
+        setSessionRetryCount(sessionId, INITIAL_RETRY_COUNT)
     }
 
     private fun getSessionById(id: Long): WCSession? {
