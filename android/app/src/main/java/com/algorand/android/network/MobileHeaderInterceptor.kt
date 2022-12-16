@@ -82,6 +82,7 @@ class MobileHeaderInterceptor(
 
     companion object {
         const val ALGORAND_NETWORK_KEY = "algorand-network"
+        const val MOBILE_API_KEY_HEADER = "X-API-Key"
         private const val KEY_APP_NAME = "App-Name"
         private const val KEY_CLIENT_TYPE = "Client-Type"
         private const val KEY_DEVICE_OS_VERSION = "Device-OS-Version"
@@ -91,7 +92,6 @@ class MobileHeaderInterceptor(
         private const val DEFAULT_CLIENT_TYPE = "android"
         private const val SECOND_ITEM_INDEX = 1
         private const val THIRD_ITEM_INDEX = 2
-        private const val MOBILE_API_KEY_HEADER = "X-API-Key"
         private const val KEY_ACCEPT_LANGUAGE = "Accept-Language"
     }
 }

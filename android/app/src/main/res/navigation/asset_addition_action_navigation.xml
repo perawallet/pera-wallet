@@ -22,6 +22,10 @@
         <argument
             android:name="assetAction"
             app:argType="com.algorand.android.models.AssetAction" />
+        <argument
+            android:name="shouldWaitForConfirmation"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </dialog>
 
 </navigation>

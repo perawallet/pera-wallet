@@ -22,4 +22,5 @@ data class AssetSearchResponse(
     @SerializedName("logo") val logo: String?,
     @SerializedName("verification_tier") val verificationTier: VerificationTierResponse?,
     @SerializedName("collectible") val collectible: CollectibleSearchResponse?,
+    @SerializedName("usd_value") val usdValue: String?
 )

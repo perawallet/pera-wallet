@@ -84,5 +84,7 @@ abstract class BaseAssetActionViewModel constructor(
 
     protected companion object {
         const val ASSET_ACTION_KEY = "assetAction"
+        const val SHOULD_WAIT_FOR_CONFIRMATION_KEY = "shouldWaitForConfirmation"
+        const val DEFAULT_WAIT_FOR_CONFIRMATION_PARAM = false
     }
 }

@@ -31,6 +31,19 @@ class SwapIntroductionViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val accountAddress: String? = savedStateHandle.getOrElse(ACCOUNT_ADDRESS_KEY, null)
+    private val fromAssetId = savedStateHandle.getOrElse(
+        FROM_ASSET_ID_KEY,
+        DEFAULT_ASSET_ID_ARG
+    ).takeIf {
+        it != DEFAULT_ASSET_ID_ARG
+    }
+
+    private val toAssetId = savedStateHandle.getOrElse(
+        TO_ASSET_ID_KEY,
+        DEFAULT_ASSET_ID_ARG
+    ).takeIf {
+        it != DEFAULT_ASSET_ID_ARG
+    }
 
     private val _swapIntroductionPreviewFlow = MutableStateFlow<SwapIntroductionPreview?>(null)
     val swapIntroductionPreviewFlow: StateFlow<SwapIntroductionPreview?>
@@ -38,12 +51,21 @@ class SwapIntroductionViewModel @Inject constructor(
 
     fun onStartSwappingClick() {
         viewModelScope.launch {
-            val newPreview = swapIntroductionPreviewUseCase.getSwapClickUpdatedPreview(accountAddress)
+            val newPreview = swapIntroductionPreviewUseCase.getSwapClickUpdatedPreview(
+                accountAddress = accountAddress,
+                fromAssetId = fromAssetId,
+                toAssetId = toAssetId,
+                defaultFromAssetIdArg = DEFAULT_ASSET_ID_ARG,
+                defaultToAssetIdArg = DEFAULT_ASSET_ID_ARG
+            )
             _swapIntroductionPreviewFlow.emit(newPreview)
         }
     }
 
     companion object {
         private const val ACCOUNT_ADDRESS_KEY = "accountAddress"
+        private const val FROM_ASSET_ID_KEY = "fromAssetId"
+        private const val TO_ASSET_ID_KEY = "toAssetId"
+        private const val DEFAULT_ASSET_ID_ARG = -1L
     }
 }

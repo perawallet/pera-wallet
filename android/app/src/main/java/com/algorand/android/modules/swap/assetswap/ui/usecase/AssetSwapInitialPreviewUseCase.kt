@@ -12,6 +12,7 @@
 
 package com.algorand.android.modules.swap.assetswap.ui.usecase
 
+import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
 import com.algorand.android.modules.accounts.domain.usecase.AccountDetailSummaryUseCase
 import com.algorand.android.modules.currency.domain.usecase.DisplayedCurrencyUseCase
 import com.algorand.android.modules.swap.assetswap.ui.mapper.AssetSwapPreviewMapper
@@ -31,38 +32,62 @@ class AssetSwapInitialPreviewUseCase @Inject constructor(
     private val displayedCurrencyUseCase: DisplayedCurrencyUseCase
 ) {
 
-    fun getAssetSwapPreviewInitializationState(accountAddress: String, fromAssetId: Long): AssetSwapPreview {
-        val ownedAssetData = accountAssetDataUseCase.getAccountOwnedAssetData(accountAddress, true).run {
-            firstOrNull { fromAssetId == it.id } ?: first { it.isAlgo }
-        }
-        val selectedAssetDetail = selectedAssetDetailMapper.mapToSelectedAssetDetail(
-            assetId = ownedAssetData.id,
-            formattedBalance = ownedAssetData.formattedAmount,
-            assetShortName = ownedAssetData.shortName,
-            verificationTier = ownedAssetData.verificationTier,
-            logoUrl = ownedAssetData.prismUrl,
-            assetDecimal = ownedAssetData.decimals
-        )
+    fun getAssetSwapPreviewInitializationState(
+        accountAddress: String,
+        fromAssetId: Long,
+        toAssetId: Long?
+    ): AssetSwapPreview {
+        val fromAssetDetail = getFromAssetDetail(accountAddress, fromAssetId)
+        val toAssetDetail = getToAssetDetail(accountAddress, toAssetId)
+
         val fromSelectedAssetAmountDetail = selectedAssetAmountDetailMapper.mapToDefaultSelectedAssetAmountDetail(
+            primaryCurrencySymbol = displayedCurrencyUseCase.getDisplayedCurrencySymbol()
+        )
+        val toSelectedAssetAmountDetail = selectedAssetAmountDetailMapper.mapToDefaultSelectedAssetAmountDetail(
             primaryCurrencySymbol = displayedCurrencyUseCase.getDisplayedCurrencySymbol()
         )
         val accountDetailSummary = accountDetailSummaryUseCase.getAccountDetailSummary(accountAddress)
         return assetSwapPreviewMapper.mapToAssetSwapPreview(
             accountDisplayName = accountDetailSummary.accountDisplayName,
             accountIconResource = accountDetailSummary.accountIconResource,
-            fromSelectedAssetDetail = selectedAssetDetail,
-            toSelectedAssetDetail = null,
+            fromSelectedAssetDetail = fromAssetDetail,
+            toSelectedAssetDetail = toAssetDetail,
             isSwapButtonEnabled = false,
             isLoadingVisible = false,
             fromSelectedAssetAmountDetail = fromSelectedAssetAmountDetail,
-            toSelectedAssetAmountDetail = null,
-            isSwitchAssetsButtonEnabled = false,
-            isMaxAndPercentageButtonEnabled = false,
+            toSelectedAssetAmountDetail = toSelectedAssetAmountDetail,
+            isSwitchAssetsButtonEnabled = toAssetDetail != null,
+            isMaxAndPercentageButtonEnabled = toAssetDetail != null,
             errorEvent = null,
             swapQuote = null,
             clearToSelectedAssetDetailEvent = null,
             navigateToConfirmSwapFragmentEvent = null,
             formattedPercentageText = emptyString()
+        )
+    }
+
+    private fun getFromAssetDetail(accountAddress: String, assetId: Long): AssetSwapPreview.SelectedAssetDetail {
+        val ownedFromAssetDetail = accountAssetDataUseCase.getAccountOwnedAssetData(accountAddress, true).run {
+            firstOrNull { assetId == it.id } ?: first { it.isAlgo }
+        }
+        return getAssetDetail(ownedFromAssetDetail)
+    }
+
+    private fun getToAssetDetail(accountAddress: String, assetId: Long?): AssetSwapPreview.SelectedAssetDetail? {
+        val ownedToAssetDetail = accountAssetDataUseCase.getAccountOwnedAssetData(accountAddress, true).run {
+            firstOrNull { assetId == it.id } ?: return null
+        }
+        return getAssetDetail(ownedToAssetDetail)
+    }
+
+    private fun getAssetDetail(ownedAssetData: OwnedAssetData): AssetSwapPreview.SelectedAssetDetail {
+        return selectedAssetDetailMapper.mapToSelectedAssetDetail(
+            assetId = ownedAssetData.id,
+            formattedBalance = ownedAssetData.formattedAmount,
+            assetShortName = ownedAssetData.shortName,
+            verificationTier = ownedAssetData.verificationTier,
+            logoUrl = ownedAssetData.prismUrl,
+            assetDecimal = ownedAssetData.decimals
         )
     }
 }

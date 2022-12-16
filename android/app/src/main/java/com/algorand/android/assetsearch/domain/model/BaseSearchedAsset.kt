@@ -35,4 +35,23 @@ sealed class BaseSearchedAsset {
         override val verificationTier: VerificationTier,
         val collectible: CollectibleSearch?
     ) : BaseSearchedAsset()
+
+    data class DiscoverSearchedAsset(
+        override val assetId: Long,
+        override val fullName: String?,
+        override val shortName: String?,
+        override val logo: String?,
+        override val verificationTier: VerificationTier,
+        val formattedUsdValue: String?
+    ) : BaseSearchedAsset()
+
+    data class DiscoverSearchedCollectible(
+        override val assetId: Long,
+        override val fullName: String?,
+        override val shortName: String?,
+        override val logo: String?,
+        override val verificationTier: VerificationTier,
+        val usdValue: String?,
+        val collectible: CollectibleSearch?
+    ) : BaseSearchedAsset()
 }

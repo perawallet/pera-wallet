@@ -988,7 +988,16 @@
 
     <string name="you_cannot_optin">You cannot opt-in for this account: It\'s a read-only Watch Account.</string>
     <string name="you_cannot_take">You cannot take actions for this account: It was removed from this device.</string>
+
     <string name="this_is_the_fee_charged">This is the fee charged to you by the decentralized exchange. It\'s automatically deducted from the amount you send and factored into the minimum received amount. It won\'t be an additional charge on top.</string>
     <string name="we_encountered_an_unexpected">We encountered an unexpected error, try again later.</string>
     <string name="caution_price_impact">Caution! Price impact is greater than 5%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.</string>
+
+    <!-- Discover -->
+    <string name="discover">Discover</string>
+    <string name="search_for_any_asa_by">Search for any ASA by name or ID</string>
+    <string name="we_are_not_able_to_find">We are not able to find this asset. Please try later.</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="you_dont_seem_to_be_connected">You don\'t seem to be connected to the internet. Please check your connection and try again.</string>
+    <string name="we_cant_get_that_information">We can\'t get that information right now. Please try again later.</string>
 </resources>

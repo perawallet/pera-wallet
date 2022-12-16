@@ -24,12 +24,25 @@ class SwapIntroductionPreviewUseCase @Inject constructor(
     private val swapIntroductionPreviewMapper: SwapIntroductionPreviewMapper
 ) {
 
-    suspend fun getSwapClickUpdatedPreview(accountAddress: String?): SwapIntroductionPreview {
+    suspend fun getSwapClickUpdatedPreview(
+        accountAddress: String?,
+        fromAssetId: Long?,
+        toAssetId: Long?,
+        defaultFromAssetIdArg: Long,
+        defaultToAssetIdArg: Long
+    ): SwapIntroductionPreview {
         setIntroductionPageAsShowed()
         val navDirectionEvent = if (accountAddress.isNullOrBlank()) {
-            SwapIntroductionFragmentDirections.actionSwapIntroductionFragmentToSwapAccountSelectionNavigation()
+            SwapIntroductionFragmentDirections.actionSwapIntroductionFragmentToSwapAccountSelectionNavigation(
+                fromAssetId = fromAssetId ?: defaultFromAssetIdArg,
+                toAssetId = toAssetId ?: defaultToAssetIdArg
+            )
         } else {
-            SwapIntroductionFragmentDirections.actionSwapIntroductionFragmentToSwapNavigation(accountAddress)
+            SwapIntroductionFragmentDirections.actionSwapIntroductionFragmentToSwapNavigation(
+                accountAddress = accountAddress,
+                fromAssetId = fromAssetId ?: defaultFromAssetIdArg,
+                toAssetId = toAssetId ?: defaultToAssetIdArg
+            )
         }
         return swapIntroductionPreviewMapper.mapToSwapIntroductionPreview(
             navigationDirectionEvent = Event(navDirectionEvent)

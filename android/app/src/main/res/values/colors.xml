@@ -343,4 +343,9 @@
     <!--Before merging to 5.3.0 let's remove "gradient_bg_view_start_color" and use this one-->
     <color name="bottom_fade_gradient_start_color">@color/white</color>
 
+    <!-- Discover -->
+    <color name="discover_helper_purple">#6B46FE</color>
+    <color name="discover_helper_text">#FFFFFF</color>
+    <color name="discover_warning">#FF4820</color>
+
 </resources>

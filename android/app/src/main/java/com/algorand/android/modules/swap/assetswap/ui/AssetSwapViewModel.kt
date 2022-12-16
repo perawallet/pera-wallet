@@ -21,6 +21,7 @@ import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.modules.swap.assetswap.ui.usecase.AssetSwapPreviewUseCase
 import com.algorand.android.modules.tracking.swap.assetswap.AssetSwapSwapButtonClickEventTracker
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.getOrElse
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -41,9 +42,12 @@ class AssetSwapViewModel @Inject constructor(
 
     val accountAddress = savedStateHandle.getOrThrow<String>(ACCOUNT_ADDRESS_KEY)
 
-    var fromAssetId: Long = ALGO_ID
+    var fromAssetId: Long = savedStateHandle.getOrElse(FROM_ASSET_ID_KEY, DEFAULT_ASSET_ID_ARG)
+        .takeIf { it != DEFAULT_ASSET_ID_ARG }
+        ?: ALGO_ID
         private set
-    private var toAssetId: Long? = null
+    private var toAssetId: Long? = savedStateHandle.getOrElse(TO_ASSET_ID_KEY, DEFAULT_ASSET_ID_ARG)
+        .takeIf { it != DEFAULT_ASSET_ID_ARG }
     private val amountInputFlow = MutableStateFlow<String?>(null)
     private var percentageCacheEvent: Event<Float>? = null
 
@@ -54,7 +58,8 @@ class AssetSwapViewModel @Inject constructor(
     private val _assetSwapPreviewFlow = MutableStateFlow<AssetSwapPreview>(
         assetSwapPreviewUseCase.getAssetSwapPreviewInitializationState(
             accountAddress = accountAddress,
-            fromAssetId = fromAssetId
+            fromAssetId = fromAssetId,
+            toAssetId = toAssetId
         )
     )
 
@@ -205,6 +210,9 @@ class AssetSwapViewModel @Inject constructor(
 
     companion object {
         private const val ACCOUNT_ADDRESS_KEY = "accountAddress"
+        private const val FROM_ASSET_ID_KEY = "fromAssetId"
+        private const val TO_ASSET_ID_KEY = "toAssetId"
+        private const val DEFAULT_ASSET_ID_ARG = -1L
         private const val AMOUNT_UPDATE_DEBOUNCE_TIMEOUT = 400L
         private const val MAX_BALANCE_PERCENTAGE = 100f
     }

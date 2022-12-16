@@ -20,6 +20,8 @@ sealed class SignedTransactionDetail : Parcelable {
 
     abstract val signedTransactionData: ByteArray
 
+    open val shouldWaitForConfirmation: Boolean = false
+
     @Parcelize
     data class Send(
         override val signedTransactionData: ByteArray,
@@ -41,7 +43,8 @@ sealed class SignedTransactionDetail : Parcelable {
         data class AssetAddition(
             override val signedTransactionData: ByteArray,
             override val accountCacheData: AccountCacheData,
-            override val assetInformation: AssetInformation
+            override val assetInformation: AssetInformation,
+            override val shouldWaitForConfirmation: Boolean = false
         ) : AssetOperation()
 
         @Parcelize

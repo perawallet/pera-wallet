@@ -27,8 +27,10 @@ import com.algorand.android.utils.isRekeyedToAnotherAccount
 import com.algorand.android.utils.toShortenedAddress
 import java.math.BigInteger
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 
@@ -55,6 +57,26 @@ class AccountDetailUseCase @Inject constructor(
 
     fun getCachedAccountDetail(publicKey: String): CacheResult<AccountDetail>? {
         return accountRepository.getCachedAccountDetail(publicKey)
+    }
+
+    suspend fun fetchAndCacheAccountDetail(
+        accountAddress: String,
+        scope: CoroutineScope
+    ): Flow<CacheResult<AccountDetail>> = flow {
+        accountInformationUseCase.getAccountInformationAndFetchAssets(accountAddress, scope).use(
+            onSuccess = { accountInformation ->
+                val localAccount = accountManager.getAccount(accountAddress) ?: run {
+                    emit(CacheResult.Error.create(null))
+                    return@use
+                }
+                val cacheResult = CacheResult.Success.create(AccountDetail(localAccount, accountInformation))
+                accountRepository.cacheAccountDetail(cacheResult)
+                emit(cacheResult)
+            },
+            onFailed = { exception, code ->
+                emit(CacheResult.Error.create(exception, code))
+            }
+        )
     }
 
     suspend fun clearAccountDetailCache() {

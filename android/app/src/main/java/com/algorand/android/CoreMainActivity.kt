@@ -19,6 +19,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
@@ -104,6 +105,7 @@ abstract class CoreMainActivity : BaseActivity() {
     private var isConnectedToTestNet: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
         if (oldValue != newValue) {
             handleStatusBarChanges(statusBarConfiguration)
+            handleBottomBarNavigationForChosenNetwork()
         }
     }
 
@@ -157,6 +159,14 @@ abstract class CoreMainActivity : BaseActivity() {
             }
 
         window?.statusBarColor = ContextCompat.getColor(this, intendedStatusBarColor)
+    }
+
+    fun handleBottomBarNavigationForChosenNetwork() {
+        binding.bottomNavigationView.menu.forEach { menuItem ->
+            if (menuItem.itemId == R.id.discoverNavigation) {
+                menuItem.isEnabled = isConnectedToTestNet.not()
+            }
+        }
     }
 
     private fun handleStatusBarIconColorChanges(

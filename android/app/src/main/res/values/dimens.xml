@@ -181,4 +181,6 @@
     <dimen name="swap_quick_action_button_stroke_width">1dp</dimen>
     <dimen name="swap_quick_action_button_radius">16dp</dimen>
 
+    <dimen name="discover_button_radius">16dp</dimen>
+
 </resources>

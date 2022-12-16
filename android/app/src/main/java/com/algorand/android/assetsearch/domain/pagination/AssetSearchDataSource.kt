@@ -49,7 +49,12 @@ class AssetSearchDataSource(
     private suspend fun searchAssets(): Result<Pagination<AssetSearchDTO>> {
         val queryText = currentQuery?.queryText ?: DEFAULT_ASSET_QUERY.queryText
         val hasCollectibles = currentQuery?.hasCollectibles
-        return assetSearchRepository.searchAsset(queryText, hasCollectibles)
+        val availableOnDiscoverMobile = currentQuery?.availableOnDiscoverMobile
+        return if (queryText.isBlank() && currentQuery?.defaultToTrending == true) {
+            assetSearchRepository.getTrendingAssets()
+        } else {
+            assetSearchRepository.searchAsset(queryText, hasCollectibles, availableOnDiscoverMobile)
+        }
     }
 
     private fun parseResult(result: Result<Pagination<AssetSearchDTO>>): LoadResult<String, AssetSearchDTO> {

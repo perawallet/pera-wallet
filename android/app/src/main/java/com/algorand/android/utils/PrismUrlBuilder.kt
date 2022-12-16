@@ -12,9 +12,9 @@
 
 package com.algorand.android.utils
 
-class PrismUrlBuilder private constructor(url: String) {
+class PrismUrlBuilder private constructor(url: String) : UrlBuilder() {
 
-    private val baseUrl: StringBuilder = StringBuilder(url.trim()).append(QUERY_SYMBOL)
+    override val baseUrl: StringBuilder = StringBuilder(url.trim()).append(QUERY_SYMBOL)
 
     fun addWidth(width: Int): PrismUrlBuilder {
         addQuery(Query.WIDTH, width.toString())
@@ -37,34 +37,10 @@ class PrismUrlBuilder private constructor(url: String) {
         return this
     }
 
-    fun build(): String {
-        return baseUrl.apply {
-            removeSuffix(QUERY_DIVIDER)
-            removeSuffix(QUERY_SYMBOL)
-        }.toString()
-    }
-
-    private fun addQuery(query: Query, queryValue: String) {
-        if (!baseUrl.endsWith(QUERY_SYMBOL)) {
-            baseUrl.append(QUERY_DIVIDER)
-        }
-        baseUrl.append(query.key).append(QUERY_KEY_VALUE_SEPARATOR).append(queryValue)
-    }
-
-    private enum class Query(val key: String) {
-        WIDTH("width"),
-        HEIGHT("height"),
-        QUALITY("quality"),
-        IMAGE_URL("image_url")
-    }
-
     companion object {
 
         const val DEFAULT_IMAGE_SIZE = 1024
         const val DEFAULT_IMAGE_QUALITY = 70
-        private const val QUERY_SYMBOL = "?"
-        private const val QUERY_DIVIDER = "&"
-        private const val QUERY_KEY_VALUE_SEPARATOR = "="
 
         fun create(url: String): PrismUrlBuilder {
             return PrismUrlBuilder(url)

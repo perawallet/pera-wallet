@@ -395,9 +395,27 @@ class WalletConnectTransactionRequestFragment :
 
     private fun updateUiWithPreview(preview: WalletConnectTransactionRequestPreview) {
         with(preview) {
-            multipleFallbackBrowserFoundEvent?.consume()?.let { navToSuccessfulTransactionDialog(peerMetaName) }
-            singleFallbackBrowserFoundEvent?.consume()?.let { navToSingleBrowserBottomSheet(it, peerMetaName) }
-            noFallbackBrowserFoundEvent?.consume()?.let { navToSuccessfulTransactionDialog(peerMetaName) }
+            multipleFallbackBrowserFoundEvent?.consume()?.let {
+                if (transactionRequestViewModel.isFromDiscover) {
+                    navBack()
+                } else {
+                    navToSuccessfulTransactionDialog(peerMetaName)
+                }
+            }
+            singleFallbackBrowserFoundEvent?.consume()?.let {
+                if (transactionRequestViewModel.isFromDiscover) {
+                    navBack()
+                } else {
+                    navToSingleBrowserBottomSheet(it, peerMetaName)
+                }
+            }
+            noFallbackBrowserFoundEvent?.consume()?.let {
+                if (transactionRequestViewModel.isFromDiscover) {
+                    navBack()
+                } else {
+                    navToSuccessfulTransactionDialog(peerMetaName)
+                }
+            }
         }
     }
 }

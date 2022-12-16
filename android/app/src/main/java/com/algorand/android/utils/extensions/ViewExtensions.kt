@@ -17,6 +17,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.net.Uri
 import android.view.View
+import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -32,6 +33,7 @@ import com.algorand.android.models.GovernorIconResource
 import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.ContactIconDrawable
 import com.algorand.android.utils.GovernorIconDrawable
+import com.algorand.android.utils.browser.BLANK_URL
 import com.algorand.android.utils.loadCircularImage
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
@@ -43,6 +45,11 @@ fun View.show() {
 
 fun View.hide() {
     this.visibility = View.GONE
+}
+
+fun WebView.hide() {
+    this.visibility = View.GONE
+    loadUrl(BLANK_URL)
 }
 
 fun View.invisible() {

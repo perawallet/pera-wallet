@@ -19,6 +19,7 @@ import androidx.core.view.doOnLayout
 import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
+import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration.Companion.DEFAULT_TEXT_COLOR_RES_ID
 import com.algorand.android.databinding.ItemSearchAssetBinding
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.models.ui.AccountAssetItemButtonState
@@ -81,7 +82,7 @@ class AssetSearchItemViewHolder(
 
     private fun setAssetVerificationTier(verificationTierConfiguration: VerificationTierConfiguration?) {
         binding.statefulAssetItemView.apply {
-            setTitleTextColor(verificationTierConfiguration?.textColorResId ?: R.color.text_main)
+            setTitleTextColor(verificationTierConfiguration?.textColorResId ?: DEFAULT_TEXT_COLOR_RES_ID)
             setTrailingIconOfTitleText(verificationTierConfiguration?.drawableResId)
         }
     }

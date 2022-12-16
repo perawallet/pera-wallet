@@ -19,11 +19,15 @@ class AssetSearchQueryMapper @Inject constructor() {
 
     fun mapToAssetSearchQuery(
         queryText: String,
-        hasCollectibles: Boolean?
+        hasCollectibles: Boolean?,
+        availableOnDiscoverMobile: Boolean?,
+        defaultToTrending: Boolean = false
     ): AssetSearchQuery {
         return AssetSearchQuery(
             queryText = queryText,
-            hasCollectibles = hasCollectibles
+            hasCollectibles = hasCollectibles,
+            availableOnDiscoverMobile = availableOnDiscoverMobile,
+            defaultToTrending = defaultToTrending
         )
     }
 }

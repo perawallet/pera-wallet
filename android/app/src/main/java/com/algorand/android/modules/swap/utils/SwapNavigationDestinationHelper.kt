@@ -19,9 +19,12 @@ import com.algorand.android.usecase.GetLocalAccountsUseCase
 import javax.inject.Inject
 
 class SwapNavigationDestinationHelper @Inject constructor(
-    private val isSwapFeatureIntroductionPageShownUseCase: IsSwapFeatureIntroductionPageShownUseCase,
-    private val setSwapFeatureRedDotVisibilityUseCase: SetSwapFeatureRedDotVisibilityUseCase,
-    private val accountsUseCase: GetLocalAccountsUseCase
+    private val accountsUseCase: GetLocalAccountsUseCase,
+    isSwapFeatureIntroductionPageShownUseCase: IsSwapFeatureIntroductionPageShownUseCase,
+    setSwapFeatureRedDotVisibilityUseCase: SetSwapFeatureRedDotVisibilityUseCase
+) : BaseSwapNavigationDestinationHelper(
+    isSwapFeatureIntroductionPageShownUseCase,
+    setSwapFeatureRedDotVisibilityUseCase
 ) {
 
     suspend fun getSwapNavigationDestination(
@@ -30,12 +33,12 @@ class SwapNavigationDestinationHelper @Inject constructor(
         onNavToSwap: (accountAddress: String) -> Unit,
         onNavToAccountSelection: (() -> Unit)? = null
     ) {
-        hideSwapButtonRedDot()
-        if (isSwapFeatureIntroductionPageShownUseCase.isSwapFeatureIntroductionPageShown()) {
-            handleDestinationWithAccount(accountAddress, onNavToSwap, onNavToAccountSelection)
-        } else {
-            onNavToIntroduction()
-        }
+        handleNavigationDestination(
+            navToIntroduction = { onNavToIntroduction() },
+            handleDestinationWithAccount = {
+                handleDestinationWithAccount(accountAddress, onNavToSwap, onNavToAccountSelection)
+            }
+        )
     }
 
     private fun handleDestinationWithAccount(
@@ -59,9 +62,5 @@ class SwapNavigationDestinationHelper @Inject constructor(
         return accountsUseCase.getLocalAccountsFromAccountManagerCache().filter {
             it.canSignTransaction()
         }
-    }
-
-    private suspend fun hideSwapButtonRedDot() {
-        setSwapFeatureRedDotVisibilityUseCase.setSwapFeatureRedDotVisibility(isVisible = false)
     }
 }

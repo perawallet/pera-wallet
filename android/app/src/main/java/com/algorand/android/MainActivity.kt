@@ -37,10 +37,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
+import androidx.navigation.fragment.NavHostFragment
 import com.algorand.android.core.TransactionManager
 import com.algorand.android.customviews.AlertView
 import com.algorand.android.customviews.CoreActionsTabBarView
 import com.algorand.android.customviews.LedgerLoadingDialog
+import com.algorand.android.discover.common.ui.BaseDiscoverFragment
 import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetAction
@@ -449,7 +451,9 @@ class MainActivity :
     private fun onNewWalletConnectTransactionRequest(transaction: WalletConnectTransaction) {
         if (isAppUnlocked) {
             nav(
-                directions = MainNavigationDirections.actionGlobalWalletConnectRequestNavigation(),
+                directions = MainNavigationDirections.actionGlobalWalletConnectRequestNavigation(
+                    isFromDiscover = isDiscoverActive()
+                ),
                 onError = { saveWcTransactionToPendingIntent(transaction.requestId) }
             )
         } else {
@@ -502,6 +506,11 @@ class MainActivity :
         )
     }
 
+    fun isDiscoverActive(): Boolean {
+        return (supportFragmentManager.findFragmentById(binding.navigationHostFragment.id) as NavHostFragment)
+            .childFragmentManager.fragments[0] is BaseDiscoverFragment
+    }
+
     private fun onIntentHandlingFailed(@StringRes errorMessageResId: Int) {
         showGlobalError(errorMessage = getString(errorMessageResId))
     }
@@ -528,7 +537,10 @@ class MainActivity :
             }
 
             override fun onCoreActionsClick(isCoreActionsOpen: Boolean) {
-                binding.bottomNavigationView.menu.forEach { menuItem -> menuItem.isEnabled = isCoreActionsOpen.not() }
+                binding.bottomNavigationView.menu.forEach { menuItem ->
+                    menuItem.isEnabled = isCoreActionsOpen.not()
+                }
+                handleBottomBarNavigationForChosenNetwork()
             }
 
             override fun onSwapClick() {
@@ -580,7 +592,11 @@ class MainActivity :
             transactionManager.setup(lifecycle)
             transactionManager.initSigningTransactions(
                 isGroupTransaction = false,
-                TransactionData.AddAsset(accountCacheData, assetActionResult.asset)
+                TransactionData.AddAsset(
+                    accountCacheData = accountCacheData,
+                    assetInformation = assetActionResult.asset,
+                    shouldWaitForConfirmation = assetActionResult.shouldWaitForConfirmation
+                )
             )
         }
     }

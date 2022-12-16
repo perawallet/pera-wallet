@@ -14,7 +14,9 @@ package com.algorand.android.assetsearch.domain.model
 
 data class AssetSearchQuery(
     val queryText: String,
-    val hasCollectibles: Boolean? = null
+    val hasCollectibles: Boolean? = null,
+    val availableOnDiscoverMobile: Boolean? = null,
+    val defaultToTrending: Boolean = false
 ) {
     companion object {
         fun createDefaultQuery(): AssetSearchQuery {

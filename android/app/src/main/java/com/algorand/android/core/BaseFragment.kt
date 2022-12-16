@@ -70,6 +70,9 @@ abstract class BaseFragment(
     private fun handleBottomBarVisibility(isBottomBarVisible: Boolean?) {
         if (isBottomBarVisible != null) {
             (activity as? CoreMainActivity)?.isBottomBarNavigationVisible = isBottomBarVisible
+            if (isBottomBarVisible) {
+                (activity as? CoreMainActivity)?.handleBottomBarNavigationForChosenNetwork()
+            }
         }
     }
 

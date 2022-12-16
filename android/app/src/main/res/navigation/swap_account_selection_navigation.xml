@@ -18,6 +18,8 @@
 
     <include app:graph="@navigation/swap_navigation" />
 
+    <include app:graph="@navigation/asset_addition_action_navigation" />
+
     <fragment
         android:id="@+id/swapAccountSelectionFragment"
         android:name="com.algorand.android.modules.swap.accountselection.ui.SwapAccountSelectionFragment"
@@ -33,8 +35,25 @@
             <argument
                 android:name="accountAddress"
                 app:argType="string" />
+            <argument
+                android:name="fromAssetId"
+                android:defaultValue="-1L"
+                app:argType="long" />
+            <argument
+                android:name="toAssetId"
+                android:defaultValue="-1L"
+                app:argType="long" />
         </action>
-
+        <action
+            android:id="@+id/action_swapAccountSelectionFragment_to_assetAdditionActionNavigation"
+            app:destination="@id/assetAdditionActionNavigation">
+            <argument
+                android:name="assetAction"
+                app:argType="com.algorand.android.models.AssetAction" />
+            <argument
+                android:name="shouldWaitForConfirmation"
+                app:argType="boolean" />
+        </action>
     </fragment>
 
 </navigation>

@@ -159,4 +159,9 @@ abstract class BaseAccountAndAssetItemView @JvmOverloads constructor(
         val color = ContextCompat.getColor(context, colorResId)
         binding.primaryValueTextView.setTextColor(color)
     }
+
+    fun setSecondaryValueTextColor(@ColorRes colorResId: Int) {
+        val color = ContextCompat.getColor(context, colorResId)
+        binding.secondaryValueTextView.setTextColor(color)
+    }
 }

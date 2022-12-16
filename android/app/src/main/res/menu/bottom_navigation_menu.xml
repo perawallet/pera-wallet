@@ -18,9 +18,9 @@
         android:title="@string/home" />
 
     <item
-        android:id="@id/algoPriceFragment"
-        android:icon="@drawable/ic_price"
-        android:title="@string/price" />
+        android:id="@id/discoverNavigation"
+        android:icon="@drawable/ic_global"
+        android:title="@string/discover" />
 
     <item
         android:id="@+id/coreActionsMenuButton"

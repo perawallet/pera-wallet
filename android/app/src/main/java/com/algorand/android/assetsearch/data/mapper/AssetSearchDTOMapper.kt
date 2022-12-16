@@ -28,7 +28,8 @@ class AssetSearchDTOMapper @Inject constructor(
             shortName = response.shortName,
             logo = response.logo,
             verificationTier = verificationTierDTODecider.decideVerificationTierDTO(response.verificationTier),
-            collectible = collectibleSearchDTOMapper.mapToCollectibleSearchDTO(response.collectible)
+            collectible = collectibleSearchDTOMapper.mapToCollectibleSearchDTO(response.collectible),
+            usdValue = response.usdValue
         )
     }
 }

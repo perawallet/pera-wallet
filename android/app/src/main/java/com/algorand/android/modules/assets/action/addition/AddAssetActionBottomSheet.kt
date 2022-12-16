@@ -57,7 +57,8 @@ class AddAssetActionBottomSheet : BaseAssetActionBottomSheet() {
                 asset?.let { assetDescription ->
                     val assetActionResult = AssetActionResult(
                         asset = assetDescription,
-                        publicKey = assetActionViewModel.accountAddress
+                        publicKey = assetActionViewModel.accountAddress,
+                        shouldWaitForConfirmation = assetActionViewModel.shouldWaitForConfirmation
                     )
                     (activity as? MainActivity)?.signAddAssetTransaction(assetActionResult)
                     setFragmentNavigationResult(ADD_ASSET_ACTION_RESULT_KEY, true)

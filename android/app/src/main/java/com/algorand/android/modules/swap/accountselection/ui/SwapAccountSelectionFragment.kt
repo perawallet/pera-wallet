@@ -16,8 +16,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
+import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.algorand.android.models.AnnotatedString
+import com.algorand.android.models.AssetAction
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ScreenState
 import com.algorand.android.models.ToolbarConfiguration
@@ -47,9 +50,9 @@ class SwapAccountSelectionFragment : BaseAccountSelectionFragment() {
         updateSwapAccountSelectionPreview(preview)
     }
 
-    private val navToSwapNavigationEventCollector: suspend (Event<String>?) -> Unit = { navigationEvent ->
+    private val navToSwapNavigationEventCollector: suspend (Event<NavDirections>?) -> Unit = { navigationEvent ->
         navigationEvent?.consume()?.run {
-            nav(SwapAccountSelectionFragmentDirections.actionSwapAccountSelectionFragmentToSwapNavigation(this))
+            nav(this)
         }
     }
 
@@ -58,6 +61,10 @@ class SwapAccountSelectionFragment : BaseAccountSelectionFragment() {
             val error = context?.getXmlStyledString(this)
             showGlobalError(error)
         }
+    }
+
+    private val optIntoAssetEventCollector: suspend (Event<AssetAction>?) -> Unit = { assetActionEvent ->
+        assetActionEvent?.consume()?.run { handleAssetAddition(this) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,6 +104,10 @@ class SwapAccountSelectionFragment : BaseAccountSelectionFragment() {
                 swapAccountSelectionPreviewFlow.map { it.errorEvent }.distinctUntilChanged(),
                 errorEventCollector
             )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                swapAccountSelectionPreviewFlow.map { it.optInToAssetEvent }.distinctUntilChanged(),
+                optIntoAssetEventCollector
+            )
         }
     }
 
@@ -105,6 +116,26 @@ class SwapAccountSelectionFragment : BaseAccountSelectionFragment() {
             if (isLoading) showProgress() else hideProgress()
             accountAdapter.submitList(accountListItems)
             setScreenStateViewVisibility(isEmptyStateVisible)
+        }
+    }
+
+    private fun handleAssetAddition(assetAction: AssetAction) {
+        nav(
+            SwapAccountSelectionFragmentDirections.actionSwapAccountSelectionFragmentToAssetAdditionActionNavigation(
+                assetAction = assetAction,
+                shouldWaitForConfirmation = true
+            )
+        )
+        (activity as? MainActivity)?.mainViewModel?.assetOperationResultLiveData?.observe(viewLifecycleOwner) {
+            it.peek().use(
+                onSuccess = {
+                    if (it.assetId == assetAction.assetId) {
+                        assetAction.publicKey?.run {
+                            swapAccountSelectionViewModel.onAssetAdded(accountAddress = this, assetAction.assetId)
+                        }
+                    }
+                }
+            )
         }
     }
 }

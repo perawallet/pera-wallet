@@ -17,6 +17,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.R
 import com.algorand.android.core.BaseViewModel
@@ -33,6 +34,7 @@ import com.algorand.android.modules.walletconnect.transactionrequest.ui.usecase.
 import com.algorand.android.modules.walletconnectfallbackbrowser.ui.usecase.GetInstalledAppPackageNameListUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.getOrElse
 import com.algorand.android.utils.preference.getFirstWalletConnectRequestBottomSheetShown
 import com.algorand.android.utils.preference.setFirstWalletConnectRequestBottomSheetShown
 import com.algorand.android.utils.walletconnect.WalletConnectManager
@@ -52,7 +54,8 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     private val walletConnectSignManager: WalletConnectSignManager,
     private val transactionListBuilder: WalletConnectTransactionListBuilder,
     private val getInstalledAppPackageNameListUseCase: GetInstalledAppPackageNameListUseCase,
-    private val walletConnectTransactionRequestPreviewUseCase: WalletConnectTransactionRequestPreviewUseCase
+    private val walletConnectTransactionRequestPreviewUseCase: WalletConnectTransactionRequestPreviewUseCase,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     val requestResultLiveData: LiveData<Event<Resource<AnnotatedString>>>
@@ -69,6 +72,8 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     private val _walletConnectTransactionRequestPreviewFlow = MutableStateFlow(
         walletConnectTransactionRequestPreviewUseCase.getInitialPreview(transaction?.session?.peerMeta?.name.orEmpty())
     )
+
+    val isFromDiscover = savedStateHandle.getOrElse(IS_FROM_DISCOVER_KEY, false)
 
     fun setupWalletConnectSignManager(lifecycle: Lifecycle) {
         walletConnectSignManager.setup(lifecycle)
@@ -152,5 +157,6 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     companion object {
         private const val MULTIPLE_TRANSACTION_KEY = "transactions"
         private const val SINGLE_TRANSACTION_KEY = "transaction"
+        private const val IS_FROM_DISCOVER_KEY = "isFromDiscover"
     }
 }

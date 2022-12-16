@@ -16,6 +16,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetWalletConnectConnectionBinding
@@ -165,10 +166,14 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(R.layout.bottom_sheet
     }
 
     private fun handleFallbackBrowserNavigation(fallbackBrowserGroupResponse: String?) {
-        fallbackBrowserGroupResponse?.let {
-            navigateToFallbackBrowserSelectionBottomSheet(it)
-        } ?: run {
-            showConnectedDappInfoBottomSheet()
+        if ((activity as? MainActivity)?.isDiscoverActive() == true) {
+            dismiss()
+        } else {
+            fallbackBrowserGroupResponse?.let {
+                navigateToFallbackBrowserSelectionBottomSheet(it)
+            } ?: run {
+                showConnectedDappInfoBottomSheet()
+            }
         }
     }
 

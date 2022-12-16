@@ -46,8 +46,10 @@ class AssetDrawableProviderDecider @Inject constructor(
     fun getAssetDrawableProvider(searchedAsset: BaseSearchedAsset): BaseAssetDrawableProvider {
         // This is unnecessary check but to keep consistency, I added this check, too
         val isAlgo = searchedAsset.assetId == AssetInformation.ALGO_ID
-        val isAsset = searchedAsset is BaseSearchedAsset.SearchedAsset
-        val isCollectible = searchedAsset is BaseSearchedAsset.SearchedCollectible
+        val isAsset = searchedAsset is BaseSearchedAsset.SearchedAsset ||
+            searchedAsset is BaseSearchedAsset.DiscoverSearchedAsset
+        val isCollectible = searchedAsset is BaseSearchedAsset.SearchedCollectible ||
+            searchedAsset is BaseSearchedAsset.DiscoverSearchedCollectible
         return when {
             isAlgo -> AlgoDrawableProvider()
             isAsset -> AssetDrawableProvider()

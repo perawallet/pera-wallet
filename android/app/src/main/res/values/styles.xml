@@ -10,7 +10,7 @@
   ~ limitations under the License
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:colorBackground">@color/primary_background</item>
@@ -39,6 +39,7 @@
         <item name="android:progressBarStyle">@style/ProgressBarStyle</item>
         <item name="switchStyle">@style/SwitchStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="peraChipStyle">@style/PeraChip</item>
     </style>
 
@@ -470,6 +471,12 @@
         <item name="rippleColor">@color/button_secondary_focus_bg</item>
     </style>
 
+    <style name="Button.Discover">
+        <item name="backgroundTint">@color/discover_helper_purple</item>
+        <item name="cornerRadius">@dimen/discover_button_radius</item>
+        <item name="android:textColor">@color/discover_helper_text</item>
+    </style>
+
     <style name="Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:insetBottom">0dp</item>
         <item name="android:insetTop">0dp</item>
@@ -625,6 +632,11 @@
         <item name="android:drawablePadding">@dimen/spacing_xsmall</item>
         <item name="drawableStartCompat">@drawable/ic_search</item>
         <item name="minHeight">@dimen/spacing_xxxxlarge</item>
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textSize">@dimen/text_size_13</item>
+        <item name="android:textAppearance">@style/TextAppearance.Footnote.Description</item>
     </style>
 
     <style name="BottomSheetModalityLine">

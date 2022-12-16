@@ -92,6 +92,10 @@ android {
             buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://staging.api.perawallet.app/"'
             buildConfigField "String", "ALGO_EXPLORER_BASE_URL", '"https://price.algoexplorerapi.io/price/"'
             buildConfigField "String", "PERA_3D_EXPLORER_BASE_URL", '"https://static-hosting.perawallet.app/3dviewer/index.html"'
+            buildConfigField "String", "DISCOVER_WEBVIEW_USERNAME", apiKeyProps["DISCOVER_WEBVIEW_USERNAME"]
+            buildConfigField "String", "DISCOVER_WEBVIEW_PASSWORD", apiKeyProps["DISCOVER_WEBVIEW_PASSWORD"]
+            buildConfigField "String", "DISCOVER_VERSION", '"1"'
+            buildConfigField "String", "DISCOVER_URL", '"https://discover-mobile-staging.perawallet.app/"'
         }
 
         prod {
@@ -104,6 +108,10 @@ android {
             buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://api.perawallet.app/"'
             buildConfigField "String", "ALGO_EXPLORER_BASE_URL", '"https://price.algoexplorerapi.io/price/"'
             buildConfigField "String", "PERA_3D_EXPLORER_BASE_URL", '"https://static-hosting.perawallet.app/3dviewer/index.html"'
+            buildConfigField "String", "DISCOVER_WEBVIEW_USERNAME", apiKeyProps["DISCOVER_WEBVIEW_USERNAME"]
+            buildConfigField "String", "DISCOVER_WEBVIEW_PASSWORD", apiKeyProps["DISCOVER_WEBVIEW_PASSWORD"]
+            buildConfigField "String", "DISCOVER_VERSION", '"1"'
+            buildConfigField "String", "DISCOVER_URL", '"https://discover-mobile.perawallet.app/"'
         }
     }
 

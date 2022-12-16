@@ -18,7 +18,7 @@ import android.content.Intent
 import android.net.Uri
 import com.algorand.android.R
 
-private const val EMAIL_APPS_URI_SCHEME = "mailto:"
+const val EMAIL_APPS_URI_SCHEME = "mailto:"
 const val PERA_VERIFICATION_MAIL_ADDRESS = "verification@perawallet.app"
 
 fun Context.composeReportAssetEmail(
@@ -37,6 +37,18 @@ fun Context.composeReportAssetEmail(
     }
     try {
         startActivity(Intent.createChooser(emailIntent, chooserTitle))
+    } catch (activityNotFoundException: ActivityNotFoundException) {
+        onActivityNotFound()
+        recordException(activityNotFoundException)
+    }
+}
+
+fun Context.sendMailRequestUrl(
+    url: String,
+    onActivityNotFound: () -> Unit
+) {
+    try {
+        startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(url)))
     } catch (activityNotFoundException: ActivityNotFoundException) {
         onActivityNotFound()
         recordException(activityNotFoundException)

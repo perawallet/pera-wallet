@@ -31,12 +31,29 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="fromAssetId"
+            android:defaultValue="-1L"
+            app:argType="long" />
+        <argument
+            android:name="toAssetId"
+            android:defaultValue="-1L"
+            app:argType="long" />
 
         <action
             android:id="@+id/action_swapIntroductionFragment_to_swap_account_selection_navigation"
             app:destination="@id/swapAccountSelectionNavigation"
             app:popUpTo="@id/swapIntroductionNavigation"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true">
+            <argument
+                android:name="fromAssetId"
+                android:defaultValue="-1L"
+                app:argType="long" />
+            <argument
+                android:name="toAssetId"
+                android:defaultValue="-1L"
+                app:argType="long" />
+        </action>
 
         <action
             android:id="@+id/action_swapIntroductionFragment_to_swap_navigation"
@@ -46,6 +63,14 @@
             <argument
                 android:name="accountAddress"
                 app:argType="string" />
+            <argument
+                android:name="fromAssetId"
+                android:defaultValue="-1L"
+                app:argType="long" />
+            <argument
+                android:name="toAssetId"
+                android:defaultValue="-1L"
+                app:argType="long" />
         </action>
     </fragment>
 

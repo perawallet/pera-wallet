@@ -22,6 +22,7 @@ import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.usecase.AccountAddressUseCase
 import com.algorand.android.usecase.GetFormattedTransactionFeeAmountUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
+import com.algorand.android.utils.getOrElse
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -44,6 +45,10 @@ class AddAssetActionViewModel @Inject constructor(
 
     private val assetAction: AssetAction = savedStateHandle.getOrThrow(ASSET_ACTION_KEY)
     val accountAddress: String = assetAction.publicKey.orEmpty()
+    val shouldWaitForConfirmation = savedStateHandle.getOrElse(
+        SHOULD_WAIT_FOR_CONFIRMATION_KEY,
+        DEFAULT_WAIT_FOR_CONFIRMATION_PARAM
+    )
 
     override val assetId: Long = assetAction.assetId
 

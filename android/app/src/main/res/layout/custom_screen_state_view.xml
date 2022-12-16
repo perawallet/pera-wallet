@@ -17,7 +17,6 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:background="@color/white"
     tools:parentTag="android.widget.LinearLayout">
 
     <ImageView

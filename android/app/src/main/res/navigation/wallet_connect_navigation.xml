@@ -16,6 +16,11 @@
     android:id="@+id/walletConnectRequestNavigation"
     app:startDestination="@id/walletConnectTransactionRequestFragment">
 
+    <argument
+        android:name="isFromDiscover"
+        android:defaultValue="false"
+        app:argType="boolean" />
+
     <!--  Transaction Request Graph  -->
 
     <include app:graph="@navigation/transaction_request_navigation" />

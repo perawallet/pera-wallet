@@ -12,7 +12,9 @@
 
 package com.algorand.android.modules.swap.accountselection.ui.mapper
 
+import androidx.navigation.NavDirections
 import com.algorand.android.models.AnnotatedString
+import com.algorand.android.models.AssetAction
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.modules.swap.accountselection.ui.model.SwapAccountSelectionPreview
 import com.algorand.android.utils.Event
@@ -23,16 +25,18 @@ class SwapAccountSelectionPreviewMapper @Inject constructor() {
     fun mapToSwapAccountSelectionPreview(
         accountListItems: List<BaseAccountSelectionListItem.BaseAccountItem>,
         isLoading: Boolean,
-        navToSwapNavigationEvent: Event<String>?,
+        navToSwapNavigationEvent: Event<NavDirections>?,
         errorEvent: Event<AnnotatedString>?,
         isEmptyStateVisible: Boolean,
+        optInToAssetEvent: Event<AssetAction>?
     ): SwapAccountSelectionPreview {
         return SwapAccountSelectionPreview(
             accountListItems = accountListItems,
             isLoading = isLoading,
             navToSwapNavigationEvent = navToSwapNavigationEvent,
             errorEvent = errorEvent,
-            isEmptyStateVisible = isEmptyStateVisible
+            isEmptyStateVisible = isEmptyStateVisible,
+            optInToAssetEvent = optInToAssetEvent
         )
     }
 }

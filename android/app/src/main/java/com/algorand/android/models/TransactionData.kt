@@ -49,13 +49,15 @@ sealed class TransactionData {
 
     data class AddAsset(
         override val accountCacheData: AccountCacheData,
-        val assetInformation: AssetInformation
+        val assetInformation: AssetInformation,
+        val shouldWaitForConfirmation: Boolean = false
     ) : TransactionData() {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
             return SignedTransactionDetail.AssetOperation.AssetAddition(
                 signedTransactionData = signedTransactionData,
                 accountCacheData = accountCacheData,
-                assetInformation = assetInformation
+                assetInformation = assetInformation,
+                shouldWaitForConfirmation = shouldWaitForConfirmation
             )
         }
     }

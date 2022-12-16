@@ -31,15 +31,27 @@ class AssetSearchRepositoryImpl @Inject constructor(
 
     override suspend fun searchAsset(
         queryText: String,
-        hasCollectible: Boolean?
+        hasCollectible: Boolean?,
+        availableOnDiscoverMobile: Boolean?
     ): Result<Pagination<AssetSearchDTO>> {
         return requestWithHipoErrorHandler(hipoApiErrorHandler) {
             val assetQuery = queryText.takeIf { it.isNotBlank() }
             mobileAlgorandApi.getAssets(
                 assetQuery = assetQuery,
-                hasCollectible = hasCollectible
+                hasCollectible = hasCollectible,
+                availableOnDiscoverMobile = availableOnDiscoverMobile
             )
-        }.map { paginationData -> mapToAssetSearchDTO(paginationData) }
+        }.map { paginationData ->
+            mapToAssetSearchDTO(paginationData)
+        }
+    }
+
+    override suspend fun getTrendingAssets(): Result<Pagination<AssetSearchDTO>> {
+        return requestWithHipoErrorHandler(hipoApiErrorHandler) {
+            mobileAlgorandApi.getTrendingAssets()
+        }.map { listData ->
+            mapToAssetSearchDTO(Pagination(null, listData))
+        }
     }
 
     override suspend fun getAssetsByUrl(url: String): Result<Pagination<AssetSearchDTO>> {

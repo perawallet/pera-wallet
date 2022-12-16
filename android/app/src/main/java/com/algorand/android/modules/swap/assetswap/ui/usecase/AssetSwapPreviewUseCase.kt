@@ -31,8 +31,16 @@ class AssetSwapPreviewUseCase @Inject constructor(
     private val assetSwapInitialPreviewUseCase: AssetSwapInitialPreviewUseCase
 ) {
 
-    fun getAssetSwapPreviewInitializationState(accountAddress: String, fromAssetId: Long): AssetSwapPreview {
-        return assetSwapInitialPreviewUseCase.getAssetSwapPreviewInitializationState(accountAddress, fromAssetId)
+    fun getAssetSwapPreviewInitializationState(
+        accountAddress: String,
+        fromAssetId: Long,
+        toAssetId: Long?
+    ): AssetSwapPreview {
+        return assetSwapInitialPreviewUseCase.getAssetSwapPreviewInitializationState(
+            accountAddress,
+            fromAssetId,
+            toAssetId
+        )
     }
 
     fun getAmountUpdatedPreview(

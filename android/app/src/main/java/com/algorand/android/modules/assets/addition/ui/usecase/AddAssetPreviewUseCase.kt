@@ -45,7 +45,8 @@ class AddAssetPreviewUseCase @Inject constructor(
     ): Flow<PagingData<BaseAssetSearchListItem>> {
         val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(
             queryText = queryText,
-            hasCollectibles = null
+            hasCollectibles = null,
+            availableOnDiscoverMobile = null
         )
         val searchedAssetFlow = searchAssetUseCase.createPaginationFlow(
             builder = searchPagerBuilder,
@@ -74,7 +75,8 @@ class AddAssetPreviewUseCase @Inject constructor(
     suspend fun searchAsset(queryText: String) {
         val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(
             queryText = queryText,
-            hasCollectibles = null
+            hasCollectibles = null,
+            availableOnDiscoverMobile = null
         )
         searchAssetUseCase.searchAsset(assetSearchQuery)
     }
@@ -101,6 +103,7 @@ class AddAssetPreviewUseCase @Inject constructor(
                         accountAssetItemButtonState = assetActionButtonState
                     )
                 }
+                else -> throw Exception("Unable to handle this kind of searched item.")
             }
         }
     }

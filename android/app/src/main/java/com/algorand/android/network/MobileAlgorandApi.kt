@@ -122,7 +122,8 @@ interface MobileAlgorandApi {
         @Query("q") assetQuery: String?,
         @Query("offset") offset: Long = 0,
         @Query("limit") limit: Int = SEARCH_RESULT_LIMIT,
-        @Query("has_collectible") hasCollectible: Boolean? = null
+        @Query("has_collectible") hasCollectible: Boolean? = null,
+        @Query("available_on_discover_mobile") availableOnDiscoverMobile: Boolean? = null
     ): Response<Pagination<AssetSearchResponse>>
 
     @GET("v1/assets/")
@@ -210,4 +211,7 @@ interface MobileAlgorandApi {
     suspend fun shouldRefresh(
         @Body shouldRefreshAccountInformationRequestBody: ShouldRefreshRequestBody
     ): Response<ShouldRefreshResponse>
+
+    @GET("v1/discover/assets/trending/")
+    suspend fun getTrendingAssets(): Response<List<AssetSearchResponse>>
 }

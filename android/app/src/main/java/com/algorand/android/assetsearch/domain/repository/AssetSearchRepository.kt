@@ -19,8 +19,11 @@ import com.algorand.android.models.Result
 interface AssetSearchRepository {
     suspend fun searchAsset(
         queryText: String,
-        hasCollectible: Boolean?
+        hasCollectible: Boolean?,
+        availableOnDiscoverMobile: Boolean?
     ): Result<Pagination<AssetSearchDTO>>
+
+    suspend fun getTrendingAssets(): Result<Pagination<AssetSearchDTO>>
 
     suspend fun getAssetsByUrl(url: String): Result<Pagination<AssetSearchDTO>>
 
