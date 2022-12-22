@@ -20,7 +20,7 @@ import kotlinx.parcelize.Parcelize
 data class WCAlgoTransactionRequest(
     @SerializedName("txn") val transactionMsgPack: String,
     @SerializedName("signers") val signers: List<String>?,
-    @SerializedName("authAddr") val authAddressBase64: String?,
+    @SerializedName("authAddr") val authAccountAddress: String?,
     @SerializedName("msig") val multisigMetadata: MultisigMetadata?,
     @SerializedName("message") val message: String?
 ) : Parcelable {

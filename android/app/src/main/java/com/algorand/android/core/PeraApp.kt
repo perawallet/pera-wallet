@@ -22,6 +22,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDex
 import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate
 import com.algorand.android.migration.MigrationManager
+import com.algorand.android.utils.coremanager.ApplicationStatusObserver
 import com.algorand.android.utils.preference.getSavedThemePreference
 import com.algorand.android.utils.walletconnect.WalletConnectManager
 import com.google.android.play.core.missingsplits.MissingSplitsManagerFactory
@@ -44,6 +45,9 @@ open class PeraApp : Application() {
     @Inject
     lateinit var walletConnectManager: WalletConnectManager
 
+    @Inject
+    lateinit var applicationStatusObserver: ApplicationStatusObserver
+
     private val localizationDelegate = LocalizationApplicationDelegate()
 
     override fun attachBaseContext(base: Context) {
@@ -64,12 +68,13 @@ open class PeraApp : Application() {
         AppCompatDelegate.setDefaultNightMode(sharedPref.getSavedThemePreference().convertToSystemAbbr())
         accountManager.initAccounts()
 
-        bindWalletConnectManager()
+        bindLifecycleAwareComponents()
     }
 
-    private fun bindWalletConnectManager() {
+    private fun bindLifecycleAwareComponents() {
         with(ProcessLifecycleOwner.get().lifecycle) {
             addObserver(walletConnectManager)
+            addObserver(applicationStatusObserver)
         }
     }
 

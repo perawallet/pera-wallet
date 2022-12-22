@@ -24,23 +24,21 @@ class WalletConnectSessionCachedDataHandler @Inject constructor() {
 
     fun getCachedDataById(id: Long) = getConnectedSessions { sessions -> sessions.firstOrNull { it.sessionId == id } }
 
-    fun isSessionCached(topic: String): Boolean {
-        return getConnectedSessions { sessions -> sessions.any { it.sessionConfig.handshakeTopic == topic } }
-    }
-
     fun addNewCachedData(sessionCachedData: WalletConnectSessionCachedData) {
-        val cachedSession: WalletConnectSessionCachedData? = getConnectedSessions { sessions ->
-            sessions.popIfOrNull { it.sessionId == sessionCachedData.sessionId }
+        getConnectedSessions { sessions ->
+            val cachedSession = sessions.popIfOrNull { it.sessionId == sessionCachedData.sessionId }
+            val safeRetryCount = cachedSession?.getRetryCount() ?: INITIAL_RETRY_COUNT
+            sessionCachedData.setRetryCount(safeRetryCount)
+            sessions.add(sessionCachedData)
         }
-        val safeRetryCount = cachedSession?.getRetryCount() ?: INITIAL_RETRY_COUNT
-        sessionCachedData.setRetryCount(safeRetryCount)
-        getConnectedSessions { sessions -> sessions.add(sessionCachedData) }
     }
 
     fun deleteCachedData(sessionId: Long, onCacheDeleted: (WalletConnectSessionCachedData) -> Unit) {
-        val sessionIndex = getConnectedSessions { sessions -> sessions.indexOfFirst { it.sessionId == sessionId } }
-        if (sessionIndex != ITEM_NOT_FOUND_INDEX) {
-            getConnectedSessions { it.removeAt(sessionIndex).also { onCacheDeleted(it) } }
+        getConnectedSessions { sessions ->
+            val sessionIndex = sessions.indexOfFirst { it.sessionId == sessionId }
+            if (sessionIndex != ITEM_NOT_FOUND_INDEX) {
+                sessions.removeAt(sessionIndex).also { onCacheDeleted(it) }
+            }
         }
     }
 

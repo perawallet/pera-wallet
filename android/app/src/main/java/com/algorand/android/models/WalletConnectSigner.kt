@@ -35,10 +35,10 @@ sealed class WalletConnectSigner : Parcelable {
                     hasMultisig -> Multisig(errorProvider.unsupported.multisigTransaction)
                     hasMultipleSigner -> Unsignable(errorProvider.unsupported.unknownTransactionType)
                     isDisplayOnly -> DisplayOnly
-                    firstSignerAddressBase64 != null && authAddressBase64 != null -> {
-                        return if (authAddressBase64 == firstSignerAddressBase64) {
+                    firstSignerAddressBase64 != null && authAccountAddress != null -> {
+                        return if (authAccountAddress == firstSignerAddressBase64) {
                             returnInvalidInputIfAddressIsInvalid(
-                                Rekeyed(WalletConnectAddress.create(authAddressBase64)),
+                                Rekeyed(WalletConnectAddress(authAccountAddress, authAccountAddress)),
                                 errorProvider.invalidInput.invalidPublicKey
                             )
                         } else {
@@ -55,9 +55,9 @@ sealed class WalletConnectSigner : Parcelable {
                             Unsignable(errorProvider.invalidInput.unableToSign)
                         }
                     }
-                    authAddressBase64 != null -> {
+                    authAccountAddress != null -> {
                         returnInvalidInputIfAddressIsInvalid(
-                            Rekeyed(WalletConnectAddress.create(authAddressBase64)),
+                            Rekeyed(WalletConnectAddress(authAccountAddress, authAccountAddress)),
                             errorProvider.invalidInput.invalidPublicKey
                         )
                     }

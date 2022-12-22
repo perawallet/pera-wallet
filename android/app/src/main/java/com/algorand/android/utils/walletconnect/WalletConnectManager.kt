@@ -34,6 +34,7 @@ import com.algorand.android.usecase.GetActiveNodeChainIdUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.Resource.Error.Annotated
+import com.algorand.android.utils.coremanager.ApplicationStatusObserver
 import com.algorand.android.utils.exception.InvalidWalletConnectUrlException
 import com.algorand.android.utils.exception.WalletConnectException
 import com.algorand.android.utils.recordException
@@ -76,7 +77,8 @@ class WalletConnectManager @Inject constructor(
     private val getActiveNodeChainIdUseCase: GetActiveNodeChainIdUseCase,
     private val getWalletConnectSessionsByAccountAddressUseCase: GetWalletConnectSessionsByAccountAddressUseCase,
     private val getAllWalletConnectSessionWithAccountAddressesUseCase: GetWalletConnectSessionsWithAccountsUseCase,
-    private val deleteWalletConnectAccountBySessionUseCase: DeleteWalletConnectAccountBySessionUseCase
+    private val deleteWalletConnectAccountBySessionUseCase: DeleteWalletConnectAccountBySessionUseCase,
+    private val applicationStatusObserver: ApplicationStatusObserver
 ) : DefaultLifecycleObserver {
 
     val sessionResultFlow: SharedFlow<Event<Resource<WalletConnectSession>>>
@@ -433,7 +435,13 @@ class WalletConnectManager @Inject constructor(
         sessionConnectionTimer.cancel()
     }
 
+    /**
+     * The purpose of checking [isAppOnBackground] is that we shouldn't try to reconnect failed session again and again
+     * while the app is in the background. It was causing session deletion in case of no internet connection. So, we are
+     * trying to reconnect the user only while the app is in the foreground
+     */
     private suspend fun addSessionAndDeleteIfNeed(sessionId: Long) {
+        if (applicationStatusObserver.isAppOnBackground) return
         if (isSessionRetryCountExceeded(sessionId)) {
             val sessionEntity = walletConnectRepository.getSessionById(sessionId) ?: return
             killSession(walletConnectMapper.createWalletConnectSession(sessionEntity))

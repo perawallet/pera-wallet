@@ -74,7 +74,7 @@ abstract class BaseWalletConnectTransaction : Parcelable {
         }
 
     fun isAuthAddressValid(): Boolean {
-        val authAddress = rawTransactionPayload.authAddressBase64
+        val authAddress = rawTransactionPayload.authAccountAddress
         return authAddress == null || authAddress.isValidAddress()
     }
 

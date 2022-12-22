@@ -1,6 +1,6 @@
 ext {
     peraApplication = [
-            versionCode: 82,
-            versionName: "5.6.0"
+            versionCode: 83,
+            versionName: "5.6.1"
     ]
 }
