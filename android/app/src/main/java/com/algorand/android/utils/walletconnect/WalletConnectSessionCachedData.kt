@@ -71,9 +71,9 @@ class WalletConnectSessionCachedData(
     override fun onStatus(status: Session.Status) {
         Log.e(logTag, "onStatus -> $status")
         when (status) {
-            Session.Status.Connected -> callback?.onSessionConnected(sessionId)
+            is Session.Status.Connected -> callback?.onSessionConnected(sessionId, status.clientId)
             is Session.Status.Disconnected -> callback?.onSessionDisconnected(sessionId, status.isSessionDeletionNeeded)
-            Session.Status.Approved -> callback?.onSessionApproved(sessionId)
+            is Session.Status.Approved -> callback?.onSessionApproved(sessionId, status.clientId)
             is Session.Status.Error -> callback?.onSessionError(sessionId, status)
             else -> {
                 sendErrorLog("Unhandled else case in WalletConnectSessionCachedData")
@@ -103,9 +103,9 @@ class WalletConnectSessionCachedData(
         fun onSessionUpdate(sessionId: Long, call: Session.MethodCall.SessionUpdate)
         fun onCustomRequest(sessionId: Long, call: Session.MethodCall.Custom)
 
-        fun onSessionConnected(sessionId: Long)
+        fun onSessionConnected(sessionId: Long, clientId: String)
         fun onSessionDisconnected(sessionId: Long, isSessionDeletionNeeded: Boolean)
-        fun onSessionApproved(sessionId: Long)
+        fun onSessionApproved(sessionId: Long, clientId: String)
         fun onSessionError(sessionId: Long, error: Session.Status.Error)
     }
 }

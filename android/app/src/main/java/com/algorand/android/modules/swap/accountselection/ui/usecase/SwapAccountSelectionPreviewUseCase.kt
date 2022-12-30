@@ -22,6 +22,7 @@ import com.algorand.android.modules.swap.accountselection.ui.model.SwapAccountSe
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.AccountSelectionListUseCase
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.exceptions.AccountNotFoundException
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.channelFlow
@@ -76,7 +77,7 @@ class SwapAccountSelectionPreviewUseCase @Inject constructor(
             if (fromAssetId != null) {
                 val isUserOptedIntoFromAsset = accountDetail.isAssetSupported(fromAssetId)
                 if (!isUserOptedIntoFromAsset) {
-                    return copy(errorEvent = Event(AnnotatedString(R.string.an_error_occured)))
+                    return copy(errorEvent = Event(AnnotatedString(R.string.you_are_not_opted_in)))
                 }
 
                 if (toAssetId != null) {
@@ -133,9 +134,15 @@ class SwapAccountSelectionPreviewUseCase @Inject constructor(
                     val swapNavigationEvent = getSwapNavigationDestinationEvent(accountAddress, fromAssetId, toAssetId)
                     send(previousState.copy(navToSwapNavigationEvent = swapNavigationEvent))
                 },
-                onFailed = {
-                    // TODO We may consider showing exception message instead of default one
-                    send(previousState.copy(errorEvent = Event(AnnotatedString(R.string.an_error_occured))))
+                onFailed = { error ->
+                    // TODO add specific strings for exceptions
+                    val errorResourceId = if (error.exception is AccountNotFoundException) {
+                        R.string.an_error_occured
+                    } else {
+                        R.string.an_error_occured
+                    }
+                    val annotatedErrorString = AnnotatedString(errorResourceId)
+                    send(previousState.copy(errorEvent = Event(annotatedErrorString)))
                 }
             )
         }

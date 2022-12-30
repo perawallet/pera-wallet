@@ -23,7 +23,9 @@ import com.algorand.android.repository.AccountRepository
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.canSignTransaction
+import com.algorand.android.utils.exceptions.AccountNotFoundException
 import com.algorand.android.utils.isRekeyedToAnotherAccount
+import com.algorand.android.utils.recordException
 import com.algorand.android.utils.toShortenedAddress
 import java.math.BigInteger
 import javax.inject.Inject
@@ -66,7 +68,8 @@ class AccountDetailUseCase @Inject constructor(
         accountInformationUseCase.getAccountInformationAndFetchAssets(accountAddress, scope).use(
             onSuccess = { accountInformation ->
                 val localAccount = accountManager.getAccount(accountAddress) ?: run {
-                    emit(CacheResult.Error.create(null))
+                    emit(CacheResult.Error.create(AccountNotFoundException()))
+                    recordException(AccountNotFoundException())
                     return@use
                 }
                 val cacheResult = CacheResult.Success.create(AccountDetail(localAccount, accountInformation))
@@ -191,5 +194,23 @@ class AccountDetailUseCase @Inject constructor(
 
     fun isThereAnyAccountWithPublicKey(publicKey: String): Boolean {
         return accountManager.isThereAnyAccountWithPublicKey(publicKey)
+    }
+
+    fun isThereAnyCachedErrorAccount(excludeWatchAccounts: Boolean): Boolean {
+        val accountDetailCache = getAccountDetailCacheFlow().value
+        return accountDetailCache.any { cachedAccount ->
+            cachedAccount.value is CacheResult.Error<*> &&
+                cachedAccount.value.data == null &&
+                (canAccountSignTransaction(cachedAccount.key) || excludeWatchAccounts.not())
+        }
+    }
+
+    fun isThereAnyCachedSuccessAccount(excludeWatchAccounts: Boolean): Boolean {
+        val accountDetailCache = getAccountDetailCacheFlow().value
+        return accountDetailCache.any { cachedAccount ->
+            cachedAccount.value is CacheResult.Success<*> &&
+                cachedAccount.value.data != null &&
+                (canAccountSignTransaction(cachedAccount.key) || excludeWatchAccounts.not())
+        }
     }
 }

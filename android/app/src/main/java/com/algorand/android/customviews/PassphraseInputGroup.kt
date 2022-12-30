@@ -116,7 +116,7 @@ class PassphraseInputGroup @JvmOverloads constructor(
         val mnemonicStringBuilder = StringBuilder()
         passphraseInputArray.forEachIndexed { index, passphraseInput ->
             if (!passphraseInput.isValidated()) {
-                val errorString = AnnotatedString(R.string.account_not_found)
+                val errorString = AnnotatedString(R.string.account_not_found_please_try)
                 val mnemonic = mnemonicStringBuilder.toString().trim()
                 return MnemonicResponse.Error(mnemonic, errorString)
             }

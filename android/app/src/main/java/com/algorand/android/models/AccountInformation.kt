@@ -27,7 +27,7 @@ data class AccountInformation(
     val amount: BigInteger,
     val participation: Participation?,
     val rekeyAdminAddress: String?,
-    private val allAssetHoldingList: MutableSet<AssetHolding>?,
+    private val allAssetHoldingList: MutableSet<AssetHolding>,
     val createdAtRound: Long?,
     val appsLocalState: List<CreatedAppLocalState>? = null,
     val appsTotalSchema: CreatedAppStateScheme? = null,
@@ -37,19 +37,19 @@ data class AccountInformation(
 ) : Parcelable {
 
     val assetHoldingList: List<AssetHolding>
-        get() = allAssetHoldingList?.filterNot { it.isDeleted } ?: listOf()
+        get() = allAssetHoldingList.filterNot { it.isDeleted }
 
     fun isCreated(): Boolean {
         return createdAtRound != null
     }
 
     fun setAssetHoldingStatus(assetId: Long, status: AssetStatus) {
-        allAssetHoldingList?.firstOrNull { it.assetId == assetId }?.status = status
+        allAssetHoldingList.firstOrNull { it.assetId == assetId }?.status = status
     }
 
     fun addPendingAssetHolding(assetHolding: AssetHolding) {
         if (!AssetStatus.isPending(assetHolding.status)) return
-        allAssetHoldingList?.add(assetHolding)
+        allAssetHoldingList.add(assetHolding)
     }
 
     fun isRekeyed(): Boolean {
@@ -77,7 +77,7 @@ data class AccountInformation(
         return assetHoldingList.map { it.assetId }.toMutableList().apply { add(0, ALGO_ID) }
     }
 
-    fun getOptedInAssetsCount() = allAssetHoldingList?.size ?: 0
+    fun getOptedInAssetsCount() = allAssetHoldingList.size
 
     fun getMinAlgoBalance(): BigInteger {
         return calculateMinBalance(
@@ -87,11 +87,11 @@ data class AccountInformation(
     }
 
     fun isAssetSupported(assetId: Long): Boolean {
-        return assetId == AssetInformation.ALGO_ID || assetHoldingList.any { it.assetId == assetId }
+        return assetId == ALGO_ID || assetHoldingList.any { it.assetId == assetId }
     }
 
     fun getBalance(assetId: Long): BigInteger {
-        return if (assetId == AssetInformation.ALGO_ID) {
+        return if (assetId == ALGO_ID) {
             amount
         } else {
             assetHoldingList.firstOrNull { it.assetId == assetId }?.amount ?: ZERO

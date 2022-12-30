@@ -14,32 +14,58 @@ package com.algorand.android.utils.assetdrawable
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.widget.ImageView
+import androidx.core.view.doOnLayout
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.createPrismUrl
 import com.algorand.android.utils.loadImage
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class AssetDrawableProvider : BaseAssetDrawableProvider() {
+class AssetDrawableProvider(
+    override val assetName: AssetName,
+    override val logoUri: String?
+) : BaseAssetDrawableProvider() {
 
     override fun getAssetDrawable(
-        context: Context,
-        assetName: AssetName,
-        logoUri: String?,
-        width: Int,
-        onResourceReady: (Drawable?) -> Unit
+        imageView: ImageView,
+        onPreparePlaceHolder: (Context, Int) -> Drawable?,
+        onResourceReady: (Drawable) -> Unit,
+        onResourceFailed: (Drawable?) -> Unit,
+        onUriReady: (String) -> Unit
     ) {
-        onResourceReady(createAssetShortNameDrawable(context, assetName))
-        if (!logoUri.isNullOrBlank()) {
-            context.loadImage(
-                uri = createPrismUrl(url = logoUri, width = width),
-                onResourceReady = { onResourceReady(it) },
-                onLoadFailed = { onResourceReady(createAssetShortNameDrawable(context, assetName)) }
-            )
+        imageView.setImageDrawable(null)
+        imageView.doOnLayout {
+            val placeHolder = onPreparePlaceHolder(imageView.context, it.measuredWidth)
+            if (!logoUri.isNullOrBlank()) {
+                val uri = createPrismUrl(url = logoUri, width = it.measuredWidth).also(onUriReady)
+                imageView.loadImage(
+                    uri = uri,
+                    onResourceReady = { drawable -> onResourceReady(drawable) },
+                    onLoadFailed = { drawable -> onResourceFailed(drawable) },
+                    placeHolder = placeHolder
+                )
+            } else {
+                onResourceFailed(placeHolder)
+            }
         }
     }
 
-    private fun createAssetShortNameDrawable(context: Context, assetName: AssetName): Drawable {
+    override fun createPlaceHolder(context: Context, width: Int): Drawable {
         return ShortAssetNameDrawable(assetName.getAsAvatarNameOrDefault(context.resources)).toDrawable(context)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is AssetDrawableProvider) return false
+        if (logoUri != other.logoUri) return false
+        if (assetName != other.assetName) return false
+        return true
+    }
+
+    @Suppress("MagicNumber")
+    override fun hashCode(): Int {
+        var result = assetName.hashCode()
+        result = 31 * result + logoUri.hashCode()
+        return result
     }
 }

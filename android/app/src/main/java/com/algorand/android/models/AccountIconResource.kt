@@ -31,6 +31,8 @@ enum class AccountIconResource(
 
     STANDARD(R.drawable.ic_wallet, R.color.wallet_4, R.color.wallet_4_icon),
 
+    PLACEHOLDER(R.drawable.ic_wallet, R.color.wallet_placeholder, R.color.wallet_placeholder_icon),
+
     UNDEFINED(R.drawable.ic_wallet, R.color.transparent, R.color.transparent);
 
     companion object {

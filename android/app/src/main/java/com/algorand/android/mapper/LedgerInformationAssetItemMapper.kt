@@ -38,8 +38,7 @@ class LedgerInformationAssetItemMapper @Inject constructor(
             ),
             baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(accountAssetData.id),
             formattedDisplayedCurrencyValue = accountAssetData.getSelectedCurrencyParityValue().getFormattedValue(),
-            formattedAmount = accountAssetData.formattedAmount,
-            prismUrl = accountAssetData.prismUrl
+            formattedAmount = accountAssetData.formattedAmount
         )
     }
 }

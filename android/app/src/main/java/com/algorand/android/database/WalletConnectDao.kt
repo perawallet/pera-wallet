@@ -77,4 +77,7 @@ interface WalletConnectDao {
 
     @Query("DELETE FROM WalletConnectSessionAccountEntity WHERE session_id = :sessionId AND connected_account_address = :accountAddress")
     suspend fun deleteWalletConnectAccountBySession(sessionId: Long, accountAddress: String)
+
+    @Query("UPDATE WalletConnectSessionEntity SET is_subscribed = 1 WHERE id = :sessionId")
+    suspend fun setGivenSessionAsSubscribed(sessionId: Long)
 }

@@ -12,6 +12,7 @@
 
 package com.algorand.android.nft.data.model
 
+import com.algorand.android.modules.collectibles.detail.base.data.model.CollectibleMediaResponse
 import com.google.gson.annotations.SerializedName
 
 data class CollectibleResponse(
@@ -19,7 +20,7 @@ data class CollectibleResponse(
     @SerializedName("media_type") val mediaType: CollectibleMediaTypeResponse?,
     @SerializedName("primary_image") val primaryImageUrl: String?,
     @SerializedName("title") val title: String?,
-    @SerializedName("collection_name") val collectionName: String?,
+    @SerializedName("collection") val collection: CollectionResponse,
     @SerializedName("media") val collectibleMedias: List<CollectibleMediaResponse>,
     @SerializedName("description") val description: String?,
     @SerializedName("traits") val traits: List<CollectibleTraitResponse>

@@ -148,7 +148,7 @@ abstract class BaseAddEditContactFragment : DaggerBaseFragment(R.layout.fragment
 
     private fun startImagePicker() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startForContactImageResult.launch(intent)
+        startForContactImageResult.launch(Intent.createChooser(intent, getString(R.string.pick_a_photo)))
     }
 
     private fun onNameChangedListener(name: String) {

@@ -20,10 +20,12 @@ import com.algorand.android.discover.home.domain.model.TokenDetailInfo
 import com.algorand.android.discover.home.ui.model.DiscoverHomePreview
 import com.algorand.android.discover.home.ui.usecase.DiscoverHomePreviewUseCase
 import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
+import com.algorand.android.modules.tracking.discover.home.DiscoverHomeEventTracker
 import com.algorand.android.utils.preference.ThemePreference
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
@@ -35,6 +37,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class DiscoverHomeViewModel @Inject constructor(
     private val discoverHomePreviewUseCase: DiscoverHomePreviewUseCase,
+    private val discoverHomeEventTracker: DiscoverHomeEventTracker,
     private val currencyUseCase: CurrencyUseCase,
     private val gson: Gson
 ) : BaseDiscoverViewModel() {
@@ -70,7 +73,17 @@ class DiscoverHomeViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    private fun logQueryEvent(assetId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            discoverHomeEventTracker.logQueryEvent(
+                query = queryTextFlow.value,
+                assetId = assetId
+            )
+        }
+    }
+
     fun navigateToAssetDetail(assetId: Long) {
+        logQueryEvent(assetId)
         pushTokenDetailScreen(gson.toJson(TokenDetailInfo(tokenId = assetId.toString(), poolId = null)))
     }
 
@@ -102,7 +115,7 @@ class DiscoverHomeViewModel @Inject constructor(
     }
 
     fun requestLoadHomepage() {
-        saveLastError(null)
+        clearLastError()
         viewModelScope.launch {
             _discoverHomePreviewFlow
                 .emit(discoverHomePreviewUseCase.requestLoadHomepage(_discoverHomePreviewFlow.value))

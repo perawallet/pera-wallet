@@ -108,7 +108,12 @@ class AccountsPreviewUseCase @Inject constructor(
             }
             when (selectedCurrencyParityCache) {
                 is CacheResult.Success -> {
-                    processAccountsAndAssets(accountDetailCache, banner, isTestnetBadgeVisible, tutorial)
+                    processAccountsAndAssets(
+                        accountDetailCache = accountDetailCache,
+                        banner = banner,
+                        isTestnetBadgeVisible = isTestnetBadgeVisible,
+                        tutorial = tutorial
+                    )
                 }
                 is CacheResult.Error -> getAlgoPriceErrorState(
                     selectedCurrencyDetailCache = selectedCurrencyParityCache,
@@ -167,7 +172,12 @@ class AccountsPreviewUseCase @Inject constructor(
     ): AccountPreview {
         val areAllAccountsAreCached = accountDetailUseCase.areAllAccountsCached()
         return if (areAllAccountsAreCached) {
-            processSuccessAccountCacheAndOthers(accountDetailCache, banner, isTestnetBadgeVisible, tutorial)
+            processSuccessAccountCacheAndOthers(
+                accountDetailCache = accountDetailCache,
+                banner = banner,
+                isTestnetBadgeVisible = isTestnetBadgeVisible,
+                tutorial = tutorial
+            )
         } else {
             accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
         }
@@ -189,12 +199,15 @@ class AccountsPreviewUseCase @Inject constructor(
         ) {
             accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
         } else {
-            prepareAccountPreview(accountDetailCache, banner, isTestnetBadgeVisible, tutorial)
+            prepareAccountPreview(
+                banner = banner,
+                isTestnetBadgeVisible = isTestnetBadgeVisible,
+                tutorial = tutorial
+            )
         }
     }
 
     private suspend fun prepareAccountPreview(
-        accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
         banner: BaseBanner?,
         isTestnetBadgeVisible: Boolean,
         tutorial: Tutorial?
@@ -208,15 +221,14 @@ class AccountsPreviewUseCase @Inject constructor(
                 secondaryAccountValue += it.secondaryAccountValue
             }).apply {
                 val bannerItem = getBannerItemOrNull(baseBanner = banner)
+                // TODO: Remove test banner
                 insertQuickActionsItem(this)
                 if (bannerItem != null) add(BANNER_ITEM_INDEX, bannerItem)
             }
-            val isThereAnyErrorInAccountCache = accountDetailCache.any {
-                it.value is CacheResult.Error<*> && it.value.data == null
-            }
-            val isThereAnySuccessInAccountCache = accountDetailCache.any {
-                it.value is CacheResult.Success<*> && it.value.data != null
-            }
+            val isThereAnyErrorInAccountCache =
+                accountDetailUseCase.isThereAnyCachedErrorAccount(excludeWatchAccounts = true)
+            val isThereAnySuccessInAccountCache =
+                accountDetailUseCase.isThereAnyCachedSuccessAccount(excludeWatchAccounts = true)
             val portfolioValueItem = if (!isThereAnyErrorInAccountCache) {
                 getPortfolioValueSuccessItem(primaryAccountValue, secondaryAccountValue)
             } else if (isThereAnySuccessInAccountCache) {

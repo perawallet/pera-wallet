@@ -31,6 +31,7 @@ import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetOperationResult
 import com.algorand.android.models.Node
 import com.algorand.android.models.SignedTransactionDetail
+import com.algorand.android.models.TransactionData
 import com.algorand.android.modules.appopencount.domain.usecase.IncreaseAppOpeningCountUseCase
 import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
 import com.algorand.android.modules.swap.utils.SwapNavigationDestinationHelper
@@ -51,6 +52,8 @@ import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.coremanager.AccountDetailCacheManager
 import com.algorand.android.utils.exception.AccountAlreadyOptedIntoAssetException
+import com.algorand.android.utils.exceptions.TransactionConfirmationAwaitException
+import com.algorand.android.utils.exceptions.TransactionIdNullException
 import com.algorand.android.utils.findAllNodes
 import com.algorand.android.utils.sendErrorLog
 import com.google.firebase.messaging.FirebaseMessaging
@@ -109,6 +112,8 @@ class MainViewModel @Inject constructor(
     private var sendTransactionJob: Job? = null
     var refreshBalanceJob: Job? = null
     var registerDeviceJob: Job? = null
+
+    private var latestFailedAddAssetTransaction: TransactionData.AddAsset? = null
 
     init {
         initializeAccountCacheManager()
@@ -189,6 +194,7 @@ class MainViewModel @Inject constructor(
             sendSignedTransactionUseCase.sendSignedTransaction(transaction).collectLatest { dataResource ->
                 when (dataResource) {
                     is DataResource.Success -> {
+                        latestFailedAddAssetTransaction = null
                         val assetActionResult = getAssetOperationResult(transaction)
                         assetOperationResultLiveData.postValue(Event(Resource.Success(assetActionResult)))
                     }
@@ -196,10 +202,20 @@ class MainViewModel @Inject constructor(
                         assetOperationResultLiveData.postValue(Event(Resource.Error.Api(dataResource.exception)))
                     }
                     is DataResource.Error.Local -> {
-                        val errorResourceId = if (dataResource.exception is AccountAlreadyOptedIntoAssetException) {
-                            R.string.you_are_already
-                        } else {
-                            R.string.an_error_occured
+                        // TODO add specific strings for exceptions
+                        val errorResourceId = when (dataResource.exception) {
+                            is AccountAlreadyOptedIntoAssetException -> {
+                                R.string.you_are_already
+                            }
+                            is TransactionConfirmationAwaitException -> {
+                                R.string.transaction_confirmation_timed_out
+                            }
+                            is TransactionIdNullException -> {
+                                R.string.an_error_occured
+                            }
+                            else -> {
+                                R.string.an_error_occured
+                            }
                         }
                         val assetName = transaction.assetInformation.fullName.toString()
                         assetOperationResultLiveData.postValue(
@@ -220,6 +236,14 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getLatestAddAssetTransaction(): TransactionData.AddAsset? {
+        return latestFailedAddAssetTransaction
+    }
+
+    fun setLatestAddAssetTransaction(transactionData: TransactionData.AddAsset) {
+        latestFailedAddAssetTransaction = transactionData
     }
 
     fun handleDeepLink(uri: String) {
@@ -306,8 +330,8 @@ class MainViewModel @Inject constructor(
     private fun getAssetOperationResult(transaction: SignedTransactionDetail.AssetOperation): AssetOperationResult {
         val assetName = transaction.assetInformation.fullName ?: transaction.assetInformation.shortName
         val resultTitleResId = when (transaction) {
-            is SignedTransactionDetail.AssetOperation.AssetAddition -> R.string.asset_successfully_added_to_your
-            is SignedTransactionDetail.AssetOperation.AssetRemoval -> R.string.asset_successfully_removed_from_your
+            is SignedTransactionDetail.AssetOperation.AssetAddition -> R.string.asset_successfully_opted_in
+            is SignedTransactionDetail.AssetOperation.AssetRemoval -> R.string.asset_successfully_opted_out_from_your
         }
         return AssetOperationResult(
             resultTitleResId = resultTitleResId,

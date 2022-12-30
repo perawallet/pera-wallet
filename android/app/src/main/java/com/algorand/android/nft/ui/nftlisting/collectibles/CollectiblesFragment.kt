@@ -24,7 +24,6 @@ import com.algorand.android.core.BottomNavigationBackPressedDelegate
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.domain.usecase.CollectiblesListingPreviewUseCase.Companion.COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX
-import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.nftlisting.BaseCollectiblesListingFragment
 import com.algorand.android.utils.addItemVisibilityChangeListener
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
@@ -44,57 +43,14 @@ class CollectiblesFragment :
         isBottomBarNeeded = true
     )
 
-    private val collectiblesViewModel by viewModels<CollectiblesViewModel>()
-
-    override val baseCollectibleListingViewModel: BaseCollectibleListingViewModel
-        get() = collectiblesViewModel
+    override val baseCollectibleListingViewModel: CollectiblesViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? CoreMainActivity)?.let { initBackPressedControllerComponent(it, viewLifecycleOwner) }
     }
 
-    override fun onVideoItemClick(collectibleAssetId: Long, publicKey: String) {
-        nav(
-            CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleDetailFragment(
-                collectibleAssetId = collectibleAssetId,
-                publicKey = publicKey
-            )
-        )
-    }
-
-    override fun onImageItemClick(collectibleAssetId: Long, publicKey: String) {
-        nav(
-            CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleDetailFragment(
-                collectibleAssetId = collectibleAssetId,
-                publicKey = publicKey
-            )
-        )
-    }
-
-    override fun onSoundItemClick(collectibleAssetId: Long, publicKey: String) {
-        nav(
-            CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleDetailFragment(
-                collectibleAssetId = collectibleAssetId,
-                publicKey = publicKey
-            )
-        )
-    }
-
-    override fun onGifItemClick(collectibleAssetId: Long, publicKey: String) {
-        // TODO "Not yet implemented"
-    }
-
-    override fun onNotSupportedItemClick(collectibleAssetId: Long, publicKey: String) {
-        nav(
-            CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleDetailFragment(
-                collectibleAssetId = collectibleAssetId,
-                publicKey = publicKey
-            )
-        )
-    }
-
-    override fun onMixedItemClick(collectibleAssetId: Long, publicKey: String) {
+    override fun onOwnedNFTItemClick(collectibleAssetId: Long, publicKey: String) {
         nav(
             CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleDetailFragment(
                 collectibleAssetId = collectibleAssetId,
@@ -114,11 +70,11 @@ class CollectiblesFragment :
 
     override fun initCollectiblesListingPreviewCollector() {
         viewLifecycleOwner.collectLatestOnLifecycle(
-            collectiblesViewModel.collectiblesListingPreviewFlow,
+            baseCollectibleListingViewModel.collectiblesListingPreviewFlow,
             collectibleListingPreviewCollector
         )
         viewLifecycleOwner.collectLatestOnLifecycle(
-            flow = collectiblesViewModel.collectiblesListingPreviewFlow
+            flow = baseCollectibleListingViewModel.collectiblesListingPreviewFlow
                 .map { it?.isAddCollectibleFloatingActionButtonVisible }
                 .distinctUntilChanged(),
             collection = addCollectibleFloatingActionButtonVisibilityCollector,

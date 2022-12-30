@@ -52,8 +52,8 @@ class WCWalletConnectClient(
             listener?.onCustomRequest(sessionId, call.id, call.params ?: return)
         }
 
-        override fun onSessionConnected(sessionId: Long) {
-            listener?.onConnected(sessionId, getWalletConnectSession(sessionId))
+        override fun onSessionConnected(sessionId: Long, clientId: String) {
+            listener?.onConnected(sessionId, getWalletConnectSession(sessionId), clientId)
         }
 
         override fun onSessionDisconnected(sessionId: Long, isSessionDeletionNeeded: Boolean) {
@@ -63,9 +63,9 @@ class WCWalletConnectClient(
             listener?.onDisconnected(sessionId)
         }
 
-        override fun onSessionApproved(sessionId: Long) {
+        override fun onSessionApproved(sessionId: Long, clientId: String) {
             val walletConnectSession = getWalletConnectSession(sessionId) ?: return
-            listener?.onSessionApproved(sessionId, walletConnectSession)
+            listener?.onSessionApproved(sessionId, walletConnectSession, clientId)
         }
 
         override fun onSessionError(sessionId: Long, error: Session.Status.Error) {

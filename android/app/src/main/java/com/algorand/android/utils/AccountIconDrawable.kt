@@ -73,7 +73,8 @@ class AccountIconDrawable(
             return AccountIconDrawable(
                 backgroundColor = ContextCompat.getColor(context, accountIconResource.backgroundColorResId),
                 iconTint = ContextCompat.getColor(context, accountIconResource.iconTintResId),
-                iconDrawable = AppCompatResources.getDrawable(context, accountIconResource.iconResId) ?: return null,
+                iconDrawable = AppCompatResources.getDrawable(context, accountIconResource.iconResId)?.mutate()
+                    ?: return null,
                 size = size
             )
         }

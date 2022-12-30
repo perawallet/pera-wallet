@@ -63,7 +63,11 @@ class WalletConnectTransactionInfoCardView(
             initAccountBalance(accountBalance, assetInformation)
             initRekeyToAddress(rekeyToAccountAddress, isLocalAccountSigner)
             initCloseToAddress(closeToAccountAddress, isLocalAccountSigner)
-            initAssetCloseToAddress(assetCloseToAddress, assetInformation?.shortName)
+            initAssetCloseToAddress(
+                address = assetCloseToAddress,
+                assetShortName = assetInformation?.shortName,
+                accountName = fromDisplayedAddress?.displayValue
+            )
             initAssetName(assetName, isAssetUnnamed)
             initUnitName(assetUnitName, isAssetUnnamed)
         }
@@ -224,12 +228,17 @@ class WalletConnectTransactionInfoCardView(
         }
     }
 
-    private fun initAssetCloseToAddress(address: BaseWalletConnectDisplayedAddress?, assetShortName: String?) {
+    private fun initAssetCloseToAddress(
+        address: BaseWalletConnectDisplayedAddress?,
+        assetShortName: String?,
+        accountName: String?
+    ) {
         if (!address?.displayValue.isNullOrBlank()) {
             with(binding) {
                 closeAssetToWarningTextView.text = root.context.getString(
-                    R.string.this_transaction_is_sending_asset,
-                    assetShortName
+                    R.string.this_transaction_is_sending_your,
+                    assetShortName,
+                    accountName
                 )
                 closeAssetToTextView.apply {
                     text = address?.displayValue

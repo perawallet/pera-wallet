@@ -43,6 +43,7 @@ class DiscoverDetailViewModel @Inject constructor(
         get() = _discoverDetailPreviewFlow
 
     fun reloadPage() {
+        clearLastError()
         viewModelScope.launch {
             _discoverDetailPreviewFlow
                 .emit(discoverDetailPreviewUseCase.getInitialStatePreview(tokenDetail))
@@ -83,6 +84,7 @@ class DiscoverDetailViewModel @Inject constructor(
 
     fun handleTokenDetailActionButtonClick(data: String) {
         viewModelScope.launch {
+            discoverDetailPreviewUseCase.logTokenDetailActionButtonClick(data)
             _discoverDetailPreviewFlow
                 .emit(
                     discoverDetailPreviewUseCase.handleTokenDetailActionButtonClick(

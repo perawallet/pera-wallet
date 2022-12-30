@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.assets.profile.about.domain.repository
 
-import com.algorand.android.models.AssetDetail
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.models.Result
 import com.algorand.android.utils.CacheResult
 import kotlinx.coroutines.flow.Flow
@@ -21,9 +21,9 @@ import kotlinx.coroutines.flow.StateFlow
 interface AssetAboutRepository {
 
     // TODO: Remove this function here and create another repository and use case
-    suspend fun getAssetDetail(assetId: Long): Flow<Result<AssetDetail>>
+    suspend fun getAssetDetail(assetId: Long): Flow<Result<BaseAssetDetail>>
     suspend fun cacheAssetDetailToAsaProfileLocalCache(assetId: Long)
-    fun getAssetDetailFlowFromAsaProfileLocalCache(): StateFlow<CacheResult<AssetDetail>?>
+    fun getAssetDetailFlowFromAsaProfileLocalCache(): StateFlow<CacheResult<BaseAssetDetail>?>
     fun clearAsaProfileLocalCache()
 
     companion object {

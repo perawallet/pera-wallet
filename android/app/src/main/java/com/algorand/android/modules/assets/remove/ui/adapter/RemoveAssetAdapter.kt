@@ -20,6 +20,7 @@ import com.algorand.android.models.BaseRemoveAssetItem
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.BaseRemoveCollectibleItem
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.RemoveAssetItem
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.DESCRIPTION_VIEW_ITEM
+import com.algorand.android.models.BaseRemoveAssetItem.ItemType.SCREEN_STATE_ITEM
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.REMOVE_ASSET_ITEM
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.REMOVE_COLLECTIBLE_AUDIO_ITEM
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.REMOVE_COLLECTIBLE_IMAGE_ITEM
@@ -30,6 +31,7 @@ import com.algorand.android.models.BaseRemoveAssetItem.ItemType.SEARCH_VIEW_ITEM
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.TITLE_VIEW_ITEM
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.modules.accountdetail.assets.ui.adapter.AccountAssetsAdapter
+import com.algorand.android.modules.assets.remove.ui.ScreenStateViewHolder
 import com.algorand.android.utils.hideKeyboard
 
 class RemoveAssetAdapter(
@@ -76,6 +78,7 @@ class RemoveAssetAdapter(
             SEARCH_VIEW_ITEM.ordinal -> crateSearchItemViewHolder(parent)
             TITLE_VIEW_ITEM.ordinal -> createTitleItemViewHolder(parent)
             DESCRIPTION_VIEW_ITEM.ordinal -> createDescriptionItemViewHolder(parent)
+            SCREEN_STATE_ITEM.ordinal -> createScreenStateViewHolder(parent)
             else -> throw IllegalArgumentException("$logTag: Unknown viewType = $viewType")
         }
     }
@@ -116,6 +119,10 @@ class RemoveAssetAdapter(
 
     private fun crateSearchItemViewHolder(parent: ViewGroup): SearchViewItemViewHolder {
         return SearchViewItemViewHolder.create(parent, searchViewItemListener)
+    }
+
+    private fun createScreenStateViewHolder(parent: ViewGroup): ScreenStateViewHolder {
+        return ScreenStateViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<BaseRemoveAssetItem>, position: Int) {

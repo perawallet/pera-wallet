@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.assets.profile.about.domain.usecase
 
-import com.algorand.android.models.AssetDetail
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.models.Result
 import com.algorand.android.modules.assets.profile.about.domain.repository.AssetAboutRepository
 import com.algorand.android.utils.DataResource
@@ -21,12 +21,13 @@ import javax.inject.Named
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+// TODO: No need to return flow from this.
 class GetAssetDetailUseCase @Inject constructor(
     @Named(AssetAboutRepository.INJECTION_NAME)
     private val assetAboutRepository: AssetAboutRepository
 ) {
 
-    suspend fun getAssetDetail(assetId: Long): Flow<DataResource<AssetDetail>> {
+    suspend fun getAssetDetail(assetId: Long): Flow<DataResource<BaseAssetDetail>> {
         return assetAboutRepository.getAssetDetail(assetId).map {
             when (it) {
                 is Result.Success -> DataResource.Success(data = it.data)

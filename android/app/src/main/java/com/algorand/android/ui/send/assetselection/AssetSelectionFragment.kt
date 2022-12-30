@@ -22,16 +22,11 @@ import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentAssetSelectionBinding
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.AssetSelectionPreview
-import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
 import com.algorand.android.ui.send.assetselection.adapter.SelectSendingAssetAdapter
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
-import com.algorand.android.utils.extensions.hide
-import com.algorand.android.utils.extensions.show
-import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -54,31 +49,6 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
 
     private val assetSelectionPreviewCollector: suspend (preview: AssetSelectionPreview) -> Unit = {
         updateUiWithPreview(it)
-    }
-
-    override val transactionFragmentListener = object : TransactionFragmentListener {
-
-        override fun onSignTransactionLoading() {
-            showProgress()
-        }
-
-        override fun onSignTransactionLoadingFinished() {
-            hideProgress()
-        }
-
-        override fun onSignTransactionFinished(signedTransactionDetail: SignedTransactionDetail) {
-            when (signedTransactionDetail) {
-                is SignedTransactionDetail.Send -> {
-                    nav(
-                        AssetSelectionFragmentDirections
-                            .actionAssetSelectionFragmentToAssetTransferPreviewFragment(signedTransactionDetail)
-                    )
-                }
-                else -> {
-                    sendErrorLog("Unhandled else case in AssetSelectionFragment.transactionFragmentListener")
-                }
-            }
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,7 +79,7 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
                 navToAssetTransferAmountFragment(this)
             }
             navigateToCollectibleSendFragmentEvent?.consume()?.let {
-                navToCollectibleSendFragment(it)
+                navToCollectibleSendFragment(it.ownerAccountAddress.publicKey, it.collectibleId)
             }
         }
     }
@@ -125,14 +95,6 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
                 assetTransaction
             )
         )
-    }
-
-    private fun showProgress() {
-        binding.progressBar.loadingProgressBar.show()
-    }
-
-    private fun hideProgress() {
-        binding.progressBar.loadingProgressBar.hide()
     }
 
     private fun showTransactionTipsIfNeed() {
@@ -158,10 +120,11 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
         )
     }
 
-    private fun navToCollectibleSendFragment(collectibleDetail: CollectibleDetail) {
+    private fun navToCollectibleSendFragment(senderAddress: String, nftId: Long) {
         nav(
             HomeNavigationDirections.actionGlobalSendCollectibleNavigation(
-                collectibleDetail
+                accountAddress = senderAddress,
+                nftId = nftId
             )
         )
     }

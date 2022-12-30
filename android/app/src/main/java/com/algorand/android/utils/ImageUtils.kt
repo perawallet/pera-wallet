@@ -176,3 +176,40 @@ fun ImageView.loadGif(uri: String, onResourceReady: (GifDrawable) -> Unit, onLoa
             }
         })
 }
+
+fun ImageView.loadImage(
+    uri: String,
+    placeHolder: Drawable?,
+    onResourceReady: (Drawable) -> Unit,
+    onLoadFailed: (Drawable?) -> Unit
+) {
+    Glide.with(this)
+        .load(uri)
+        .placeholder(placeHolder)
+        .listener(
+            object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    onLoadFailed.invoke(placeHolder)
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable,
+                    model: Any,
+                    target: Target<Drawable>,
+                    dataSource: DataSource,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    onResourceReady(resource)
+                    target.onResourceReady(resource, null)
+                    return true
+                }
+            }
+        )
+        .into(this)
+}

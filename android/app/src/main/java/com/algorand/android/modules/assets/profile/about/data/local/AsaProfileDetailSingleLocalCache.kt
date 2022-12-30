@@ -13,9 +13,9 @@
 package com.algorand.android.modules.assets.profile.about.data.local
 
 import com.algorand.android.cache.SingleLocalCache
-import com.algorand.android.models.AssetDetail
+import com.algorand.android.models.BaseAssetDetail
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AsaProfileDetailSingleLocalCache @Inject constructor() : SingleLocalCache<AssetDetail>()
+class AsaProfileDetailSingleLocalCache @Inject constructor() : SingleLocalCache<BaseAssetDetail>()

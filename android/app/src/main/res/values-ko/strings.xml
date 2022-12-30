@@ -38,7 +38,6 @@
     <string name="remove_account">계정 삭제</string>
     <string name="copied_to_clipboard">클립보드로 복사 완료</string>
     <string name="remove">삭제</string>
-    <string name="enter_six_digit_pin">6자리 PIN 번호를 입력하세요</string>
     <string name="wrong_password">잘못된 비밀번호입니다</string>
     <string name="node_settings">노드 설정</string>
     <string name="language">언어</string>
@@ -82,14 +81,11 @@
     <string name="you_already_have">이미 보유 중인 자산입니다.</string>
     <string name="adding_asset">자산 추가 중</string>
     <string name="removing_asset">자산 삭제 중</string>
-    <string name="adding_an_asset">자산 추가 시 최소 트랜잭션 수수료의 트랜잭션을 전송해야 합니다. 해당 정보는 트랜잭션 내역에 표시됩니다.</string>
-    <string name="unfortunately_this_account">죄송합니다, 계정에 자산이 추가되지 않았습니다. 계정 소유주에게 자산 추가법을 문의하신 후 다시 시도해 주세요.</string>
     <string name="transfer_balance">보내는 금액</string>
     <string name="approve">승인</string>
     <string name="account_does_not_accept">계정에서 자산을 받지 않습니다.</string>
     <string name="you_are_about_to_receive">수신할 자산이 있습니다!</string>
     <string name="min_transaction_error">최소 트랜잭션 오류!</string>
-    <string name="you_need_at_least">자산을 추가하려면 최소한 <annotation replacement="min_balance"> </annotation> 알고가 필요합니다.</string>
     <string name="please_add_this">자산을 추가한 다음 다시 시도해 주세요.</string>
     <string name="key_not_valid">잘못된 키입니다, 보유한 키가 정확한지 확인해 주세요.</string>
     <string name="scanned_qr_is_not_valid">잘못된 QR 코드를 스캔하셨습니다.</string>
@@ -137,7 +133,6 @@
     <string name="go_to_home">홈으로 이동</string>
     <string name="accept">동의</string>
     <string name="add_new_asset">새 자산 추가</string>
-    <string name="try_different">다른 자산명이나 자산 ID를 사용해보세요</string>
     <string name="copy_address">주소 복사</string>
     <string name="account_address">계정 주소</string>
     <string name="keep_it">유지</string>
@@ -161,7 +156,6 @@
     <string name="try_again">다시 시도해 주세요</string>
     <string name="no_current_notifications">현재 알림 없음</string>
     <string name="your_recent_transactions">최근 트랜잭션, 자산 요청 및 기타 알림이 표시됩니다.</string>
-    <string name="to_remove_an_asset">자산을 삭제하려면 먼저 자산 잔액을 다른 계정으로 전송하셔야 합니다.</string>
     <string name="connect_to_internet">인터넷 연결</string>
     <string name="we_couldn_t_reach">서버에 접속할 수 없습니다, 인터넷에 연결되어 있는지 확인해 주세요.</string>
     <string name="add_note">참조 추가</string>
@@ -314,10 +308,9 @@
     <string name="this_transaction_will_transfer">이번 트랜잭션으로 계정의 소유권을 이전합니다. 현재의 복원 비밀문구는 이러한 자산에 대한 접근 권한을 상실하게 됩니다.</string>
     <string name="this_transaction_is_sending">이번 트랜잭션으로 알고 잔액 전체를 송금합니다.</string>
     <string name="close_asset_to">계정 삭제 - 자산을 받으시는 분</string>
-    <string name="this_transaction_is_sending_asset">이번 트랜잭션으로 %1$s 잔액 전체를 송금하고, 계정에서 %1$s이(가) 삭제됩니다.</string>
     <string name="wallet_connect_is_not_reachable">현재 WalletConnect에 연결할 수 없습니다. 나중에 다시 시도해 주세요.</string>
     <string name="connected_with_formatted">%1$s 연결</string>
-    <string name="this_transaction_will_be">이 트랜잭션은 추후 제출됩니다.</string>
+    <string name="this_transaction_will_be">곧 트랜잭션이 제출될 예정입니다. 확정하신 후에는 연동된 애플리케이션에서 재량에 따라 트랜잭션을 전송할 수 있게 됩니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.</string>
     <plurals name="confirm_transactions">
         <item quantity="other">모든 트랜잭션 확정</item>
     </plurals>
@@ -382,7 +375,7 @@
     <string name="enter_your_new_six_digit_pin">새 6자리 PIN 번호를\n입력하세요</string>
     <string name="re_enter_your_new_six_digit_pin">새 6자리 PIN 번호를\n다시 입력하세요</string>
     <string name="wrong_passphrase">잘못된 비밀문구</string>
-    <string name="account_not_found">계정을 찾을 수 없습니다. 올바른 비밀문구를 입력하여 다시 시도해주세요.</string>
+    <string name="account_not_found_please_try">계정을 찾을 수 없습니다. 올바른 비밀문구를 입력하여 다시 시도해주세요.</string>
     <string name="account_is_verified">계정 인증 완료!</string>
     <string name="verified">인증 완료</string>
     <string name="copy_id">ID 복사</string>
@@ -440,7 +433,6 @@
     <string name="show_transaction_details">트랜잭션 정보 보기</string>
     <string name="network_fee">네트워크 수수료</string>
     <string name="application_call">애플리케이션 호출</string>
-    <string name="application_opt_in">애플리케이션 옵트인</string>
     <string name="application_close_to">애플리케이션 자산 삭제용 자산 이전</string>
     <string name="application_update">애플리케이션 업데이트</string>
     <string name="application_delete">애플리케이션 삭제</string>
@@ -450,7 +442,6 @@
     <string name="asset_reconfiguration_request_with_asset_name">자산 재설정 요청 <annotation replacement="asset_name">assetNamePlaceholder</annotation></string>
     <string name="asset_deletion_request_with_asset_name">자산 삭제 요청 <annotation replacement="asset_name">assetNamePlaceholder</annotation></string>
     <string name="application_call_with_id">애플리케이션 호출 <annotation replacement="app_id">appIdPlaceholder</annotation></string>
-    <string name="application_opt_in_with_id">애플리케이션 옵트인 <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_close_to_with_id">애플리케이션 종료 <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_update_with_id">애플리케이션 업데이트 <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_delete_with_id">애플리케이션 삭제 <annotation replacement="app_id">appIdPlaceholder</annotation></string>
@@ -546,28 +537,24 @@
     <string name="change_pin_code">PIN 코드 변경</string>
     <string name="watch_account_added">읽기 전용 계정 추가 성공</string>
     <string name="the_watch_account_has_been">읽기 전용 계정이 추가되었습니다.</string>
-    <string name="collectibles">수집품</string>
     <string name="welcome_to_your_nft">NFT 갤러리에 오신 것을 환영합니다! 아직 보유하신 NFT가 없습니다. 지갑에서 사용 가능한 모든 NFT가 여기에 표시됩니다.</string>
-    <string name="receive_nft">NFT 받기</string>
     <string name="share">공유</string>
     <string name="description">설명</string>
     <string name="owner">소유자</string>
     <string name="asset_id_">자산 ID</string>
     <string name="creator_wallet_address">크리에이터 지갑 주소</string>
     <string name="collection_name">컬렉션 이름</string>
-    <string name="creator_name">크리에이터 이름</string>
     <string name="properties">속성</string>
     <string name="view_transaction">트랜잭션 보기</string>
     <string name="show_on_algoexplorer">Algoexplorer에서 보기</string>
     <string name="show_on_nftexplorer">NFTExplorer에서 보기</string>
-    <string name="you_are_not_the_owner">아직 해당 NFT의 소유자가 아니지만, NFT를 옵트인 설정했습니다. 이제 계정에 NFT를 전송 가능합니다.</string>
     <string name="we_don_t_support">아직 지원하지 않는 NFT 미디어 유형입니다.</string>
     <string name="we_can_t_display">현재 임시로 시각적 개체를 표시할 수 없습니다.</string>
     <string name="transfer">전송</string>
     <string name="send_your_nft">NFT 보내기</string>
     <string name="paste_an_algorand_wallet_address">알고랜드 지갑 주소 붙여넣기</string>
     <string name="ask_recipient_to">받는 분께 옵트인 요청</string>
-    <string name="you_cant_send"><annotation replacement="collectible_name">collectibleNamePlaceHolder</annotation>을(를) <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> 주소로 보낼 수 없습니다. 이 지갑은 아직 해당 자산을 옵트인 설정하지 않았습니다. <annotation font="dmsans_medium"><annotation custom="learn_more">옵트인에 대해 자세히 알아보세요</annotation></annotation></string>
+    <string name="you_cant_send"><annotation replacement="nft_name">NFTNamePlaceHolder</annotation>을(를) <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> 주소로 보낼 수 없습니다. 이 지갑은 아직 해당 자산을 옵트인 설정하지 않았습니다. <annotation font="dmsans_medium"><annotation custom="learn_more">옵트인에 대해 자세히 알아보세요</annotation></annotation></string>
     <string name="request_opt_in">옵트인 요청</string>
     <string name="information_about_opt">옵트인 정보</string>
     <string name="to_avoid_spammy">스팸 트랜잭션을 방지하기 위해, 알고랜드 블록체인은 이전에 옵트인한 자산에 대해서만 트랜잭션을 보내고 받도록 허용합니다.</string>
@@ -581,34 +568,23 @@
     <string name="transacting_fee">트랜잭션 수수료</string>
     <string name="confirm_transfer">전송 확인</string>
     <string name="search_asset_id_or_nft">자산 ID 또는 NFT 이름 검색</string>
-    <string name="receive_an_nft">NFT 받기</string>
-    <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name">accountNamePlaceholder</annotation>\"</annotation> 계정의 키가 재지정되었습니다.</string>
-    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>에서 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 계정에 추가했습니다. 해당 주소로 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 보낼 수 있습니다.</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>에서 <annotation font="dmsans_medium"><annotation replacement="receiver">receiverPlaceholder</annotation></annotation> 계정으로 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 전송하려고 합니다. 탭하여 이 자산에 옵트인하면 트랜잭션이 처리됩니다.</string>
+    <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name"></annotation>\"</annotation> 계정의 키가 재지정되었습니다.</string>
     <string name="transaction_send_successful">내 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 트랜잭션이(보내는 주소: <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, 받으시는 주소: <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>) 완료되었습니다.</string>
     <string name="transaction_send_failed">내 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 트랜잭션이(보내는 주소: <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, 받으시는 주소: <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>) 실패했습니다.</string>
     <string name="the_only_way_to">알고랜드 계정을 복원하는 유일한 방법은 이 복구 비밀문구를 사용하는 것뿐입니다.</string>
     <string name="monitor_activity_of">읽기 전용 계정을 사용하면 비밀문구가 없어도 계정 활동을 모니터링할 수 있습니다. 콜드 스토리지에 보관된 자산을 모니터링하는 데 유용한 기능입니다.</string>
     <string name="this_transaction_fee_is_higher">이 트랜잭션 수수료는 일반적인 수수료(0.001알고)보다 높습니다.</string>
-    <string name="you_are_about_to"><annotation replacement="asset_name">assetNamePlaceholder</annotation>을(를) <annotation replacement="account_name">accountNamePlaceholder</annotation>에서 삭제하려고 하십니다. 다시 추가하기 전까지는 이 계정에서 해당 자산을 거래하실 수 없습니다.</string>
-    <string name="to_remove_the_balance">잔액이 0인 경우에만 <annotation replacement="asset_name">assetNamePlaceholder</annotation> 삭제가 가능합니다. 잔액을 다른 계정으로 전송한 다음 다시 시도하시기 바랍니다.</string>
-    <string name="you_are_about_to_receive_description"><annotation replacement="account_name">accountNamePlaceholder</annotation>에서 자산 수신을 진행합니다. 자산을 수신 대상 계정에 추가하시겠습니까?</string>
     <string name="invalid_input_transaction_request">잘못된 입력: 트랜잭션 요청에 %1$d개 이상의 트랜잭션이 포함되었습니다.</string>
     <string name="selected_account">선택한 계정</string>
     <string name="your_nft_transfer_has_failed">NFT 전송에 실패했습니다!</string>
     <string name="please_try_again">다시 시도해 주세요.</string>
-    <string name="opt_out">옵트아웃</string>
     <string name="nft_successfully_opted_out">%1$s NFT가 옵트아웃되었습니다</string>
-    <string name="opted_in_to">다음을 옵트인:</string>
     <string name="show_on">보기:</string>
     <string name="you_are_about_to_remove_watch_account">읽기 전용 계정을 삭제하려고 하십니다. 정말로 계정을 삭제하시겠습니까?</string>
     <string name="you_are_about_to_remove_main_account">메인 계정을 삭제하려고 하십니다. 정말로 계정을 삭제하시겠습니까?</string>
-    <string name="this_watch_account_has_opted">본 읽기 전용 계정에서 이 NFT를 옵트인했지만 소유하지는 않습니다.</string>
     <string name="display_opted_in_nfts">옵트인 NFT 표시</string>
-    <string name="you_can_show_hide">옵트인되었지만 소유하지 않은 NFT를 표시하거나 숨길 수 있습니다.</string>
     <string name="filter">필터</string>
     <string name="show_filtered_nfts_formatted">필터링된 NFT 표시( %1$d )</string>
-    <string name="search_your_nfts">NFT 검색</string>
     <string name="enter_your_old">기존 6자리 PIN 번호를\n입력하세요</string>
     <string name="ledger_info_power_first_paragraph">
     <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Ledger의 Bluetooth 기능 사용법은 Ledger의 공식 <annotation type="bold"><annotation type="color">Bluetooth 연결 가이드에서 찾아보실 수 있습니다.</annotation></annotation></annotation>
@@ -630,8 +606,6 @@
     <string name="filter_by_date">날짜별 필터링</string>
     <string name="asset_history_not_available">자산 내역을 사용할 수 없습니다</string>
     <string name="the_history_for_this_spesific">지정하신 특정 자산의 내역을 사용할 수 없습니다.</string>
-    <string name="your_account_needs_to_be">계정에서 NFT를 옵트인해야 수신이 가능합니다. 확인할 때 자산 ID를 체크하시기 바랍니다.</string>
-    <string name="you_can_search_the_nft">아래의 검색창에 NFT 이름이나 자산 ID를 붙여넣어 옵트인할 NFT를 찾을 수 있습니다.</string>
     <string name="select_the_wallet_account">수신할 지갑 계정을 선택하세요.</string>
     <string name="receive_opt_out">받기(옵트아웃)</string>
     <string name="enter_your_six_digit_pin">6자리 PIN 번호를\n입력하세요</string>
@@ -639,7 +613,6 @@
     <string name="the_opt_out_request_has">Ledger 장치에서 옵트아웃 요청을 거부했습니다. 다시 시도해 주세요.</string>
     <string name="home">홈</string>
     <string name="price">가격</string>
-    <string name="three_d_card_mode">3D 카드 모드</string>
     <string name="alphabetically_a_to_z">알파벳순: A에서 Z로</string>
     <string name="alphabetically_z_to_a">알파벳순: Z에서 A로</string>
     <string name="highest_value_to_lowest">가장 높은 값에서 낮은 값으로</string>
@@ -656,10 +629,8 @@
     <string name="algo_or_any_asa">알고 또는 ASA를 다른 계정으로</string>
     <string name="view_or_copy">계정 주소를 확인하거나 복사</string>
     <string name="use_wallet_connect">WalletConnect을 사용하거나 계정 주소를 스캔</string>
-    <string name="opt_out_from_the">NFT 옵트아웃</string>
     <string name="asset_configuration">자산 구성</string>
     <string name="scan_qr">QR 스캔</string>
-    <string name="algorand_blockchain">알고랜드 블록체인에서 ASA를 받으려면 이전에 계정에서 해당 ASA에 옵트인해야 합니다. 이제 NFT를 다른 계정으로 전송했으므로 옵트아웃하실 수 있습니다. 옵트아웃하려면 추가 트랜잭션이 필요합니다.</string>
     <string name="scanned_account_address">스캔한 계정 주소</string>
     <string name="send_transaction">트랜잭션 전송</string>
     <string name="add_new_contact">새 연락처 추가</string>
@@ -684,12 +655,10 @@
     </plurals>
     <string name="inner_n_transactions">내부\n트랜잭션</string>
     <string name="inner_transactions">내부 트랜잭션</string>
-    <string name="your_accounts_don_t_contain_this">계정에 해당 자산이 없습니다, 자산을 추가한 다음 다시 시도해 주세요.</string>
     <plurals name="show_count_more_assets">
         <item quantity="other">자산 %1$d개 더 보기</item>
     </plurals>
     <string name="invalid_asset_id">잘못된 자산 ID</string>
-    <string name="asset_successfully_added_formatted">%1$s이(가) 계정에 추가되었습니다.</string>
     <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 자산이 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> 주소로 전송되었습니다(보내는 주소: <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>).</string>
     <string name="opt_in_to">계정에서 ASA 또는 NFT에 옵트인</string>
     <string name="add_new_asa">새 ASA 추가</string>
@@ -725,7 +694,6 @@
     <string name="transaction_submitted">트랜잭션 제출 완료</string>
     <string name="your_transaction_sub">트랜잭션이 알고랜드 네트워크로 제출되었습니다.</string>
     <string name="search_assets">자산 검색</string>
-    <string name="manage_collectibles">수집품 관리</string>
     <string name="asa_verification">ASA 인증</string>
     <string name="pera_wallet_s_algorand">Pera Wallet의 ASA(Algorand Standard Asset, 알고랜드 표준 자산) 인증 프로그램을 통해 ASA 작성자가 자산 소유자임을 확인하여 <annotation type="bold">자동으로</annotation> 검증할 수 있습니다.</string>
     <string name="the_main_purpose">ASA 인증의 주요 목적은<annotation type="bold"> ASA가 연결되지 않은 프로젝트에서 토큰 역할을 하는 것처럼 위장할 수 없도록 방지</annotation>하는 것입니다.</string>
@@ -763,20 +731,14 @@
     <string name="insufficient_algo_balance">알고 잔액 부족</string>
     <string name="you_can_opt_in_to_this">계정에서 자산을 옵트인할 수있습니다.</string>
     <string name="please_select_an_account_to">%1$s을(를) 추가할 계정을 선택하세요.</string>
-    <string name="asset_successfully_added_to_your">%1$s이(가) 계정에 추가되었습니다.</string>
-    <string name="asset_successfully_removed_from_your">%1$s이(가) 계정에서 제거되었습니다.</string>
     <string name="filter_nfts">NFT 필터링</string>
     <string name="newest_to_oldest">최신에서 오래된 것으로</string>
     <string name="oldest_to_newest">오래된 것에서 최신으로</string>
-    <string name="you_can_add_this_nft">NFT 추가 가능 대상:</string>
     <string name="opt_dash_in">옵트인</string>
     <string name="sorry_there_was">죄송합니다. 일부 계정을 가져오는 중에 오류가 발생했습니다. 포트폴리오 가치는 가져오는 데 성공한 계정을 기반으로만 계산됩니다.</string>
     <string name="we_couldn_t_find_any_assets">삭제할 자산을 찾을 수 없습니다.</string>
     <string name="the_algo_is_the_official_cryptocurrency">알고(Algo)는 알고랜드 블록체인의 공식 암호화폐입니다. 알고랜드 블록체인은 누구나 참여할 수 있는, 국경 없이 개방된 경제를 만들기 위해 설계되었습니다. 새로운 유형의 디지털 경제는 모두가 즉시 사용할 수 있는 진정한 디지털 통화가 있어야 실현할 수 있습니다. 그것이 바로 알고입니다.</string>
-    <string name="opt_out_nft">NFT 옵트아웃</string>
-    <string name="you_are_about_to_opt">%1$s을(를) 옵트아웃하려고 하십니다. 다시 추가하기 전까지는 이 계정에서 해당 자산을 거래하실 수 없습니다.</string>
     <string name="opt_in_to_nft">NFT 옵트인</string>
-    <string name="opting_in_to_an_nft">NFT 옵트인 시 최소 트랜잭션 수수료의 트랜잭션을 전송해야 합니다. 해당 정보는 트랜잭션 내역에 표시됩니다.</string>
     <string name="this_account_doesn_t">계정에 트랜잭션을 수행할 잔액이 부족합니다.</string>
     <string name="we_couldn_t">WalletConnect 세션을 시작한 브라우저를 자동으로 감지할 수 없습니다. %1$s(으)로 돌아가려면 선택하세요.</string>
     <string name="select_a_browser">브라우저 선택</string>
@@ -825,7 +787,7 @@
     <string name="from_to_to_asset_ratio"><annotation replacement="ratio">비율</annotation> <annotation replacement="secondAssetShortName">secondAssetShortName</annotation> 당 <annotation replacement="firstAssetShortName">assetShortName</annotation></string>
     <string name="slippage_tolerance_value_updated">슬리피지 허용 값이 업데이트되었습니다!</string>
     <string name="sign_with_ledger">Ledger로 서명하기</string>
-    <string name="we_ve_detected_that_you">계정에서 Ledger 기기를 사용 중이신 것으로 나타났습니다.  <annotation font="dmsans_medium">하드웨어 코튼을 사용하여 트랜잭션 <annotation replacement="transaction_count">transactionCountPlaceholder</annotation>건에 하나하나 서명하셔야 합니다</annotation>.</string>
+    <string name="we_ve_detected_that_you">계정에서 Ledger 기기를 사용 중이신 것으로 나타났습니다.  <annotation font="dmsans_medium">하드웨어 토큰을 사용하여 트랜잭션 <annotation replacement="transaction_count">transactionCountPlaceholder</annotation>건에 하나하나 서명하셔야 합니다</annotation>.</string>
     <plurals name="sign_transaction">
         <item quantity="other">트랜잭션 서명</item>
     </plurals>
@@ -874,4 +836,19 @@
     <string name="total_owned">총 소유</string>
     <string name="this_is_the_fee_charged">이것은 탈중앙화 거래소에서 부과하는 수수료입니다. 보내는 금액에서 자동으로 차감되어 최소 수신 금액에 반영됩니다. 여기에서 추가 비용이 더 청구되지 않습니다.</string>
     <string name="we_encountered_an_unexpected">예상치 못한 오류가 발생했습니다. 나중에 다시 시도해 주세요.</string>
+    <string name="asa_balance_is_not_sufficient_formatted"><annotation replacement="asa_short_name">asaShortNamePlaceholder</annotation> 잔액이 부족합니다.</string>
+    <string name="asa_balance_is_not_sufficient">잔액이 부족합니다.</string>
+    <string name="future_transaction_detected">예정 트랜잭션 감지</string>
+    <plurals name="select_accounts">
+        <item quantity="other">계정 선택</item>
+    </plurals>
+    <string name="you_cannot_optin">이 계정에 옵트인할 수 없습니다. 읽기 전용 계정입니다.</string>
+    <string name="you_cannot_take">이 계정에 대해 조치를 취할 수 없습니다. 계정이 기기에서 삭제되었습니다.</string>
+    <string name="caution_price_impact">주의! 가격 영향이 5%%보다 큽니다. 풀의 유동성이 낮을 수 있다는 점에 유의하세요. 스왑을 진행하기 전에 결과를 이해했는지 확인하시기 바랍니다.</string>
+    <string name="discover">알아보기</string>
+    <string name="search_for_any_asa_by">전체 ASA에서 이름이나 ID로 검색</string>
+    <string name="we_are_not_able_to_find">자산을 찾을 수 없습니다. 잠시 후 다시 시도해 주세요.</string>
+    <string name="no_internet_connection">인터넷 연결 없음</string>
+    <string name="you_dont_seem_to_be_connected">인터넷에 연결되지 않으신 것 같습니다. 연결을 확인하고 다시 시도해 주세요.</string>
+    <string name="we_cant_get_that_information">현재 정보를 가져올 수 없습니다. 잠시 후 다시 시도해 주세요.</string>
 </resources>

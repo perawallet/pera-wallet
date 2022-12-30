@@ -96,6 +96,19 @@ fun BigInteger?.formatAmountByCollectibleFractionalDigit(
     )
 }
 
+fun BigDecimal?.formatAmountByCollectibleFractionalDigit(
+    decimals: Int,
+    isDecimalFixed: Boolean = false,
+    isCompact: Boolean = false
+): String {
+    return (this ?: BigDecimal.ZERO).formatAmount(
+        decimals = decimals,
+        isDecimalFixed = isDecimalFixed,
+        isCompact = isCompact,
+        fractionalDigit = CollectibleFractionalDigit
+    )
+}
+
 fun BigDecimal.formatAmount(
     decimals: Int,
     isDecimalFixed: Boolean,

@@ -15,8 +15,13 @@ package com.algorand.android.nft.domain.usecase
 import com.algorand.android.R
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.nft.mapper.CollectibleReceiverSelectionPreviewMapper
+import com.algorand.android.nft.ui.model.CollectibleReceiverSelectionPreview
 import com.algorand.android.usecase.AccountSelectionListUseCase
+import com.algorand.android.utils.isValidAddress
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 
 class CollectibleReceiverSelectionPreviewUseCase @Inject constructor(
@@ -24,30 +29,95 @@ class CollectibleReceiverSelectionPreviewUseCase @Inject constructor(
     private val collectibleReceiverSelectionPreviewMapper: CollectibleReceiverSelectionPreviewMapper
 ) {
 
-    suspend fun getCollectibleReceiverSelectionPreview(
-        query: String
-    ) = flow {
-        emit(collectibleReceiverSelectionPreviewMapper.mapToLoading())
-        val accountItems = accountSelectionListUseCase.createAccountSelectionListAccountItems(
+    fun getCollectibleReceiverSelectionPreview(
+        query: String,
+        copiedMessage: String?
+    ): Flow<CollectibleReceiverSelectionPreview> {
+        val accountItems = createAccountItems(query)
+        val contactItems = createContactItems(query)
+        val nftDomainItems = createNftDomainItems(query)
+        val queriedAddress = query.takeIf { it.isValidAddress() }
+        return combine(
+            accountItems,
+            contactItems,
+            nftDomainItems
+        ) { accounts, contacts, nftDomains ->
+            val accountSelectionItems = mutableListOf<BaseAccountSelectionListItem>().apply {
+                createPasteItem(copiedMessage)?.run { add(this) }
+                createQueriedAccountItem(
+                    accountAddresses = accounts.map { it.publicKey },
+                    contactAddresses = contacts.map { it.publicKey },
+                    queriedAddress = queriedAddress
+                )?.run {
+                    add(BaseAccountSelectionListItem.HeaderItem(R.string.account))
+                    add(this)
+                }
+                if (contacts.isNotEmpty()) {
+                    add(BaseAccountSelectionListItem.HeaderItem(R.string.contacts))
+                    addAll(contacts)
+                }
+                if (accounts.isNotEmpty()) {
+                    add(BaseAccountSelectionListItem.HeaderItem(R.string.my_accounts))
+                    addAll(accounts)
+                }
+                if (nftDomains.isNotEmpty()) {
+                    add(BaseAccountSelectionListItem.HeaderItem(R.string.matched_accounts))
+                    addAll(nftDomains)
+                }
+            }
+            collectibleReceiverSelectionPreviewMapper.mapTo(accountSelectionItems)
+        }.distinctUntilChanged()
+    }
+
+    private fun createPasteItem(latestCopiedMessage: String?): BaseAccountSelectionListItem.PasteItem? {
+        return latestCopiedMessage.takeIf { it.isValidAddress() }?.let { copiedAccount ->
+            BaseAccountSelectionListItem.PasteItem(copiedAccount)
+        }
+    }
+
+    private fun createQueriedAccountItem(
+        queriedAddress: String?,
+        accountAddresses: List<String>,
+        contactAddresses: List<String>
+    ): BaseAccountSelectionListItem.BaseAccountItem.AccountItem? {
+        if (queriedAddress.isNullOrBlank()) return null
+        val shouldInsertQueriedAccount = shouldInsertQueriedAccount(
+            accountAddresses = accountAddresses,
+            contactAddresses = contactAddresses,
+            queriedAccount = queriedAddress
+        )
+        if (!shouldInsertQueriedAccount) return null
+        return accountSelectionListUseCase.createAccountSelectionItemFromAccountAddress(
+            accountAddress = queriedAddress
+        )
+    }
+
+    private fun shouldInsertQueriedAccount(
+        accountAddresses: List<String>,
+        contactAddresses: List<String>,
+        queriedAccount: String?
+    ): Boolean {
+        return !accountAddresses.contains(queriedAccount) && !contactAddresses.contains(queriedAccount)
+    }
+
+    private fun createContactItems(query: String) = flow {
+        val contactListItems = accountSelectionListUseCase.createAccountSelectionListContactItems().filter {
+            it.displayName.contains(query, true) || it.publicKey.contains(query, true)
+        }
+        emit(contactListItems)
+    }
+
+    private fun createAccountItems(query: String) = flow {
+        val accountListItems = accountSelectionListUseCase.createAccountSelectionListAccountItems(
             showHoldings = false,
             shouldIncludeWatchAccounts = true,
             showFailedAccounts = true
         ).filter { it.displayName.contains(query, true) || it.publicKey.contains(query, true) }
+        emit(accountListItems)
+    }
 
-        val contactItems = accountSelectionListUseCase.createAccountSelectionListContactItems().filter {
-            it.displayName.contains(query, true) || it.publicKey.contains(query, true)
-        }
-
-        val accountSelectionItems = mutableListOf<BaseAccountSelectionListItem>().apply {
-            if (contactItems.isNotEmpty()) {
-                add(BaseAccountSelectionListItem.HeaderItem(R.string.contacts))
-                addAll(contactItems)
-            }
-            if (accountItems.isNotEmpty()) {
-                add(BaseAccountSelectionListItem.HeaderItem(R.string.my_accounts))
-                addAll(accountItems)
-            }
-        }
-        emit(collectibleReceiverSelectionPreviewMapper.mapTo(accountSelectionItems))
+    private fun createNftDomainItems(query: String) = flow {
+        val nftDomainListItems = accountSelectionListUseCase.createAccountSelectionNftDomainItems(query)
+        emit(nftDomainListItems)
     }
 }

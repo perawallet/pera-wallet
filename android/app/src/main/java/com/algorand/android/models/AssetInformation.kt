@@ -15,7 +15,6 @@ package com.algorand.android.models
 import android.content.res.Resources
 import android.os.Parcelable
 import com.algorand.android.assetsearch.domain.model.VerificationTier
-import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.ALGO_FULL_NAME
 import com.algorand.android.utils.ALGO_SHORT_NAME
@@ -111,18 +110,6 @@ data class AssetInformation(
                     assetDrawableProvider = assetDrawableProvider,
                     verificationTier = verificationTier,
                     prismUrl = prismUrl
-                )
-            }
-        }
-
-        // TODO: 18.03.2022 Remove this function after changing TransactionBaseFragment
-        fun createAssetInformation(collectibleDetail: CollectibleDetail): AssetInformation {
-            return with(collectibleDetail) {
-                AssetInformation(
-                    assetId = collectibleId,
-                    creatorPublicKey = creatorWalletAddress?.publicKey,
-                    fullName = collectibleName,
-                    verificationTier = null
                 )
             }
         }

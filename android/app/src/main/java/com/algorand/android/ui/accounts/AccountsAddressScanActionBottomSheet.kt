@@ -16,7 +16,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.algorand.android.HomeNavigationDirections
-import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetAccountsAddressScanActionBinding
@@ -71,10 +70,10 @@ class AccountsAddressScanActionBottomSheet : BaseBottomSheet(
             return
         }
         nav(
-            MainNavigationDirections.actionNewAccount(
-                shouldNavToRegisterWatchAccount = true,
-                accountAddress = accountsAddressScanActionViewModel.getAccountAddress()
-            )
+            AccountsAddressScanActionBottomSheetDirections
+                .actionAccountsAddressScanActionBottomSheetToRegisterWatchAccountNavigation(
+                    accountAddress = accountsAddressScanActionViewModel.getAccountAddress()
+                )
         )
     }
 

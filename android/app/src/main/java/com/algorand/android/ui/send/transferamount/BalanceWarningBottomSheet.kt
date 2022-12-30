@@ -18,7 +18,6 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetBalanceWarningBinding
-import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.AlgoDrawableProvider
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -66,11 +65,8 @@ class BalanceWarningBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_balance_
                 setTitleText(preview.algoFullName)
                 setDescriptionText(preview.algoShortName)
                 AlgoDrawableProvider().provideAssetDrawable(
-                    context = context,
-                    assetName = AssetName.create(preview.algoShortName),
-                    logoUri = null,
-                    width = resources.getDimensionPixelSize(R.dimen.asset_avatar_image_size),
-                    onResourceReady = ::setStartIconDrawable
+                    imageView = getStartIconImageView(),
+                    onResourceFailed = ::setStartIconDrawable
                 )
             }
         }

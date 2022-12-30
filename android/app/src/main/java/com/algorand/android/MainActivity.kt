@@ -42,7 +42,7 @@ import com.algorand.android.core.TransactionManager
 import com.algorand.android.customviews.AlertView
 import com.algorand.android.customviews.CoreActionsTabBarView
 import com.algorand.android.customviews.LedgerLoadingDialog
-import com.algorand.android.discover.common.ui.BaseDiscoverFragment
+import com.algorand.android.customviews.customsnackbar.CustomSnackbar
 import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetAction
@@ -61,6 +61,7 @@ import com.algorand.android.modules.assets.action.optin.UnsupportedAssetNotifica
 import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
 import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
+import com.algorand.android.modules.perawebview.ui.BasePeraWebViewFragment
 import com.algorand.android.modules.qrscanning.QrScannerViewModel
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.WalletConnectConnectionBottomSheet
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
@@ -274,10 +275,22 @@ class MainActivity :
                         mainViewModel.sendAssetOperationSignedTransaction(signedTransactionDetail)
                     }
                 }
-                is TransactionManagerResult.Error -> {
+                is TransactionManagerResult.Error.GlobalWarningError -> {
                     hideLedgerLoadingDialog()
                     val (title, errorMessage) = result.getMessage(this)
                     showGlobalError(title = title, errorMessage = errorMessage, tag = activityTag)
+                }
+                is TransactionManagerResult.Error.SnackbarError -> {
+                    hideLedgerLoadingDialog()
+                    CustomSnackbar.Builder()
+                        .setTitleTextResId(result.titleResId)
+                        .setDescriptionTextResId(result.descriptionResId)
+                        .setActionButtonTextResId(result.buttonTextResId)
+                        .setActionButtonClickListener {
+                            retryLatestAssetAdditionTransaction().also { dismiss() }
+                        }
+                        .build()
+                        .show(binding.root)
                 }
                 is TransactionManagerResult.LedgerWaitingForApproval -> showLedgerLoadingDialog(result.bluetoothName)
                 is TransactionManagerResult.Loading -> showProgress()
@@ -289,6 +302,12 @@ class MainActivity :
                     sendErrorLog("Unhandled else case in transactionManagerResultLiveData")
                 }
             }
+        }
+    }
+
+    private fun retryLatestAssetAdditionTransaction() {
+        mainViewModel.getLatestAddAssetTransaction()?.let { transactionData ->
+            sendAssetOperationTransaction(transactionData)
         }
     }
 
@@ -452,7 +471,7 @@ class MainActivity :
         if (isAppUnlocked) {
             nav(
                 directions = MainNavigationDirections.actionGlobalWalletConnectRequestNavigation(
-                    isFromDiscover = isDiscoverActive()
+                    shouldSkipConfirmation = isBasePeraWebViewFragmentActive()
                 ),
                 onError = { saveWcTransactionToPendingIntent(transaction.requestId) }
             )
@@ -506,9 +525,9 @@ class MainActivity :
         )
     }
 
-    fun isDiscoverActive(): Boolean {
+    fun isBasePeraWebViewFragmentActive(): Boolean {
         return (supportFragmentManager.findFragmentById(binding.navigationHostFragment.id) as NavHostFragment)
-            .childFragmentManager.fragments[0] is BaseDiscoverFragment
+            .childFragmentManager.fragments[0] is BasePeraWebViewFragment
     }
 
     private fun onIntentHandlingFailed(@StringRes errorMessageResId: Int) {
@@ -589,15 +608,9 @@ class MainActivity :
     fun signAddAssetTransaction(assetActionResult: AssetActionResult) {
         if (!assetActionResult.publicKey.isNullOrBlank()) {
             val accountCacheData = accountCacheManager.getCacheData(assetActionResult.publicKey) ?: return
-            transactionManager.setup(lifecycle)
-            transactionManager.initSigningTransactions(
-                isGroupTransaction = false,
-                TransactionData.AddAsset(
-                    accountCacheData = accountCacheData,
-                    assetInformation = assetActionResult.asset,
-                    shouldWaitForConfirmation = assetActionResult.shouldWaitForConfirmation
-                )
-            )
+            val transactionData = TransactionData.AddAsset(accountCacheData, assetActionResult.asset)
+            mainViewModel.setLatestAddAssetTransaction(transactionData)
+            sendAssetOperationTransaction(transactionData)
         }
     }
 
@@ -607,12 +620,16 @@ class MainActivity :
             val transactionData = with(assetActionResult) {
                 TransactionData.RemoveAsset(accountCacheData, asset, asset.creatorPublicKey.orEmpty())
             }
-            transactionManager.setup(lifecycle)
-            transactionManager.initSigningTransactions(
-                isGroupTransaction = false,
-                transactionData
-            )
+            sendAssetOperationTransaction(transactionData)
         }
+    }
+
+    private fun sendAssetOperationTransaction(transactionData: TransactionData) {
+        transactionManager.setup(lifecycle)
+        transactionManager.initSigningTransactions(
+            isGroupTransaction = false,
+            transactionData
+        )
     }
 
     private fun onWalletConnectSessionTimedOut() {

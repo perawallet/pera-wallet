@@ -24,6 +24,8 @@ import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.MAINNET_NETWORK_SLUG
 import com.algorand.android.utils.analytics.logTransactionEvent
 import com.algorand.android.utils.exception.AccountAlreadyOptedIntoAssetException
+import com.algorand.android.utils.exceptions.TransactionConfirmationAwaitException
+import com.algorand.android.utils.exceptions.TransactionIdNullException
 import com.google.firebase.analytics.FirebaseAnalytics
 import javax.inject.Inject
 import kotlinx.coroutines.flow.channelFlow
@@ -52,7 +54,7 @@ class SendSignedTransactionUseCase @Inject constructor(
                     val txnId = sendTransactionResponse.taxId
                     if (signedTransactionDetail.shouldWaitForConfirmation) {
                         if (txnId.isNullOrBlank()) {
-                            send(DataResource.Error.Local(Exception()))
+                            send(DataResource.Error.Local(TransactionIdNullException()))
                             return@use
                         }
                         transactionConfirmationUseCase.waitForConfirmation(txnId).collectLatest {
@@ -61,10 +63,9 @@ class SendSignedTransactionUseCase @Inject constructor(
                                     send(getSendTransactionResult(signedTransactionDetail, shouldLogTransaction, txnId))
                                 },
                                 onFailed = { error ->
-                                    // TODO handle exceptions better
                                     error.exception?.let { exception ->
                                         send(DataResource.Error.Api(exception, error.code))
-                                    } ?: send(DataResource.Error.Api(Exception(), null))
+                                    } ?: send(DataResource.Error.Api(TransactionConfirmationAwaitException(), null))
                                 }
                             )
                         }

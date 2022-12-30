@@ -20,7 +20,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.nft.domain.usecase.AccountCollectiblesListingPreviewUseCase.Companion.ACCOUNT_COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX
-import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.nftlisting.BaseCollectiblesListingFragment
 import com.algorand.android.utils.addItemVisibilityChangeListener
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
@@ -33,35 +32,12 @@ class AccountCollectiblesFragment : BaseCollectiblesListingFragment() {
 
     override val fragmentConfiguration = FragmentConfiguration()
 
-    private val accountCollectiblesViewModel by viewModels<AccountCollectiblesViewModel>()
-
-    override val baseCollectibleListingViewModel: BaseCollectibleListingViewModel
-        get() = accountCollectiblesViewModel
+    override val baseCollectibleListingViewModel: AccountCollectiblesViewModel by viewModels()
 
     private var listener: Listener? = null
 
-    override fun onVideoItemClick(collectibleAssetId: Long, publicKey: String) {
+    override fun onOwnedNFTItemClick(collectibleAssetId: Long, publicKey: String) {
         listener?.onVideoItemClick(collectibleAssetId)
-    }
-
-    override fun onImageItemClick(collectibleAssetId: Long, publicKey: String) {
-        listener?.onImageItemClick(collectibleAssetId)
-    }
-
-    override fun onSoundItemClick(collectibleAssetId: Long, publicKey: String) {
-        listener?.onSoundItemClick(collectibleAssetId)
-    }
-
-    override fun onGifItemClick(collectibleAssetId: Long, publicKey: String) {
-        listener?.onGifItemClick(collectibleAssetId)
-    }
-
-    override fun onNotSupportedItemClick(collectibleAssetId: Long, publicKey: String) {
-        listener?.onNotSupportedItemClick(collectibleAssetId)
-    }
-
-    override fun onMixedItemClick(collectibleAssetId: Long, publicKey: String) {
-        listener?.onMixedItemClick(collectibleAssetId)
     }
 
     override fun onReceiveCollectibleClick() {
@@ -76,11 +52,11 @@ class AccountCollectiblesFragment : BaseCollectiblesListingFragment() {
 
     override fun initCollectiblesListingPreviewCollector() {
         viewLifecycleOwner.collectLatestOnLifecycle(
-            accountCollectiblesViewModel.collectiblesListingPreviewFlow,
+            baseCollectibleListingViewModel.collectiblesListingPreviewFlow,
             collectibleListingPreviewCollector
         )
         viewLifecycleOwner.collectLatestOnLifecycle(
-            flow = accountCollectiblesViewModel.collectiblesListingPreviewFlow
+            flow = baseCollectibleListingViewModel.collectiblesListingPreviewFlow
                 .map { it?.isAddCollectibleFloatingActionButtonVisible }
                 .distinctUntilChanged(),
             collection = addCollectibleFloatingActionButtonVisibilityCollector,

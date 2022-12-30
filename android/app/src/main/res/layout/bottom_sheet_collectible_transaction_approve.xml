@@ -148,6 +148,15 @@
             app:layout_constraintTop_toTopOf="@id/transactionFeeLabelTextView"
             tools:text="46 ALGO" />
 
+        <View
+            android:id="@+id/transactionFeeDivider"
+            style="@style/Divider.Horizontal"
+            android:layout_marginHorizontal="0dp"
+            android:layout_marginTop="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/transactionFeeTextView" />
+
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/optOutCheckbox"
             style="@style/CheckBoxStyle"
@@ -158,7 +167,7 @@
             android:text="@string/opt_out_from_the"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/transactionFeeLabelTextView"
+            app:layout_constraintTop_toBottomOf="@id/transactionFeeDivider"
             tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
@@ -168,9 +177,9 @@
             android:layout_height="24dp"
             app:icon="@drawable/ic_info"
             app:iconTint="@color/tertiary_icon_tint_color"
+            app:layout_constraintBottom_toBottomOf="@id/optOutCheckbox"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/optOutCheckbox"
-            app:layout_constraintBottom_toBottomOf="@id/optOutCheckbox"/>
+            app:layout_constraintTop_toTopOf="@id/optOutCheckbox" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/optOutGroup"

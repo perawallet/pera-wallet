@@ -139,7 +139,6 @@ abstract class BaseAddAssetFragment(@LayoutRes layoutResId: Int) : BaseFragment(
         screenStateView.isVisible = loadStatePreview.isScreenStateViewVisible
         assetsRecyclerView.isVisible = loadStatePreview.isAssetListVisible
         loadStatePreview.screenStateViewType?.let { screenStateView.setupUi(it) }
-        loadStatePreview.onRetryEvent?.consume()?.run { assetSearchAdapter.retry() }
     }
 
     fun interface BaseAddAssetFragmentListener {

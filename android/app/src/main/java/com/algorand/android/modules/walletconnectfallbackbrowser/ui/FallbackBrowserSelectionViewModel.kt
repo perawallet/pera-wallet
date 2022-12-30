@@ -13,12 +13,10 @@
 package com.algorand.android.modules.walletconnectfallbackbrowser.ui
 
 import android.content.pm.PackageManager
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.walletconnectfallbackbrowser.ui.model.FallbackBrowserSelectionPreview
 import com.algorand.android.modules.walletconnectfallbackbrowser.ui.usecase.FallbackBrowserSelectionPreviewUseCase
-import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -27,17 +25,14 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class FallbackBrowserSelectionViewModel @Inject constructor(
-    private val fallbackBrowserSelectionPreviewUseCase: FallbackBrowserSelectionPreviewUseCase,
-    savedStateHandle: SavedStateHandle
+    private val fallbackBrowserSelectionPreviewUseCase: FallbackBrowserSelectionPreviewUseCase
 ) : BaseViewModel() {
 
     val fallbackBrowserSelectionPreviewFlow: Flow<FallbackBrowserSelectionPreview>
         get() = _fallbackBrowserSelectionPreviewFlow
     private val _fallbackBrowserSelectionPreviewFlow = MutableStateFlow(getInitialLoadingPreview())
 
-    private val browserGroup = savedStateHandle.getOrThrow<String>(BROWSER_GROUP_KEY)
-
-    fun updatePreviewWithBrowserList(packageManager: PackageManager?) {
+    fun updatePreviewWithBrowserList(packageManager: PackageManager?, browserGroup: String) {
         viewModelScope.launch {
             _fallbackBrowserSelectionPreviewFlow.emit(
                 fallbackBrowserSelectionPreviewUseCase.getFallbackBrowserPreview(
@@ -50,9 +45,5 @@ class FallbackBrowserSelectionViewModel @Inject constructor(
 
     private fun getInitialLoadingPreview(): FallbackBrowserSelectionPreview {
         return fallbackBrowserSelectionPreviewUseCase.getInitialLoadingPreview()
-    }
-
-    companion object {
-        private const val BROWSER_GROUP_KEY = "browserGroup"
     }
 }

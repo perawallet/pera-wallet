@@ -31,7 +31,8 @@ class DatabaseMigrationUnitTest {
         AlgorandDatabase.MIGRATION_6_7,
         AlgorandDatabase.MIGRATION_7_8,
         AlgorandDatabase.MIGRATION_8_9,
-        AlgorandDatabase.MIGRATION_9_10
+        AlgorandDatabase.MIGRATION_9_10,
+        AlgorandDatabase.MIGRATION_10_11
     )
     private var migratedDb: SupportSQLiteDatabase? = null
     private lateinit var gson: Gson
@@ -119,6 +120,7 @@ class DatabaseMigrationUnitTest {
                     wc_session,
                     date_time_stamp, 
                     is_connected,
+                    is_subscribed,
                     fallback_browser_group_response
                 )
                 VALUES (
@@ -126,6 +128,7 @@ class DatabaseMigrationUnitTest {
                     '$peerMetaJson',
                     '$sessionMetaJson',
                     1625574947350,
+                    0,
                     0,
                     '$fallbackBrowserGroupResponse'
                 )

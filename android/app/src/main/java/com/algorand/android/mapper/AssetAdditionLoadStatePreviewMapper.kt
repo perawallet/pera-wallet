@@ -17,7 +17,6 @@ import com.algorand.android.decider.AssetAdditionScreenStateViewTypeDecider
 import com.algorand.android.decider.AssetAdditionScreenStateViewVisibilityDecider
 import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
 import com.algorand.android.modules.assets.addition.ui.model.AssetAdditionType
-import com.algorand.android.utils.Event
 import javax.inject.Inject
 
 class AssetAdditionLoadStatePreviewMapper @Inject constructor(
@@ -30,8 +29,7 @@ class AssetAdditionLoadStatePreviewMapper @Inject constructor(
         itemCount: Int,
         assetAdditionType: AssetAdditionType,
         isAssetListVisible: Boolean,
-        isLoading: Boolean,
-        onRetryEvent: Event<Unit>?
+        isLoading: Boolean
     ): AssetAdditionLoadStatePreview {
         return AssetAdditionLoadStatePreview(
             isAssetListVisible = isAssetListVisible,
@@ -44,8 +42,7 @@ class AssetAdditionLoadStatePreviewMapper @Inject constructor(
                 itemCount = itemCount,
                 assetAdditionType = assetAdditionType
             ),
-            isLoading = isLoading,
-            onRetryEvent = onRetryEvent
+            isLoading = isLoading
         )
     }
 }

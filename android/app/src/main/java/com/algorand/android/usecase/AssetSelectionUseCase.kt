@@ -23,15 +23,13 @@ import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseO
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData
 import com.algorand.android.models.BaseSelectAssetItem
+import com.algorand.android.modules.collectibles.detail.ui.usecase.CollectibleDetailItemUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.modules.sorting.assetsorting.ui.usecase.AssetItemSortUseCase
-import com.algorand.android.nft.domain.usecase.CollectibleDetailItemUseCase
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.nft.mapper.AssetSelectionPreviewMapper
 import com.algorand.android.nft.ui.model.AssetSelectionPreview
 import com.algorand.android.utils.Event
-import com.algorand.android.utils.isGreaterThan
-import java.math.BigInteger
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -74,12 +72,12 @@ class AssetSelectionUseCase @Inject constructor(
             val assetItemConfiguration = with(baseAccountAssetData) {
                 assetItemConfigurationMapper.mapTo(
                     isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                    secondaryValueText = getSelectedCurrencyParityValue().getFormattedValue(isCompact = true),
+                    secondaryValueText =
+                    getSelectedCurrencyParityValue().getFormattedValue(isCompact = true),
                     formattedCompactAmount = formattedCompactAmount,
                     assetId = id,
                     name = name,
                     shortName = shortName,
-                    prismUrl = prismUrl,
                     verificationTier = verificationTier,
                     primaryValue = parityValueInSelectedCurrency.amountAsCurrency
                 )
@@ -92,7 +90,7 @@ class AssetSelectionUseCase @Inject constructor(
         accountCollectibleData: List<BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData>
     ): List<BaseSelectAssetItem.BaseSelectCollectibleItem> {
         return accountCollectibleData.mapNotNull { ownedCollectibleData ->
-            val isOwnedByTheUser = ownedCollectibleData.amount isGreaterThan BigInteger.ZERO
+            val isOwnedByTheUser = ownedCollectibleData.isOwnedByTheUser
             if (isOwnedByTheUser) {
                 when (ownedCollectibleData) {
                     is OwnedCollectibleImageData -> assetSelectionMapper.mapToCollectibleImageItem(ownedCollectibleData)
@@ -158,22 +156,14 @@ class AssetSelectionUseCase @Inject constructor(
         val senderAddress = loadingFinishedStatePreview.assetTransaction.senderAddress
         val isPureCollectible = simpleCollectibleUseCase.isCachedCollectiblePureIfExists(assetId)
         if (isPureCollectible == true) {
-            collectibleDetailItemUseCase.getCollectibleDetailItemFlow(assetId, senderAddress).collect {
-                it.useSuspended(
-                    onSuccess = {
-                        emit(loadingFinishedStatePreview.copy(navigateToCollectibleSendFragmentEvent = Event(it)))
-                    },
-                    onFailed = {
-                        emit(
-                            loadingFinishedStatePreview.copy(
-                                navigateToAssetTransferAmountFragmentEvent = Event(
-                                    assetId
-                                )
-                            )
-                        )
-                    }
-                )
-            }
+            collectibleDetailItemUseCase.getCollectibleDetailItemFlow(assetId, senderAddress).use(
+                onSuccess = {
+                    emit(loadingFinishedStatePreview.copy(navigateToCollectibleSendFragmentEvent = Event(it)))
+                },
+                onFailed = { _, _ ->
+                    emit(loadingFinishedStatePreview.copy(navigateToAssetTransferAmountFragmentEvent = Event(assetId)))
+                }
+            )
         } else {
             emit(loadingFinishedStatePreview.copy(navigateToAssetTransferAmountFragmentEvent = Event(assetId)))
         }

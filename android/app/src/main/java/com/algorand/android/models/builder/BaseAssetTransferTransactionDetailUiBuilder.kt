@@ -103,7 +103,7 @@ class BaseAssetTransferTransactionDetailUiBuilder @Inject constructor(
                 rekeyToAccountAddress = getFromAddressAsDisplayAddress(
                     getRekeyToAccountAddress()?.decodedAddress.orEmpty()
                 ),
-                closeToAccountAddress = getFromAddressAsDisplayAddress(
+                assetCloseToAddress = getFromAddressAsDisplayAddress(
                     getCloseToAccountAddress()?.decodedAddress.orEmpty()
                 ),
                 isLocalAccountSigner = warningCount != null

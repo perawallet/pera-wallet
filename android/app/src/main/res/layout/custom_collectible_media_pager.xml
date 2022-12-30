@@ -20,22 +20,26 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/collectibleMediaViewPager"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/spacing_xlarge"
         app:layout_constraintBottom_toTopOf="@id/collectibleMediaTabLayout"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@drawable/ic_algo" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/collectibleMediaTabLayout"
         style="@style/TabLayoutStyle"
         android:layout_width="0dp"
-        android:layout_height="@dimen/spacing_large"
-        android:layout_marginTop="@dimen/spacing_xsmall"
-        android:minHeight="0dp"
+        android:layout_height="@dimen/spacing_xsmall"
+        android:layout_marginTop="@dimen/spacing_small"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/collectibleMediaViewPager"
         app:layout_constraintStart_toStartOf="@id/collectibleMediaViewPager"
         app:layout_constraintTop_toBottomOf="@id/collectibleMediaViewPager"
@@ -44,34 +48,5 @@
         app:tabMode="scrollable"
         app:tabPadding="0dp"
         tools:visibility="visible" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/collectibleMediaBottomButton"
-        style="@style/IconButton.Transparent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/spacing_xxxlarge"
-        android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
-        android:textColor="@color/text_gray_lighter"
-        android:visibility="invisible"
-        app:iconTint="@color/text_gray_lighter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/collectibleMediaTabLayout"
-        app:layout_goneMarginTop="@dimen/spacing_xxsmall"
-        tools:icon="@drawable/ic_3d_object"
-        tools:text="@string/three_d_card_mode"
-        tools:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/fullScreenImageView"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_margin="@dimen/spacing_small"
-        android:background="@drawable/bg_collectible_badge"
-        app:layout_constraintBottom_toBottomOf="@id/collectibleMediaViewPager"
-        app:layout_constraintEnd_toEndOf="@id/collectibleMediaViewPager"
-        app:srcCompat="@drawable/ic_fullscreen" />
 
 </merge>

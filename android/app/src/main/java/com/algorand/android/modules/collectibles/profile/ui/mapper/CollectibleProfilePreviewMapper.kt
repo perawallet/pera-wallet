@@ -13,29 +13,49 @@
 package com.algorand.android.modules.collectibles.profile.ui.mapper
 
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
-import com.algorand.android.modules.collectibles.profile.ui.model.CollectibleProfile
+import com.algorand.android.modules.collectibles.detail.base.ui.model.BaseCollectibleMediaItem
+import com.algorand.android.modules.collectibles.detail.base.ui.model.CollectibleTraitItem
 import com.algorand.android.modules.collectibles.profile.ui.model.CollectibleProfilePreview
-import com.algorand.android.utils.Event
+import com.algorand.android.utils.AssetName
 import javax.inject.Inject
 
 class CollectibleProfilePreviewMapper @Inject constructor() {
 
+    @SuppressWarnings("LongParameterList")
     fun mapToCollectibleProfilePreview(
         isLoadingVisible: Boolean,
         asaStatusPreview: AsaStatusPreview?,
-        collectibleProfile: CollectibleProfile?,
-        onTransactionLoadingEvent: Event<Unit>? = null,
-        onTransactionSuccess: Event<Unit>? = null,
-        onTransactionFailed: Event<Throwable?>? = null,
+        nftName: AssetName,
+        collectionNameOfNFT: String?,
+        mediaListOfNFT: List<BaseCollectibleMediaItem>,
+        traitListOfNFT: List<CollectibleTraitItem>?,
+        nftDescription: String?,
+        creatorAccountAddressOfNFT: String,
+        formattedCreatorAccountAddressOfNFT: String,
+        nftId: Long,
+        formattedTotalSupply: String,
+        peraExplorerUrl: String,
+        isPureNFT: Boolean,
+        primaryWarningResId: Int?,
+        secondaryWarningResId: Int?,
         accountAddress: String
     ): CollectibleProfilePreview {
         return CollectibleProfilePreview(
             isLoadingVisible = isLoadingVisible,
-            collectibleProfile = collectibleProfile,
+            nftName = nftName,
+            collectionNameOfNFT = collectionNameOfNFT,
+            mediaListOfNFT = mediaListOfNFT,
+            traitListOfNFT = traitListOfNFT,
+            nftDescription = nftDescription,
+            creatorAccountAddressOfNFT = creatorAccountAddressOfNFT,
+            formattedCreatorAccountAddressOfNFT = formattedCreatorAccountAddressOfNFT,
+            nftId = nftId,
+            formattedTotalSupply = formattedTotalSupply,
+            peraExplorerUrl = peraExplorerUrl,
+            isPureNFT = isPureNFT,
+            primaryWarningResId = primaryWarningResId,
+            secondaryWarningResId = secondaryWarningResId,
             collectibleStatusPreview = asaStatusPreview,
-            onTransactionLoadingEvent = onTransactionLoadingEvent,
-            onTransactionFailed = onTransactionFailed,
-            onTransactionSuccess = onTransactionSuccess,
             accountAddress = accountAddress
         )
     }

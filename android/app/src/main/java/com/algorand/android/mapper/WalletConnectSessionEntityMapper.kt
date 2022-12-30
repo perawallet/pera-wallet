@@ -30,6 +30,7 @@ class WalletConnectSessionEntityMapper @Inject constructor() {
                 sessionMeta = wcSession,
                 dateTimeStamp = dateTimeStamp,
                 isConnected = isConnected,
+                isSubscribed = isSubscribed,
                 connectedAccountsAddresses = connectedAccountsAddresses,
                 accountsNames = accountsNames,
                 fallbackBrowserGroupResponse = fallbackBrowserGroupResponse

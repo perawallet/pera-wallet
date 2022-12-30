@@ -14,18 +14,20 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.AssetTransferPreview
-import com.algorand.android.models.SignedTransactionDetail
+import com.algorand.android.models.TransactionData
 import java.math.BigDecimal
 import javax.inject.Inject
 
 class AssetTransferPreviewMapper @Inject constructor() {
 
     fun mapToAssetTransferPreview(
-        signedTransactionDetail: SignedTransactionDetail.Send,
+        transactionData: TransactionData.Send,
         exchangePrice: BigDecimal,
-        currencySymbol: String
+        currencySymbol: String,
+        note: String?,
+        isNoteEditable: Boolean
     ): AssetTransferPreview {
-        with(signedTransactionDetail) {
+        with(transactionData) {
             return AssetTransferPreview(
                 accountCacheData = accountCacheData,
                 amount = amount,
@@ -33,8 +35,9 @@ class AssetTransferPreviewMapper @Inject constructor() {
                 targetUser = targetUser,
                 exchangePrice = exchangePrice,
                 currencySymbol = currencySymbol,
-                fee = fee,
-                note = note
+                fee = calculatedFee ?: projectedFee,
+                note = note,
+                isNoteEditable = isNoteEditable
             )
         }
     }

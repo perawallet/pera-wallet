@@ -44,7 +44,7 @@ abstract class AlgorandDatabase : RoomDatabase() {
     abstract fun walletConnect(): WalletConnectDao
 
     companion object {
-        const val LATEST_DB_VERSION = 10
+        const val LATEST_DB_VERSION = 11
 
         val MIGRATION_3_4 = object : Migration(3, 4) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -177,6 +177,12 @@ abstract class AlgorandDatabase : RoomDatabase() {
 
                 // // Drop WalletConnectSessionHistoryEntity table, no need to keep it
                 database.execSQL("DROP TABLE WalletConnectSessionHistoryEntity")
+            }
+        }
+
+        val MIGRATION_10_11 = object : Migration(10, 11) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE WalletConnectSessionEntity ADD COLUMN is_subscribed INTEGER NOT NULL DEFAULT 0")
             }
         }
 

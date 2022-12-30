@@ -28,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class UnsupportedAddAssetTryLaterBottomSheet : BaseAssetActionBottomSheet() {
 
-    private val toolbarConfiguration = ToolbarConfiguration(titleResId = R.string.missing_asset)
+    private val toolbarConfiguration = ToolbarConfiguration(titleResId = R.string.your_accounts_don_t)
 
     override val assetActionViewModel by viewModels<UnsupportedAddAssetTryLaterViewModel>()
 

@@ -8,6 +8,7 @@ plugins {
     id "kotlin-kapt"
     id "androidx.navigation.safeargs.kotlin"
     id "dagger.hilt.android.plugin"
+    id 'com.google.firebase.firebase-perf'
 }
 
 apply from: 'https://raw.githubusercontent.com/Hipo/macaron/master/config/quality/quality.gradle'
@@ -58,21 +59,20 @@ android {
             multiDexEnabled true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [enableCrashReporting: "true"]
+            manifestPlaceholders = [enableCrashReporting: "true", enableFirebasePerformanceLogcat: "false"]
         }
 
         release {
             multiDexEnabled true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [enableCrashReporting: "true"]
+            manifestPlaceholders = [enableCrashReporting: "true", enableFirebasePerformanceLogcat: "false"]
         }
 
         debug {
             multiDexEnabled true
-
             minifyEnabled false
-            manifestPlaceholders = [enableCrashReporting: "false"]
+            manifestPlaceholders = [enableCrashReporting: "false", enableFirebasePerformanceLogcat: "true"]
         }
     }
 
@@ -94,7 +94,7 @@ android {
             buildConfigField "String", "PERA_3D_EXPLORER_BASE_URL", '"https://static-hosting.perawallet.app/3dviewer/index.html"'
             buildConfigField "String", "DISCOVER_WEBVIEW_USERNAME", apiKeyProps["DISCOVER_WEBVIEW_USERNAME"]
             buildConfigField "String", "DISCOVER_WEBVIEW_PASSWORD", apiKeyProps["DISCOVER_WEBVIEW_PASSWORD"]
-            buildConfigField "String", "DISCOVER_VERSION", '"1"'
+            buildConfigField "String", "DISCOVER_VERSION", "\"${discoverVersions.staging}\""
             buildConfigField "String", "DISCOVER_URL", '"https://discover-mobile-staging.perawallet.app/"'
         }
 
@@ -110,7 +110,7 @@ android {
             buildConfigField "String", "PERA_3D_EXPLORER_BASE_URL", '"https://static-hosting.perawallet.app/3dviewer/index.html"'
             buildConfigField "String", "DISCOVER_WEBVIEW_USERNAME", apiKeyProps["DISCOVER_WEBVIEW_USERNAME"]
             buildConfigField "String", "DISCOVER_WEBVIEW_PASSWORD", apiKeyProps["DISCOVER_WEBVIEW_PASSWORD"]
-            buildConfigField "String", "DISCOVER_VERSION", '"1"'
+            buildConfigField "String", "DISCOVER_VERSION", "\"${discoverVersions.prod}\""
             buildConfigField "String", "DISCOVER_URL", '"https://discover-mobile.perawallet.app/"'
         }
     }
@@ -166,6 +166,7 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation "com.google.firebase:firebase-messaging-ktx"
     implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-perf-ktx"
 
     implementation "androidx.biometric:biometric:${libVersions.biometric}"
 
@@ -232,4 +233,7 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:${libVersions.room}"
     androidTestImplementation "androidx.test:runner:${testLibVersions.runner}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${testLibVersions.espresso}"
+
+    // Debug
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${debugLibVersions.leakCanary}"
 }

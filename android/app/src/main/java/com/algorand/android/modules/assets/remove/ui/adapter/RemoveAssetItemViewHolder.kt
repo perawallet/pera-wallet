@@ -14,14 +14,12 @@ package com.algorand.android.modules.assets.remove.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.databinding.ItemRemoveAssetBinding
 import com.algorand.android.models.BaseRemoveAssetItem
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.RemoveAssetItem
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.models.ui.AccountAssetItemButtonState
-import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 
 class RemoveAssetItemViewHolder(
@@ -33,34 +31,22 @@ class RemoveAssetItemViewHolder(
         if (item !is RemoveAssetItem) return
         with(item) {
             setActionButtonState(actionItemButtonState)
-            setAssetStartIconDrawable(
-                assetDrawableProvider = baseAssetDrawableProvider,
-                assetName = name,
-                prismUrl = prismUrl
-            )
+            setAssetStartIconDrawable(assetDrawableProvider = baseAssetDrawableProvider)
             setAssetTitleText(name.getName(binding.root.resources))
             setAssetDescriptionText(shortName.getName(binding.root.resources))
             setAssetPrimaryValue(formattedCompactAmount)
-            setAssetSecondaryValue(formattedSelectedCurrencyCompactValue, isAmountInSelectedCurrencyVisible)
+            setAssetSecondaryValue(formattedSelectedCurrencyCompactValue)
             setAssetVerificationTier(verificationTierConfiguration)
             setClickListeners(this)
         }
     }
 
-    private fun setAssetStartIconDrawable(
-        assetDrawableProvider: BaseAssetDrawableProvider?,
-        assetName: AssetName,
-        prismUrl: String?
-    ) {
+    private fun setAssetStartIconDrawable(assetDrawableProvider: BaseAssetDrawableProvider?) {
         with(binding.assetItemView) {
-            setStartIconDrawable(drawable = null, forceShow = true)
-            getStartIconImageView().doOnLayout {
+            getStartIconImageView().apply {
                 assetDrawableProvider?.provideAssetDrawable(
-                    context = context,
-                    assetName = assetName,
-                    logoUri = prismUrl,
-                    width = it.measuredWidth,
-                    onResourceReady = ::setStartIconDrawable
+                    imageView = this,
+                    onResourceFailed = ::setStartIconDrawable
                 )
             }
         }
@@ -78,10 +64,8 @@ class RemoveAssetItemViewHolder(
         binding.assetItemView.setPrimaryValueText(assetPrimaryValue)
     }
 
-    private fun setAssetSecondaryValue(assetSecondaryValue: String?, isAmountInSelectedCurrencyVisible: Boolean) {
-        if (isAmountInSelectedCurrencyVisible) {
-            binding.assetItemView.setSecondaryValueText(assetSecondaryValue)
-        }
+    private fun setAssetSecondaryValue(assetSecondaryValue: String?) {
+        binding.assetItemView.setSecondaryValueText(assetSecondaryValue)
     }
 
     private fun setAssetVerificationTier(verificationTierConfiguration: VerificationTierConfiguration) {

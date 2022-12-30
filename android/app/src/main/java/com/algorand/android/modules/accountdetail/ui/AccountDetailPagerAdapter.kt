@@ -35,7 +35,7 @@ class AccountDetailPagerAdapter(
         ),
         AccountDetailPagerAdapterItem(
             fragmentInstance = AccountCollectiblesFragment.newInstance(address),
-            titleResId = R.string.collectibles
+            titleResId = R.string.nfts
         ),
         AccountDetailPagerAdapterItem(
             fragmentInstance = AccountHistoryFragment.newInstance(address),

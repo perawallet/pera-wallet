@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 11,
-    "identityHash": "3adab7914f643b7acf18ca2988a18977",
+    "identityHash": "3ea1e72c88579ec73d3ef32eeb4efef2",
     "entities": [
       {
         "tableName": "User",
@@ -148,7 +148,7 @@
       },
       {
         "tableName": "WalletConnectSessionEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `peer_meta` TEXT NOT NULL, `wc_session` TEXT NOT NULL, `date_time_stamp` INTEGER NOT NULL, `is_connected` INTEGER NOT NULL, `fallback_browser_group_response` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `peer_meta` TEXT NOT NULL, `wc_session` TEXT NOT NULL, `date_time_stamp` INTEGER NOT NULL, `is_connected` INTEGER NOT NULL, `is_subscribed` INTEGER NOT NULL, `fallback_browser_group_response` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -177,6 +177,12 @@
           {
             "fieldPath": "isConnected",
             "columnName": "is_connected",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isSubscribed",
+            "columnName": "is_subscribed",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -244,7 +250,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3adab7914f643b7acf18ca2988a18977')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3ea1e72c88579ec73d3ef32eeb4efef2')"
     ]
   }
 }

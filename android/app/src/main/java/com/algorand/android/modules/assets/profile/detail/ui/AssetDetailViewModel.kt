@@ -66,6 +66,13 @@ class AssetDetailViewModel @Inject constructor(
         }
     }
 
+    fun onMarketClick() {
+        with(_assetDetailPreviewFlow) {
+            val currentPreview = value ?: return@with
+            value = assetDetailPreviewUseCase.updatePreviewForDiscoverMarketEvent(currentPreview)
+        }
+    }
+
     private fun initAssetDetailPreview() {
         viewModelScope.launch {
             assetDetailPreviewUseCase.initAssetDetailPreview(

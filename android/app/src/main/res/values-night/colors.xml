@@ -98,6 +98,8 @@
     <color name="wallet_4_icon">@color/turquoise_800</color>
     <color name="wallet_5">@color/salmon_400</color>
     <color name="wallet_5_icon">#424F76</color>
+    <color name="wallet_placeholder">@color/gray_800</color>
+    <color name="wallet_placeholder_icon">@color/gray_400</color>
 
     <!--  Governor  -->
     <color name="wallet_1_icon_governor">#9B1F69</color>
@@ -225,4 +227,7 @@
     <color name="discover_helper_purple">#AC8EFF</color>
     <color name="discover_helper_text">#1A1A1A</color>
     <color name="discover_warning">#FF6E41</color>
+
+    <color name="negative_market_value_background_color">@color/salmon_600_alpha_10</color>
+    <color name="positive_market_value_background">@color/turquoise_500_alpha_24</color>
 </resources>

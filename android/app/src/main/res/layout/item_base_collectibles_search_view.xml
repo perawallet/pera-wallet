@@ -10,15 +10,32 @@
   ~ limitations under the License
   -->
 
-<com.algorand.android.customviews.AlgorandSearchView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/collectibleSearchView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_small"
     android:layout_marginTop="@dimen/spacing_normal"
     android:layout_marginBottom="@dimen/spacing_xsmall"
-    android:hint="@string/search_your_nfts"
-    android:inputType="text"
-    app:endIconTintColor="@color/secondary_icon_tint_color"
-    app:startIconTintColor="@color/search_bar_view_icon_color" />
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <com.algorand.android.customviews.AlgorandSearchView
+        android:id="@+id/collectibleSearchView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/search_nfts"
+        android:inputType="text"
+        app:endIconTintColor="@color/secondary_icon_tint_color"
+        app:startIconTintColor="@color/search_bar_view_icon_color" />
+
+    <com.algorand.android.customviews.PeraHorizontalSwitchView
+        android:id="@+id/nftListingViewTypeSwitchView"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        app:endOptionIcon="@drawable/list_view"
+        app:startOptionIcon="@drawable/ic_quick_actions" />
+
+</LinearLayout>

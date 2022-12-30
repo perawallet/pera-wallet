@@ -7,6 +7,7 @@ buildscript {
     ext.google_services_version = '4.3.13'
     ext.dagger_gradle_version = '2.43.2'
     ext.firebase_crashlytics_version = '2.7.1'
+    ext.firebase_performance_version = '1.4.2'
     repositories {
         google()
         mavenCentral()
@@ -19,6 +20,7 @@ buildscript {
         classpath "com.google.gms:google-services:$google_services_version"
         classpath "com.google.firebase:firebase-crashlytics-gradle:$firebase_crashlytics_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_gradle_version"
+        classpath "com.google.firebase:perf-plugin:$firebase_performance_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

@@ -13,120 +13,25 @@
 package com.algorand.android.nft.mapper
 
 import androidx.annotation.StringRes
+import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.models.BaseAccountAssetData
-import com.algorand.android.nft.domain.decider.CollectibleBadgeDecider
+import com.algorand.android.modules.accountdetail.assets.ui.decider.NFTIndicatorDrawableDecider
+import com.algorand.android.modules.collectibles.listingviewtype.domain.model.NFTListingViewType
+import com.algorand.android.modules.collectibles.util.deciders.NFTAmountFormatDecider
+import com.algorand.android.nft.domain.decider.BaseCollectibleListItemItemTypeDecider
 import com.algorand.android.nft.ui.model.BaseCollectibleListData
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
+import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.Event
 import javax.inject.Inject
 
 class CollectibleListingItemMapper @Inject constructor(
-    private val collectibleBadgeDecider: CollectibleBadgeDecider
+    private val assetDrawableProviderDecider: AssetDrawableProviderDecider,
+    private val baseCollectibleListItemItemTypeDecider: BaseCollectibleListItemItemTypeDecider,
+    private val nftIndicatorDrawableDecider: NFTIndicatorDrawableDecider,
+    private val nftAmountFormatDecider: NFTAmountFormatDecider
 ) {
-
-    fun mapToNotSupportedItem(
-        collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData,
-        isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String,
-        isAmountVisible: Boolean
-    ): BaseCollectibleListItem.BaseCollectibleItem.NotSupportedCollectibleItem {
-        return BaseCollectibleListItem.BaseCollectibleItem.NotSupportedCollectibleItem(
-            collectibleId = collectible.id,
-            collectibleName = collectible.collectibleName,
-            collectionName = collectible.collectionName,
-            avatarDisplayText = collectible.avatarDisplayText,
-            isOwnedByTheUser = isOwnedByTheUser,
-            badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
-            optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = collectible.optedInAtRound,
-            formattedCollectibleAmount = collectible.formattedCompactAmount,
-            isAmountVisible = isAmountVisible
-        )
-    }
-
-    fun mapToImageItem(
-        collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleImageData,
-        isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String,
-        isAmountVisible: Boolean
-    ): BaseCollectibleListItem.BaseCollectibleItem.CollectibleImageItem {
-        return BaseCollectibleListItem.BaseCollectibleItem.CollectibleImageItem(
-            collectibleId = collectible.id,
-            collectibleName = collectible.collectibleName,
-            collectionName = collectible.collectionName,
-            isOwnedByTheUser = isOwnedByTheUser,
-            avatarDisplayText = collectible.avatarDisplayText,
-            badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
-            prismUrl = collectible.prismUrl,
-            optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = collectible.optedInAtRound,
-            formattedCollectibleAmount = collectible.formattedCompactAmount,
-            isAmountVisible = isAmountVisible
-        )
-    }
-
-    fun mapToVideoItem(
-        collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData,
-        isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String,
-        isAmountVisible: Boolean
-    ): BaseCollectibleListItem.BaseCollectibleItem.CollectibleVideoItem {
-        return BaseCollectibleListItem.BaseCollectibleItem.CollectibleVideoItem(
-            collectibleId = collectible.id,
-            collectibleName = collectible.collectibleName,
-            collectionName = collectible.collectionName,
-            isOwnedByTheUser = isOwnedByTheUser,
-            avatarDisplayText = collectible.avatarDisplayText,
-            badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
-            thumbnailPrismUrl = collectible.prismUrl,
-            optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = collectible.optedInAtRound,
-            formattedCollectibleAmount = collectible.formattedCompactAmount,
-            isAmountVisible = isAmountVisible
-        )
-    }
-
-    fun mapToAudioItem(
-        collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleAudioData,
-        isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String,
-        isAmountVisible: Boolean
-    ): BaseCollectibleListItem.BaseCollectibleItem.CollectibleSoundItem {
-        return BaseCollectibleListItem.BaseCollectibleItem.CollectibleSoundItem(
-            collectibleId = collectible.id,
-            collectibleName = collectible.collectibleName,
-            collectionName = collectible.collectionName,
-            isOwnedByTheUser = isOwnedByTheUser,
-            avatarDisplayText = collectible.avatarDisplayText,
-            badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
-            thumbnailPrismUrl = collectible.prismUrl,
-            optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = collectible.optedInAtRound,
-            formattedCollectibleAmount = collectible.formattedCompactAmount,
-            isAmountVisible = isAmountVisible
-        )
-    }
-
-    fun mapToMixedItem(
-        collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleMixedData,
-        isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String,
-        isAmountVisible: Boolean
-    ): BaseCollectibleListItem.BaseCollectibleItem.CollectibleMixedItem {
-        return BaseCollectibleListItem.BaseCollectibleItem.CollectibleMixedItem(
-            collectibleId = collectible.id,
-            collectibleName = collectible.collectibleName,
-            collectionName = collectible.collectionName,
-            isOwnedByTheUser = isOwnedByTheUser,
-            avatarDisplayText = collectible.avatarDisplayText,
-            badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
-            thumbnailPrismUrl = collectible.prismUrl,
-            optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = collectible.optedInAtRound,
-            formattedCollectibleAmount = collectible.formattedCompactAmount,
-            isAmountVisible = isAmountVisible
-        )
-    }
 
     @SuppressWarnings("LongParameterList")
     fun mapToPreviewItem(
@@ -153,97 +58,90 @@ class CollectibleListingItemMapper @Inject constructor(
         )
     }
 
-    fun mapToPendingRemovalItem(
-        collectible: BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingDeletionCollectibleData,
-        optedInAccountAddress: String
-    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingRemovalItem {
-        return BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingRemovalItem(
+    fun mapToSimpleNFTItem(
+        collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData,
+        optedInAccountAddress: String,
+        isAmountVisible: Boolean,
+        nftListingViewType: NFTListingViewType,
+        isOptedIn: Boolean,
+        isOwnedByWatchAccount: Boolean
+    ): BaseCollectibleListItem.BaseCollectibleItem.BaseOwnedNFTItem.SimpleNFTItem {
+        return BaseCollectibleListItem.BaseCollectibleItem.BaseOwnedNFTItem.SimpleNFTItem(
             collectibleId = collectible.id,
-            collectibleName = collectible.collectibleName,
+            collectibleName = AssetName.create(collectible.collectibleName),
             collectionName = collectible.collectionName,
-            isOwnedByTheUser = false,
-            avatarDisplayText = collectible.avatarDisplayText,
-            primaryImageUrl = collectible.primaryImageUrl,
-            badgeImageResId = collectibleBadgeDecider.decidePendingCollectibleBadgeResId(collectible),
             optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = null
+            optedInAtRound = collectible.optedInAtRound,
+            formattedCollectibleAmount = nftAmountFormatDecider.decideNFTAmountFormat(
+                nftAmount = collectible.amount,
+                fractionalDecimal = collectible.decimals,
+                formattedAmount = collectible.formattedAmount,
+                formattedCompactAmount = collectible.formattedCompactAmount
+            ),
+            isAmountVisible = isAmountVisible,
+            baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(collectible.id),
+            itemType = baseCollectibleListItemItemTypeDecider.decideSimpleNFTViewType(nftListingViewType),
+            nftIndicatorDrawable = nftIndicatorDrawableDecider.decideNFTIndicatorDrawable(
+                isOwned = isOptedIn,
+                isHoldingByWatchAccount = isOwnedByWatchAccount,
+                nftListingViewType = nftListingViewType
+            ),
+            shouldDecreaseOpacity = !isOptedIn,
         )
     }
 
-    fun mapToPendingAdditionItem(
-        collectible: BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingAdditionCollectibleData,
-        optedInAccountAddress: String
-    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingAdditionItem {
-        return BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingAdditionItem(
+    fun mapToSimplePendingNFTItem(
+        collectible: BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData,
+        optedInAccountAddress: String,
+        nftListingViewType: NFTListingViewType
+    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingNFTItem.SimplePendingNFTItem {
+        return BaseCollectibleListItem.BaseCollectibleItem.BasePendingNFTItem.SimplePendingNFTItem(
             collectibleId = collectible.id,
-            collectibleName = collectible.collectibleName,
+            collectibleName = AssetName.create(collectible.collectibleName),
             collectionName = collectible.collectionName,
-            isOwnedByTheUser = false,
-            avatarDisplayText = collectible.avatarDisplayText,
-            primaryImageUrl = collectible.primaryImageUrl,
-            badgeImageResId = collectibleBadgeDecider.decidePendingCollectibleBadgeResId(collectible),
             optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = null
-        )
-    }
-
-    fun mapToPendingSendingItem(
-        collectible: BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingSendingCollectibleData,
-        optedInAccountAddress: String
-    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingSendingItem {
-        return BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingSendingItem(
-            collectibleId = collectible.id,
-            collectibleName = collectible.collectibleName,
-            collectionName = collectible.collectionName,
-            isOwnedByTheUser = false,
-            avatarDisplayText = collectible.avatarDisplayText,
-            primaryImageUrl = collectible.primaryImageUrl,
-            badgeImageResId = collectibleBadgeDecider.decidePendingCollectibleBadgeResId(collectible),
-            optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = null
+            optedInAtRound = null,
+            baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(collectible.id),
+            itemType = baseCollectibleListItemItemTypeDecider.decideSimplePendingNFTViewType(nftListingViewType)
         )
     }
 
     fun mapToBaseCollectibleListData(
         collectibleList: List<BaseCollectibleListItem>,
-        isFilterActive: Boolean,
         displayedCollectibleCount: Int,
         filteredOutCollectibleCount: Int
     ): BaseCollectibleListData {
         return BaseCollectibleListData(
             baseCollectibleItemList = collectibleList,
-            isFilterActive = isFilterActive,
             displayedCollectibleCount = displayedCollectibleCount,
             filteredOutCollectibleCount = filteredOutCollectibleCount
         )
     }
 
-    fun mapToTitleTextItem(isVisible: Boolean): BaseCollectibleListItem.TitleTextViewItem {
-        return BaseCollectibleListItem.TitleTextViewItem(isVisible = isVisible)
+    fun mapToTitleTextItem(): BaseCollectibleListItem.TitleTextViewItem {
+        return BaseCollectibleListItem.TitleTextViewItem
     }
 
     fun mapToSearchViewItem(
         @StringRes searchViewHintResId: Int,
-        isVisible: Boolean,
-        query: String
+        query: String,
+        onGridListViewSelectedEvent: Event<Unit>? = null,
+        onLinearListViewSelectedEvent: Event<Unit>? = null
     ): BaseCollectibleListItem.SearchViewItem {
         return BaseCollectibleListItem.SearchViewItem(
             searchViewHintResId = searchViewHintResId,
-            isVisible = isVisible,
-            query = query
+            query = query,
+            onGridListViewSelectedEvent = onGridListViewSelectedEvent,
+            onLinearListViewSelectedEvent = onLinearListViewSelectedEvent
         )
     }
 
     fun mapToInfoViewItem(
         displayedCollectibleCount: Int,
-        isVisible: Boolean,
-        isFilterActive: Boolean,
         isAddButtonVisible: Boolean
     ): BaseCollectibleListItem.InfoViewItem {
         return BaseCollectibleListItem.InfoViewItem(
             displayedCollectibleCount = displayedCollectibleCount,
-            isVisible = isVisible,
-            isFilterActive = isFilterActive,
             isAddButtonVisible = isAddButtonVisible
         )
     }

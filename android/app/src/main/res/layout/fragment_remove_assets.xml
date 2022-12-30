@@ -23,15 +23,6 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_remove_asset" />
 
-    <com.algorand.android.customviews.ScreenStateView
-        android:id="@+id/screenStateView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        tools:titleRes="@string/no_asset_found"
-        tools:visibility="visible" />
-
     <include
         android:id="@+id/removeAssetsLoadingLayout"
         layout="@layout/layout_loading" />

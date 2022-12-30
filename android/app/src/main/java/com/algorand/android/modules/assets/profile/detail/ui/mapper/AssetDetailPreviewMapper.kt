@@ -20,13 +20,16 @@ import com.algorand.android.modules.assets.profile.detail.ui.model.AssetDetailPr
 import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
 import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AssetName
+import java.math.BigDecimal
 import javax.inject.Inject
 
 class AssetDetailPreviewMapper @Inject constructor(
     private val assetDrawableProviderDecider: AssetDrawableProviderDecider,
-    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider
+    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider,
+    private val assetDetailMarketInformationDecider: AssetDetailMarketInformationDecider
 ) {
 
+    @SuppressWarnings("LongParameterList")
     fun mapToAssetDetailPreview(
         baseOwnedAssetDetail: BaseAccountAssetData.BaseOwnedAssetData,
         accountAddress: String,
@@ -34,7 +37,10 @@ class AssetDetailPreviewMapper @Inject constructor(
         accountType: Account.Type?,
         canAccountSignTransaction: Boolean,
         isQuickActionButtonsVisible: Boolean,
-        isSwapButtonSelected: Boolean
+        isSwapButtonSelected: Boolean,
+        isMarketInformationVisible: Boolean,
+        last24HoursChange: BigDecimal?,
+        formattedAssetPrice: String?
     ): AssetDetailPreview {
         return with(baseOwnedAssetDetail) {
             AssetDetailPreview(
@@ -50,7 +56,19 @@ class AssetDetailPreviewMapper @Inject constructor(
                 verificationTierConfiguration =
                 verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier),
                 isQuickActionButtonsVisible = canAccountSignTransaction && isQuickActionButtonsVisible,
-                isSwapButtonSelected = isSwapButtonSelected
+                isSwapButtonSelected = isSwapButtonSelected,
+                isMarketInformationVisible = isMarketInformationVisible,
+                isChangePercentageVisible = assetDetailMarketInformationDecider.decideIsChangePercentageVisible(
+                    last24HoursChange
+                ),
+                changePercentage = last24HoursChange,
+                formattedAssetPrice = formattedAssetPrice.orEmpty(),
+                changePercentageIcon = assetDetailMarketInformationDecider.decideIconResOfChangePercentage(
+                    last24HoursChange
+                ),
+                changePercentageTextColor = assetDetailMarketInformationDecider.decideTextColorResOfChangePercentage(
+                    last24HoursChange
+                )
             )
         }
     }

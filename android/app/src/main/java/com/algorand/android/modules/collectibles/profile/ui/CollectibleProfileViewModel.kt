@@ -15,10 +15,11 @@ package com.algorand.android.modules.collectibles.profile.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.AssetAction
+import com.algorand.android.modules.collectibles.detail.base.ui.BaseCollectibleDetailViewModel
 import com.algorand.android.modules.collectibles.profile.ui.model.CollectibleProfilePreview
 import com.algorand.android.modules.collectibles.profile.ui.usecase.CollectibleProfilePreviewUseCase
-import com.algorand.android.nft.ui.nfsdetail.base.BaseCollectibleDetailViewModel
 import com.algorand.android.usecase.NetworkSlugUseCase
+import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -36,9 +37,8 @@ class CollectibleProfileViewModel @Inject constructor(
     val accountAddress = savedStateHandle.getOrThrow<String>(ACCOUNT_ADDRESS_KEY)
     val collectibleId = savedStateHandle.getOrThrow<Long>(COLLECTIBLE_ID_KEY)
 
-    private val _collectibleProfilePreviewFlow =
-        MutableStateFlow(collectibleProfilePreviewUseCase.getLoadingPreview(accountAddress))
-    val collectibleProfilePreviewFlow: StateFlow<CollectibleProfilePreview> get() = _collectibleProfilePreviewFlow
+    private val _collectibleProfilePreviewFlow = MutableStateFlow<CollectibleProfilePreview?>(null)
+    val collectibleProfilePreviewFlow: StateFlow<CollectibleProfilePreview?> get() = _collectibleProfilePreviewFlow
 
     init {
         initCollectibleProfilePreviewFlow()
@@ -51,14 +51,20 @@ class CollectibleProfileViewModel @Inject constructor(
         )
     }
 
+    fun getNFTExplorerUrl(): String? {
+        return collectibleProfilePreviewFlow.value?.peraExplorerUrl
+    }
+
+    fun getNFTName(): AssetName? {
+        return collectibleProfilePreviewFlow.value?.nftName
+    }
+
     private fun initCollectibleProfilePreviewFlow() {
         viewModelScope.launch {
             collectibleProfilePreviewUseCase.getCollectibleProfilePreviewFlow(
-                collectibleId = collectibleId,
+                nftId = collectibleId,
                 accountAddress = accountAddress
-            ).collect { preview ->
-                if (preview != null) _collectibleProfilePreviewFlow.emit(preview)
-            }
+            ).collect { preview -> _collectibleProfilePreviewFlow.emit(preview) }
         }
     }
 

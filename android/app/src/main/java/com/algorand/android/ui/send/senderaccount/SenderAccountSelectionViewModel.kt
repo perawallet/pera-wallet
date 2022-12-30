@@ -98,18 +98,6 @@ class SenderAccountSelectionViewModel @Inject constructor(
         return senderAccountSelectionUseCase.getAccountInformation(senderAddress)
     }
 
-    fun signTransaction(senderAddress: String) {
-        viewModelScope.launch {
-            senderAccountSelectionPreviewUseCase.getUpdatedPreviewFlowWithSignResult(
-                fromAccountAddress = senderAddress,
-                assetTransaction = assetTransaction,
-                preview = _senderAccountSelectionPreviewFlow.value
-            ).collectLatest {
-                _senderAccountSelectionPreviewFlow.emit(it)
-            }
-        }
-    }
-
     companion object {
         private const val ASSET_TRANSACTION_KEY = "assetTransaction"
     }

@@ -29,10 +29,8 @@ import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentCollectibleImagePreviewBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.utils.PrismUrlBuilder
 import com.algorand.android.utils.createPrismUrl
-import com.algorand.android.utils.loadGif
 import com.algorand.android.utils.loadImageWithCachedFirst
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -105,32 +103,12 @@ class CollectibleImagePreviewFragment : BaseFragment(R.layout.fragment_collectib
     }
 
     private fun loadCollectiblePreview() {
-        val prismUrl = createPrismUrl(args.imageUrl, PrismUrlBuilder.DEFAULT_IMAGE_SIZE)
-        val isImageTypeGif = args.mediaType.name == BaseCollectibleMediaItem.ItemType.GIF.name
-        if (isImageTypeGif) loadGif(prismUrl) else loadCollectibleImage(prismUrl)
-    }
-
-    private fun loadCollectibleImage(prismUrl: String) {
         with(binding.collectibleImageView) {
             context.loadImageWithCachedFirst(
-                uri = prismUrl,
-                cachedUri = args.previewPrismUrl,
+                uri = createPrismUrl(args.imageUri, PrismUrlBuilder.DEFAULT_IMAGE_SIZE),
+                cachedUri = args.cachedMediaUri,
                 onCachedResourceReady = { showImage(it) },
-                onResourceReady = { showImage(it) },
-                onCachedLoadFailed = { showText(args.errorDisplayText) }
-            )
-        }
-    }
-
-    private fun loadGif(prismUrl: String) {
-        with(binding.collectibleImageView) {
-            getImageView()?.loadGif(
-                uri = prismUrl,
-                onResourceReady = { gifDrawable ->
-                    showImage(gifDrawable)
-                    gifDrawable.start()
-                },
-                onLoadFailed = { showText(args.errorDisplayText) }
+                onResourceReady = { showImage(it) }
             )
         }
     }

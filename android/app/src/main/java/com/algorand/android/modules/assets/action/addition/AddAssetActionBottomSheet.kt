@@ -31,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AddAssetActionBottomSheet : BaseAssetActionBottomSheet() {
 
-    private val toolbarConfiguration = ToolbarConfiguration(titleResId = R.string.add_new_asset)
+    private val toolbarConfiguration = ToolbarConfiguration(titleResId = R.string.adding_asset)
 
     override val assetActionViewModel: AddAssetActionViewModel by viewModels()
 
@@ -43,7 +43,7 @@ class AddAssetActionBottomSheet : BaseAssetActionBottomSheet() {
     }
 
     override fun setDescriptionTextView(textView: TextView) {
-        textView.setText(R.string.adding_an_asset)
+        textView.setText(R.string.before_interacting_with)
     }
 
     override fun setToolbar(customToolbar: CustomToolbar) {

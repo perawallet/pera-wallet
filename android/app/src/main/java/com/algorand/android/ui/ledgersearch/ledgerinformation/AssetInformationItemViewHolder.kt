@@ -15,7 +15,6 @@ package com.algorand.android.ui.ledgersearch.ledgerinformation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemLedgerInformationAssetBinding
 import com.algorand.android.models.LedgerInformationListItem
@@ -27,14 +26,10 @@ class AssetInformationItemViewHolder(
     fun bind(assetInformationItem: LedgerInformationListItem.AssetInformationItem) {
         with(assetInformationItem) {
             with(binding.assetItemView) {
-                setStartIconDrawable(drawable = null, forceShow = true)
-                getStartIconImageView().doOnLayout {
+                getStartIconImageView().apply {
                     baseAssetDrawableProvider.provideAssetDrawable(
-                        context = context,
-                        assetName = name,
-                        logoUri = prismUrl,
-                        width = it.measuredWidth,
-                        onResourceReady = ::setStartIconDrawable
+                        imageView = this,
+                        onResourceFailed = ::setStartIconDrawable
                     )
                 }
                 setTitleText(name.getName(resources))

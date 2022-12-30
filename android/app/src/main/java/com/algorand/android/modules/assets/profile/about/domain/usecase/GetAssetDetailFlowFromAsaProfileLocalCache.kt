@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.assets.profile.about.domain.usecase
 
-import com.algorand.android.models.AssetDetail
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.modules.assets.profile.about.domain.repository.AssetAboutRepository
 import com.algorand.android.utils.CacheResult
 import javax.inject.Inject
@@ -24,7 +24,7 @@ class GetAssetDetailFlowFromAsaProfileLocalCache @Inject constructor(
     private val assetAboutRepository: AssetAboutRepository
 ) {
 
-    fun getAssetDetailFlowFromAsaProfileLocalCache(): StateFlow<CacheResult<AssetDetail>?> {
+    fun getAssetDetailFlowFromAsaProfileLocalCache(): StateFlow<CacheResult<BaseAssetDetail>?> {
         return assetAboutRepository.getAssetDetailFlowFromAsaProfileLocalCache()
     }
 }

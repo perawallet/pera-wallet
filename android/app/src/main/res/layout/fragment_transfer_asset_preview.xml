@@ -204,8 +204,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/note"
+            android:layout_marginTop="28dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/noteTextView" />
+            app:layout_constraintTop_toBottomOf="@id/balanceDivider" />
 
         <TextView
             android:id="@+id/noteTextView"
@@ -220,7 +221,24 @@
             app:layout_constraintStart_toStartOf="@id/labelBarrier"
             app:layout_constraintTop_toBottomOf="@id/balanceDivider"
             app:layout_constraintVertical_bias="0"
-            tools:text="@tools:sample/lorem[50]" />
+            tools:visibility="gone"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addEditNoteButton"
+            style="@style/Button.Text"
+            app:icon="@drawable/ic_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="@string/add_note"
+            android:textColor="@color/positive"
+            app:layout_constraintBottom_toBottomOf="@id/noteLabelTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/labelBarrier"
+            app:layout_constraintTop_toTopOf="@id/noteLabelTextView"
+            app:layout_constraintHorizontal_bias="0"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextButton"
@@ -250,9 +268,8 @@
             android:id="@+id/noteGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="noteLabelTextView,noteTextView,balanceDivider"
-            tools:visibility="visible" />
+            android:visibility="visible"
+            app:constraint_referenced_ids="noteLabelTextView,noteTextView,balanceDivider,addEditNoteButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

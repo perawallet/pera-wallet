@@ -51,6 +51,15 @@ ext {
             algoSdk          : '1.19.0'
     ]
 
+    discoverVersions = [
+            staging: 1,
+            prod   : 1
+    ]
+
+    debugLibVersions = [
+            leakCanary: '2.9.1'
+    ]
+
     testLibVersions = [
             junit   : '4.13.2',
             runner  : '1.4.0',

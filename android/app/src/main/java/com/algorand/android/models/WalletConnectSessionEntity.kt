@@ -34,6 +34,9 @@ data class WalletConnectSessionEntity(
     @ColumnInfo(name = "is_connected")
     val isConnected: Boolean = false,
 
+    @ColumnInfo(name = "is_subscribed")
+    val isSubscribed: Boolean = false,
+
     @ColumnInfo(name = "fallback_browser_group_response")
     val fallbackBrowserGroupResponse: String? = null
 ) {

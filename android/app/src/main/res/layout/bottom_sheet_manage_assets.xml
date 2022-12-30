@@ -13,18 +13,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/spacing_xlarge"
-    android:paddingVertical="@dimen/spacing_normal">
+    android:paddingTop="@dimen/spacing_small"
+    android:paddingBottom="@dimen/bottom_safe_area_margin">
+
+    <View style="@style/BottomSheetModalityLine" />
+
+    <com.algorand.android.customviews.CustomToolbar
+        android:id="@+id/customToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:layout_marginTop="@dimen/spacing_xsmall" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/sortAssetsButton"
         style="@style/Button.Text.Options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:text="@string/sort"
         app:icon="@drawable/ic_sort" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/filterAssetsButton"
+        style="@style/Button.Text.Options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_assets"
+        app:icon="@drawable/ic_customize" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/removeAssetsButton"

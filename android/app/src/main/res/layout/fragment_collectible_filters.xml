@@ -10,41 +10,88 @@
   ~ limitations under the License
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/filterOptedInNotOwnedLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:text="@string/display_opted_in_nfts"
-        app:layout_constraintBottom_toBottomOf="@id/filterOptedInNotOwnedSwitch"
-        app:layout_constraintEnd_toStartOf="@id/filterOptedInNotOwnedSwitch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/filterOptedInNotOwnedSwitch" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_small"
-        android:text="@string/you_can_show_hide"
-        android:textAppearance="@style/TextAppearance.Footnote"
-        android:textColor="@color/secondary_text_color"
-        app:layout_constraintEnd_toEndOf="@id/filterOptedInNotOwnedLabel"
-        app:layout_constraintStart_toStartOf="@id/filterOptedInNotOwnedLabel"
-        app:layout_constraintTop_toBottomOf="@id/filterOptedInNotOwnedLabel" />
+        <TextView
+            android:id="@+id/displayOptedInNFTsLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxxxlarge"
+            android:text="@string/display_opted_in_nfts"
+            android:textAppearance="@style/TextAppearance.Body.Sans"
+            app:layout_constraintEnd_toStartOf="@id/displayOptedInNFTsSwitch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@tools:sample/lorem[10]" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/filterOptedInNotOwnedSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_xxxxlarge"
-        android:layout_marginEnd="@dimen/spacing_xlarge"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/displayOptedInNFTsDescriptionLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            android:text="@string/you_can_show_hide_nfts"
+            android:textAppearance="@style/TextAppearance.Footnote"
+            android:textColor="@color/text_gray"
+            app:layout_constraintEnd_toEndOf="@id/displayOptedInNFTsLabel"
+            app:layout_constraintStart_toStartOf="@id/displayOptedInNFTsLabel"
+            app:layout_constraintTop_toBottomOf="@id/displayOptedInNFTsLabel"
+            tools:text="@tools:sample/lorem[10]" />
 
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/displayOptedInNFTsSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            app:layout_constraintBottom_toBottomOf="@id/displayOptedInNFTsLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/displayOptedInNFTsLabel" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/displayWatchAccountNFTsLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:text="@string/display_nfts_from_watch_accounts"
+            android:textAppearance="@style/TextAppearance.Body.Sans"
+            app:layout_constraintEnd_toStartOf="@id/displayWatchAccountNFTsSwitch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/displayOptedInNFTsDescriptionLabel"
+            tools:text="@tools:sample/lorem[10]" />
+
+        <TextView
+            android:id="@+id/displayWatchAccountNFTsDescriptionLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            android:text="@string/this_will_show_nfts"
+            android:textAppearance="@style/TextAppearance.Footnote"
+            android:textColor="@color/text_gray"
+            app:layout_constraintEnd_toEndOf="@id/displayWatchAccountNFTsLabel"
+            app:layout_constraintStart_toStartOf="@id/displayWatchAccountNFTsLabel"
+            app:layout_constraintTop_toBottomOf="@id/displayWatchAccountNFTsLabel"
+            tools:text="@tools:sample/lorem[10]" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/displayWatchAccountNFTsSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            app:layout_constraintBottom_toBottomOf="@id/displayWatchAccountNFTsLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/displayWatchAccountNFTsLabel" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

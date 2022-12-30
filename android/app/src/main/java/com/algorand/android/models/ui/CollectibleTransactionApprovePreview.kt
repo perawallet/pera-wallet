@@ -22,5 +22,7 @@ data class CollectibleTransactionApprovePreview(
     val receiverAccountDisplayText: String,
     val receiverAccountIconResource: AccountIconResource?,
     val formattedTransactionFee: String,
-    val isOptOutGroupVisible: Boolean
+    val isOptOutGroupVisible: Boolean,
+    val nftDomainName: String?,
+    val nftDomainLogoUrl: String?
 )

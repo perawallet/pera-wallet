@@ -30,7 +30,7 @@
     <item
         android:id="@id/collectiblesFragment"
         android:icon="@drawable/ic_collectibles"
-        android:title="@string/collectibles" />
+        android:title="@string/nfts" />
 
     <item
         android:id="@id/settingsFragment"

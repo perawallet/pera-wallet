@@ -28,6 +28,7 @@ import com.algorand.android.models.WalletConnectTransactionErrorResponse
 import com.algorand.android.modules.walletconnect.domain.DeleteWalletConnectAccountBySessionUseCase
 import com.algorand.android.modules.walletconnect.domain.GetWalletConnectSessionsByAccountAddressUseCase
 import com.algorand.android.modules.walletconnect.domain.GetWalletConnectSessionsWithAccountsUseCase
+import com.algorand.android.modules.walletconnect.subscription.domain.SubscribeGivenWalletConnectSessionUseCase
 import com.algorand.android.repository.WalletConnectRepository
 import com.algorand.android.usecase.AccountCacheStatusUseCase
 import com.algorand.android.usecase.GetActiveNodeChainIdUseCase
@@ -78,7 +79,8 @@ class WalletConnectManager @Inject constructor(
     private val getWalletConnectSessionsByAccountAddressUseCase: GetWalletConnectSessionsByAccountAddressUseCase,
     private val getAllWalletConnectSessionWithAccountAddressesUseCase: GetWalletConnectSessionsWithAccountsUseCase,
     private val deleteWalletConnectAccountBySessionUseCase: DeleteWalletConnectAccountBySessionUseCase,
-    private val applicationStatusObserver: ApplicationStatusObserver
+    private val applicationStatusObserver: ApplicationStatusObserver,
+    private val subscribeGivenWalletConnectSessionUseCase: SubscribeGivenWalletConnectSessionUseCase
 ) : DefaultLifecycleObserver {
 
     val sessionResultFlow: SharedFlow<Event<Resource<WalletConnectSession>>>
@@ -150,22 +152,25 @@ class WalletConnectManager @Inject constructor(
             }
         }
 
-        override fun onSessionApproved(sessionId: Long, session: WalletConnectSession) {
+        override fun onSessionApproved(sessionId: Long, session: WalletConnectSession, clientId: String) {
             coroutineScope?.launch(Dispatchers.IO) {
                 insertWCSSession(session)
                 walletConnectClient.clearSessionRetryCount(sessionId)
-                subscribeWalletConnectSession(session)
+                subscribeGivenWalletConnectSession(session, clientId)
             }
         }
 
-        override fun onConnected(sessionId: Long, session: WalletConnectSession?) {
+        override fun onConnected(sessionId: Long, session: WalletConnectSession?, clientId: String) {
             coroutineScope?.launch(Dispatchers.IO) {
                 _sessionResultFlow.emit(Event(Resource.OnLoadingFinished))
                 if (session != null) {
-                    val sessionEntity = walletConnectMapper.createWCSessionEntity(session)
+                    val sessionEntity = walletConnectRepository.getSessionById(sessionId)
+                        ?: walletConnectMapper.createWCSessionEntity(session)
                     walletConnectRepository.setConnectedSession(sessionEntity)
                     walletConnectClient.clearSessionRetryCount(sessionId)
-                    subscribeWalletConnectSession(session)
+                    if (!sessionEntity.isSubscribed) {
+                        subscribeGivenWalletConnectSession(session, clientId)
+                    }
                 }
             }
         }
@@ -322,15 +327,6 @@ class WalletConnectManager @Inject constructor(
         )
     }
 
-    private suspend fun subscribeWalletConnectSession(
-        wcSessionRequest: WalletConnectSession,
-        isConnected: Boolean = true
-    ) {
-        val wcSessionEntity = walletConnectMapper.createWCSessionEntity(wcSessionRequest)
-            .copy(isConnected = isConnected)
-        walletConnectRepository.subscribeWalletConnectSession(wcSessionEntity)
-    }
-
     private fun connectToDisconnectedSessions() {
         coroutineScope?.launch(Dispatchers.IO) {
             walletConnectRepository.getAllDisconnectedSessions().map {
@@ -374,7 +370,7 @@ class WalletConnectManager @Inject constructor(
                 walletConnectClient.rejectRequest(result.sessionId, result.requestId, result.errorResponse)
                 _invalidTransactionCauseLiveData.postValue(Event(Resource.Error.Local(result.errorResponse.message)))
             }
-        }
+        }.also { requestHandlingJob?.cancel() }
     }
 
     private fun isLatestRequestHandled(): Boolean {
@@ -435,6 +431,16 @@ class WalletConnectManager @Inject constructor(
         sessionConnectionTimer.cancel()
     }
 
+    private suspend fun subscribeGivenWalletConnectSession(
+        walletConnectSession: WalletConnectSession,
+        clientId: String
+    ) {
+        subscribeGivenWalletConnectSessionUseCase.invoke(
+            walletConnectSession = walletConnectSession,
+            handshakeTopic = clientId
+        )
+    }
+
     /**
      * The purpose of checking [isAppOnBackground] is that we shouldn't try to reconnect failed session again and again
      * while the app is in the background. It was causing session deletion in case of no internet connection. So, we are
@@ -464,9 +470,7 @@ class WalletConnectManager @Inject constructor(
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main).apply {
-            launch(Dispatchers.IO) {
-                walletConnectRepository.setAllSessionsDisconnected()
-            }
+            launch(Dispatchers.IO) { walletConnectRepository.setAllSessionsDisconnected() }
         }
     }
 

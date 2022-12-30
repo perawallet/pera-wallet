@@ -27,9 +27,7 @@ import com.algorand.android.utils.KeyboardToggleListener
 import com.algorand.android.utils.addKeyboardToggleListener
 import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.removeKeyboardToggleListener
-import com.algorand.android.utils.requestFocusAndShowKeyboard
 import com.algorand.android.utils.showAlertDialog
-import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -74,7 +72,7 @@ abstract class BaseNameRegistrationFragment : DaggerBaseFragment(R.layout.fragme
         with(binding) {
             nextButton.setOnClickListener { onNextButtonClick() }
             nameInputLayout.apply {
-                text = nameRegistrationViewModel.accountAddress.toShortenedAddress()
+                text = nameRegistrationViewModel.predefinedAccountName
                 addTrailingIcon(drawableRes = R.drawable.ic_close, onIconClick = { text = "" })
                 requestFocusAndShowKeyboard()
             }

@@ -16,15 +16,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentAssetDetailBinding
+import com.algorand.android.discover.home.domain.model.TokenDetailInfo
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetTransaction
@@ -46,7 +45,7 @@ import com.algorand.android.utils.Event
 import com.algorand.android.utils.PERA_VERIFICATION_MAIL_ADDRESS
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import com.algorand.android.utils.copyToClipboard
-import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.getCustomLongClickableSpan
 import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.setDrawable
@@ -55,7 +54,7 @@ import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
+import java.math.BigDecimal
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -101,6 +100,14 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
 
     private val swapNavigationDirectionEventCollector: suspend (Event<NavDirections>?) -> Unit = {
         it?.consume()?.run { nav(this) }
+    }
+
+    private val baseAssetDrawableProviderCollector: suspend (BaseAssetDrawableProvider?) -> Unit = { drawableProvider ->
+        drawableProvider?.let(::setAssetDrawable)
+    }
+
+    private val navigateToDiscoverMarketEventCollector: suspend (Event<TokenDetailInfo>?) -> Unit = { event ->
+        event?.consume()?.run { navToDiscoverTokenDetailPage(this) }
     }
 
     override fun onDateFilterClick(currentFilter: DateFilter) {
@@ -156,24 +163,35 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
     }
 
     private fun initObservers() {
-        with(viewLifecycleOwner.lifecycleScope) {
-            with(assetDetailViewModel.assetDetailPreviewFlow) {
-                launchWhenResumed { collectLatest(assetDetailPreviewCollector) }
-                launchWhenResumed {
-                    map { it?.accountDisplayName }.distinctUntilChanged().collectLatest(accountDisplayNameCollector)
-                }
-                launchWhenResumed {
-                    map { it?.accountIconResource }.distinctUntilChanged().collectLatest(accountIconResourceCollector)
-                }
-                launchWhenResumed {
-                    map { it?.swapNavigationDirectionEvent }.distinctUntilChanged()
-                        .collectLatest(swapNavigationDirectionEventCollector)
-                }
-                launchWhenResumed {
-                    map { it?.onShowGlobalErrorEvent }.distinctUntilChanged()
-                        .collectLatest(onGlobalErrorEventCollector)
-                }
-            }
+        with(assetDetailViewModel) {
+            collectLatestOnLifecycle(
+                flow = assetDetailPreviewFlow,
+                collection = assetDetailPreviewCollector
+            )
+            collectLatestOnLifecycle(
+                flow = assetDetailPreviewFlow.map { it?.baseAssetDrawableProvider }.distinctUntilChanged(),
+                collection = baseAssetDrawableProviderCollector
+            )
+            collectLatestOnLifecycle(
+                flow = assetDetailPreviewFlow.map { it?.accountDisplayName }.distinctUntilChanged(),
+                collection = accountDisplayNameCollector
+            )
+            collectLatestOnLifecycle(
+                flow = assetDetailPreviewFlow.map { it?.accountIconResource }.distinctUntilChanged(),
+                collection = accountIconResourceCollector
+            )
+            collectLatestOnLifecycle(
+                flow = assetDetailPreviewFlow.map { it?.swapNavigationDirectionEvent }.distinctUntilChanged(),
+                collection = swapNavigationDirectionEventCollector
+            )
+            collectLatestOnLifecycle(
+                flow = assetDetailPreviewFlow.map { it?.onShowGlobalErrorEvent }.distinctUntilChanged(),
+                collection = onGlobalErrorEventCollector
+            )
+            collectLatestOnLifecycle(
+                flow = assetDetailPreviewFlow.map { it?.navigateToDiscoverMarket }.distinctUntilChanged(),
+                collection = navigateToDiscoverMarketEventCollector
+            )
         }
     }
 
@@ -202,8 +220,6 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
     private fun updatePreview(preview: AssetDetailPreview) {
         with(preview) {
             setAssetInformation(
-                baseAssetDrawableProvider = baseAssetDrawableProvider,
-                assetPrismUrl = assetPrismUrl,
                 assetFullName = assetFullName,
                 assetId = assetId,
                 isAlgo = isAlgo,
@@ -218,6 +234,35 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
                 isQuickActionButtonsVisible = isQuickActionButtonsVisible,
                 isSwapButtonSelected = isSwapButtonSelected
             )
+            setMarketInformation(
+                isMarketInformationVisible = isMarketInformationVisible,
+                formattedAssetPrice = formattedAssetPrice,
+                isChangePercentageVisible = isChangePercentageVisible,
+                changePercentage = changePercentage,
+                changePercentageIcon = changePercentageIcon,
+                changePercentageTextColor = changePercentageTextColor
+            )
+        }
+    }
+
+    private fun setMarketInformation(
+        isMarketInformationVisible: Boolean,
+        formattedAssetPrice: String,
+        isChangePercentageVisible: Boolean,
+        changePercentage: BigDecimal?,
+        changePercentageIcon: Int?,
+        changePercentageTextColor: Int?
+    ) {
+        with(binding.marketInformationLayout) {
+            root.isVisible = isMarketInformationVisible
+            root.setOnClickListener { assetDetailViewModel.onMarketClick() }
+            assetPriceTextView.text = formattedAssetPrice
+            assetChangePercentageTextView.apply {
+                changePercentageIcon?.let { setDrawable(start = AppCompatResources.getDrawable(context, it)) }
+                changePercentageTextColor?.let { setTextColor(ContextCompat.getColor(context, it)) }
+                changePercentage?.let { text = getString(R.string.formatted_changed_percentage, it.abs()) }
+                isVisible = isChangePercentageVisible
+            }
         }
     }
 
@@ -238,9 +283,16 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
         }
     }
 
+    private fun setAssetDrawable(baseAssetDrawableProvider: BaseAssetDrawableProvider) {
+        binding.assetLogoImageView.apply {
+            baseAssetDrawableProvider.provideAssetDrawable(
+                imageView = this,
+                onResourceFailed = ::setImageDrawable
+            )
+        }
+    }
+
     private fun setAssetInformation(
-        baseAssetDrawableProvider: BaseAssetDrawableProvider,
-        assetPrismUrl: String?,
         assetFullName: AssetName,
         assetId: Long,
         isAlgo: Boolean,
@@ -256,22 +308,12 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
             }
             if (!isAlgo) {
                 assetIdTextView.apply {
-                    text = getString(R.string.interpunct_asset_id, assetId)
+                    text = assetId.toString()
                     setOnLongClickListener { context.copyToClipboard(assetId.toString()); true }
-                    show()
                 }
             }
-            assetLogoImageView.apply {
-                doOnLayout {
-                    baseAssetDrawableProvider.provideAssetDrawable(
-                        context = root.context,
-                        assetName = assetFullName,
-                        logoUri = assetPrismUrl,
-                        width = it.measuredWidth,
-                        onResourceReady = ::setImageDrawable
-                    )
-                }
-            }
+            assetIdTextView.isVisible = !isAlgo
+            interpunctTextView.isVisible = !isAlgo
         }
     }
 
@@ -368,5 +410,9 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
 
     override fun onTotalSupplyClick() {
         nav(AssetDetailFragmentDirections.actionAssetDetailFragmentToAssetTotalSupplyNavigation())
+    }
+
+    private fun navToDiscoverTokenDetailPage(tokenDetailInfo: TokenDetailInfo) {
+        nav(AssetDetailFragmentDirections.actionAssetDetailFragmentToDiscoverDetailNavigation(tokenDetailInfo))
     }
 }

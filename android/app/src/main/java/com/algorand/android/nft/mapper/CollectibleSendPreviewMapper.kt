@@ -12,13 +12,13 @@
 
 package com.algorand.android.nft.mapper
 
-import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
+import com.algorand.android.modules.collectibles.detail.base.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.nft.ui.model.CollectibleSendPreview
 import javax.inject.Inject
 
 class CollectibleSendPreviewMapper @Inject constructor() {
 
-    fun mapToInitialState(
+    fun mapToCollectibleSendPreview(
         collectibleId: Long,
         collectionName: String,
         collectibleName: String,

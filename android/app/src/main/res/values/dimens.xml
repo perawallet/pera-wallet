@@ -167,8 +167,8 @@
 
     <dimen name="asa_action_layout_height">130dp</dimen>
 
-    <dimen name="collectible_image_view_radius">4dp</dimen>
-    <dimen name="collectible_image_size">40dp</dimen>
+    <dimen name="nft_image_view_radius">4dp</dimen>
+    <dimen name="nft_image_size">40dp</dimen>
     <dimen name="divider_margin">56dp</dimen>
     <dimen name="fab_bottom_padding">100dp</dimen>
 
@@ -182,5 +182,8 @@
     <dimen name="swap_quick_action_button_radius">16dp</dimen>
 
     <dimen name="discover_button_radius">16dp</dimen>
+
+    <!-- Asset Transfer Amount Fragment -->
+    <dimen name="algorand_amount_text_view_height">48dp</dimen>
 
 </resources>

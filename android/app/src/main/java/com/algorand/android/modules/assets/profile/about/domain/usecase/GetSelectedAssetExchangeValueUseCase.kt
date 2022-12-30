@@ -13,8 +13,8 @@
 package com.algorand.android.modules.assets.profile.about.domain.usecase
 
 import com.algorand.android.mapper.AssetHoldingsMapper
-import com.algorand.android.models.AssetDetail
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.modules.parity.domain.model.ParityValue
 import com.algorand.android.modules.parity.domain.usecase.PrimaryCurrencyParityCalculationUseCase
@@ -32,11 +32,11 @@ class GetSelectedAssetExchangeValueUseCase @Inject constructor(
     private val currencyUseCase: CurrencyUseCase
 ) {
 
-    fun getSelectedAssetExchangeValue(assetDetail: AssetDetail): ParityValue? {
-        return if (assetDetail.assetId == ALGO_ID) {
-            getAlgoExchangeParityValue()
-        } else {
-            getAssetExchangeParityValue(assetDetail)
+    fun getSelectedAssetExchangeValue(assetDetail: BaseAssetDetail?): ParityValue? {
+        return when {
+            assetDetail == null -> null
+            assetDetail.assetId == ALGO_ID -> getAlgoExchangeParityValue()
+            else -> getAssetExchangeParityValue(assetDetail)
         }
     }
 
@@ -50,7 +50,7 @@ class GetSelectedAssetExchangeValueUseCase @Inject constructor(
         }
     }
 
-    private fun getAssetExchangeParityValue(assetDetail: AssetDetail): ParityValue? {
+    private fun getAssetExchangeParityValue(assetDetail: BaseAssetDetail): ParityValue? {
         if (assetDetail.usdValue == null) return null
         val assetHolding = assetHoldingsMapper.mapToAssetHoldings(
             assetId = assetDetail.assetId,

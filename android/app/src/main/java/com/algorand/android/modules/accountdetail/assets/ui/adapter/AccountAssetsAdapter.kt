@@ -15,20 +15,21 @@ package com.algorand.android.modules.accountdetail.assets.ui.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.models.AccountDetailAssetsItem
-import com.algorand.android.models.AccountDetailAssetsItem.BaseAssetItem
-import com.algorand.android.models.AccountDetailAssetsItem.ItemType.ACCOUNT_PORTFOLIO
-import com.algorand.android.models.AccountDetailAssetsItem.ItemType.ASSET
-import com.algorand.android.models.AccountDetailAssetsItem.ItemType.ASSETS_LIST_TITLE
-import com.algorand.android.models.AccountDetailAssetsItem.ItemType.NO_ASSET_FOUND
-import com.algorand.android.models.AccountDetailAssetsItem.ItemType.PENDING_ASSET
-import com.algorand.android.models.AccountDetailAssetsItem.ItemType.QUICK_ACTIONS
-import com.algorand.android.models.AccountDetailAssetsItem.ItemType.SEARCH
 import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.modules.accountdetail.assets.ui.adapter.AccountDetailAssetsTitleViewHolder.AccountDetailAssetsTitleViewHolderListener
 import com.algorand.android.modules.accountdetail.assets.ui.adapter.AccountDetailQuickActionsViewHolder.AccountDetailQuickActionsListener
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.ACCOUNT_PORTFOLIO
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.ASSET
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.ASSETS_LIST_TITLE
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.NFT
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.NO_ASSET_FOUND
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.PENDING_ASSET
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.PENDING_NFT
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.QUICK_ACTIONS
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.REQUIRED_MINIMUM_BALANCE
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.SEARCH
 import com.algorand.android.utils.hideKeyboard
 
 class AccountAssetsAdapter(
@@ -69,6 +70,30 @@ class AccountAssetsAdapter(
         }
     }
 
+    private val requiredMinimumBalanceListener = RequiredMinimumBalanceItemViewHolder.RequiredMinimumBalanceListener {
+        listener.onRequiredMinimumBalanceClick()
+    }
+
+    private val ownedAssetViewHolderListener = object : OwnedAssetViewHolder.Listener {
+        override fun onOwnedAssetItemClick(assetId: Long) {
+            listener.onAssetClick(assetId)
+        }
+
+        override fun onOwnedAssetLongPressed(assetId: Long) {
+            listener.onAssetLongClick(assetId)
+        }
+    }
+
+    private val ownedNFTViewHolderListener = object : OwnedNFTViewHolder.Listener {
+        override fun onOwnedNFTItemClick(nftId: Long) {
+            listener.onNFTClick(nftId)
+        }
+
+        override fun onOwnedNFTItemLongPressed(nftId: Long) {
+            listener.onNFTLongClick(nftId)
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
         return getItem(position).itemType.ordinal
     }
@@ -82,6 +107,9 @@ class AccountAssetsAdapter(
             PENDING_ASSET.ordinal -> createPendingAssetViewHolder(parent)
             QUICK_ACTIONS.ordinal -> createQuickActionsViewHolder(parent)
             NO_ASSET_FOUND.ordinal -> createNoAssetFoundScreenStateViewHolder(parent)
+            REQUIRED_MINIMUM_BALANCE.ordinal -> createRequiredMinimumBalanceViewHolder(parent)
+            NFT.ordinal -> createOwnedNFTViewHolder(parent)
+            PENDING_NFT.ordinal -> createPendingNFTViewHolder(parent)
             else -> throw IllegalArgumentException("$logTag : Item View Type is Unknown.")
         }
     }
@@ -106,13 +134,7 @@ class AccountAssetsAdapter(
     }
 
     private fun createOwnedAssetViewHolder(parent: ViewGroup): OwnedAssetViewHolder {
-        return OwnedAssetViewHolder.create(parent).apply {
-            itemView.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    listener.onAssetClick(getItem(bindingAdapterPosition) as BaseAssetItem)
-                }
-            }
-        }
+        return OwnedAssetViewHolder.create(parent, ownedAssetViewHolderListener)
     }
 
     private fun createPendingAssetViewHolder(parent: ViewGroup): PendingAssetViewHolder {
@@ -131,15 +153,31 @@ class AccountAssetsAdapter(
         return NoAssetFoundScreenStateViewHolder.create(parent)
     }
 
+    private fun createRequiredMinimumBalanceViewHolder(parent: ViewGroup): RequiredMinimumBalanceItemViewHolder {
+        return RequiredMinimumBalanceItemViewHolder.create(parent, requiredMinimumBalanceListener)
+    }
+
+    private fun createOwnedNFTViewHolder(parent: ViewGroup): OwnedNFTViewHolder {
+        return OwnedNFTViewHolder.create(parent, ownedNFTViewHolderListener)
+    }
+
+    private fun createPendingNFTViewHolder(parent: ViewGroup): PendingNFTViewHolder {
+        return PendingNFTViewHolder.create(parent)
+    }
+
     interface Listener {
         fun onSearchQueryUpdated(query: String) {}
-        fun onAssetClick(assetItem: BaseAssetItem)
+        fun onAssetClick(assetId: Long)
+        fun onAssetLongClick(assetId: Long)
+        fun onNFTClick(nftId: Long)
+        fun onNFTLongClick(nftId: Long)
         fun onAddNewAssetClick() {}
         fun onManageAssetsClick()
         fun onBuyAlgoClick()
         fun onSendClick()
         fun onSwapClick()
         fun onMoreClick()
+        fun onRequiredMinimumBalanceClick()
     }
 
     companion object {

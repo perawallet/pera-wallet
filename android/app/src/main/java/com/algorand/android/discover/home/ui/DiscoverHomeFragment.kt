@@ -279,7 +279,7 @@ class DiscoverHomeFragment :
 
     private fun navigateToTokenDetailScreen(tokenDetail: TokenDetailInfo) {
         nav(
-            DiscoverHomeFragmentDirections.actionDiscoverHomeFragmentToDiscoverDetailFragment(
+            DiscoverHomeFragmentDirections.actionDiscoverHomeFragmentToDiscoverDetailNavigation(
                 tokenDetail = tokenDetail
             )
         )

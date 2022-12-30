@@ -53,6 +53,6 @@ class RecoverAccountInfoFragment : BaseInfoFragment() {
     }
 
     private fun navigateToRecoverWithPassphraseFragment() {
-        nav(RecoverAccountInfoFragmentDirections.actionRecoverAccountInfoFragmentToRecoverWithPassphraseFragment())
+        nav(RecoverAccountInfoFragmentDirections.actionRecoverAccountInfoFragmentToRecoverWithPassphraseNavigation())
     }
 }

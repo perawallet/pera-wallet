@@ -18,7 +18,11 @@
 
     <include app:graph="@navigation/pair_ledger_navigation" />
 
-    <include app:graph="@navigation/moonpay_navigation" />
+    <include app:graph="@navigation/recover_with_passphrase_navigation" />
+
+    <include app:graph="@navigation/register_watch_account_navigation" />
+
+    <include app:graph="@navigation/backup_passphrases_navigation" />
 
     <action
         android:id="@+id/action_global_to_homeNavigation"
@@ -53,32 +57,10 @@
         android:label="fragment_write_down_info"
         tools:layout="@layout/fragment_base_info">
         <action
-            android:id="@+id/action_writeDownInfoFragment_to_backupPassphraseFragment"
-            app:destination="@id/backupPassphraseFragment" />
+            android:id="@+id/action_writeDownInfoFragment_to_backup_passphrases_navigation"
+            app:destination="@id/backupPassphrasesNavigation" />
     </fragment>
 
-    <fragment
-        android:id="@+id/backupPassphraseFragment"
-        android:name="com.algorand.android.ui.register.BackupPassphraseFragment"
-        android:label="fragment_backup_passphrase"
-        tools:layout="@layout/fragment_backup_passphrase">
-        <action
-            android:id="@+id/action_backupPassphrase_to_passphraseQuestion"
-            app:destination="@id/passphraseQuestionFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/passphraseQuestionFragment"
-        android:name="com.algorand.android.ui.register.PassphraseValidationFragment"
-        android:label="fragment_passphrase_question"
-        tools:layout="@layout/fragment_passphrase_validation">
-        <argument
-            android:name="accountCreation"
-            app:argType="com.algorand.android.models.AccountCreation" />
-        <action
-            android:id="@+id/action_passphraseQuestionFragment_to_passphraseVerifiedInfoFragment"
-            app:destination="@id/passphraseVerifiedInfoFragment" />
-    </fragment>
 
     <fragment
         android:id="@+id/recoverAccountInfoFragment"
@@ -86,32 +68,14 @@
         android:label="fragment_recover_account_info"
         tools:layout="@layout/fragment_base_info">
         <action
-            android:id="@+id/action_recoverAccountInfoFragment_to_recoverWithPassphraseFragment"
-            app:destination="@id/recoverWithPassphraseFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/recoverWithPassphraseFragment"
-        android:name="com.algorand.android.ui.register.recover.RecoverWithPassphraseFragment"
-        android:label="fragment_recover_from_seed"
-        tools:layout="@layout/fragment_recover_with_passphrase">
-        <action
-            android:id="@+id/action_recoverWithPassphraseFragment_to_recoverWithPassphraseQrScannerFragment"
-            app:destination="@id/recoverWithPassphraseQrScannerFragment" />
-        <action
-            android:id="@+id/action_recoverWithPassphraseFragment_to_recoverOptionsBottomSheet"
-            app:destination="@id/recoverOptionsBottomSheet" />
-        <action
-            android:id="@+id/action_recoverWithPassphraseFragment_to_passphraseQuestionFragment"
-            app:destination="@id/passphraseQuestionFragment" />
-        <action
-            android:id="@+id/action_recoverWithPassphraseFragment_to_recoverAccountNameRegistrationFragment"
-            app:destination="@id/recoverAccountNameRegistrationFragment" />
-        <argument
-            android:name="mnemonic"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
+            android:id="@+id/action_recoverAccountInfoFragment_to_recoverWithPassphraseNavigation"
+            app:destination="@id/recoverWithPassphraseNavigation">
+            <argument
+                android:name="mnemonic"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
     </fragment>
 
     <fragment
@@ -120,34 +84,15 @@
         android:label="WatchAccountInfoFragment"
         tools:layout="@layout/fragment_base_info">
         <action
-            android:id="@+id/action_watchAccountInfoFragment_to_registerWatchAccountFragment"
-            app:destination="@id/registerWatchAccountFragment" />
+            android:id="@+id/action_watchAccountInfoFragment_to_registerWatchAccountNavigation"
+            app:destination="@id/registerWatchAccountNavigation">
+            <argument
+                android:name="accountAddress"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
     </fragment>
-
-    <fragment
-        android:id="@+id/registerWatchAccountFragment"
-        android:name="com.algorand.android.ui.register.watch.RegisterWatchAccountFragment"
-        android:label="RegisterWatchAccountFragment"
-        tools:layout="@layout/fragment_register_watch_account">
-        <action
-            android:id="@+id/action_registerWatchAccountInfoFragment_to_registerWatchAccountQrScannerFragment"
-            app:destination="@id/registerWatchAccountQrScannerFragment" />
-        <action
-            android:id="@+id/action_registerWatchAccountFragment_to_watchAccountNameRegistrationFragment"
-            app:destination="@id/watchAccountNameRegistrationFragment" />
-
-        <argument
-            android:name="accountAddress"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/registerWatchAccountQrScannerFragment"
-        android:name="com.algorand.android.ui.register.watch.RegisterWatchAccountQrScannerFragment"
-        android:label="RegisterWatchAccountQrScannerFragment"
-        tools:layout="@layout/fragment_qr_code_scanner" />
 
     <fragment
         android:id="@+id/registerIntroFragment"
@@ -157,20 +102,6 @@
         <argument
             android:name="isShowingCloseButton"
             app:argType="boolean" />
-        <argument
-            android:name="shouldNavToRegisterWatchAccount"
-            android:defaultValue="false"
-            app:argType="boolean" />
-        <argument
-            android:name="mnemonic"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-        <action
-            android:id="@+id/action_registerIntroFragment_to_recoverWithPassphraseFragment"
-            app:destination="@id/recoverWithPassphraseFragment"
-            app:popUpTo="@id/registerIntroFragment"
-            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_registerIntroFragment_to_addAccountTypeSelectionFragment"
             app:destination="@id/addAccountTypeSelectionFragment" />
@@ -182,9 +113,6 @@
             app:destination="@id/registerWatchAccountFragment"
             app:popUpTo="@id/registerIntroFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_registerIntroFragment_to_recoverAccountInfoFragment"
-            app:destination="@id/recoverAccountInfoFragment" />
     </fragment>
 
     <fragment
@@ -213,99 +141,5 @@
             app:destination="@id/pairLedgerNavigation" />
     </fragment>
 
-    <fragment
-        android:id="@+id/createAccountNameRegistrationFragment"
-        android:name="com.algorand.android.ui.register.createaccount.name.CreateAccountNameRegistrationFragment"
-        android:label="CreateAccountNameRegistrationFragment"
-        tools:layout="@layout/fragment_name_registration">
-        <argument
-            android:name="accountCreation"
-            app:argType="com.algorand.android.models.AccountCreation" />
-        <action
-            android:id="@+id/action_createAccountNameRegistrationFragment_to_createAccountResultInfoFragment"
-            app:destination="@id/createAccountResultInfoFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/recoverAccountNameRegistrationFragment"
-        android:name="com.algorand.android.ui.register.recover.name.RecoverAccountNameRegistrationFragment"
-        android:label="RecoverAccountNameRegistrationFragment"
-        tools:layout="@layout/fragment_name_registration">
-        <argument
-            android:name="accountCreation"
-            app:argType="com.algorand.android.models.AccountCreation" />
-        <action
-            android:id="@+id/action_recoverAccountNameRegistrationFragment_to_recoverAccountResultInfoFragment"
-            app:destination="@id/recoverAccountResultInfoFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/watchAccountNameRegistrationFragment"
-        android:name="com.algorand.android.ui.register.watch.name.WatchAccountNameRegistrationFragment"
-        android:label="WatchAccountNameRegistrationFragment"
-        tools:layout="@layout/fragment_name_registration">
-        <argument
-            android:name="accountCreation"
-            app:argType="com.algorand.android.models.AccountCreation" />
-        <action
-            android:id="@+id/action_watchAccountNameRegistrationFragment_to_watchAccountResultInfoFragment"
-            app:destination="@id/watchAccountResultInfoFragment" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/createAccountResultInfoFragment"
-        android:name="com.algorand.android.ui.register.createaccount.result.CreateAccountResultInfoFragment"
-        android:label="CreateAccountResultInfoFragment"
-        tools:layout="@layout/fragment_base_info">
-        <action
-            android:id="@+id/action_createAccountResultInfoFragment_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation"
-            app:popUpTo="@id/loginNavigation"
-            app:popUpToInclusive="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/recoverAccountResultInfoFragment"
-        android:name="com.algorand.android.ui.register.recover.result.RecoverAccountResultInfoFragment"
-        android:label="RecoverAccountResultInfoFragment"
-        tools:layout="@layout/fragment_base_info">
-        <action
-            android:id="@+id/action_recoverAccountResultInfoFragment_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation"
-            app:popUpTo="@id/loginNavigation"
-            app:popUpToInclusive="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/watchAccountResultInfoFragment"
-        android:name="com.algorand.android.ui.register.watch.result.WatchAccountResultInfoFragment"
-        android:label="WatchAccountResultInfoFragment"
-        tools:layout="@layout/fragment_base_info" />
-
-    <dialog
-        android:id="@+id/recoverOptionsBottomSheet"
-        android:name="com.algorand.android.ui.register.recover.RecoverOptionsBottomSheet"
-        android:label="RecoverOptionsBottomSheet"
-        tools:layout="@layout/bottom_sheet_recover_options" />
-
-    <fragment
-        android:id="@+id/passphraseVerifiedInfoFragment"
-        android:name="com.algorand.android.ui.register.createaccount.passphraseverified.PassphraseVerifiedInfoFragment"
-        android:label="PassphraseVerifiedInfoFragment"
-        tools:layout="@layout/fragment_base_info">
-        <argument
-            android:name="accountCreation"
-            app:argType="com.algorand.android.models.AccountCreation" />
-        <action
-            android:id="@+id/action_passphraseVerifiedInfoFragment_to_recoverAccountNameRegistrationFragment"
-            app:destination="@id/recoverAccountNameRegistrationFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/recoverWithPassphraseQrScannerFragment"
-        android:name="com.algorand.android.ui.register.recover.RecoverWithPassphraseQrScannerFragment"
-        android:label="RecoverWithPassphraseQrScannerFragment"
-        tools:layout="@layout/fragment_qr_code_scanner" />
 
 </navigation>

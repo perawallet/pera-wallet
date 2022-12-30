@@ -22,33 +22,50 @@ import java.math.BigInteger
 sealed class TransactionManagerResult {
     data class Success(val signedTransactionDetail: SignedTransactionDetail) : TransactionManagerResult()
 
-    sealed class Error(@StringRes val titleResId: Int) : TransactionManagerResult() {
-        fun getMessage(context: Context): Pair<String, CharSequence> {
-            val title = context.getString(titleResId)
-            return when (this) {
-                is Defined -> Pair(title, context.getXmlStyledString(description))
-                is MinBalanceError -> {
-                    val annotatedString = AnnotatedString(
-                        stringResId = R.string.you_need_at_least,
-                        replacementList = listOf("min_balance" to neededBalance.formatAsAlgoString())
-                    )
-                    Pair(title, context.getXmlStyledString(annotatedString))
+    sealed class Error : TransactionManagerResult() {
+
+        abstract val titleResId: Int
+
+        sealed class GlobalWarningError : Error() {
+
+            fun getMessage(context: Context): Pair<String, CharSequence> {
+                val title = context.getString(titleResId)
+                return when (this) {
+                    is Defined -> Pair(title, context.getXmlStyledString(description))
+                    is MinBalanceError -> {
+                        Pair(title, context.getString(R.string.you_need_at_least, neededBalance.formatAsAlgoString()))
+                    }
+                    is Api -> Pair(title, errorMessage)
                 }
-                is Api -> Pair(title, errorMessage)
             }
+
+            data class Defined(
+                val description: AnnotatedString,
+                @StringRes override val titleResId: Int = R.string.error_default_title
+            ) : GlobalWarningError()
+
+            data class Api(
+                val errorMessage: String,
+                @StringRes override val titleResId: Int = R.string.error_default_title
+            ) : GlobalWarningError()
+
+            data class MinBalanceError(
+                val neededBalance: BigInteger,
+                @StringRes override val titleResId: Int = R.string.min_transaction_error
+            ) : GlobalWarningError()
         }
 
-        class Defined(
-            val description: AnnotatedString,
-            @StringRes titleResId: Int = R.string.error_default_title
-        ) : Error(titleResId)
+        sealed class SnackbarError : Error() {
 
-        class Api(
-            val errorMessage: String,
-            @StringRes titleResId: Int = R.string.error_default_title
-        ) : Error(titleResId)
+            abstract val descriptionResId: Int?
+            abstract val buttonTextResId: Int?
 
-        data class MinBalanceError(val neededBalance: BigInteger) : Error(titleResId = R.string.min_transaction_error)
+            data class Retry(
+                override val titleResId: Int,
+                override val descriptionResId: Int?,
+                override val buttonTextResId: Int = R.string.retry
+            ) : SnackbarError()
+        }
     }
 
     object LedgerOperationCanceled : TransactionManagerResult()

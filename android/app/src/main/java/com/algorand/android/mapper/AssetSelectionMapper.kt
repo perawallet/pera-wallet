@@ -55,7 +55,6 @@ class AssetSelectionMapper @Inject constructor(
                 .getFormattedCompactValue(),
             isAmountInSelectedCurrencyVisible = ownedCollectibleImageData.isAmountInSelectedCurrencyVisible,
             avatarDisplayText = AssetName.create(ownedCollectibleImageData.name),
-            prismUrl = ownedCollectibleImageData.prismUrl,
             baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(
                 assetId = ownedCollectibleImageData.id
             ),
@@ -81,7 +80,6 @@ class AssetSelectionMapper @Inject constructor(
                 .getFormattedCompactValue(),
             isAmountInSelectedCurrencyVisible = ownedCollectibleVideoData.isAmountInSelectedCurrencyVisible,
             avatarDisplayText = AssetName.create(ownedCollectibleVideoData.name),
-            prismUrl = ownedCollectibleVideoData.prismUrl,
             baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(
                 assetId = ownedCollectibleVideoData.id
             ),
@@ -107,7 +105,6 @@ class AssetSelectionMapper @Inject constructor(
                 .getFormattedCompactValue(),
             isAmountInSelectedCurrencyVisible = ownedCollectibleAudioData.isAmountInSelectedCurrencyVisible,
             avatarDisplayText = AssetName.create(ownedCollectibleAudioData.name),
-            prismUrl = ownedCollectibleAudioData.prismUrl,
             baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(
                 assetId = ownedCollectibleAudioData.id
             ),
@@ -133,7 +130,6 @@ class AssetSelectionMapper @Inject constructor(
                 .getFormattedCompactValue(),
             isAmountInSelectedCurrencyVisible = ownedCollectibleMixedData.isAmountInSelectedCurrencyVisible,
             avatarDisplayText = AssetName.create(ownedCollectibleMixedData.name),
-            prismUrl = ownedCollectibleMixedData.prismUrl,
             baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(
                 assetId = ownedCollectibleMixedData.id
             ),

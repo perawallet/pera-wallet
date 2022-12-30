@@ -21,18 +21,13 @@ import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentSenderAccountSelectionBinding
 import com.algorand.android.models.AccountInformation
-import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.SenderAccountSelectionPreview
-import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.accountselection.AccountSelectionAdapter
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
-import com.algorand.android.utils.extensions.hide
-import com.algorand.android.utils.extensions.show
-import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigInteger
@@ -62,31 +57,6 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
 
     private val senderAccountSelectionPreviewCollector: suspend (SenderAccountSelectionPreview) -> Unit = {
         updateUiWithPreview(it)
-    }
-
-    override val transactionFragmentListener = object : TransactionFragmentListener {
-
-        override fun onSignTransactionLoading() {
-            showProgress()
-        }
-
-        override fun onSignTransactionLoadingFinished() {
-            hideProgress()
-        }
-
-        override fun onSignTransactionFinished(signedTransactionDetail: SignedTransactionDetail) {
-            when (signedTransactionDetail) {
-                is SignedTransactionDetail.Send -> {
-                    nav(
-                        SenderAccountSelectionFragmentDirections
-                            .actionSenderAccountSelectionFragmentToAssetTransferPreviewFragment(signedTransactionDetail)
-                    )
-                }
-                else -> {
-                    sendErrorLog("Unhandled else case in SenderAccountSelectionFragment.transactionFragmentListener")
-                }
-            }
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -124,30 +94,28 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
                     .actionSenderAccountSelectionFragmentToReceiverAccountSelectionFragment(assetTransaction)
             }
             else -> {
-                senderAccountSelectionViewModel.signTransaction(accountInformation.address)
-                return
+                val selectedAccountCacheData = senderAccountSelectionViewModel
+                    .getAccountCachedData(accountInformation.address) ?: return
+                val selectedAsset = senderAccountSelectionViewModel
+                    .getAssetInformation(accountInformation.address) ?: return
+                val targetUser = TargetUser(
+                    assetTransaction.receiverUser,
+                    assetTransaction.receiverUser.publicKey,
+                    selectedAccountCacheData
+                )
+                SenderAccountSelectionFragmentDirections
+                    .actionSenderAccountSelectionFragmentToAssetTransferPreviewFragment(
+                        TransactionData.Send(
+                            selectedAccountCacheData,
+                            assetTransaction.amount,
+                            selectedAsset,
+                            assetTransaction.note,
+                            assetTransaction.xnote,
+                            targetUser
+                        )
+                    )
             }
         }.apply { nav(this) }
-    }
-
-    private fun signTransaction(assetTransaction: AssetTransaction, senderAddress: String) {
-        val note = assetTransaction.xnote ?: assetTransaction.note
-        val selectedAccountCacheData = senderAccountSelectionViewModel.getAccountCachedData(senderAddress) ?: return
-        val selectedAsset = senderAccountSelectionViewModel.getAssetInformation(senderAddress) ?: return
-        val targetUser = TargetUser(
-            assetTransaction.receiverUser ?: return,
-            assetTransaction.receiverUser.publicKey,
-            selectedAccountCacheData
-        )
-        sendTransaction(
-            TransactionData.Send(
-                selectedAccountCacheData,
-                assetTransaction.amount,
-                selectedAsset,
-                note,
-                targetUser
-            )
-        )
     }
 
     private fun updateUiWithPreview(preview: SenderAccountSelectionPreview) {
@@ -158,22 +126,7 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
 
             fromAccountInformationSuccessEvent?.consume()?.let { handleNextNavigation(it) }
             fromAccountInformationErrorEvent?.consume()?.let { handleError(it.getAsResourceError(), binding.root) }
-            signTransactionSuccessEvent?.consume()?.let {
-                signTransaction(
-                    senderAddress = it.first,
-                    assetTransaction = it.second
-                )
-            }
-            signTransactionErrorEvent?.consume()?.let { showGlobalError(getString(it.second), getString(it.first)) }
         }
-    }
-
-    private fun showProgress() {
-        binding.progressBar.root.show()
-    }
-
-    private fun hideProgress() {
-        binding.progressBar.root.hide()
     }
 
     private fun showTransactionTipsIfNeed() {

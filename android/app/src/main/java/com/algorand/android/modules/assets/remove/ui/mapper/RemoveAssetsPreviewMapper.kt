@@ -13,19 +13,12 @@
 package com.algorand.android.modules.assets.remove.ui.mapper
 
 import com.algorand.android.models.BaseRemoveAssetItem
-import com.algorand.android.models.ScreenState
 import com.algorand.android.modules.assets.remove.ui.model.RemoveAssetsPreview
 import javax.inject.Inject
 
 class RemoveAssetsPreviewMapper @Inject constructor() {
 
-    fun mapToRemoveAssetsPreview(
-        removableAssetList: List<BaseRemoveAssetItem>,
-        screenState: ScreenState.CustomState?
-    ): RemoveAssetsPreview {
-        return RemoveAssetsPreview(
-            removableAssetList = removableAssetList,
-            screenState = screenState
-        )
+    fun mapToRemoveAssetsPreview(removableAssetList: List<BaseRemoveAssetItem>): RemoveAssetsPreview {
+        return RemoveAssetsPreview(removableAssetList = removableAssetList)
     }
 }

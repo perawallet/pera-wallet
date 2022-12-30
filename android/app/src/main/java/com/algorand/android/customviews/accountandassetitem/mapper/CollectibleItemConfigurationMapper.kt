@@ -37,8 +37,7 @@ class CollectibleItemConfigurationMapper @Inject constructor(
                 primaryValueText = ownedAssetData?.getSelectedCurrencyParityValue()?.getFormattedCompactValue(),
                 secondaryValueText = ownedAssetData?.parityValueInSelectedCurrency?.getFormattedValue(),
                 verificationTierConfiguration =
-                verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier),
-                prismUrl = ownedAssetData?.prismUrl
+                verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier)
             )
         }
     }

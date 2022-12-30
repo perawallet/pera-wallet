@@ -31,7 +31,8 @@ sealed class SignedTransactionDetail : Parcelable {
         val isMax: Boolean,
         var fee: Long,
         val assetInformation: AssetInformation,
-        val note: String? = null
+        val note: String? = null,
+        val xnote: String? = null
     ) : SignedTransactionDetail()
 
     sealed class AssetOperation : SignedTransactionDetail() {

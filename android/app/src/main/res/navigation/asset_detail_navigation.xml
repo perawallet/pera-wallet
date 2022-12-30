@@ -154,6 +154,13 @@
                 android:name="accountAddress"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_assetDetailFragment_to_discoverDetailNavigation"
+            app:destination="@id/discoverDetailNavigation">
+            <argument
+                android:name="tokenDetail"
+                app:argType="com.algorand.android.discover.home.domain.model.TokenDetailInfo" />
+        </action>
     </fragment>
 
 </navigation>

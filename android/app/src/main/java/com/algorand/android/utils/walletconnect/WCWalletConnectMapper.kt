@@ -69,7 +69,8 @@ class WCWalletConnectMapper @Inject constructor() {
                 connectedAccountsAddresses = approvedAccounts,
                 isConnected = true,
                 accountsNames = accountsNames,
-                fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
+                fallbackBrowserGroupResponse = fallbackBrowserGroupResponse,
+                isSubscribed = false
             )
         }
     }

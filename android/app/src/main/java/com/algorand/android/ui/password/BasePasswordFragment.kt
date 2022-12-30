@@ -114,6 +114,7 @@ abstract class BasePasswordFragment : DaggerBaseFragment(R.layout.fragment_base_
             navBack()
         } else {
             binding.passwordView.clearWithAnimation()
+            showPasswordDidNotMatchError()
         }
     }
 

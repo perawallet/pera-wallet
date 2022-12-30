@@ -17,13 +17,15 @@
     app:startDestination="@id/walletConnectTransactionRequestFragment">
 
     <argument
-        android:name="isFromDiscover"
+        android:name="shouldSkipConfirmation"
         android:defaultValue="false"
         app:argType="boolean" />
 
     <!--  Transaction Request Graph  -->
 
     <include app:graph="@navigation/transaction_request_navigation" />
+
+    <include app:graph="@navigation/wallet_connect_transaction_fallback_browser_selection_navigation" />
 
     <action
         android:id="@+id/action_walletConnectRequestNavigation_pop"
@@ -67,10 +69,17 @@
             android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectAtomicTransactionsFragment"
             app:destination="@id/walletConnectAtomicTransactionsFragment" />
         <action
-            android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectTransactionConfirmedSingleBrowserBottomSheet"
-            app:destination="@id/walletConnectTransactionConfirmedSingleBrowserBottomSheet"
+            android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectTransactionFallbackBrowserSelectionNavigation"
+            app:destination="@id/walletConnectTransactionFallbackBrowserSelectionNavigation"
             app:popUpTo="@id/walletConnectTransactionRequestFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true">
+            <argument
+                android:name="browserGroup"
+                app:argType="string" />
+            <argument
+                android:name="peerMetaName"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <!--  Bottom Sheets  -->
@@ -86,18 +95,6 @@
         <argument
             android:name="peerMeta"
             app:argType="com.algorand.android.models.WalletConnectPeerMeta" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/walletConnectTransactionConfirmedSingleBrowserBottomSheet"
-        android:name="com.algorand.android.modules.walletconnectfallbackbrowser.ui.WalletConnectTransactionConfirmedSingleBrowserBottomSheet"
-        android:label="WalletConnectTransactionConfirmedSingleBrowserBottomSheet">
-        <argument
-            android:name="browserItem"
-            app:argType="com.algorand.android.modules.walletconnectfallbackbrowser.ui.model.FallbackBrowserListItem" />
-        <argument
-            android:name="peerMetaName"
-            app:argType="string" />
     </dialog>
 
 </navigation>

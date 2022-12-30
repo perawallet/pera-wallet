@@ -225,11 +225,16 @@
         android:name="com.algorand.android.ui.send.transferpreview.AssetTransferPreviewFragment"
         android:label="AssetTransferPreviewFragment">
         <argument
-            android:name="signedTransactionDetail"
-            app:argType="com.algorand.android.models.SignedTransactionDetail$Send" />
+            android:name="transactionData"
+            app:argType="com.algorand.android.models.TransactionData$Send" />
+        <action
+            android:id="@+id/action_assetTransferPreviewFragment_to_addNoteBottomSheet"
+            app:destination="@id/addNoteBottomSheet" />
         <action
             android:id="@+id/action_assetTransferPreviewFragment_to_transactionConfirmationFragment"
-            app:destination="@id/transactionConfirmationFragment" />
+            app:destination="@id/transactionConfirmationFragment"
+            app:popUpTo="@id/sendAlgoNavigation"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -260,7 +265,7 @@
 
     <dialog
         android:id="@+id/addNoteBottomSheet"
-        android:name="com.algorand.android.ui.send.transferamount.AddNoteBottomSheet"
+        android:name="com.algorand.android.ui.send.shared.AddNoteBottomSheet"
         android:label="bottom_sheet_add_note"
         tools:layout="@layout/bottom_sheet_add_note">
         <argument

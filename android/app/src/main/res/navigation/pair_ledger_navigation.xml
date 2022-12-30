@@ -82,7 +82,7 @@
         <action
             android:id="@+id/action_verifyLedgerInfoFragment_to_moonpayNavigation"
             app:destination="@id/moonpayNavigation"
-            app:popUpTo="@id/pairLedgerNavigation"
+            app:popUpTo="@id/loginNavigation"
             app:popUpToInclusive="true" />
     </fragment>
 

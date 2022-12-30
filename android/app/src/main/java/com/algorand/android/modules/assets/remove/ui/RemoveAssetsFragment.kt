@@ -14,7 +14,6 @@ package com.algorand.android.modules.assets.remove.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
@@ -96,10 +95,6 @@ class RemoveAssetsFragment : BaseFragment(R.layout.fragment_remove_assets) {
 
     private fun updatePreview(preview: RemoveAssetsPreview) {
         removeAssetAdapter.submitList(preview.removableAssetList)
-        binding.screenStateView.apply {
-            isVisible = preview.screenState != null
-            preview.screenState?.let { setupUi(it) }
-        }
     }
 
     private fun setupRecyclerView() {
@@ -204,7 +199,7 @@ class RemoveAssetsFragment : BaseFragment(R.layout.fragment_remove_assets) {
             )
         }
         nav(
-            RemoveAssetsFragmentDirections.actionRemoveAssetsFragmentToCollectibleOptOutConfirmationBottomSheet(
+            RemoveAssetsFragmentDirections.actionRemoveAssetsFragmentToNftOptOutConfirmationNavigation(
                 assetAction = assetAction
             )
         )

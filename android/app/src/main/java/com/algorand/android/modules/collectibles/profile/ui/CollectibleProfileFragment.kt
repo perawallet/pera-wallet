@@ -17,31 +17,26 @@ import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.algorand.android.R
 import com.algorand.android.models.AccountIconResource
-import com.algorand.android.modules.assets.action.removal.RemoveAssetActionBottomSheet.Companion.REMOVE_ASSET_ACTION_RESULT_KEY
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
-import com.algorand.android.modules.collectibles.action.optin.CollectibleOptInActionBottomSheet.Companion.OPT_IN_COLLECTIBLE_ACTION_RESULT_KEY
+import com.algorand.android.modules.collectibles.detail.base.ui.BaseCollectibleDetailFragment
 import com.algorand.android.modules.collectibles.profile.ui.model.CollectibleProfilePreview
-import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
-import com.algorand.android.nft.ui.nfsdetail.base.BaseCollectibleDetailFragment
 import com.algorand.android.utils.AccountIconDrawable
-import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.openTextShareBottomMenuChooser
 import com.algorand.android.utils.setDrawable
-import com.algorand.android.utils.useFragmentResultListenerValue
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
 
     override val baseCollectibleDetailViewModel: CollectibleProfileViewModel by viewModels()
 
-    private val collectibleProfileCollector: suspend (CollectibleProfilePreview) -> Unit = {
-        initCollectibleProfilePreview(it)
+    private val collectibleProfileCollector: suspend (CollectibleProfilePreview?) -> Unit = {
+        if (it != null) initCollectibleProfilePreview(it)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,52 +46,26 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
     }
 
     override fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            baseCollectibleDetailViewModel.collectibleProfilePreviewFlow.collectLatest(collectibleProfileCollector)
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        startFragmentResultListeners()
-    }
-
-    private fun startFragmentResultListeners() {
-        useFragmentResultListenerValue<Boolean>(
-            key = REMOVE_ASSET_ACTION_RESULT_KEY,
-            result = { isConfirmed -> if (isConfirmed) navBack() }
-        )
-        useFragmentResultListenerValue<Boolean>(
-            key = OPT_IN_COLLECTIBLE_ACTION_RESULT_KEY,
-            result = { isConfirmed -> if (isConfirmed) navBack() }
+        collectLatestOnLifecycle(
+            flow = baseCollectibleDetailViewModel.collectibleProfilePreviewFlow,
+            collection = collectibleProfileCollector
         )
     }
 
     private fun initCollectibleProfilePreview(collectibleProfilePreview: CollectibleProfilePreview) {
         with(collectibleProfilePreview) {
-            with(collectibleProfile ?: return) {
-                setCollectibleMedias(collectibleMedias)
-                setWarningViewGroup(warningTextRes)
-                setOptedInWarningViewGroup(isOwnedByTheUser, optedInWarningTextRes)
-                setCollectionTitleView(collectionName)
-                setCollectibleNameView(collectibleName)
-                setCollectibleDescription(collectibleDescription)
-                setCollectibleAssetId(collectibleId)
-                setCollectibleAssetIdClickListener(collectibleId, accountAddress)
-                setCollectibleCreatorNameView(creatorName)
-                setCollectibleCreatorWalletAddressView(creatorWalletAddress)
-                setCollectibleTraits(collectibleTraits)
-                setShowOnPeraExplorerGroup(isPeraExplorerVisible, peraExplorerUrl)
-            }
-            with(binding.progressbar.root) {
-                isVisible = isLoadingVisible
-                onTransactionLoadingEvent?.consume()?.run { show() }
-                onTransactionSuccess?.consume()?.run { navBack() }
-                onTransactionFailed?.consume()?.run {
-                    hide()
-                    showGlobalError(message)
-                }
-            }
+            setCollectibleMedias(mediaListOfNFT)
+            setPrimaryWarningText(primaryWarningResId)
+            setSecondaryWarningText(secondaryWarningResId)
+            setCollectionName(collectionNameOfNFT)
+            setNFTName(nftName)
+            setNFTDescription(nftDescription)
+            setNFTId(nftId)
+            setCollectibleAssetIdClickListener(nftId, accountAddress)
+            setNFTCreatorAccount(creatorAccountAddressOfNFT, formattedCreatorAccountAddressOfNFT)
+            setNFTTraits(traitListOfNFT)
+            setShowOnPeraExplorer(peraExplorerUrl)
+            setProgressBarVisibility(isLoadingVisible)
             setAsaStatusPreview(collectibleStatusPreview)
         }
     }
@@ -129,6 +98,10 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
                             size = resources.getDimension(R.dimen.account_icon_size_small).toInt()
                         )
                     )
+                    setOnLongClickListener {
+                        onAccountAddressCopied(asaStatusPreview.accountName?.publicKey.orEmpty())
+                        true
+                    }
                 }
                 is AsaStatusPreview.RemovalStatus.CollectibleRemovalStatus -> {
                     isVisible = asaStatusPreview.accountName != null
@@ -141,6 +114,10 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
                             size = resources.getDimension(R.dimen.account_icon_size_small).toInt()
                         )
                     )
+                    setOnLongClickListener {
+                        onAccountAddressCopied(asaStatusPreview.accountName?.publicKey.orEmpty())
+                        true
+                    }
                 }
                 is AsaStatusPreview.AccountSelectionStatus -> {
                     // Account should be already selected in this fragment. Nothing to do until a flow change
@@ -196,7 +173,7 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
     private fun navToAssetRemovalFlow() {
         val assetAction = baseCollectibleDetailViewModel.getAssetAction()
         nav(
-            CollectibleProfileFragmentDirections.actionCollectibleProfileFragmentToAssetRemovalActionNavigation(
+            CollectibleProfileFragmentDirections.actionCollectibleProfileFragmentToNftOptOutConfirmationNavigation(
                 assetAction = assetAction
             )
         )
@@ -214,21 +191,17 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
         onAccountAddressCopied(baseCollectibleDetailViewModel.accountAddress)
     }
 
-    override fun navToShowQrBottomSheet() {
-        nav(
-            CollectibleProfileFragmentDirections.actionCollectibleProfileFragmentToShowQrNavigation(
-                title = getString(R.string.qr_code),
-                qrText = baseCollectibleDetailViewModel.accountAddress
-            )
+    override fun onShareButtonClick() {
+        context?.openTextShareBottomMenuChooser(
+            title = baseCollectibleDetailViewModel.getNFTName()?.getName(resources).orEmpty(),
+            text = baseCollectibleDetailViewModel.getNFTExplorerUrl().orEmpty()
         )
     }
 
     override fun navToImagePreviewFragment(
         imageUrl: String,
-        errorDisplayText: String,
         view: View,
-        mediaType: BaseCollectibleMediaItem.ItemType,
-        previewPrismUrl: String
+        cachedMediaUri: String
     ) {
         exitTransition = getImageDetailTransitionAnimation(isGrowing = false)
         reenterTransition = getImageDetailTransitionAnimation(isGrowing = true)
@@ -236,11 +209,9 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
         nav(
             directions = CollectibleProfileFragmentDirections
                 .actionCollectibleProfileFragmentToCollectibleImagePreviewNavigation(
-                    imageUrl = imageUrl,
-                    errorDisplayText = errorDisplayText,
                     transitionName = transitionName,
-                    mediaType = mediaType,
-                    previewPrismUrl = previewPrismUrl
+                    imageUri = imageUrl,
+                    cachedMediaUri = cachedMediaUri
                 ),
             extras = FragmentNavigatorExtras(view to transitionName)
         )
@@ -255,5 +226,9 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
                 )
             )
         }
+    }
+
+    override fun onNavBack() {
+        navBack()
     }
 }

@@ -36,5 +36,7 @@ data class AssetDetail(
     override val assetDescription: String?,
     override val url: String?,
     override val totalSupply: BigDecimal?,
-    override val maxSupply: BigInteger?
+    override val maxSupply: BigInteger?,
+    override val last24HoursAlgoPriceChangePercentage: BigDecimal?,
+    override val isAvailableOnDiscoverMobile: Boolean?
 ) : BaseAssetDetail()

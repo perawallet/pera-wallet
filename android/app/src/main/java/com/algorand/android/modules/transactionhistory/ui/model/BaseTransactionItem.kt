@@ -108,20 +108,40 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
         }
 
         sealed class AssetTransferItem : TransactionItem(), Parcelable {
-            @Parcelize
-            data class AssetSendItem(
-                override val id: String?,
-                override val signature: String?,
-                override val nameRes: Int? = R.string.send,
-                override val description: String?,
-                override val formattedAmount: String?,
-                override val isAmountVisible: Boolean = true,
-                override val isPending: Boolean,
-                override val amountColorRes: Int? = R.color.transaction_amount_negative_color,
-            ) : AssetTransferItem() {
-                override fun isSameTransaction(other: RecyclerListItem): Boolean {
-                    val transaction = other as? AssetSendItem ?: return false
-                    return signature != null && signature == transaction.signature
+
+            sealed class BaseAssetSendItem : AssetTransferItem() {
+                @Parcelize
+                data class AssetSendItem(
+                    override val id: String?,
+                    override val signature: String?,
+                    override val nameRes: Int? = R.string.send,
+                    override val description: String?,
+                    override val formattedAmount: String?,
+                    override val isAmountVisible: Boolean = true,
+                    override val isPending: Boolean,
+                    override val amountColorRes: Int? = R.color.transaction_amount_negative_color,
+                ) : BaseAssetSendItem() {
+                    override fun isSameTransaction(other: RecyclerListItem): Boolean {
+                        val transaction = other as? AssetSendItem ?: return false
+                        return signature != null && signature == transaction.signature
+                    }
+                }
+
+                @Parcelize
+                data class AssetSendOptOutItem(
+                    override val id: String?,
+                    override val signature: String?,
+                    override val nameRes: Int? = R.string.opt_out,
+                    override val description: String?,
+                    override val formattedAmount: String?,
+                    override val isAmountVisible: Boolean = true,
+                    override val isPending: Boolean,
+                    override val amountColorRes: Int? = R.color.transaction_amount_negative_color,
+                ) : BaseAssetSendItem() {
+                    override fun isSameTransaction(other: RecyclerListItem): Boolean {
+                        val transaction = other as? AssetSendOptOutItem ?: return false
+                        return signature != null && signature == transaction.signature
+                    }
                 }
             }
 
@@ -194,7 +214,7 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
                     override val amountColorRes: Int? = null
                 ) : BaseSelfItem() {
                     override fun isSameTransaction(other: RecyclerListItem): Boolean {
-                        val transaction = other as? AssetSendItem ?: return false
+                        val transaction = other as? AssetSelfItem ?: return false
                         return signature != null && signature == transaction.signature
                     }
                 }
@@ -211,7 +231,7 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
                     override val amountColorRes: Int? = null
                 ) : BaseSelfItem() {
                     override fun isSameTransaction(other: RecyclerListItem): Boolean {
-                        val transaction = other as? AssetSendItem ?: return false
+                        val transaction = other as? AssetSelfOptInItem ?: return false
                         return signature != null && signature == transaction.signature
                     }
                 }

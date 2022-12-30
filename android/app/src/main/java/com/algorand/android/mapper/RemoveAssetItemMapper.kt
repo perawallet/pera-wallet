@@ -20,6 +20,7 @@ import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseO
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
+import com.algorand.android.models.BaseRemoveAssetItem
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.BaseRemoveCollectibleItem.RemoveCollectibleAudioItem
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.BaseRemoveCollectibleItem.RemoveCollectibleImageItem
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.BaseRemoveCollectibleItem.RemoveCollectibleMixedItem
@@ -29,6 +30,7 @@ import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.RemoveA
 import com.algorand.android.models.BaseRemoveAssetItem.DescriptionViewItem
 import com.algorand.android.models.BaseRemoveAssetItem.SearchViewItem
 import com.algorand.android.models.BaseRemoveAssetItem.TitleViewItem
+import com.algorand.android.models.ScreenState
 import com.algorand.android.models.ui.AccountAssetItemButtonState
 import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
 import com.algorand.android.utils.AssetName
@@ -39,7 +41,7 @@ class RemoveAssetItemMapper @Inject constructor(
     private val assetDrawableProviderDecider: AssetDrawableProviderDecider
 ) {
 
-    fun mapTo(
+    fun mapToRemoveAssetItem(
         ownedAssetData: OwnedAssetData,
         actionItemButtonState: AccountAssetItemButtonState
     ): RemoveAssetItem {
@@ -54,11 +56,13 @@ class RemoveAssetItemMapper @Inject constructor(
                 formattedAmount = formattedAmount,
                 formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
-                formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
-                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
+                formattedSelectedCurrencyCompactValue = if (isAmountInSelectedCurrencyVisible) {
+                    parityValueInSelectedCurrency.getFormattedCompactValue()
+                } else {
+                    null
+                },
                 verificationTierConfiguration =
                 verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier),
-                prismUrl = prismUrl,
                 baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
                 actionItemButtonState = actionItemButtonState,
                 amountInPrimaryCurrency = parityValueInSelectedCurrency.amountAsCurrency
@@ -66,7 +70,7 @@ class RemoveAssetItemMapper @Inject constructor(
         }
     }
 
-    fun mapTo(
+    fun mapToRemoveCollectibleImageItem(
         ownedCollectibleImageData: OwnedCollectibleImageData,
         actionItemButtonState: AccountAssetItemButtonState
     ): RemoveCollectibleImageItem {
@@ -81,9 +85,11 @@ class RemoveAssetItemMapper @Inject constructor(
                 formattedAmount = formattedAmount,
                 formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
-                formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
-                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                prismUrl = prismUrl,
+                formattedSelectedCurrencyCompactValue = if (isAmountInSelectedCurrencyVisible) {
+                    parityValueInSelectedCurrency.getFormattedCompactValue()
+                } else {
+                    null
+                },
                 baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
                 actionItemButtonState = actionItemButtonState,
                 optedInAtRound = optedInAtRound,
@@ -92,7 +98,7 @@ class RemoveAssetItemMapper @Inject constructor(
         }
     }
 
-    fun mapTo(
+    fun mapToRemoveCollectibleVideoItem(
         ownedCollectibleImageData: OwnedCollectibleVideoData,
         actionItemButtonState: AccountAssetItemButtonState
     ): RemoveCollectibleVideoItem {
@@ -107,9 +113,11 @@ class RemoveAssetItemMapper @Inject constructor(
                 formattedAmount = formattedAmount,
                 formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
-                formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
-                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                prismUrl = prismUrl,
+                formattedSelectedCurrencyCompactValue = if (isAmountInSelectedCurrencyVisible) {
+                    parityValueInSelectedCurrency.getFormattedCompactValue()
+                } else {
+                    null
+                },
                 baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
                 actionItemButtonState = actionItemButtonState,
                 optedInAtRound = optedInAtRound,
@@ -134,8 +142,6 @@ class RemoveAssetItemMapper @Inject constructor(
                 formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
                 formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
-                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                prismUrl = prismUrl,
                 baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
                 actionItemButtonState = actionItemButtonState,
                 optedInAtRound = optedInAtRound,
@@ -144,7 +150,7 @@ class RemoveAssetItemMapper @Inject constructor(
         }
     }
 
-    fun mapTo(
+    fun mapToRemoveCollectibleMixedItem(
         ownedCollectibleMixedData: OwnedCollectibleMixedData,
         actionItemButtonState: AccountAssetItemButtonState
     ): RemoveCollectibleMixedItem {
@@ -159,9 +165,11 @@ class RemoveAssetItemMapper @Inject constructor(
                 formattedAmount = formattedAmount,
                 formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
-                formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
-                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                prismUrl = prismUrl,
+                formattedSelectedCurrencyCompactValue = if (isAmountInSelectedCurrencyVisible) {
+                    parityValueInSelectedCurrency.getFormattedCompactValue()
+                } else {
+                    null
+                },
                 baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
                 actionItemButtonState = actionItemButtonState,
                 optedInAtRound = optedInAtRound,
@@ -170,7 +178,7 @@ class RemoveAssetItemMapper @Inject constructor(
         }
     }
 
-    fun mapTo(
+    fun mapToRemoveNotSupportedCollectibleItem(
         ownedUnsupportedCollectibleData: OwnedUnsupportedCollectibleData,
         actionItemButtonState: AccountAssetItemButtonState
     ): RemoveNotSupportedCollectibleItem {
@@ -185,8 +193,11 @@ class RemoveAssetItemMapper @Inject constructor(
                 formattedAmount = formattedAmount,
                 formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
-                formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
-                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
+                formattedSelectedCurrencyCompactValue = if (isAmountInSelectedCurrencyVisible) {
+                    parityValueInSelectedCurrency.getFormattedCompactValue()
+                } else {
+                    null
+                },
                 baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
                 actionItemButtonState = actionItemButtonState,
                 optedInAtRound = optedInAtRound,
@@ -205,5 +216,9 @@ class RemoveAssetItemMapper @Inject constructor(
 
     fun mapToSearchItem(@StringRes searchViewHintResId: Int): SearchViewItem {
         return SearchViewItem(searchViewHintResId)
+    }
+
+    fun mapToScreenStateItem(screenState: ScreenState): BaseRemoveAssetItem.ScreenStateItem {
+        return BaseRemoveAssetItem.ScreenStateItem(screenState)
     }
 }

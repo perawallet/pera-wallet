@@ -31,7 +31,8 @@ import com.algorand.android.models.Result
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
 import com.algorand.android.models.TransactionManagerResult
-import com.algorand.android.models.TransactionManagerResult.Error.Defined
+import com.algorand.android.models.TransactionManagerResult.Error.GlobalWarningError.Defined
+import com.algorand.android.models.TransactionManagerResult.Error.GlobalWarningError.MinBalanceError
 import com.algorand.android.models.TransactionParams
 import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.usecase.AccountDetailUseCase
@@ -112,7 +113,7 @@ class TransactionManager @Inject constructor(
                 is LedgerBleResult.SignedTransactionResult ->
                     checkAndCacheSignedTransaction(transactionByteArray)
                 is LedgerBleResult.LedgerErrorResult ->
-                    setSignFailed(TransactionManagerResult.Error.Api(errorMessage))
+                    setSignFailed(TransactionManagerResult.Error.GlobalWarningError.Api(errorMessage))
                 is LedgerBleResult.AppErrorResult -> setSignFailed(Defined(AnnotatedString(errorMessageId), titleResId))
                 is LedgerBleResult.OperationCancelledResult -> setSignFailed(
                     Defined(AnnotatedString(R.string.error_cancelled_message), R.string.error_cancelled_title)
@@ -168,7 +169,6 @@ class TransactionManager @Inject constructor(
             }
 
             if (isMinimumLimitViolated()) {
-                setSignFailed(Defined(AnnotatedString(stringResId = R.string.minimum_balance_required)))
                 return
             }
         }
@@ -203,10 +203,15 @@ class TransactionManager @Inject constructor(
     fun initSigningTransactions(isGroupTransaction: Boolean, vararg transactionData: TransactionData) {
         currentScope.launch {
             postResult(TransactionManagerResult.Loading)
-            processTransactionDataList(transactionData.toList(), isGroupTransaction)?.let {
-                this@TransactionManager.transactionDataList = it
-                signHelper.initItemsToBeEnqueued(it)
-            } ?: setSignFailed(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
+            transactionData.toList().ifEmpty {
+                setSignFailed(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
+                return@launch
+            }.let { transactionList ->
+                processTransactionDataList(transactionList, isGroupTransaction)?.let {
+                    this@TransactionManager.transactionDataList = it
+                    signHelper.initItemsToBeEnqueued(it)
+                }
+            }
         }
     }
 
@@ -265,7 +270,7 @@ class TransactionManager @Inject constructor(
     }
 
     suspend fun TransactionData.createTransaction(): ByteArray? {
-        val transactionParams = getTransactionParams() ?: return null
+        val transactionParams = getTransactionParams(this) ?: return null
 
         val createdTransactionByteArray = when (this) {
             is TransactionData.Send -> {
@@ -327,7 +332,7 @@ class TransactionManager @Inject constructor(
         return createdTransactionByteArray
     }
 
-    private suspend fun getTransactionParams(): TransactionParams? {
+    private suspend fun getTransactionParams(transactionData: TransactionData): TransactionParams? {
         when (val result = transactionsRepository.getTransactionParams()) {
             is Result.Success -> {
                 transactionParams = result.data
@@ -336,12 +341,30 @@ class TransactionManager @Inject constructor(
                 transactionParams = null
                 when (result.exception.cause) {
                     is ConnectException, is SocketException -> {
-                        postResult(
-                            Defined(AnnotatedString(R.string.the_internet_connection))
-                        )
+                        postResult(Defined(AnnotatedString(R.string.the_internet_connection)))
                     }
                     else -> {
-                        postResult(TransactionManagerResult.Error.Api(result.exception.message.orEmpty()))
+                        when (transactionData) {
+                            is TransactionData.AddAsset -> {
+                                postResult(
+                                    TransactionManagerResult.Error.SnackbarError.Retry(
+                                        titleResId = R.string.error_while_opting_to_the,
+                                        descriptionResId = null,
+                                        buttonTextResId = R.string.retry
+                                    )
+                                )
+                            }
+                            is TransactionData.Rekey,
+                            is TransactionData.Send,
+                            is TransactionData.SendAndRemoveAsset,
+                            is TransactionData.RemoveAsset -> {
+                                postResult(
+                                    TransactionManagerResult.Error.GlobalWarningError.Api(
+                                        result.exception.message.orEmpty()
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -434,9 +457,15 @@ class TransactionManager @Inject constructor(
         val balance = accountCacheManager.getAssetInformation(
             accountCacheData.account.address,
             AssetInformation.ALGO_ID
-        )?.amount ?: return true
+        )?.amount ?: run {
+            setSignFailed(Defined(AnnotatedString(stringResId = R.string.minimum_balance_required)))
+            return true
+        }
 
-        val fee = calculatedFee?.toBigInteger() ?: return true
+        val fee = calculatedFee?.toBigInteger() ?: run {
+            setSignFailed(Defined(AnnotatedString(stringResId = R.string.minimum_balance_required)))
+            return true
+        }
 
         // fee only drops from the algos.
         val balanceAfterTransaction =
@@ -448,7 +477,7 @@ class TransactionManager @Inject constructor(
 
         if (balanceAfterTransaction < minBalance) {
             if (this is TransactionData.AddAsset) {
-                postResult(TransactionManagerResult.Error.MinBalanceError(minBalance + fee))
+                postResult(MinBalanceError(minBalance + fee))
             } else {
                 val description = AnnotatedString(
                     stringResId = R.string.transaction_amount,
@@ -497,9 +526,6 @@ class TransactionManager @Inject constructor(
         transactionDataList: List<TransactionData>,
         isGroupTransaction: Boolean
     ): List<TransactionData>? {
-        if (transactionDataList.isEmpty()) {
-            return null
-        }
         transactionDataList.forEach { it.createTransaction() ?: return null }
         if (isGroupTransaction) {
             createGroupedBytesArray(transactionDataList)?.let {

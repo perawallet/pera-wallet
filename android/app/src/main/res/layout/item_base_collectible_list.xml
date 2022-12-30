@@ -17,14 +17,15 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/spacing_small">
 
-    <com.algorand.android.customviews.collectibleimageview.CollectibleImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/collectibleImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/AccountAssetItemStartImageShapeAppearance" />
 
     <TextView
         android:id="@+id/collectionTextView"
@@ -32,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_small"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textAppearance="@style/TextAppearance.Footnote.Sans"
         android:textColor="@color/secondary_text_color"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:maxLines="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/collectionTextView"
@@ -56,28 +57,11 @@
         android:id="@+id/warningImageView"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:layout_margin="@dimen/spacing_xsmall"
-        android:background="@drawable/bg_collectible_warning"
-        android:padding="@dimen/spacing_xxsmall"
+        android:layout_marginStart="@dimen/spacing_xsmall"
+        android:layout_marginBottom="@dimen/spacing_xsmall"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/collectibleImageView"
         app:layout_constraintStart_toStartOf="@id/collectibleImageView"
-        app:tint="@color/text_gray"
-        tools:src="@drawable/ic_error"
-        tools:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/collectibleBadgeImageView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="@dimen/spacing_xsmall"
-        android:layout_marginTop="@dimen/spacing_xsmall"
-        android:background="@drawable/bg_collectible_badge"
-        android:padding="@dimen/spacing_xxxsmall"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/collectibleImageView"
-        app:layout_constraintTop_toTopOf="@id/collectibleImageView"
-        tools:srcCompat="@drawable/ic_3d_object"
         tools:visibility="visible" />
 
     <!--  TODO Missing shadow  -->
@@ -87,7 +71,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_xsmall"
         android:layout_marginBottom="@dimen/spacing_xsmall"
-        android:background="@drawable/bg_collectible_pending"
+        android:background="@drawable/bg_rectangle_radius_8"
+        android:backgroundTint="@color/nft_icon_background"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/spacing_xsmall"
@@ -95,29 +80,30 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/collectibleImageView"
         app:layout_constraintStart_toStartOf="@id/collectibleImageView"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
         <ProgressBar
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:indeterminateTint="@color/positive" />
+            android:indeterminateTint="@color/white" />
 
         <TextView
             android:id="@+id/collectiblePendingTextView"
-            style="@style/TextAppearance.Footnote.Sans.Medium"
+            style="@style/TextAppearance.Footnote.Sans.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_xsmall"
-            android:textColor="@color/positive"
+            android:textColor="@color/white"
             tools:text="@tools:sample/lorem[1]" />
+
     </LinearLayout>
 
     <TextView
         android:id="@+id/collectibleAmountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_xsmall"
-        android:layout_marginBottom="@dimen/spacing_xsmall"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:layout_marginEnd="@dimen/spacing_xsmall"
         android:background="@drawable/bg_rectangle_radius_8"
         android:backgroundTint="@color/nft_icon_background"
         android:paddingHorizontal="@dimen/spacing_xsmall"
@@ -125,9 +111,11 @@
         android:textAppearance="@style/TextAppearance.Footnote.Sans.Bold"
         android:textColor="@color/white"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/collectibleImageView"
-        app:layout_constraintStart_toStartOf="@id/collectibleImageView"
-        tools:text="@tools:sample/lorem[2]"
+        app:layout_constraintEnd_toEndOf="@id/collectibleImageView"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/collectibleImageView"
+        tools:text="@tools:sample/lorem[3]"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

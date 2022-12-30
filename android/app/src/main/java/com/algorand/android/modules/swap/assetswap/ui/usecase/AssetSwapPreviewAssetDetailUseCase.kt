@@ -23,7 +23,6 @@ import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.formatAsTwoDecimals
 import java.math.BigDecimal
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
 
 class AssetSwapPreviewAssetDetailUseCase @Inject constructor(
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
@@ -81,7 +80,6 @@ class AssetSwapPreviewAssetDetailUseCase @Inject constructor(
             formattedBalance = ownedAssetData?.formattedAmount ?: BigDecimal.ZERO.formatAsTwoDecimals(),
             assetShortName = swapQuoteAssetDetail.shortName,
             verificationTier = swapQuoteAssetDetail.verificationTier,
-            logoUrl = swapQuoteAssetDetail.logoUrl,
             assetDecimal = ownedAssetData?.decimals ?: DEFAULT_ASSET_DECIMAL
         )
     }
@@ -92,7 +90,6 @@ class AssetSwapPreviewAssetDetailUseCase @Inject constructor(
             formattedBalance = ownedAssetData.formattedAmount,
             assetShortName = ownedAssetData.shortName,
             verificationTier = ownedAssetData.verificationTier,
-            logoUrl = ownedAssetData.prismUrl,
             assetDecimal = ownedAssetData.decimals
         )
     }
@@ -103,7 +100,6 @@ class AssetSwapPreviewAssetDetailUseCase @Inject constructor(
             formattedBalance = BigDecimal.ZERO.formatAsTwoDecimals(),
             assetShortName = assetDetail.shortName,
             verificationTier = assetDetail.verificationTier,
-            logoUrl = assetDetail.logoUri,
             assetDecimal = assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL
         )
     }

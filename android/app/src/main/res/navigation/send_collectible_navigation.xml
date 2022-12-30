@@ -30,8 +30,11 @@
         android:label="CollectibleSendFragment"
         tools:layout="@layout/fragment_collectible_send">
         <argument
-            android:name="collectibleDetail"
-            app:argType="com.algorand.android.nft.ui.model.CollectibleDetail" />
+            android:name="accountAddress"
+            app:argType="string" />
+        <argument
+            android:name="nftId"
+            app:argType="long" />
         <action
             android:id="@+id/action_collectibleSendFragment_to_collectibleSendQrScannerFragment"
             app:destination="@id/collectibleSendQrScannerFragment" />
@@ -85,8 +88,16 @@
             android:name="fee"
             app:argType="float" />
         <argument
-            android:name="collectibleDetail"
-            app:argType="com.algorand.android.nft.ui.model.CollectibleDetail" />
+            android:name="nftId"
+            app:argType="long" />
+        <argument
+            android:name="nftDomainLogoUrl"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="nftDomainName"
+            app:argType="string"
+            app:nullable="true" />
     </dialog>
 
     <fragment

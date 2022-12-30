@@ -13,15 +13,12 @@
 package com.algorand.android.modules.assets.profile.asaprofile.ui.usecase
 
 import com.algorand.android.R
+import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.mapper.AssetActionMapper
-import com.algorand.android.mapper.AssetOperationResultMapper
-import com.algorand.android.models.Account
 import com.algorand.android.models.AssetAction
-import com.algorand.android.models.AssetDetail
-import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
-import com.algorand.android.models.Result
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.modules.assets.profile.about.domain.usecase.GetAssetDetailFlowFromAsaProfileLocalCache
 import com.algorand.android.modules.assets.profile.about.domain.usecase.GetSelectedAssetExchangeValueUseCase
 import com.algorand.android.modules.assets.profile.asaprofile.ui.mapper.AsaProfilePreviewMapper
@@ -30,16 +27,12 @@ import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaProfil
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.PeraButtonState
 import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
-import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.usecase.AccountAddressUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.usecase.AssetAdditionUseCase
 import com.algorand.android.usecase.GetBaseOwnedAssetDataUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.AssetName
-import com.algorand.android.utils.Event
-import com.algorand.android.utils.Resource
 import com.algorand.android.utils.isGreaterThan
 import java.math.BigInteger
 import javax.inject.Inject
@@ -58,32 +51,10 @@ class AsaProfilePreviewUseCase @Inject constructor(
     private val accountAddressUseCase: AccountAddressUseCase,
     private val asaStatusPreviewMapper: AsaStatusPreviewMapper,
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val transactionsRepository: TransactionsRepository,
-    private val assetAdditionUseCase: AssetAdditionUseCase,
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val assetActionMapper: AssetActionMapper,
-    private val assetOperationResultMapper: AssetOperationResultMapper,
     private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase
 ) {
-    // TODO: Use SendSignedTransactionUseCase instead of transactionsRepository
-    suspend fun sendTransaction(
-        signedTransactionData: ByteArray,
-        assetInformation: AssetInformation,
-        account: Account
-    ) = flow {
-        when (val result = transactionsRepository.sendSignedTransaction(signedTransactionData)) {
-            is Result.Success -> {
-                assetAdditionUseCase.addAssetAdditionToAccountCache(account.address, assetInformation)
-                val assetOperationResult = assetOperationResultMapper.mapTo(
-                    resultTitleResId = R.string.asset_successfully_added_formatted,
-                    assetName = AssetName.create(assetInformation.fullName),
-                    assetId = assetInformation.assetId
-                )
-                emit(Event(Resource.Success(assetOperationResult)))
-            }
-            is Result.Error -> emit(Event(result.getAsResourceError()))
-        }
-    }
 
     // TODO: We should fetch asset details from API
     fun createAssetAction(assetId: Long, accountAddress: String?): AssetAction {
@@ -167,16 +138,20 @@ class AsaProfilePreviewUseCase @Inject constructor(
     }
 
     private fun createAsaProfilePreviewFromAssetDetail(
-        assetDetail: AssetDetail,
+        assetDetail: BaseAssetDetail,
         asaStatusPreview: AsaStatusPreview?
     ): AsaProfilePreview {
         return with(assetDetail) {
             val formattedAssetPrice = getSelectedAssetExchangeValueUseCase
                 .getSelectedAssetExchangeValue(assetDetail = this)
-                ?.getFormattedValue()
+                ?.getFormattedValue(isCompact = true)
             val verificationTierConfiguration = verificationTierConfigurationDecider
                 .decideVerificationTierConfiguration(verificationTier)
-            val assetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(assetId)
+            val assetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(assetDetail)
+            val isAvailableOnDiscoverMobile = isAvailableOnDiscoverMobile ?: false
+            val isMarketInformationVisible = isAvailableOnDiscoverMobile &&
+                verificationTier != VerificationTier.SUSPICIOUS &&
+                hasUsdValue()
             asaProfilePreviewMapper.mapToAsaProfilePreview(
                 isAlgo = assetDetail.assetId == ALGO_ID,
                 assetFullName = fullName,
@@ -186,7 +161,9 @@ class AsaProfilePreviewUseCase @Inject constructor(
                 verificationTierConfiguration = verificationTierConfiguration,
                 baseAssetDrawableProvider = assetDrawableProvider,
                 assetPrismUrl = logoUri,
-                asaStatusPreview = asaStatusPreview
+                asaStatusPreview = asaStatusPreview,
+                isMarketInformationVisible = isMarketInformationVisible,
+                last24HoursChange = last24HoursAlgoPriceChangePercentage
             )
         }
     }
@@ -205,7 +182,7 @@ class AsaProfilePreviewUseCase @Inject constructor(
                 asaStatusPreviewMapper.mapToAsaAccountSelectionStatusPreview(
                     statusLabelTextResId = R.string.you_can_opt_in_to_this,
                     peraButtonState = PeraButtonState.ADDITION,
-                    actionButtonTextResId = R.string.add_asset
+                    actionButtonTextResId = R.string.opt_in_to_asset
                 )
             }
             !isUserOptedInAsset -> {
@@ -213,7 +190,7 @@ class AsaProfilePreviewUseCase @Inject constructor(
                     accountAddress = accountAddressUseCase.createAccountAddress(accountAddress),
                     statusLabelTextResId = R.string.you_can_add_this_asset,
                     peraButtonState = PeraButtonState.ADDITION,
-                    actionButtonTextResId = R.string.add_asset
+                    actionButtonTextResId = R.string.opt_in_to_asset
                 )
             }
             isUserOptedInAsset && hasUserAmount -> {

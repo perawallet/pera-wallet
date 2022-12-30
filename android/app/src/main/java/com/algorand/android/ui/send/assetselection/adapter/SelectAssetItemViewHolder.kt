@@ -15,12 +15,10 @@ package com.algorand.android.ui.send.assetselection.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.databinding.ItemSendAssetSelectionBinding
 import com.algorand.android.models.BaseSelectAssetItem
 import com.algorand.android.models.BaseViewHolder
-import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 
 class SelectAssetItemViewHolder(
@@ -32,11 +30,7 @@ class SelectAssetItemViewHolder(
         if (item !is BaseSelectAssetItem.SelectAssetItem) return
         binding.assetItemView.apply {
             with(item.assetItemConfiguration) {
-                setAssetStartIconDrawable(
-                    assetDrawableProvider = assetIconDrawableProvider,
-                    assetName = primaryAssetName,
-                    prismUrl = prismUrl
-                )
+                setAssetStartIconDrawable(assetDrawableProvider = assetIconDrawableProvider)
                 setAssetTitleText(primaryAssetName?.getName(resources))
                 setAssetDescriptionText(secondaryAssetName?.getName(resources))
                 setAssetPrimaryValue(primaryValueText)
@@ -47,21 +41,12 @@ class SelectAssetItemViewHolder(
         }
     }
 
-    private fun setAssetStartIconDrawable(
-        assetDrawableProvider: BaseAssetDrawableProvider?,
-        assetName: AssetName?,
-        prismUrl: String?
-    ) {
-        if (assetName == null) return
+    private fun setAssetStartIconDrawable(assetDrawableProvider: BaseAssetDrawableProvider?) {
         with(binding.assetItemView) {
-            setStartIconDrawable(drawable = null, forceShow = true)
-            getStartIconImageView().doOnLayout {
+            getStartIconImageView().apply {
                 assetDrawableProvider?.provideAssetDrawable(
-                    context = context,
-                    assetName = assetName,
-                    logoUri = prismUrl,
-                    width = it.measuredWidth,
-                    onResourceReady = ::setStartIconDrawable
+                    imageView = this,
+                    onResourceFailed = ::setStartIconDrawable
                 )
             }
         }

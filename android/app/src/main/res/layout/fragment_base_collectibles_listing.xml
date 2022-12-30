@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_xxxxlarge"
                 android:gravity="center"
-                android:text="@string/collectibles"
+                android:text="@string/nfts"
                 android:textAppearance="@style/TextAppearance.Title.Sans.Medium" />
 
             <TextView
@@ -77,6 +77,7 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:gravity="center"
                 android:text="@string/welcome_to_your_nft"
+                android:textAppearance="@style/TextAppearance.Body.Sans"
                 android:textColor="@color/secondary_text_color" />
 
             <com.google.android.material.button.MaterialButton
@@ -85,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="52dp"
-                android:text="@string/receive_nft"
+                android:text="@string/opt_in_to_nft"
                 android:visibility="gone"
                 app:icon="@drawable/ic_plus"
                 tools:visibility="visible" />
@@ -117,15 +118,9 @@
         app:srcCompat="@drawable/ic_plus"
         app:tint="@color/button_primary_text" />
 
-    <ProgressBar
+    <include
         android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
+        layout="@layout/layout_full_screen_progress"
+        android:visibility="visible" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

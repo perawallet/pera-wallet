@@ -32,12 +32,12 @@ sealed class BaseAssetSearchListItem : RecyclerListItem {
 
     abstract val itemType: ItemType
 
-    data class InfoViewItem(@StringRes val infoViewTextResId: Int) : BaseAssetSearchListItem() {
+    object InfoViewItem : BaseAssetSearchListItem() {
 
         override val itemType: ItemType = ItemType.INFO_VIEW_ITEM
 
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-            return other is InfoViewItem && other.infoViewTextResId == infoViewTextResId
+            return other is InfoViewItem && other == this
         }
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
@@ -64,7 +64,6 @@ sealed class BaseAssetSearchListItem : RecyclerListItem {
         abstract val fullName: AssetName
         abstract val shortName: AssetName
         abstract val accountAssetItemButtonState: AccountAssetItemButtonState
-        abstract val prismUrl: String?
         abstract val baseAssetDrawableProvider: BaseAssetDrawableProvider
 
         data class AssetSearchItem(
@@ -72,7 +71,6 @@ sealed class BaseAssetSearchListItem : RecyclerListItem {
             override val fullName: AssetName,
             override val shortName: AssetName,
             override val accountAssetItemButtonState: AccountAssetItemButtonState,
-            override val prismUrl: String?,
             override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
             val verificationTierConfiguration: VerificationTierConfiguration?
         ) : AssetListItem() {
@@ -95,7 +93,6 @@ sealed class BaseAssetSearchListItem : RecyclerListItem {
                 override val fullName: AssetName,
                 override val shortName: AssetName,
                 override val accountAssetItemButtonState: AccountAssetItemButtonState,
-                override val prismUrl: String?,
                 override val baseAssetDrawableProvider: BaseAssetDrawableProvider
             ) : BaseCollectibleSearchListItem() {
 
@@ -115,7 +112,6 @@ sealed class BaseAssetSearchListItem : RecyclerListItem {
                 override val fullName: AssetName,
                 override val shortName: AssetName,
                 override val accountAssetItemButtonState: AccountAssetItemButtonState,
-                override val prismUrl: String?,
                 override val baseAssetDrawableProvider: BaseAssetDrawableProvider
             ) : BaseCollectibleSearchListItem() {
 
@@ -135,7 +131,6 @@ sealed class BaseAssetSearchListItem : RecyclerListItem {
                 override val fullName: AssetName,
                 override val shortName: AssetName,
                 override val accountAssetItemButtonState: AccountAssetItemButtonState,
-                override val prismUrl: String?,
                 override val baseAssetDrawableProvider: BaseAssetDrawableProvider
             ) : BaseCollectibleSearchListItem() {
 
@@ -159,9 +154,6 @@ sealed class BaseAssetSearchListItem : RecyclerListItem {
             ) : BaseCollectibleSearchListItem() {
 
                 override val itemType: ItemType = ItemType.COLLECTIBLE_NOT_SUPPORTED_ITEM
-
-                override val prismUrl: String?
-                    get() = null
 
                 override fun areItemsTheSame(other: RecyclerListItem): Boolean {
                     return other is NotSupportedCollectibleSearchItem && other.assetId == assetId

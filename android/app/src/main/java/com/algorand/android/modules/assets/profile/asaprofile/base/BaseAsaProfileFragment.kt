@@ -17,7 +17,6 @@ import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
@@ -42,6 +41,7 @@ import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.useFragmentResultListenerValue
 import com.algorand.android.utils.viewbinding.viewBinding
+import java.math.BigDecimal
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -77,8 +77,15 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
                 assetId = assetId,
                 verificationTierConfiguration = verificationTierConfiguration,
                 baseAssetDrawableProvider = baseAssetDrawableProvider,
-                assetPrismUrl = assetPrismUrl,
                 hasFormattedPrice = hasFormattedPrice
+            )
+            setMarketInformation(
+                isMarketInformationVisible = isMarketInformationVisible,
+                formattedAssetPrice = formattedAssetPrice.orEmpty(),
+                isChangePercentageVisible = isChangePercentageVisible,
+                changePercentage = changePercentage,
+                changePercentageIcon = changePercentageIcon,
+                changePercentageTextColor = changePercentageTextColor
             )
         }
     }
@@ -96,6 +103,7 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
     abstract fun navToAssetTransferFlow()
     abstract fun onBackButtonClick()
     abstract fun onAccountSelected(selectedAccountAddress: String)
+    abstract fun navToDiscoverTokenDetailPage()
 
     override fun onResume() {
         super.onResume()
@@ -159,13 +167,33 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
         }
     }
 
+    private fun setMarketInformation(
+        isMarketInformationVisible: Boolean,
+        formattedAssetPrice: String,
+        isChangePercentageVisible: Boolean,
+        changePercentage: BigDecimal?,
+        changePercentageIcon: Int?,
+        changePercentageTextColor: Int?
+    ) {
+        with(binding.marketInformationLayout) {
+            root.isVisible = isMarketInformationVisible
+            root.setOnClickListener { navToDiscoverTokenDetailPage() }
+            assetPriceTextView.text = formattedAssetPrice
+            assetChangePercentageTextView.apply {
+                changePercentageIcon?.let { setDrawable(start = AppCompatResources.getDrawable(context, it)) }
+                changePercentageTextColor?.let { setTextColor(ContextCompat.getColor(context, it)) }
+                changePercentage?.let { text = getString(R.string.formatted_changed_percentage, it.abs()) }
+                isVisible = isChangePercentageVisible
+            }
+        }
+    }
+
     private fun setAsaDetail(
         isAlgo: Boolean,
         assetFullName: AssetName,
         assetId: Long,
         verificationTierConfiguration: VerificationTierConfiguration,
         baseAssetDrawableProvider: BaseAssetDrawableProvider,
-        assetPrismUrl: String?,
         hasFormattedPrice: Boolean
     ) {
         with(binding) {
@@ -178,21 +206,18 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
             }
             if (!isAlgo) {
                 assetIdTextView.apply {
-                    text = getString(R.string.interpunct_asset_id, assetId)
+                    text = assetId.toString()
                     setOnLongClickListener { context.copyToClipboard(assetId.toString()); true }
-                    show()
                 }
             }
+            assetIdTextView.isVisible = !isAlgo
+            interpunctTextView.isVisible = !isAlgo
+
             assetLogoImageView.apply {
-                doOnLayout {
-                    baseAssetDrawableProvider.provideAssetDrawable(
-                        context = root.context,
-                        assetName = assetFullName,
-                        logoUri = assetPrismUrl,
-                        width = it.measuredWidth,
-                        onResourceReady = ::setImageDrawable
-                    )
-                }
+                baseAssetDrawableProvider.provideAssetDrawable(
+                    imageView = this,
+                    onResourceFailed = ::setImageDrawable
+                )
             }
             assetPriceTextView.isVisible = hasFormattedPrice
         }

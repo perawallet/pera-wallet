@@ -52,11 +52,11 @@ class AddAssetPreviewUseCase @Inject constructor(
             builder = searchPagerBuilder,
             scope = scope,
             defaultQuery = assetSearchQuery
-        ).distinctUntilChanged()
+        )
 
         val accountDetailFlow = accountDetailUseCase.getAccountDetailCacheFlow(
             publicKey = accountAddress
-        ).distinctUntilChanged()
+        )
 
         return combine(searchedAssetFlow, accountDetailFlow) { searchedAsset, accountDetail ->
             searchedAsset.map { baseSearchedAsset ->

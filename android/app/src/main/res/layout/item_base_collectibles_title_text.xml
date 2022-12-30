@@ -16,5 +16,5 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spacing_small"
     android:layout_marginTop="@dimen/spacing_xxxsmall"
-    android:text="@string/collectibles"
+    android:text="@string/nfts"
     android:textAppearance="@style/TextAppearance.Title.Sans.Medium" />

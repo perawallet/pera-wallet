@@ -36,14 +36,10 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.TransactionRequestAction
 import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
-import com.algorand.android.modules.walletconnect.transactionrequest.ui.model.WalletConnectTransactionRequestPreview
-import com.algorand.android.modules.walletconnectfallbackbrowser.ui.model.FallbackBrowserListItem
 import com.algorand.android.ui.common.walletconnect.WalletConnectAppPreviewCardView
-import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequestFragmentDirections.Companion.actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionConfirmedSingleBrowserBottomSheet
 import com.algorand.android.utils.BaseDoubleButtonBottomSheet.Companion.RESULT_KEY
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
-import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.isBluetoothEnabled
@@ -57,12 +53,9 @@ import com.algorand.android.utils.walletconnect.isFutureTransaction
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WalletConnectTransactionRequestFragment :
-    DaggerBaseFragment(
-        R.layout.fragment_wallet_connect_transaction_request
-    ),
-    LedgerLoadingDialog.Listener,
-    TransactionRequestAction {
+class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
+    R.layout.fragment_wallet_connect_transaction_request
+), LedgerLoadingDialog.Listener, TransactionRequestAction {
 
     override val fragmentConfiguration = FragmentConfiguration()
 
@@ -86,10 +79,6 @@ class WalletConnectTransactionRequestFragment :
         )
     }
 
-    private val walletConnectTransactionRequestPreviewCollector: (WalletConnectTransactionRequestPreview) -> Unit = {
-        updateUiWithPreview(it)
-    }
-
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             if (!walletConnectNavController.navigateUp()) {
@@ -101,8 +90,8 @@ class WalletConnectTransactionRequestFragment :
     private val appPreviewListener = WalletConnectAppPreviewCardView.OnShowMoreClickListener { peerMeta, message ->
         nav(
             WalletConnectRequestNavigationDirections.actionGlobalWalletConnectDappMessageBottomSheet(
-                message,
-                peerMeta
+                message = message,
+                peerMeta = peerMeta
             )
         )
     }
@@ -169,10 +158,6 @@ class WalletConnectTransactionRequestFragment :
         with(transactionRequestViewModel) {
             requestResultLiveData.observe(viewLifecycleOwner, requestResultObserver)
             signResultLiveData.observe(viewLifecycleOwner, signResultObserver)
-            viewLifecycleOwner.collectLatestOnLifecycle(
-                walletConnectTransactionRequestPreviewFlow,
-                walletConnectTransactionRequestPreviewCollector
-            )
         }
     }
 
@@ -361,61 +346,12 @@ class WalletConnectTransactionRequestFragment :
     }
 
     private fun handleSuccessfulTransaction() {
-        transactionRequestViewModel.updatePreviewWithBrowserList(context?.packageManager)
-    }
-
-    private fun navToSuccessfulTransactionDialog(peerMetaName: String) {
-        navBack()
         nav(
-            HomeNavigationDirections.actionGlobalSingleButtonBottomSheet(
-                titleAnnotatedString = AnnotatedString(R.string.your_transaction_is_being_processed),
-                drawableResId = R.drawable.ic_info,
-                drawableTintResId = R.color.info_tint_color,
-                descriptionAnnotatedString = AnnotatedString(
-                    R.string.the_transaction_has_been_signed,
-                    replacementList = listOf(
-                        Pair(
-                            "peer_name",
-                            peerMetaName
-                        )
-                    )
+            WalletConnectTransactionRequestFragmentDirections
+                .actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionFallbackBrowserSelectionNavigation(
+                    browserGroup = transactionRequestViewModel.fallbackBrowserGroupResponse,
+                    peerMetaName = transactionRequestViewModel.peerMetaName
                 )
-            )
         )
-    }
-
-    private fun navToSingleBrowserBottomSheet(browser: FallbackBrowserListItem, peerMetaName: String) {
-        nav(
-            actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionConfirmedSingleBrowserBottomSheet(
-                browserItem = browser,
-                peerMetaName = peerMetaName
-            )
-        )
-    }
-
-    private fun updateUiWithPreview(preview: WalletConnectTransactionRequestPreview) {
-        with(preview) {
-            multipleFallbackBrowserFoundEvent?.consume()?.let {
-                if (transactionRequestViewModel.isFromDiscover) {
-                    navBack()
-                } else {
-                    navToSuccessfulTransactionDialog(peerMetaName)
-                }
-            }
-            singleFallbackBrowserFoundEvent?.consume()?.let {
-                if (transactionRequestViewModel.isFromDiscover) {
-                    navBack()
-                } else {
-                    navToSingleBrowserBottomSheet(it, peerMetaName)
-                }
-            }
-            noFallbackBrowserFoundEvent?.consume()?.let {
-                if (transactionRequestViewModel.isFromDiscover) {
-                    navBack()
-                } else {
-                    navToSuccessfulTransactionDialog(peerMetaName)
-                }
-            }
-        }
     }
 }

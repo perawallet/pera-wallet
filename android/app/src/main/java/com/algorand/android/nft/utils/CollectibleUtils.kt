@@ -38,8 +38,8 @@ class CollectibleUtils @Inject constructor() {
         return true
     }
 
-    fun isCollectibleOwnedByTheUser(accountDetail: AccountDetail, collectibleAssetId: Long): Boolean {
-        val assetHolding = accountDetail.accountInformation.assetHoldingList.firstOrNull {
+    fun isCollectibleOwnedByTheUser(accountDetail: AccountDetail?, collectibleAssetId: Long): Boolean {
+        val assetHolding = accountDetail?.accountInformation?.assetHoldingList?.firstOrNull {
             it.assetId == collectibleAssetId
         } ?: return false
         return assetHolding.amount isGreaterThan BigInteger.ZERO

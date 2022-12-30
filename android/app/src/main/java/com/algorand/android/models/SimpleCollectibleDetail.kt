@@ -37,5 +37,7 @@ data class SimpleCollectibleDetail(
     override val totalSupply: BigDecimal?,
     override val url: String?,
     override val maxSupply: BigInteger?,
-    val collectible: SimpleCollectible?
+    override val last24HoursAlgoPriceChangePercentage: BigDecimal?,
+    override val isAvailableOnDiscoverMobile: Boolean?,
+    val collectible: SimpleCollectible?,
 ) : BaseAssetDetail()

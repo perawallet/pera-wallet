@@ -234,7 +234,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
                 navigateToSuccess()
             }
         } catch (exception: Exception) {
-            showErrorBottomSheet(descriptionString = AnnotatedString(R.string.account_not_found))
+            showErrorBottomSheet(descriptionString = AnnotatedString(R.string.account_not_found_please_try))
         }
     }
 

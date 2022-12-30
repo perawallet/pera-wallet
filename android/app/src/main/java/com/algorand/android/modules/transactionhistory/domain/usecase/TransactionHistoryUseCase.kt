@@ -33,6 +33,7 @@ import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.formatAsDate
 import com.algorand.android.utils.formatAsRFC3339Version
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
+import com.algorand.android.utils.isGreaterThan
 import com.algorand.android.utils.sendErrorLog
 import java.math.BigInteger
 import javax.inject.Inject
@@ -231,6 +232,9 @@ class TransactionHistoryUseCase @Inject constructor(
             when {
                 !closeToAddress.isNullOrBlank() && closeToAddress == publicKey -> {
                     mapToAssetTransactionReceiveOptOut(transaction = transactionDTO)
+                }
+                !closeToAddress.isNullOrBlank() && amount.isGreaterThan(BigInteger.ZERO) -> {
+                    mapToAssetTransactionSendOptOut(closeToAddress = closeToAddress, transaction = transactionDTO)
                 }
                 !closeToAddress.isNullOrBlank() -> {
                     mapToAssetTransactionOptOut(closeToAddress = closeToAddress, transaction = transactionDTO)

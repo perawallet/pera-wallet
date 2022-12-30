@@ -19,5 +19,5 @@
       android:pathData="M21,4H3V7L10,13V20L14,18V13L21,7V4Z"
       android:fillColor="#00000000"
       android:strokeWidth="2"
-      android:strokeColor="@color/link_primary" />
+      android:strokeColor="@color/text_main" />
 </vector>

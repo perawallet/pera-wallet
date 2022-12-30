@@ -29,12 +29,14 @@
     <color name="turquoise_900">#0B4D68</color>
     <color name="turquoise_800">#136880</color>
     <color name="turquoise_700">#1F8E9D</color>
+    <color name="turquoise_700_alpha_10">#1A2CB7BC</color>
     <color name="turquoise_700_alpha_12">#1F2CB7BC</color>
     <color name="turquoise_700_alpha_20">#331F8E9D</color>
     <color name="turquoise_700_alpha_28">#472CB7BC</color>
     <color name="turquoise_600">#2CB7BC</color>
     <color name="turquoise_500">#3EDBD2</color>
     <color name="turquoise_500_alpha_12">#1F3EDBD2</color>
+    <color name="turquoise_500_alpha_24">#3D3EDBD2</color>
     <color name="turquoise_400">#6BE9D6</color>
     <color name="turquoise_300">#8BF4DB</color>
     <color name="turquoise_200">#B2FBE3</color>
@@ -58,8 +60,10 @@
     <color name="salmon_800">#931D2D</color>
     <color name="salmon_700">#B72D37</color>
     <color name="salmon_600">#DB4645</color>
+    <color name="salmon_600_alpha_10">#1ADB4645</color>
     <color name="salmon_500">#FF6D5F</color>
     <color name="salmon_500_alpha_12">#1FFF6D5F</color>
+    <color name="salmon_500_alpha_24">#3DFF6D5F</color>
     <color name="salmon_400">#FF9B86</color>
     <color name="salmon_300">#FFB69F</color>
     <color name="salmon_200">#FFD3BE</color>
@@ -193,6 +197,8 @@
     <color name="wallet_4_icon">@color/turquoise_800</color>
     <color name="wallet_5">@color/salmon_400</color>
     <color name="wallet_5_icon">#424F76</color>
+    <color name="wallet_placeholder">@color/gray_100</color>
+    <color name="wallet_placeholder_icon">@color/gray_500</color>
 
     <!--  Governor  -->
     <color name="wallet_1_icon_governor">#9B1F69</color>
@@ -215,6 +221,7 @@
     <!-- Switches -->
     <color name="switch_bg">@color/turquoise_600</color>
     <color name="switch_off_bg">@color/gray_400</color>
+    <color name="switch_disabled_bg">@color/gray_400_alpha_50</color>
 
     <!-- NFT Icons -->
     <color name="nft_icon_bg">@color/gray_900_alpha_60</color>
@@ -347,5 +354,8 @@
     <color name="discover_helper_purple">#6B46FE</color>
     <color name="discover_helper_text">#FFFFFF</color>
     <color name="discover_warning">#FF4820</color>
+
+    <color name="negative_market_value_background_color">@color/salmon_500_alpha_24</color>
+    <color name="positive_market_value_background">@color/turquoise_700_alpha_10</color>
 
 </resources>

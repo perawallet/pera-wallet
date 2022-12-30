@@ -18,18 +18,50 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
+import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.core.view.marginBottom
 import androidx.core.view.marginStart
 import androidx.core.view.marginTop
 import com.algorand.android.R
+import com.algorand.android.utils.extensions.hide
 
 class InputLayoutTrailingIconContainerView(
     context: Context,
     attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
 
-    fun addIconView(@DrawableRes drawableRes: Int, onIconClick: () -> Unit) {
+    private val clearButton by lazy {
         getInflatedIconView().apply {
+            id = generateViewId()
+            addEndMargin(this)
+            setBackgroundResource(R.drawable.ic_close)
+            hide()
+        }
+    }
+
+    fun changeClearButtonVisibility(isVisible: Boolean) {
+        children.forEach { it.isVisible = !isVisible }
+        clearButton.isVisible = isVisible
+    }
+
+    fun enableClearButton(onIconClick: () -> Unit) {
+        addClearButtonIfNotAddedBefore()
+        setClearButtonClickListener(onIconClick)
+    }
+
+    private fun setClearButtonClickListener(onIconClick: () -> Unit) {
+        clearButton.setOnClickListener { onIconClick() }
+    }
+
+    private fun addClearButtonIfNotAddedBefore() {
+        if (children.none { it.id == clearButton.id }) {
+            addView(clearButton)
+        }
+    }
+
+    fun addIconView(@DrawableRes drawableRes: Int, onIconClick: () -> Unit): View {
+        return getInflatedIconView().apply {
             id = generateViewId()
             setOnClickListener { onIconClick.invoke() }
             addEndMargin(this)

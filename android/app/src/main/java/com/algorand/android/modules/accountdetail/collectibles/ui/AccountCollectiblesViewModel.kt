@@ -12,31 +12,44 @@
 
 package com.algorand.android.modules.accountdetail.collectibles.ui
 
-import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import com.algorand.android.modules.accountdetail.collectibles.ui.AccountCollectiblesFragment.Companion.PUBLIC_KEY
 import com.algorand.android.modules.tracking.nft.CollectibleEventTracker
 import com.algorand.android.nft.domain.usecase.AccountCollectiblesListingPreviewUseCase
 import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
+import com.algorand.android.sharedpref.SharedPrefLocalSource
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 @HiltViewModel
 class AccountCollectiblesViewModel @Inject constructor(
     private val collectiblesPreviewUseCase: AccountCollectiblesListingPreviewUseCase,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     collectibleEventTracker: CollectibleEventTracker
 ) : BaseCollectibleListingViewModel(collectiblesPreviewUseCase, collectibleEventTracker) {
 
-    private val accountPublicKey: String
-        get() = savedStateHandle.getOrThrow(PUBLIC_KEY)
+    override val nftListingViewTypeChangeListener = SharedPrefLocalSource.OnChangeListener<Int> {
+        startCollectibleListingPreviewFlow()
+    }
 
-    override fun initCollectiblesListingPreviewFlow(searchKeyword: String): Flow<CollectiblesListingPreview> {
+    private val accountPublicKey: String = savedStateHandle.getOrThrow(PUBLIC_KEY)
+
+    init {
+        collectiblesPreviewUseCase.addOnListingViewTypeChangeListener(nftListingViewTypeChangeListener)
+    }
+
+    override suspend fun initCollectiblesListingPreviewFlow(searchKeyword: String): Flow<CollectiblesListingPreview> {
         return collectiblesPreviewUseCase
             .getCollectiblesListingPreviewFlow(searchKeyword, accountPublicKey)
             .distinctUntilChanged()
+    }
+
+    override fun onCleared() {
+        collectiblesPreviewUseCase.removeOnListingViewTypeChangeListener(nftListingViewTypeChangeListener)
+        super.onCleared()
     }
 }

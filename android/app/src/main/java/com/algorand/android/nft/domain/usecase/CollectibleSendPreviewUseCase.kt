@@ -14,8 +14,9 @@ package com.algorand.android.nft.domain.usecase
 
 import com.algorand.android.models.AssetStatus
 import com.algorand.android.models.SignedTransactionDetail
+import com.algorand.android.modules.collectibles.detail.base.domain.usecase.GetCollectibleDetailUseCase
+import com.algorand.android.modules.collectibles.detail.base.ui.mapper.CollectibleMediaItemMapper
 import com.algorand.android.nft.mapper.CollectibleSendPreviewMapper
-import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.nft.ui.model.CollectibleSendPreview
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.AccountInformationUseCase
@@ -26,7 +27,6 @@ import com.algorand.android.utils.Event
 import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
@@ -34,21 +34,46 @@ class CollectibleSendPreviewUseCase @Inject constructor(
     private val collectibleSendPreviewMapper: CollectibleSendPreviewMapper,
     private val accountInformationUseCase: AccountInformationUseCase,
     private val sendSignedTransactionUseCase: SendSignedTransactionUseCase,
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val getCollectibleDetailUseCase: GetCollectibleDetailUseCase,
+    private val collectibleMediaItemMapper: CollectibleMediaItemMapper
 ) {
 
-    fun getInitialStateOfCollectibleSendPreview(collectibleDetail: CollectibleDetail): CollectibleSendPreview {
-        return with(collectibleDetail) {
-            val collectionName = collectionName.orEmpty()
-            val collectibleName = collectibleName.orEmpty()
-            collectibleSendPreviewMapper.mapToInitialState(
-                collectibleId = collectibleId,
-                collectionName = collectionName,
-                collectibleName = collectibleName,
-                collectibleMedias = collectibleMedias,
-                isCollectionNameVisible = collectionName.isNotBlank(),
-                isCollectibleNameVisible = collectibleName.isNotBlank()
-            )
+    suspend fun getInitialStateOfCollectibleSendPreview(nftId: Long) = flow {
+        getCollectibleDetailUseCase.getCollectibleDetail(nftId).use(
+            onSuccess = { baseCollectibleDetail ->
+                val collectionName = baseCollectibleDetail.fullName.orEmpty()
+                val collectibleName = baseCollectibleDetail.collectionName.orEmpty()
+                emit(
+                    collectibleSendPreviewMapper.mapToCollectibleSendPreview(
+                        collectibleId = nftId,
+                        collectionName = collectionName,
+                        collectibleName = collectibleName,
+                        collectibleMedias = baseCollectibleDetail.collectibleMedias?.map {
+                            collectibleMediaItemMapper.mapToCollectibleMediaItem(
+                                baseCollectibleMedia = it,
+                                shouldDecreaseOpacity = false,
+                                baseCollectibleDetail = baseCollectibleDetail,
+                                showMediaButtons = false
+                            )
+                        }.orEmpty(),
+                        isCollectionNameVisible = collectionName.isNotBlank(),
+                        isCollectibleNameVisible = collectibleName.isNotBlank()
+                    )
+                )
+            }
+        )
+    }
+
+    fun checkIfSenderAndReceiverAccountSame(
+        senderAccountAddress: String,
+        receiverAccountAddress: String,
+        previousState: CollectibleSendPreview?
+    ) = flow {
+        if (senderAccountAddress == receiverAccountAddress) {
+            emit(previousState?.copy(showCollectibleAlreadyOwnedErrorEvent = Event(Unit)))
+        } else {
+            emit(previousState?.copy(checkIfSelectedAccountReceiveCollectibleEvent = Event(Unit)))
         }
     }
 

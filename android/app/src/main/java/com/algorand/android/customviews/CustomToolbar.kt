@@ -57,6 +57,7 @@ class CustomToolbar @JvmOverloads constructor(
             configureStartButton(startIconResId, startIconClick, startIconColor)
             initTitleDrawables(textStartDrawable, textEndDrawable)
             initCenterDrawable(centerDrawable)
+            clearSubtitleStartDrawable()
         }
         show()
     }
@@ -149,6 +150,10 @@ class CustomToolbar @JvmOverloads constructor(
 
     fun setSubtitleStartDrawable(drawable: Drawable) {
         binding.toolbarSubtitleTextView.setDrawable(start = drawable)
+    }
+
+    fun clearSubtitleStartDrawable() {
+        binding.toolbarSubtitleTextView.setDrawable(start = null)
     }
 
     fun setOnTitleLongClickListener(action: () -> Unit) {

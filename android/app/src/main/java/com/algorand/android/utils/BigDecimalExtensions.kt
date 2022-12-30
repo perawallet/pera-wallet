@@ -39,3 +39,15 @@ infix fun BigDecimal.isEqualTo(other: BigDecimal): Boolean {
 fun String?.toBigDecimalOrZero(): BigDecimal {
     return this?.toBigDecimalOrNull() ?: BigDecimal.ZERO
 }
+
+fun BigDecimal.isPositive(): Boolean {
+    return signum() == 1
+}
+
+fun BigDecimal.isNegative(): Boolean {
+    return signum() == -1
+}
+
+fun BigDecimal.isZero(): Boolean {
+    return signum() == 0
+}

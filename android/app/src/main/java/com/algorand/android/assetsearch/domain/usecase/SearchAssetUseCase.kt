@@ -26,6 +26,7 @@ import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 class SearchAssetUseCase @Inject constructor(
@@ -42,6 +43,7 @@ class SearchAssetUseCase @Inject constructor(
         return assetSearchPagination
             .initPagination(builder, scope, assetSearchRepository, defaultQuery)
             .map { pagingData -> pagingData.map { createBaseSearchedAsset(it) } }
+            .distinctUntilChanged()
     }
 
     suspend fun searchAsset(query: AssetSearchQuery) {

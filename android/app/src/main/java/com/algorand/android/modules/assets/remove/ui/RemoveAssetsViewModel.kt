@@ -20,6 +20,7 @@ import com.algorand.android.modules.assets.remove.ui.usecase.RemoveAssetsPreview
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -50,7 +51,7 @@ class RemoveAssetsViewModel @Inject constructor(
     }
 
     private fun initAssetQueryFlow() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             assetQueryFlow.debounce(QUERY_DEBOUNCE)
                 .distinctUntilChanged()
                 .flatMapLatest { query -> removeAssetsPreviewUseCase.initRemoveAssetsPreview(accountAddress, query) }

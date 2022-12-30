@@ -681,21 +681,11 @@
     </style>
 
     <style name="CollectibleImageShapeAppearance">
-        <item name="cornerSize">4dp</item>
+        <item name="cornerSize">12dp</item>
     </style>
 
-    <style name="CollectibleOptInInfoTextStyle">
-        <item name="android:background">@drawable/bg_collectible_opt_in_info</item>
-        <item name="android:drawablePadding">@dimen/spacing_xsmall</item>
-        <item name="android:textAppearance">@style/TextAppearance.Footnote.Sans.Medium</item>
-        <item name="android:padding">@dimen/spacing_small</item>
-        <item name="android:layout_marginStart">@dimen/spacing_xlarge</item>
-        <item name="android:layout_marginEnd">@dimen/spacing_xlarge</item>
-        <item name="android:textColor">@color/positive</item>
-        <item name="drawableStartCompat">@drawable/ic_info</item>
-        <item name="drawableTint">@color/positive</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="AccountAssetItemStartImageShapeAppearance">
+        <item name="cornerSize">4dp</item>
     </style>
 
     <style name="BannerTextAppearance" />

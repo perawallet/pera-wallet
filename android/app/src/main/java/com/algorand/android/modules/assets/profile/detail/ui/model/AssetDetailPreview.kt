@@ -14,12 +14,14 @@ package com.algorand.android.modules.assets.profile.detail.ui.model
 
 import androidx.navigation.NavDirections
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
+import com.algorand.android.discover.home.domain.model.TokenDetailInfo
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
+import java.math.BigDecimal
 
 data class AssetDetailPreview(
     val assetFullName: AssetName,
@@ -35,5 +37,12 @@ data class AssetDetailPreview(
     val isQuickActionButtonsVisible: Boolean,
     val isSwapButtonSelected: Boolean,
     val onShowGlobalErrorEvent: Event<Pair<Int, AnnotatedString>>? = null,
-    val swapNavigationDirectionEvent: Event<NavDirections>? = null
+    val swapNavigationDirectionEvent: Event<NavDirections>? = null,
+    val isMarketInformationVisible: Boolean,
+    val formattedAssetPrice: String,
+    val isChangePercentageVisible: Boolean,
+    val changePercentage: BigDecimal?,
+    val changePercentageIcon: Int?,
+    val changePercentageTextColor: Int?,
+    val navigateToDiscoverMarket: Event<TokenDetailInfo>? = null
 )

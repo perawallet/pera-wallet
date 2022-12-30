@@ -34,7 +34,7 @@
         app:popUpTo="@id/walletConnectRequestNavigation"
         app:popUpToInclusive="true">
         <argument
-            android:name="isFromDiscover"
+            android:name="shouldSkipConfirmation"
             android:defaultValue="false"
             app:argType="boolean" />
     </action>

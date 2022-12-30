@@ -24,7 +24,6 @@ class InfoViewItemViewHolder(
 
     override fun bind(item: BaseAssetSearchListItem) {
         if (item !is BaseAssetSearchListItem.InfoViewItem) return
-        binding.infoTextView.setText(item.infoViewTextResId)
     }
 
     companion object {

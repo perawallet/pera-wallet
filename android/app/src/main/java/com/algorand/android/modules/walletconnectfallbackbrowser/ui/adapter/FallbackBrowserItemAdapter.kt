@@ -16,7 +16,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.modules.walletconnectfallbackbrowser.ui.model.FallbackBrowserListItem
-import com.algorand.android.modules.walletconnectfallbackbrowser.viewholder.FallbackBrowserItemViewHolder
+import com.algorand.android.modules.walletconnectfallbackbrowser.ui.viewholder.FallbackBrowserItemViewHolder
 
 class FallbackBrowserItemAdapter(
     private val listener: Listener

@@ -20,7 +20,6 @@ import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
 import com.algorand.android.modules.assets.addition.ui.model.AssetAdditionType
 import com.algorand.android.utils.CacheResult
-import com.algorand.android.utils.Event
 import javax.inject.Inject
 
 class AssetAdditionUseCase @Inject constructor(
@@ -42,15 +41,26 @@ class AssetAdditionUseCase @Inject constructor(
         isLastStateError: Boolean,
         assetAdditionType: AssetAdditionType
     ): AssetAdditionLoadStatePreview {
+        val actualAssetItemCount = if (assetAdditionType == AssetAdditionType.ASSET) {
+            itemCount
+        } else {
+            itemCount - NFT_RECEIVE_CONSTANT_ITEM_COUNT
+        }
+        val isLoading = with(combinedLoadStates) { refresh is LoadState.Loading || append is LoadState.Loading }
+        val isFailed = combinedLoadStates.refresh is LoadState.Error
+
+        val isAssetListVisible = (isLoading && isLastStateError) || (itemCount > 0 && !isFailed)
+
         return assetAdditionLoadStatePreviewMapper.mapToAssetAdditionLoadStatePreview(
             combinedLoadStates = combinedLoadStates,
-            itemCount = itemCount,
+            itemCount = actualAssetItemCount,
             assetAdditionType = assetAdditionType,
-            isAssetListVisible = (combinedLoadStates.refresh is LoadState.Error).not() &&
-                (isLastStateError && combinedLoadStates.refresh is LoadState.Loading).not(),
-            isLoading = (combinedLoadStates.refresh is LoadState.Loading) ||
-                (combinedLoadStates.append is LoadState.Loading),
-            onRetryEvent = if (combinedLoadStates.refresh is LoadState.Error) Event(Unit) else null
+            isAssetListVisible = isAssetListVisible,
+            isLoading = isLoading
         )
+    }
+
+    companion object {
+        private const val NFT_RECEIVE_CONSTANT_ITEM_COUNT = 2
     }
 }

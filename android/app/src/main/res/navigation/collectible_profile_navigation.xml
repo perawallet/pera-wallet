@@ -16,25 +16,23 @@
     android:id="@+id/collectibleProfileNavigation"
     app:startDestination="@id/collectibleProfileFragment">
 
-    <include app:graph="@navigation/asset_removal_action_navigation" />
-
     <include app:graph="@navigation/collectible_image_preview_navigation" />
 
     <include app:graph="@navigation/video_player_navigation" />
 
     <include app:graph="@navigation/audio_player_navigation" />
 
-    <include app:graph="@navigation/show_qr_navigation" />
-
     <include app:graph="@navigation/collectible_opt_in_action_navigation" />
 
     <include app:graph="@navigation/asa_profile_navigation" />
+
+    <include app:graph="@navigation/nft_opt_out_confirmation_navigation" />
 
     <fragment
         android:id="@+id/collectibleProfileFragment"
         android:name="com.algorand.android.modules.collectibles.profile.ui.CollectibleProfileFragment"
         android:label="CollectibleProfileFragment"
-        tools:layout="@layout/fragment_collectible_profile">
+        tools:layout="@layout/fragment_collectible_detail">
         <argument
             android:name="accountAddress"
             app:argType="string" />
@@ -42,8 +40,8 @@
             android:name="collectibleId"
             app:argType="long" />
         <action
-            android:id="@+id/action_collectibleProfileFragment_to_assetRemovalActionNavigation"
-            app:destination="@id/assetRemovalActionNavigation">
+            android:id="@+id/action_collectibleProfileFragment_to_nftOptOutConfirmationNavigation"
+            app:destination="@id/nftOptOutConfirmationNavigation">
             <argument
                 android:name="assetAction"
                 app:argType="com.algorand.android.models.AssetAction" />
@@ -52,19 +50,13 @@
             android:id="@+id/action_collectibleProfileFragment_to_collectibleImagePreviewNavigation"
             app:destination="@id/collectibleImagePreviewNavigation">
             <argument
-                android:name="imageUrl"
-                app:argType="string" />
-            <argument
-                android:name="errorDisplayText"
-                app:argType="string" />
-            <argument
                 android:name="transitionName"
                 app:argType="string" />
             <argument
-                android:name="mediaType"
-                app:argType="com.algorand.android.nft.ui.model.BaseCollectibleMediaItem$ItemType" />
+                android:name="imageUri"
+                app:argType="string" />
             <argument
-                android:name="previewPrismUrl"
+                android:name="cachedMediaUri"
                 app:argType="string" />
         </action>
         <action
@@ -79,16 +71,6 @@
             app:destination="@id/audioPlayerNavigation">
             <argument
                 android:name="collectibleAudioUrl"
-                app:argType="string" />
-        </action>
-        <action
-            android:id="@+id/action_collectibleProfileFragment_to_showQrNavigation"
-            app:destination="@id/showQrNavigation">
-            <argument
-                android:name="title"
-                app:argType="string" />
-            <argument
-                android:name="qrText"
                 app:argType="string" />
         </action>
         <action

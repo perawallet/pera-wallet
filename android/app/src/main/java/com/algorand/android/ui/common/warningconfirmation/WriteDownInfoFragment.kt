@@ -21,7 +21,6 @@ import com.algorand.android.customviews.WarningTextView
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
-import com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragmentDirections.Companion.actionWriteDownInfoFragmentToBackupPassphraseFragment
 import com.algorand.android.utils.extensions.show
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,6 +68,6 @@ class WriteDownInfoFragment : BaseInfoFragment() {
 
     private fun navigateToBackupPassphraseFragment() {
         writeDownInfoViewModel.logOnboardingReadyToBeginClickEvent()
-        nav(actionWriteDownInfoFragmentToBackupPassphraseFragment())
+        nav(WriteDownInfoFragmentDirections.actionWriteDownInfoFragmentToBackupPassphrasesNavigation())
     }
 }

@@ -28,14 +28,7 @@
 
     <ConstraintSet android:id="@+id/start">
 
-        <Constraint android:id="@id/toolbar">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="@dimen/default_toolbar_height"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </Constraint>
+        <ConstraintOverride android:id="@id/toolbar" />
 
         <Constraint android:id="@id/assetLogoImageView">
             <Layout
@@ -51,7 +44,7 @@
             android:id="@id/assetNameAndBadgeTextView"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toTopOf="@id/assetPriceTextView"
-            app:layout_constraintEnd_toStartOf="@id/assetIdTextView"
+            app:layout_constraintEnd_toStartOf="@id/interpunctTextView"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/assetLogoImageView">
@@ -60,39 +53,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xlarge"
                 android:layout_marginTop="@dimen/spacing_large"
-                android:layout_marginEnd="@dimen/spacing_xxsmall"
+                android:layout_marginEnd="@dimen/spacing_xsmall"
                 android:drawablePadding="@dimen/spacing_xsmall"
                 app:layout_goneMarginEnd="@dimen/spacing_xlarge" />
         </Constraint>
 
-        <Constraint
-            android:id="@id/assetIdTextView"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@id/assetNameAndBadgeTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/assetNameAndBadgeTextView"
-            app:layout_constraintTop_toTopOf="@id/assetNameAndBadgeTextView">
-            <Layout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_xlarge" />
-        </Constraint>
+        <ConstraintOverride
+            android:id="@id/interpunctTextView"
+            app:visibilityMode="ignore" />
 
-        <Constraint
+        <ConstraintOverride
+            android:id="@id/assetIdTextView"
+            app:visibilityMode="ignore" />
+
+        <ConstraintOverride
             android:id="@id/assetPriceTextView"
             app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/spacing_xlarge"
-                android:layout_marginTop="@dimen/spacing_xsmall"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/assetNameAndBadgeTextView" />
-            <PropertySet
-                android:alpha="1"
-                android:visibility="visible" />
-        </Constraint>
+            <PropertySet android:alpha="1" />
+        </ConstraintOverride>
 
         <Constraint android:id="@id/assetAboutFragmentContainerView">
             <Layout
@@ -102,89 +80,50 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/assetPriceTextView" />
+                app:layout_constraintTop_toBottomOf="@id/marketInformationLayout" />
         </Constraint>
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/assetStatusConstraintLayout"
-            app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </Constraint>
+            app:visibilityMode="ignore" />
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/statusLabelTextView"
-            app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xlarge"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                app:layout_constraintEnd_toStartOf="@id/assetStatusActionButton"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </Constraint>
+            app:visibilityMode="ignore" />
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/statusValueTextView"
-            app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxsmall"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/assetStatusActionButton"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/statusLabelTextView" />
-        </Constraint>
+            app:visibilityMode="ignore" />
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/assetStatusActionButton"
-            app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xlarge"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </Constraint>
+            app:visibilityMode="ignore" />
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/loadingLayout"
+            app:visibilityMode="ignore" />
+
+        <ConstraintOverride
+            android:id="@id/marketInformationLayout"
             app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </Constraint>
+            <PropertySet android:alpha="1" />
+        </ConstraintOverride>
 
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
 
-        <Constraint android:id="@id/toolbar">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="@dimen/default_toolbar_height"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </Constraint>
+        <ConstraintOverride android:id="@id/toolbar" />
 
         <Constraint android:id="@id/assetLogoImageView">
             <Layout
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/spacing_xlarge"
                 app:layout_constraintBottom_toBottomOf="@id/assetNameAndBadgeTextView"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@id/assetNameAndBadgeTextView"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/spacing_xlarge"
                 app:layout_constraintTop_toTopOf="@id/assetNameAndBadgeTextView" />
         </Constraint>
 
@@ -192,7 +131,7 @@
             android:id="@id/assetNameAndBadgeTextView"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toTopOf="@id/assetPriceTextView"
-            app:layout_constraintEnd_toStartOf="@id/assetIdTextView"
+            app:layout_constraintEnd_toStartOf="@id/interpunctTextView"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/assetLogoImageView"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
@@ -201,39 +140,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xsmall"
                 android:layout_marginTop="@dimen/spacing_small"
-                android:layout_marginEnd="@dimen/spacing_xxsmall"
+                android:layout_marginEnd="@dimen/spacing_xsmall"
                 android:drawablePadding="@dimen/spacing_xsmall"
                 app:layout_goneMarginEnd="@dimen/spacing_xlarge" />
         </Constraint>
 
-        <Constraint
-            android:id="@id/assetIdTextView"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@id/assetNameAndBadgeTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/assetNameAndBadgeTextView"
-            app:layout_constraintTop_toTopOf="@id/assetNameAndBadgeTextView">
-            <Layout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_xlarge" />
-        </Constraint>
+        <ConstraintOverride
+            android:id="@id/interpunctTextView"
+            app:visibilityMode="ignore" />
 
-        <Constraint
+        <ConstraintOverride
+            android:id="@id/assetIdTextView"
+            app:visibilityMode="ignore" />
+
+        <ConstraintOverride
             android:id="@id/assetPriceTextView"
             app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/spacing_xlarge"
-                android:layout_marginTop="@dimen/spacing_xsmall"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/assetNameAndBadgeTextView" />
-            <PropertySet
-                android:alpha="0"
-                android:visibility="invisible" />
-        </Constraint>
+            <PropertySet android:alpha="0" />
+        </ConstraintOverride>
 
         <Constraint android:id="@id/assetAboutFragmentContainerView">
             <Layout
@@ -246,63 +170,31 @@
                 app:layout_constraintTop_toBottomOf="@id/assetNameAndBadgeTextView" />
         </Constraint>
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/assetStatusConstraintLayout"
-            app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </Constraint>
+            app:visibilityMode="ignore" />
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/statusLabelTextView"
-            app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xlarge"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                app:layout_constraintEnd_toStartOf="@id/assetStatusActionButton"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </Constraint>
+            app:visibilityMode="ignore" />
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/statusValueTextView"
-            app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxsmall"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/assetStatusActionButton"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/statusLabelTextView" />
-        </Constraint>
+            app:visibilityMode="ignore" />
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/assetStatusActionButton"
-            app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xlarge"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </Constraint>
+            app:visibilityMode="ignore" />
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/loadingLayout"
+            app:visibilityMode="ignore" />
+
+        <ConstraintOverride
+            android:id="@id/marketInformationLayout"
             app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </Constraint>
+            <PropertySet android:alpha="0" />
+        </ConstraintOverride>
 
     </ConstraintSet>
 

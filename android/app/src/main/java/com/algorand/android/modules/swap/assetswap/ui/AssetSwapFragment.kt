@@ -279,9 +279,10 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
     ) {
         with(inputView) {
             with(assetDetail) {
-                assetDrawableProvider.provideAssetDrawable(context, assetShortName, logoUrl, assetIconSize) {
-                    setImageDrawable(it)
-                }
+                assetDrawableProvider.provideAssetDrawable(
+                    imageView = getImageView(),
+                    onResourceFailed = ::setImageDrawable
+                )
                 setAssetDetails(
                     formattedBalance = formattedBalance,
                     assetShortName = assetShortName,

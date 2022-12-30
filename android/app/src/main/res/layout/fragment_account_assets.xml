@@ -41,7 +41,7 @@
         app:fabCustomSize="@dimen/custom_fab_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_arrow_swap"
+        app:srcCompat="@drawable/ic_quick_actions"
         app:tint="@color/button_primary_text" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

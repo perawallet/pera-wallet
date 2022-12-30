@@ -12,6 +12,7 @@
 
 package com.algorand.android.ui.notificationcenter
 
+import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.models.NotificationItem
 import com.algorand.android.models.NotificationListItem
@@ -20,6 +21,7 @@ import com.algorand.android.models.Result
 import com.algorand.android.modules.deeplink.DeepLinkParser
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
 import com.algorand.android.repository.NotificationRepository
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.PeraPagingSource
 import com.algorand.android.utils.exceptions.MissingNotificationUserIdException
 import com.algorand.android.utils.getAlgorandMobileDateFormatter
@@ -27,11 +29,14 @@ import com.algorand.android.utils.parseFormattedDate
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.sendErrorLog
 import java.time.ZonedDateTime
+import kotlinx.coroutines.coroutineScope
 
 class NotificationDataSource(
     private val notificationRepository: NotificationRepository,
     private val deviceIdUseCase: DeviceIdUseCase,
-    private val deepLinkParser: DeepLinkParser
+    private val deepLinkParser: DeepLinkParser,
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
+    private val baseAssetDrawableProviderDecider: AssetDrawableProviderDecider
 ) : PeraPagingSource<String, NotificationListItem>() {
 
     override val logTag: String = NotificationDataSource::class.java.simpleName
@@ -55,11 +60,13 @@ class NotificationDataSource(
         return parseResult(result)
     }
 
-    private fun parseResult(
+    private suspend fun parseResult(
         result: Result<Pagination<NotificationItem>>,
     ): LoadResult<String, NotificationListItem> {
         return when (result) {
             is Result.Success -> {
+                val notificationDeepLinks = result.data.results.mapNotNull { getNotificationDeepLink(it.url) }
+                cacheNonCachedNotificationAssets(notificationDeepLinks)
                 val notificationListItems = result.data.results.toListItems()
                 val nextKey = result.data.next
                 LoadResult.Page(data = notificationListItems, prevKey = null, nextKey = nextKey)
@@ -75,7 +82,7 @@ class NotificationDataSource(
             deviceIdUseCase.getSelectedNodeDeviceId()?.also { newNotificationUserId ->
                 notificationUserId = newNotificationUserId
             }
-        )
+            )
     }
 
     private fun List<NotificationItem>.toListItems(): List<NotificationListItem> {
@@ -98,7 +105,10 @@ class NotificationDataSource(
                         timeDifference = timeDifference,
                         message = notificationItem.message ?: "",
                         address = deepLink.address,
-                        assetId = deepLink.assetId
+                        assetId = deepLink.assetId,
+                        baseAssetDrawableProvider = baseAssetDrawableProviderDecider.getAssetDrawableProvider(
+                            deepLink.assetId
+                        )
                     )
                 }
             }
@@ -116,6 +126,21 @@ class NotificationDataSource(
         } else {
             sendErrorLog("Malformed deeplink URL from notification payload")
             null
+        }
+    }
+
+    private suspend fun cacheNonCachedNotificationAssets(
+        notificationDeepLinks: List<BaseDeepLink.NotificationDeepLink>
+    ) {
+        val assetIds = notificationDeepLinks.map { it.assetId }.toSet()
+        if (assetIds.isNotEmpty()) {
+            coroutineScope {
+                simpleAssetDetailUseCase.cacheIfThereIsNonCachedAsset(
+                    assetIdList = assetIds,
+                    coroutineScope = this,
+                    includeDeleted = true
+                )
+            }
         }
     }
 }

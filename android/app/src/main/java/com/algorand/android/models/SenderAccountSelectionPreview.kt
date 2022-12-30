@@ -20,7 +20,5 @@ data class SenderAccountSelectionPreview(
     val isLoading: Boolean,
     val isEmptyStateVisible: Boolean,
     val fromAccountInformationSuccessEvent: Event<AccountInformation>?,
-    val fromAccountInformationErrorEvent: Event<Result.Error>?,
-    val signTransactionSuccessEvent: Event<Pair<String, AssetTransaction>>?,
-    val signTransactionErrorEvent: Event<Pair<Int, Int>>?
+    val fromAccountInformationErrorEvent: Event<Result.Error>?
 )

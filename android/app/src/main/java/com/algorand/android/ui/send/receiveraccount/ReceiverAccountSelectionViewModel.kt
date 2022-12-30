@@ -13,7 +13,6 @@
 
 package com.algorand.android.ui.send.receiveraccount
 
-import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,17 +27,14 @@ import com.algorand.android.usecase.ReceiverAccountSelectionUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
-import com.algorand.android.utils.isValidAddress
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlin.properties.Delegates
-import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -67,29 +63,10 @@ class ReceiverAccountSelectionViewModel @Inject constructor(
 
     private val queryFlow = MutableStateFlow("")
 
-    private var copiedMessage: String? by Delegates.observable(null) { _, oldValue, newValue ->
-        if (newValue != null && oldValue != newValue) {
-            insertPastedAccountAddress(newValue)
-        }
-    }
+    private val latestCopiedMessageFlow = MutableStateFlow<String?>(null)
 
     init {
-        viewModelScope.launch {
-            queryFlow.debounce(QUERY_DEBOUNCE)
-                .distinctUntilChanged()
-                .flatMapLatest {
-                    with(assetTransaction) {
-                        receiverAccountSelectionUseCase.getToAccountList(it, assetId)
-                    }
-                }
-                .flowOn(Dispatchers.Default)
-                .collect { toAccounts ->
-                    toAccounts.toMutableList().apply {
-                        copiedMessage?.let { add(0, BaseAccountSelectionListItem.PasteItem(it)) }
-                        _selectableAccountFlow.emit(this)
-                    }
-                }
-        }
+        combineLatestCopiedMessageAndQueryFlow()
     }
 
     fun onSearchQueryUpdate(query: String) {
@@ -154,20 +131,27 @@ class ReceiverAccountSelectionViewModel @Inject constructor(
         }
     }
 
-    private fun insertPastedAccountAddress(address: String) {
+    private fun combineLatestCopiedMessageAndQueryFlow() {
         viewModelScope.launch {
-            _selectableAccountFlow.value
-                ?.filter { it !is BaseAccountSelectionListItem.PasteItem }
-                ?.toMutableList()
-                ?.apply {
-                    add(0, BaseAccountSelectionListItem.PasteItem(address))
-                    _selectableAccountFlow.emit(this)
+            combine(
+                latestCopiedMessageFlow,
+                queryFlow.debounce(QUERY_DEBOUNCE)
+            ) { latestCopiedMessage, query ->
+                receiverAccountSelectionUseCase.getToAccountList(
+                    query = query,
+                    assetId = assetTransaction.assetId,
+                    latestCopiedMessage = latestCopiedMessage
+                ).collectLatest {
+                    _selectableAccountFlow.emit(it)
                 }
+            }.collect()
         }
     }
 
     fun updateCopiedMessage(copiedMessage: String?) {
-        this.copiedMessage = copiedMessage.takeIf { it.isValidAddress() }
+        viewModelScope.launch {
+            latestCopiedMessageFlow.emit(copiedMessage)
+        }
     }
 
     companion object {

@@ -19,6 +19,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.models.NotificationCenterPreview
 import com.algorand.android.models.NotificationListItem
@@ -27,6 +28,7 @@ import com.algorand.android.modules.deeplink.DeepLinkParser
 import com.algorand.android.notification.PeraNotificationManager
 import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.usecase.NotificationCenterUseCase
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.ZonedDateTime
 import javax.inject.Inject
@@ -43,7 +45,9 @@ class NotificationCenterViewModel @Inject constructor(
     private val notificationRepository: NotificationRepository,
     private val notificationCenterUseCase: NotificationCenterUseCase,
     private val notificationStatusUseCase: NotificationStatusUseCase,
-    private val deepLinkParser: DeepLinkParser
+    private val deepLinkParser: DeepLinkParser,
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
+    private val baseAssetDrawableProviderDecider: AssetDrawableProviderDecider
 ) : BaseViewModel() {
 
     private var notificationDataSource: NotificationDataSource? = null
@@ -56,7 +60,9 @@ class NotificationCenterViewModel @Inject constructor(
             NotificationDataSource(
                 notificationRepository = notificationRepository,
                 deviceIdUseCase = deviceIdUseCase,
-                deepLinkParser = deepLinkParser
+                deepLinkParser = deepLinkParser,
+                simpleAssetDetailUseCase = simpleAssetDetailUseCase,
+                baseAssetDrawableProviderDecider = baseAssetDrawableProviderDecider
             ).also { notificationDataSource = it }
         }
     ).flow

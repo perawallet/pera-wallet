@@ -34,7 +34,7 @@ class AccountInformationMapper @Inject constructor(
             amount = accountInformationPayload?.amount ?: BigInteger.ZERO,
             participation = accountInformationPayload?.participation,
             rekeyAdminAddress = accountInformationPayload?.rekeyAdminAddress,
-            allAssetHoldingList = assetHoldingList,
+            allAssetHoldingList = assetHoldingList ?: mutableSetOf(),
             createdAtRound = accountInformationPayload?.createdAtRound,
             appsLocalState = accountInformationPayload?.appsLocalState,
             appsTotalSchema = accountInformationPayload?.appsTotalSchema,

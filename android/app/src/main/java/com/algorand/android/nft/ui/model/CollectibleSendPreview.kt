@@ -12,6 +12,7 @@
 
 package com.algorand.android.nft.ui.model
 
+import com.algorand.android.modules.collectibles.detail.base.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.utils.Event
 
 data class CollectibleSendPreview(
@@ -26,5 +27,7 @@ data class CollectibleSendPreview(
     val navigateToOptInEvent: Event<Unit>? = null,
     val navigateToApprovalBottomSheetEvent: Event<Unit>? = null,
     val navigateToTransactionCompletedEvent: Event<Unit>? = null,
-    val showNetworkErrorEvent: Event<Unit>? = null
+    val showNetworkErrorEvent: Event<Unit>? = null,
+    val showCollectibleAlreadyOwnedErrorEvent: Event<Unit>? = null,
+    val checkIfSelectedAccountReceiveCollectibleEvent: Event<Unit>? = null
 )

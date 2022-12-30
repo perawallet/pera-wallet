@@ -19,14 +19,14 @@
     android:background="@color/hero_bg"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/spacing_xlarge"
-    android:paddingBottom="@dimen/spacing_xxxlarge">
+    android:paddingTop="@dimen/spacing_xxxlarge"
+    android:paddingBottom="@dimen/spacing_small">
 
     <TextView
         style="@style/TextAppearance.Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="45dp"
         android:text="@string/account_value" />
 
     <androidx.appcompat.widget.AppCompatTextView

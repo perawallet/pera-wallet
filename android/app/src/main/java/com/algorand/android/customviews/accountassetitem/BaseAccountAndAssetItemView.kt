@@ -42,9 +42,9 @@ abstract class BaseAccountAndAssetItemView @JvmOverloads constructor(
 
     fun getStartIconImageView(): AppCompatImageView = binding.startIconImageView
 
-    fun setStartIconDrawable(drawable: Drawable?, forceShow: Boolean = false) {
+    fun setStartIconDrawable(drawable: Drawable?) {
         binding.startIconImageView.apply {
-            isVisible = drawable != null || forceShow
+            isVisible = drawable != null
             setImageDrawable(drawable)
         }
     }

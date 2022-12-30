@@ -38,7 +38,6 @@ import com.algorand.android.modules.tutorialdialog.util.showCopyAccountAddressTu
 import com.algorand.android.modules.tutorialdialog.util.showSwapFeatureTutorialDialog
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.TestnetBadgeDrawable
-import com.algorand.android.utils.browser.openUrl
 import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.setDrawableTintColor
@@ -91,7 +90,7 @@ class AccountsFragment :
 
         override fun onBannerActionButtonClick(url: String, isGovernance: Boolean) {
             accountsViewModel.onBannerActionButtonClick(isGovernance)
-            context?.openUrl(url)
+            nav(AccountsFragmentDirections.actionAccountsFragmentToBannerFragment(url))
         }
 
         override fun onBuyAlgoClick() {

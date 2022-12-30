@@ -20,8 +20,8 @@ import com.algorand.android.assetsearch.domain.model.VerificationTier.TRUSTED
 import com.algorand.android.assetsearch.domain.model.VerificationTier.UNVERIFIED
 import com.algorand.android.assetsearch.domain.model.VerificationTier.VERIFIED
 import com.algorand.android.models.AssetCreator
-import com.algorand.android.models.AssetDetail
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.modules.assets.profile.about.domain.usecase.CacheAssetDetailToAsaProfileLocalCacheUseCase
 import com.algorand.android.modules.assets.profile.about.domain.usecase.ClearAsaProfileLocalCacheUseCase
 import com.algorand.android.modules.assets.profile.about.domain.usecase.GetAssetDetailFlowFromAsaProfileLocalCache
@@ -81,7 +81,7 @@ class AssetAboutPreviewUseCase @Inject constructor(
         }
     }
 
-    private fun createAlgoAboutPreview(assetDetail: AssetDetail): AssetAboutPreview {
+    private fun createAlgoAboutPreview(assetDetail: BaseAssetDetail): AssetAboutPreview {
         val algorandAboutList = mutableListOf<BaseAssetAboutListItem>().apply {
             with(assetDetail) {
                 add(createStatisticsItem(this))
@@ -108,7 +108,7 @@ class AssetAboutPreviewUseCase @Inject constructor(
         return assetAboutPreviewMapper.mapToAssetAboutPreview(assetAboutListItems = algorandAboutList)
     }
 
-    private fun createAssetAboutPreview(assetDetail: AssetDetail): AssetAboutPreview {
+    private fun createAssetAboutPreview(assetDetail: BaseAssetDetail): AssetAboutPreview {
         val assetAboutList = mutableListOf<BaseAssetAboutListItem>().apply {
             with(assetDetail) {
 
@@ -165,7 +165,7 @@ class AssetAboutPreviewUseCase @Inject constructor(
         }
     }
 
-    private fun createStatisticsItem(assetDetail: AssetDetail): BaseAssetAboutListItem.StatisticsItem {
+    private fun createStatisticsItem(assetDetail: BaseAssetDetail): BaseAssetAboutListItem.StatisticsItem {
         with(assetDetail) {
             val formattedAssetPrice = getSelectedAssetExchangeValueUseCase
                 .getSelectedAssetExchangeValue(assetDetail = this)

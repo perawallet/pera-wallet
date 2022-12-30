@@ -59,16 +59,30 @@ sealed class BaseTransaction {
             abstract val assetId: Long
             abstract val amount: BigInteger
 
-            data class Send(
-                override val id: String?,
-                override val signature: String?,
-                override val senderAddress: String?,
-                override val receiverAddress: String?,
-                override val zonedDateTime: ZonedDateTime?,
-                override val isPending: Boolean,
-                override val amount: BigInteger,
-                override val assetId: Long
-            ) : AssetTransfer()
+            sealed class BaseSend : AssetTransfer() {
+                data class Send(
+                    override val id: String?,
+                    override val signature: String?,
+                    override val senderAddress: String?,
+                    override val receiverAddress: String?,
+                    override val zonedDateTime: ZonedDateTime?,
+                    override val isPending: Boolean,
+                    override val amount: BigInteger,
+                    override val assetId: Long
+                ) : BaseSend()
+
+                data class SendOptOut(
+                    override val id: String?,
+                    override val signature: String?,
+                    override val senderAddress: String?,
+                    override val receiverAddress: String?,
+                    override val zonedDateTime: ZonedDateTime?,
+                    override val isPending: Boolean,
+                    override val amount: BigInteger,
+                    override val assetId: Long,
+                    val closeToAddress: String
+                ) : BaseSend()
+            }
 
             sealed class BaseReceive : AssetTransfer() {
 

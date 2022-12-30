@@ -13,6 +13,11 @@
 package com.algorand.android.modules.assets.profile.detail.ui.usecase
 
 import androidx.navigation.NavDirections
+import com.algorand.android.assetsearch.domain.model.VerificationTier
+import com.algorand.android.discover.home.domain.model.TokenDetailInfo
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
+import com.algorand.android.modules.assets.profile.about.domain.usecase.GetAssetDetailUseCase
+import com.algorand.android.modules.assets.profile.about.domain.usecase.GetSelectedAssetExchangeValueUseCase
 import com.algorand.android.modules.assets.profile.detail.domain.usecase.GetAccountAssetDetailUseCase
 import com.algorand.android.modules.assets.profile.detail.ui.AssetDetailFragmentDirections
 import com.algorand.android.modules.assets.profile.detail.ui.mapper.AssetDetailPreviewMapper
@@ -20,6 +25,9 @@ import com.algorand.android.modules.assets.profile.detail.ui.model.AssetDetailPr
 import com.algorand.android.modules.swap.reddot.domain.usecase.GetSwapFeatureRedDotVisibilityUseCase
 import com.algorand.android.modules.swap.utils.SwapNavigationDestinationHelper
 import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.utils.ALGO_SHORT_NAME
+import com.algorand.android.utils.AlgoAssetInformationProvider
+import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Event
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -33,8 +41,20 @@ class AssetDetailPreviewUseCase @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
     private val assetDetailPreviewMapper: AssetDetailPreviewMapper,
     private val getSwapFeatureRedDotVisibilityUseCase: GetSwapFeatureRedDotVisibilityUseCase,
-    private val swapNavigationDestinationHelper: SwapNavigationDestinationHelper
+    private val swapNavigationDestinationHelper: SwapNavigationDestinationHelper,
+    private val getAssetDetailUseCase: GetAssetDetailUseCase,
+    private val getSelectedAssetExchangeValueUseCase: GetSelectedAssetExchangeValueUseCase,
+    private val algoAssetInformationProvider: AlgoAssetInformationProvider
 ) {
+
+    fun updatePreviewForDiscoverMarketEvent(currentPreview: AssetDetailPreview): AssetDetailPreview {
+        val safeTokenId = if (currentPreview.assetId == ALGO_ID) ALGO_SHORT_NAME else currentPreview.assetId.toString()
+        return currentPreview.copy(
+            navigateToDiscoverMarket = Event(
+                TokenDetailInfo(tokenId = safeTokenId, poolId = null)
+            )
+        )
+    }
 
     suspend fun updatePreviewForNavigatingSwap(
         currentPreview: AssetDetailPreview,
@@ -64,10 +84,23 @@ class AssetDetailPreviewUseCase @Inject constructor(
     ): Flow<AssetDetailPreview> {
         return combine(
             getAccountAssetDetailUseCase.getAssetDetail(accountAddress, assetId).filterNotNull(),
-            accountDetailUseCase.getAccountDetailCacheFlow(accountAddress).filterNotNull()
-        ) { baseOwnedAssetDetail, cachedAccountDetail ->
+            accountDetailUseCase.getAccountDetailCacheFlow(accountAddress).filterNotNull(),
+            getAssetDetailUseCase.getAssetDetail(assetId)
+        ) { baseOwnedAssetDetail, cachedAccountDetail, assetDetailResult ->
             val account = cachedAccountDetail.data?.account
             val isSwapButtonSelected = getRedDotVisibility(baseOwnedAssetDetail.isAlgo)
+            // TODO Check Error and Loading cases later
+            val assetDetail = if (assetId != ALGO_ID) {
+                (assetDetailResult as? DataResource.Success)?.data
+            } else {
+                algoAssetInformationProvider.getAlgoAssetInformation().data
+            }
+            val isAvailableOnDiscoverMobile = assetDetail?.isAvailableOnDiscoverMobile ?: false
+            val formattedAssetPrice = getSelectedAssetExchangeValueUseCase.getSelectedAssetExchangeValue(assetDetail)
+                ?.getFormattedValue(isCompact = true)
+            val isMarketInformationVisible = isAvailableOnDiscoverMobile &&
+                baseOwnedAssetDetail.verificationTier != VerificationTier.SUSPICIOUS &&
+                assetDetail?.hasUsdValue() == true
             assetDetailPreviewMapper.mapToAssetDetailPreview(
                 baseOwnedAssetDetail = baseOwnedAssetDetail,
                 accountAddress = accountAddress,
@@ -75,7 +108,11 @@ class AssetDetailPreviewUseCase @Inject constructor(
                 accountType = account?.type,
                 canAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(accountAddress),
                 isQuickActionButtonsVisible = isQuickActionButtonsVisible,
-                isSwapButtonSelected = isSwapButtonSelected
+                isSwapButtonSelected = isSwapButtonSelected,
+                isMarketInformationVisible = isMarketInformationVisible,
+                last24HoursChange = assetDetail?.last24HoursAlgoPriceChangePercentage,
+                formattedAssetPrice = formattedAssetPrice
+
             )
         }.distinctUntilChanged()
     }

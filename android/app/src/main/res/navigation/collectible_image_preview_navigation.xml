@@ -22,20 +22,14 @@
         android:label="CollectibleImagePreview"
         tools:layout="@layout/fragment_collectible_image_preview">
         <argument
-            android:name="imageUrl"
-            app:argType="string" />
-        <argument
-            android:name="errorDisplayText"
-            app:argType="string" />
-        <argument
             android:name="transitionName"
             app:argType="string" />
         <argument
-            android:name="mediaType"
-            app:argType="com.algorand.android.nft.ui.model.BaseCollectibleMediaItem$ItemType" />
+            android:name="imageUri"
+            app:argType="string" />
         <argument
-        android:name="previewPrismUrl"
-        app:argType="string" />
+            android:name="cachedMediaUri"
+            app:argType="string" />
     </fragment>
 
 </navigation>

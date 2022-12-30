@@ -22,6 +22,8 @@ import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.Result
 import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.usecase.GetAccountMinimumBalanceUseCase
+import com.algorand.android.utils.MIN_FEE
 import com.algorand.android.utils.exceptions.WarningException
 import com.algorand.android.utils.isEqualTo
 import com.algorand.android.utils.isLesserThan
@@ -33,6 +35,7 @@ import javax.inject.Inject
 class AccountTransactionValidator @Inject constructor(
     private val accountManager: AccountManager,
     private val accountDetailUseCase: AccountDetailUseCase,
+    private val getAccountMinimumBalanceUseCase: GetAccountMinimumBalanceUseCase
 ) {
 
     fun isAccountAddressValid(toAccountPublicKey: String): Result<String> {
@@ -75,6 +78,23 @@ class AccountTransactionValidator @Inject constructor(
             !isThereAnOptedInApp() || !isThereAnyDifferentAsset()
         } ?: false
         return fromAccount?.account?.address == toAccount && selectedAsset?.isAlgo() == true && isMax && hasOnlyAlgo
+    }
+
+    fun isSendingMaxAmountToTheSameAccount(
+        fromAccount: String,
+        toAccount: String,
+        maxAmount: BigInteger,
+        amount: BigInteger,
+        isAlgo: Boolean
+    ): Boolean {
+        val maxSelectableAmount = if (isAlgo) {
+            maxAmount - getAccountMinimumBalanceUseCase.getAccountMinimumBalance(toAccount) - MIN_FEE.toBigInteger()
+        } else {
+            maxAmount
+        }
+        val isMax = amount >= maxSelectableAmount
+        val isTheSameAccount = fromAccount == toAccount
+        return isMax && isTheSameAccount
     }
 
     fun isAccountNewlyOpenedAndBalanceInvalid(

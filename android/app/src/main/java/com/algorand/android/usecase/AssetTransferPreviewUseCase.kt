@@ -14,47 +14,36 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.mapper.AssetTransferPreviewMapper
-import com.algorand.android.models.AssetStatus
 import com.algorand.android.models.AssetTransferPreview
 import com.algorand.android.models.SignedTransactionDetail
+import com.algorand.android.models.TransactionData
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
-import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
-import java.math.BigDecimal
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
 class AssetTransferPreviewUseCase @Inject constructor(
     private val assetTransferPreviewMapper: AssetTransferPreviewMapper,
     private val parityUseCase: ParityUseCase,
-    private val sendSignedTransactionUseCase: SendSignedTransactionUseCase,
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val sendSignedTransactionUseCase: SendSignedTransactionUseCase
 ) {
 
     fun getAssetTransferPreview(
-        signedTransactionDetail: SignedTransactionDetail.Send
+        transactionData: TransactionData.Send
     ): AssetTransferPreview {
-        val exchangePrice = parityUseCase.getAlgoToPrimaryCurrencyConversionRate() ?: BigDecimal.ZERO
+        val exchangePrice = parityUseCase.getAlgoToPrimaryCurrencyConversionRate()
         return assetTransferPreviewMapper.mapToAssetTransferPreview(
-            signedTransactionDetail = signedTransactionDetail,
+            transactionData = transactionData,
             exchangePrice = exchangePrice,
-            currencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName()
+            currencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName(),
+            note = transactionData.xnote ?: transactionData.note,
+            isNoteEditable = transactionData.xnote == null
         )
     }
 
     suspend fun sendSignedTransaction(
         signedTransactionDetail: SignedTransactionDetail.Send
     ): Flow<DataResource<String>> {
-        addAssetSendingToAccountCache(
-            signedTransactionDetail.accountCacheData.account.address,
-            signedTransactionDetail.assetInformation.assetId
-        )
         return sendSignedTransactionUseCase.sendSignedTransaction(signedTransactionDetail)
-    }
-
-    private suspend fun addAssetSendingToAccountCache(publicKey: String, assetId: Long) {
-        val cachedAccountDetail = accountDetailUseCase.getCachedAccountDetail(publicKey)?.data ?: return
-        cachedAccountDetail.accountInformation.setAssetHoldingStatus(assetId, AssetStatus.PENDING_FOR_SENDING)
-        accountDetailUseCase.cacheAccountDetail(CacheResult.Success.create(cachedAccountDetail))
     }
 }

@@ -22,6 +22,6 @@ interface WalletConnectClientListener {
     fun onFailure(sessionId: Long, error: Session.Status.Error)
     fun onDisconnected(sessionId: Long)
     fun onSessionKilled(sessionId: Long)
-    fun onSessionApproved(sessionId: Long, session: WalletConnectSession)
-    fun onConnected(sessionId: Long, session: WalletConnectSession?)
+    fun onSessionApproved(sessionId: Long, session: WalletConnectSession, clientId: String)
+    fun onConnected(sessionId: Long, session: WalletConnectSession?, clientId: String)
 }

@@ -14,7 +14,7 @@ package com.algorand.android.customviews
 
 import android.content.Context
 import android.util.AttributeSet
-import com.algorand.android.nft.ui.model.CollectibleTraitItem
+import com.algorand.android.modules.collectibles.detail.base.ui.model.CollectibleTraitItem
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayout

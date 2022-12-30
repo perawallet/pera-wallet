@@ -32,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RemoveAssetActionBottomSheet : BaseAssetActionBottomSheet() {
 
-    private val toolbarConfiguration = ToolbarConfiguration(titleResId = R.string.remove_assets)
+    private val toolbarConfiguration = ToolbarConfiguration(titleResId = R.string.remove_asset)
 
     override fun initUi() {
         with(binding) {
@@ -48,7 +48,7 @@ class RemoveAssetActionBottomSheet : BaseAssetActionBottomSheet() {
             stringResId = R.string.you_are_about_to,
             replacementList = listOf(
                 "account_name" to assetActionViewModel.accountAddress,
-                "asset_name" to asset?.shortName.orEmpty()
+                "asset_name" to assetActionViewModel.assetFullName.getName(resources)
             )
         )
     }

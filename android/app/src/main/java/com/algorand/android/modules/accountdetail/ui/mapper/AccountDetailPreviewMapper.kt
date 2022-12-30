@@ -20,9 +20,11 @@ import javax.inject.Inject
 class AccountDetailPreviewMapper @Inject constructor() {
 
     fun mapToAccountDetail(
-        swapNavigationDirectionEvent: Event<NavDirections>?
+        swapNavigationDirectionEvent: Event<NavDirections>?,
+        copyAssetIDToClipboardEvent: Event<Long>?
     ): AccountDetailPreview {
         return AccountDetailPreview(
+            copyAssetIDToClipboardEvent = copyAssetIDToClipboardEvent,
             swapNavigationDirectionEvent = swapNavigationDirectionEvent
         )
     }

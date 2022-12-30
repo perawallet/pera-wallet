@@ -38,7 +38,6 @@
     <string name="remove_account">Konto entfernen</string>
     <string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
     <string name="remove">Entfernen</string>
-    <string name="enter_six_digit_pin">Geben Sie die sechsstellige PIN ein</string>
     <string name="wrong_password">Falsches Passwort</string>
     <string name="node_settings">Knoteneinstellungen</string>
     <string name="language">Sprache</string>
@@ -82,14 +81,11 @@
     <string name="you_already_have">Sie besitzen dieses Asset bereits.</string>
     <string name="adding_asset">Asset wird hinzugefügt</string>
     <string name="removing_asset">Asset wird entfernt</string>
-    <string name="adding_an_asset">Um ein Asset hinzuzufügen, müssen Sie eine Transaktion mit der Mindesttransaktionsgebühr tätigen. Dies wird in Ihrem Transaktionsverlauf angezeigt.</string>
-    <string name="unfortunately_this_account">Leider wurde dieses Asset diesem Konto nicht hinzugefügt. Bitte weisen Sie den Kontoinhaber an, das Asset hinzuzufügen, und versuchen Sie es dann erneut.</string>
     <string name="transfer_balance">Guthaben übertragen</string>
     <string name="approve">Bestätigen</string>
     <string name="account_does_not_accept">Das Konto unterstützt dieses Asset nicht</string>
     <string name="you_are_about_to_receive">Sie werden gleich ein Asset empfangen!</string>
     <string name="min_transaction_error">Fehler Mindesttransaktion!</string>
-    <string name="you_need_at_least">Sie benötigen mindestens <annotation replacement="min_balance"> </annotation> Algos, um dieses Asset hinzuzufügen.</string>
     <string name="please_add_this">Bitte fügen Sie dieses Asset hinzu und versuchen Sie es erneut.</string>
     <string name="key_not_valid">Falscher Schlüssel. Bitte stellen Sie sicher, dass Sie den richtigen Schlüssel verwenden.</string>
     <string name="scanned_qr_is_not_valid">Gescannter QR-Code ist ungültig.</string>
@@ -137,7 +133,6 @@
     <string name="go_to_home">Zu Startseite gehen</string>
     <string name="accept">Akzeptieren</string>
     <string name="add_new_asset">Neues Asset hinzufügen</string>
-    <string name="try_different">Versuchen Sie es mit einem anderen Asset-Namen oder einer anderen Asset-ID</string>
     <string name="copy_address">Adresse kopieren</string>
     <string name="account_address">Kontoadresse</string>
     <string name="keep_it">Behalten</string>
@@ -161,7 +156,6 @@
     <string name="try_again">Erneut versuchen</string>
     <string name="no_current_notifications">Keine aktuellen Benachrichtigungen</string>
     <string name="your_recent_transactions">Ihre letzten Transaktionen, Asset-Anforderungen und weiteren Benachrichtigungen werden hier angezeigt.</string>
-    <string name="to_remove_an_asset">Um ein Asset zu entfernen, müssen Sie zuerst das gesamte verbleibende Kontoguthaben dieses Assets auf ein anderes Konto überweisen</string>
     <string name="connect_to_internet">Verbindung mit dem Internet herstellen</string>
     <string name="we_couldn_t_reach">Wir konnten den Server nicht erreichen. Stellen Sie sicher, dass Sie mit dem Internet verbunden sind</string>
     <string name="add_note">Bemerkung hinzufügen</string>
@@ -320,10 +314,9 @@
     <string name="this_transaction_will_transfer">Mit dieser Transaktion wird das Eigentum an diesem Konto übertragen. Ihre derzeitige Passphrase für die Wiederherstellung gewährt keinen Zugriff mehr auf diese Vermögenswerte.</string>
     <string name="this_transaction_is_sending">Mit dieser Transaktion wird Ihr gesamtes Algo-Guthaben gesendet.</string>
     <string name="close_asset_to">Schließen und Asset senden an</string>
-    <string name="this_transaction_is_sending_asset">Mit dieser Transaktion wird Ihr gesamtes %1$s-Guthaben gesendet und %1$s wird vom Ihrem Konto entfernt.</string>
     <string name="wallet_connect_is_not_reachable">WalletConnect ist im Moment nicht erreichbar. Bitte versuchen Sie es später noch einmal.</string>
     <string name="connected_with_formatted">Verbunden mit %1$s</string>
-    <string name="this_transaction_will_be">Diese Transaktion wird in der Zukunft eingereicht werden. </string>
+    <string name="this_transaction_will_be">Diese Transaktion wird in der Zukunft übermittelt werden. Nach der Bestätigung kann die angeschlossene Anwendung diese Transaktionen nach eigenem Ermessen versenden. Bitte überprüfen Sie die Transaktionen sorgfältig, da dieser Vorgang unumkehrbar ist.</string>
     <plurals name="confirm_transactions">
         <item quantity="one">Bestätigen</item>
         <item quantity="other">Alle Transaktionen bestätigen</item>
@@ -389,7 +382,7 @@
     <string name="enter_your_new_six_digit_pin">Gebn Sie Ihren \nsechsstelligen Zugangscode ein</string>
     <string name="re_enter_your_new_six_digit_pin">Gebn Sie Ihren neuen \nsechsstelligen Zugangscode erneut ein</string>
     <string name="wrong_passphrase">Falsche Passphrase</string>
-    <string name="account_not_found">Konto nicht gefunden. Bitte versuchen Sie es erneut, indem Sie die richtige Passphrase eingeben.</string>
+    <string name="account_not_found_please_try">Konto nicht gefunden. Bitte versuchen Sie es erneut, indem Sie die richtige Passphrase eingeben.</string>
     <string name="account_is_verified">Konto ist verifiziert!</string>
     <string name="verified">Verifiziert</string>
     <string name="copy_id">ID kopieren</string>
@@ -447,7 +440,6 @@
     <string name="show_transaction_details">Transaktionsdetails anzeigen</string>
     <string name="network_fee">Netzwerkgebühr</string>
     <string name="application_call">Anwendungsaufruf</string>
-    <string name="application_opt_in">Anwendungs-Opt-in</string>
     <string name="application_close_to">Anwendungsbeendigung an</string>
     <string name="application_update">Update der Anwendung</string>
     <string name="application_delete">Anwendung löschen</string>
@@ -457,7 +449,6 @@
     <string name="asset_reconfiguration_request_with_asset_name">Asset-Rekonfigurationsanfrage <annotation replacement="asset_name">assetNamePlaceholder</annotation></string>
     <string name="asset_deletion_request_with_asset_name">Asset-Löschungsanfrage <annotation replacement="asset_name">assetNamePlaceholder</annotation></string>
     <string name="application_call_with_id">Anwendungsaufruf <annotation replacement="app_id"> appIdPlaceholder </annotation></string>
-    <string name="application_opt_in_with_id">Anwendungs-Opt-in <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_close_to_with_id">Anwendung schließen bis <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_update_with_id">Anwendungsupdate <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_delete_with_id">Anwendung Löschen <annotation replacement="app_id">appIdPlaceholder</annotation></string>
@@ -554,28 +545,24 @@
     <string name="change_pin_code">PIN-Code ändern</string>
     <string name="watch_account_added">Überwachungskonto erfolgreich hinzugefügt</string>
     <string name="the_watch_account_has_been">Das Überwachungskonto wurde erfolgreich hinzugefügt.</string>
-    <string name="collectibles">Collectibles</string>
     <string name="welcome_to_your_nft">Willkommen in Ihrer NFT-Galerie! Sie haben noch keine NFTs. Alle NFTs, die in Ihrer Wallet  vorhanden sind, werden hier angezeigt.</string>
-    <string name="receive_nft">NFT empfangen</string>
     <string name="share">Teilen</string>
     <string name="description">Beschreibung</string>
     <string name="owner">Eigentümer</string>
     <string name="asset_id_">Asset-ID</string>
     <string name="creator_wallet_address">Wallet-Adresse des Erstellers</string>
     <string name="collection_name">Name der Sammlung</string>
-    <string name="creator_name">Name des Erstellers</string>
     <string name="properties">Eigenschaften</string>
     <string name="view_transaction">Transaktion anzeigen</string>
     <string name="show_on_algoexplorer">Im Algoexplorer anzeigen</string>
     <string name="show_on_nftexplorer">Im NFTExplorer anzeigen</string>
-    <string name="you_are_not_the_owner">Sie sind noch nicht Eigentümer dieses NFT, aber Sie haben das Opt-in dafür durchgeführt. Sie können es jetzt in Ihr Konto übertragen.</string>
     <string name="we_don_t_support">Dieser NFT-Medientyp wird von uns noch nicht unterstützt.</string>
     <string name="we_can_t_display">Wir können das Bildmaterial vorübergehend nicht anzeigen.</string>
     <string name="transfer">Übertragen</string>
     <string name="send_your_nft">Senden Sie Ihren NFT</string>
     <string name="paste_an_algorand_wallet_address">Algorand-Wallet-Adresse einfügen</string>
     <string name="ask_recipient_to">Empfänger um Opt-in bitten</string>
-    <string name="you_cant_send">Sie können <annotation replacement="collectible_name">collectibleNamePlaceHolder</annotation> nicht an <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> senden, da diese Wallet noch nicht für dieses Asset optiert hat. <annotation font="dmsans_medium"><annotation custom="learn_more">Erfahren Sie mehr über Opt-in</annotation></annotation></string>
+    <string name="you_cant_send">Sie können <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> nicht an <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> senden, da diese Wallet noch nicht für dieses Asset optiert hat. <annotation font="dmsans_medium"><annotation custom="learn_more">Erfahren Sie mehr über Opt-in</annotation></annotation></string>
     <string name="request_opt_in">Opt-in anfordern</string>
     <string name="information_about_opt">Informationen zum Opt-in</string>
     <string name="to_avoid_spammy">Um Spam-Transaktionen zu vermeiden, erlaubt die Algorand-Blockchain nur das Senden und Empfangen von Transaktionen für Assets, für die zuvor ein Opt-in erteilt wurde.</string>
@@ -589,34 +576,23 @@
     <string name="transacting_fee">Transaktionsgebühr</string>
     <string name="confirm_transfer">Übertragung bestätigen</string>
     <string name="search_asset_id_or_nft">Asset-ID oder NFT-Name suchen</string>
-    <string name="receive_an_nft">NFT empfangen</string>
     <string name="the_account_name">Für das Konto <annotation font="dmsans_bold">„<annotation replacement="account_name"> </annotation>“</annotation> wurde ein erfolgreiches Rekeying durchgeführt.</string>
-    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> hat seinem Konto <annotation replacement="asset">assetPlaceholder</annotation> hinzugefügt. Sie können <annotation replacement="asset">assetPlaceholder</annotation> senden.</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> versucht <annotation replacement="asset">assetPlaceholder</annotation> an Ihr Konto <annotation font="dmsans_medium"><annotation replacement="receiver">receiverPlaceholder</annotation></annotation> zu senden. Tippen Sie auf hier zum Opt-in, damit die Transaktion verarbeitet werden kann.</string>
     <string name="transaction_send_successful">Ihre Transaktion in Höhe von <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> wurde erfolgreich ausgeführt.</string>
     <string name="transaction_send_failed">Ihre Transaktion in Höhe von <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ist fehlgeschlagen.</string>
     <string name="the_only_way_to">Die einzige Möglichkeit, ein Algorand-Konto wiederherzustellen, ist diese Wiederherstellungs-Passphrase.</string>
     <string name="monitor_activity_of">Mit einem Überwachungskonto können Sie die Aktivität eines Kontos überwachen, ohne dass Sie die Passphrase haben müssen. Dies ist nützlich für die Überwachung von Assets, die in einem Cold-Storage aufbewahrt werden.</string>
     <string name="this_transaction_fee_is_higher">Diese Transaktionsgebühr ist höher als die übliche Gebühr von 0,001 Algo.</string>
-    <string name="you_are_about_to">Sie sind dabei, <annotation replacement="asset_name">assetNamePlaceholder</annotation> aus <annotation replacement="account_name">accountNamePlaceholder</annotation> zu entfernen. Um Transaktionen mit diesem Asset zu tätigen, müssen Sie es zuerst wieder aktivieren.</string>
-    <string name="to_remove_the_balance">Um <annotation replacement="asset_name">assetNamePlaceholder</annotation> zu entfernen, muss das Kontoguthaben 0 sein. Bitte überweisen Sie den Restbetrag auf ein anderes Konto und versuchen Sie es erneut.</string>
-    <string name="you_are_about_to_receive_description">Sie werden gleich ein Asset auf <annotation replacement="account_name">accountNamePlaceholder</annotation> empfangen! Möchten Sie diesem Konto dieses Asset hinzufügen, um die Überweisung empfangen zu können?</string>
     <string name="invalid_input_transaction_request">Ungültige Eingabe: Transaktionsanforderung enthält mehr als %1$d Transaktionen</string>
     <string name="selected_account">Ausgewähltes Konto</string>
     <string name="your_nft_transfer_has_failed">Ihr NFT-Transfer ist fehlgeschlagen!</string>
     <string name="please_try_again">Bitte versuchen Sie es erneut.</string>
-    <string name="opt_out">Opt-out</string>
     <string name="nft_successfully_opted_out">Opt-out für %1$s NFT erfolgreich</string>
-    <string name="opted_in_to">Opt-in für</string>
     <string name="show_on">Anzeigen auf</string>
     <string name="you_are_about_to_remove_watch_account">Sie sind dabei, ein Überwachungskonto zu entfernen. Sind Sie sicher, dass Sie fortfahren möchten?</string>
     <string name="you_are_about_to_remove_main_account">Sie sind dabei, Ihr Hauptkonto zu entfernen. Sind Sie sicher, dass Sie fortfahren möchten?</string>
-    <string name="this_watch_account_has_opted">Dieses Überwachungskonto hat sich für dieses NFT entschieden, besitzt es aber nicht.</string>
     <string name="display_opted_in_nfts">Opted-in NFTs anzeigen</string>
-    <string name="you_can_show_hide">Sie können NFTs anzeigen/ausblenden, für die Sie das Opt-in durchgeführt haben, die Ihnen aber nicht gehören.</string>
     <string name="filter">Filter</string>
     <string name="show_filtered_nfts_formatted">Gefilterte NFTs anzeigen (%1$d)</string>
-    <string name="search_your_nfts">Durchsuchen Sie Ihre NFTs</string>
     <string name="enter_your_old">Geben Sie Ihren alten\nsechsstelligen Zugangscode ein</string>
     <string name="ledger_info_power_first_paragraph">
     <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Informationen zur Verwendung der Bluetooth-Funktion Ihres Ledger-Geräts finden Sie in der offiziellen <annotation type="bold"><annotation type="color">Anleitung für Bluetooth-Verbindungen von Ledger.</annotation></annotation></annotation>
@@ -638,8 +614,6 @@
     <string name="filter_by_date">Nach Datum filtern</string>
     <string name="asset_history_not_available">Asset-Verlauf nicht verfügbar</string>
     <string name="the_history_for_this_spesific">Der Verlauf für dieses bestimmte Asset ist nicht verfügbar.</string>
-    <string name="your_account_needs_to_be">Ihr Konto muss das Opt-in für das NFT durchführen, bevor Sie es erhalten können. Achten Sie bei der Bestätigung darauf, die Asset-ID zu überprüfen.</string>
-    <string name="you_can_search_the_nft">Sie können das NFT, für das Sie das Opt-in durchführen möchten, suchen, indem Sie den Namen oder die Asset-ID in die Suchleiste unten einfügen.</string>
     <string name="select_the_wallet_account">Wählen Sie das Wallet-Konto aus, auf das Sie empfangen möchten:</string>
     <string name="receive_opt_out">Empfangen (Opt-out)</string>
     <string name="enter_your_six_digit_pin">Geben Sie Ihren alten sechsstelligen Zugangscode ein</string>
@@ -647,7 +621,6 @@
     <string name="the_opt_out_request_has">Die Opt-out-Anfrage wurde auf dem Ledger-Gerät abgelehnt. Bitte versuchen Sie es erneut.</string>
     <string name="home">Startseite</string>
     <string name="price">Preis</string>
-    <string name="three_d_card_mode">3D-Kartenmodus</string>
     <string name="alphabetically_a_to_z">Alphabetisch von A bis Z</string>
     <string name="alphabetically_z_to_a">Alphabetisch von Z bis A</string>
     <string name="highest_value_to_lowest">Höchster Wert bis niedrigster Wert</string>
@@ -664,10 +637,8 @@
     <string name="algo_or_any_asa">Algo oder ASA auf ein anderes Konto</string>
     <string name="view_or_copy">Ihre Kontoadresse anzeigen oder kopieren</string>
     <string name="use_wallet_connect">Verwenden Sie WalletConnect oder scannen Sie eine Kontoadresse</string>
-    <string name="opt_out_from_the">Opt-out für NFT</string>
     <string name="asset_configuration">Asset-Konfiguration</string>
     <string name="scan_qr">QR-Code scannen</string>
-    <string name="algorand_blockchain">Die Algorand-Blockchain erfordert, dass ein Konto einem ASA zustimmt, bevor es dieses empfangen kann. Jetzt, wo Sie diesen NFT auf ein anderes Konto übertragen haben, können Sie das Opt-out durchführen. Das Opt-out erfordert eine zusätzliche Transaktion.</string>
     <string name="scanned_account_address">Gescannte Kontoadresse</string>
     <string name="send_transaction">Transaktion senden</string>
     <string name="add_new_contact">Neuen Kontakt hinzufügen</string>
@@ -695,13 +666,11 @@
     </plurals>
     <string name="inner_n_transactions">Interne\nTransaktionen</string>
     <string name="inner_transactions">Interne Transaktionen</string>
-    <string name="your_accounts_don_t_contain_this">Ihre Konten enthalten dieses Asset nicht. Bitte fügen Sie dieses Asset hinzu und versuchen Sie es erneut.</string>
     <plurals name="show_count_more_assets">
         <item quantity="one">+%1$d weiteres Asset anzeigen</item>
         <item quantity="other">+%1$d weitere Assets anzeigen</item>
     </plurals>
     <string name="invalid_asset_id">Ungültige Asset-ID.</string>
-    <string name="asset_successfully_added_formatted">%1$s erfolgreich zu Ihrem Konto hinzugefügt.</string>
     <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> wurden von <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> an <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> gesendet.</string>
     <string name="opt_in_to">Opt-in zu einem ASA oder NFT von diesem Konto aus</string>
     <string name="add_new_asa">Neues ASA hinzufügen</string>
@@ -729,7 +698,6 @@
     <string name="disconnect_all_sessions">Alle Sitzungen trennen</string>
     <string name="would_disconnect_all_sessions">Möchten Sie die Verbindung zu allen Sitzungen trennen?</string>
     <string name="missing_asset">Fehlendes Asset</string>
-    <string name="you_are_already">Sie haben das Opt-in für <annotation replacement="asset_name">assetNamePlaceholder</annotation> über dieses Konto bereits durchgeführt.</string>
     <string name="too_many_accounts">Zu viele Konten!</string>
     <string name="looks_like_already_have_accounts">Es sieht aus, als hätten Sie bereits %1$d oder mehr Konten in Ihrer Wallet. Um die Leistung der App schnell zu halten, unterstützen wir derzeit nicht mehr als %1$d Konten. Um ein weiteres Konto hinzuzufügen, entfernen Sie bitte zuerst ein bestehendes Konto.</string>
     <string name="error_bluetooth_permission_message">Um nach Ledger-Geräten in Ihrer Nähe zu suchen, müssen Sie eine Bluetooth-Scan-Berechtigung erteilen.</string>
@@ -737,7 +705,6 @@
     <string name="transaction_submitted">Transaktion übermittelt</string>
     <string name="your_transaction_sub">Ihre Transaktion wurde erfolgreich an das Algorand-Netzwerk übermittelt.</string>
     <string name="search_assets">Assets durchsuchen</string>
-    <string name="manage_collectibles">Collectibles verwalten</string>
     <string name="asa_verification">ASA-Verifizierung</string>
     <string name="pera_wallet_s_algorand">Das Algorand Standard Asset (ASA) Verifizierungsprogramm von Pera Wallet ermöglicht es ASA-Erstellern, sich <annotation type="bold">automatisch</annotation> verifizieren zu lassen, indem sie bestätigen, dass sie die Eigentümer des Assets sind.</string>
     <string name="the_main_purpose">Der Hauptzweck der ASA-Verifizierung besteht darin, <annotation type="bold">zu verhindern, dass ein ASA vorgibt, mit einem Projekt verbunden zu sein und als Token für ein Projekt zu fungieren, mit dem er nicht verbunden ist.</annotation></string>
@@ -775,20 +742,14 @@
     <string name="insufficient_algo_balance">Unzureichendes Algo-Guthaben</string>
     <string name="you_can_opt_in_to_this">Sie können über eines Ihrer Konten das Opt-in für dieses Asset durchführen.</string>
     <string name="please_select_an_account_to">Bitte wählen Sie ein Konto zum Hinzufügen von %1$s</string>
-    <string name="asset_successfully_added_to_your">%1$s erfolgreich zu Ihrem Konto hinzugefügt.</string>
-    <string name="asset_successfully_removed_from_your">%1$s erfolgreich von Ihrem Konto entfernt.</string>
     <string name="filter_nfts">NFTs filtern</string>
     <string name="newest_to_oldest">Neuestes bis Ältestes</string>
     <string name="oldest_to_newest">Ältestes bis Neuestes</string>
-    <string name="you_can_add_this_nft">Sie können dieses NFT hinzufügen zu</string>
     <string name="opt_dash_in">Opt-in</string>
     <string name="sorry_there_was">Leider ist beim Abrufen einiger Ihrer Konten ein Fehler aufgetreten. Der Portfoliowert wird nur auf der Grundlage der erfolgreich abgerufenen Konten berechnet.</string>
     <string name="we_couldn_t_find_any_assets">Wir konnten keine Assets zum Entfernen finden.</string>
     <string name="the_algo_is_the_official_cryptocurrency">Der Algo ist die offizielle Kryptowährung der Algorand-Blockchain. Die Algorand-Blockchain wurde entwickelt, um eine offene, grenzenlose Wirtschaft zu schaffen, an der jeder teilnehmen kann. Diese neue Art der digitalen Wirtschaft kann nur mit einer wirklich digitalen Währung funktionieren, die sofort und für jeden funktioniert. Dies ist der Algo.</string>
-    <string name="opt_out_nft">Opt-in für NFT</string>
-    <string name="you_are_about_to_opt">Sie sind dabei, das Opt-out für %1$s durchführen. Um Transaktionen mit diesem NFT zu tätigen, müssen Sie es zuerst wieder aktivieren.</string>
     <string name="opt_in_to_nft">Opt-in für NFT</string>
-    <string name="opting_in_to_an_nft">Das Opt-in für ein NFT erfordert, dass Sie eine Transaktion mit der Mindesttransaktionsgebühr tätigen. Dies wird in Ihrem Transaktionsverlauf angezeigt.</string>
     <string name="this_account_doesn_t">Dieses Konto hat nicht genügend Guthaben für diese Transaktion.</string>
     <string name="we_couldn_t">Wir konnten den Browser, mit dem Sie die WalletConnect-Sitzung gestartet haben, nicht automatisch erkennen. Bitte wählen Sie ihn aus, um zu %1$s zurückzukehren:</string>
     <string name="select_a_browser">Wählen Sie einen Browser</string>
@@ -888,4 +849,20 @@
     <string name="total_owned">Gesamtbesitz</string>
     <string name="this_is_the_fee_charged">Dies ist die Gebühr, die Ihnen von der dezentralen Börse berechnet wird. Sie wird automatisch von dem Betrag, den Sie senden, abgezogen und in den Mindestbetrag, den Sie erhalten, eingerechnet. Es handelt sich nicht um eine zusätzliche Gebühr, die aufgeschlagen wird.</string>
     <string name="we_encountered_an_unexpected">Es ist ein unerwarteter Fehler aufgetreten. Versuchen Sie es später erneut.</string>
+    <string name="asa_balance_is_not_sufficient_formatted"><annotation replacement="asa_short_name">asaShortNamePlaceholder</annotation>-Guthaben ist nicht ausreichend.</string>
+    <string name="asa_balance_is_not_sufficient">Guthaben ist nicht ausreichend.</string>
+    <string name="future_transaction_detected">Zukünftige Transaktion erkannt</string>
+    <plurals name="select_accounts">
+        <item quantity="one">Konto auswählen</item>
+        <item quantity="other">Konten auswählen</item>
+    </plurals>
+    <string name="you_cannot_optin">Sie können sich nicht für dieses Konto anmelden: Es handelt sich um ein schreibgeschütztes Überwachungskonto.</string>
+    <string name="you_cannot_take">Sie können keine Aktionen für dieses Konto durchführen: Es wurde von diesem Gerät entfernt.</string>
+    <string name="caution_price_impact">Vorsicht! Die Kursauswirkung ist größer als 5%%, was bedeutet, dass die Liquidität dieses Pools gering sein könnte. Bitte vergewissern Sie sich, dass Sie die Konsequenzen verstehen, bevor Sie den Tausch bestätigen.</string>
+    <string name="discover">Entdecken</string>
+    <string name="search_for_any_asa_by">Suchen Sie anhand des Namens oder der ID nach einem beliebigen ASA</string>
+    <string name="we_are_not_able_to_find">Wir können dieses Asset nicht finden. Bitte versuchen Sie es später.</string>
+    <string name="no_internet_connection">Keine Internetverbindung</string>
+    <string name="you_dont_seem_to_be_connected">Sie scheinen nicht mit dem Internet verbunden zu sein. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.</string>
+    <string name="we_cant_get_that_information">Wir können diese Informationen im Moment nicht abrufen. Bitte versuchen Sie es später noch einmal.</string>
 </resources>

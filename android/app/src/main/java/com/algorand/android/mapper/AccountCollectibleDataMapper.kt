@@ -68,7 +68,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             isAmountInSelectedCurrencyVisible = collectibleDetail.hasUsdValue(),
             prismUrl = collectibleDetail.collectible?.primaryImageUrl,
             collectibleName = collectibleDetail.collectible?.title,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             optedInAtRound = optedInAtRound
         )
     }
@@ -98,7 +98,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             isAmountInSelectedCurrencyVisible = collectibleDetail.hasUsdValue(),
             prismUrl = collectibleDetail.collectible?.primaryImageUrl,
             collectibleName = collectibleDetail.collectible?.title,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             optedInAtRound = optedInAtRound
         )
     }
@@ -128,7 +128,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             isAmountInSelectedCurrencyVisible = collectibleDetail.hasUsdValue(),
             prismUrl = collectibleDetail.collectible?.primaryImageUrl,
             collectibleName = collectibleDetail.collectible?.title,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             optedInAtRound = optedInAtRound
         )
     }
@@ -158,7 +158,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             isAmountInSelectedCurrencyVisible = collectibleDetail.hasUsdValue(),
             prismUrl = collectibleDetail.collectible?.primaryImageUrl,
             collectibleName = collectibleDetail.collectible?.title,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             optedInAtRound = optedInAtRound
         )
     }
@@ -187,7 +187,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             usdValue = collectibleDetail.usdValue,
             isAmountInSelectedCurrencyVisible = collectibleDetail.hasUsdValue(),
             collectibleName = collectibleDetail.collectible?.title,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             prismUrl = null,
             optedInAtRound = optedInAtRound
         )
@@ -205,7 +205,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -222,7 +222,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -239,7 +239,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -256,7 +256,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -273,7 +273,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -290,7 +290,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -307,7 +307,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -324,7 +324,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -341,7 +341,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -358,7 +358,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -375,7 +375,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -392,7 +392,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -409,7 +409,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -426,7 +426,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }
@@ -443,7 +443,7 @@ class AccountCollectibleDataMapper @Inject constructor() {
             creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
             usdValue = collectibleDetail.usdValue,
             primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
-            collectionName = collectibleDetail.collectible?.collectionName,
+            collectionName = collectibleDetail.collectible?.collection?.name,
             collectibleName = collectibleDetail.collectible?.title
         )
     }

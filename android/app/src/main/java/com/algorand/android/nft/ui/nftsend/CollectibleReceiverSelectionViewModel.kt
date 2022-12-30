@@ -12,21 +12,18 @@
 
 package com.algorand.android.nft.ui.nftsend
 
-import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.nft.domain.usecase.CollectibleReceiverSelectionPreviewUseCase
 import com.algorand.android.nft.ui.model.CollectibleReceiverSelectionPreview
-import com.algorand.android.utils.isValidAddress
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlin.properties.Delegates
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -40,14 +37,10 @@ class CollectibleReceiverSelectionViewModel @Inject constructor(
 
     private val searchingQueryFlow = MutableStateFlow("")
 
-    private var latestCopiedMessage: String? by Delegates.observable(null) { _, oldValue, newValue ->
-        if (newValue != oldValue) {
-            insertCopiedMessageToTopIfValid(newValue)
-        }
-    }
+    private val latestCopiedMessageFlow = MutableStateFlow<String?>(null)
 
     init {
-        initSearchingQueryFlow()
+        combineLatestCopiedMessageAndQueryFlow()
     }
 
     fun updateSearchingQuery(query: String) {
@@ -56,35 +49,25 @@ class CollectibleReceiverSelectionViewModel @Inject constructor(
         }
     }
 
-    fun updateLatestCopiedMessage(message: String?) {
-        latestCopiedMessage = message
-    }
-
-    private fun initSearchingQueryFlow() {
+    fun updateCopiedMessage(copiedMessage: String?) {
         viewModelScope.launch {
-            searchingQueryFlow.debounce(QUERY_DEBOUNCE)
-                .distinctUntilChanged()
-                .flatMapLatest { query ->
-                    collectibleReceiverSelectionPreviewUseCase.getCollectibleReceiverSelectionPreview(query)
-                }.collectLatest {
-                    insertCopiedMessageToTopIfValid(latestCopiedMessage)
-                    _collectibleReceiverSelectionPreviewFlow.emit(it)
-                }
+            latestCopiedMessageFlow.emit(copiedMessage)
         }
     }
 
-    private fun insertCopiedMessageToTopIfValid(copiedMessage: String?) {
+    private fun combineLatestCopiedMessageAndQueryFlow() {
         viewModelScope.launch {
-            val copiedAddress = copiedMessage.takeIf { it.isValidAddress() } ?: return@launch
-            _collectibleReceiverSelectionPreviewFlow.value?.accountSelectionItems
-                ?.filter { it !is BaseAccountSelectionListItem.PasteItem }
-                ?.toMutableList()
-                ?.apply {
-                    add(0, BaseAccountSelectionListItem.PasteItem(copiedAddress))
-                    _collectibleReceiverSelectionPreviewFlow.emit(
-                        _collectibleReceiverSelectionPreviewFlow.value?.copy(accountSelectionItems = this)
-                    )
+            combine(
+                latestCopiedMessageFlow,
+                searchingQueryFlow.debounce(QUERY_DEBOUNCE)
+            ) { latestCopiedMessage, query ->
+                collectibleReceiverSelectionPreviewUseCase.getCollectibleReceiverSelectionPreview(
+                    query = query,
+                    copiedMessage = latestCopiedMessage
+                ).collectLatest {
+                    _collectibleReceiverSelectionPreviewFlow.emit(it)
                 }
+            }.collect()
         }
     }
 

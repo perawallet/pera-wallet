@@ -16,7 +16,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/hero_bg"
-    android:paddingBottom="@dimen/spacing_xxxlarge"
+    android:paddingVertical="@dimen/spacing_xxxlarge"
     tools:ignore="MissingConstraints">
 
     <androidx.constraintlayout.helper.widget.Flow

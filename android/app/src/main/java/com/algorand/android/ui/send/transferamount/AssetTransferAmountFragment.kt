@@ -15,7 +15,6 @@ package com.algorand.android.ui.send.transferamount
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.algorand.android.R
@@ -29,18 +28,17 @@ import com.algorand.android.models.AmountInput
 import com.algorand.android.models.AssetTransferAmountPreview
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
-import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.common.warningconfirmation.BaseMaximumBalanceWarningBottomSheet
+import com.algorand.android.ui.send.shared.AddNoteBottomSheet
 import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
-import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -79,30 +77,6 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
 
     private val assetTransferAmountViewModel: AssetTransferAmountViewModel by viewModels()
 
-    override val transactionFragmentListener = object : TransactionFragmentListener {
-        override fun onSignTransactionLoading() {
-            showProgress()
-        }
-
-        override fun onSignTransactionLoadingFinished() {
-            hideProgress()
-        }
-
-        override fun onSignTransactionFinished(signedTransactionDetail: SignedTransactionDetail) {
-            when (signedTransactionDetail) {
-                is SignedTransactionDetail.Send -> {
-                    nav(
-                        AssetTransferAmountFragmentDirections
-                            .actionAssetTransferAmountFragmentToAssetTransferPreviewFragment(signedTransactionDetail)
-                    )
-                }
-                else -> {
-                    sendErrorLog("Unhandled else case in AssetTransferAmountFragment.transactionFragmentListener")
-                }
-            }
-        }
-    }
-
     private val keyboardListener = object : DialPadView.DialPadListener {
         override fun onNumberClick(number: Int) {
             binding.amountTextView.onNumberEntered(number)
@@ -125,7 +99,7 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
         onAmountChanged(newValue)
     }
 
-    private var onBalanceChangeListener = AlgorandAmountInputTextView.Listener {
+    private val onBalanceChangeListener = AlgorandAmountInputTextView.Listener {
         latestAmountInput = it
     }
 
@@ -150,6 +124,8 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
         handleTransactionNote()
         initObservers()
         with(binding) {
+            dialpadView.setDialPadListener(keyboardListener)
+            amountTextView.setOnBalanceChangeListener(onBalanceChangeListener)
             nextButton.setOnClickListener { onNextButtonClick() }
             maxButton.setOnClickListener { onMaxButtonClick() }
             addNoteButton.setOnClickListener { onAddButtonClick() }
@@ -176,7 +152,6 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
                     fullName = it.fullName,
                     assetId = it.assetId,
                     isAlgo = it.isAlgo,
-                    prismUrl = it.prismUrl,
                     assetDrawableProvider = it.assetDrawableProvider,
                     verificationTierConfiguration = it.verificationTierConfiguration,
                     formattedAmount = it.formattedAmount,
@@ -222,7 +197,6 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
         fullName: AssetName,
         assetId: Long,
         isAlgo: Boolean,
-        prismUrl: String?,
         assetDrawableProvider: BaseAssetDrawableProvider,
         verificationTierConfiguration: VerificationTierConfiguration,
         formattedAmount: String,
@@ -230,17 +204,11 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
         isAmountInSelectedCurrencyVisible: Boolean
     ) {
         with(binding.assetItemView) {
-            setStartIconDrawable(drawable = null, forceShow = true)
-            getStartIconImageView().doOnLayout {
+            getStartIconImageView().apply {
                 assetDrawableProvider.provideAssetDrawable(
-                    context = context,
-                    assetName = fullName,
-                    logoUri = prismUrl,
-                    width = it.measuredWidth,
-                    onResourceReady = { drawable ->
-                        getStartIconImageView().alpha = 1f
-                        setStartIconDrawable(drawable)
-                    }
+                    imageView = this,
+                    onResourceReady = { getStartIconImageView().alpha = 1f },
+                    onResourceFailed = ::setStartIconDrawable
                 )
             }
             setTitleText(fullName.getName(resources))
@@ -260,13 +228,7 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
     }
 
     private fun setAmountView(decimal: Int) {
-        with(binding) {
-            amountTextView.apply {
-                setOnBalanceChangeListener(onBalanceChangeListener)
-                dialpadView.setDialPadListener(keyboardListener)
-                setFractionDecimalLimit(decimal)
-            }
-        }
+        binding.amountTextView.setFractionDecimalLimit(decimal)
     }
 
     private fun onAmountChanged(amountInput: AmountInput) {
@@ -349,35 +311,33 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
                 contact = assetTransaction.receiverUser,
                 publicKey = assetTransaction.receiverUser.publicKey
             )
-            startSendingTransaction(targetUser, amount)
-            return
+            val selectedAccountCacheData = assetTransferAmountViewModel.getAccountCachedData() ?: return
+            val selectedAsset = assetTransferAmountViewModel.getAssetInformation() ?: return
+            nav(
+                AssetTransferAmountFragmentDirections
+                    .actionAssetTransferAmountFragmentToAssetTransferPreviewFragment(
+                        TransactionData.Send(
+                            selectedAccountCacheData,
+                            amount,
+                            selectedAsset,
+                            transactionNote,
+                            lockedNote,
+                            targetUser
+                        )
+                    )
+            )
+        } else {
+            nav(
+                AssetTransferAmountFragmentDirections
+                    .actionAssetTransferAmountFragmentToReceiverAccountSelectionFragment(
+                        assetTransaction = assetTransaction.copy(
+                            amount = amount,
+                            note = transactionNote,
+                            xnote = lockedNote
+                        )
+                    )
+            )
         }
-
-        nav(
-            AssetTransferAmountFragmentDirections.actionAssetTransferAmountFragmentToReceiverAccountSelectionFragment(
-                assetTransaction = assetTransaction.copy(
-                    amount = amount,
-                    note = transactionNote,
-                    xnote = lockedNote
-                )
-            )
-        )
-    }
-
-    // TODO: 2.02.2022 We have to move this logic in domain layer
-    private fun startSendingTransaction(targetUser: TargetUser, amount: BigInteger) {
-        val note = lockedNote ?: transactionNote
-        val selectedAccountCacheData = assetTransferAmountViewModel.getAccountCachedData() ?: return
-        val selectedAsset = assetTransferAmountViewModel.getAssetInformation() ?: return
-        sendTransaction(
-            TransactionData.Send(
-                selectedAccountCacheData,
-                amount,
-                selectedAsset,
-                note,
-                targetUser
-            )
-        )
     }
 
     private fun handleTransactionNote() {

@@ -15,7 +15,6 @@ package com.algorand.android.modules.assets.addition.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
@@ -23,7 +22,6 @@ import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration.C
 import com.algorand.android.databinding.ItemSearchAssetBinding
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.models.ui.AccountAssetItemButtonState
-import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 
 class AssetSearchItemViewHolder(
@@ -35,11 +33,7 @@ class AssetSearchItemViewHolder(
         if (item !is BaseAssetSearchListItem.AssetListItem.AssetSearchItem) return
         with(item) {
             setAssetButtonState(accountAssetItemButtonState)
-            setAssetStartIconDrawable(
-                assetDrawableProvider = baseAssetDrawableProvider,
-                assetName = fullName,
-                prismUrl = prismUrl
-            )
+            setAssetStartIconDrawable(assetDrawableProvider = baseAssetDrawableProvider)
             setAssetTitleText(fullName.getName(binding.root.resources))
             setAssetDescriptionText(shortName.getName(binding.root.resources), assetId)
             setAssetVerificationTier(verificationTierConfiguration)
@@ -47,21 +41,12 @@ class AssetSearchItemViewHolder(
         }
     }
 
-    private fun setAssetStartIconDrawable(
-        assetDrawableProvider: BaseAssetDrawableProvider?,
-        assetName: AssetName?,
-        prismUrl: String?
-    ) {
-        if (assetName == null) return
+    private fun setAssetStartIconDrawable(assetDrawableProvider: BaseAssetDrawableProvider?) {
         with(binding.statefulAssetItemView) {
-            setStartIconDrawable(drawable = null, forceShow = true)
-            getStartIconImageView().doOnLayout {
+            getStartIconImageView().apply {
                 assetDrawableProvider?.provideAssetDrawable(
-                    context = context,
-                    assetName = assetName,
-                    logoUri = prismUrl,
-                    width = it.measuredWidth,
-                    onResourceReady = ::setStartIconDrawable
+                    imageView = this,
+                    onResourceFailed = ::setStartIconDrawable
                 )
             }
         }

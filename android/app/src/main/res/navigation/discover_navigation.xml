@@ -32,8 +32,8 @@
                 app:argType="string" />
         </action>
         <action
-            android:id="@+id/action_discoverHomeFragment_to_discoverDetailFragment"
-            app:destination="@id/discoverDetailFragment">
+            android:id="@+id/action_discoverHomeFragment_to_discoverDetailNavigation"
+            app:destination="@id/discoverDetailNavigation">
             <argument
                 android:name="tokenDetail"
                 app:argType="com.algorand.android.discover.home.domain.model.TokenDetailInfo" />
@@ -67,73 +67,6 @@
                 android:name="shouldDescriptionHasLinkMovementMethod"
                 android:defaultValue="false"
                 app:argType="boolean" />
-        </action>
-    </fragment>
-
-    <fragment
-        android:id="@+id/discoverDetailFragment"
-        android:name="com.algorand.android.discover.detail.ui.DiscoverDetailFragment"
-        android:label="DiscoverDetail"
-        tools:layout="@layout/fragment_discover_detail">
-        <argument
-            android:name="tokenDetail"
-            app:argType="com.algorand.android.discover.home.domain.model.TokenDetailInfo" />
-        <action
-            android:id="@+id/action_discoverDetailFragment_to_singleButtonBottomSheetNavigation"
-            app:destination="@id/singleButtonBottomSheetNavigation"
-            app:popUpTo="@id/discoverDetailFragment"
-            app:popUpToInclusive="true">
-            <argument
-                android:name="titleAnnotatedString"
-                app:argType="com.algorand.android.models.AnnotatedString" />
-            <argument
-                android:name="descriptionAnnotatedString"
-                android:defaultValue="@null"
-                app:argType="com.algorand.android.models.AnnotatedString"
-                app:nullable="true" />
-            <argument
-                android:name="buttonStringResId"
-                android:defaultValue="@string/close"
-                app:argType="reference" />
-            <argument
-                android:name="drawableResId"
-                android:defaultValue="0"
-                app:argType="reference" />
-            <argument
-                android:name="drawableTintResId"
-                android:defaultValue="0"
-                app:argType="reference" />
-            <argument
-                android:name="shouldDescriptionHasLinkMovementMethod"
-                android:defaultValue="false"
-                app:argType="boolean" />
-        </action>
-        <action
-            android:id="@+id/action_discoverDetailFragment_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation" />
-        <action
-            android:id="@+id/action_discoverDetailFragment_to_swapAccountSelectionNavigation"
-            app:destination="@id/swapAccountSelectionNavigation">
-            <argument
-                android:name="fromAssetId"
-                android:defaultValue="-1L"
-                app:argType="long" />
-            <argument
-                android:name="toAssetId"
-                android:defaultValue="-1L"
-                app:argType="long" />
-        </action>
-        <action
-            android:id="@+id/action_discoverDetailFragment_to_swapIntroductionNavigation"
-            app:destination="@id/swapIntroductionNavigation">
-            <argument
-                android:name="fromAssetId"
-                android:defaultValue="-1L"
-                app:argType="long" />
-            <argument
-                android:name="toAssetId"
-                android:defaultValue="-1L"
-                app:argType="long" />
         </action>
     </fragment>
 

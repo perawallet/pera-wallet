@@ -46,7 +46,7 @@ class AssetSearchPager private constructor(
     }
 
     fun invalidateDataSource() {
-        refreshDataSource(defaultQuery ?: AssetSearchDataSource.DEFAULT_ASSET_QUERY)
+        refreshDataSource(searchQuery ?: defaultQuery ?: AssetSearchDataSource.DEFAULT_ASSET_QUERY)
     }
 
     private fun refreshDataSource(query: AssetSearchQuery) {

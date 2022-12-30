@@ -15,32 +15,38 @@ package com.algorand.android.utils.assetdrawable
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
+import android.widget.ImageView
 import com.algorand.android.utils.AssetName
 
 abstract class BaseAssetDrawableProvider : Parcelable {
 
+    abstract val assetName: AssetName
+    abstract val logoUri: String?
+
     fun provideAssetDrawable(
-        context: Context?,
-        assetName: AssetName,
-        logoUri: String? = null,
-        width: Int,
-        onResourceReady: (Drawable?) -> Unit
+        imageView: ImageView?,
+        onPreparePlaceHolder: (Context, Int) -> Drawable? = { context, width -> createPlaceHolder(context, width) },
+        onResourceReady: (Drawable) -> Unit = {},
+        onResourceFailed: (Drawable?) -> Unit = {},
+        onUriReady: (String) -> Unit = {}
     ) {
-        if (context == null) return
+        if (imageView == null) return
         getAssetDrawable(
-            context = context,
-            assetName = assetName,
-            logoUri = logoUri,
-            width = width,
-            onResourceReady = onResourceReady
+            imageView = imageView,
+            onResourceReady = onResourceReady,
+            onResourceFailed = onResourceFailed,
+            onUriReady = onUriReady,
+            onPreparePlaceHolder = onPreparePlaceHolder
         )
     }
 
     protected abstract fun getAssetDrawable(
-        context: Context,
-        assetName: AssetName,
-        logoUri: String?,
-        width: Int,
-        onResourceReady: (Drawable?) -> Unit
+        imageView: ImageView,
+        onPreparePlaceHolder: (Context, Int) -> Drawable?,
+        onResourceReady: (Drawable) -> Unit,
+        onResourceFailed: (Drawable?) -> Unit,
+        onUriReady: (String) -> Unit = {}
     )
+
+    protected abstract fun createPlaceHolder(context: Context, width: Int): Drawable?
 }

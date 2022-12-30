@@ -15,27 +15,23 @@ package com.algorand.android.modules.accountdetail.assets.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemAccountAssetViewBinding
-import com.algorand.android.models.AccountDetailAssetsItem
 import com.algorand.android.models.BaseViewHolder
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem
 
 class OwnedAssetViewHolder(
-    private val binding: ItemAccountAssetViewBinding
+    private val binding: ItemAccountAssetViewBinding,
+    private val listener: Listener
 ) : BaseViewHolder<AccountDetailAssetsItem>(binding.root) {
 
     override fun bind(item: AccountDetailAssetsItem) {
-        if (item !is AccountDetailAssetsItem.BaseAssetItem.OwnedAssetItem) return
+        if (item !is AccountDetailAssetsItem.BaseAssetItem.BaseOwnedItem.AssetItem) return
         with(item) {
             with(binding.assetItemView) {
-                setStartIconDrawable(drawable = null, forceShow = true)
-                getStartIconImageView().doOnLayout {
+                getStartIconImageView().apply {
                     baseAssetDrawableProvider.provideAssetDrawable(
-                        context = context,
-                        assetName = name,
-                        logoUri = prismUrl,
-                        width = it.measuredWidth,
-                        onResourceReady = ::setStartIconDrawable
+                        imageView = this,
+                        onResourceFailed = ::setStartIconDrawable
                     )
                 }
                 setTitleText(name.getName(resources))
@@ -44,14 +40,21 @@ class OwnedAssetViewHolder(
                 setSecondaryValueText(if (isAmountInDisplayedCurrencyVisible) formattedDisplayedCurrencyValue else null)
                 setTitleTextColor(verificationTierConfiguration.textColorResId)
                 setTrailingIconOfTitleText(verificationTierConfiguration.drawableResId)
+                setOnClickListener { listener.onOwnedAssetItemClick(item.id) }
+                setOnLongClickListener { listener.onOwnedAssetLongPressed(item.id); true }
             }
         }
     }
 
+    interface Listener {
+        fun onOwnedAssetItemClick(assetId: Long)
+        fun onOwnedAssetLongPressed(assetId: Long)
+    }
+
     companion object {
-        fun create(parent: ViewGroup): OwnedAssetViewHolder {
+        fun create(parent: ViewGroup, listener: Listener): OwnedAssetViewHolder {
             val binding = ItemAccountAssetViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return OwnedAssetViewHolder(binding)
+            return OwnedAssetViewHolder(binding, listener)
         }
     }
 }

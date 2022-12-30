@@ -74,7 +74,7 @@ class WatchAccountInfoFragment : BaseInfoFragment() {
 
     private fun navigateToRegisterWatchAccountFragment() {
         watchAccountInfoViewModel.logOnboardingCreateWatchAccountClickEvent()
-        nav(WatchAccountInfoFragmentDirections.actionWatchAccountInfoFragmentToRegisterWatchAccountFragment())
+        nav(WatchAccountInfoFragmentDirections.actionWatchAccountInfoFragmentToRegisterWatchAccountNavigation())
     }
 
     private fun configureToolbar() {

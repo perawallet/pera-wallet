@@ -37,7 +37,7 @@
     <string name="remove_account">Remove Account</string>
     <string name="copied_to_clipboard">Copied to Clipboard</string>
     <string name="remove">Remove</string>
-    <string name="enter_six_digit_pin">Enter six digit pin</string>
+    <string name="enter_your_pin">Enter your PIN</string>
     <string name="wrong_password">Wrong Password</string>
     <string name="node_settings">Node Settings</string>
     <string name="language">Language</string>
@@ -83,14 +83,13 @@
     <string name="you_already_have">You already own this asset.</string>
     <string name="adding_asset">Adding Asset</string>
     <string name="removing_asset">Removing Asset</string>
-    <string name="adding_an_asset">Adding an asset requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.</string>
-    <string name="unfortunately_this_account">Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.</string>
+    <string name="unfortunately_this_account">Unfortunately, this account is not opted-in to %1$s asset. Please instruct the account %1$s to opt-in to the asset and then try again.</string>
     <string name="transfer_balance">Transfer balance</string>
     <string name="approve">Approve</string>
     <string name="account_does_not_accept">Account does not accept this asset</string>
     <string name="you_are_about_to_receive">You are about to receive an asset!</string>
     <string name="min_transaction_error">Min Transaction Error!</string>
-    <string name="you_need_at_least">You need at least <annotation replacement="min_balance"> </annotation> Algo to add this asset</string>
+    <string name="you_need_at_least">You need at least %1$s Algo to opt-in to this asset</string>
     <string name="please_add_this">Please add this asset and try again.</string>
     <string name="key_not_valid">Key not valid, please make sure you have the right key.</string>
     <string name="scanned_qr_is_not_valid">Scanned QR is not valid.</string>
@@ -149,7 +148,7 @@
     <string name="go_to_home">Go to Home</string>
     <string name="accept">Accept</string>
     <string name="add_new_asset">Add New Asset</string>
-    <string name="try_different">Try different asset name or asset id</string>
+    <string name="try_different">Try different asset name or asset ID</string>
     <string name="copy_address">Copy Address</string>
     <string name="account_address">Account Address</string>
     <string name="keep_it">Keep it</string>
@@ -175,7 +174,7 @@
     <string name="try_again">Try Again</string>
     <string name="no_current_notifications">No current notifications</string>
     <string name="your_recent_transactions">Your recent transactions, asset requests and other notifications will appear here</string>
-    <string name="to_remove_an_asset">To remove an asset, you must first transfer that asset\'s balance to another account.</string>
+    <string name="to_opt_out_from_an_asset">To opt-out from an asset, you must first transfer any remaining balance to another account.</string>
     <string name="connect_to_internet">Connect to the Internet</string>
     <string name="we_couldn_t_reach">We couldn’t reach the server, make sure you are connected to the internet</string>
     <string name="add_note">Add Note</string>
@@ -197,8 +196,8 @@
     <string name="old_ledger">Old Ledger</string>
     <string name="the_account_name">The account <annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> has been successfully rekeyed.</string>
     <string name="just_now">Just Now</string>
-    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> has added <annotation replacement="asset">assetPlaceholder</annotation> to their account. You can send them <annotation replacement="asset">assetPlaceholder</annotation>.</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> is trying to send <annotation replacement="asset">assetPlaceholder</annotation> at your account <annotation font="dmsans_medium"><annotation replacement="receiver">receiverPlaceholder</annotation></annotation>. Tap to opt-in to this asset so the transaction can be processed.</string>
+    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> has opted-in <annotation replacement="asset">assetPlaceholder</annotation> to their account. You can send them <annotation replacement="asset">assetPlaceholder</annotation>.</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> is trying to send you <annotation replacement="asset">assetPlaceholder</annotation> however, you do not own this. We can opt-in the asset to your account.</string>
     <string name="transaction_send_successful">Your transaction of <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> from <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> to <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> is complete.</string>
     <string name="transaction_send_failed">Your transaction of <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> from <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> to <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> has failed.</string>
     <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> were sent to <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> by <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
@@ -286,7 +285,7 @@
         <item quantity="other">%1$d Assets</item>
     </plurals>
     <string name="account_asset_count_zero">0 Asset</string>
-    <plurals name="account_collectible_count">
+    <plurals name="account_nft_count">
         <item quantity="one">%1$d NFT</item>
         <item quantity="other">%1$d NFTs</item>
     </plurals>
@@ -352,7 +351,7 @@
     <string name="application_id">Application ID</string>
     <string name="this_transaction_will_transfer">This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.</string>
     <string name="this_transaction_is_sending">This transaction is sending your full Algo balance.</string>
-    <string name="this_transaction_is_sending_asset">This transaction is sending your full %1$s balance and will remove %1$s from your account.</string>
+    <string name="this_transaction_is_sending_your">This transaction is sending your full %1$s balance. It will opt-out and remove the %1$s asset from your account “%2$s”.</string>
     <string name="this_transaction_fee_is_higher">This transaction fee is higher than the usual fee of 0.001 Algo.</string>
     <string name="wallet_connect_is_not_reachable">WalletConnect is not reachable at the moment. Please try again later.</string>
     <string name="connected_with_formatted">Connected with %1$s</string>
@@ -391,7 +390,7 @@
     <string name="enter_your_new_six_digit_pin">Enter your new\n6-digit PIN</string>
     <string name="re_enter_your_new_six_digit_pin">Re-enter your new\n6-digit PIN</string>
     <string name="wrong_passphrase">Wrong Passphrase</string>
-    <string name="account_not_found">Account not found. Please try again by entering the correct passphrase.</string>
+    <string name="account_not_found_please_try">Account not found. Please try again by entering the correct passphrase.</string>
 
     <string name="account_is_verified">Account is verified!</string>
     <string name="congratulations_your_account">Congratulations, your account is ready to use.</string>
@@ -404,9 +403,9 @@
     <string name="share_address">Share Address</string>
     <string name="show_qr_code">Show QR Code</string>
     <string name="qr_code">QR Code</string>
-    <string name="you_are_about_to">You are about to remove <annotation replacement="asset_name">assetNamePlaceholder</annotation> from <annotation replacement="account_name">accountNamePlaceholder</annotation>. You will not be able to transact with this asset until you re-enable it.</string>
-    <string name="to_remove_the_balance">To remove <annotation replacement="asset_name">assetNamePlaceholder</annotation> the balance must be 0. Please transfer the balance to another account and try again.</string>
-    <string name="you_are_about_to_receive_description">You are about to receive an asset to <annotation replacement="account_name">accountNamePlaceholder</annotation>. Would you like to add this asset to this account to receive it?</string>
+    <string name="you_are_about_to">You\'re about to remove and opt-out from the <annotation replacement="asset_name">assetNamePlaceholder</annotation> with "<annotation replacement="account_name">accountNamePlaceholder</annotation>". You\'ll be unable to transact with this asset from this account unless you opt-in to it again.</string>
+    <string name="to_opt_out_and_remove">To opt-out and remove <annotation replacement="asset_name">assetNamePlaceholder</annotation> the balance must be 0. Please transfer the balance to another account and try again.</string>
+    <string name="you_are_about_to_receive_description">You are about to receive an asset on the account <annotation replacement="account_name">accountNamePlaceholder</annotation>. Would you like to opt-in to this asset with this account?</string>
     <string name="rename_account">Rename Account</string>
     <string name="completed">Completed</string>
     <string name="search_contacts_or_name">Search contacts or name</string>
@@ -491,7 +490,7 @@
     </plurals>
 
     <string name="application_call">Application Call</string>
-    <string name="application_opt_in">Application Opt in</string>
+    <string name="application_opt_in">Application Opt-in</string>
     <string name="application_close_to">Application Close To</string>
     <string name="application_update">Application Update</string>
     <string name="application_delete">Application Delete</string>
@@ -504,7 +503,7 @@
     <string name="asset_deletion_request_with_asset_name">Asset Deletion Request <annotation replacement="asset_name">assetNamePlaceholder</annotation></string>
 
     <string name="application_call_with_id">Application Call <annotation replacement="app_id">appIdPlaceholder</annotation></string>
-    <string name="application_opt_in_with_id">Application Opt in <annotation replacement="app_id">appIdPlaceholder</annotation></string>
+    <string name="application_opt_in_with_id">Application Opt-in <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_close_to_with_id">Application Close To <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_update_with_id">Application Update <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_delete_with_id">Application Delete <annotation replacement="app_id">appIdPlaceholder</annotation></string>
@@ -632,16 +631,14 @@
     <string name="watch_account_added">Watch account added successfully</string>
     <string name="the_watch_account_has_been">The Watch Account has been added successfully.</string>
 
-    <string name="collectibles">Collectibles</string>
+    <string name="nfts">NFTs</string>
     <string name="welcome_to_your_nft">Welcome to your NFT Gallery! You don\'t have any NFTs yet. All the NFTs available in your wallet will be visible here.</string>
-    <string name="receive_nft">Receive NFT</string>
     <string name="share">Share</string>
     <string name="description">Description</string>
     <string name="owner">Owner</string>
     <string name="asset_id_">Asset ID</string>
     <string name="creator_wallet_address">Creator wallet address</string>
     <string name="collection_name">Collection name</string>
-    <string name="creator_name">Creator name</string>
     <string name="properties">Properties</string>
     <string name="view_transaction">View Transaction</string>
     <string name="show_on_algoexplorer">Show on Algoexplorer</string>
@@ -651,8 +648,8 @@
     <string name="transfer">Transfer</string>
     <string name="send_your_nft">Send your NFT</string>
     <string name="paste_an_algorand_wallet_address">Paste an Algorand wallet address</string>
-    <string name="ask_recipient_to">Ask recipient to opt in</string>
-    <string name="you_cant_send">You can\'t send <annotation replacement="collectible_name">collectibleNamePlaceHolder</annotation> to <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> because this wallet didn\'t opt in for this asset yet. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more about Opt-in</annotation></annotation></string>
+    <string name="ask_recipient_to">Ask recipient to opt-in</string>
+    <string name="you_cant_send">You can\'t send <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> to <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> because this wallet didn\'t opt-in for this asset yet. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more about Opt-in</annotation></annotation></string>
     <string name="request_opt_in">Request Opt-in</string>
     <string name="information_about_opt">Information about Opt-in</string>
     <string name="to_avoid_spammy">To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.</string>
@@ -666,29 +663,26 @@
     <string name="transacting_fee">Transaction Fee</string>
     <string name="confirm_transfer">Confirm transfer</string>
     <string name="search_asset_id_or_nft">Search Asset ID or NFT name</string>
-    <string name="receive_an_nft">Receive an NFT</string>
     <string name="selected_account">Selected account</string>
     <string name="your_nft_transfer_has_failed">Your NFT transfer has failed!</string>
     <string name="please_try_again">Please try again.</string>
-    <string name="opt_out">Opt Out</string>
+    <string name="opt_out">Opt-Out</string>
     <string name="receive_opt_out">Receive (Opt-Out)</string>
     <string name="nft_successfully_opted_out">%1$s NFT successfully opted-out</string>
-    <string name="opted_in_to">Opted in to</string>
+    <string name="opted_in_to">Opted-in to</string>
     <string name="show_on">Show on</string>
     <string name="no_nft_found">No NFT Found</string>
     <string name="you_are_about_to_remove_watch_account">You are about to remove a watch account. Are you sure you want to proceed with this choice?</string>
     <string name="you_are_about_to_remove_main_account">You are about to remove your main account, are you sure you want to proceed with this choice?</string>
-    <string name="this_watch_account_has_opted">This watch account has opted in for this NFT, however doesn\'t own it.</string>
-    <string name="you_are_not_the_owner">You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your account.</string>
+    <string name="this_watch_account_has_opted">This watch account has opted-in for this NFT, however doesn\'t own it.</string>
+    <string name="you_are_not_the_owner">You are not the owner of this NFT yet, however you opted-in for it. You can now transfer it to your account.</string>
     <string name="display_opted_in_nfts">Display opted-in NFTs</string>
-    <string name="you_can_show_hide">You can show/hide NFTs that are opted-in but not owned</string>
     <string name="filter">Filter</string>
-    <plurals name="collectible_count">
+    <plurals name="nft_count">
         <item quantity="one">%1$d NFT</item>
         <item quantity="other">%1$d NFTs</item>
     </plurals>
     <string name="show_filtered_nfts_formatted">Show Filtered NFTs (%1$d)</string>
-    <string name="search_your_nfts">Search your NFTs</string>
     <string name="enter_your_old">Enter your old\n6-digit PIN</string>
     <string name="welcome_to_pera_wallet_your_watch">Welcome to Pera Wallet! Your Watch Account has been added successfully.</string>
     <string name="congratulations_your_watch_account_has">Congratulations, your Watch Account has been added successfully.</string>
@@ -702,15 +696,12 @@
     <string name="filter_by_date">Filter by Date</string>
     <string name="asset_history_not_available">Asset history not available</string>
     <string name="the_history_for_this_spesific">The history for this specific asset is not available.</string>
-    <string name="your_account_needs_to_be">Your account needs to be opt in to the NFT before you can receive it. Make sure to check the Asset ID while confirming.</string>
-    <string name="you_can_search_the_nft">You can search the NFT you want to opt in to by pasting its name or Asset ID in the search bar below.</string>
     <string name="select_the_wallet_account">Select the wallet account you would like to receive to:</string>
     <string name="enter_your_six_digit_pin">Enter your\n6-digit PIN</string>
     <string name="refused_ledger_transaction">Refused Ledger Transaction</string>
     <string name="the_opt_out_request_has">The opt-out request has been rejected on the Ledger device. Please try again.</string>
     <string name="home">Home</string>
     <string name="price">Price</string>
-    <string name="three_d_card_mode">3D card mode</string>
     <string name="alphabetically_a_to_z">Alphabetically A to Z</string>
     <string name="alphabetically_z_to_a">Alphabetically Z to A</string>
     <string name="highest_value_to_lowest">Highest Value to Lowest</string>
@@ -728,10 +719,10 @@
     <string name="algo_or_any_asa">Algo or any ASA to another account</string>
     <string name="view_or_copy">View or copy your account address</string>
     <string name="use_wallet_connect">Use WalletConnect or scan an account address </string>
-    <string name="opt_out_from_the">Opt out from the NFT</string>
+    <string name="opt_out_from_the">Opt-out from the NFT</string>
     <string name="asset_configuration">Asset Configuration</string>
     <string name="scan_qr">Scan QR</string>
-    <string name="algorand_blockchain">Algorand blockchain requires an account to opt in to an ASA before it can receive it. Now that you\'ve transferred this NFT to another account, you can opt out from it. Opting out requires an additional transaction.</string>
+    <string name="algorand_blockchain">Algorand blockchain requires an account to opt-in to an ASA before it can receive it. Now that you\'ve transferred this NFT to another account, you can opt-out from it.</string>
     <string name="scanned_account_address">Scanned account address</string>
     <string name="send_transaction">Send transaction</string>
     <string name="add_new_contact">Add new contact</string>
@@ -742,7 +733,7 @@
     <string name="press_and_hold_to">Press and hold to\n“Copy Address”</string>
     <string name="you_can_quickly_copy">You can quickly copy the account address by pressing and holding on Account box</string>
     <string name="matched_accounts">Matched Accounts</string>
-    <string name="manage_collectibles">Manage Collectibles</string>
+    <string name="manage_nfts">Manage NFTs</string>
     <string name="manually">Manually</string>
     <string name="recently_received">Recently received</string>
     <string name="reorganize_accounts_manually">Reorganize Accounts manually</string>
@@ -774,7 +765,7 @@
 
     <string name="inner_n_transactions">Inner\nTransactions</string>
     <string name="inner_transactions">Inner Transactions</string>
-    <string name="your_accounts_don_t_contain_this">Your accounts don\'t contain this asset, please add this asset and try again.</string>
+    <string name="your_accounts_don_t_contain_this">Your accounts don\'t contain this asset, please opt-in to this asset and try again.</string>
 
     <plurals name="show_count_more_assets">
         <item quantity="one">Show +%1$d more asset</item>
@@ -788,7 +779,7 @@
 
     <string name="invalid_asset_id">Invalid Asset ID.</string>
     <string name="asset_not_found_please_make">Asset not found. Please make sure that you are using correct network.</string>
-    <string name="asset_successfully_added_formatted">%1$s successfully added to your account.</string>
+    <string name="asset_successfully_opted_in">%1$s successfully opted-in and added to your account.</string>
     <string name="parent_transaction_id">Parent\nTransaction ID</string>
     <string name="it_looks_like">It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won\'t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.</string>
     <string name="self_transfer">Self Transfer</string>
@@ -830,7 +821,7 @@
     <string name="would_disconnect_all_sessions">Would you like the disconnect all sessions?</string>
     <string name="missing_asset">Missing Asset</string>
 
-    <string name="you_are_already">You are already opted in to <annotation replacement="asset_name">assetNamePlaceholder</annotation> from this account.</string>
+    <string name="you_are_already">You are already opted-in to <annotation replacement="asset_name">assetNamePlaceholder</annotation> from this account.</string>
 
     <string name="thousand">Thousand</string>
     <string name="thousand_abbreviation">K</string>
@@ -851,12 +842,11 @@
 
     <string name="you_can_opt_in_to_this">You can opt-in to this asset from one of your accounts.</string>
     <string name="please_select_an_account_to">Please select an account to add %1$s</string>
-    <string name="asset_successfully_added_to_your">%1$s successfully added to your account.</string>
-    <string name="asset_successfully_removed_from_your">%1$s successfully removed from your account.</string>
+    <string name="asset_successfully_opted_out_from_your">%1$s successfully opted-out from your account.</string>
     <string name="filter_nfts">Filter NFTs</string>
     <string name="newest_to_oldest">Newest to oldest</string>
     <string name="oldest_to_newest">Oldest to newest</string>
-    <string name="you_can_add_this_nft">You can add this NFT to</string>
+    <string name="you_can_opt_in_to_this_nft">You can opt-in to this NFT with</string>
     <string name="opt_dash_in">Opt-in</string>
     <string name="sorry_there_was">Sorry, there was an error fetching some of your accounts. The portfolio value is calculated based only on successfully fetched ones.</string>
     <string name="we_couldn_t_find_any_assets">We couldn\'t find any assets for remove.</string>
@@ -937,10 +927,10 @@
     <string name="pera_fees">Pera Fees</string>
     <string name="an_unexpected_error_mismatched_txn">An unexpected error happened: Error code: mismatched-transactions.</string>
     <string name="custom">Custom</string>
-    <string name="opt_out_nft">Opt out NFT</string>
-    <string name="you_are_about_to_opt">You are about to opt out %1$s. You will not be able to transact with this NFT from this account unless you re-add it.</string>
+    <string name="opt_out_nft">Opt-out NFT</string>
+    <string name="you_are_about_to_opt">You are about to opt-out %1$s. You will not be able to transact with this NFT from this account unless you re-add it.</string>
     <string name="opt_in_to_nft">Opt-in to NFT</string>
-    <string name="opting_in_to_an_nft">Opting in to an NFT requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.</string>
+    <string name="opting_in_to_an_nft">Opting-in to an NFT requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.</string>
 
     <string name="this_account_doesn_t">This account doesn\'t have enough balance for this transaction.</string>
 
@@ -991,7 +981,7 @@
 
     <string name="this_is_the_fee_charged">This is the fee charged to you by the decentralized exchange. It\'s automatically deducted from the amount you send and factored into the minimum received amount. It won\'t be an additional charge on top.</string>
     <string name="we_encountered_an_unexpected">We encountered an unexpected error, try again later.</string>
-    <string name="caution_price_impact">Caution! Price impact is greater than 5%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.</string>
+    <string name="caution_price_impact">Caution! Price impact is greater than 5%%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.</string>
 
     <!-- Discover -->
     <string name="discover">Discover</string>
@@ -1000,4 +990,44 @@
     <string name="no_internet_connection">No Internet Connection</string>
     <string name="you_dont_seem_to_be_connected">You don\'t seem to be connected to the internet. Please check your connection and try again.</string>
     <string name="we_cant_get_that_information">We can\'t get that information right now. Please try again later.</string>
+
+    <string name="transaction_confirmation_timed_out">Transaction confirmation timed out - Please check your transaction status.</string>
+    <string name="you_are_not_opted_in">You are not opted in to source token. Pick another pool, or another eligible account to be able to swap.</string>
+
+    <string name="min_balance">Min Balance %1$s</string>
+    <string name="minimum_balance_is_the_minimum">Minimum balance is the minimum amount of Algo you have to keep in an account. It increases every time the account is opted in to a smart contract, ASA or NFT.</string>
+
+    <string name="asset_id_copied_to_clipboard">Asset ID copied to clipboard</string>
+    <string name="pick_a_photo">Pick a photo for this contact</string>
+
+    <string name="filter_assets">Filter Assets</string>
+    <string name="hide_assets_with_no_balance">Hide assets with no balance</string>
+    <string name="you_can_show_hide_assets">You can show/hide assets with zero balance.</string>
+    <string name="your_accounts_don_t">Your accounts don\'t contain this asset.</string>
+    <string name="remove_asset">Remove Asset</string>
+    <string name="opt_in_to_an">Opt-in to an Asset</string>
+    <string name="asset_opt_out">Asset Opt-out</string>
+    <string name="opt_in_to_asset">Opt-in to Asset</string>
+
+    <string name="account_not_found">Account not found</string>
+    <string name="account_address_or_short_name">Account address or short name</string>
+
+    <string name="error_while_opting_to_the">Error while opting to the ASA. Please Retry</string>
+    <string name="retry">Retry</string>
+
+    <string name="before_interacting_with">Before interacting with an asset, you must opt-in to it from your account. This prevents unauthorized asset transactions to be sent to you.</string>
+
+    <string name="you_already_own">You already own this asset</string>
+    <string name="markets">Markets</string>
+    <string name="formatted_changed_percentage">%1$.2f%%</string>
+    <string name="display_nfts_in_asset_list">Display NFTs in asset list</string>
+    <string name="nfts_assets_will_be_shown">NFTs assets will be shown in the asset list of your account</string>
+    <string name="display_nfts_from_watch_accounts">Display NFTs from Watch Accounts</string>
+    <string name="this_will_show_nfts">This will show NFTs from your watch accounts as well as your own accounts</string>
+    <string name="you_can_show_hide_nfts">You can show/hide NFTs that are opted-in but are not owned</string>
+    <string name="three_d_mode">3D Mode</string>
+    <string name="creator_account">Creator account</string>
+    <string name="search_nfts">Search NFTs</string>
+    <string name="you_need_to_opt_in">You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.</string>
+    <string name="you_need_to_opt_in_to">You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.</string>
 </resources>

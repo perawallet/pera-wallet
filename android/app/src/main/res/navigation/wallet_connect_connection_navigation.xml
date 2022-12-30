@@ -47,50 +47,10 @@
                 app:argType="reference" />
         </action>
         <action
-            android:id="@+id/action_walletConnectConnectionBottomSheet_to_fallbackBrowserSelectionBottomSheet"
-            app:destination="@id/fallbackBrowserSelectionBottomSheet"
+            android:id="@+id/action_walletConnectConnectionBottomSheet_to_walletConnectConnectedFallbackBrowserSelectionBottomSheet"
+            app:destination="@id/walletConnectConnectedFallbackBrowserSelectionBottomSheet"
             app:popUpTo="@id/walletConnectConnectionBottomSheet"
             app:popUpToInclusive="true" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/fallbackBrowserSelectionBottomSheet"
-        android:name="com.algorand.android.modules.walletconnectfallbackbrowser.ui.FallbackBrowserSelectionBottomSheet"
-        android:label="FallbackBrowserSelectionBottomSheet"
-        tools:layout="@layout/bottom_sheet_fallback_browser_selection">
-        <argument
-            android:name="browserGroup"
-            app:argType="string" />
-        <argument
-            android:name="peerMetaName"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_fallbackBrowserSelectionBottomSheet_to_walletConnectConnectedSingleBrowserBottomSheet"
-            app:destination="@id/walletConnectConnectedSingleBrowserBottomSheet"
-            app:popUpTo="@id/fallbackBrowserSelectionBottomSheet"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_fallbackBrowserSelectionBottomSheet_to_singleButtonBottomSheet"
-            app:destination="@id/singleButtonBottomSheetNavigation"
-            app:popUpTo="@id/fallbackBrowserSelectionBottomSheet"
-            app:popUpToInclusive="true">
-            <argument
-                android:name="titleAnnotatedString"
-                app:argType="com.algorand.android.models.AnnotatedString" />
-            <argument
-                android:name="descriptionAnnotatedString"
-                android:defaultValue="@null"
-                app:argType="com.algorand.android.models.AnnotatedString"
-                app:nullable="true" />
-            <argument
-                android:name="drawableResId"
-                android:defaultValue="0"
-                app:argType="reference" />
-            <argument
-                android:name="isResultNeeded"
-                android:defaultValue="false"
-                app:argType="boolean" />
-        </action>
     </dialog>
 
     <dialog
@@ -105,5 +65,42 @@
             android:name="peerMetaName"
             app:argType="string" />
     </dialog>
+
+    <dialog
+        android:id="@+id/walletConnectConnectedFallbackBrowserSelectionBottomSheet"
+        android:name="com.algorand.android.modules.walletconnectfallbackbrowser.ui.WalletConnectConnectedFallbackBrowserSelectionBottomSheet"
+        android:label="WalletConnectConnectedFallbackBrowserSelectionBottomSheet"
+        tools:layout="@layout/bottom_sheet_fallback_browser_selection">
+        <action
+            android:id="@+id/action_walletConnectConnectedFallbackBrowserSelectionBottomSheet_to_walletConnectConnectedSingleBrowserBottomSheet"
+            app:destination="@id/walletConnectConnectedSingleBrowserBottomSheet"
+            app:popUpTo="@id/walletConnectConnectedFallbackBrowserSelectionBottomSheet"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_walletConnectConnectedFallbackBrowserSelectionBottomSheet_to_singleButtonBottomSheet"
+            app:destination="@id/singleButtonBottomSheetNavigation"
+            app:popUpTo="@id/walletConnectConnectedFallbackBrowserSelectionBottomSheet"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="titleAnnotatedString"
+                app:argType="com.algorand.android.models.AnnotatedString" />
+            <argument
+                android:name="descriptionAnnotatedString"
+                android:defaultValue="@null"
+                app:argType="com.algorand.android.models.AnnotatedString"
+                app:nullable="true" />
+            <argument
+                android:name="drawableResId"
+                android:defaultValue="0"
+                app:argType="reference" />
+        </action>
+        <argument
+            android:name="browserGroup"
+            app:argType="string" />
+        <argument
+            android:name="peerMetaName"
+            app:argType="string" />
+    </dialog>
+
 
 </navigation>

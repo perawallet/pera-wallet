@@ -50,7 +50,9 @@ class SimpleCollectibleDetailMapper @Inject constructor(
             twitterUsername = assetDetailResponse.twitterUsername,
             totalSupply = assetDetailResponse.totalSupply,
             url = assetDetailResponse.url,
-            maxSupply = assetDetailResponse.maxSupply
+            maxSupply = assetDetailResponse.maxSupply,
+            last24HoursAlgoPriceChangePercentage = assetDetailResponse.last24HoursAlgoPriceChangePercentage,
+            isAvailableOnDiscoverMobile = assetDetailResponse.isAvailableOnDiscoverMobile
         )
     }
 }

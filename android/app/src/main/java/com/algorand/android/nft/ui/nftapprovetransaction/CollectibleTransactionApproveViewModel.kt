@@ -12,18 +12,17 @@
 
 package com.algorand.android.nft.ui.nftapprovetransaction
 
-import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.ui.CollectibleTransactionApprovePreview
 import com.algorand.android.nft.domain.usecase.CollectibleTransactionApprovePreviewUseCase
-import com.algorand.android.nft.ui.model.CollectibleDetail
+import com.algorand.android.utils.getOrElse
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -35,12 +34,15 @@ class CollectibleTransactionApproveViewModel @Inject constructor(
     private val senderPublicKey = savedStateHandle.getOrThrow<String>(SENDER_PUBLIC_KEY_KEY)
     private val receiverPublicKey = savedStateHandle.getOrThrow<String>(RECEIVER_PUBLIC_KEY_KEY)
     private val fee = savedStateHandle.getOrThrow<Float>(FEE_KEY)
-    private val collectibleDetail = savedStateHandle.getOrThrow<CollectibleDetail>(COLLECTIBLE_DETAIL_KEY)
+    private val nftId = savedStateHandle.getOrThrow<Long>(NFT_ID_KEY)
+    private val nftDomainName = savedStateHandle.getOrElse<String?>(NFT_DOMAIN_NAME, null)
+    private val nftDomainLogoUrl = savedStateHandle.getOrElse<String?>(NFT_DOMAIN_LOGO_URL, null)
 
-    val collectibleTransactionApprovePreviewFlow: Flow<CollectibleTransactionApprovePreview?>
+    val collectibleTransactionApprovePreviewFlow: StateFlow<CollectibleTransactionApprovePreview?>
         get() = _collectibleTransactionApprovePreviewFlow
-    private val _collectibleTransactionApprovePreviewFlow =
-        MutableStateFlow<CollectibleTransactionApprovePreview?>(null)
+    private val _collectibleTransactionApprovePreviewFlow = MutableStateFlow<CollectibleTransactionApprovePreview?>(
+        null
+    )
 
     init {
         initCollectibleTransactionApprovePreviewFlow()
@@ -52,7 +54,9 @@ class CollectibleTransactionApproveViewModel @Inject constructor(
                 senderPublicKey = senderPublicKey,
                 receiverPublicKey = receiverPublicKey,
                 fee = fee,
-                collectibleDetail = collectibleDetail
+                nftDomainName = nftDomainName,
+                nftDomainLogoUrl = nftDomainLogoUrl,
+                nftId = nftId
             ).collect { _collectibleTransactionApprovePreviewFlow.emit(it) }
         }
     }
@@ -61,6 +65,8 @@ class CollectibleTransactionApproveViewModel @Inject constructor(
         private const val SENDER_PUBLIC_KEY_KEY = "senderPublicKey"
         private const val RECEIVER_PUBLIC_KEY_KEY = "receiverPublicKey"
         private const val FEE_KEY = "fee"
-        private const val COLLECTIBLE_DETAIL_KEY = "collectibleDetail"
+        private const val NFT_ID_KEY = "nftId"
+        private const val NFT_DOMAIN_NAME = "nftDomainName"
+        private const val NFT_DOMAIN_LOGO_URL = "nftDomainLogoUrl"
     }
 }

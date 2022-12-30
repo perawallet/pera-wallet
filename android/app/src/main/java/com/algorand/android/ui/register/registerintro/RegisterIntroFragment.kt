@@ -16,11 +16,11 @@ import com.algorand.android.models.RegisterIntroPreview
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.models.TextButton
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.browser.openPrivacyPolicyUrl
+import com.algorand.android.utils.browser.openTermsAndServicesUrl
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.getCustomClickableSpan
 import com.algorand.android.utils.getXmlStyledString
-import com.algorand.android.utils.browser.openPrivacyPolicyUrl
-import com.algorand.android.utils.browser.openTermsAndServicesUrl
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
@@ -50,26 +50,8 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.isAppUnlocked = true
-        checkNavDestinations()
         initUi()
         initObservers()
-    }
-
-    private fun checkNavDestinations() {
-        with(registerIntroViewModel) {
-            when {
-                shouldNavToRegisterWatchAccount() -> navToRegisterWatchAccount(getAccountAddress())
-                shouldNavToRecoverWithPassphrase() -> navToRecoverWithPassphrase(getMnemonic())
-            }
-        }
-    }
-
-    private fun navToRegisterWatchAccount(accountAddress: String?) {
-        nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToRegisterWatchAccountFragment(accountAddress))
-    }
-
-    private fun navToRecoverWithPassphrase(mnemonic: String?) {
-        nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToRecoverWithPassphraseFragment(mnemonic))
     }
 
     private fun initUi() {

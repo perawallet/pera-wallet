@@ -258,18 +258,18 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap), Ledger
     }
 
     private fun initAssetDetail(assetInputView: SwapAssetInputView, assetDetail: ConfirmSwapPreview.SwapAssetDetail) {
-        val iconSize = resources.getDimensionPixelSize(R.dimen.asset_avatar_image_size)
         with(assetDetail) {
             assetInputView.apply {
+                assetDrawableProvider.provideAssetDrawable(
+                    imageView = getImageView(),
+                    onResourceFailed = ::setImageDrawable
+                )
                 setAssetDetails(
                     amount = formattedAmount,
                     assetShortName = shortName,
                     verificationTierConfiguration = verificationTierConfig,
                     approximateValue = getString(R.string.approximate_currency_value, formattedApproximateValue)
                 )
-                assetDrawableProvider.provideAssetDrawable(context, shortName, logoUrl, iconSize) { drawable ->
-                    setImageDrawable(drawable)
-                }
             }
         }
     }

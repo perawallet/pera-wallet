@@ -16,6 +16,7 @@ import com.algorand.android.modules.nftdomain.domain.mapper.NftDomainSearchResul
 import com.algorand.android.modules.nftdomain.domain.mapper.NftDomainServiceMapper
 import com.algorand.android.modules.nftdomain.domain.model.NftDomainSearchResult
 import com.algorand.android.modules.nftdomain.domain.repository.NftDomainSearchRepository
+import com.algorand.android.utils.isValidNFTDomain
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -27,8 +28,9 @@ class GetNftDomainSearchResultUseCase @Inject constructor(
 ) {
 
     suspend fun getNftDomainSearchResults(query: String): List<NftDomainSearchResult> {
-        val nftDomainSearchResultList = mutableListOf<NftDomainSearchResult>()
         val normalizedQuery = query.trim().lowercase()
+        if (!normalizedQuery.isValidNFTDomain()) return emptyList()
+        val nftDomainSearchResultList = mutableListOf<NftDomainSearchResult>()
         nftDomainSearchRepository.getSearchResults(normalizedQuery).use(
             onSuccess = { nftDomainSearchResultDtoList ->
                 nftDomainSearchResultDtoList.forEach { searchResultDTO ->

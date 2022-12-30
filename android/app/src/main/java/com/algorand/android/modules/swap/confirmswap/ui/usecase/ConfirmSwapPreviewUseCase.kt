@@ -214,8 +214,7 @@ class ConfirmSwapPreviewUseCase @Inject constructor(
             formattedAmount = formattedAmount,
             formattedApproximateValue = getFormattedApproximateValue(approximateValueInUsd),
             shortName = assetDetail.shortName,
-            verificationTier = assetDetail.verificationTier,
-            logoUrl = assetDetail.logoUrl
+            verificationTier = assetDetail.verificationTier
         )
     }
 

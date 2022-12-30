@@ -28,246 +28,265 @@
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/bottom_safe_area_margin">
 
-            <com.algorand.android.customviews.CollectibleMediaPager
-                android:id="@+id/collectibleMediaPager"
+            <TextView
+                android:id="@+id/nftNameTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_small"
-                app:bottomButtonIcon="@drawable/ic_3d_object"
-                app:bottomButtonText="@string/three_d_card_mode"
-                app:isBottomButtonVisible="true"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.Body.Large.Sans.Medium"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/optedInWarningImageView"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:layout_constraintBottom_toBottomOf="@id/optedInWarningTextView"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toTopOf="@id/optedInWarningTextView"
-                app:srcCompat="@drawable/ic_error"
-                app:tint="@color/text_gray" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@tools:sample/lorem[233]"
+                tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/optedInWarningTextView"
-                style="@style/TextAppearance.Footnote.Sans.Medium"
+                android:id="@+id/nftCollectionNameTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_xsmall"
-                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xxxsmall"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
                 android:textColor="@color/text_gray"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toEndOf="@id/optedInWarningImageView"
-                app:layout_constraintTop_toBottomOf="@id/collectibleMediaPager"
-                tools:text="@tools:sample/lorem[10]" />
-
-            <ImageView
-                android:id="@+id/warningImageView"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:layout_constraintBottom_toBottomOf="@id/warningTextView"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toTopOf="@id/warningTextView"
-                app:srcCompat="@drawable/ic_error"
-                app:tint="@color/text_gray" />
-
-            <TextView
-                android:id="@+id/warningTextView"
-                style="@style/TextAppearance.Footnote.Sans.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_xsmall"
-                android:layout_marginTop="@dimen/spacing_xlarge"
-                android:textColor="@color/text_gray"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toEndOf="@id/warningImageView"
-                app:layout_constraintTop_toBottomOf="@id/optedInWarningTextView"
-                tools:text="@tools:sample/lorem[10]" />
-
-            <TextView
-                android:id="@+id/collectionTitleNameTextView"
-                style="@style/TextAppearance.Footnote.Description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xlarge"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/warningTextView"
+                app:layout_constraintTop_toBottomOf="@id/nftNameTextView"
                 tools:text="@tools:sample/lorem[2]" />
 
+            <ImageView
+                android:id="@+id/nftOwnerAccountIconImageView"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/nftOwnerAccountTextView"
+                app:layout_constraintEnd_toStartOf="@id/nftOwnerAccountTextView"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                app:layout_constraintTop_toTopOf="@id/nftOwnerAccountTextView"
+                tools:srcCompat="@drawable/ic_eye" />
+
             <TextView
-                android:id="@+id/collectibleTitleNameTextView"
-                style="@style/TextAppearance.Body.Large.Sans.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxsmall"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/collectionTitleNameTextView"
-                app:layout_goneMarginTop="@dimen/spacing_xxxlarge"
-                tools:text="@tools:sample/lorem[3]" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/optOutButton"
-                style="@style/Button.Secondary.Icon"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_large"
-                android:text="@string/opt_out"
-                android:visibility="gone"
-                app:icon="@drawable/ic_trash"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/collectibleTitleNameTextView"
-                tools:visibility="visible" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/collectibleSendButton"
-                style="@style/Button.Secondary.Icon"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_large"
-                android:layout_marginEnd="@dimen/spacing_xsmall"
-                android:text="@string/send"
-                android:visibility="gone"
-                app:icon="@drawable/ic_arrow_up_line"
-                app:layout_constraintEnd_toStartOf="@id/collectibleShareButton"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/collectibleTitleNameTextView"
-                tools:visibility="visible" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/collectibleShareButton"
-                style="@style/Button.Secondary.Icon"
-                android:layout_width="0dp"
+                android:id="@+id/nftOwnerAccountTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xsmall"
                 android:layout_marginTop="@dimen/spacing_large"
-                android:text="@string/share"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toStartOf="@id/accountOwnedNFTCountTextView"
+                app:layout_constraintStart_toEndOf="@id/nftOwnerAccountIconImageView"
+                app:layout_constraintTop_toBottomOf="@id/nftCollectionNameTextView"
+                tools:text="@tools:sample/lorem[5]" />
+
+            <TextView
+                android:id="@+id/accountOwnedNFTCountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                android:background="@drawable/bg_rectangle_radius_16_stroke_2"
+                android:paddingHorizontal="@dimen/spacing_small"
+                android:paddingVertical="@dimen/spacing_xxsmall"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
                 android:visibility="gone"
-                app:icon="@drawable/ic_share"
+                app:layout_constraintBottom_toBottomOf="@id/nftOwnerAccountTextView"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toEndOf="@id/collectibleSendButton"
-                app:layout_constraintTop_toBottomOf="@id/collectibleTitleNameTextView"
-                app:layout_goneMarginStart="0dp"
+                app:layout_constraintStart_toEndOf="@id/nftOwnerAccountTextView"
+                app:layout_constraintTop_toTopOf="@id/nftOwnerAccountTextView"
+                tools:text="0.000000000000000012"
+                tools:visibility="visible" />
+
+            <com.algorand.android.customviews.CollectibleMediaPager
+                android:id="@+id/nftMediaPager"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nftOwnerAccountTextView" />
+
+            <TextView
+                android:id="@+id/primarysecondaryWarningTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:drawablePadding="@dimen/spacing_small"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
+                android:textColor="@color/text_gray"
+                android:visibility="gone"
+                app:drawableStartCompat="@drawable/ic_info"
+                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@id/nftMediaPager"
+                tools:text="@tools:sample/lorem[20]"
                 tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/collectibleOptedInAccountsLabelTextView"
-                style="@style/TextAppearance.Body.Large.Sans.Medium"
-                android:layout_width="wrap_content"
+                android:id="@+id/secondaryWarningTextView"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxxxlarge"
-                android:text="@string/opted_in_to"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:drawablePadding="@dimen/spacing_small"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
+                android:textColor="@color/text_gray"
                 android:visibility="gone"
+                app:drawableStartCompat="@drawable/ic_info"
+                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/actionButtonsBarrier"
+                app:layout_constraintTop_toBottomOf="@id/primarysecondaryWarningTextView"
+                tools:text="@tools:sample/lorem[30]"
                 tools:visibility="visible" />
 
-            <com.algorand.android.customviews.AccountCopyQrView
-                android:id="@+id/optedInAccountQrView"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/nftSendButton"
+                style="@style/Button.Secondary.Icon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:text="@string/send"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@id/secondaryWarningTextView"
+                tools:visibility="visible" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/nftOptOutButton"
+                style="@style/Button.Secondary.Icon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:text="@string/opt_out"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@id/nftSendButton"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/traitsLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:text="@string/properties"
+                android:textAppearance="@style/TextAppearance.Body.Large.Sans.Medium"
+                app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@id/nftOptOutButton" />
+
+            <com.algorand.android.customviews.CollectibleTraitsFlexboxLayout
+                android:id="@+id/collectibleTraitsLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"
-                android:paddingVertical="@dimen/spacing_small"
-                android:visibility="gone"
-                app:accountIconSize="40dp"
-                app:isTitleVisible="false"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/collectibleOptedInAccountsLabelTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/actionButtonsBarrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="bottom"
-                app:constraint_referenced_ids="collectibleShareButton, collectibleSendButton, optedInAccountQrView, optOutButton" />
-
-            <View
-                android:id="@+id/collectibleDescriptionDivider"
-                style="@style/Divider"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/spacing_xxlarge"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/optedInAccountQrView" />
+                app:layout_constraintTop_toBottomOf="@id/traitsLabelTextView" />
 
             <TextView
                 android:id="@+id/collectibleDescriptionLabelTextView"
-                style="@style/TextAppearance.Body.Large.Sans.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:layout_marginTop="@dimen/spacing_xxxxlarge"
                 android:text="@string/description"
+                android:textAppearance="@style/TextAppearance.Body.Large.Sans.Medium"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/collectibleDescriptionDivider" />
+                app:layout_constraintTop_toBottomOf="@id/collectibleTraitsLayout" />
 
             <TextView
                 android:id="@+id/collectibleDescriptionTextView"
-                style="@style/TextAppearance.Body.Sans"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:textAppearance="@style/TextAppearance.Body.Sans"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
                 app:layout_constraintTop_toBottomOf="@id/collectibleDescriptionLabelTextView"
-                tools:text="@tools:sample/lorem[15]" />
+                tools:text="@tools:sample/lorem[15]"
+                tools:visibility="visible" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/showMoreButton"
+                style="@style/Button.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xsmall"
+                android:gravity="start"
+                android:minHeight="0dp"
+                android:padding="0dp"
+                android:text="@string/show_more"
+                android:textAppearance="@style/TextAppearance.Body.Sans"
+                android:textColor="@color/positive"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@id/collectibleDescriptionTextView"
+                tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/collectibleOwnerLabelTextView"
-                style="@style/TextAppearance.Description"
+                android:id="@+id/creatorAccountLabelTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/owner"
-                app:layout_constraintBottom_toBottomOf="@id/collectibleOwnerAccountUserView"
+                android:text="@string/creator_account"
+                android:textAppearance="@style/TextAppearance.Description"
+                app:layout_constraintBottom_toBottomOf="@id/creatorAccountTextView"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toTopOf="@id/collectibleOwnerAccountUserView" />
+                app:layout_constraintTop_toTopOf="@id/creatorAccountTextView" />
 
-            <com.algorand.android.customviews.AlgorandUserView
-                android:id="@+id/collectibleOwnerAccountUserView"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/creatorAccountTextView"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:ellipsize="end"
+                android:gravity="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+                android:textColor="@color/link_primary"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/collectibleDescriptionTextView" />
+                app:layout_constraintStart_toEndOf="@id/creatorAccountLabelTextView"
+                app:layout_constraintTop_toBottomOf="@id/showMoreButton"
+                tools:text="@tools:sample/lorem[4]" />
 
             <View
-                android:id="@+id/ownerAccountDividerView"
+                android:id="@+id/creatorAccountDividerView"
                 style="@style/Divider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/spacing_normal"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/collectibleOwnerAccountUserView" />
+                app:layout_constraintTop_toBottomOf="@id/creatorAccountTextView" />
 
             <TextView
                 android:id="@+id/assetIdLabelTextView"
-                style="@style/TextAppearance.Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/asset_id_"
+                android:textAppearance="@style/TextAppearance.Description"
                 app:layout_constraintBottom_toBottomOf="@id/assetIdTextView"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
                 app:layout_constraintTop_toTopOf="@id/assetIdTextView" />
 
             <TextView
                 android:id="@+id/assetIdTextView"
-                style="@style/TextAppearance.Body.Sans"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xlarge"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:gravity="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
                 android:textColor="@color/link_primary"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                 app:layout_constraintStart_toEndOf="@id/assetIdLabelTextView"
-                app:layout_constraintTop_toBottomOf="@id/ownerAccountDividerView"
+                app:layout_constraintTop_toBottomOf="@id/creatorAccountDividerView"
                 tools:text="@tools:sample/lorem[2]" />
 
             <View
@@ -281,153 +300,51 @@
                 app:layout_constraintTop_toBottomOf="@id/assetIdTextView" />
 
             <TextView
-                android:id="@+id/totalOwnedLabelTextView"
-                style="@style/TextAppearance.Description"
+                android:id="@+id/totalSupplyLabelTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/total_owned"
-                app:layout_constraintBottom_toBottomOf="@id/totalOwnedTextView"
+                android:text="@string/total_supply"
+                android:textAppearance="@style/TextAppearance.Description"
+                app:layout_constraintBottom_toBottomOf="@id/totalSupplyTextView"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toTopOf="@id/totalOwnedTextView" />
+                app:layout_constraintTop_toTopOf="@id/totalSupplyTextView" />
 
             <TextView
-                android:id="@+id/totalOwnedTextView"
-                style="@style/TextAppearance.Body.Sans"
+                android:id="@+id/totalSupplyTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xlarge"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:gravity="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Body.Sans"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toEndOf="@id/totalOwnedLabelTextView"
+                app:layout_constraintStart_toEndOf="@id/totalSupplyLabelTextView"
                 app:layout_constraintTop_toBottomOf="@id/assetIdDividerView"
                 tools:text="@tools:sample/lorem[2]" />
 
             <View
-                android:id="@+id/totalOwnedDividerView"
+                android:id="@+id/totalSupplyDividerView"
                 style="@style/Divider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/spacing_normal"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/totalOwnedTextView" />
-
-            <TextView
-                android:id="@+id/collectionNameLabelTextView"
-                style="@style/TextAppearance.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/collection_name"
-                app:layout_constraintBottom_toBottomOf="@id/collectionNameTextView"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toTopOf="@id/collectionNameTextView" />
-
-            <TextView
-                android:id="@+id/collectionNameTextView"
-                style="@style/TextAppearance.Body.Sans.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_xlarge"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:gravity="end"
-                android:textColor="@color/link_primary"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toEndOf="@id/collectionNameLabelTextView"
-                app:layout_constraintTop_toBottomOf="@id/totalOwnedDividerView"
-                tools:text="@tools:sample/lorem[4]" />
-
-            <View
-                android:id="@+id/collectionNameDividerView"
-                style="@style/Divider"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/spacing_normal"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/collectionNameTextView" />
-
-            <TextView
-                android:id="@+id/creatorNameLabelTextView"
-                style="@style/TextAppearance.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/creator_name"
-                app:layout_constraintBottom_toBottomOf="@id/creatorNameTextView"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toTopOf="@id/creatorNameTextView" />
-
-            <TextView
-                android:id="@+id/creatorNameTextView"
-                style="@style/TextAppearance.Body.Sans.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_xlarge"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:gravity="end"
-                android:textColor="@color/link_primary"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toEndOf="@id/creatorNameLabelTextView"
-                app:layout_constraintTop_toBottomOf="@id/collectionNameDividerView"
-                tools:text="@tools:sample/lorem[4]" />
-
-            <View
-                android:id="@+id/creatorNameDividerView"
-                style="@style/Divider"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/spacing_normal"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/creatorNameTextView" />
-
-            <TextView
-                android:id="@+id/creatorWalletAddressLabelTextView"
-                style="@style/TextAppearance.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/creator_wallet_address"
-                app:layout_constraintBottom_toBottomOf="@id/creatorWalletAddressTextView"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toTopOf="@id/creatorWalletAddressTextView" />
-
-            <TextView
-                android:id="@+id/creatorWalletAddressTextView"
-                style="@style/TextAppearance.Body.Sans.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_xlarge"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:gravity="end"
-                android:textColor="@color/link_primary"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toEndOf="@id/creatorWalletAddressLabelTextView"
-                app:layout_constraintTop_toBottomOf="@id/creatorNameDividerView"
-                tools:text="@tools:sample/lorem[4]" />
-
-            <View
-                android:id="@+id/showOnPeraExplorerDivider"
-                style="@style/Divider"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/spacing_normal"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/creatorWalletAddressTextView" />
+                app:layout_constraintTop_toBottomOf="@id/totalSupplyTextView" />
 
             <TextView
                 android:id="@+id/showOnPeraExplorerLabelTextView"
-                style="@style/TextAppearance.Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/show_on"
+                android:textAppearance="@style/TextAppearance.Description"
                 app:layout_constraintBottom_toBottomOf="@id/showOnPeraExplorerTextView"
                 app:layout_constraintStart_toStartOf="@id/startGuideLine"
                 app:layout_constraintTop_toTopOf="@id/showOnPeraExplorerTextView" />
 
             <TextView
                 android:id="@+id/showOnPeraExplorerTextView"
-                style="@style/TextAppearance.Body.Sans.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xlarge"
@@ -435,185 +352,11 @@
                 android:drawablePadding="@dimen/spacing_xsmall"
                 android:gravity="center"
                 android:text="@string/pera_explorer"
+                android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
                 android:textColor="@color/link_primary"
                 app:drawableStartCompat="@drawable/ic_pera_round"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/showOnPeraExplorerDivider" />
-
-            <TextView
-                android:id="@+id/traitsLabelTextView"
-                style="@style/TextAppearance.Body.Large.Sans.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="52dp"
-                android:text="@string/properties"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/showOnPeraExplorerTextView" />
-
-            <com.algorand.android.customviews.CollectibleTraitsFlexboxLayout
-                android:id="@+id/collectibleTraitsLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xlarge"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/traitsLabelTextView" />
-
-            <TextView
-                android:id="@+id/viewTransactionLabelTextView"
-                style="@style/TextAppearance.Body.Large.Sans.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="52dp"
-                android:text="@string/view_transaction"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/collectibleTraitsLayout" />
-
-            <TextView
-                android:id="@+id/showOnAlgoExplorerTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:drawablePadding="@dimen/spacing_small"
-                android:gravity="center_vertical"
-                android:paddingVertical="@dimen/spacing_large"
-                android:text="@string/show_on_algoexplorer"
-                app:drawableEndCompat="@drawable/ic_external_link"
-                app:drawableStartCompat="@drawable/ic_algo_explorer"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/viewTransactionLabelTextView" />
-
-            <View
-                android:id="@+id/showOnAlgoExplorerDivider"
-                style="@style/Divider"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/showOnAlgoExplorerTextView"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/showOnNftExplorerTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/spacing_small"
-                android:gravity="center_vertical"
-                android:paddingVertical="@dimen/spacing_large"
-                android:text="@string/show_on_nftexplorer"
-                android:visibility="gone"
-                app:drawableEndCompat="@drawable/ic_external_link"
-                app:drawableStartCompat="@drawable/ic_nft_explorer"
-                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/showOnAlgoExplorerDivider"
-                tools:visibility="visible" />
-
-            <include
-                android:id="@+id/progressbar"
-                layout="@layout/layout_full_screen_progress" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/warningGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="warningImageView, warningTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/optedInWarningGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="optedInWarningImageView, optedInWarningTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/collectionNameGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="collectionNameDividerView, collectionNameLabelTextView,
-            collectionNameTextView, collectionTitleNameTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/optedInViewsGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="optedInAccountQrView, collectibleOptedInAccountsLabelTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/collectibleOwnerGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="collectibleOwnerAccountUserView,
-            collectibleOwnerLabelTextView, ownerAccountDividerView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/creatorNameGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="creatorNameDividerView, creatorNameLabelTextView,
-             creatorNameTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/creatorWalletNameGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="creatorWalletAddressLabelTextView,
-            creatorWalletAddressTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/showOnPeraExplorerGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="showOnPeraExplorerDivider,
-            showOnPeraExplorerLabelTextView, showOnPeraExplorerTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/collectibleTraitsGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="collectibleTraitsLayout,traitsLabelTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/explorerGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="showOnAlgoExplorerDivider,showOnAlgoExplorerTextView,showOnNftExplorerTextView,viewTransactionLabelTextView" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/descriptionGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="collectibleDescriptionDivider, collectibleDescriptionLabelTextView, collectibleDescriptionTextView"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/totalOwnedGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="totalOwnedDividerView, totalOwnedLabelTextView, totalOwnedTextView"
-                tools:visibility="visible" />
+                app:layout_constraintTop_toBottomOf="@id/totalSupplyDividerView" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/startGuideLine"
@@ -628,6 +371,54 @@
                 android:layout_height="0dp"
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="@dimen/spacing_xlarge" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/creatorAccountGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="creatorAccountDividerView, creatorAccountLabelTextView, creatorAccountTextView"
+                tools:visibility="visible" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/nftTraitGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="traitsLabelTextView, collectibleTraitsLayout"
+                tools:visibility="visible" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/totalSupplyViewGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="totalSupplyDividerView, totalSupplyLabelTextView, totalSupplyTextView"
+                tools:visibility="visible" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/ownerAccountGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="nftOwnerAccountTextView, accountOwnedNFTCountTextView, nftOwnerAccountIconImageView"
+                tools:visibility="visible" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/assetIdGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="assetIdDividerView, assetIdLabelTextView, assetIdTextView"
+                tools:visibility="visible" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/peraExplorerGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="showOnPeraExplorerLabelTextView, showOnPeraExplorerTextView"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -644,5 +435,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible" />
+
+    <include
+        android:id="@+id/progressbar"
+        layout="@layout/layout_full_screen_progress"
+        android:visibility="visible" />
 
 </FrameLayout>

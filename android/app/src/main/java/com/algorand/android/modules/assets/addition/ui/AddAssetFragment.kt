@@ -55,7 +55,7 @@ class AddAssetFragment : BaseAddAssetFragment(R.layout.fragment_add_asset) {
         get() = AssetAdditionType.ASSET
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        titleResId = R.string.add_new_asset,
+        titleResId = R.string.opt_in_to_an,
         startIconResId = R.drawable.ic_close,
         startIconClick = ::onBackPressed
     )

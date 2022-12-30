@@ -18,6 +18,7 @@ import javax.inject.Inject
 
 class CollectibleTransactionApprovePreviewMapper @Inject constructor() {
 
+    @SuppressWarnings("LongParameterList")
     fun mapToPreview(
         senderAccountPublicKey: String,
         senderAccountDisplayText: String,
@@ -26,7 +27,9 @@ class CollectibleTransactionApprovePreviewMapper @Inject constructor() {
         receiverAccountDisplayText: String,
         receiverAccountIconResource: AccountIconResource?,
         formattedTransactionFee: String,
-        isOptOutGroupVisible: Boolean
+        isOptOutGroupVisible: Boolean,
+        nftDomainName: String?,
+        nftDomainLogoUrl: String?
     ): CollectibleTransactionApprovePreview {
         return CollectibleTransactionApprovePreview(
             senderAccountPublicKey = senderAccountPublicKey,
@@ -36,7 +39,9 @@ class CollectibleTransactionApprovePreviewMapper @Inject constructor() {
             receiverAccountDisplayText = receiverAccountDisplayText,
             receiverAccountIconResource = receiverAccountIconResource,
             formattedTransactionFee = formattedTransactionFee,
-            isOptOutGroupVisible = isOptOutGroupVisible
+            isOptOutGroupVisible = isOptOutGroupVisible,
+            nftDomainName = nftDomainName,
+            nftDomainLogoUrl = nftDomainLogoUrl
         )
     }
 }

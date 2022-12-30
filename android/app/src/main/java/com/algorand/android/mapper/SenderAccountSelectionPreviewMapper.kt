@@ -24,9 +24,7 @@ class SenderAccountSelectionPreviewMapper @Inject constructor() {
             isLoading = true,
             isEmptyStateVisible = false,
             fromAccountInformationSuccessEvent = null,
-            fromAccountInformationErrorEvent = null,
-            signTransactionSuccessEvent = null,
-            signTransactionErrorEvent = null
+            fromAccountInformationErrorEvent = null
         )
     }
 }

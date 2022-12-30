@@ -13,14 +13,25 @@
 package com.algorand.android.modules.collectibles.profile.ui.model
 
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
-import com.algorand.android.utils.Event
+import com.algorand.android.modules.collectibles.detail.base.ui.model.BaseCollectibleMediaItem
+import com.algorand.android.modules.collectibles.detail.base.ui.model.CollectibleTraitItem
+import com.algorand.android.utils.AssetName
 
 data class CollectibleProfilePreview(
     val isLoadingVisible: Boolean,
-    val collectibleProfile: CollectibleProfile?,
+    val nftName: AssetName,
+    val collectionNameOfNFT: String?,
+    val mediaListOfNFT: List<BaseCollectibleMediaItem>,
+    val traitListOfNFT: List<CollectibleTraitItem>?,
+    val nftDescription: String?,
+    val creatorAccountAddressOfNFT: String,
+    val formattedCreatorAccountAddressOfNFT: String,
+    val nftId: Long,
+    val formattedTotalSupply: String,
+    val peraExplorerUrl: String,
+    val isPureNFT: Boolean,
+    val primaryWarningResId: Int?,
+    val secondaryWarningResId: Int?,
     val collectibleStatusPreview: AsaStatusPreview?,
-    val onTransactionLoadingEvent: Event<Unit>?,
-    val onTransactionSuccess: Event<Unit>?,
-    val onTransactionFailed: Event<Throwable?>?,
     val accountAddress: String
 )

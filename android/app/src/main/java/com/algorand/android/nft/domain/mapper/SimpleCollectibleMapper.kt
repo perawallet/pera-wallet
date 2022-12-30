@@ -17,7 +17,8 @@ import com.algorand.android.nft.domain.model.SimpleCollectible
 import javax.inject.Inject
 
 class SimpleCollectibleMapper @Inject constructor(
-    private val collectibleMediaTypeMapper: CollectibleMediaTypeMapper
+    private val collectibleMediaTypeMapper: CollectibleMediaTypeMapper,
+    private val simpleCollectionMapper: SimpleCollectionMapper
 ) {
 
     fun mapToSimpleCollectible(collectibleResponse: CollectibleResponse?): SimpleCollectible? {
@@ -26,7 +27,7 @@ class SimpleCollectibleMapper @Inject constructor(
             mediaType = collectibleMediaTypeMapper.mapToCollectibleMediaType(collectibleResponse.mediaType),
             primaryImageUrl = collectibleResponse.primaryImageUrl,
             title = collectibleResponse.title,
-            collectionName = collectibleResponse.collectionName
+            collection = simpleCollectionMapper.mapToSimpleCollection(collectibleResponse.collection)
         )
     }
 }

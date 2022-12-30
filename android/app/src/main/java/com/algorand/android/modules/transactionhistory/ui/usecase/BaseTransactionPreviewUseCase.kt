@@ -20,7 +20,6 @@ import com.algorand.android.modules.transactionhistory.domain.model.BaseTransact
 import com.algorand.android.modules.transactionhistory.domain.model.BaseTransaction.Transaction.Pay
 import com.algorand.android.modules.transactionhistory.ui.mapper.TransactionItemMapper
 import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem
-import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem.TransactionItem.AssetTransferItem.AssetSendItem
 import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem.TransactionItem.PayItem.PayReceiveItem
 import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem.TransactionItem.PayItem.PaySelfItem
 import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem.TransactionItem.PayItem.PaySendItem
@@ -50,7 +49,8 @@ open class BaseTransactionPreviewUseCase constructor(
             is Pay.Send -> createPayTransactionSendItem(txn, publicKey)
             is Pay.Receive -> createPayTransactionReceiveItem(txn, publicKey)
             is Pay.Self -> createPayTransactionSelfItem(txn, publicKey)
-            is AssetTransfer.Send -> createAssetTransferSendItem(txn, publicKey)
+            is AssetTransfer.BaseSend.Send -> createAssetTransferSendItem(txn, publicKey)
+            is AssetTransfer.BaseSend.SendOptOut -> createAssetTransferSendOptOutItem(txn, publicKey)
             is AssetTransfer.BaseReceive.Receive -> createAssetTransferReceiveItem(txn, publicKey)
             is AssetTransfer.BaseReceive.ReceiveOptOut -> createAssetTransferReceiveOptOutItem(txn, publicKey)
             is AssetTransfer.OptOut -> createAssetTransferOptOutItem(txn)
@@ -79,7 +79,7 @@ open class BaseTransactionPreviewUseCase constructor(
     }
 
     private fun getTransactionSign(transaction: BaseTransaction.Transaction): String? {
-        return if (transaction is Pay.Send || transaction is AssetTransfer.Send) {
+        return if (transaction is Pay.Send || transaction is AssetTransfer.BaseSend) {
             if (isSenderAndReceiverSame(transaction)) null else NEGATIVE_SIGN
         } else if (transaction is Pay.Receive || transaction is AssetTransfer.BaseReceive) {
             if (isSenderAndReceiverSame(transaction)) null else POSITIVE_SIGN
@@ -89,7 +89,7 @@ open class BaseTransactionPreviewUseCase constructor(
     }
 
     private fun getTransactionColorRes(transaction: BaseTransaction.Transaction): Int? {
-        return if (transaction is Pay.Send || transaction is AssetTransfer.Send) {
+        return if (transaction is Pay.Send || transaction is AssetTransfer.BaseSend) {
             if (isSenderAndReceiverSame(transaction)) null else R.color.transaction_amount_negative_color
         } else if (transaction is Pay.Receive || transaction is AssetTransfer.BaseReceive) {
             if (isSenderAndReceiverSame(transaction)) null else R.color.transaction_amount_positive_color
@@ -163,10 +163,24 @@ open class BaseTransactionPreviewUseCase constructor(
     }
 
     private suspend fun createAssetTransferSendItem(
-        txn: AssetTransfer.Send,
+        txn: AssetTransfer.BaseSend.Send,
         publicKey: String
-    ): AssetSendItem {
+    ): BaseTransactionItem.TransactionItem.AssetTransferItem.BaseAssetSendItem.AssetSendItem {
         return transactionItemMapper.mapToAssetTransactionSendItem(
+            transaction = txn,
+            description = getTransactionTargetUserDisplayName(txn, publicKey),
+            formattedAmount = txn.amount
+                .formatAmount(decimals = getAssetDecimals(txn), isCompact = true)
+                .formatAsAssetAmount(getAssetShortName(txn), getTransactionSign(txn)),
+            amountColorRes = getTransactionColorRes(txn)
+        )
+    }
+
+    private suspend fun createAssetTransferSendOptOutItem(
+        txn: AssetTransfer.BaseSend.SendOptOut,
+        publicKey: String
+    ): BaseTransactionItem.TransactionItem.AssetTransferItem.BaseAssetSendItem.AssetSendOptOutItem {
+        return transactionItemMapper.mapToAssetTransactionSendOptOutItem(
             transaction = txn,
             description = getTransactionTargetUserDisplayName(txn, publicKey),
             formattedAmount = txn.amount

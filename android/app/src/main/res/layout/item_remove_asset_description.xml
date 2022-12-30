@@ -17,5 +17,4 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spacing_normal"
-    android:text="@string/to_remove_an_asset" />
-
+    android:text="@string/to_opt_out_from_an_asset" />

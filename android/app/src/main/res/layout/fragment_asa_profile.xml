@@ -33,6 +33,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
@@ -50,13 +51,28 @@
         android:textColor="@color/text_gray"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/assetPriceTextView"
-        app:layout_constraintEnd_toStartOf="@id/assetIdTextView"
+        app:layout_constraintEnd_toStartOf="@id/interpunctTextView"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/assetLogoImageView"
         app:layout_goneMarginEnd="@dimen/spacing_xlarge"
         tools:drawableEndCompat="@drawable/ic_asa_verified"
         tools:text="@tools:sample/lorem[1]" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/interpunctTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_xsmall"
+        android:maxLines="1"
+        android:text="@string/interpunct"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/text_gray"
+        app:layout_constraintBottom_toBottomOf="@id/assetNameAndBadgeTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/assetIdTextView"
+        app:layout_constraintStart_toEndOf="@id/assetNameAndBadgeTextView"
+        app:layout_constraintTop_toTopOf="@id/assetNameAndBadgeTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/assetIdTextView"
@@ -66,10 +82,10 @@
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Footnote.Sans"
         android:textColor="@color/text_gray"
-        app:layout_constraintBottom_toBottomOf="@id/assetNameAndBadgeTextView"
+        app:layout_constraintBottom_toBottomOf="@id/interpunctTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/assetNameAndBadgeTextView"
-        app:layout_constraintTop_toTopOf="@id/assetNameAndBadgeTextView"
+        app:layout_constraintStart_toEndOf="@id/interpunctTextView"
+        app:layout_constraintTop_toTopOf="@id/interpunctTextView"
         tools:text="@tools:sample/lorem[2]" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -88,15 +104,27 @@
         app:layout_constraintTop_toBottomOf="@id/assetNameAndBadgeTextView"
         tools:text="@tools:sample/lorem[1]" />
 
+    <include
+        android:id="@+id/marketInformationLayout"
+        layout="@layout/layout_asset_detail_market_information"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetPriceTextView" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/assetAboutFragmentContainerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spacing_xxxxlarge"
+        android:layout_marginTop="@dimen/spacing_xlarge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/assetPriceTextView"
+        app:layout_constraintTop_toBottomOf="@id/marketInformationLayout"
+        app:layout_goneMarginTop="@dimen/spacing_xxxxlarge"
         tools:background="@color/background" />
 
     <!--    TODO Missing shadow-->

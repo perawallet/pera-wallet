@@ -20,8 +20,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentBaseCollectiblesListingBinding
+import com.algorand.android.modules.collectibles.listingviewtype.domain.model.NFTListingViewType
 import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
+import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
+import com.algorand.android.utils.ExcludedViewTypesDividerItemDecoration
+import com.algorand.android.utils.addCustomDivider
 import com.algorand.android.utils.viewbinding.viewBinding
 
 abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fragment_base_collectibles_listing),
@@ -64,12 +68,25 @@ abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fra
         baseCollectibleListingViewModel.updateSearchKeyword(query)
     }
 
+    override fun onGridListingOptionSelected() {
+        baseCollectibleListingViewModel.saveNFTListingViewTypePreference(NFTListingViewType.GRID)
+    }
+
+    override fun onLinearVerticalListingOptionSelected() {
+        baseCollectibleListingViewModel.saveNFTListingViewTypePreference(NFTListingViewType.LINEAR_VERTICAL)
+    }
+
     protected open fun initUi() {
         initializeCollectibleListAdapter()
         with(binding) {
             collectiblesRecyclerView.apply {
                 adapter = collectibleListAdapter
                 layoutManager = CollectibleListGridLayoutManager(context, collectibleListAdapter)
+                addCustomDivider(
+                    drawableResId = R.drawable.horizontal_divider_80_24dp,
+                    showLast = false,
+                    divider = ExcludedViewTypesDividerItemDecoration(BaseCollectibleListItem.excludedItemFromDivider)
+                )
             }
             receiveCollectiblesButton.setOnClickListener { onReceiveCollectibleClick() }
         }
@@ -85,7 +102,7 @@ abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fra
                 emptyStateScrollView.isVisible = isEmptyStateVisible
                 receiveCollectiblesButton.isVisible = isReceiveButtonVisible
                 collectiblesRecyclerView.isVisible = !isEmptyStateVisible
-                progressBar.isVisible = isLoadingVisible
+                progressBar.root.isVisible = isLoadingVisible
                 collectibleListAdapter.submitList(baseCollectibleListItems)
                 clearFiltersButton.apply {
                     setOnClickListener { baseCollectibleListingViewModel.clearFilters() }

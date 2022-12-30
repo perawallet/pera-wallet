@@ -70,10 +70,10 @@ class BaseTransactionMapper @Inject constructor() {
 
     fun mapToAssetTransactionSend(
         transaction: TransactionDTO
-    ): BaseTransaction.Transaction.AssetTransfer.Send? {
+    ): BaseTransaction.Transaction.AssetTransfer.BaseSend.Send? {
         return with(transaction) {
             val assetId = assetTransfer?.assetId ?: return null
-            BaseTransaction.Transaction.AssetTransfer.Send(
+            BaseTransaction.Transaction.AssetTransfer.BaseSend.Send(
                 id = id,
                 signature = signature?.signatureKey,
                 senderAddress = senderAddress.orEmpty(),
@@ -129,6 +129,26 @@ class BaseTransactionMapper @Inject constructor() {
         return with(transaction) {
             val assetId = assetTransfer?.assetId ?: return null
             BaseTransaction.Transaction.AssetTransfer.OptOut(
+                id = id,
+                signature = signature?.signatureKey,
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = assetTransfer.receiverAddress,
+                zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
+                isPending = false,
+                amount = assetTransfer.amount ?: BigInteger.ZERO,
+                assetId = assetId,
+                closeToAddress = closeToAddress
+            )
+        }
+    }
+
+    fun mapToAssetTransactionSendOptOut(
+        transaction: TransactionDTO,
+        closeToAddress: String,
+    ): BaseTransaction.Transaction.AssetTransfer.BaseSend.SendOptOut? {
+        return with(transaction) {
+            val assetId = assetTransfer?.assetId ?: return null
+            BaseTransaction.Transaction.AssetTransfer.BaseSend.SendOptOut(
                 id = id,
                 signature = signature?.signatureKey,
                 senderAddress = senderAddress.orEmpty(),

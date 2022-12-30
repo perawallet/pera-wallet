@@ -25,7 +25,6 @@ import com.algorand.android.databinding.FragmentReceiverAccountSelectionBinding
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
@@ -38,7 +37,6 @@ import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.getTextFromClipboard
 import com.algorand.android.utils.isValidAddress
-import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -105,37 +103,11 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
 
     private val toAccountTransactionRequirementsCollector: suspend (Event<Resource<TargetUser>>?) -> Unit = {
         it?.consume()?.use(
-            onSuccess = ::startSendingTransaction,
+            onSuccess = ::handleNextNavigation,
             onFailed = { handleError(it, binding.root) },
             onLoading = ::showProgress,
             onLoadingFinished = ::hideProgress
         )
-    }
-
-    override val transactionFragmentListener = object : TransactionFragmentListener {
-        override fun onSignTransactionLoading() {
-            showProgress()
-        }
-
-        override fun onSignTransactionLoadingFinished() {
-            hideProgress()
-        }
-
-        override fun onSignTransactionFinished(signedTransactionDetail: SignedTransactionDetail) {
-            when (signedTransactionDetail) {
-                is SignedTransactionDetail.Send -> {
-                    nav(
-                        ReceiverAccountSelectionFragmentDirections
-                            .actionReceiverAccountSelectionFragmentToAssetTransferPreviewFragment(
-                                signedTransactionDetail
-                            )
-                    )
-                }
-                else -> {
-                    sendErrorLog("Unhandled else case in ReceiverAccountSelectionFragment.transactionFragmentListener")
-                }
-            }
-        }
     }
 
     private val windowFocusChangeListener = ViewTreeObserver.OnWindowFocusChangeListener { hasFocus ->
@@ -208,21 +180,23 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
         receiverAccountSelectionViewModel.checkIsGivenAddressValid(binding.searchView.text)
     }
 
-    private fun startSendingTransaction(targetUser: TargetUser) {
+    private fun handleNextNavigation(targetUser: TargetUser) {
         val assetTransaction = receiverAccountSelectionViewModel.assetTransaction
-        val note = assetTransaction.xnote ?: assetTransaction.note
         val selectedAccountCacheData = receiverAccountSelectionViewModel.getFromAccountCachedData() ?: return
         val selectedAsset = receiverAccountSelectionViewModel.getSelectedAssetInformation() ?: return
         val minBalanceCalculatedAmount = assetTransaction.amount
-
-        sendTransaction(
-            TransactionData.Send(
-                selectedAccountCacheData,
-                minBalanceCalculatedAmount,
-                selectedAsset,
-                note,
-                targetUser
-            )
+        nav(
+            ReceiverAccountSelectionFragmentDirections
+                .actionReceiverAccountSelectionFragmentToAssetTransferPreviewFragment(
+                    TransactionData.Send(
+                        selectedAccountCacheData,
+                        minBalanceCalculatedAmount,
+                        selectedAsset,
+                        assetTransaction.note,
+                        assetTransaction.xnote,
+                        targetUser
+                    )
+                )
         )
     }
 

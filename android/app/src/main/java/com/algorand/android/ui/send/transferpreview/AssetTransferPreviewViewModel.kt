@@ -21,6 +21,7 @@ import com.algorand.android.R
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetTransferPreview
 import com.algorand.android.models.SignedTransactionDetail
+import com.algorand.android.models.TransactionData
 import com.algorand.android.usecase.AssetTransferPreviewUseCase
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Event
@@ -41,8 +42,8 @@ class AssetTransferPreviewViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var sendAlgoJob: Job? = null
-    private val signedTransactionDetail =
-        savedStateHandle.getOrThrow<SignedTransactionDetail.Send>(SIGNED_TRANSACTION_DETAIL_KEY)
+    private val transactionData =
+        savedStateHandle.getOrThrow<TransactionData.Send>(TRANSACTION_DATA_KEY)
 
     private val _sendAlgoResponseFlow = MutableStateFlow<Event<Resource<String>>?>(null)
     val sendAlgoResponseFlow: StateFlow<Event<Resource<String>>?> = _sendAlgoResponseFlow
@@ -56,12 +57,12 @@ class AssetTransferPreviewViewModel @Inject constructor(
 
     private fun getAssetTransferPreview() {
         viewModelScope.launch {
-            val signedTransactionPreview = assetTransferPreviewUserCase.getAssetTransferPreview(signedTransactionDetail)
+            val signedTransactionPreview = assetTransferPreviewUserCase.getAssetTransferPreview(transactionData)
             _assetTransferPreviewFlow.emit(signedTransactionPreview)
         }
     }
 
-    fun sendSignedTransaction() {
+    fun sendSignedTransaction(signedTransactionDetail: SignedTransactionDetail.Send) {
         if (sendAlgoJob?.isActive == true) {
             return
         }
@@ -84,7 +85,30 @@ class AssetTransferPreviewViewModel @Inject constructor(
         }
     }
 
+    fun onNoteUpdate(newNote: String) {
+        viewModelScope.launch {
+            if (_assetTransferPreviewFlow.value?.isNoteEditable == true) {
+                val newPreview = _assetTransferPreviewFlow.value?.copy(note = newNote)
+                _assetTransferPreviewFlow.emit(newPreview)
+            }
+        }
+    }
+
+    fun getTransactionData(): TransactionData.Send {
+        return if (_assetTransferPreviewFlow.value?.isNoteEditable == true) {
+            transactionData.copy(
+                note = _assetTransferPreviewFlow.value?.note,
+                xnote = null
+            )
+        } else {
+            transactionData.copy(
+                note = null,
+                xnote = _assetTransferPreviewFlow.value?.note
+            )
+        }
+    }
+
     companion object {
-        private const val SIGNED_TRANSACTION_DETAIL_KEY = "signedTransactionDetail"
+        private const val TRANSACTION_DATA_KEY = "transactionData"
     }
 }

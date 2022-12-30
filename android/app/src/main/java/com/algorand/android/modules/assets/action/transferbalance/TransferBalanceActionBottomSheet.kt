@@ -41,8 +41,8 @@ class TransferBalanceActionBottomSheet : BaseAssetActionBottomSheet() {
 
     override fun setDescriptionTextView(textView: TextView) {
         textView.text = context?.getXmlStyledString(
-            stringResId = R.string.to_remove_the_balance,
-            replacementList = listOf("asset_name" to asset?.fullName.orEmpty())
+            stringResId = R.string.to_opt_out_and_remove,
+            replacementList = listOf("asset_name" to assetActionViewModel.assetFullName.getName(resources))
         )
     }
 

@@ -48,7 +48,9 @@ class AssetDetailMapper @Inject constructor(
             assetDescription = assetDetailResponse.description,
             totalSupply = assetDetailResponse.totalSupply,
             url = assetDetailResponse.url,
-            maxSupply = assetDetailResponse.maxSupply
+            maxSupply = assetDetailResponse.maxSupply,
+            last24HoursAlgoPriceChangePercentage = assetDetailResponse.last24HoursAlgoPriceChangePercentage,
+            isAvailableOnDiscoverMobile = assetDetailResponse.isAvailableOnDiscoverMobile
         )
     }
 }

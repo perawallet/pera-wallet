@@ -14,7 +14,6 @@ package com.algorand.android.ui.send.assetselection.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemSelectCollectibleBinding
 import com.algorand.android.models.BaseSelectAssetItem
 import com.algorand.android.models.BaseViewHolder
@@ -26,14 +25,10 @@ abstract class BaseSelectCollectibleItemViewHolder(
 
     protected open fun bindImage(item: BaseSelectAssetItem.BaseSelectCollectibleItem) {
         binding.collectibleItemView.apply {
-            setStartIconDrawable(drawable = null, forceShow = true)
-            getStartIconImageView().doOnLayout {
+            getStartIconImageView().apply {
                 item.baseAssetDrawableProvider.provideAssetDrawable(
-                    context = context,
-                    assetName = item.avatarDisplayText,
-                    logoUri = item.prismUrl,
-                    width = it.measuredWidth,
-                    onResourceReady = ::setStartIconDrawable
+                    imageView = this,
+                    onResourceFailed = ::setStartIconDrawable
                 )
             }
         }

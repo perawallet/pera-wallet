@@ -79,11 +79,18 @@ class CollectibleTransactionApproveBottomSheet :
                     accountIconResource = it.senderAccountIconResource,
                     publicKey = it.senderAccountPublicKey
                 )
-                toAlgorandUserView.setAccount(
-                    name = it.receiverAccountDisplayText,
-                    accountIconResource = it.receiverAccountIconResource,
-                    publicKey = it.receiverAccountPublicKey
-                )
+                if (it.nftDomainName.isNullOrBlank()) {
+                    toAlgorandUserView.setAccount(
+                        name = it.receiverAccountDisplayText,
+                        accountIconResource = it.receiverAccountIconResource,
+                        publicKey = it.receiverAccountPublicKey
+                    )
+                } else {
+                    toAlgorandUserView.setNftDomainAddress(
+                        nftDomainAddress = it.nftDomainName,
+                        nftDomainServiceLogoUrl = it.nftDomainLogoUrl
+                    )
+                }
                 transactionFeeTextView.text = it.formattedTransactionFee
                 optOutGroup.isVisible = it.isOptOutGroupVisible
                 optOutCheckbox.isChecked = it.isOptOutGroupVisible

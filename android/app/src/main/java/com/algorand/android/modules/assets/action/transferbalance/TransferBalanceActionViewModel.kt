@@ -21,6 +21,7 @@ import com.algorand.android.modules.verificationtier.ui.decider.VerificationTier
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.usecase.AccountAddressUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
+import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -44,6 +45,7 @@ class TransferBalanceActionViewModel @Inject constructor(
     val accountAddress: String = assetAction.publicKey.orEmpty()
 
     override val assetId: Long = assetAction.assetId
+    val assetFullName = AssetName.create(assetAction.asset?.fullName)
 
     init {
         fetchAssetDescription(assetId)

@@ -73,13 +73,31 @@ class TransactionItemMapper @Inject constructor() {
     }
 
     fun mapToAssetTransactionSendItem(
-        transaction: BaseTransaction.Transaction.AssetTransfer.Send,
+        transaction: BaseTransaction.Transaction.AssetTransfer.BaseSend.Send,
         description: String?,
         formattedAmount: String?,
         amountColorRes: Int?
-    ): BaseTransactionItem.TransactionItem.AssetTransferItem.AssetSendItem {
+    ): BaseTransactionItem.TransactionItem.AssetTransferItem.BaseAssetSendItem.AssetSendItem {
         return with(transaction) {
-            BaseTransactionItem.TransactionItem.AssetTransferItem.AssetSendItem(
+            BaseTransactionItem.TransactionItem.AssetTransferItem.BaseAssetSendItem.AssetSendItem(
+                id = id,
+                signature = signature,
+                description = description,
+                isPending = isPending,
+                formattedAmount = formattedAmount,
+                amountColorRes = amountColorRes
+            )
+        }
+    }
+
+    fun mapToAssetTransactionSendOptOutItem(
+        transaction: BaseTransaction.Transaction.AssetTransfer.BaseSend.SendOptOut,
+        description: String?,
+        formattedAmount: String?,
+        amountColorRes: Int?
+    ): BaseTransactionItem.TransactionItem.AssetTransferItem.BaseAssetSendItem.AssetSendOptOutItem {
+        return with(transaction) {
+            BaseTransactionItem.TransactionItem.AssetTransferItem.BaseAssetSendItem.AssetSendOptOutItem(
                 id = id,
                 signature = signature,
                 description = description,

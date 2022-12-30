@@ -15,7 +15,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:background="@drawable/bg_algo_rewards_border"
+    tools:background="@drawable/bg_nft_trait"
     tools:orientation="vertical"
     tools:paddingHorizontal="@dimen/spacing_normal"
     tools:paddingVertical="@dimen/spacing_xsmall"
@@ -23,18 +23,19 @@
 
     <TextView
         android:id="@+id/propertyTitle"
-        style="@style/TextAppearance.Caption.Regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.Caption.Regular"
+        android:textColor="@color/text_gray_lighter"
         tools:text="@tools:sample/lorem[1]" />
 
     <TextView
         android:id="@+id/propertyDescription"
-        style="@style/TextAppearance.Body.Sans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xxsmall"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
         tools:text="@tools:sample/lorem[2]" />
 
 </merge>

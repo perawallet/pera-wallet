@@ -15,12 +15,17 @@ package com.algorand.android.modules.assets.profile.asaprofile.ui.mapper
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaProfilePreview
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
+import com.algorand.android.modules.assets.profile.detail.ui.mapper.AssetDetailMarketInformationDecider
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
+import java.math.BigDecimal
 import javax.inject.Inject
 
-class AsaProfilePreviewMapper @Inject constructor() {
+class AsaProfilePreviewMapper @Inject constructor(
+    private val assetDetailMarketInformationDecider: AssetDetailMarketInformationDecider
+) {
 
+    @SuppressWarnings("LongParameterList")
     fun mapToAsaProfilePreview(
         isAlgo: Boolean,
         assetFullName: String?,
@@ -30,7 +35,9 @@ class AsaProfilePreviewMapper @Inject constructor() {
         verificationTierConfiguration: VerificationTierConfiguration,
         baseAssetDrawableProvider: BaseAssetDrawableProvider,
         assetPrismUrl: String?,
-        asaStatusPreview: AsaStatusPreview?
+        asaStatusPreview: AsaStatusPreview?,
+        isMarketInformationVisible: Boolean,
+        last24HoursChange: BigDecimal?
     ): AsaProfilePreview {
         return AsaProfilePreview(
             isAlgo = isAlgo,
@@ -41,7 +48,18 @@ class AsaProfilePreviewMapper @Inject constructor() {
             verificationTierConfiguration = verificationTierConfiguration,
             baseAssetDrawableProvider = baseAssetDrawableProvider,
             assetPrismUrl = assetPrismUrl,
-            asaStatusPreview = asaStatusPreview
+            asaStatusPreview = asaStatusPreview,
+            isMarketInformationVisible = isMarketInformationVisible,
+            isChangePercentageVisible = assetDetailMarketInformationDecider.decideIsChangePercentageVisible(
+                last24HoursChange
+            ),
+            changePercentage = last24HoursChange,
+            changePercentageIcon = assetDetailMarketInformationDecider.decideIconResOfChangePercentage(
+                last24HoursChange
+            ),
+            changePercentageTextColor = assetDetailMarketInformationDecider.decideTextColorResOfChangePercentage(
+                last24HoursChange
+            )
         )
     }
 }

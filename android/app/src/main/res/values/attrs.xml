@@ -105,6 +105,7 @@
         <attr name="helper" format="string" />
         <attr name="singleLine" format="boolean" />
         <attr name="maxCharacter" format="integer" />
+        <attr name="showClearButton" format="boolean" />
         <attr name="android:inputType" />
         <attr name="android:imeOptions" />
     </declare-styleable>
@@ -151,10 +152,6 @@
 
     <declare-styleable name="ViewPortHeightRecyclerView">
         <attr name="heightOffset" format="dimension" />
-    </declare-styleable>
-
-    <declare-styleable name="BaseCollectibleImageView">
-        <attr name="textHorizontalMargin" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="CollectibleMediaPager">
@@ -208,4 +205,8 @@
         <attr name="peraChipStyle" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="PeraHorizontalSwitchView">
+        <attr name="startOptionIcon" format="reference" />
+        <attr name="endOptionIcon" format="reference" />
+    </declare-styleable>
 </resources>

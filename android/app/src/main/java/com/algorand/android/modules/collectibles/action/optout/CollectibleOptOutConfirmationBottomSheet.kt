@@ -86,6 +86,7 @@ class CollectibleOptOutConfirmationBottomSheet : BaseAssetActionBottomSheet() {
                         size = resources.getDimension(R.dimen.account_icon_size_normal).toInt()
                     )
                 )
+                setOnLongClickListener { onAccountAddressCopied(publicKey); true }
             }
         }
     }

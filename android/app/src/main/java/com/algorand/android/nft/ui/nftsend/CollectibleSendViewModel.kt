@@ -20,9 +20,7 @@ import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.TransactionData
 import com.algorand.android.nft.domain.usecase.CollectibleSendPreviewUseCase
-import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.nft.ui.model.CollectibleSendPreview
-import com.algorand.android.usecase.AccountAssetRemovalUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,40 +35,52 @@ import kotlinx.coroutines.launch
 class CollectibleSendViewModel @Inject constructor(
     private val collectibleSendPreviewUseCase: CollectibleSendPreviewUseCase,
     private val accountCacheManager: AccountCacheManager,
-    private val accountAssetRemovalUseCase: AccountAssetRemovalUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    private val collectibleDetail = savedStateHandle.getOrThrow<CollectibleDetail>(COLLECTIBLE_DETAIL_ARG_KEY)
+    val accountAddress: String = savedStateHandle.getOrThrow(ACCOUNT_ADDRESS_KEY)
+    val nftId: Long = savedStateHandle.getOrThrow(NFT_ID_KEY)
 
     private val _selectedAccountAddressFlow = MutableStateFlow<String>("")
-    val selectedAccountAddressFlow: StateFlow<String>
-        get() = _selectedAccountAddressFlow
+    val selectedAccountAddressFlow: StateFlow<String> get() = _selectedAccountAddressFlow
 
-    private val _collectibleSendPreviewFlow = MutableStateFlow(
-        collectibleSendPreviewUseCase.getInitialStateOfCollectibleSendPreview(collectibleDetail)
-    )
-    val collectibleSendPreview: StateFlow<CollectibleSendPreview>
-        get() = _collectibleSendPreviewFlow
+    private val _collectibleSendPreviewFlow = MutableStateFlow<CollectibleSendPreview?>(null)
+    val collectibleSendPreview: StateFlow<CollectibleSendPreview?> get() = _collectibleSendPreviewFlow
 
     private var cachedPreviouslySignedTransaction: SignedTransactionDetail.Send? = null
+
+    var nftDomainAddressServiceLogoPair: Pair<String, String?>? = null
+        private set
 
     fun updateSelectedAccountAddress(address: String) {
         _selectedAccountAddressFlow.value = address
     }
 
-    fun getSenderPublicKey() = collectibleDetail.ownerAccountAddress
+    init {
+        initCollectibleSendPreview()
+    }
 
     fun getSelectedAddress(): String = _selectedAccountAddressFlow.value
 
-    fun getCollectibleDetail(): CollectibleDetail = collectibleDetail
+    fun checkIfSenderAndReceiverAccountSame() {
+        viewModelScope.launch(Dispatchers.IO) {
+            collectibleSendPreviewUseCase.checkIfSenderAndReceiverAccountSame(
+                senderAccountAddress = accountAddress,
+                receiverAccountAddress = _selectedAccountAddressFlow.value,
+                previousState = _collectibleSendPreviewFlow.value
+            ).collect { collectibleSendPreview ->
+                _collectibleSendPreviewFlow.emit(collectibleSendPreview)
+            }
+        }
+    }
 
     fun checkIfSelectedAccountReceiveCollectible() {
+        val nftSendPreview = _collectibleSendPreviewFlow.value ?: return
         viewModelScope.launch(Dispatchers.IO) {
             collectibleSendPreviewUseCase.checkIfSelectedAccountReceiveCollectible(
-                _selectedAccountAddressFlow.value,
-                collectibleDetail.collectibleId,
-                _collectibleSendPreviewFlow.value
+                publicKey = _selectedAccountAddressFlow.value,
+                collectibleId = nftId,
+                previousState = nftSendPreview
             ).collect { collectibleSendPreview ->
                 _collectibleSendPreviewFlow.emit(collectibleSendPreview)
             }
@@ -79,46 +89,44 @@ class CollectibleSendViewModel @Inject constructor(
 
     // TODO Transaction signing & sending flow needs to be refactored
     fun createSendTransactionData(): TransactionData.Send? {
-        val senderAccountCacheData = accountCacheManager
-            .getCacheData(collectibleDetail.ownerAccountAddress.publicKey) ?: return null
+        val senderAccountCacheData = accountCacheManager.getCacheData(accountAddress) ?: return null
         val targetUser = TargetUser(publicKey = selectedAccountAddressFlow.value)
         return TransactionData.Send(
             accountCacheData = senderAccountCacheData,
             amount = BigInteger.ONE,
-            assetInformation = AssetInformation(assetId = collectibleDetail.collectibleId, verificationTier = null),
+            assetInformation = AssetInformation(
+                assetId = nftId,
+                verificationTier = null
+            ),
             targetUser = targetUser
         )
     }
 
     fun createSendAndRemoveAssetTransactionData(): TransactionData.SendAndRemoveAsset? {
-        val senderAccountCacheData = accountCacheManager
-            .getCacheData(collectibleDetail.ownerAccountAddress.publicKey) ?: return null
+        val senderAccountCacheData = accountCacheManager.getCacheData(accountAddress) ?: return null
         val targetUser = TargetUser(publicKey = selectedAccountAddressFlow.value)
         return TransactionData.SendAndRemoveAsset(
             accountCacheData = senderAccountCacheData,
             amount = BigInteger.ONE,
-            assetInformation = AssetInformation(assetId = collectibleDetail.collectibleId, verificationTier = null),
+            assetInformation = AssetInformation(
+                assetId = nftId,
+                verificationTier = null
+            ),
             targetUser = targetUser
         )
     }
 
     fun sendSignedTransaction(signedTransactionDetail: SignedTransactionDetail.Send) {
         cachedPreviouslySignedTransaction = signedTransactionDetail
+        val nftSendPreview = _collectibleSendPreviewFlow.value ?: return
         viewModelScope.launch(Dispatchers.IO) {
             collectibleSendPreviewUseCase.sendSignedTransaction(
-                signedTransactionDetail,
-                _collectibleSendPreviewFlow.value
+                signedTransactionDetail = signedTransactionDetail,
+                previousState = nftSendPreview
             ).collect { preview ->
                 _collectibleSendPreviewFlow.emit(preview)
             }
         }
-    }
-
-    suspend fun addAssetDeletionToAccountCache() {
-        accountAssetRemovalUseCase.addAssetDeletionToAccountCache(
-            _selectedAccountAddressFlow.value,
-            collectibleDetail.collectibleId
-        )
     }
 
     fun retrySendingTransaction() {
@@ -127,7 +135,20 @@ class CollectibleSendViewModel @Inject constructor(
         }
     }
 
+    fun updateNftDomainInformation(nftDomainAddressServiceLogoPair: Pair<String, String?>) {
+        this.nftDomainAddressServiceLogoPair = nftDomainAddressServiceLogoPair
+    }
+
+    private fun initCollectibleSendPreview() {
+        viewModelScope.launch {
+            collectibleSendPreviewUseCase.getInitialStateOfCollectibleSendPreview(nftId).collect {
+                _collectibleSendPreviewFlow.emit(it)
+            }
+        }
+    }
+
     companion object {
-        private const val COLLECTIBLE_DETAIL_ARG_KEY = "collectibleDetail"
+        private const val ACCOUNT_ADDRESS_KEY = "accountAddress"
+        private const val NFT_ID_KEY = "nftId"
     }
 }

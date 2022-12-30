@@ -99,7 +99,10 @@ class AlgorandUserView @JvmOverloads constructor(
                 setOnClickListener { onAddButtonClick?.invoke(publicKey) }
                 isVisible = showAddButton
             }
-            accountIconImageView.hide()
+            accountIconImageView.setAccountIconDrawable(
+                accountIconResource = AccountIconResource.PLACEHOLDER,
+                iconSize = R.dimen.account_icon_size_normal
+            )
         }
         if (enableAddressCopy) enableLongPressToCopyText(publicKey)
         if (showTooltip) showCopyTutorial()

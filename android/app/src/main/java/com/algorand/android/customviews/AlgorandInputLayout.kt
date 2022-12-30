@@ -53,9 +53,9 @@ class AlgorandInputLayout @JvmOverloads constructor(
         }
 
     var hint: String?
-        get() = editText.hint.toString()
+        get() = binding.textInputLayout.hint.toString()
         set(value) {
-            editText.hint = value
+            binding.textInputLayout.hint = value
         }
 
     var error: String?
@@ -85,14 +85,20 @@ class AlgorandInputLayout @JvmOverloads constructor(
     }
 
     private var inputType by Delegates.observable(InputType.TYPE_CLASS_TEXT) { _, oldValue, newValue ->
-        if (oldValue != newValue) {
+        if (newValue != oldValue) {
             editText.inputType = newValue
         }
     }
 
     private var imeOptions by Delegates.observable(EditorInfo.IME_ACTION_DONE) { _, oldValue, newValue ->
-        if (oldValue != newValue) {
+        if (newValue != oldValue) {
             editText.imeOptions = newValue
+        }
+    }
+
+    private var isClearButtonEnabled by Delegates.observable(false) { _, oldValue, newValue ->
+        if (oldValue != newValue && newValue) {
+            binding.iconContainerView.enableClearButton(onIconClick = ::clearInput)
         }
     }
 
@@ -100,8 +106,27 @@ class AlgorandInputLayout @JvmOverloads constructor(
         loadAttrs()
     }
 
+    private fun loadAttrs() {
+        context.obtainStyledAttributes(attrs, R.styleable.CustomInputLayout).use { attrs ->
+            text = attrs.getString(R.styleable.CustomInputLayout_text).orEmpty()
+            hint = attrs.getString(R.styleable.CustomInputLayout_hint).orEmpty()
+            error = attrs.getString(R.styleable.CustomInputLayout_error).orEmpty()
+            helper = attrs.getString(R.styleable.CustomInputLayout_helper).orEmpty()
+            isSingleLine = attrs.getBoolean(R.styleable.CustomInputLayout_singleLine, false)
+            maxCharacter = attrs.getInteger(R.styleable.CustomInputLayout_maxCharacter, -1)
+            inputType = attrs.getInt(R.styleable.CustomInputLayout_android_inputType, InputType.TYPE_CLASS_TEXT)
+            imeOptions = attrs.getInt(R.styleable.CustomInputLayout_android_imeOptions, EditorInfo.IME_ACTION_DONE)
+            isClearButtonEnabled = attrs.getBoolean(R.styleable.CustomInputLayout_showClearButton, false)
+        }
+    }
+
     fun setOnTextChangeListener(listener: (text: String) -> Unit) {
-        editText.addTextChangedListener { listener.invoke(text) }
+        editText.addTextChangedListener {
+            listener.invoke(it.toString())
+            if (isClearButtonEnabled) {
+                binding.iconContainerView.changeClearButtonVisibility(it.toString().isNotBlank())
+            }
+        }
     }
 
     fun setImeOptionsNext(callback: () -> Unit) {
@@ -120,19 +145,6 @@ class AlgorandInputLayout @JvmOverloads constructor(
 
     fun setInputTypeText() {
         editText.inputType = InputType.TYPE_CLASS_TEXT
-    }
-
-    private fun loadAttrs() {
-        context.obtainStyledAttributes(attrs, R.styleable.CustomInputLayout).use { attrs ->
-            text = attrs.getString(R.styleable.CustomInputLayout_text).orEmpty()
-            hint = attrs.getString(R.styleable.CustomInputLayout_hint).orEmpty()
-            error = attrs.getString(R.styleable.CustomInputLayout_error).orEmpty()
-            helper = attrs.getString(R.styleable.CustomInputLayout_helper).orEmpty()
-            isSingleLine = attrs.getBoolean(R.styleable.CustomInputLayout_singleLine, false)
-            maxCharacter = attrs.getInteger(R.styleable.CustomInputLayout_maxCharacter, -1)
-            inputType = attrs.getInt(R.styleable.CustomInputLayout_android_inputType, InputType.TYPE_CLASS_TEXT)
-            imeOptions = attrs.getInt(R.styleable.CustomInputLayout_android_imeOptions, EditorInfo.IME_ACTION_DONE)
-        }
     }
 
     fun addByteLimiter(maximumByteLimit: Int) {
@@ -166,6 +178,14 @@ class AlgorandInputLayout @JvmOverloads constructor(
         }
     }
 
+    fun requestFocusAndShowKeyboard() {
+        editText.requestFocusAndShowKeyboard()
+    }
+
+    private fun clearInput() {
+        text = ""
+    }
+
     override fun onSaveInstanceState(): Parcelable {
         return CustomInputSavedState(super.onSaveInstanceState(), text)
     }
@@ -183,9 +203,5 @@ class AlgorandInputLayout @JvmOverloads constructor(
 
     override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>?) {
         super.dispatchThawSelfOnly(container)
-    }
-
-    fun requestFocusAndShowKeyboard() {
-        editText.requestFocusAndShowKeyboard()
     }
 }

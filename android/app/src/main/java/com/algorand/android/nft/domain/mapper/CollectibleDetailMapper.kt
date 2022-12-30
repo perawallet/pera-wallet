@@ -12,13 +12,13 @@
 
 package com.algorand.android.nft.domain.mapper
 
+import com.algorand.android.modules.collectibles.detail.base.data.model.CollectibleDetailDTO
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail.AudioCollectibleDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail.ImageCollectibleDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail.MixedCollectibleDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail.NotSupportedCollectibleDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail.VideoCollectibleDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleMedia
-import com.algorand.android.nft.domain.model.CollectibleDetailDTO
 import javax.inject.Inject
 
 class CollectibleDetailMapper @Inject constructor() {
@@ -50,15 +50,15 @@ class CollectibleDetailMapper @Inject constructor() {
             twitterUsername = collectibleDetailDTO.twitterUsername,
             assetDescription = collectibleDetailDTO.description,
             url = collectibleDetailDTO.url,
-            maxSupply = collectibleDetailDTO.maxSupply
+            maxSupply = collectibleDetailDTO.maxSupply,
+            last24HoursAlgoPriceChangePercentage = collectibleDetailDTO.last24HoursAlgoPriceChangePercentage,
+            isAvailableOnDiscoverMobile = collectibleDetailDTO.isAvailableOnDiscoverMobile
         )
     }
 
     fun mapToNotSupportedCollectibleDetail(collectibleDetailDTO: CollectibleDetailDTO): NotSupportedCollectibleDetail {
-        val collectibleMedias = if (collectibleDetailDTO.medias.isEmpty()) {
+        val collectibleMedias = collectibleDetailDTO.medias.ifEmpty {
             listOf(BaseCollectibleMedia.NoMediaCollectibleMedia(null, null))
-        } else {
-            collectibleDetailDTO.medias
         }
         return NotSupportedCollectibleDetail(
             assetId = collectibleDetailDTO.collectibleAssetId,
@@ -85,7 +85,10 @@ class CollectibleDetailMapper @Inject constructor() {
             twitterUsername = collectibleDetailDTO.twitterUsername,
             assetDescription = collectibleDetailDTO.description,
             url = collectibleDetailDTO.url,
-            maxSupply = collectibleDetailDTO.maxSupply
+            maxSupply = collectibleDetailDTO.maxSupply,
+            last24HoursAlgoPriceChangePercentage = collectibleDetailDTO.last24HoursAlgoPriceChangePercentage,
+            isAvailableOnDiscoverMobile = collectibleDetailDTO.isAvailableOnDiscoverMobile,
+            prismUrl = collectibleDetailDTO.primaryImageUrl
         )
     }
 
@@ -104,7 +107,7 @@ class CollectibleDetailMapper @Inject constructor() {
             title = collectibleDetailDTO.title,
             description = collectibleDetailDTO.description,
             traits = collectibleDetailDTO.traits,
-            thumbnailPrismUrl = thumbnailPrismUrl,
+            prismUrl = thumbnailPrismUrl,
             nftExplorerUrl = collectibleDetailDTO.explorerUrl,
             collectibleMedias = collectibleDetailDTO.medias,
             totalSupply = collectibleDetailDTO.totalSupply,
@@ -119,7 +122,9 @@ class CollectibleDetailMapper @Inject constructor() {
             twitterUsername = collectibleDetailDTO.twitterUsername,
             assetDescription = collectibleDetailDTO.description,
             url = collectibleDetailDTO.url,
-            maxSupply = collectibleDetailDTO.maxSupply
+            maxSupply = collectibleDetailDTO.maxSupply,
+            last24HoursAlgoPriceChangePercentage = collectibleDetailDTO.last24HoursAlgoPriceChangePercentage,
+            isAvailableOnDiscoverMobile = collectibleDetailDTO.isAvailableOnDiscoverMobile
         )
     }
 
@@ -138,7 +143,7 @@ class CollectibleDetailMapper @Inject constructor() {
             title = collectibleDetailDTO.title,
             description = collectibleDetailDTO.description,
             traits = collectibleDetailDTO.traits,
-            thumbnailPrismUrl = thumbnailPrismUrl,
+            prismUrl = thumbnailPrismUrl,
             nftExplorerUrl = collectibleDetailDTO.explorerUrl,
             collectibleMedias = collectibleDetailDTO.medias,
             totalSupply = collectibleDetailDTO.totalSupply,
@@ -153,7 +158,9 @@ class CollectibleDetailMapper @Inject constructor() {
             twitterUsername = collectibleDetailDTO.twitterUsername,
             assetDescription = collectibleDetailDTO.description,
             url = collectibleDetailDTO.url,
-            maxSupply = collectibleDetailDTO.maxSupply
+            maxSupply = collectibleDetailDTO.maxSupply,
+            last24HoursAlgoPriceChangePercentage = collectibleDetailDTO.last24HoursAlgoPriceChangePercentage,
+            isAvailableOnDiscoverMobile = collectibleDetailDTO.isAvailableOnDiscoverMobile
         )
     }
 
@@ -169,7 +176,7 @@ class CollectibleDetailMapper @Inject constructor() {
             title = collectibleDetailDTO.title,
             description = collectibleDetailDTO.description,
             traits = collectibleDetailDTO.traits,
-            thumbnailPrismUrl = collectibleDetailDTO.primaryImageUrl,
+            prismUrl = collectibleDetailDTO.primaryImageUrl,
             nftExplorerUrl = collectibleDetailDTO.explorerUrl,
             collectibleMedias = collectibleDetailDTO.medias,
             totalSupply = collectibleDetailDTO.totalSupply,
@@ -184,7 +191,9 @@ class CollectibleDetailMapper @Inject constructor() {
             twitterUsername = collectibleDetailDTO.twitterUsername,
             assetDescription = collectibleDetailDTO.description,
             url = collectibleDetailDTO.url,
-            maxSupply = collectibleDetailDTO.maxSupply
+            maxSupply = collectibleDetailDTO.maxSupply,
+            last24HoursAlgoPriceChangePercentage = collectibleDetailDTO.last24HoursAlgoPriceChangePercentage,
+            isAvailableOnDiscoverMobile = collectibleDetailDTO.isAvailableOnDiscoverMobile
         )
     }
 }

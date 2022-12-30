@@ -14,12 +14,10 @@ package com.algorand.android.modules.assets.remove.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemRemoveCollectibleBinding
 import com.algorand.android.models.BaseRemoveAssetItem
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.BaseRemoveCollectibleItem
 import com.algorand.android.models.BaseViewHolder
-import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 
 abstract class BaseRemoveCollectibleItemViewHolder(
@@ -31,37 +29,23 @@ abstract class BaseRemoveCollectibleItemViewHolder(
         if (item !is BaseRemoveCollectibleItem) return
         with(binding.collectibleStatefulItemView) {
             with(item) {
-                bindImage(
-                    assetName = name,
-                    prismUrl = prismUrl,
-                    baseAssetDrawableProvider = baseAssetDrawableProvider
-                )
+                bindImage(baseAssetDrawableProvider = baseAssetDrawableProvider)
                 setTitleText(title = name.getName(resources))
                 setDescriptionText(description = shortName.getName(resources))
                 setPrimaryValueText(primaryValue = formattedCompactAmount)
-                if (isAmountInSelectedCurrencyVisible) {
-                    setSecondaryValueText(secondaryValue = formattedSelectedCurrencyCompactValue)
-                }
+                setSecondaryValueText(secondaryValue = formattedSelectedCurrencyCompactValue)
                 setButtonState(state = actionItemButtonState)
                 setClickListeners(removeCollectibleListItem = this)
             }
         }
     }
 
-    private fun bindImage(
-        assetName: AssetName,
-        prismUrl: String?,
-        baseAssetDrawableProvider: BaseAssetDrawableProvider
-    ) {
+    private fun bindImage(baseAssetDrawableProvider: BaseAssetDrawableProvider) {
         binding.collectibleStatefulItemView.apply {
-            setStartIconDrawable(drawable = null, forceShow = true)
-            getStartIconImageView().doOnLayout {
+            getStartIconImageView().apply {
                 baseAssetDrawableProvider.provideAssetDrawable(
-                    context = context,
-                    assetName = assetName,
-                    logoUri = prismUrl,
-                    width = it.measuredWidth,
-                    onResourceReady = ::setStartIconDrawable
+                    imageView = this,
+                    onResourceFailed = ::setStartIconDrawable
                 )
             }
         }

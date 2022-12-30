@@ -18,7 +18,6 @@ import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.models.WalletConnectSessionAccountEntity
 import com.algorand.android.models.WalletConnectSessionByAccountsAddress
 import com.algorand.android.models.WalletConnectSessionEntity
-import com.algorand.android.models.WalletConnectSessionSubscriptionBody
 import com.algorand.android.models.WalletConnectSessionWithAccountsAddresses
 import com.algorand.android.network.MobileAlgorandApi
 import javax.inject.Inject
@@ -63,20 +62,6 @@ class WalletConnectRepository @Inject constructor(
         )
     }
 
-    suspend fun subscribeWalletConnectSession(
-        wcSessionEntity: WalletConnectSessionEntity
-    ) {
-        mobileAlgorandApi.subscribeWalletConnectSession(
-            WalletConnectSessionSubscriptionBody(
-                device = deviceIdUseCase.getSelectedNodeDeviceId() ?: "",
-                bridgeUrl = wcSessionEntity.wcSession.bridge,
-                topicId = wcSessionEntity.wcSession.topic,
-                dappName = wcSessionEntity.peerMeta.name,
-                pushToken = firebasePushTokenRepository.getPushTokenOrNull()?.data ?: ""
-            )
-        )
-    }
-
     suspend fun setConnectedSession(session: WalletConnectSessionEntity) {
         walletConnectDao.setSessionConnected(session.id)
     }
@@ -99,5 +84,9 @@ class WalletConnectRepository @Inject constructor(
 
     suspend fun deleteWalletConnectAccountBySession(sessionId: Long, accountAddress: String) {
         return walletConnectDao.deleteWalletConnectAccountBySession(sessionId, accountAddress)
+    }
+
+    suspend fun setGivenSessionAsSubscribed(sessionId: Long) {
+        walletConnectDao.setGivenSessionAsSubscribed(sessionId)
     }
 }

@@ -21,22 +21,7 @@
         android:id="@+id/collectibleImageViewStup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        app:shapeAppearance="@style/CollectibleImageShapeAppearance" />
-
-    <TextView
-        android:id="@+id/collectibleNameTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.Footnote.Sans"
-        android:textColor="@color/secondary_text_color"
-        android:visibility="gone"
-        tools:text="@tools:sample/lorem/random"
-        tools:visibility="visible" />
+        android:scaleType="fitCenter" />
 
     <ImageView
         android:id="@+id/videoPlayButton"

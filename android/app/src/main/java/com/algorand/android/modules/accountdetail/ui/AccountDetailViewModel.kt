@@ -119,6 +119,14 @@ class AccountDetailViewModel @Inject constructor(
         }
     }
 
+    fun onAssetLongClick(assetId: Long) {
+        viewModelScope.launch {
+            with(_accountDetailPreviewFlow) {
+                emit(accountDetailPreviewUseCase.getAssetLongClickUpdatedPreview(value ?: return@with, assetId))
+            }
+        }
+    }
+
     companion object {
         private const val ACCOUNT_PUBLIC_KEY = "publicKey"
         private const val ACCOUNT_DETAIL_TAB = "accountDetailTab"

@@ -22,6 +22,7 @@ import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.usecase.AccountAddressUseCase
 import com.algorand.android.usecase.GetFormattedTransactionFeeAmountUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
+import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -46,6 +47,7 @@ class RemoveAssetActionViewModel @Inject constructor(
     val accountAddress: String = assetAction.publicKey.orEmpty()
 
     override val assetId: Long = assetAction.assetId
+    val assetFullName: AssetName = AssetName.create(assetAction.asset?.fullName)
 
     init {
         fetchAssetDescription(assetId)

@@ -14,7 +14,6 @@ package com.algorand.android.nft.ui.nftlisting.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemBaseCollectiblesInfoItemBinding
 import com.algorand.android.models.BaseViewHolder
@@ -30,7 +29,7 @@ class InfoItemViewHolder(
         with(binding.root) {
             setTitle(
                 resources.getQuantityString(
-                    R.plurals.collectible_count,
+                    R.plurals.nft_count,
                     item.displayedCollectibleCount,
                     item.displayedCollectibleCount,
                 )
@@ -38,7 +37,6 @@ class InfoItemViewHolder(
             setPrimaryButtonClickListener { infoItemListener.primaryButtonOnClickListener() }
             setSecondaryButtonClickListener { infoItemListener.secondaryButtonClickListener() }
             setSecondaryButtonVisibility(item.isAddButtonVisible)
-            isVisible = item.isVisible
         }
     }
 

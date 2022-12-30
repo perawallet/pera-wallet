@@ -37,7 +37,6 @@ import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentAccountDetailBinding
-import com.algorand.android.models.AccountDetailAssetsItem
 import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.DateFilter
@@ -53,6 +52,7 @@ import com.algorand.android.ui.accounts.RenameAccountBottomSheet
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet
 import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.startSavedStateListener
@@ -102,6 +102,13 @@ class AccountDetailFragment :
         it?.consume()?.run { nav(this) }
     }
 
+    private val copyAssetIDToClipboardEventCollector: suspend (Event<Long>?) -> Unit = {
+        it?.consume()?.run {
+            context?.copyToClipboard(textToCopy = this.toString(), showToast = false)
+            showTopToast(getString(R.string.asset_id_copied_to_clipboard), this.toString())
+        }
+    }
+
     private lateinit var accountDetailPagerAdapter: AccountDetailPagerAdapter
 
     override fun onStandardTransactionClick(transaction: BaseTransactionItem.TransactionItem) {
@@ -134,14 +141,26 @@ class AccountDetailFragment :
         nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToAssetAdditionNavigation(args.publicKey))
     }
 
-    override fun onAssetClick(assetItem: AccountDetailAssetsItem.BaseAssetItem) {
+    override fun onAssetClick(assetId: Long) {
         val publicKey = accountDetailViewModel.accountPublicKey
         nav(
             AccountDetailFragmentDirections.actionAccountDetailFragmentToAssetProfileNavigation(
-                assetId = assetItem.id,
+                assetId = assetId,
                 accountAddress = publicKey
             )
         )
+    }
+
+    override fun onAssetLongClick(assetId: Long) {
+        accountDetailViewModel.onAssetLongClick(assetId)
+    }
+
+    override fun onNFTClick(nftId: Long) {
+        navToCollectibleDetailFragment(nftId)
+    }
+
+    override fun onNFTLongClick(nftId: Long) {
+        accountDetailViewModel.onAssetLongClick(nftId)
     }
 
     override fun onBuyAlgoClick() {
@@ -166,6 +185,10 @@ class AccountDetailFragment :
 
     override fun onAccountQuickActionsFloatingActionButtonClicked() {
         nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToAccountQuickActionsBottomSheet(args.publicKey))
+    }
+
+    override fun onMinimumBalanceInfoClick() {
+        navToMinimumBalanceInfoBottomSheet()
     }
 
     override fun onImageItemClick(nftAssetId: Long) {
@@ -206,7 +229,7 @@ class AccountDetailFragment :
     }
 
     override fun onManageCollectiblesClick() {
-        nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToManageCollectiblesBottomSheet())
+        nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToManageAccountNFTsBottomSheet())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -255,6 +278,12 @@ class AccountDetailFragment :
             accountDetailViewModel.accountDetailPreviewFlow
                 .map { it?.swapNavigationDirectionEvent }.distinctUntilChanged(),
             swapNavigationDirectionEventCollector
+        )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            accountDetailViewModel.accountDetailPreviewFlow
+                .map { it?.copyAssetIDToClipboardEvent }
+                .distinctUntilChanged(),
+            copyAssetIDToClipboardEventCollector
         )
     }
 
@@ -342,5 +371,9 @@ class AccountDetailFragment :
                 is AccountHistoryFragment -> logAccountDetailTransactionHistoryTapEventTracker()
             }
         }
+    }
+
+    private fun navToMinimumBalanceInfoBottomSheet() {
+        nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToRequiredMinimumBalanceInformationBottomSheet())
     }
 }

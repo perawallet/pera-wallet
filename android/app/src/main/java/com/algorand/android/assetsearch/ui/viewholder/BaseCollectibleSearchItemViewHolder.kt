@@ -14,13 +14,11 @@ package com.algorand.android.assetsearch.ui.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
 import com.algorand.android.databinding.ItemSearchCollectibleBinding
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.models.ui.AccountAssetItemButtonState
-import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 
 abstract class BaseCollectibleSearchItemViewHolder(
@@ -28,20 +26,12 @@ abstract class BaseCollectibleSearchItemViewHolder(
     private val listener: CollectibleSearchItemListener
 ) : BaseViewHolder<BaseAssetSearchListItem>(binding.root) {
 
-    protected open fun bindImage(
-        prismUrl: String?,
-        assetName: AssetName,
-        baseAssetDrawableProvider: BaseAssetDrawableProvider
-    ) {
+    protected open fun bindImage(baseAssetDrawableProvider: BaseAssetDrawableProvider) {
         binding.collectibleItemView.apply {
-            setStartIconDrawable(drawable = null, forceShow = true)
-            getStartIconImageView().doOnLayout {
+            getStartIconImageView().apply {
                 baseAssetDrawableProvider.provideAssetDrawable(
-                    context = context,
-                    assetName = assetName,
-                    logoUri = prismUrl,
-                    width = it.measuredWidth,
-                    onResourceReady = ::setStartIconDrawable
+                    imageView = this,
+                    onResourceFailed = ::setStartIconDrawable
                 )
             }
         }
@@ -52,7 +42,7 @@ abstract class BaseCollectibleSearchItemViewHolder(
         with(binding.collectibleItemView) {
             with(item) {
                 setTitleText(fullName.getName(resources))
-                bindImage(prismUrl, fullName, baseAssetDrawableProvider)
+                bindImage(baseAssetDrawableProvider)
                 setAssetDescriptionText(shortName.getName(resources), assetId)
                 setButtonState(accountAssetItemButtonState)
                 setAssetItemViewClickListeners(this)

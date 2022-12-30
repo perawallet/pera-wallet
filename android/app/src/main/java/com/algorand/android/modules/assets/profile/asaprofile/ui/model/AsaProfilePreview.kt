@@ -15,6 +15,7 @@ package com.algorand.android.modules.assets.profile.asaprofile.ui.model
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
+import java.math.BigDecimal
 
 data class AsaProfilePreview(
     val isAlgo: Boolean,
@@ -25,7 +26,12 @@ data class AsaProfilePreview(
     val verificationTierConfiguration: VerificationTierConfiguration,
     val baseAssetDrawableProvider: BaseAssetDrawableProvider,
     val assetPrismUrl: String?,
-    val asaStatusPreview: AsaStatusPreview?
+    val asaStatusPreview: AsaStatusPreview?,
+    val isMarketInformationVisible: Boolean,
+    val isChangePercentageVisible: Boolean,
+    val changePercentage: BigDecimal?,
+    val changePercentageIcon: Int?,
+    val changePercentageTextColor: Int?
 ) {
     val hasFormattedPrice: Boolean
         get() = formattedAssetPrice.isNullOrBlank().not()

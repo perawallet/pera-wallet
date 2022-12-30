@@ -13,13 +13,16 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.models.Account
+import com.algorand.android.modules.sorting.accountsorting.util.NOT_INITIALIZED_ACCOUNT_INDEX
 import javax.inject.Inject
 
 class GetSortedLocalAccountsUseCase @Inject constructor(
     private val getLocalAccountsUseCase: GetLocalAccountsUseCase
 ) {
-
     fun getSortedLocalAccounts(): List<Account> {
-        return getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache().sortedBy { it.index }
+        val (initializedAccounts, notInitializedAccounts) =
+            getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache()
+                .partition { it.index != NOT_INITIALIZED_ACCOUNT_INDEX }
+        return initializedAccounts.sortedBy { it.index } + notInitializedAccounts
     }
 }

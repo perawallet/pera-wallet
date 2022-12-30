@@ -39,17 +39,16 @@
         app:barrierDirection="start"
         app:constraint_referenced_ids="endGuideline, primaryValueTextView,secondaryValueTextView" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/startIconImageView"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginVertical="@dimen/spacing_normal"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_algo_green_round"
-        tools:visibility="visible" />
+        app:shapeAppearance="@style/AccountAssetItemStartImageShapeAppearance"
+        tools:srcCompat="@drawable/ic_algo_green_round" />
 
     <ProgressBar
         android:id="@+id/startIconProgressBar"
@@ -158,9 +157,9 @@
         android:id="@+id/actionButton"
         style="@style/Button.Transparent.Icon"
         android:layout_width="36dp"
-        android:gravity="center"
         android:layout_height="36dp"
         android:layout_marginEnd="@dimen/spacing_small"
+        android:gravity="center"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/progressBar"

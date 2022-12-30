@@ -14,54 +14,88 @@ package com.algorand.android.nft.domain.usecase
 
 import androidx.annotation.StringRes
 import com.algorand.android.R
+import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData
-import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingAdditionCollectibleData
-import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingDeletionCollectibleData
-import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingSendingCollectibleData
+import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData
+import com.algorand.android.modules.collectibles.filter.domain.usecase.ClearCollectibleFiltersPreferencesUseCase
+import com.algorand.android.modules.collectibles.filter.domain.usecase.ShouldDisplayOptedInNFTPreferenceUseCase
+import com.algorand.android.modules.collectibles.listingviewtype.domain.model.NFTListingViewType
+import com.algorand.android.modules.collectibles.listingviewtype.domain.model.NFTListingViewType.GRID
+import com.algorand.android.modules.collectibles.listingviewtype.domain.model.NFTListingViewType.LINEAR_VERTICAL
+import com.algorand.android.modules.collectibles.listingviewtype.domain.usecase.AddOnListingViewTypeChangeListenerUseCase
+import com.algorand.android.modules.collectibles.listingviewtype.domain.usecase.RemoveOnListingViewTypeChangeListenerUseCase
+import com.algorand.android.modules.collectibles.listingviewtype.domain.usecase.SaveNFTListingViewTypePreferenceUseCase
 import com.algorand.android.nft.mapper.CollectibleListingItemMapper
 import com.algorand.android.nft.ui.model.BaseCollectibleListData
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
+import com.algorand.android.nft.utils.CollectibleUtils
+import com.algorand.android.sharedpref.SharedPrefLocalSource
+import com.algorand.android.utils.Event
 import java.math.BigInteger
 
 open class BaseCollectiblesListingPreviewUseCase(
     private val collectibleListingItemMapper: CollectibleListingItemMapper,
-    private val collectibleFilterUseCase: CollectibleFilterUseCase
+    private val saveNFTListingViewTypePreferenceUseCase: SaveNFTListingViewTypePreferenceUseCase,
+    private val addOnListingViewTypeChangeListenerUseCase: AddOnListingViewTypeChangeListenerUseCase,
+    private val removeOnListingViewTypeChangeListenerUseCase: RemoveOnListingViewTypeChangeListenerUseCase,
+    private val shouldDisplayOptedInNFTPreferenceUseCase: ShouldDisplayOptedInNFTPreferenceUseCase,
+    private val collectibleUtils: CollectibleUtils,
+    private val clearCollectibleFiltersPreferencesUseCase: ClearCollectibleFiltersPreferencesUseCase
 ) {
 
-    fun clearCollectibleFilters() {
-        collectibleFilterUseCase.clearCollectibleFilters()
+    fun addOnListingViewTypeChangeListener(listener: SharedPrefLocalSource.OnChangeListener<Int>) {
+        addOnListingViewTypeChangeListenerUseCase.invoke(listener)
+    }
+
+    fun removeOnListingViewTypeChangeListener(listener: SharedPrefLocalSource.OnChangeListener<Int>) {
+        removeOnListingViewTypeChangeListenerUseCase.invoke(listener)
+    }
+
+    suspend fun clearCollectibleFilters() {
+        clearCollectibleFiltersPreferencesUseCase.invoke()
+    }
+
+    suspend fun saveNFTListingViewTypePreference(nftListingViewType: NFTListingViewType) {
+        saveNFTListingViewTypePreferenceUseCase.invoke(nftListingViewType)
     }
 
     protected fun createCollectibleListItem(
         accountAssetData: BaseAccountAssetData,
-        isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String
+        optedInAccountAddress: String,
+        nftListingType: NFTListingViewType,
+        isOwnedByWatchAccount: Boolean
     ): BaseCollectibleListItem.BaseCollectibleItem? {
         return when (accountAssetData) {
             is BaseOwnedCollectibleData -> {
-                createOwnedCollectibleListItem(accountAssetData, isOwnedByTheUser, optedInAccountAddress)
+                createOwnedCollectibleListItem(
+                    accountAssetData = accountAssetData,
+                    optedInAccountAddress = optedInAccountAddress,
+                    nftListingType = nftListingType,
+                    isOwnedByWatchAccount = isOwnedByWatchAccount
+                )
             }
-            is PendingDeletionCollectibleData -> {
-                createPendingDeletionCollectibleListItem(accountAssetData, optedInAccountAddress)
-            }
-            is PendingAdditionCollectibleData -> {
-                createPendingAdditionCollectibleListItem(accountAssetData, optedInAccountAddress)
-            }
-            is PendingSendingCollectibleData -> {
-                createPendingSentCollectibleListItem(accountAssetData, optedInAccountAddress)
+            is BasePendingCollectibleData -> {
+                createPendingCollectibleListItem(
+                    pendingCollectibleData = accountAssetData,
+                    optedInAccountAddress = optedInAccountAddress,
+                    nftListingType = nftListingType
+                )
             }
             else -> null
         }
     }
 
-    protected fun isAllCollectiblesFilteredOut(collectibleListData: BaseCollectibleListData): Boolean {
+    protected fun isAllCollectiblesFilteredOut(
+        collectibleListData: BaseCollectibleListData,
+        searchKeyword: String
+    ): Boolean {
         return with(collectibleListData) {
-            displayedCollectibleCount == 0 && filteredOutCollectibleCount > 0
+            displayedCollectibleCount == 0 && filteredOutCollectibleCount > 0 && searchKeyword.isBlank()
         }
     }
 
-    protected fun shouldFilterOutBasedOnSearch(searchKeyword: String, collectibleData: BaseAccountAssetData): Boolean {
+    protected fun filterNFTBaseOnSearch(searchKeyword: String, collectibleData: BaseAccountAssetData): Boolean {
         return with(collectibleData) {
             name?.contains(searchKeyword, ignoreCase = true) != true &&
                 shortName?.contains(searchKeyword, ignoreCase = true) != true &&
@@ -69,88 +103,72 @@ open class BaseCollectiblesListingPreviewUseCase(
         }
     }
 
+    protected suspend fun filterOptedInNFTIfNeed(
+        accountDetail: AccountDetail?,
+        nftData: BaseAccountAssetData
+    ): Boolean {
+        return shouldDisplayOptedInNFTPreferenceUseCase() ||
+            collectibleUtils.isCollectibleOwnedByTheUser(accountDetail, nftData.id)
+    }
+
     private fun createOwnedCollectibleListItem(
         accountAssetData: BaseOwnedCollectibleData,
-        isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String
+        optedInAccountAddress: String,
+        nftListingType: NFTListingViewType,
+        isOwnedByWatchAccount: Boolean
     ): BaseCollectibleListItem.BaseCollectibleItem {
         with(collectibleListingItemMapper) {
             with(accountAssetData) {
                 val isAmountVisible = accountAssetData.amount > BigInteger.ONE
-                return when (this) {
-                    is BaseOwnedCollectibleData.OwnedCollectibleImageData -> {
-                        mapToImageItem(this, isOwnedByTheUser, optedInAccountAddress, isAmountVisible)
-                    }
-                    is BaseOwnedCollectibleData.OwnedCollectibleVideoData -> {
-                        mapToVideoItem(this, isOwnedByTheUser, optedInAccountAddress, isAmountVisible)
-                    }
-                    is BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData -> {
-                        mapToNotSupportedItem(this, isOwnedByTheUser, optedInAccountAddress, isAmountVisible)
-                    }
-                    is BaseOwnedCollectibleData.OwnedCollectibleMixedData -> {
-                        mapToMixedItem(this, isOwnedByTheUser, optedInAccountAddress, isAmountVisible)
-                    }
-                    is BaseOwnedCollectibleData.OwnedCollectibleAudioData -> {
-                        mapToAudioItem(this, isOwnedByTheUser, optedInAccountAddress, isAmountVisible)
-                    }
-                }
+                return mapToSimpleNFTItem(
+                    collectible = this,
+                    optedInAccountAddress = optedInAccountAddress,
+                    isAmountVisible = isAmountVisible,
+                    nftListingViewType = nftListingType,
+                    isOptedIn = accountAssetData.isOwnedByTheUser,
+                    isOwnedByWatchAccount = isOwnedByWatchAccount
+                )
             }
         }
     }
 
-    private fun createPendingAdditionCollectibleListItem(
-        pendingCollectibleData: PendingAdditionCollectibleData,
-        optedInAccountAddress: String
-    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem {
+    private fun createPendingCollectibleListItem(
+        pendingCollectibleData: BasePendingCollectibleData,
+        optedInAccountAddress: String,
+        nftListingType: NFTListingViewType,
+    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingNFTItem {
         with(pendingCollectibleData) {
-            return collectibleListingItemMapper.mapToPendingAdditionItem(this, optedInAccountAddress)
+            return collectibleListingItemMapper.mapToSimplePendingNFTItem(
+                collectible = this,
+                optedInAccountAddress = optedInAccountAddress,
+                nftListingViewType = nftListingType
+            )
         }
     }
 
-    private fun createPendingDeletionCollectibleListItem(
-        pendingCollectibleData: PendingDeletionCollectibleData,
-        optedInAccountAddress: String
-    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem {
-        with(pendingCollectibleData) {
-            return collectibleListingItemMapper.mapToPendingRemovalItem(this, optedInAccountAddress)
-        }
-    }
-
-    private fun createPendingSentCollectibleListItem(
-        pendingCollectibleData: PendingSendingCollectibleData,
-        optedInAccountAddress: String
-    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem {
-        with(pendingCollectibleData) {
-            return collectibleListingItemMapper.mapToPendingSendingItem(this, optedInAccountAddress)
-        }
-    }
-
-    protected fun createTitleTextViewItem(isVisible: Boolean): BaseCollectibleListItem.TitleTextViewItem {
-        return collectibleListingItemMapper.mapToTitleTextItem(isVisible = isVisible)
+    protected fun createTitleTextViewItem(): BaseCollectibleListItem.TitleTextViewItem {
+        return collectibleListingItemMapper.mapToTitleTextItem()
     }
 
     protected fun createSearchViewItem(
-        isVisible: Boolean,
-        @StringRes searchViewHintResId: Int = R.string.search_your_nfts,
-        query: String
+        @StringRes searchViewHintResId: Int = R.string.search_nfts,
+        query: String,
+        nftListingType: NFTListingViewType?
     ): BaseCollectibleListItem.SearchViewItem {
         return collectibleListingItemMapper.mapToSearchViewItem(
             searchViewHintResId = searchViewHintResId,
-            isVisible = isVisible,
-            query = query
+            query = query,
+            onLinearListViewSelectedEvent = if (nftListingType == LINEAR_VERTICAL) Event(Unit) else null,
+            onGridListViewSelectedEvent = if (nftListingType == GRID) Event(Unit) else null
         )
     }
 
     protected fun createInfoViewItem(
         displayedCollectibleCount: Int,
-        isVisible: Boolean,
-        isFilterActive: Boolean,
         isAddButtonVisible: Boolean
     ): BaseCollectibleListItem.InfoViewItem {
         return collectibleListingItemMapper.mapToInfoViewItem(
             displayedCollectibleCount = displayedCollectibleCount,
-            isVisible = isVisible,
-            isFilterActive = isFilterActive,
             isAddButtonVisible = isAddButtonVisible
         )
     }

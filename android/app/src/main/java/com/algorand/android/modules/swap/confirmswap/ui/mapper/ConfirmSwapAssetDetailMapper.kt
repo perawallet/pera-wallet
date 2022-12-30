@@ -29,15 +29,13 @@ class ConfirmSwapAssetDetailMapper @Inject constructor(
         formattedAmount: String,
         formattedApproximateValue: String,
         shortName: AssetName,
-        verificationTier: VerificationTier,
-        logoUrl: String?
+        verificationTier: VerificationTier
     ): ConfirmSwapPreview.SwapAssetDetail {
         return ConfirmSwapPreview.SwapAssetDetail(
             formattedAmount = formattedAmount,
             formattedApproximateValue = formattedApproximateValue,
             shortName = shortName,
             assetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(assetId),
-            logoUrl = logoUrl,
             verificationTierConfig = verificationTierConfigurationDecider.decideVerificationTierConfiguration(
                 verificationTier
             )

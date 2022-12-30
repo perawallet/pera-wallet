@@ -19,7 +19,8 @@ import javax.inject.Inject
 class AccountSelectionListUseCase @Inject constructor(
     private val getAccountSelectionAccountsItemUseCase: GetAccountSelectionAccountsItemUseCase,
     private val getAccountSelectionContactsItemUseCase: GetAccountSelectionContactsItemUseCase,
-    private val getAccountSelectionNftDomainItemsUseCase: GetAccountSelectionNftDomainItemsUseCase
+    private val getAccountSelectionNftDomainItemsUseCase: GetAccountSelectionNftDomainItemsUseCase,
+    private val createAccountSelectionAccountItemUseCase: CreateAccountSelectionAccountItemUseCase
 ) {
     suspend fun createAccountSelectionListAccountItems(
         showHoldings: Boolean,
@@ -55,5 +56,14 @@ class AccountSelectionListUseCase @Inject constructor(
         query: String
     ): List<BaseAccountSelectionListItem.BaseAccountItem> {
         return getAccountSelectionNftDomainItemsUseCase.getAccountSelectionNftDomainAccounts(query)
+    }
+
+    fun createAccountSelectionItemFromAccountAddress(
+        accountAddress: String?
+    ): BaseAccountSelectionListItem.BaseAccountItem.AccountItem? {
+        if (accountAddress.isNullOrBlank()) return null
+        return createAccountSelectionAccountItemUseCase.createAccountSelectionAccountItemFromAccountAddress(
+            accountAddress
+        )
     }
 }

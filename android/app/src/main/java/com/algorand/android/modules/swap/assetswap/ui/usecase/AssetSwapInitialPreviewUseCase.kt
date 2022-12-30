@@ -20,6 +20,7 @@ import com.algorand.android.modules.swap.assetswap.ui.mapper.SelectedAssetAmount
 import com.algorand.android.modules.swap.assetswap.ui.mapper.SelectedAssetDetailMapper
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.usecase.AccountAssetDataUseCase
+import com.algorand.android.usecase.CheckUserHasAssetBalanceUseCase
 import com.algorand.android.utils.emptyString
 import javax.inject.Inject
 
@@ -29,6 +30,7 @@ class AssetSwapInitialPreviewUseCase @Inject constructor(
     private val selectedAssetAmountDetailMapper: SelectedAssetAmountDetailMapper,
     private val accountDetailSummaryUseCase: AccountDetailSummaryUseCase,
     private val assetSwapPreviewMapper: AssetSwapPreviewMapper,
+    private val checkUserHasAssetBalanceUseCase: CheckUserHasAssetBalanceUseCase,
     private val displayedCurrencyUseCase: DisplayedCurrencyUseCase
 ) {
 
@@ -47,6 +49,7 @@ class AssetSwapInitialPreviewUseCase @Inject constructor(
             primaryCurrencySymbol = displayedCurrencyUseCase.getDisplayedCurrencySymbol()
         )
         val accountDetailSummary = accountDetailSummaryUseCase.getAccountDetailSummary(accountAddress)
+        // TODO update isSwitchAssetsButtonEnabled when we merge tinyman-swap-2
         return assetSwapPreviewMapper.mapToAssetSwapPreview(
             accountDisplayName = accountDetailSummary.accountDisplayName,
             accountIconResource = accountDetailSummary.accountIconResource,
@@ -56,7 +59,11 @@ class AssetSwapInitialPreviewUseCase @Inject constructor(
             isLoadingVisible = false,
             fromSelectedAssetAmountDetail = fromSelectedAssetAmountDetail,
             toSelectedAssetAmountDetail = toSelectedAssetAmountDetail,
-            isSwitchAssetsButtonEnabled = toAssetDetail != null,
+            isSwitchAssetsButtonEnabled = if (toAssetId == null) {
+                false
+            } else {
+                checkUserHasAssetBalanceUseCase.hasUserAssetBalance(accountAddress, toAssetId)
+            },
             isMaxAndPercentageButtonEnabled = toAssetDetail != null,
             errorEvent = null,
             swapQuote = null,
@@ -86,7 +93,6 @@ class AssetSwapInitialPreviewUseCase @Inject constructor(
             formattedBalance = ownedAssetData.formattedAmount,
             assetShortName = ownedAssetData.shortName,
             verificationTier = ownedAssetData.verificationTier,
-            logoUrl = ownedAssetData.prismUrl,
             assetDecimal = ownedAssetData.decimals
         )
     }

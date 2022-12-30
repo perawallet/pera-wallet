@@ -136,7 +136,7 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(R.layout.bottom_sheet
     private fun navigateToFallbackBrowserSelectionBottomSheet(fallbackBrowserGroupResponse: String) {
         nav(
             WalletConnectConnectionBottomSheetDirections
-                .actionWalletConnectConnectionBottomSheetToFallbackBrowserSelectionBottomSheet(
+                .actionWalletConnectConnectionBottomSheetToWalletConnectConnectedFallbackBrowserSelectionBottomSheet(
                     browserGroup = fallbackBrowserGroupResponse,
                     peerMetaName = walletConnectConnectionViewModel.peerMetaName
                 )
@@ -166,7 +166,7 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(R.layout.bottom_sheet
     }
 
     private fun handleFallbackBrowserNavigation(fallbackBrowserGroupResponse: String?) {
-        if ((activity as? MainActivity)?.isDiscoverActive() == true) {
+        if ((activity as? MainActivity)?.isBasePeraWebViewFragmentActive() == true) {
             dismiss()
         } else {
             fallbackBrowserGroupResponse?.let {

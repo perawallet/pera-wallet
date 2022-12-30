@@ -13,12 +13,24 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/background" />
-            <stroke
-                android:width="1dp"
-                android:color="@color/layer_gray" />
-            <!-- TODO update here when color in design is ready -->
+            <solid android:color="@color/white" />
         </shape>
     </item>
-    <item android:drawable="@drawable/ic_close" />
+    <item
+        android:bottom="@dimen/spacing_xxsmall"
+        android:end="@dimen/spacing_xxsmall"
+        android:start="@dimen/spacing_xxsmall"
+        android:top="@dimen/spacing_xxsmall">
+        <vector
+            android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <path
+                android:fillColor="#00000000"
+                android:pathData="M18,6L12,12M12,12L6,18M12,12L18,18M12,12L6,6"
+                android:strokeWidth="2"
+                android:strokeColor="@color/gray_900" />
+        </vector>
+    </item>
 </layer-list>

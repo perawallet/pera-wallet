@@ -57,8 +57,8 @@ class AccountCollectibleDataUseCase @Inject constructor(
     fun getAccountAllCollectibleDataFlow(publicKey: String): Flow<List<BaseAccountAssetData>> {
         return accountDetailUseCase.getAccountDetailCacheFlow()
             .mapNotNull { it.getOrDefault(publicKey, null)?.data }
-            .distinctUntilChanged()
             .mapNotNull { account -> createAccountAllCollectibleDataList(account) }
+            .distinctUntilChanged()
     }
 
     fun getAccountOwnedCollectibleDataFlow(publicKey: String): Flow<List<BaseOwnedCollectibleData>> {
@@ -78,8 +78,8 @@ class AccountCollectibleDataUseCase @Inject constructor(
     fun getAllAccountsAllCollectibleDataFlow(): Flow<List<Pair<AccountDetail, List<BaseAccountAssetData>>>> {
         return accountDetailUseCase.getAccountDetailCacheFlow()
             .mapNotNull { accounts -> accounts.values.mapNotNull { it.data } }
-            .distinctUntilChanged()
             .mapNotNull { account -> createAllAccountsAllCollectibleDataList(account) }
+            .distinctUntilChanged()
     }
 
     private fun createAllAccountsAllCollectibleDataList(
@@ -135,6 +135,7 @@ class AccountCollectibleDataUseCase @Inject constructor(
         }
     }
 
+    @SuppressWarnings("LongMethod")
     private fun createCollectibleData(
         assetHolding: AssetHolding,
         collectibleItem: SimpleCollectibleDetail

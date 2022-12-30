@@ -65,8 +65,10 @@ class AccountAssetStatusUpdateHelper @Inject constructor(
     ): AccountDetail {
         return accountDetail.apply {
             pendingAssetSendings.forEach { assetHolding ->
-                if (!accountInformation.assetHoldingList.any { it.assetId == assetHolding.assetId }) {
-                    accountInformation.addPendingAssetHolding(assetHolding)
+                val fetchedAssetHolding =
+                    accountInformation.assetHoldingList.firstOrNull { it.assetId == assetHolding.assetId }
+                if (fetchedAssetHolding != null && fetchedAssetHolding.amount.isEqualTo(assetHolding.amount)) {
+                    fetchedAssetHolding.status = assetHolding.status
                 }
             }
         }

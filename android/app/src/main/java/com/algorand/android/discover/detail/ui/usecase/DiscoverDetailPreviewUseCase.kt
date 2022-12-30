@@ -19,10 +19,12 @@ import com.algorand.android.discover.detail.domain.model.DetailActionRequest
 import com.algorand.android.discover.detail.ui.DiscoverDetailFragmentDirections
 import com.algorand.android.discover.detail.ui.mapper.BuySellActionRequestMapper
 import com.algorand.android.discover.detail.ui.model.BuySellActionRequest
+import com.algorand.android.discover.detail.ui.model.DiscoverDetailAction
 import com.algorand.android.discover.detail.ui.model.DiscoverDetailPreview
 import com.algorand.android.discover.home.domain.model.TokenDetailInfo
 import com.algorand.android.modules.swap.assetswap.data.utils.getSafeAssetIdForResponse
 import com.algorand.android.modules.swap.utils.DiscoverSwapNavigationDestinationHelper
+import com.algorand.android.modules.tracking.discover.detail.DiscoverDetailEventTracker
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.fromJson
 import com.algorand.android.utils.preference.getSavedThemePreference
@@ -33,6 +35,7 @@ class DiscoverDetailPreviewUseCase @Inject constructor(
     private val buySellActionRequestMapper: BuySellActionRequestMapper,
     private val sharedPreferences: SharedPreferences,
     private val discoverSwapNavigationDestinationHelper: DiscoverSwapNavigationDestinationHelper,
+    private val discoverDetailEventTracker: DiscoverDetailEventTracker,
     private val gson: Gson
 ) {
 
@@ -61,11 +64,23 @@ class DiscoverDetailPreviewUseCase @Inject constructor(
         loadingErrorEvent = Event(WebViewError.HTTP_ERROR)
     )
 
+    suspend fun logTokenDetailActionButtonClick(data: String) {
+        val detailActionRequest = getDetailActionRequestFromJson(data)
+
+        detailActionRequest?.let {
+            logDetailAction(
+                detailActionRequest = it,
+                assetIn = getSafeAssetIdForResponse(it.assetIn?.toLongOrNull()) ?: -1,
+                assetOut = getSafeAssetIdForResponse(it.assetOut?.toLongOrNull()) ?: -1
+            )
+        }
+    }
+
     suspend fun handleTokenDetailActionButtonClick(
         data: String,
         previousState: DiscoverDetailPreview
     ): DiscoverDetailPreview {
-        val detailActionRequest = gson.fromJson<DetailActionRequest>(data)
+        val detailActionRequest = getDetailActionRequestFromJson(data)
 
         val buySellActionRequest = buySellActionRequestMapper.mapToBuySellActionRequest(
             assetInId = getSafeAssetIdForResponse(detailActionRequest?.assetIn?.toLongOrNull()) ?: -1,
@@ -101,5 +116,31 @@ class DiscoverDetailPreviewUseCase @Inject constructor(
         return swapNavDirection?.let { direction ->
             previousState.copy(buySellActionEvent = Event(direction))
         } ?: previousState
+    }
+
+    private fun getDetailActionRequestFromJson(data: String): DetailActionRequest? {
+        return gson.fromJson<DetailActionRequest>(data)
+    }
+
+    private suspend fun logDetailAction(
+        detailActionRequest: DetailActionRequest,
+        assetIn: Long,
+        assetOut: Long
+    ) {
+        when (detailActionRequest.action) {
+            DiscoverDetailAction.BUY_ALGO, DiscoverDetailAction.SWAP_TO_TOKEN -> {
+                discoverDetailEventTracker.logTokenDetailBuyEvent(
+                    assetIn = assetIn,
+                    assetOut = assetOut
+                )
+            }
+            DiscoverDetailAction.SWAP_FROM_ALGO, DiscoverDetailAction.SWAP_FROM_TOKEN -> {
+                discoverDetailEventTracker.logTokenDetailSellEvent(
+                    assetIn = assetIn,
+                    assetOut = assetOut
+                )
+            }
+            else -> {}
+        }
     }
 }

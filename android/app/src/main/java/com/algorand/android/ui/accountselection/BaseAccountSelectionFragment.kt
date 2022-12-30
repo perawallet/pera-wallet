@@ -39,6 +39,8 @@ abstract class BaseAccountSelectionFragment : BaseFragment(R.layout.fragment_bas
 
     protected abstract fun initObservers()
 
+    protected open fun onNftDomainSelected(accountAddress: String, nftDomainName: String, nftDomainLogoUrl: String?) {}
+
     protected open fun onCopiedItemHandled(copiedMessage: String?) {}
 
     protected open fun setTitleTextView(textView: TextView) {}
@@ -62,6 +64,10 @@ abstract class BaseAccountSelectionFragment : BaseFragment(R.layout.fragment_bas
 
         override fun onContactItemClick(publicKey: String) {
             onAccountSelected(publicKey)
+        }
+
+        override fun onNftDomainItemClick(accountAddress: String, nftDomain: String, logoUrl: String?) {
+            onNftDomainSelected(accountAddress, nftDomain, logoUrl)
         }
 
         override fun onPasteItemClick(publicKey: String) {

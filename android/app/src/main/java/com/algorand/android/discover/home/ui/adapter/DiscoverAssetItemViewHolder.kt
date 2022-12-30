@@ -14,7 +14,6 @@ package com.algorand.android.discover.home.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration.Companion.DEFAULT_TEXT_COLOR_RES_ID
@@ -33,8 +32,7 @@ class DiscoverAssetItemViewHolder(
         with(item) {
             setAssetStartIconDrawable(
                 assetDrawableProvider = baseAssetDrawableProvider,
-                assetName = fullName,
-                prismUrl = prismUrl
+                assetName = fullName
             )
             setAssetTitleText(fullName.getName(binding.root.resources))
             setAssetDescriptionText(shortName.getName(binding.root.resources), assetId)
@@ -46,23 +44,13 @@ class DiscoverAssetItemViewHolder(
         }
     }
 
-    private fun setAssetStartIconDrawable(
-        assetDrawableProvider: BaseAssetDrawableProvider?,
-        assetName: AssetName?,
-        prismUrl: String?
-    ) {
+    private fun setAssetStartIconDrawable(assetDrawableProvider: BaseAssetDrawableProvider?, assetName: AssetName?) {
         with(binding.statefulAssetItemView) {
-            setStartIconDrawable(drawable = null, forceShow = true)
             if (assetName == null) return
-            getStartIconImageView().doOnLayout {
-                assetDrawableProvider?.provideAssetDrawable(
-                    context = context,
-                    assetName = assetName,
-                    logoUri = prismUrl,
-                    width = it.measuredWidth,
-                    onResourceReady = ::setStartIconDrawable
-                )
-            }
+            assetDrawableProvider?.provideAssetDrawable(
+                imageView = getStartIconImageView(),
+                onResourceFailed = ::setStartIconDrawable
+            )
         }
     }
 

@@ -67,7 +67,11 @@ class AccountsQrScannerFragment : BaseQrScannerFragment(R.id.accountsQrScannerFr
                 showMaxAccountLimitExceededError()
                 return@also
             }
-            nav(AccountsQrScannerFragmentDirections.actionAccountsQrScannerFragmentToLoginNavigation(mnemonic = mnemonic))
+            nav(
+                AccountsQrScannerFragmentDirections.actionAccountsQrScannerFragmentToRecoverWithPassphraseNavigation(
+                    mnemonic = mnemonic
+                )
+            )
         }
     }
 
@@ -85,7 +89,11 @@ class AccountsQrScannerFragment : BaseQrScannerFragment(R.id.accountsQrScannerFr
 
     override fun onAssetOptInDeepLink(assetAction: AssetAction): Boolean {
         return true.also {
-            nav(HomeNavigationDirections.actionGlobalAddAssetAccountSelectionFragment(assetAction.assetId))
+            nav(
+                AccountsQrScannerFragmentDirections.actionAccountsQrScannerFragmentToAddAssetAccountSelectionFragment(
+                    assetId = assetAction.assetId
+                )
+            )
         }
     }
 

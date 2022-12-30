@@ -45,7 +45,9 @@ class AlgoAssetInformationProvider @Inject constructor() {
                 assetDescription = null,
                 totalSupply = algoTotalSupply,
                 url = ALGORAND_WEBSITE_URL,
-                maxSupply = null
+                maxSupply = null,
+                last24HoursAlgoPriceChangePercentage = null,
+                isAvailableOnDiscoverMobile = true
             )
         )
     }

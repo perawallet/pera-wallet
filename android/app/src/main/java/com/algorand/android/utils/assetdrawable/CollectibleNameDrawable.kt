@@ -53,7 +53,7 @@ class CollectibleNameDrawable(val collectibleName: String, val width: Int) {
         initTextColor(context)
         val backgroundColor = ContextCompat.getColor(context, backgroundColor)
         val rectBackgroundColor = ContextCompat.getColor(context, R.color.primary_background)
-        val cornerRadius = context.resources.getDimension(R.dimen.collectible_image_view_radius)
+        val cornerRadius = context.resources.getDimension(R.dimen.nft_image_view_radius)
         return RoundRectTextDrawable(
             backgroundColor = backgroundColor,
             radiusAsPx = cornerRadius,

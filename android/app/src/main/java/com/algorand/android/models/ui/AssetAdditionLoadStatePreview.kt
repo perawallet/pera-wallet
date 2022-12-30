@@ -13,12 +13,10 @@
 package com.algorand.android.models.ui
 
 import com.algorand.android.models.ScreenState
-import com.algorand.android.utils.Event
 
 data class AssetAdditionLoadStatePreview(
     val isScreenStateViewVisible: Boolean,
     val isAssetListVisible: Boolean,
     val screenStateViewType: ScreenState?,
-    val isLoading: Boolean,
-    val onRetryEvent: Event<Unit>?
+    val isLoading: Boolean
 )

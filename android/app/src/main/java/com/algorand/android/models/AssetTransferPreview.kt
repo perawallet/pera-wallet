@@ -24,5 +24,6 @@ data class AssetTransferPreview(
     val exchangePrice: BigDecimal,
     val currencySymbol: String,
     val fee: Long,
-    val note: String? = null
+    val note: String? = null,
+    val isNoteEditable: Boolean
 )

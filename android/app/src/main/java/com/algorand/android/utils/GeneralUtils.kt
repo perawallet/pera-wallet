@@ -16,30 +16,27 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.text.InputFilter
 import android.util.Base64
-import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.algorand.android.modules.currency.domain.model.Currency
-import com.google.android.material.snackbar.Snackbar
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 
-val algoTotalSupply: BigDecimal = BigDecimal.valueOf(10_000_000_000)
-private const val MIN_BALANCE_PER_ASSET = 100000L
-val minBalancePerAssetAsBigInteger: BigInteger = BigInteger.valueOf(MIN_BALANCE_PER_ASSET)
+@Suppress("MagicNumber")
+val algoTotalSupply: BigDecimal = BigDecimal.valueOf(10_000_000_000L)
+
+@Suppress("MagicNumber")
+val minBalancePerAssetAsBigInteger: BigInteger = BigInteger.valueOf(100_000L)
+
 const val MIN_FEE = 1000L
 const val DATA_SIZE_FOR_MAX = 270
 const val ROUND_THRESHOLD = 1000L
 const val SHORTENED_ADDRESS_LETTER_COUNT = 6
-
-fun showSnackbar(text: String, rootView: View, actionSetup: Snackbar.() -> Unit = {}) {
-    Snackbar.make(rootView, text, Snackbar.LENGTH_SHORT).apply { actionSetup() }.also { it.show() }
-}
 
 fun DialogFragment.showWithStateCheck(fragmentManager: FragmentManager?, tag: String = "") {
     if (fragmentManager != null && fragmentManager.isStateSaved.not()) {

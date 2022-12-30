@@ -52,18 +52,18 @@ class RemoveAssetsPreviewUseCase @Inject constructor(
             }.run { assetItemSortUseCase.sortAssets(this) }
 
             val removableAssetList = mutableListOf<BaseRemoveAssetItem>().apply {
-                add(removeAssetItemMapper.mapToTitleItem(R.string.remove_assets))
-                add(removeAssetItemMapper.mapToDescriptionItem(R.string.to_remove_an_asset))
+                add(removeAssetItemMapper.mapToTitleItem(R.string.asset_opt_out))
+                add(removeAssetItemMapper.mapToDescriptionItem(R.string.to_opt_out_from_an_asset))
                 if (shouldAddSearchView(sortedRemovableListItems, query)) {
                     add(removeAssetItemMapper.mapToSearchItem(R.string.search_my_assets))
                 }
                 addAll(sortedRemovableListItems)
+                getScreenStateOrNull(sortedRemovableListItems, query)?.let {
+                    add(removeAssetItemMapper.mapToScreenStateItem(it))
+                }
             }
 
-            removeAssetsPreviewMapper.mapToRemoveAssetsPreview(
-                removableAssetList = removableAssetList,
-                screenState = getScreenStateOrNull(sortedRemovableListItems, query)
-            )
+            removeAssetsPreviewMapper.mapToRemoveAssetsPreview(removableAssetList = removableAssetList)
         }
     }
 
@@ -74,7 +74,7 @@ class RemoveAssetsPreviewUseCase @Inject constructor(
     ): List<BaseRemovableItem> {
         return accountOwnedAssets.mapNotNull {
             if (it.name?.contains(query, true) == true && it.creatorPublicKey != accountAddress) {
-                removeAssetItemMapper.mapTo(
+                removeAssetItemMapper.mapToRemoveAssetItem(
                     ownedAssetData = it,
                     actionItemButtonState = AccountAssetItemButtonState.REMOVAL
                 )
@@ -93,25 +93,25 @@ class RemoveAssetsPreviewUseCase @Inject constructor(
             if (it.name?.contains(query, true) == true && it.creatorPublicKey != accountAddress) {
                 when (it) {
                     is OwnedCollectibleImageData -> {
-                        removeAssetItemMapper.mapTo(
+                        removeAssetItemMapper.mapToRemoveCollectibleImageItem(
                             ownedCollectibleImageData = it,
                             actionItemButtonState = AccountAssetItemButtonState.REMOVAL
                         )
                     }
                     is OwnedUnsupportedCollectibleData -> {
-                        removeAssetItemMapper.mapTo(
+                        removeAssetItemMapper.mapToRemoveNotSupportedCollectibleItem(
                             ownedUnsupportedCollectibleData = it,
                             actionItemButtonState = AccountAssetItemButtonState.REMOVAL
                         )
                     }
                     is OwnedCollectibleVideoData -> {
-                        removeAssetItemMapper.mapTo(
+                        removeAssetItemMapper.mapToRemoveCollectibleVideoItem(
                             ownedCollectibleImageData = it,
                             actionItemButtonState = AccountAssetItemButtonState.REMOVAL
                         )
                     }
                     is OwnedCollectibleMixedData -> {
-                        removeAssetItemMapper.mapTo(
+                        removeAssetItemMapper.mapToRemoveCollectibleMixedItem(
                             ownedCollectibleMixedData = it,
                             actionItemButtonState = AccountAssetItemButtonState.REMOVAL
                         )

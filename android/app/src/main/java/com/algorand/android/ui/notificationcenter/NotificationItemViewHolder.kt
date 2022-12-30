@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemNotificationBinding
 import com.algorand.android.models.NotificationListItem
+import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import com.algorand.android.utils.getRelativeTimeDifference
 import java.time.ZonedDateTime
 
@@ -32,7 +33,8 @@ class NotificationItemViewHolder(
                 message = message
             )
             setAvatar(
-                isFailed = isFailed
+                isFailed = isFailed,
+                baseAssetDrawableProvider = baseAssetDrawableProvider
             )
             setDate(
                 time = creationDateTime,
@@ -45,14 +47,15 @@ class NotificationItemViewHolder(
         }
     }
 
-    private fun setAvatar(
-        isFailed: Boolean
-    ) {
+    private fun setAvatar(isFailed: Boolean, baseAssetDrawableProvider: BaseAssetDrawableProvider) {
         with(binding.avatarImageView) {
             if (isFailed) {
                 setImageResource(R.drawable.ic_default_failed_notification)
             } else {
-                setImageResource(R.drawable.ic_algo_green_round)
+                baseAssetDrawableProvider.provideAssetDrawable(
+                    imageView = this,
+                    onResourceFailed = { setImageDrawable(it) }
+                )
             }
         }
     }

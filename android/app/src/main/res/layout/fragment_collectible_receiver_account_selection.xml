@@ -22,32 +22,52 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_small"
-        android:text="@string/receive_an_nft"
+        android:text="@string/opt_in_to_nft"
         android:textAppearance="@style/TextAppearance.Title.Sans.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/infoTextView"
-        style="@style/CollectibleOptInInfoTextStyle"
+    <LinearLayout
+        android:id="@+id/optInInfoLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_normal"
-        android:text="@string/your_account_needs_to_be"
+        android:background="@drawable/bg_collectible_opt_in_info"
+        android:padding="@dimen/spacing_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+        app:layout_constraintTop_toBottomOf="@id/titleTextView">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_info"
+            app:tint="@color/positive" />
+
+        <TextView
+            android:id="@+id/infoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xsmall"
+            android:text="@string/you_need_to_opt_in_to"
+            android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
+            android:textColor="@color/positive" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/descriptionTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
         android:text="@string/select_the_wallet_account"
         android:textColor="@color/secondary_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/infoTextView" />
+        app:layout_constraintTop_toBottomOf="@id/optInInfoLinearLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/accountsRecyclerView"

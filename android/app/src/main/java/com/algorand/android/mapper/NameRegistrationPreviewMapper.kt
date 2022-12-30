@@ -48,7 +48,7 @@ class NameRegistrationPreviewMapper @Inject constructor() {
 
     fun mapToAccountAlreadyExistsPreview(): NameRegistrationPreview {
         return NameRegistrationPreview(
-            accountAlreadyExistsEvent = Event(null),
+            accountAlreadyExistsEvent = Event(Unit),
             updateWatchAccountEvent = null,
             createAccountEvent = null,
             handleNextNavigationEvent = null

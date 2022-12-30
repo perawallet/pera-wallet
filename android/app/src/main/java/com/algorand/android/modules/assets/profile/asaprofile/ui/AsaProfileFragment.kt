@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
+import com.algorand.android.discover.home.domain.model.TokenDetailInfo
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetActionResult
 import com.algorand.android.models.AssetTransaction
@@ -88,6 +89,17 @@ class AsaProfileFragment : BaseAsaProfileFragment() {
 
     override fun onAccountSelected(selectedAccountAddress: String) {
         asaProfileViewModel.setSelectedAccountAddress(selectedAccountAddress)
+    }
+
+    override fun navToDiscoverTokenDetailPage() {
+        nav(
+            AsaProfileFragmentDirections.actionAsaProfileFragmentToDiscoverDetailNavigation(
+                TokenDetailInfo(
+                    tokenId = asaProfileViewModel.assetId.toString(),
+                    poolId = null
+                )
+            )
+        )
     }
 
     override fun navToAccountSelection() {

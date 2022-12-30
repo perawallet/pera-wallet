@@ -208,7 +208,7 @@
             app:layout_constraintTop_toBottomOf="@id/transactionFeeLabel"
             app:layout_goneMarginStart="@dimen/spacing_xlarge"
             app:layout_goneMarginTop="@dimen/spacing_xlarge"
-            tools:text="@string/adding_an_asset" />
+            tools:text="@string/before_interacting_with" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/positiveButton"

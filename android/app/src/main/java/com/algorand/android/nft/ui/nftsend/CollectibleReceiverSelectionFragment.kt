@@ -17,10 +17,11 @@ import com.algorand.android.R
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.CollectibleReceiverSelectionPreview
+import com.algorand.android.nft.ui.model.CollectibleReceiverSelectionResult
 import com.algorand.android.nft.ui.nftsend.CollectibleReceiverSelectionQrScannerFragment.Companion.ACCOUNT_ADDRESS_SCAN_RESULT_KEY
 import com.algorand.android.ui.accountselection.BaseAccountSelectionFragment
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
-import com.algorand.android.utils.setNavigationResult
+import com.algorand.android.utils.setFragmentNavigationResult
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,7 +61,22 @@ class CollectibleReceiverSelectionFragment : BaseAccountSelectionFragment() {
     }
 
     override fun onAccountSelected(publicKey: String) {
-        setNavigationResult(ACCOUNT_PUBLIC_KEY_KEY, publicKey)
+        setFragmentNavigationResult(
+            key = COLLECTIBLE_RECEIVER_ACCOUNT_SELECTION_RESULT_KEY,
+            value = CollectibleReceiverSelectionResult.AccountSelectionResult(publicKey)
+        )
+        navBack()
+    }
+
+    override fun onNftDomainSelected(accountAddress: String, nftDomainName: String, nftDomainLogoUrl: String?) {
+        setFragmentNavigationResult(
+            key = COLLECTIBLE_RECEIVER_NFT_DOMAIN_SELECTION_RESULT_KEY,
+            value = CollectibleReceiverSelectionResult.NftDomainSelectionResult(
+                accountAddress = accountAddress,
+                nftDomainName = nftDomainName,
+                nftDomainLogoUrl = nftDomainLogoUrl
+            )
+        )
         navBack()
     }
 
@@ -72,7 +88,7 @@ class CollectibleReceiverSelectionFragment : BaseAccountSelectionFragment() {
     }
 
     override fun onCopiedItemHandled(copiedMessage: String?) {
-        collectibleReceiverSelectionViewModel.updateLatestCopiedMessage(copiedMessage)
+        collectibleReceiverSelectionViewModel.updateCopiedMessage(copiedMessage)
     }
 
     override fun onResume() {
@@ -89,6 +105,7 @@ class CollectibleReceiverSelectionFragment : BaseAccountSelectionFragment() {
     }
 
     companion object {
-        const val ACCOUNT_PUBLIC_KEY_KEY = "account_public_key"
+        const val COLLECTIBLE_RECEIVER_ACCOUNT_SELECTION_RESULT_KEY = "collectible_receiver_account_selection"
+        const val COLLECTIBLE_RECEIVER_NFT_DOMAIN_SELECTION_RESULT_KEY = "collectible_receiver_nft_domain_selection"
     }
 }

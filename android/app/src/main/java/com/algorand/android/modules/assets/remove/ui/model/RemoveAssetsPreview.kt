@@ -13,9 +13,5 @@
 package com.algorand.android.modules.assets.remove.ui.model
 
 import com.algorand.android.models.BaseRemoveAssetItem
-import com.algorand.android.models.ScreenState
 
-data class RemoveAssetsPreview(
-    val removableAssetList: List<BaseRemoveAssetItem>,
-    val screenState: ScreenState.CustomState?
-)
+data class RemoveAssetsPreview(val removableAssetList: List<BaseRemoveAssetItem>)

@@ -14,26 +14,26 @@ package com.algorand.android.modules.collectibles.profile.ui.usecase
 
 import com.algorand.android.R
 import com.algorand.android.mapper.AssetActionMapper
-import com.algorand.android.models.Account
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.BaseAccountAddress
 import com.algorand.android.modules.assets.profile.asaprofile.ui.mapper.AsaStatusPreviewMapper
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.PeraButtonState
-import com.algorand.android.modules.collectibles.profile.ui.mapper.CollectibleProfileMapper
+import com.algorand.android.modules.collectibles.detail.base.domain.decider.CollectibleDetailDecider
+import com.algorand.android.modules.collectibles.detail.base.domain.usecase.GetCollectibleDetailUseCase
+import com.algorand.android.modules.collectibles.detail.base.ui.mapper.CollectibleMediaItemMapper
+import com.algorand.android.modules.collectibles.detail.base.ui.mapper.CollectibleTraitItemMapper
 import com.algorand.android.modules.collectibles.profile.ui.mapper.CollectibleProfilePreviewMapper
-import com.algorand.android.modules.collectibles.profile.ui.model.CollectibleProfile
 import com.algorand.android.modules.collectibles.profile.ui.model.CollectibleProfilePreview
-import com.algorand.android.nft.domain.model.BaseCollectibleDetail
-import com.algorand.android.nft.domain.usecase.GetCollectibleDetailUseCase
+import com.algorand.android.modules.collectibles.util.deciders.NFTAmountFormatDecider
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.nft.utils.CollectibleUtils
 import com.algorand.android.usecase.AccountAddressUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.utils.DataResource
+import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.toShortenedAddress
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 
 @SuppressWarnings("LongParameterList")
 class CollectibleProfilePreviewUseCase @Inject constructor(
@@ -42,10 +42,13 @@ class CollectibleProfilePreviewUseCase @Inject constructor(
     private val accountAddressUseCase: AccountAddressUseCase,
     private val asaStatusPreviewMapper: AsaStatusPreviewMapper,
     private val collectibleProfilePreviewMapper: CollectibleProfilePreviewMapper,
-    private val collectibleProfileMapper: CollectibleProfileMapper,
     private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
     private val assetActionMapper: AssetActionMapper,
     private val collectibleUtils: CollectibleUtils,
+    private val collectibleMediaItemMapper: CollectibleMediaItemMapper,
+    private val collectibleTraitItemMapper: CollectibleTraitItemMapper,
+    private val collectibleDetailDecider: CollectibleDetailDecider,
+    private val nftAmountFormatDecider: NFTAmountFormatDecider
 ) {
 
     fun createAssetAction(assetId: Long, accountAddress: String?): AssetAction {
@@ -60,73 +63,59 @@ class CollectibleProfilePreviewUseCase @Inject constructor(
         )
     }
 
-    fun getLoadingPreview(accountAddress: String): CollectibleProfilePreview {
-        return collectibleProfilePreviewMapper.mapToCollectibleProfilePreview(
-            isLoadingVisible = true,
-            asaStatusPreview = null,
-            collectibleProfile = null,
-            accountAddress = accountAddress
-        )
-    }
-
-    fun getCollectibleProfilePreviewFlow(
-        collectibleId: Long,
-        accountAddress: String
-    ): Flow<CollectibleProfilePreview?> {
-        return combine(
-            getCollectibleDetailUseCase.getCollectibleDetail(collectibleId),
-            accountDetailUseCase.getAccountDetailCacheFlow(accountAddress)
-        ) { baseCollectibleDetailResource, cachedAccountDetail ->
-            when (baseCollectibleDetailResource) {
-                is DataResource.Loading -> getLoadingPreview(accountAddress)
-                is DataResource.Error -> null // todo handle error case when have a design
-                is DataResource.Success -> {
+    fun getCollectibleProfilePreviewFlow(nftId: Long, accountAddress: String) = flow<CollectibleProfilePreview?> {
+        accountDetailUseCase.getAccountDetailCacheFlow(accountAddress).collect { cachedAccountDetail ->
+            val accountDetail = cachedAccountDetail?.data ?: return@collect
+            getCollectibleDetailUseCase.getCollectibleDetail(nftId).use(
+                onSuccess = { nftDetail ->
                     val isOptedInByAccount = accountDetailUseCase.isAssetOwnedByAccount(
                         publicKey = accountAddress,
-                        assetId = collectibleId
+                        assetId = nftId
                     )
                     val isOwnedByTheUser = collectibleUtils.isCollectibleOwnedByTheUser(
-                        accountDetail = cachedAccountDetail,
-                        collectibleAssetId = collectibleId
+                        accountDetail = accountDetail,
+                        collectibleAssetId = nftId
                     )
                     val asaStatusPreview = createAsaStatusPreview(
                         isUserHasCollectibleBalance = isOwnedByTheUser,
                         isCollectibleOwnedByAccount = isOptedInByAccount,
                         accountAddress = accountAddress,
-                        creatorWalletAddress = baseCollectibleDetailResource.data.assetCreator?.publicKey
+                        creatorWalletAddress = nftDetail.assetCreator?.publicKey
                     )
-                    val collectibleProfile = createCollectibleProfilePreview(
-                        baseCollectibleDetail = baseCollectibleDetailResource.data,
-                        isOwnedByTheUser = !isOptedInByAccount || isOwnedByTheUser,
-                        ownerAccountType = cachedAccountDetail?.data?.account?.type
-                    )
-                    collectibleProfilePreviewMapper.mapToCollectibleProfilePreview(
+                    val preview = collectibleProfilePreviewMapper.mapToCollectibleProfilePreview(
                         isLoadingVisible = false,
-                        collectibleProfile = collectibleProfile,
                         asaStatusPreview = asaStatusPreview,
-                        accountAddress = accountAddress
+                        accountAddress = accountAddress,
+                        nftName = AssetName.create(nftDetail.title ?: nftDetail.fullName),
+                        collectionNameOfNFT = nftDetail.collectionName,
+                        mediaListOfNFT = nftDetail.collectibleMedias?.map { nftMedia ->
+                            collectibleMediaItemMapper.mapToCollectibleMediaItem(
+                                baseCollectibleMedia = nftMedia,
+                                shouldDecreaseOpacity = !isOptedInByAccount,
+                                baseCollectibleDetail = nftDetail,
+                                showMediaButtons = true
+                            )
+                        }.orEmpty(),
+                        traitListOfNFT = nftDetail.traits?.map { collectibleTraitItemMapper.mapToTraitItem(it) },
+                        nftId = nftDetail.assetId,
+                        nftDescription = nftDetail.description,
+                        creatorAccountAddressOfNFT = nftDetail.assetCreator?.publicKey.orEmpty(),
+                        formattedCreatorAccountAddressOfNFT = nftDetail.assetCreator?.publicKey.toShortenedAddress(),
+                        formattedTotalSupply = nftAmountFormatDecider.decideNFTAmountFormat(
+                            nftAmount = nftDetail.totalSupply,
+                            fractionalDecimal = nftDetail.fractionDecimals
+                        ),
+                        peraExplorerUrl = nftDetail.explorerUrl.orEmpty(),
+                        isPureNFT = nftDetail.isPure(),
+                        primaryWarningResId = collectibleDetailDecider.decideWarningTextRes(
+                            prismUrl = nftDetail.prismUrl
+                        ),
+                        secondaryWarningResId = null
                     )
+                    emit(preview)
                 }
-            }
+            )
         }
-    }
-
-    private fun createCollectibleProfilePreview(
-        baseCollectibleDetail: BaseCollectibleDetail,
-        isOwnedByTheUser: Boolean,
-        ownerAccountType: Account.Type?
-    ): CollectibleProfile {
-
-        val errorDisplayText = baseCollectibleDetail.getErrorDisplayText()
-
-        return collectibleProfileMapper.mapToCollectibleProfile(
-            collectibleDetail = baseCollectibleDetail,
-            creatorWalletAddress = getCreatorAccountAddress(baseCollectibleDetail.assetCreator?.publicKey),
-            ownerAccountType = ownerAccountType,
-            isOwnedByTheUser = isOwnedByTheUser,
-            errorDisplayText = errorDisplayText,
-            prismUrl = getCollectiblePrismUrl(baseCollectibleDetail)
-        )
     }
 
     private fun createAsaStatusPreview(
@@ -139,7 +128,7 @@ class CollectibleProfilePreviewUseCase @Inject constructor(
             !isCollectibleOwnedByAccount -> {
                 asaStatusPreviewMapper.mapToAsaAdditionStatusPreview(
                     accountAddress = accountAddressUseCase.createAccountAddress(accountAddress),
-                    statusLabelTextResId = R.string.you_can_add_this_nft,
+                    statusLabelTextResId = R.string.you_can_opt_in_to_this_nft,
                     peraButtonState = PeraButtonState.ADDITION,
                     actionButtonTextResId = R.string.opt_dash_in
                 )
@@ -159,17 +148,5 @@ class CollectibleProfilePreviewUseCase @Inject constructor(
     private fun getCreatorAccountAddress(publicKey: String?): BaseAccountAddress.AccountAddress? {
         if (publicKey == null) return null
         return accountAddressUseCase.createAccountAddress(publicKey)
-    }
-
-    private fun getCollectiblePrismUrl(baseCollectibleDetail: BaseCollectibleDetail): String? {
-        return with(baseCollectibleDetail) {
-            when (this) {
-                is BaseCollectibleDetail.ImageCollectibleDetail -> prismUrl
-                is BaseCollectibleDetail.MixedCollectibleDetail -> thumbnailPrismUrl
-                is BaseCollectibleDetail.NotSupportedCollectibleDetail -> null
-                is BaseCollectibleDetail.VideoCollectibleDetail -> thumbnailPrismUrl
-                is BaseCollectibleDetail.AudioCollectibleDetail -> thumbnailPrismUrl
-            }
-        }
     }
 }

@@ -63,9 +63,9 @@ class PendingBaseTransactionMapper @Inject constructor() {
         receiverAddress: String?,
         amount: BigInteger,
         assetId: Long
-    ): BaseTransaction.Transaction.AssetTransfer.Send {
+    ): BaseTransaction.Transaction.AssetTransfer.BaseSend.Send {
         return with(transaction) {
-            BaseTransaction.Transaction.AssetTransfer.Send(
+            BaseTransaction.Transaction.AssetTransfer.BaseSend.Send(
                 id = null,
                 signature = signatureKey,
                 senderAddress = senderAddress,

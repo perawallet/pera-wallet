@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import com.algorand.android.assetsearch.domain.model.VerificationTier
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -38,9 +39,11 @@ abstract class BaseAssetDetail {
     abstract val totalSupply: BigDecimal?
     abstract val maxSupply: BigInteger?
     abstract val url: String?
+    abstract val last24HoursAlgoPriceChangePercentage: BigDecimal?
+    abstract val isAvailableOnDiscoverMobile: Boolean?
 
     fun hasUsdValue(): Boolean {
-        return usdValue != null
+        return usdValue != null || assetId == ALGO_ID
     }
 
     // TODO remove this function after deleting AssetInformation

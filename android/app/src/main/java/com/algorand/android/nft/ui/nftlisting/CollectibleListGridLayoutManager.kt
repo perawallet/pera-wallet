@@ -14,12 +14,12 @@ package com.algorand.android.nft.ui.nftlisting
 
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
-import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.INFO_VIEW_ITEM
-import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.SEARCH_VIEW_ITEM
-import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.TITLE_TEXT_VIEW_ITEM
+import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 
-class CollectibleListGridLayoutManager(context: Context, adapter: CollectibleListAdapter) :
-    GridLayoutManager(context, RECYCLER_SPAN_COUNT) {
+class CollectibleListGridLayoutManager(
+    context: Context,
+    adapter: CollectibleListAdapter
+) : GridLayoutManager(context, RECYCLER_SPAN_COUNT) {
 
     init {
         spanSizeLookup = object : SpanSizeLookup() {
@@ -31,11 +31,7 @@ class CollectibleListGridLayoutManager(context: Context, adapter: CollectibleLis
     }
 
     private fun getSpanSizeByItemViewType(itemType: Int): Int {
-        return if (
-            itemType == TITLE_TEXT_VIEW_ITEM.ordinal ||
-            itemType == SEARCH_VIEW_ITEM.ordinal ||
-            itemType == INFO_VIEW_ITEM.ordinal
-        ) {
+        return if (itemType !in BaseCollectibleListItem.singleColumnItemList) {
             RECYCLER_SPAN_COUNT
         } else {
             1

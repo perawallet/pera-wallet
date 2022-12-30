@@ -13,16 +13,17 @@
 
 package com.algorand.android.modules.accountdetail.assets.ui
 
-import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.algorand.android.models.AccountDetailAssetsItem
 import com.algorand.android.modules.accountdetail.assets.ui.AccountAssetsFragment.Companion.ADDRESS_KEY
+import com.algorand.android.modules.accountdetail.assets.ui.domain.AccountAssetsPreviewUseCase
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem
 import com.algorand.android.modules.tracking.accountdetail.accountassets.AccountAssetsFragmentEventTracker
-import com.algorand.android.usecase.AccountAssetsPreviewUseCase
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,22 +36,23 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class AccountAssetsViewModel @Inject constructor(
     private val accountAssetsPreviewUseCase: AccountAssetsPreviewUseCase,
-    private val savedStateHandle: SavedStateHandle,
-    private val accountAssetsFragmentEventTracker: AccountAssetsFragmentEventTracker
+    private val accountAssetsFragmentEventTracker: AccountAssetsFragmentEventTracker,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val accountAssetsFlow: StateFlow<List<AccountDetailAssetsItem>?>
-        get() = _accountAssetsFlow
+    private val accountAddress: String = savedStateHandle.getOrThrow(ADDRESS_KEY)
+
+    val accountAssetsFlow: StateFlow<List<AccountDetailAssetsItem>?> get() = _accountAssetsFlow
     private val _accountAssetsFlow = MutableStateFlow<List<AccountDetailAssetsItem>?>(null)
 
     private val searchQueryFlow = MutableStateFlow("")
 
-    private var updateQueryJob: Job? = null
-
-    private val accountAddress: String = savedStateHandle.getOrThrow(ADDRESS_KEY)
+    private var searchQueryFlowJob: Job? = null
 
     fun initAccountAssetsFlow() {
-        viewModelScope.launch {
+        searchQueryFlowJob?.cancel()
+
+        searchQueryFlowJob = viewModelScope.launch(Dispatchers.IO) {
             searchQueryFlow
                 .debounce(QUERY_DEBOUNCE)
                 .distinctUntilChanged()
@@ -61,30 +63,29 @@ class AccountAssetsViewModel @Inject constructor(
     }
 
     fun updateSearchQuery(query: String) {
-        updateQueryJob?.cancel()
-        updateQueryJob = viewModelScope.launch { searchQueryFlow.emit(query) }
+        searchQueryFlow.value = query
     }
 
     fun logAccountAssetsAddAssetEvent() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             accountAssetsFragmentEventTracker.logAccountAssetsAddAssetEvent()
         }
     }
 
     fun logAccountAssetsManageAssetsEvent() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             accountAssetsFragmentEventTracker.logAccountAssetsManageAssetsEvent()
         }
     }
 
     fun logAccountAssetsBuyAlgoTapEventTracker() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             accountAssetsFragmentEventTracker.logAccountAssetsBuyAlgoTapEvent()
         }
     }
 
     fun canAccountSignTransactions(): Boolean {
-        return accountAssetsPreviewUseCase.canAccountSignTransactions(savedStateHandle.getOrThrow(ADDRESS_KEY))
+        return accountAssetsPreviewUseCase.canAccountSignTransactions(accountAddress)
     }
 
     companion object {

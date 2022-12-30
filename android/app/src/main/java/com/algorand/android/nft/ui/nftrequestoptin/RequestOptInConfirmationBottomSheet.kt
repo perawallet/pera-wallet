@@ -53,7 +53,7 @@ class RequestOptInConfirmationBottomSheet : BaseDoubleButtonBottomSheet() {
         val annotatedString = AnnotatedString(
             stringResId = R.string.you_cant_send,
             replacementList = listOf(
-                "collectible_name" to requestOptInConfirmationViewModel.getCollectibleDisplayText(),
+                "nft_name" to requestOptInConfirmationViewModel.getCollectibleDisplayText(),
                 "wallet_address" to requestOptInConfirmationViewModel.getReceiverPublicKey()
             ),
             customAnnotationList = listOf(

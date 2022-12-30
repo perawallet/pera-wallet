@@ -14,7 +14,6 @@ package com.algorand.android.modules.swap.assetselection.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemSwapAssetSelectionBinding
 import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapAssetSelectionItem
@@ -27,19 +26,15 @@ class SwapAssetSelectionViewHolder(
     fun bind(item: SwapAssetSelectionItem) {
         with(binding.assetItemView) {
             rootView.setOnClickListener { listener.onAssetItemSelected(item) }
-            setStartIconDrawable(null, forceShow = true)
             setTitleText(item.assetFullName.getName(resources))
             setTrailingIconOfTitleText(item.verificationTier.drawableResId)
             setDescriptionText(item.assetShortName.getName(resources))
             setPrimaryValueText(item.formattedPrimaryValue, item.arePrimaryAndSecondaryValueVisible)
             setSecondaryValueText(item.formattedSecondaryValue, item.arePrimaryAndSecondaryValueVisible)
-            getStartIconImageView().doOnLayout {
+            getStartIconImageView().apply {
                 item.assetDrawableProvider.provideAssetDrawable(
-                    context = context,
-                    assetName = item.assetFullName,
-                    logoUri = item.logoUrl,
-                    width = it.measuredWidth,
-                    onResourceReady = ::setStartIconDrawable
+                    imageView = this,
+                    onResourceFailed = ::setStartIconDrawable
                 )
             }
         }

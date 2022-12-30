@@ -15,6 +15,7 @@ package com.algorand.android.nft.domain.model
 import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.models.AssetCreator
 import com.algorand.android.models.BaseAssetDetail
+import com.algorand.android.utils.isEqualTo
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -32,15 +33,11 @@ sealed class BaseCollectibleDetail(
     abstract val description: String?
     abstract val traits: List<CollectibleTrait>?
     abstract val nftExplorerUrl: String?
-
+    abstract val prismUrl: String?
     abstract val collectibleMedias: List<BaseCollectibleMedia>?
 
     fun isPure(): Boolean {
-        return if (maxSupply == null) false else maxSupply == BigInteger.ONE && fractionDecimals == 0
-    }
-
-    fun getErrorDisplayText(): String {
-        return title ?: fullName ?: shortName ?: assetId.toString()
+        return totalSupply?.isEqualTo(BigDecimal.ONE) == true && fractionDecimals == 0
     }
 
     data class ImageCollectibleDetail(
@@ -69,7 +66,9 @@ sealed class BaseCollectibleDetail(
         override val assetDescription: String?,
         override val url: String?,
         override val maxSupply: BigInteger?,
-        val prismUrl: String?,
+        override val prismUrl: String?,
+        override val last24HoursAlgoPriceChangePercentage: BigDecimal?,
+        override val isAvailableOnDiscoverMobile: Boolean?
     ) : BaseCollectibleDetail(assetId, fullName, shortName, fractionDecimals, usdValue, assetCreator)
 
     data class NotSupportedCollectibleDetail(
@@ -97,7 +96,10 @@ sealed class BaseCollectibleDetail(
         override val twitterUsername: String?,
         override val url: String?,
         override val assetDescription: String?,
-        override val maxSupply: BigInteger?
+        override val maxSupply: BigInteger?,
+        override val prismUrl: String?,
+        override val last24HoursAlgoPriceChangePercentage: BigDecimal?,
+        override val isAvailableOnDiscoverMobile: Boolean?
     ) : BaseCollectibleDetail(assetId, fullName, shortName, fractionDecimals, usdValue, assetCreator)
 
     data class VideoCollectibleDetail(
@@ -126,7 +128,9 @@ sealed class BaseCollectibleDetail(
         override val assetDescription: String?,
         override val url: String?,
         override val maxSupply: BigInteger?,
-        val thumbnailPrismUrl: String?
+        override val prismUrl: String?,
+        override val last24HoursAlgoPriceChangePercentage: BigDecimal?,
+        override val isAvailableOnDiscoverMobile: Boolean?
     ) : BaseCollectibleDetail(assetId, fullName, shortName, fractionDecimals, usdValue, assetCreator)
 
     data class AudioCollectibleDetail(
@@ -155,7 +159,9 @@ sealed class BaseCollectibleDetail(
         override val assetDescription: String?,
         override val url: String?,
         override val maxSupply: BigInteger?,
-        val thumbnailPrismUrl: String?
+        override val prismUrl: String?,
+        override val last24HoursAlgoPriceChangePercentage: BigDecimal?,
+        override val isAvailableOnDiscoverMobile: Boolean?
     ) : BaseCollectibleDetail(assetId, fullName, shortName, fractionDecimals, usdValue, assetCreator)
 
     data class MixedCollectibleDetail(
@@ -184,6 +190,8 @@ sealed class BaseCollectibleDetail(
         override val assetDescription: String?,
         override val maxSupply: BigInteger?,
         override val url: String?,
-        val thumbnailPrismUrl: String?
+        override val prismUrl: String?,
+        override val last24HoursAlgoPriceChangePercentage: BigDecimal?,
+        override val isAvailableOnDiscoverMobile: Boolean?
     ) : BaseCollectibleDetail(assetId, fullName, shortName, fractionDecimals, usdValue, assetCreator)
 }

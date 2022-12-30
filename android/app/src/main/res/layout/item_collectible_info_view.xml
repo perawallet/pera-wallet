@@ -10,11 +10,28 @@
   ~ limitations under the License
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/infoTextView"
-    style="@style/CollectibleOptInInfoTextStyle"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_xlarge"
     android:layout_marginTop="@dimen/spacing_small"
-    android:text="@string/you_can_search_the_nft" />
+    android:background="@drawable/bg_collectible_opt_in_info"
+    android:padding="@dimen/spacing_small">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_info"
+        app:tint="@color/positive" />
+
+    <TextView
+        android:id="@+id/infoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xsmall"
+        android:text="@string/you_need_to_opt_in"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
+        android:textColor="@color/positive" />
+
+</LinearLayout>

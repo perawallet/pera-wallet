@@ -12,5 +12,5 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/nft_icon_background" />
-    <corners android:radius="4dp" />
+    <corners android:radius="42dp" />
 </shape>

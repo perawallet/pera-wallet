@@ -60,7 +60,6 @@ sealed class BaseItemConfiguration {
         abstract val primaryAssetName: AssetName?
         abstract val secondaryAssetName: AssetName?
         abstract val showWithAssetId: Boolean?
-        abstract val prismUrl: String?
 
         data class AssetItemConfiguration(
             override val assetId: Long,
@@ -70,7 +69,6 @@ sealed class BaseItemConfiguration {
             override val secondaryValueText: String? = null,
             override val primaryAssetName: AssetName? = null,
             override val secondaryAssetName: AssetName? = null,
-            override val prismUrl: String? = null,
             override val verificationTierConfiguration: VerificationTierConfiguration? = null,
             override val assetIconDrawableProvider: BaseAssetDrawableProvider? = null,
             override val showWithAssetId: Boolean? = null,
@@ -88,7 +86,6 @@ sealed class BaseItemConfiguration {
             override val secondaryValueText: String? = null,
             override val primaryAssetName: AssetName? = null,
             override val secondaryAssetName: AssetName? = null,
-            override val prismUrl: String? = null,
             override val verificationTierConfiguration: VerificationTierConfiguration? = null,
             override val assetIconDrawableProvider: BaseAssetDrawableProvider? = null,
             override val showWithAssetId: Boolean? = null,

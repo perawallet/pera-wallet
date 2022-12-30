@@ -66,7 +66,7 @@ class ReceiveCollectibleFragment : BaseAddAssetFragment(R.layout.fragment_receiv
     }
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        titleResId = R.string.receive_an_nft,
+        titleResId = R.string.opt_in_to_nft,
         startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )

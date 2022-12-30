@@ -10,152 +10,176 @@
   ~ limitations under the License
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/headlineTextView"
-        style="@style/TextAppearance.Title.Sans.Medium"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="46dp"
-        android:text="@string/enter_six_digit_pin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <com.algorand.android.customviews.DialPadView
-        android:id="@+id/dialPad"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_large"
-        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-        app:buttonHorizontalMargin="20dp"
-        app:buttonVerticalMargin="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/headlineTextView"
+            style="@style/TextAppearance.Title.Sans.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="46dp"
+            android:text="@string/enter_your_pin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.algorand.android.customviews.SixDigitPasswordView
-        android:id="@+id/passwordView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/dialPad"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headlineTextView"
-        app:layout_constraintVertical_bias="0.6" />
+        <com.algorand.android.customviews.DialPadView
+            android:id="@+id/dialPad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+            app:buttonHorizontalMargin="20dp"
+            app:buttonVerticalMargin="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/lockImageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/bg_lock_rounded_12"
-        android:padding="@dimen/spacing_normal"
-        app:layout_constraintBottom_toTopOf="@id/deleteAllDataButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15"
-        app:srcCompat="@drawable/ic_locked"
-        app:tint="@color/white" />
+        <com.algorand.android.customviews.SixDigitPasswordView
+            android:id="@+id/passwordView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/dialPad"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headlineTextView"
+            app:layout_constraintVertical_bias="0.6" />
 
-    <TextView
-        android:id="@+id/penaltyTitleTextView"
-        style="@style/TextAppearance.Body.Large.Sans.Medium"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:gravity="center"
-        android:text="@string/pera_app_is_locked"
-        app:layout_constraintBottom_toTopOf="@id/deleteAllDataButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lockImageView"
-        app:layout_constraintVertical_bias="0.2" />
+        <TextView
+            android:id="@+id/passwordDidNotMatchTextView"
+            style="@style/TextAppearance.Footnote.Sans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:gravity="center"
+            android:text="@string/pin_code_did_not_match"
+            android:textColor="@color/negative"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/dialPad"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/passwordView"
+            app:layout_constraintVertical_bias="0"
+            tools:visibility="visible" />
 
-    <TextView
-        android:id="@+id/penaltySubtitleTextView"
-        style="@style/TextAppearance.Description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_small"
-        android:text="@string/too_many_pin_attempts"
-        app:layout_constraintBottom_toTopOf="@id/penaltyGroupDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/penaltyTitleTextView" />
+        <ImageView
+            android:id="@+id/lockImageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_lock_rounded_12"
+            android:padding="@dimen/spacing_normal"
+            app:layout_constraintBottom_toTopOf="@id/deleteAllDataButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15"
+            app:srcCompat="@drawable/ic_locked"
+            app:tint="@color/white" />
 
-    <View
-        android:id="@+id/penaltyGroupDivider"
-        style="@style/Divider.Horizontal"
-        android:layout_marginTop="@dimen/spacing_xxlarge"
-        app:layout_constraintBottom_toTopOf="@id/tryAgainTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/penaltySubtitleTextView" />
+        <TextView
+            android:id="@+id/penaltyTitleTextView"
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:gravity="center"
+            android:text="@string/pera_app_is_locked"
+            app:layout_constraintBottom_toTopOf="@id/deleteAllDataButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lockImageView"
+            app:layout_constraintVertical_bias="0.2" />
 
-    <TextView
-        android:id="@+id/tryAgainTextView"
-        style="@style/TextAppearance.Description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_xxlarge"
-        android:gravity="center"
-        android:text="@string/try_again_in"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/penaltyGroupDivider" />
+        <TextView
+            android:id="@+id/penaltySubtitleTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/too_many_pin_attempts"
+            app:layout_constraintBottom_toTopOf="@id/penaltyGroupDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/penaltyTitleTextView" />
 
-    <TextView
-        android:id="@+id/remainingTimeTextView"
-        style="@style/TextAppearance.Title.Mono"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_small"
-        android:layout_marginBottom="@dimen/spacing_xlarge"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/deleteAllDataButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tryAgainTextView"
-        app:layout_constraintVertical_chainStyle="spread_inside"
-        tools:text="01:42" />
+        <View
+            android:id="@+id/penaltyGroupDivider"
+            style="@style/Divider.Horizontal"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            app:layout_constraintBottom_toTopOf="@id/tryAgainTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/penaltySubtitleTextView" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/deleteAllDataButton"
-        style="@style/Button.Secondary"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-        android:text="@string/remove_all_accounts_and_logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/remainingTimeTextView" />
+        <TextView
+            android:id="@+id/tryAgainTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:gravity="center"
+            android:text="@string/try_again_in"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/penaltyGroupDivider" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/penaltyGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="penaltyTitleTextView,
+        <TextView
+            android:id="@+id/remainingTimeTextView"
+            style="@style/TextAppearance.Title.Mono"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginBottom="@dimen/spacing_xlarge"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/deleteAllDataButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tryAgainTextView"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:text="01:42" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/deleteAllDataButton"
+            style="@style/Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+            android:text="@string/remove_all_accounts_and_logout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/remainingTimeTextView" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/penaltyGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="penaltyTitleTextView,
         penaltySubtitleTextView,tryAgainTextView,remainingTimeTextView,
         deleteAllDataButton, lockImageView,penaltyGroupDivider"
-        tools:visibility="visible" />
+            tools:visibility="gone" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/passwordGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="headlineTextView,passwordView, dialPad"
-        tools:visibility="gone" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/passwordGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="headlineTextView,passwordView, dialPad"
+            tools:visibility="visible" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

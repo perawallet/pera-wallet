@@ -14,7 +14,6 @@ package com.algorand.android.nft.ui.model
 
 data class BaseCollectibleListData(
     val baseCollectibleItemList: List<BaseCollectibleListItem>,
-    val isFilterActive: Boolean,
     val displayedCollectibleCount: Int,
     val filteredOutCollectibleCount: Int
 )

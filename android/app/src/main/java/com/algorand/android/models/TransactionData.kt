@@ -12,10 +12,13 @@
 
 package com.algorand.android.models
 
+import android.os.Parcelable
 import com.algorand.android.utils.MIN_FEE
+import kotlinx.parcelize.Parcelize
 import java.math.BigInteger
 
-sealed class TransactionData {
+@Parcelize
+sealed class TransactionData : Parcelable {
 
     abstract val accountCacheData: AccountCacheData
     open var calculatedFee: Long? = null
@@ -29,6 +32,7 @@ sealed class TransactionData {
         override var amount: BigInteger,
         val assetInformation: AssetInformation,
         val note: String? = null,
+        val xnote: String? = null,
         val targetUser: TargetUser,
         var isMax: Boolean = false,
         var projectedFee: Long = MIN_FEE
@@ -42,7 +46,8 @@ sealed class TransactionData {
                 isMax = isMax,
                 fee = calculatedFee ?: 0,
                 assetInformation = assetInformation,
-                note = note
+                note = note,
+                xnote = xnote
             )
         }
     }
@@ -104,7 +109,10 @@ sealed class TransactionData {
     ) : TransactionData() {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
             return SignedTransactionDetail.RekeyOperation(
-                signedTransactionData, accountCacheData, rekeyAdminAddress, ledgerDetail
+                signedTransactionData,
+                accountCacheData,
+                rekeyAdminAddress,
+                ledgerDetail
             )
         }
     }

@@ -21,7 +21,6 @@ data class SwapAssetSelectionItem(
     val assetId: Long,
     val assetFullName: AssetName,
     val assetShortName: AssetName,
-    val logoUrl: String,
     val formattedPrimaryValue: String,
     val formattedSecondaryValue: String,
     val arePrimaryAndSecondaryValueVisible: Boolean,

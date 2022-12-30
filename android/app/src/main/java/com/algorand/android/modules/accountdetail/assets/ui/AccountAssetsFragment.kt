@@ -1,3 +1,4 @@
+@file:SuppressWarnings("TooManyFunctions")
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,11 +21,11 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentAccountAssetsBinding
-import com.algorand.android.models.AccountDetailAssetsItem
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.modules.accountdetail.assets.ui.adapter.AccountAssetsAdapter
-import com.algorand.android.usecase.AccountAssetsPreviewUseCase.Companion.QUICK_ACTIONS_INDEX
-import com.algorand.android.utils.AccountAssetsDividerItemDecoration
+import com.algorand.android.modules.accountdetail.assets.ui.domain.AccountAssetsPreviewUseCase.Companion.QUICK_ACTIONS_INDEX
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem
+import com.algorand.android.utils.ExcludedViewTypesDividerItemDecoration
 import com.algorand.android.utils.addCustomDivider
 import com.algorand.android.utils.addItemVisibilityChangeListener
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
@@ -43,8 +44,20 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
     private var listener: Listener? = null
 
     private val accountAssetListener = object : AccountAssetsAdapter.Listener {
-        override fun onAssetClick(assetItem: AccountDetailAssetsItem.BaseAssetItem) {
-            listener?.onAssetClick(assetItem)
+        override fun onAssetClick(assetId: Long) {
+            listener?.onAssetClick(assetId)
+        }
+
+        override fun onAssetLongClick(assetId: Long) {
+            listener?.onAssetLongClick(assetId)
+        }
+
+        override fun onNFTClick(nftId: Long) {
+            listener?.onNFTClick(nftId)
+        }
+
+        override fun onNFTLongClick(nftId: Long) {
+            listener?.onNFTLongClick(nftId)
         }
 
         override fun onAddNewAssetClick() {
@@ -77,6 +90,10 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
         override fun onMoreClick() {
             listener?.onMoreClick()
         }
+
+        override fun onRequiredMinimumBalanceClick() {
+            listener?.onMinimumBalanceInfoClick()
+        }
     }
 
     private val accountAssetsAdapter = AccountAssetsAdapter(accountAssetListener)
@@ -98,6 +115,7 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
 
     override fun onResume() {
         super.onResume()
+        // TODO: find a way to update the preview flow only in case of filter option changes
         accountAssetsViewModel.initAccountAssetsFlow()
     }
 
@@ -106,7 +124,7 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
         binding.accountAssetsRecyclerView.addCustomDivider(
             drawableResId = R.drawable.horizontal_divider_80_24dp,
             showLast = false,
-            divider = AccountAssetsDividerItemDecoration()
+            divider = ExcludedViewTypesDividerItemDecoration(AccountDetailAssetsItem.excludedItemFromDivider)
         )
         if (accountAssetsViewModel.canAccountSignTransactions()) {
             binding.accountQuickActionsFloatingActionButton.setOnClickListener {
@@ -129,13 +147,17 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
 
     interface Listener {
         fun onAddAssetClick()
-        fun onAssetClick(assetItem: AccountDetailAssetsItem.BaseAssetItem)
+        fun onAssetClick(assetId: Long)
+        fun onAssetLongClick(assetId: Long)
+        fun onNFTClick(nftId: Long)
+        fun onNFTLongClick(nftId: Long)
         fun onBuyAlgoClick()
         fun onSendClick()
         fun onSwapClick()
         fun onMoreClick()
         fun onManageAssetsClick()
         fun onAccountQuickActionsFloatingActionButtonClicked()
+        fun onMinimumBalanceInfoClick()
     }
 
     companion object {

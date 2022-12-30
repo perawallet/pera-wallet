@@ -38,7 +38,6 @@ class BaseAssetSearchItemMapper @Inject constructor(
                 searchedAsset.verificationTier
             ),
             baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(searchedAsset),
-            prismUrl = searchedAsset.logo,
             accountAssetItemButtonState = accountAssetItemButtonState
         )
     }
@@ -51,14 +50,13 @@ class BaseAssetSearchItemMapper @Inject constructor(
             assetId = searchedCollectible.assetId,
             fullName = AssetName.create(searchedCollectible.fullName),
             shortName = AssetName.createShortName(searchedCollectible.shortName),
-            prismUrl = searchedCollectible.collectible?.primaryImageUrl,
             accountAssetItemButtonState = accountAssetItemButtonState,
             baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(searchedCollectible)
         )
     }
 
-    fun mapToInfoViewItem(@StringRes infoViewTextResId: Int): BaseAssetSearchListItem.InfoViewItem {
-        return BaseAssetSearchListItem.InfoViewItem(infoViewTextResId = infoViewTextResId)
+    fun mapToInfoViewItem(): BaseAssetSearchListItem.InfoViewItem {
+        return BaseAssetSearchListItem.InfoViewItem
     }
 
     fun mapToSearchViewItem(@StringRes searchViewHintResId: Int): BaseAssetSearchListItem.SearchViewItem {

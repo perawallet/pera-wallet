@@ -15,12 +15,15 @@ package com.algorand.android.modules.assets.manage
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.navArgs
+import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetManageAssetsBinding
+import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.viewbinding.viewBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ManageAssetsBottomSheet : DaggerBaseBottomSheet(
     layoutResId = R.layout.bottom_sheet_manage_assets,
     fullPageNeeded = false,
@@ -28,8 +31,7 @@ class ManageAssetsBottomSheet : DaggerBaseBottomSheet(
 ) {
 
     private val binding by viewBinding(BottomSheetManageAssetsBinding::bind)
-
-    private val args by navArgs<ManageAssetsBottomSheetArgs>()
+    private val manageAssetsViewModel by viewModels<ManageAssetsViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,11 +39,30 @@ class ManageAssetsBottomSheet : DaggerBaseBottomSheet(
     }
 
     private fun initUi() {
-        with(binding) {
-            sortAssetsButton.setOnClickListener { navToSortAssetsFragment() }
-            removeAssetsButton.setOnClickListener { navToRemoveAssetsFragment() }
-            removeAssetsButton.isVisible = args.canSignTransaction
+        configureToolbar()
+        configureRemoveAssetsButton()
+        configureSortAssetsButton()
+        configureFilterAssetsButton()
+    }
+
+    private fun configureToolbar() {
+        val toolbarConfiguration = ToolbarConfiguration(titleResId = R.string.manage_assets)
+        binding.customToolbar.configure(toolbarConfiguration)
+    }
+
+    private fun configureRemoveAssetsButton() {
+        with(binding.removeAssetsButton) {
+            setOnClickListener { navToRemoveAssetsFragment() }
+            isVisible = manageAssetsViewModel.canSignTransaction
         }
+    }
+
+    private fun configureSortAssetsButton() {
+        binding.sortAssetsButton.setOnClickListener { navToSortAssetsFragment() }
+    }
+
+    private fun configureFilterAssetsButton() {
+        binding.filterAssetsButton.setOnClickListener { navToFilterAssetNavigation() }
     }
 
     private fun navToSortAssetsFragment() {
@@ -49,6 +70,14 @@ class ManageAssetsBottomSheet : DaggerBaseBottomSheet(
     }
 
     private fun navToRemoveAssetsFragment() {
-        nav(ManageAssetsBottomSheetDirections.actionManageAssetsBottomSheetToRemoveAssetsFragment(args.publicKey))
+        nav(
+            ManageAssetsBottomSheetDirections.actionManageAssetsBottomSheetToRemoveAssetsFragment(
+                accountPublicKey = manageAssetsViewModel.accountAddress
+            )
+        )
+    }
+
+    private fun navToFilterAssetNavigation() {
+        nav(ManageAssetsBottomSheetDirections.actionManageAssetsBottomSheetToAssetFilterNavigation())
     }
 }

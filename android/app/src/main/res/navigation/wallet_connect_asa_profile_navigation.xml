@@ -26,6 +26,8 @@
 
     <include app:graph="@navigation/asset_transfer_balance_action_navigation" />
 
+    <include app:graph="@navigation/discover_detail_navigation" />
+
     <fragment
         android:id="@+id/walletConnectAsaProfileFragment"
         android:name="com.algorand.android.ui.wctransactionrequest.WalletConnectAsaProfileFragment"
@@ -92,6 +94,13 @@
             <argument
                 android:name="assetAction"
                 app:argType="com.algorand.android.models.AssetAction" />
+        </action>
+        <action
+            android:id="@+id/action_walletConnectAsaProfileFragment_to_discoverDetailNavigation"
+            app:destination="@id/discoverDetailNavigation">
+            <argument
+                android:name="tokenDetail"
+                app:argType="com.algorand.android.discover.home.domain.model.TokenDetailInfo" />
         </action>
     </fragment>
 

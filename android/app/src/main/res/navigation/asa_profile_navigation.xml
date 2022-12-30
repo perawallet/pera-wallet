@@ -93,6 +93,13 @@
                 android:name="assetAction"
                 app:argType="com.algorand.android.models.AssetAction" />
         </action>
+        <action
+            android:id="@+id/action_asaProfileFragment_to_discoverDetailNavigation"
+            app:destination="@id/discoverDetailNavigation">
+            <argument
+                android:name="tokenDetail"
+                app:argType="com.algorand.android.discover.home.domain.model.TokenDetailInfo" />
+        </action>
     </fragment>
 
     <fragment

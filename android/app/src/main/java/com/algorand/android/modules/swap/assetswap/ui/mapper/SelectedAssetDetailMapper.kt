@@ -29,7 +29,6 @@ class SelectedAssetDetailMapper @Inject constructor(
         formattedBalance: String,
         assetShortName: String?,
         verificationTier: VerificationTier?,
-        logoUrl: String?,
         assetDecimal: Int
     ): AssetSwapPreview.SelectedAssetDetail {
         return AssetSwapPreview.SelectedAssetDetail(
@@ -40,7 +39,6 @@ class SelectedAssetDetailMapper @Inject constructor(
                 verificationTier
             ),
             assetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(assetId),
-            logoUrl = logoUrl,
             assetDecimal = assetDecimal
         )
     }
@@ -50,7 +48,6 @@ class SelectedAssetDetailMapper @Inject constructor(
         formattedBalance: String,
         assetShortName: AssetName,
         verificationTier: VerificationTier?,
-        logoUrl: String?,
         assetDecimal: Int
     ): AssetSwapPreview.SelectedAssetDetail {
         return AssetSwapPreview.SelectedAssetDetail(
@@ -61,7 +58,6 @@ class SelectedAssetDetailMapper @Inject constructor(
                 verificationTier
             ),
             assetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(assetId),
-            logoUrl = logoUrl,
             assetDecimal = assetDecimal
         )
     }

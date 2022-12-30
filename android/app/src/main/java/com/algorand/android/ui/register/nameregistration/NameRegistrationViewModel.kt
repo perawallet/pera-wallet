@@ -13,21 +13,22 @@
 
 package com.algorand.android.ui.register.nameregistration
 
-import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCreation
-import com.algorand.android.usecase.IsAccountLimitExceedUseCase
 import com.algorand.android.models.ui.NameRegistrationPreview
+import com.algorand.android.usecase.IsAccountLimitExceedUseCase
 import com.algorand.android.usecase.NameRegistrationPreviewUseCase
 import com.algorand.android.utils.analytics.CreationType
 import com.algorand.android.utils.getOrThrow
+import com.algorand.android.utils.toShortenedAddress
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @HiltViewModel
 class NameRegistrationViewModel @Inject constructor(
@@ -40,7 +41,12 @@ class NameRegistrationViewModel @Inject constructor(
     val nameRegistrationPreviewFlow: Flow<NameRegistrationPreview>
         get() = _nameRegistrationPreviewFlow
 
-    val accountAddress = savedStateHandle.getOrThrow<AccountCreation>(ACCOUNT_CREATION_KEY).tempAccount.address
+    private val accountCreation = savedStateHandle.getOrThrow<AccountCreation>(ACCOUNT_CREATION_KEY)
+    private val accountAddress = accountCreation.tempAccount.address
+    private val accountName = accountCreation.tempAccount.name
+
+    val predefinedAccountName: String
+        get() = accountName.takeIf { it.isNotBlank() } ?: accountAddress.toShortenedAddress()
 
     fun updatePreviewWithAccountCreation(accountCreation: AccountCreation?, inputName: String) {
         viewModelScope.launch {

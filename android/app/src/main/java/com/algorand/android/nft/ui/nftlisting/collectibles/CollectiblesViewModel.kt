@@ -12,12 +12,13 @@
 
 package com.algorand.android.nft.ui.nftlisting.collectibles
 
-import javax.inject.Inject
 import com.algorand.android.modules.tracking.nft.CollectibleEventTracker
 import com.algorand.android.nft.domain.usecase.CollectiblesListingPreviewUseCase
 import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
+import com.algorand.android.sharedpref.SharedPrefLocalSource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -27,7 +28,20 @@ class CollectiblesViewModel @Inject constructor(
     collectibleEventTracker: CollectibleEventTracker
 ) : BaseCollectibleListingViewModel(collectiblesListingPreviewUseCase, collectibleEventTracker) {
 
-    override fun initCollectiblesListingPreviewFlow(searchKeyword: String): Flow<CollectiblesListingPreview> {
+    override val nftListingViewTypeChangeListener = SharedPrefLocalSource.OnChangeListener<Int> {
+        startCollectibleListingPreviewFlow()
+    }
+
+    init {
+        collectiblesListingPreviewUseCase.addOnListingViewTypeChangeListener(nftListingViewTypeChangeListener)
+    }
+
+    override suspend fun initCollectiblesListingPreviewFlow(searchKeyword: String): Flow<CollectiblesListingPreview> {
         return collectiblesListingPreviewUseCase.getCollectiblesListingPreviewFlow(searchKeyword).distinctUntilChanged()
+    }
+
+    override fun onCleared() {
+        collectiblesListingPreviewUseCase.removeOnListingViewTypeChangeListener(nftListingViewTypeChangeListener)
+        super.onCleared()
     }
 }

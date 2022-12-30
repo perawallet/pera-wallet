@@ -16,10 +16,10 @@ package com.algorand.android.modules.transactionhistory.domain.usecase
 import com.algorand.android.core.BaseUseCase
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.Result
+import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO
 import com.algorand.android.modules.transactionhistory.domain.mapper.PendingBaseTransactionMapper
 import com.algorand.android.modules.transactionhistory.domain.model.BaseTransaction
 import com.algorand.android.modules.transactionhistory.domain.model.PendingTransactionDTO
-import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO
 import com.algorand.android.modules.transactionhistory.domain.repository.PendingTransactionsRepository
 import javax.inject.Inject
 import javax.inject.Named
@@ -86,15 +86,9 @@ class PendingTransactionsUseCase @Inject constructor(
         with(transaction) {
             val receiverAddress = getReceiverAddress()
             return when {
-                detail?.senderAddress == accountPublicKey && receiverAddress == accountPublicKey -> {
-                    null
-                }
-                receiverAddress == accountPublicKey -> {
-                    false
-                }
-                else -> {
-                    true
-                }
+                detail?.senderAddress == accountPublicKey && receiverAddress == accountPublicKey -> null
+                receiverAddress == accountPublicKey -> false
+                else -> true
             }
         }
     }

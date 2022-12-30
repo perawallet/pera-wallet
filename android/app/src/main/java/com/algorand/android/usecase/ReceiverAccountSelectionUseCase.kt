@@ -36,6 +36,7 @@ import com.algorand.android.utils.exceptions.GlobalException
 import com.algorand.android.utils.exceptions.NavigationException
 import com.algorand.android.utils.exceptions.WarningException
 import com.algorand.android.utils.formatAsAlgoString
+import com.algorand.android.utils.isValidAddress
 import com.algorand.android.utils.validator.AccountTransactionValidator
 import java.math.BigInteger
 import javax.inject.Inject
@@ -58,12 +59,30 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
     accountInformationUseCase: AccountInformationUseCase
 ) : BaseSendAccountSelectionUseCase(accountInformationUseCase) {
 
-    fun getToAccountList(query: String, assetId: Long): Flow<List<BaseAccountSelectionListItem>> {
+    fun getToAccountList(
+        query: String,
+        assetId: Long,
+        latestCopiedMessage: String?
+    ): Flow<List<BaseAccountSelectionListItem>> {
         val contactList = fetchContactList(query)
         val accountList = fetchAccountList(assetId, query)
         val nftDomainAccountList = fetchNftDomainAccountList(query)
-        return combine(accountList, contactList, nftDomainAccountList) { accounts, contacts, nftDomainAccounts ->
+        val queriedAddress = query.takeIf { it.isValidAddress() }
+        return combine(
+            accountList,
+            contactList,
+            nftDomainAccountList
+        ) { accounts, contacts, nftDomainAccounts ->
             mutableListOf<BaseAccountSelectionListItem>().apply {
+                createPasteItem(latestCopiedMessage)?.run { add(this) }
+                createQueriedAccountItem(
+                    accountAddresses = accounts.map { it.publicKey },
+                    contactAddresses = contacts.map { it.publicKey },
+                    queriedAddress = queriedAddress
+                )?.run {
+                    add(BaseAccountSelectionListItem.HeaderItem(R.string.account))
+                    add(this)
+                }
                 if (nftDomainAccounts.isNotEmpty()) {
                     add(BaseAccountSelectionListItem.HeaderItem(R.string.matched_accounts))
                     addAll(nftDomainAccounts)
@@ -78,6 +97,37 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun createPasteItem(latestCopiedMessage: String?): BaseAccountSelectionListItem.PasteItem? {
+        return latestCopiedMessage.takeIf { it.isValidAddress() }?.let { copiedAccount ->
+            BaseAccountSelectionListItem.PasteItem(copiedAccount)
+        }
+    }
+
+    private fun createQueriedAccountItem(
+        queriedAddress: String?,
+        accountAddresses: List<String>,
+        contactAddresses: List<String>
+    ): BaseAccountSelectionListItem.BaseAccountItem.AccountItem? {
+        if (queriedAddress.isNullOrBlank()) return null
+        val shouldInsertQueriedAccount = shouldInsertQueriedAccount(
+            accountAddresses = accountAddresses,
+            contactAddresses = contactAddresses,
+            queriedAccount = queriedAddress
+        )
+        if (!shouldInsertQueriedAccount) return null
+        return accountSelectionListUseCase.createAccountSelectionItemFromAccountAddress(
+            accountAddress = queriedAddress
+        )
+    }
+
+    private fun shouldInsertQueriedAccount(
+        accountAddresses: List<String>,
+        contactAddresses: List<String>,
+        queriedAccount: String?
+    ): Boolean {
+        return !accountAddresses.contains(queriedAccount) && !contactAddresses.contains(queriedAccount)
     }
 
     private fun fetchContactList(query: String) = flow {
@@ -110,12 +160,12 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
     suspend fun checkToAccountTransactionRequirements(
         accountInformation: AccountInformation,
         assetId: Long,
-        fromAccountPublicKey: String,
+        fromAccountAddress: String,
         amount: BigInteger,
         nftDomainAddress: String?,
         nftDomainServiceLogoUrl: String?
     ): Result<TargetUser> {
-        val isSelectedAssetValid = accountTransactionValidator.isSelectedAssetValid(fromAccountPublicKey, assetId)
+        val isSelectedAssetValid = accountTransactionValidator.isSelectedAssetValid(fromAccountAddress, assetId)
         if (!isSelectedAssetValid) {
             // TODO: 18.03.2022 Find better exception message
             return Result.Error(Exception())
@@ -125,13 +175,13 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
             accountInformation,
             assetId
         )
-        val selectedAsset = accountCacheManager.getAssetInformation(fromAccountPublicKey, assetId)
+        val selectedAsset = getAssetInformation(assetId = assetId, accountAddress = fromAccountAddress)
 
         if (!isSelectedAssetSupported) {
             val nextDirection = ReceiverAccountSelectionFragmentDirections
                 .actionReceiverAccountSelectionFragmentToRequestOptInConfirmationNavigation(
                     RequestOptInConfirmationArgs(
-                        fromAccountPublicKey,
+                        fromAccountAddress,
                         accountInformation.address,
                         assetId,
                         getAssetOrCollectibleNameOrNull(assetId)
@@ -157,7 +207,20 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
             }
         }
 
-        val fromAccountCacheData = accountCacheManager.getCacheData(fromAccountPublicKey)
+        val fromAccountCacheData = accountCacheManager.getCacheData(fromAccountAddress)
+
+        val isSendingMaxAmountToSameAccount = accountTransactionValidator.isSendingMaxAmountToTheSameAccount(
+            fromAccount = fromAccountAddress,
+            toAccount = accountInformation.address,
+            maxAmount = selectedAsset?.amount ?: BigInteger.ZERO,
+            amount = amount,
+            isAlgo = selectedAsset?.isAlgo() ?: false
+        )
+
+        if (isSendingMaxAmountToSameAccount) {
+            return Result.Error(GlobalException(descriptionRes = R.string.you_can_not_send_your))
+        }
+
         val isCloseTransactionToSameAccount = accountTransactionValidator.isCloseTransactionToSameAccount(
             fromAccountCacheData,
             accountInformation.address,
@@ -206,8 +269,8 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         return contactRepository.getAllContacts().firstOrNull { it.publicKey == accountAddress }
     }
 
-    fun getAssetInformation(assetId: Long, publicKey: String): AssetInformation? {
-        val ownedAssetData = getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, publicKey)
+    fun getAssetInformation(assetId: Long, accountAddress: String): AssetInformation? {
+        val ownedAssetData = getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, accountAddress)
         return AssetInformation.createAssetInformation(
             baseOwnedAssetData = ownedAssetData ?: return null,
             assetDrawableProvider = assetDataProviderDecider.getAssetDrawableProvider(assetId)

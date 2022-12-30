@@ -25,9 +25,12 @@ import com.algorand.android.models.CollectibleSendApproveResult
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.nft.ui.model.CollectibleReceiverSelectionResult
 import com.algorand.android.nft.ui.model.CollectibleSendPreview
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
 import com.algorand.android.nft.ui.nftapprovetransaction.CollectibleTransactionApproveBottomSheet.Companion.COLLECTIBLE_TXN_APPROVE_KEY
+import com.algorand.android.nft.ui.nftsend.CollectibleReceiverSelectionFragment.Companion.COLLECTIBLE_RECEIVER_ACCOUNT_SELECTION_RESULT_KEY
+import com.algorand.android.nft.ui.nftsend.CollectibleReceiverSelectionFragment.Companion.COLLECTIBLE_RECEIVER_NFT_DOMAIN_SELECTION_RESULT_KEY
 import com.algorand.android.nft.ui.nftsend.CollectibleSendQrScannerFragment.Companion.ACCOUNT_ADDRESS_SCAN_RESULT_KEY
 import com.algorand.android.utils.SingleButtonBottomSheet
 import com.algorand.android.utils.extensions.collectOnLifecycle
@@ -35,6 +38,7 @@ import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.isValidAddress
 import com.algorand.android.utils.startSavedStateListener
+import com.algorand.android.utils.useFragmentResultListenerValue
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,8 +60,8 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
         nav(CollectibleSendFragmentDirections.actionCollectibleSendFragmentToCollectibleSendQrScannerFragment())
     }
 
-    private val collectibleSendPreviewCollector: suspend (CollectibleSendPreview) -> Unit = {
-        updateUi(it)
+    private val collectibleSendPreviewCollector: suspend (CollectibleSendPreview?) -> Unit = {
+        if (it != null) updateUi(it)
     }
 
     private val selectedAddressCollector: suspend (String) -> Unit = { address ->
@@ -114,9 +118,6 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
             useSavedStateValue<String>(ACCOUNT_ADDRESS_SCAN_RESULT_KEY) { accountAddress ->
                 collectibleSendViewModel.updateSelectedAccountAddress(accountAddress)
             }
-            useSavedStateValue<String>(CollectibleReceiverSelectionFragment.ACCOUNT_PUBLIC_KEY_KEY) { publicKey ->
-                collectibleSendViewModel.updateSelectedAccountAddress(publicKey)
-            }
             useSavedStateValue<CollectibleSendApproveResult>(COLLECTIBLE_TXN_APPROVE_KEY) { result ->
                 if (result.isApproved) {
                     if (result.isOptOutChecked) {
@@ -132,6 +133,19 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
             }
             useSavedStateValue<Boolean>(SingleButtonBottomSheet.CLOSE_KEY) { isRetryClicked ->
                 if (isRetryClicked) collectibleSendViewModel.retrySendingTransaction()
+            }
+            useFragmentResultListenerValue<CollectibleReceiverSelectionResult.AccountSelectionResult>(
+                COLLECTIBLE_RECEIVER_ACCOUNT_SELECTION_RESULT_KEY
+            ) {
+                collectibleSendViewModel.updateSelectedAccountAddress(it.accountAddress)
+            }
+            useFragmentResultListenerValue<CollectibleReceiverSelectionResult.NftDomainSelectionResult>(
+                COLLECTIBLE_RECEIVER_NFT_DOMAIN_SELECTION_RESULT_KEY
+            ) {
+                with(collectibleSendViewModel) {
+                    updateSelectedAccountAddress(it.accountAddress)
+                    updateNftDomainInformation(Pair(it.nftDomainName, it.nftDomainLogoUrl))
+                }
             }
         }
     }
@@ -158,6 +172,10 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
             globalErrorTextEvent?.consume()?.run { if (!isNullOrBlank()) showGlobalError(this) }
             navigateToTransactionCompletedEvent?.consume()?.run { navToTransferConfirmedFragment() }
             showNetworkErrorEvent?.consume()?.run { navToNetworkErrorRetryBottomSheet() }
+            showCollectibleAlreadyOwnedErrorEvent?.consume()?.run { showCollectibleAlreadyOwnedError() }
+            checkIfSelectedAccountReceiveCollectibleEvent?.consume()?.run {
+                collectibleSendViewModel.checkIfSelectedAccountReceiveCollectible()
+            }
         }
     }
 
@@ -181,7 +199,7 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
         nav(
             CollectibleSendFragmentDirections.actionCollectibleSendFragmentToRequestOptInConfirmationNavigation(
                 RequestOptInConfirmationArgs(
-                    senderPublicKey = collectibleSendViewModel.getSenderPublicKey().publicKey,
+                    senderPublicKey = collectibleSendViewModel.accountAddress,
                     receiverPublicKey = receiverPublicKey,
                     assetId = collectibleId,
                     assetName = collectibleName
@@ -197,7 +215,9 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
                 senderPublicKey = transactionData.accountCacheData.account.address,
                 receiverPublicKey = transactionData.targetUser.publicKey,
                 fee = (transactionData.calculatedFee ?: transactionData.projectedFee).toFloat(),
-                collectibleDetail = collectibleSendViewModel.getCollectibleDetail()
+                nftId = collectibleSendViewModel.nftId,
+                nftDomainLogoUrl = collectibleSendViewModel.nftDomainAddressServiceLogoPair?.second,
+                nftDomainName = collectibleSendViewModel.nftDomainAddressServiceLogoPair?.first
             )
         )
     }
@@ -210,7 +230,7 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
 
     private fun initTransferButton() {
         binding.transferButton.setOnClickListener {
-            collectibleSendViewModel.checkIfSelectedAccountReceiveCollectible()
+            collectibleSendViewModel.checkIfSenderAndReceiverAccountSame()
         }
     }
 
@@ -230,5 +250,9 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
             addTrailingIcon(R.drawable.ic_contacts, onContactClick)
             addTrailingIcon(R.drawable.ic_qr_scan, onScanQrClick)
         }
+    }
+
+    private fun showCollectibleAlreadyOwnedError() {
+        showGlobalError(getString(R.string.you_already_own))
     }
 }

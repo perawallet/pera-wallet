@@ -14,7 +14,6 @@ package com.algorand.android.nft.ui.nftlisting.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import com.algorand.android.databinding.ItemBaseCollectiblesTitleTextBinding
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
@@ -25,7 +24,6 @@ class TitleTextItemViewHolder(
 
     override fun bind(item: BaseCollectibleListItem) {
         if (item !is BaseCollectibleListItem.TitleTextViewItem) return
-        binding.titleTextView.isVisible = item.isVisible
     }
 
     companion object {

@@ -53,7 +53,7 @@ class PassphraseVerifiedInfoFragment : BaseInfoFragment() {
     private fun handleNextNavigation() {
         nav(
             PassphraseVerifiedInfoFragmentDirections
-                .actionPassphraseVerifiedInfoFragmentToRecoverAccountNameRegistrationFragment(args.accountCreation)
+                .actionPassphraseVerifiedInfoFragmentToCreateAccountNameRegistrationFragment(args.accountCreation)
         )
     }
 }

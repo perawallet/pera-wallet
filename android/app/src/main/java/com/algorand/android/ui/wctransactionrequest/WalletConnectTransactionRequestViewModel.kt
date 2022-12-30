@@ -13,7 +13,6 @@
 package com.algorand.android.ui.wctransactionrequest
 
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
@@ -29,9 +28,6 @@ import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.models.builder.WalletConnectTransactionListBuilder
-import com.algorand.android.modules.walletconnect.transactionrequest.ui.model.WalletConnectTransactionRequestPreview
-import com.algorand.android.modules.walletconnect.transactionrequest.ui.usecase.WalletConnectTransactionRequestPreviewUseCase
-import com.algorand.android.modules.walletconnectfallbackbrowser.ui.usecase.GetInstalledAppPackageNameListUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.getOrElse
@@ -42,8 +38,6 @@ import com.algorand.android.utils.walletconnect.WalletConnectSignManager
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -53,8 +47,6 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val walletConnectSignManager: WalletConnectSignManager,
     private val transactionListBuilder: WalletConnectTransactionListBuilder,
-    private val getInstalledAppPackageNameListUseCase: GetInstalledAppPackageNameListUseCase,
-    private val walletConnectTransactionRequestPreviewUseCase: WalletConnectTransactionRequestPreviewUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -67,13 +59,13 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     val transaction: WalletConnectTransaction?
         get() = walletConnectManager.transaction
 
-    val walletConnectTransactionRequestPreviewFlow: StateFlow<WalletConnectTransactionRequestPreview>
-        get() = _walletConnectTransactionRequestPreviewFlow
-    private val _walletConnectTransactionRequestPreviewFlow = MutableStateFlow(
-        walletConnectTransactionRequestPreviewUseCase.getInitialPreview(transaction?.session?.peerMeta?.name.orEmpty())
-    )
+    val fallbackBrowserGroupResponse: String
+        get() = transaction?.session?.fallbackBrowserGroupResponse.orEmpty()
 
-    val isFromDiscover = savedStateHandle.getOrElse(IS_FROM_DISCOVER_KEY, false)
+    val peerMetaName: String
+        get() = transaction?.session?.peerMeta?.name.orEmpty()
+
+    val shouldSkipConfirmation = savedStateHandle.getOrElse(SHOULD_SKIP_CONFIRMATION_KEY, false)
 
     fun setupWalletConnectSignManager(lifecycle: Lifecycle) {
         walletConnectSignManager.setup(lifecycle)
@@ -141,22 +133,9 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
         return transactionListBuilder.createTransactionItems(transactionList)
     }
 
-    fun updatePreviewWithBrowserList(packageManager: PackageManager?) {
-        viewModelScope.launch {
-            _walletConnectTransactionRequestPreviewFlow.emit(
-                walletConnectTransactionRequestPreviewUseCase
-                    .getWalletConnectTransactionRequestPreviewByBrowserResponse(
-                        preview = _walletConnectTransactionRequestPreviewFlow.value,
-                        fallbackBrowserGroupResponse = transaction?.session?.fallbackBrowserGroupResponse,
-                        packageManager = packageManager
-                    )
-            )
-        }
-    }
-
     companion object {
         private const val MULTIPLE_TRANSACTION_KEY = "transactions"
         private const val SINGLE_TRANSACTION_KEY = "transaction"
-        private const val IS_FROM_DISCOVER_KEY = "isFromDiscover"
+        private const val SHOULD_SKIP_CONFIRMATION_KEY = "shouldSkipConfirmation"
     }
 }

@@ -13,6 +13,7 @@
 package com.algorand.android.modules.accountdetail.ui.usecase
 
 import androidx.navigation.NavDirections
+import com.algorand.android.models.AssetInformation
 import com.algorand.android.modules.accountdetail.ui.AccountDetailFragmentDirections
 import com.algorand.android.modules.accountdetail.ui.mapper.AccountDetailPreviewMapper
 import com.algorand.android.modules.accountdetail.ui.model.AccountDetailPreview
@@ -27,7 +28,8 @@ class AccountDetailPreviewUseCase @Inject constructor(
 
     fun getInitialPreview(): AccountDetailPreview {
         return accountDetailPreviewMapper.mapToAccountDetail(
-            swapNavigationDirectionEvent = null
+            swapNavigationDirectionEvent = null,
+            copyAssetIDToClipboardEvent = null
         )
     }
 
@@ -50,5 +52,18 @@ class AccountDetailPreviewUseCase @Inject constructor(
         return swapNavDirection?.let { direction ->
             previousState.copy(swapNavigationDirectionEvent = Event(direction))
         } ?: previousState
+    }
+
+    fun getAssetLongClickUpdatedPreview(
+        previousState: AccountDetailPreview,
+        assetId: Long
+    ): AccountDetailPreview {
+        return with(previousState) {
+            if (assetId != AssetInformation.ALGO_ID) {
+                copy(copyAssetIDToClipboardEvent = Event(assetId))
+            } else {
+                previousState
+            }
+        }
     }
 }

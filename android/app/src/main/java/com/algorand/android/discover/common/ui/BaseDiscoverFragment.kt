@@ -21,83 +21,42 @@ import android.view.ViewGroup
 import android.webkit.WebSettings
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
-import androidx.viewbinding.ViewBinding
 import com.algorand.android.R
-import com.algorand.android.core.BaseFragment
 import com.algorand.android.customviews.PeraWebView
-import com.algorand.android.discover.common.ui.model.PeraWebViewClient
 import com.algorand.android.discover.common.ui.model.WebViewTheme
 import com.algorand.android.discover.utils.getJavascriptThemeChangeFunctionForTheme
 import com.algorand.android.models.AnnotatedString
+import com.algorand.android.modules.perawebview.ui.BasePeraWebViewFragment
 import com.algorand.android.utils.PERA_VERIFICATION_MAIL_ADDRESS
 import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.getCustomLongClickableSpan
 import com.algorand.android.utils.preference.ThemePreference
-import com.algorand.android.utils.sendMailRequestUrl
 
 abstract class BaseDiscoverFragment(
     @LayoutRes private val layoutResId: Int,
-) : BaseFragment(layoutResId) {
+) : BasePeraWebViewFragment(layoutResId) {
 
-    abstract val binding: ViewBinding
-
+    override val basePeraWebViewViewModel
+        get() = discoverViewModel
     abstract val discoverViewModel: BaseDiscoverViewModel
-
-    protected val peraWebViewClientListener = object : PeraWebViewClient.PeraWebViewClientListener {
-        override fun onWalletConnectUrlDetected(url: String) {
-            handleWalletConnectUrl(url)
-        }
-
-        override fun onEmailRequested(url: String) {
-            handleMailRequestUrl(url)
-        }
-
-        override fun onPageRequested() {
-            discoverViewModel.onPageRequested()
-        }
-
-        override fun onPageFinished() {
-            discoverViewModel.onPageFinished()
-        }
-
-        override fun onError() {
-            discoverViewModel.onError()
-        }
-
-        override fun onHttpError() {
-            discoverViewModel.onHttpError()
-        }
-
-        override fun onPageUrlChanged() {
-            discoverViewModel.onPageUrlChanged()
-        }
-    }
 
     abstract fun onReportActionFailed()
 
-    abstract fun bindWebView(view: View?)
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        discoverViewModel.getWebView()?.let { previousWebView ->
-            // If we have a previously saved WebView, it is reloaded, bound and theming set
-            reloadWebView(view, previousWebView)
-            bindWebView(view)
-            val themePreference = discoverViewModel.getDiscoverThemePreference()
-            getWebView(binding.root)?.let { currentWebView ->
-                handleWebViewTheme(themePreference, currentWebView)
-                currentWebView.evaluateJavascript(
-                    getJavascriptThemeChangeFunctionForTheme(getWebViewThemeFromThemePreference(themePreference)),
-                    null
-                )
-            } // Otherwise we just bind the view as we have no previously saved state to show
-        } ?: bindWebView(view)
+        val themePreference = discoverViewModel.getDiscoverThemePreference()
+        getWebView(binding.root)?.let { currentWebView ->
+            handleWebViewTheme(themePreference, currentWebView)
+            currentWebView.evaluateJavascript(
+                getJavascriptThemeChangeFunctionForTheme(getWebViewThemeFromThemePreference(themePreference)),
+                null
+            )
+        } // Otherwise we just bind the view as we have no previously saved state to show
         return view
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        getWebView(binding.root)?.let { discoverViewModel.saveWebView(it) }
+    override fun onSendMailRequestFailed() {
+        onReportActionFailed()
     }
 
     protected fun getTitleForFailedReport(): AnnotatedString {
@@ -114,10 +73,6 @@ abstract class BaseDiscoverFragment(
             customAnnotationList = listOf("verification_mail_click" to longClickSpannable),
             replacementList = listOf("verification_mail" to PERA_VERIFICATION_MAIL_ADDRESS)
         )
-    }
-
-    protected fun handleMailRequestUrl(url: String) {
-        context?.sendMailRequestUrl(url, ::onReportActionFailed)
     }
 
     protected fun getWebViewThemeFromThemePreference(themePreference: ThemePreference): WebViewTheme {
@@ -142,32 +97,6 @@ abstract class BaseDiscoverFragment(
             ) {
                 WebViewTheme.DARK -> webView.settings.forceDark = WebSettings.FORCE_DARK_ON
                 WebViewTheme.LIGHT -> webView.settings.forceDark = WebSettings.FORCE_DARK_OFF
-            }
-        }
-    }
-
-    private fun getWebView(parent: View): PeraWebView? {
-        if (parent is ViewGroup) {
-            for (cx in 0 until parent.childCount) {
-                val child = parent.getChildAt(cx)
-                if (child is PeraWebView) {
-                    return child
-                }
-            }
-        }
-        return null
-    }
-
-    private fun reloadWebView(parent: View?, webView: PeraWebView) {
-        if (parent is ViewGroup) {
-            for (cx in 0 until parent.childCount) {
-                val child = parent.getChildAt(cx)
-                if (child is PeraWebView) {
-                    val index = parent.indexOfChild(child)
-                    parent.removeView(child)
-                    (webView.parent as ViewGroup).removeView(webView)
-                    parent.addView(webView, index)
-                }
             }
         }
     }

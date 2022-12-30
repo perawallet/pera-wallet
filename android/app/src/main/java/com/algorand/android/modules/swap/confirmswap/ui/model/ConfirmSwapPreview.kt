@@ -61,7 +61,6 @@ data class ConfirmSwapPreview(
         val formattedApproximateValue: String,
         val shortName: AssetName,
         val assetDrawableProvider: BaseAssetDrawableProvider,
-        val verificationTierConfig: VerificationTierConfiguration,
-        val logoUrl: String?
+        val verificationTierConfig: VerificationTierConfiguration
     )
 }

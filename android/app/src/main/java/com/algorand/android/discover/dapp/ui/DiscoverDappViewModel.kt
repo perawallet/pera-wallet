@@ -17,10 +17,12 @@ import androidx.lifecycle.viewModelScope
 import com.algorand.android.discover.common.ui.BaseDiscoverViewModel
 import com.algorand.android.discover.dapp.ui.model.DiscoverDappPreview
 import com.algorand.android.discover.dapp.ui.usecase.DiscoverDappPreviewUseCase
+import com.algorand.android.modules.tracking.discover.dapp.DiscoverDappEventTracker
 import com.algorand.android.utils.getOrThrow
 import com.algorand.android.utils.preference.ThemePreference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -28,6 +30,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class DiscoverDappViewModel @Inject constructor(
     private val discoverDappPreviewUseCase: DiscoverDappPreviewUseCase,
+    private val discoverDappEventTracker: DiscoverDappEventTracker,
     savedStateHandle: SavedStateHandle
 ) : BaseDiscoverViewModel() {
 
@@ -40,7 +43,21 @@ class DiscoverDappViewModel @Inject constructor(
     val discoverDappPreviewFlow: StateFlow<DiscoverDappPreview>
         get() = _discoverDappPreviewFlow
 
+    init {
+        logDappVisitEvent()
+    }
+
+    private fun logDappVisitEvent() {
+        viewModelScope.launch(Dispatchers.IO) {
+            discoverDappEventTracker.logDappVisitEvent(
+                dappTitle = dappTitle,
+                dappUrl = dappUrl
+            )
+        }
+    }
+
     fun reloadPage() {
+        clearLastError()
         viewModelScope.launch {
             _discoverDappPreviewFlow
                 .emit(discoverDappPreviewUseCase.getInitialStatePreview(dappUrl, dappTitle))

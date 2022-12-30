@@ -12,8 +12,16 @@
 
 package com.algorand.android.nft.domain.usecase
 
+import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.BaseAccountAssetData
+import com.algorand.android.modules.collectibles.filter.domain.usecase.ClearCollectibleFiltersPreferencesUseCase
+import com.algorand.android.modules.collectibles.filter.domain.usecase.ShouldDisplayOptedInNFTPreferenceUseCase
+import com.algorand.android.modules.collectibles.listingviewtype.domain.model.NFTListingViewType
+import com.algorand.android.modules.collectibles.listingviewtype.domain.usecase.AddOnListingViewTypeChangeListenerUseCase
+import com.algorand.android.modules.collectibles.listingviewtype.domain.usecase.GetNFTListingViewTypePreferenceUseCase
+import com.algorand.android.modules.collectibles.listingviewtype.domain.usecase.RemoveOnListingViewTypeChangeListenerUseCase
+import com.algorand.android.modules.collectibles.listingviewtype.domain.usecase.SaveNFTListingViewTypePreferenceUseCase
 import com.algorand.android.modules.sorting.nftsorting.ui.usecase.CollectibleItemSortUseCase
 import com.algorand.android.nft.mapper.CollectibleListingItemMapper
 import com.algorand.android.nft.ui.model.BaseCollectibleListData
@@ -28,15 +36,29 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
+@SuppressWarnings("LongParameterList")
 class AccountCollectiblesListingPreviewUseCase @Inject constructor(
     private val collectibleListingItemMapper: CollectibleListingItemMapper,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val failedAssetRepository: FailedAssetRepository,
-    private val collectibleUtils: CollectibleUtils,
     private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase,
-    private val collectibleFilterUseCase: CollectibleFilterUseCase,
-    private val collectibleItemSortUseCase: CollectibleItemSortUseCase
-) : BaseCollectiblesListingPreviewUseCase(collectibleListingItemMapper, collectibleFilterUseCase) {
+    private val collectibleItemSortUseCase: CollectibleItemSortUseCase,
+    private val getNFTListingViewTypePreferenceUseCase: GetNFTListingViewTypePreferenceUseCase,
+    clearCollectibleFiltersPreferencesUseCase: ClearCollectibleFiltersPreferencesUseCase,
+    shouldDisplayOptedInNFTPreferenceUseCase: ShouldDisplayOptedInNFTPreferenceUseCase,
+    collectibleUtils: CollectibleUtils,
+    addOnListingViewTypeChangeListenerUseCase: AddOnListingViewTypeChangeListenerUseCase,
+    removeOnListingViewTypeChangeListenerUseCase: RemoveOnListingViewTypeChangeListenerUseCase,
+    saveNFTListingViewTypePreferenceUseCase: SaveNFTListingViewTypePreferenceUseCase
+) : BaseCollectiblesListingPreviewUseCase(
+    collectibleListingItemMapper,
+    saveNFTListingViewTypePreferenceUseCase,
+    addOnListingViewTypeChangeListenerUseCase,
+    removeOnListingViewTypeChangeListenerUseCase,
+    shouldDisplayOptedInNFTPreferenceUseCase,
+    collectibleUtils,
+    clearCollectibleFiltersPreferencesUseCase
+) {
 
     fun getCollectiblesListingPreviewFlow(searchKeyword: String, publicKey: String): Flow<CollectiblesListingPreview> {
         return combine(
@@ -45,27 +67,28 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
             accountCollectibleDataUseCase.getAccountAllCollectibleDataFlow(publicKey)
         ) { accountDetail, failedAssets, accountCollectibleData ->
             val canAccountSignTransaction = canAccountSignTransaction(accountDetail)
+            val nftListingType = getNFTListingViewTypePreferenceUseCase()
             val collectibleListData = prepareCollectiblesListItems(
-                searchKeyword,
-                accountDetail,
-                canAccountSignTransaction,
-                accountCollectibleData
+                searchKeyword = searchKeyword,
+                cachedAccountDetail = accountDetail,
+                accountCollectibleData = accountCollectibleData,
+                nftListingType = nftListingType
             )
-            val isAllCollectiblesFilteredOut = isAllCollectiblesFilteredOut(collectibleListData)
+            val isAllCollectiblesFilteredOut = isAllCollectiblesFilteredOut(collectibleListData, searchKeyword)
             val isEmptyStateVisible = accountCollectibleData.isEmpty() || isAllCollectiblesFilteredOut
-            val itemList = mutableListOf<BaseCollectibleListItem>(
-                createSearchViewItem(
-                    isVisible = !isEmptyStateVisible,
-                    query = searchKeyword
-                ),
-            ).apply { addAll(collectibleListData.baseCollectibleItemList) }
-            val infoViewItem = createInfoViewItem(
-                displayedCollectibleCount = collectibleListData.displayedCollectibleCount,
-                isVisible = !isEmptyStateVisible,
-                isFilterActive = collectibleListData.isFilterActive,
-                isAddButtonVisible = canAccountSignTransaction
-            )
-            itemList.add(ACCOUNT_COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX, infoViewItem)
+            val itemList = mutableListOf<BaseCollectibleListItem>().apply {
+                if (!isEmptyStateVisible) {
+                    add(createSearchViewItem(query = searchKeyword, nftListingType = nftListingType))
+                    add(
+                        ACCOUNT_COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX,
+                        createInfoViewItem(
+                            displayedCollectibleCount = collectibleListData.displayedCollectibleCount,
+                            isAddButtonVisible = canAccountSignTransaction
+                        )
+                    )
+                }
+                addAll(collectibleListData.baseCollectibleItemList)
+            }
             collectibleListingItemMapper.mapToPreviewItem(
                 isLoadingVisible = false,
                 isEmptyStateVisible = isEmptyStateVisible,
@@ -82,42 +105,34 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
 
     private suspend fun prepareCollectiblesListItems(
         searchKeyword: String,
-        accountDetail: CacheResult<AccountDetail>?,
-        canAccountSignTransaction: Boolean,
-        accountCollectibleData: List<BaseAccountAssetData>
+        cachedAccountDetail: CacheResult<AccountDetail>?,
+        accountCollectibleData: List<BaseAccountAssetData>,
+        nftListingType: NFTListingViewType
     ): BaseCollectibleListData {
+        val accountDetail = cachedAccountDetail?.data
         var displayedCollectibleCount = 0
         var filteredOutCollectibleCount = 0
-        val isFilterActive = collectibleFilterUseCase.isFilterActive()
         val collectibleList = mutableListOf<BaseCollectibleListItem>().apply {
-            accountCollectibleData.forEach { collectibleData ->
-                if (shouldFilterOutBasedOnSearch(searchKeyword, collectibleData)) return@forEach
-                val isOwnedByTheUser = collectibleUtils.isCollectibleOwnedByTheUser(accountDetail, collectibleData.id)
-                val accountAddress = accountDetail?.data?.account?.address.orEmpty()
-                val shouldFilterOutCollectible = collectibleFilterUseCase.shouldFilterOutCollectible(
-                    collectibleData,
-                    accountDetail?.data ?: return@forEach
-                )
-                if (shouldFilterOutCollectible) {
-                    filteredOutCollectibleCount++
-                    return@forEach
+            accountCollectibleData.filter { nftData ->
+                filterOptedInNFTIfNeed(accountDetail, nftData).also { isNotFiltered ->
+                    if (!isNotFiltered) filteredOutCollectibleCount++
                 }
-                val collectibleListItem = createCollectibleListItem(collectibleData, isOwnedByTheUser, accountAddress)
-                if (collectibleListItem != null) {
-                    add(collectibleListItem)
-                    displayedCollectibleCount++
-                }
-            }
-            if (canAccountSignTransaction && accountCollectibleData.isNotEmpty()) {
-                add(BaseCollectibleListItem.ReceiveNftItem)
+            }.forEach { collectibleData ->
+                filteredOutCollectibleCount++
+                if (filterNFTBaseOnSearch(searchKeyword, collectibleData)) return@forEach
+                val collectibleListItem = createCollectibleListItem(
+                    accountAssetData = collectibleData,
+                    optedInAccountAddress = accountDetail?.account?.address.orEmpty(),
+                    nftListingType = nftListingType,
+                    isOwnedByWatchAccount = accountDetail?.account?.type == Account.Type.WATCH
+                ) ?: return@forEach
+                add(collectibleListItem)
+                displayedCollectibleCount++
             }
         }
-
         val sortedCollectibleItemList = collectibleItemSortUseCase.sortCollectibles(collectibleList)
-
         return collectibleListingItemMapper.mapToBaseCollectibleListData(
             sortedCollectibleItemList,
-            isFilterActive,
             displayedCollectibleCount,
             filteredOutCollectibleCount
         )

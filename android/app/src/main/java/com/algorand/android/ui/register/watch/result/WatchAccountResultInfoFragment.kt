@@ -16,7 +16,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import com.algorand.android.LoginNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
@@ -60,10 +59,14 @@ class WatchAccountResultInfoFragment : BaseInfoFragment() {
     }
 
     private fun navToHomeNavigation() {
-        nav(LoginNavigationDirections.actionGlobalToHomeNavigation())
+        nav(WatchAccountResultInfoFragmentDirections.actionWatchAccountResultInfoFragmentToHomeNavigation())
     }
 
     private fun navToForceLockNavigation() {
-        nav(LoginNavigationDirections.actionToLockPreferenceNavigation(shouldNavigateHome = true))
+        nav(
+            WatchAccountResultInfoFragmentDirections.actionWatchAccountResultInfoFragmentToLockPreferenceNavigation(
+                shouldNavigateHome = true
+            )
+        )
     }
 }

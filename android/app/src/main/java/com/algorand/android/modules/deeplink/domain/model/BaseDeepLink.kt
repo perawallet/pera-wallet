@@ -16,6 +16,7 @@ package com.algorand.android.modules.deeplink.domain.model
 
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.NotificationGroupType
+import com.algorand.android.modules.swap.assetswap.data.utils.getSafeAssetIdForResponse
 import com.algorand.android.modules.webexport.model.WebExportQrCode
 import com.algorand.android.utils.isEqualTo
 import java.math.BigInteger
@@ -360,7 +361,7 @@ sealed class BaseDeepLink {
             override fun createDeepLink(rawDeeplink: RawDeepLink): BaseDeepLink {
                 return NotificationDeepLink(
                     address = rawDeeplink.accountAddress.orEmpty(),
-                    assetId = rawDeeplink.assetId ?: DEFAULT_ASSET_ID,
+                    assetId = getSafeAssetIdForResponse(rawDeeplink.assetId) ?: DEFAULT_ASSET_ID,
                     notificationGroupType = rawDeeplink.notificationGroupType ?: DEFAULT_NOTIFICATION_GROUP_TYPE
                 )
             }

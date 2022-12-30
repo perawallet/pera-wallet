@@ -29,7 +29,7 @@ import com.algorand.android.modules.accountblockpolling.data.model.ShouldRefresh
 import com.algorand.android.modules.accountblockpolling.data.model.ShouldRefreshResponse
 import com.algorand.android.models.TrackTransactionRequest
 import com.algorand.android.models.VerifiedAssetDetail
-import com.algorand.android.models.WalletConnectSessionSubscriptionBody
+import com.algorand.android.modules.walletconnect.subscription.data.model.WalletConnectSessionSubscriptionBody
 import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
 import com.algorand.android.modules.accounts.data.model.LastSeenNotificationRequest
 import com.algorand.android.modules.accounts.data.model.LastSeenNotificationResponse

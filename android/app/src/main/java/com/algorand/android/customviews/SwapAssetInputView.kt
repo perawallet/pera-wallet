@@ -20,6 +20,7 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.use
@@ -159,6 +160,10 @@ class SwapAssetInputView(context: Context, attrs: AttributeSet? = null) : Constr
 
     fun setImageDrawable(drawable: Drawable?) {
         binding.assetIconImageView.setImageDrawable(drawable)
+    }
+
+    fun getImageView(): ImageView {
+        return binding.assetIconImageView
     }
 
     fun setInputFilter(inputFilter: InputFilter) {

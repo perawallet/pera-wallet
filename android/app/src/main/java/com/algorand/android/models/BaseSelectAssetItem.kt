@@ -67,7 +67,6 @@ sealed class BaseSelectAssetItem : RecyclerListItem, AssetSortableItem {
         abstract val formattedSelectedCurrencyCompactValue: String
         abstract val isAmountInSelectedCurrencyVisible: Boolean
         abstract val baseAssetDrawableProvider: BaseAssetDrawableProvider
-        abstract val prismUrl: String?
 
         abstract val optedInAtRound: Long?
         abstract val amountInSelectedCurrency: BigDecimal?
@@ -91,7 +90,6 @@ sealed class BaseSelectAssetItem : RecyclerListItem, AssetSortableItem {
             override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
-            override val prismUrl: String?,
             override val optedInAtRound: Long?,
             override val amountInSelectedCurrency: BigDecimal
         ) : BaseSelectCollectibleItem() {
@@ -119,7 +117,6 @@ sealed class BaseSelectAssetItem : RecyclerListItem, AssetSortableItem {
             override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
-            override val prismUrl: String?,
             override val optedInAtRound: Long?,
             override val amountInSelectedCurrency: BigDecimal
         ) : BaseSelectCollectibleItem() {
@@ -148,7 +145,6 @@ sealed class BaseSelectAssetItem : RecyclerListItem, AssetSortableItem {
             override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
-            override val prismUrl: String?,
             override val optedInAtRound: Long?,
             override val amountInSelectedCurrency: BigDecimal
         ) : BaseSelectCollectibleItem() {
@@ -177,7 +173,6 @@ sealed class BaseSelectAssetItem : RecyclerListItem, AssetSortableItem {
             override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
-            override val prismUrl: String?,
             override val optedInAtRound: Long?,
             override val amountInSelectedCurrency: BigDecimal
         ) : BaseSelectCollectibleItem() {
@@ -211,9 +206,6 @@ sealed class BaseSelectAssetItem : RecyclerListItem, AssetSortableItem {
         ) : BaseSelectCollectibleItem() {
 
             override val itemType: ItemType = ItemType.SELECT_COLLECTIBLE_NOT_SUPPORTED_ITEM
-
-            override val prismUrl: String?
-                get() = null
 
             override fun areItemsTheSame(other: RecyclerListItem): Boolean {
                 return other is SelectNotSupportedCollectibleItem && id == other.id

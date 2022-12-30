@@ -37,5 +37,7 @@ data class AssetDetailResponse(
     @SerializedName("twitter_username") val twitterUsername: String?,
     @SerializedName("description") val description: String?,
     @SerializedName("url") val url: String?,
-    @SerializedName("total_supply") val totalSupply: BigDecimal?
+    @SerializedName("total_supply") val totalSupply: BigDecimal?,
+    @SerializedName("last_24_hours_algo_price_change_percentage") val last24HoursAlgoPriceChangePercentage: BigDecimal?,
+    @SerializedName("available_on_discover_mobile") val isAvailableOnDiscoverMobile: Boolean?
 )

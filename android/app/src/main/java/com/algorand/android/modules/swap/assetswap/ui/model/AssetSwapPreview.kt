@@ -46,7 +46,6 @@ data class AssetSwapPreview(
         val assetShortName: AssetName,
         val verificationTierConfiguration: VerificationTierConfiguration,
         val assetDrawableProvider: BaseAssetDrawableProvider,
-        val logoUrl: String?,
         val assetDecimal: Int
     )
 

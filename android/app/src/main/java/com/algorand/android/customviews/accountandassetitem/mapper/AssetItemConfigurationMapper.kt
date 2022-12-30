@@ -33,7 +33,6 @@ class AssetItemConfigurationMapper @Inject constructor(
         name: String?,
         shortName: String?,
         formattedCompactAmount: String,
-        prismUrl: String?,
         verificationTier: VerificationTier,
         primaryValue: BigDecimal?
     ): BaseItemConfiguration.BaseAssetItemConfiguration.AssetItemConfiguration {
@@ -44,7 +43,6 @@ class AssetItemConfigurationMapper @Inject constructor(
             secondaryAssetName = AssetName.createShortName(shortName),
             primaryValueText = formattedCompactAmount,
             secondaryValueText = secondaryValueText.takeIf { isAmountInSelectedCurrencyVisible },
-            prismUrl = prismUrl,
             verificationTierConfiguration = verificationTierConfigurationDecider.decideVerificationTierConfiguration(
                 verificationTier
             ),

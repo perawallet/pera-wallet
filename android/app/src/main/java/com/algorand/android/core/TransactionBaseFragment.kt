@@ -17,6 +17,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
@@ -56,20 +57,26 @@ abstract class TransactionBaseFragment(
     private var bleWaitingGroupTransactionData: List<TransactionData>? = null
     private var ledgerLoadingDialog: LedgerLoadingDialog? = null
 
-    abstract val transactionFragmentListener: TransactionFragmentListener
+    open val transactionFragmentListener: TransactionFragmentListener? = null
 
     private val transactionManagerObserver = Observer<Event<TransactionManagerResult>?> { event ->
         event?.consume()?.run {
             when (this) {
                 is TransactionManagerResult.Success -> {
                     hideLoading()
-                    transactionFragmentListener.onSignTransactionFinished(this.signedTransactionDetail)
+                    transactionFragmentListener?.onSignTransactionFinished(this.signedTransactionDetail)
                 }
-                is TransactionManagerResult.Error -> {
+                is TransactionManagerResult.Error.GlobalWarningError -> {
                     showTransactionError(this)
                 }
+                is TransactionManagerResult.Error.SnackbarError.Retry -> {
+//                    Currently, we are showing this kind of error in case of ASA  adding failure. Since we are are
+//                    handling this operation in [MainActivity], no need to check it here. But as a fallback behaviour,
+//                    we will display [CustomSnackbar] here as well.
+                    onCustomBottomSheetOpened(this)
+                }
                 TransactionManagerResult.Loading -> {
-                    transactionFragmentListener.onSignTransactionLoading()
+                    transactionFragmentListener?.onSignTransactionLoading()
                 }
                 is TransactionManagerResult.LedgerWaitingForApproval -> {
                     showLedgerLoading(bluetoothName)
@@ -119,7 +126,12 @@ abstract class TransactionBaseFragment(
     internal fun permissionDeniedOnTransactionData(@StringRes errorResId: Int, @StringRes titleResId: Int) {
         bleWaitingTransactionData = null
         bleWaitingGroupTransactionData = null
-        showTransactionError(TransactionManagerResult.Error.Defined(AnnotatedString(errorResId), titleResId))
+        showTransactionError(
+            TransactionManagerResult.Error.GlobalWarningError.Defined(
+                description = AnnotatedString(errorResId),
+                titleResId = titleResId
+            )
+        )
     }
 
     private fun sendWaitingTransactionData() {
@@ -132,7 +144,7 @@ abstract class TransactionBaseFragment(
     }
 
     private fun hideLoading() {
-        transactionFragmentListener.onSignTransactionLoadingFinished()
+        transactionFragmentListener?.onSignTransactionLoadingFinished()
         ledgerLoadingDialog?.dismissAllowingStateLoss()
         ledgerLoadingDialog = null
     }
@@ -183,17 +195,19 @@ abstract class TransactionBaseFragment(
         )
     }
 
-    protected fun showTransactionError(error: TransactionManagerResult.Error) {
+    protected fun showTransactionError(error: TransactionManagerResult.Error.GlobalWarningError) {
         hideLoading()
         val (title, errorMessage) = error.getMessage(requireContext())
         showGlobalError(errorMessage, title)
         transactionManager.manualStopAllResources()
     }
 
-    protected fun handleError(error: Resource.Error, view: View) {
+    protected open fun onCustomBottomSheetOpened(transactionResult: TransactionManagerResult.Error.SnackbarError) {}
+
+    protected fun handleError(error: Resource.Error, viewGroup: ViewGroup) {
         when (error) {
             is Resource.Error.Annotated -> {
-                showSnackbar(context?.getXmlStyledString(error.annotatedString).toString(), view)
+                showSnackbar(context?.getXmlStyledString(error.annotatedString).toString(), viewGroup)
             }
             is Resource.Error.Warning -> {
                 context?.showAlertDialog(
@@ -215,7 +229,7 @@ abstract class TransactionBaseFragment(
     }
 
     protected open fun onSignTransactionCancelledByLedger() {
-        val transactionManagerResult = TransactionManagerResult.Error.Defined(
+        val transactionManagerResult = TransactionManagerResult.Error.GlobalWarningError.Defined(
             description = AnnotatedString(R.string.error_cancelled_message),
             titleResId = R.string.error_cancelled_title
         )

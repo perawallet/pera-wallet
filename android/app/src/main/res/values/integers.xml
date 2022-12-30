@@ -25,4 +25,5 @@
     <integer name="governor_icon_angle">135</integer>
 
     <integer name="asset_description_max_lines_count">4</integer>
+    <integer name="nft_description_max_lines_count">3</integer>
 </resources>

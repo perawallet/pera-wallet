@@ -13,12 +13,13 @@
 package com.algorand.android.modules.assets.profile.about.data.repository
 
 import com.algorand.android.mapper.AssetDetailMapper
-import com.algorand.android.models.AssetDetail
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.models.Result
 import com.algorand.android.modules.assets.profile.about.data.local.AsaProfileDetailSingleLocalCache
 import com.algorand.android.modules.assets.profile.about.domain.repository.AssetAboutRepository
 import com.algorand.android.network.MobileAlgorandApi
 import com.algorand.android.network.request
+import com.algorand.android.nft.domain.mapper.SimpleCollectibleDetailMapper
 import com.algorand.android.utils.CacheResult
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.flow
 class AssetAboutRepositoryImpl constructor(
     private val mobileAlgorandApi: MobileAlgorandApi,
     private val assetDetailMapper: AssetDetailMapper,
+    private val simpleCollectibleDetailMapper: SimpleCollectibleDetailMapper,
     private val asaProfileDetailSingleLocalCache: AsaProfileDetailSingleLocalCache
 ) : AssetAboutRepository {
 
@@ -44,8 +46,12 @@ class AssetAboutRepositoryImpl constructor(
     override suspend fun cacheAssetDetailToAsaProfileLocalCache(assetId: Long) {
         request { mobileAlgorandApi.getAssetDetail(assetId) }.use(
             onSuccess = { assetDetailResponse ->
-                val assetDetail = assetDetailMapper.mapToAssetDetail(assetDetailResponse)
-                asaProfileDetailSingleLocalCache.put(CacheResult.Success.create(assetDetail))
+                val baseAssetDetail = if (assetDetailResponse.collectible != null) {
+                    simpleCollectibleDetailMapper.mapToCollectibleDetail(assetDetailResponse)
+                } else {
+                    assetDetailMapper.mapToAssetDetail(assetDetailResponse)
+                }
+                asaProfileDetailSingleLocalCache.put(CacheResult.Success.create(baseAssetDetail))
             },
             onFailed = { exception, code ->
                 asaProfileDetailSingleLocalCache.put(CacheResult.Error.create(exception, code))
@@ -53,7 +59,7 @@ class AssetAboutRepositoryImpl constructor(
         )
     }
 
-    override fun getAssetDetailFlowFromAsaProfileLocalCache(): StateFlow<CacheResult<AssetDetail>?> {
+    override fun getAssetDetailFlowFromAsaProfileLocalCache(): StateFlow<CacheResult<BaseAssetDetail>?> {
         return asaProfileDetailSingleLocalCache.cacheFlow
     }
 

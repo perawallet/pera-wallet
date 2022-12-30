@@ -32,6 +32,8 @@ import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet.Companion.WARNING_CONFIRMATION_KEY
 import com.algorand.android.ui.splash.LauncherActivity
+import com.algorand.android.utils.extensions.invisible
+import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.getNavigationBackStackCount
 import com.algorand.android.utils.getTimeAsMinSecondPair
 import com.algorand.android.utils.showBiometricAuthentication
@@ -71,9 +73,14 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
             if (lockViewModel.getCurrentPassword() == pinCode) {
                 onEnteredCorrectPassword()
             } else {
+                binding.passwordDidNotMatchTextView.show()
                 setLockAttemptCount(lockAttemptCount + 1)
                 binding.passwordView.clearWithAnimation()
             }
+        }
+
+        override fun onNewPinAdded() {
+            binding.passwordDidNotMatchTextView.invisible()
         }
     }
     private val dialPadListener = object : DialPadView.DialPadListener {

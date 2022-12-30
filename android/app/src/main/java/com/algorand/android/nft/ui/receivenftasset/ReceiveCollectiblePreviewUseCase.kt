@@ -57,17 +57,17 @@ class ReceiveCollectiblePreviewUseCase @Inject constructor(
             builder = searchPagerBuilder,
             scope = scope,
             defaultQuery = assetSearchQuery
-        ).distinctUntilChanged()
+        )
 
         val accountCollectiblesFlow = accountDetailUseCase.getAccountDetailCacheFlow(
             publicKey = accountAddress
-        ).distinctUntilChanged()
+        )
 
         val searchViewItem = assetSearchItemMapper.mapToSearchViewItem(
             searchViewHintResId = R.string.search_asset_id_or_nft
         )
 
-        val infoViewItem = assetSearchItemMapper.mapToInfoViewItem(infoViewTextResId = R.string.you_can_search_the_nft)
+        val infoViewItem = assetSearchItemMapper.mapToInfoViewItem()
 
         return combine(searchedAssetsFlow, accountCollectiblesFlow) { searchedAssets, accountDetail ->
             searchedAssets.map { baseSearchedAsset ->
