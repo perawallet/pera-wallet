@@ -36,6 +36,20 @@ extension ALGAPI {
     }
 
     @discardableResult
+    func searchAssetsForDiscover(
+        draft: SearchAssetsForDiscoverDraft,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.assetSearch)
+            .method(.get)
+            .query(draft)
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
     func fetchAssetDetails(
         _ draft: AssetFetchQuery,
         queue: DispatchQueue,
@@ -108,6 +122,16 @@ extension ALGAPI {
             .path(.verifiedAssets)
             .method(.get)
             .query(LimitQuery())
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
+    func getTrendingAssets(onCompleted handler: @escaping (Response.ModelResult<[AssetDecoration.APIModel]>) -> Void) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.trendingAssets)
+            .method(.get)
             .completionHandler(handler)
             .execute()
     }

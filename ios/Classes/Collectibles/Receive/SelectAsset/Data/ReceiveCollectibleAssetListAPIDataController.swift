@@ -44,7 +44,8 @@ final class ReceiveCollectibleAssetListAPIDataController:
     private let sharedDataController: SharedDataController
 
     private let snapshotQueue = DispatchQueue(
-        label: "com.algorand.queue.receiveCollectibleAssetListAPIDataController"
+        label: "pera.queue.receiveCollectible.updates",
+        qos: .userInitiated
     )
 
     init(

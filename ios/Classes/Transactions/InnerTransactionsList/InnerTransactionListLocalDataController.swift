@@ -22,7 +22,8 @@ final class InnerTransactionListLocalDataController:
     var eventHandler: ((InnerTransactionListDataControllerEvent) -> Void)?
 
     private let snapshotQueue = DispatchQueue(
-        label: "com.algorand.queue.innerTransactionListLocalDataController"
+        label: "pera.queue.innerTransactions.updates",
+        qos: .userInitiated
     )
 
     private(set) var draft: InnerTransactionListDraft

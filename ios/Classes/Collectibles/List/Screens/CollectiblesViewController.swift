@@ -88,7 +88,7 @@ extension CollectiblesViewController {
             rightBarButtonItems = [ addBarButtonItem ]
         }
 
-        setNeedsNavigationBarAppearanceUpdate()
+        setNeedsRightBarButtonItemsUpdate()
     }
 
     private func bindNavigationItemTitle() {

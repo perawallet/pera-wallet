@@ -44,11 +44,10 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
 
         self.input = input
         self.api = api
-        self.completionQueue =
-            DispatchQueue(
-                label: "com.algorand.queue.operation.assetGroupFetch.\(address)",
-                qos: .userInitiated
-            )
+        self.completionQueue = DispatchQueue(
+            label: "pera.queue.operation.assetGroupFetch.\(address)",
+            qos: .userInitiated
+        )
     }
     
     override func main() {

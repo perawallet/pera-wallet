@@ -345,11 +345,25 @@ extension Colors {
 
 extension Colors {
     /// <todo>
-    /// The "Other" group is temporary. If the cases are renamed in the design side, they will be
+    /// The groups below are temporary. If the cases are renamed in the design side, they will be
     /// removed from this list. Also, the new colors shouldn't be added in this group.
     /// <note>
     /// Sort:
     /// Alphabetical order.
+
+    enum Discover:
+        String,
+        Color {
+        case buttonPrimaryText = "Discover/buttonPrimaryText"
+        case helperGray = "Discover/helperGray"
+        case helperRed = "Discover/helperRed"
+        case layer1 = "Discover/layer1"
+        case main = "Discover/main"
+        case textGray = "Discover/textGray"
+        case textGrayLighter = "Discover/textGrayLighter"
+        case textMain = "Discover/textMain"
+    }
+
     enum Other:
         String,
         Color {

@@ -70,6 +70,11 @@ extension NavigationBarConfigurable where Self: UIViewController {
         navigationItem.leftBarButtonItems = leftBarButtonItems.map {
             UIBarButtonItem(customView: BarButton(barButtonItem: $0))
         }
+
+        setNeedsRightBarButtonItemsUpdate()
+    }
+
+    func setNeedsRightBarButtonItemsUpdate() {
         navigationItem.rightBarButtonItems = rightBarButtonItems.map {
             UIBarButtonItem(customView: BarButton(barButtonItem: $0))
         }

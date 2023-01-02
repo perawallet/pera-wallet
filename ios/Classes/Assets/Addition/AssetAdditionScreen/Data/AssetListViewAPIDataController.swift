@@ -44,7 +44,10 @@ final class AssetListViewAPIDataController:
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
 
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.assetListViewDataController")
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.optinAssets.updates",
+        qos: .userInitiated
+    )
 
     init(
         account: Account,

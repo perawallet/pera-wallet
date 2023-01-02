@@ -19,7 +19,10 @@ import Foundation
 final class ExportAccountsConfirmationListLocalDataController: ExportAccountsConfirmationListDataController {
     var eventHandler: ((ExportAccountsConfirmationListDataControllerEvent) -> Void)?
 
-    private let snapshotQueue = DispatchQueue(label: "exportAccountsConfirmationListSnapshot")
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.confirmExportAccounts.updates",
+        qos: .userInitiated
+    )
 
     let selectedAccounts: [Account]
 

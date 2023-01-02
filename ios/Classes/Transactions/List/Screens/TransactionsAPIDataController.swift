@@ -44,7 +44,10 @@ final class TransactionsAPIDataController:
 
     private var lastSnapshot: Snapshot?
 
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.transactionsController")
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.transactions.updates",
+        qos: .userInitiated
+    )
 
     init(
         _ api: ALGAPI,

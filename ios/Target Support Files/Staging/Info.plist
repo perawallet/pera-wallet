@@ -4,6 +4,8 @@
 <dict>
 	<key>ALGOD_TOKEN</key>
 	<string>$(ALGOD_TOKEN)</string>
+    <key>API_KEY</key>
+    <string>$(STAGING_API_KEY)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

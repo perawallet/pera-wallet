@@ -15,16 +15,15 @@
 //   NoContentWithActionViewIllustratedTheme.swift
 
 import MacaroonUIKit
+import UIKit
 
 struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
     let icon: ImageStyle
-    let iconAlignment: ResultView.IconViewAlignment
-    let spacingBetweenIconAndTitle: LayoutMetric
+    let iconSize: CGSize?
     let title: TextStyle
-    let titleHorizontalMargins: LayoutHorizontalMargins
-    let spacingBetweenTitleAndBody: LayoutMetric
+    let titleTopMargin: LayoutMetric
     let body: TextStyle
-    let bodyHorizontalMargins: LayoutHorizontalMargins
+    let bodyTopMargin: LayoutMetric
     var contentHorizontalPaddings: LayoutHorizontalPaddings
     var contentVerticalPaddings: LayoutVerticalPaddings
     let actionContentEdgeInsets: LayoutPaddings
@@ -41,13 +40,11 @@ struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
         let resultTheme = ResultViewIllustratedTheme()
 
         icon = resultTheme.icon
-        iconAlignment = resultTheme.iconAlignment
-        spacingBetweenIconAndTitle = resultTheme.spacingBetweenIconAndTitle
+        iconSize = nil
         title = resultTheme.title
-        titleHorizontalMargins = resultTheme.titleHorizontalMargins
-        spacingBetweenTitleAndBody = resultTheme.spacingBetweenTitleAndBody
+        titleTopMargin = resultTheme.titleTopMargin
         body = resultTheme.body
-        bodyHorizontalMargins = resultTheme.bodyHorizontalMargins
+        bodyTopMargin = resultTheme.bodyTopMargin
         contentHorizontalPaddings = (24, 24)
         contentVerticalPaddings = (16, 16)
         actionContentEdgeInsets = (14, 24, 14, 24)

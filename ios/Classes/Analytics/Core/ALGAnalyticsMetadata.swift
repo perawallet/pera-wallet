@@ -62,4 +62,7 @@ enum ALGAnalyticsMetadataKey:
     case transactionID = "tx_id"
     case accountCreationType = "type"
     case unsignedTransaction = "unsigned_transaction"
+    case query = "query"
+    case assetInID = "asset_in"
+    case assetOutID = "asset_out"
 }

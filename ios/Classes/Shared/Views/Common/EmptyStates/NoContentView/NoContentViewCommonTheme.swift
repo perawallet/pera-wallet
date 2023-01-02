@@ -20,17 +20,15 @@ import MacaroonUIKit
 import UIKit
 
 struct NoContentViewCommonTheme: NoContentViewTheme {
-    var icon: ImageStyle
-    var iconAlignment: ResultView.IconViewAlignment
-    var spacingBetweenIconAndTitle: LayoutMetric
-    var title: TextStyle
-    var titleHorizontalMargins: LayoutHorizontalMargins
-    var spacingBetweenTitleAndBody: LayoutMetric
-    var body: TextStyle
-    var bodyHorizontalMargins: LayoutHorizontalMargins
+    let icon: ImageStyle
+    let iconSize: CGSize?
+    let title: TextStyle
+    var titleTopMargin: LayoutMetric
+    let body: TextStyle
+    let bodyTopMargin: LayoutMetric
     var contentHorizontalPaddings: LayoutHorizontalPaddings
     var contentVerticalPaddings: LayoutVerticalPaddings
-    var resultAlignment: NoContentView.ResultViewAlignment
+    let resultAlignment: NoContentView.ResultViewAlignment
 
     init(
         _ family: LayoutFamily
@@ -38,13 +36,11 @@ struct NoContentViewCommonTheme: NoContentViewTheme {
         let resultTheme = ResultViewCommonTheme()
 
         self.icon = resultTheme.icon
-        self.iconAlignment = resultTheme.iconAlignment
-        self.spacingBetweenIconAndTitle = resultTheme.spacingBetweenIconAndTitle
+        self.iconSize = nil
         self.title = resultTheme.title
-        self.titleHorizontalMargins = resultTheme.titleHorizontalMargins
-        self.spacingBetweenTitleAndBody = resultTheme.spacingBetweenTitleAndBody
         self.body = resultTheme.body
-        self.bodyHorizontalMargins = resultTheme.bodyHorizontalMargins
+        self.titleTopMargin = resultTheme.titleTopMargin
+        self.bodyTopMargin = resultTheme.bodyTopMargin
         self.contentHorizontalPaddings = (24, 24)
         self.contentVerticalPaddings = (32, 32)
         self.resultAlignment = .centered

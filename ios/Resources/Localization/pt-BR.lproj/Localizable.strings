@@ -308,6 +308,9 @@
 "asset-removing-status" = "Removendo Ativo";
 
 /* (No Comment) */
+"asset-search-not-found" = "Não podemos encontrar este ativo.";
+
+/* (No Comment) */
 "asset-search-placeholder" = "Buscar ID ou Nome de Ativos";
 
 /* (No Comment) */
@@ -717,6 +720,18 @@
 
 /* (No Comment) */
 "default-error-message" = "Um erro ocorreu.";
+
+/* (No Comment) */
+"discover-error-connection-body" = "Parece que você não está conectado à internet. Verifique sua conexão e tente novamente.";
+
+/* (No Comment) */
+"discover-error-connection-title" = "Sem Conexão de Internet";
+
+/* (No Comment) */
+"discover-error-fallback-body" = "Não podemos obter essa informação agora.";
+
+/* MARK: Discover */
+"discover-search-input-placeholder" = "Buscar qualquer ASA";
 
 /* (No Comment) */
 "edit-node-title" = "Editar Node";
@@ -1970,6 +1985,9 @@
 "swap-asset-not-available" = "Ativo não disponível.";
 
 /* (No Comment) */
+"swap-asset-not-opted-in-error" = "Você não optou pelo token de origem. Escolha outra piscina ou outra conta elegível para fazer o swap.";
+
+/* (No Comment) */
 "swap-asset-pool-search-error" = "Não podemos exibir ativos neste momento. Tente novamente.";
 
 /* (No Comment) */
@@ -2201,6 +2219,9 @@
 "title-disconnect" = "Desconectar";
 
 /* (No Comment) */
+"title-discover" = "Descobrir";
+
+/* (No Comment) */
 "title-done" = "Feito";
 
 /* (No Comment) */
@@ -2355,6 +2376,9 @@
 
 /* (No Comment) */
 "title-retry" = "Tentar Novamente";
+
+/* (No Comment) */
+"title-retry-later" = "Tente mais tarde.";
 
 /* (No Comment) */
 "title-save" = "Salvar";

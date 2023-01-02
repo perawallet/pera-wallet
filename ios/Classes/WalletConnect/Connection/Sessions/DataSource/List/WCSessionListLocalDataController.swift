@@ -22,7 +22,10 @@ final class WCSessionListLocalDataController: WCSessionListDataController {
 
     var eventHandler: EventHandler?
 
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.wcSessionListLocalDataController")
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.wcsessions.updates",
+        qos: .userInitiated
+    )
 
     private var lastSnapshot: Snapshot? = nil
     private var disconnectedSessions: Set<WCSession> = []

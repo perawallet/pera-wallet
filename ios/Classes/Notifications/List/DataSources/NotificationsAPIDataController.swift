@@ -31,7 +31,10 @@ final class NotificationsAPIDataController:
     private(set) var notifications = [NotificationMessage]()
     private var addedAssetsWithAccounts = [PublicKey: [AssetID]]()
 
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.notificationsDataController")
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.notifications.updates",
+        qos: .userInitiated
+    )
 
     private var nextCursor: String?
 

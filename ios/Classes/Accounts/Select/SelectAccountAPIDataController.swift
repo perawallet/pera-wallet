@@ -28,7 +28,10 @@ final class SelectAccountAPIDataController:
     private var lastSnapshot: Snapshot?
 
     private let sharedDataController: SharedDataController
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.selectAccountDataController")
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.selectAccount.updates",
+        qos: .userInitiated
+    )
     private let transactionAction: TransactionAction
 
     var shouldFilterAccount: ((Account) -> Bool)?

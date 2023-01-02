@@ -36,7 +36,10 @@ final class AccountAssetListAPIDataController:
     private var lastSnapshot: Snapshot?
 
     private let sharedDataController: SharedDataController
-    private let updatesQueue = DispatchQueue(label: "com.algorand.queue.accountAssetListDataController")
+    private let updatesQueue = DispatchQueue(
+        label: "pera.queue.accountAssets.updates",
+        qos: .userInitiated
+    )
 
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
 

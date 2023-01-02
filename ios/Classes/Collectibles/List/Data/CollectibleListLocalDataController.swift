@@ -52,7 +52,8 @@ final class CollectibleListLocalDataController:
 
     private var lastSnapshot: Snapshot?
     private let snapshotQueue = DispatchQueue(
-        label: Constants.DispatchQueues.collectibleListSnapshot
+        label: "pera.queue.collectibles.updates",
+        qos: .userInitiated
     )
 
     let galleryAccount: CollectibleGalleryAccount

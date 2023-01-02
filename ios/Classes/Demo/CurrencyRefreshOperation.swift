@@ -26,7 +26,7 @@ final class CurrencyRefreshOperation: MacaroonUtils.AsyncOperation {
     private let cachedCurrency: CurrencyProvider
     private let api: ALGAPI
     private let completionQueue = DispatchQueue(
-        label: "com.algorand.queue.operation.currencyFetch",
+        label: "pera.queue.operation.currencyFetch",
         qos: .userInitiated
     )
     

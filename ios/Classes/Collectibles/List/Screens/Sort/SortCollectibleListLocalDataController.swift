@@ -32,7 +32,10 @@ final class SortCollectibleListLocalDataController: SortCollectibleListDataContr
     private let session: Session
     private let sharedDataController: SharedDataController
 
-    private let snapshotQueue = DispatchQueue(label: "sortCollectibleListSnapshot")
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.sortCollectibles.updates",
+        qos: .userInitiated
+    )
 
     init(
         session: Session,

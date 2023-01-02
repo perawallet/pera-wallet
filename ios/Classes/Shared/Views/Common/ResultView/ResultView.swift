@@ -64,7 +64,7 @@ final class ResultView:
             return CGSize((size.width, 0))
         }
 
-        let iconSize = viewModel.icon?.uiImage.size ?? .zero
+        let iconSize = theme.iconSize ?? (viewModel.icon?.uiImage.size ?? .zero)
         let titleSize =
             viewModel.title.boundingSize(
                 fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
@@ -79,11 +79,11 @@ final class ResultView:
             bodySize.height
 
         if viewModel.icon != nil {
-            preferredHeight += theme.spacingBetweenIconAndTitle
+            preferredHeight += theme.titleTopMargin
         }
 
         if viewModel.body != nil {
-            preferredHeight += theme.spacingBetweenTitleAndBody
+            preferredHeight += theme.bodyTopMargin
         }
 
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
@@ -102,6 +102,10 @@ extension ResultView {
             $0.top == 0
             $0.leading == 0
             $0.trailing == 0
+
+            if let iconSize = theme.iconSize {
+                $0.fitToSize((iconSize.width, iconSize.height))
+            }
         }
     }
 
@@ -111,13 +115,12 @@ extension ResultView {
         titleView.customizeAppearance(theme.title)
 
         addSubview(titleView)
-        titleView.contentEdgeInsets.top = theme.spacingBetweenIconAndTitle
         titleView.fitToVerticalIntrinsicSize()
         titleView.snp.makeConstraints {
-            $0.top == iconView.snp.bottom
+            $0.top == iconView.snp.bottom + theme.titleTopMargin
             $0.top.equalToSuperview().priority(.low)
-            $0.leading == theme.titleHorizontalMargins.leading
-            $0.trailing == theme.titleHorizontalMargins.trailing
+
+            $0.setPaddings((.noMetric, 0, .noMetric, 0))
         }
     }
 
@@ -125,22 +128,13 @@ extension ResultView {
         _ theme: ResultViewTheme
     ) {
         bodyView.customizeAppearance(theme.body)
+        bodyView.contentEdgeInsets.top = theme.bodyTopMargin
 
-        bodyView.contentEdgeInsets.top = theme.spacingBetweenTitleAndBody
         addSubview(bodyView)
         bodyView.snp.makeConstraints {
             $0.top == titleView.snp.bottom
-            $0.leading == theme.bodyHorizontalMargins.leading
-            $0.bottom == 0
-            $0.trailing == theme.bodyHorizontalMargins.trailing
-        }
-    }
-}
 
-extension ResultView {
-    enum IconViewAlignment {
-        case centered
-        case leading(margin: LayoutMetric)
-        case trailing(margin: LayoutMetric)
+            $0.setPaddings((.noMetric, 0, 0, 0))
+        }
     }
 }

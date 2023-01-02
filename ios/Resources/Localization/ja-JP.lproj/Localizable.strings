@@ -308,6 +308,9 @@
 "asset-removing-status" = "資産の削除";
 
 /* (No Comment) */
+"asset-search-not-found" = "We are not able to find this asset.";
+
+/* (No Comment) */
 "asset-search-placeholder" = "資産IDまたは名前の検索";
 
 /* (No Comment) */
@@ -717,6 +720,18 @@
 
 /* (No Comment) */
 "default-error-message" = "エラーが発生しました。";
+
+/* (No Comment) */
+"discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
+
+/* (No Comment) */
+"discover-error-connection-title" = "No Internet Connection";
+
+/* (No Comment) */
+"discover-error-fallback-body" = "We can't get that information right now.";
+
+/* MARK: Discover */
+"discover-search-input-placeholder" = "Search for any ASA";
 
 /* (No Comment) */
 "edit-node-title" = "ノードの編集";
@@ -1970,6 +1985,9 @@
 "swap-asset-not-available" = "資産を利用できません。";
 
 /* (No Comment) */
+"swap-asset-not-opted-in-error" = "You are not opted in to source token. Pick another pool, or another eligible account to be able to swap.";
+
+/* (No Comment) */
 "swap-asset-pool-search-error" = "現在資産を表示できません。もう一度お試しください。";
 
 /* (No Comment) */
@@ -2201,6 +2219,9 @@
 "title-disconnect" = "接続解除";
 
 /* (No Comment) */
+"title-discover" = "Discover";
+
+/* (No Comment) */
 "title-done" = "完了";
 
 /* (No Comment) */
@@ -2355,6 +2376,9 @@
 
 /* (No Comment) */
 "title-retry" = "リトライ";
+
+/* (No Comment) */
+"title-retry-later" = "Please try later.";
 
 /* (No Comment) */
 "title-save" = "保存";

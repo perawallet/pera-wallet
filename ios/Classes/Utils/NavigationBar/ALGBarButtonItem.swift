@@ -144,11 +144,34 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .search:
+            if let icon = img("icon-search") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         case .account(let image):
             return ImageContent(normal: image)
+        case .discoverHome:
+            if let icon = img("icon-homepage") {
+                let disabledIcon = img("icon-homepage-disabled")
+                return ImageContent(normal: icon, disabled: disabledIcon)
+            }
+            return nil
+        case .discoverPrevious:
+            if let icon = img("icon-previous") {
+                let disabledIcon = img("icon-previous-disabled")
+                return ImageContent(normal: icon, disabled: disabledIcon)
+            }
+            return nil
+        case .discoverNext:
+            if let icon = img("icon-next") {
+                let disabledIcon = img("icon-next-disabled")
+                return ImageContent(normal: icon, disabled: disabledIcon)
+            }
         case .flexibleSpace:
             return nil
         }
+        return nil
     }
     
     var size: ALGBarButtonItem.Size {
@@ -229,8 +252,16 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .notification:
             return .explicit(CGSize(width: 40, height: 40))
+        case .search:
+            return .explicit(CGSize(width: 40, height: 40))
         case .account:
             return .explicit(CGSize(width: 28, height: 28))
+        case .discoverHome:
+            return .explicit(CGSize(width: 40, height: 40))
+        case .discoverNext:
+            return .explicit(CGSize(width: 40, height: 40))
+        case .discoverPrevious:
+            return .explicit(CGSize(width: 40, height: 40))
         case .flexibleSpace:
             return .explicit(CGSize(width: 40, height: 40))
         }
@@ -279,7 +310,11 @@ extension ALGBarButtonItem {
         case share
         case filter
         case troubleshoot
+        case search
         case account(UIImage)
+        case discoverNext
+        case discoverPrevious
+        case discoverHome
         case flexibleSpace
     }
 }

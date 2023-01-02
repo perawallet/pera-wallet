@@ -34,7 +34,10 @@ final class AccountSelectScreenListAPIDataController:
     private let sharedDataController: SharedDataController
     private let api: ALGAPI
 
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.accountSelectScreen")
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.oldSelectAccount.updates",
+        qos: .userInitiated
+    )
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
 
     private var _contacts: [Contact] = []

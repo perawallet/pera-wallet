@@ -67,11 +67,18 @@ struct BarButtonItemImageContent {
     
     let normal: UIImage
     let highlighted: UIImage?
+    let disabled: UIImage?
     let tintColor: UIColor?
     
-    init(normal: UIImage, highlighted: UIImage? = nil, tintColor: UIColor? = nil) {
+    init(
+        normal: UIImage,
+        highlighted: UIImage? = nil,
+        disabled: UIImage? = nil,
+        tintColor: UIColor? = nil
+    ) {
         self.normal = normal
         self.highlighted = highlighted
+        self.disabled = disabled
         self.tintColor = tintColor
     }
 }

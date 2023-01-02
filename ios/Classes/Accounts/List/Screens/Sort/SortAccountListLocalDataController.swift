@@ -35,7 +35,10 @@ final class SortAccountListLocalDataController: SortAccountListDataController {
     private let session: Session
     private let sharedDataController: SharedDataController
 
-    private let snapshotQueue = DispatchQueue(label: "sortAccountListSnapshot")
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.sortAccounts.updates",
+        qos: .userInitiated
+    )
 
     init(
         session: Session,

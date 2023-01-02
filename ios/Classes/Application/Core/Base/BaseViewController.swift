@@ -260,6 +260,10 @@ extension BaseViewController {
     var analytics: ALGAnalytics {
         return configuration.analytics
     }
+
+    var launchController: AppLaunchController {
+        return configuration.launchController
+    }
 }
 
 extension BaseViewController: NavigationBarConfigurable {

@@ -22,6 +22,12 @@ extension URL {
         let host = host.unwrapNonEmptyString() ?? absoluteString
         return host.without(prefix: "www.")
     }
+    var isMailURL: Bool {
+        return scheme?.lowercased() == "mailto"
+    }
+    var isWebURL: Bool {
+        return (scheme?.lowercased() == "http" || scheme?.lowercased() == "https") && host != nil
+    }
 }
 
 extension URL {

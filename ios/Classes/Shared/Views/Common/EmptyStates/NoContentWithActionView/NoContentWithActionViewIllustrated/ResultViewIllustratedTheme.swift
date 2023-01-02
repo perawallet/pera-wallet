@@ -15,16 +15,15 @@
 //   ResultViewIllustratedTheme.swift
 
 import MacaroonUIKit
+import UIKit
 
 struct ResultViewIllustratedTheme: ResultViewTheme {
     let icon: ImageStyle
-    let iconAlignment: ResultView.IconViewAlignment
-    let spacingBetweenIconAndTitle: LayoutMetric
+    let iconSize: CGSize?
     let title: TextStyle
-    let titleHorizontalMargins: LayoutHorizontalMargins
-    let spacingBetweenTitleAndBody: LayoutMetric
+    let titleTopMargin: LayoutMetric
     let body: TextStyle
-    let bodyHorizontalMargins: LayoutHorizontalMargins
+    let bodyTopMargin: LayoutMetric
 
     init(
         _ family: LayoutFamily
@@ -33,7 +32,7 @@ struct ResultViewIllustratedTheme: ResultViewTheme {
             .adjustsImageForContentSizeCategory(true),
             .contentMode(.center)
         ]
-        self.iconAlignment = .centered
+        self.iconSize = nil
         self.title = [
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.center),
@@ -41,8 +40,7 @@ struct ResultViewIllustratedTheme: ResultViewTheme {
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main)
         ]
-        self.titleHorizontalMargins = (0, 0)
-        self.spacingBetweenIconAndTitle = 40
+        self.titleTopMargin = 40
         self.body = [
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.center),
@@ -50,7 +48,6 @@ struct ResultViewIllustratedTheme: ResultViewTheme {
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray)
         ]
-        self.spacingBetweenTitleAndBody = 16
-        self.bodyHorizontalMargins = (0, 0)
+        self.bodyTopMargin = 16
     }
 }

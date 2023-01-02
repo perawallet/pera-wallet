@@ -95,15 +95,6 @@ final class SearchInputView:
         textClearInputAccessoryView.addTarget(self, action: #selector(clearText), for: .touchUpInside)
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        if bounds.isEmpty {
-            return
-        }
-        recustomizeAppearanceWhenViewDidLayoutSubviews()
-    }
-
     func setText(_ text: String?) {
         textInputView.text = text
         notifyDelegateForEditing()
@@ -138,18 +129,11 @@ extension SearchInputView {
 }
 
 extension SearchInputView {
-    private func recustomizeAppearanceWhenViewDidLayoutSubviews() {
-        recustomizeTextInputAppearanceWhenViewDidLayoutSubviews()
-    }
-
     private func customizeTextInputBackgroundAppearance(_ theme: SearchInputViewTheme) {
         textInputBackgroundView.customizeAppearance(
             theme.textInputBackground
         )
-    }
-
-    private func recustomizeTextInputAppearanceWhenViewDidLayoutSubviews() {
-        textInputBackgroundView.layer.draw(corner: Corner(radius: 4))
+        textInputBackgroundView.layer.draw(corner: theme.textInputBackgroundRadius)
     }
 
     private func customizeTextInputAppearance(_ theme: SearchInputViewTheme) {

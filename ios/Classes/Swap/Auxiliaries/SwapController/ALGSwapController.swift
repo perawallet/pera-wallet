@@ -51,13 +51,13 @@ final class ALGSwapController: SwapController {
     )
 
     init(
-        account: Account,
-        userAsset: Asset,
+        draft: ALGSwapControllerDraft,
         api: ALGAPI,
         transactionSigner: SwapTransactionSigner
     ) {
-        self.account = account
-        self.userAsset = userAsset
+        self.account = draft.account
+        self.userAsset = draft.assetIn
+        self.poolAsset = draft.assetOut
         self.api = api
         self.transactionSigner = transactionSigner
     }

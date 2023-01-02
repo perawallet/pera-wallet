@@ -31,8 +31,10 @@ final class ALGBlockProcessor: BlockProcessor {
     private let blockRequest: BlockRequest
     private let blockCycle: BlockCycle
     private let api: ALGAPI
-    private let blockCycleNotificationQueue =
-        DispatchQueue(label: "com.algorand.queue.blockCycle.notifications")
+    private let blockCycleNotificationQueue = DispatchQueue(
+        label: "pera.queue.blockCycle.notifications",
+        qos: .default
+    )
     
     init(
         blockRequest: @escaping BlockRequest,

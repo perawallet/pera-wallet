@@ -41,7 +41,7 @@ struct HomeTabBarItem: TabBarItem {
     }
 }
 
-struct AlgoStatisticsTabBarItem: TabBarItem {
+struct DiscoverTabBarItem: TabBarItem {
     let id: String
     let barButtonItem: MacaroonUIKit.TabBarButtonItem
     let screen: UIViewController?
@@ -49,15 +49,15 @@ struct AlgoStatisticsTabBarItem: TabBarItem {
     init(
         _ screen: UIViewController
     ) {
-        self.id = TabBarItemID.algoStatistics.rawValue
+        self.id = TabBarItemID.discover.rawValue
         self.barButtonItem =
             TabBarButtonItem(
                 icon: [
-                    .normal("tabbar-icon-algo-statistics"),
-                    .selected("tabbar-icon-algo-statistics-selected"),
-                    .disabled("tabbar-icon-algo-statistics-disabled")
+                    .normal("tabbar-icon-discover"),
+                    .selected("tabbar-icon-discover-selected"),
+                    .disabled("tabbar-icon-discover-disabled")
                 ],
-                title: "title-price".localized
+                title: "title-discover".localized
             )
         self.screen = screen
     }
@@ -109,7 +109,7 @@ struct SettingsTabBarItem: TabBarItem {
 
 enum TabBarItemID: String {
     case home
-    case algoStatistics
+    case discover
     case collectibles
     case settings
 }

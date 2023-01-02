@@ -30,8 +30,11 @@ final class HomeAPIDataController:
     private var visibleAnnouncement: Announcement?
 
     private var lastSnapshot: Snapshot?
-    
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.homeDataController")
+
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.home.updates",
+        qos: .userInitiated
+    )
 
     init(
         _ sharedDataController: SharedDataController,

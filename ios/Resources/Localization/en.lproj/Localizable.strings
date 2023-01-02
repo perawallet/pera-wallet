@@ -45,11 +45,13 @@
 "title-off" = "Off";
 "title-on" = "On";
 "title-retry" = "Retry";
+"title-try-again" = "Try Again";
 "title-error-description" = "Error: %@";
 "title-generic-api-error" = "Well, this is unexpected";
 "title-not-available" = "Not available";
 "title-generic-error" = "Something went wrong";
 "title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
+"title-retry-later" = "Please try later.";
 "title-press-hold-copy-address" = "Press and hold to copy address";
 "title-buy-algo" = "Buy ALGO";
 "title-sort" = "Sort";
@@ -63,6 +65,7 @@
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
 "title-home" = "Home";
+"title-discover" = "Discover";
 "title-price" = "Price";
 "title-collectibles" = "Collectibles";
 "settings-title" = "Settings";
@@ -288,6 +291,7 @@
 "asset-quick-action-title-remove" = "Opted in to";
 "asset-opt-in-successful-message" = "%@ successfully added to your account.";
 "asset-opt-out-successful-message" = "%@ successfully removed from your account.";
+"asset-search-not-found" = "We are not able to find this asset.";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";
@@ -1219,6 +1223,7 @@
 "swap-asset-fee-unavailable-error" = "Swap fee could not be fetched right now.";
 "swap-asset-min-balance-error-without-amount" = "Account doesn't have enough balance for this transaction.";
 "swap-asset-min-balance-error-fee" = "Account doesn't have enough Algo balance to cover transaction fees.";
+"swap-asset-not-opted-in-error" = "You are not opted in to source token. Pick another pool, or another eligible account to be able to swap.";
 
 /// MARK: Swap Adjust Amount
 "swap-amount-percentage-title" = "Balance Percentage";
@@ -1310,3 +1315,9 @@
 "web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";
 "web-export-result-body-singular" = "You can now use this account on Pera Web Wallet.";
 "web-export-encryption-error-message" = "There was an error decrypting incoming data. Please try again by scanning the QR code once more.";
+
+// MARK: Discover
+"discover-search-input-placeholder" = "Search for any ASA";
+"discover-error-fallback-body" = "We can't get that information right now.";
+"discover-error-connection-title" = "No Internet Connection";
+"discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";

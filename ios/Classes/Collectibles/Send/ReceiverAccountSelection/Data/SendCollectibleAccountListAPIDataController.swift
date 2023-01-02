@@ -27,7 +27,8 @@ final class SendCollectibleAccountListAPIDataController:
 
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(
-        label: "com.algorand.queue.receiveCollectibleAccountListAPIDataController"
+        label: "pera.queue.sendCollectibleAccount.updates",
+        qos: .userInitiated
     )
 
     private var accounts: [AccountHandle] = []

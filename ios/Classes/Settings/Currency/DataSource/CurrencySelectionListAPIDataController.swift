@@ -39,7 +39,9 @@ final class CurrencySelectionListAPIDataController: CurrencySelectionDataControl
     private let sharedDataController: SharedDataController
     private let api: ALGAPI
 
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.CurrencySelectionDataController")
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.selectCurrency.updates",
+        qos: .userInitiated)
     
     init(
         sharedDataController: SharedDataController,

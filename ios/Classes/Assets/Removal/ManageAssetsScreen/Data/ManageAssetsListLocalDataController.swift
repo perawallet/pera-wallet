@@ -32,7 +32,10 @@ final class ManageAssetsListLocalDataController:
     private var accountAssets: [Asset] = []
     
     private let sharedDataController: SharedDataController
-    private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.manageAssetListSnapshot)
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.manageAccountAssets.updates",
+        qos: .userInitiated
+    )
 
     private var lastQuery: String? = nil
 

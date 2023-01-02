@@ -23,7 +23,7 @@ final class AccountSelectionListNoContentCell:
     ViewModelBindable {
     static let theme: NoContentViewCommonTheme = {
         var theme = NoContentViewCommonTheme()
-        theme.spacingBetweenIconAndTitle = .zero
+        theme.titleTopMargin = .zero
         return theme
     }()
 

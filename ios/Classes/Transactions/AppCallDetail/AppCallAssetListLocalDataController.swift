@@ -24,7 +24,8 @@ final class AppCallAssetListLocalDataController:
     var eventHandler: EventHandler?
 
     private let snapshotQueue = DispatchQueue(
-        label: "com.algorand.queue.appCallAssetListLocalDataController"
+        label: "pera.queue.appCallAssets.updates",
+        qos: .userInitiated
     )
 
     private(set) var assets: [Asset]

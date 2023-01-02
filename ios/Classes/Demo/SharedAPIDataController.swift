@@ -74,8 +74,10 @@ final class SharedAPIDataController:
     }
 
     private lazy var blockProcessor = createBlockProcessor()
-    private lazy var blockProcessorEventQueue =
-        DispatchQueue(label: "com.algorand.queue.blockProcessor.events")
+    private lazy var blockProcessorEventQueue = DispatchQueue(
+        label: "pera.queue.blockProcessor.events",
+        qos: .userInitiated
+    )
     
     private var nextAccountCollection: AccountCollection = []
     

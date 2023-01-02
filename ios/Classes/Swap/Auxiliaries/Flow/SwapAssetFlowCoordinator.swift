@@ -45,45 +45,69 @@ final class SwapAssetFlowCoordinator:
     private var transitionToEditAmount: BottomSheetTransition?
     private var transitionToEditSlippage: BottomSheetTransition?
 
+    private lazy var assetCacher = MobileAPIAssetCache(
+        api: api,
+        loadingController: loadingController,
+        sharedDataController: sharedDataController
+    )
+
     private var loadingScreen: LoadingScreen?
 
+    private var draft: SwapAssetFlowDraft
     private let dataStore: SwapDataStore
     private let analytics: ALGAnalytics
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
+    private let loadingController: LoadingController
     private let bannerController: BannerController
     private unowned let presentingScreen: UIViewController
-    private var account: Account?
-    private let asset: Asset?
 
     init(
+        draft: SwapAssetFlowDraft,
         dataStore: SwapDataStore,
         analytics: ALGAnalytics,
         api: ALGAPI,
         sharedDataController: SharedDataController,
+        loadingController: LoadingController,
         bannerController: BannerController,
-        presentingScreen: UIViewController,
-        asset: Asset? = nil
+        presentingScreen: UIViewController
     ) {
         self.dataStore = dataStore
         self.analytics = analytics
         self.api = api
         self.sharedDataController = sharedDataController
+        self.loadingController = loadingController
         self.bannerController = bannerController
         self.presentingScreen = presentingScreen
-        self.asset = asset
+        self.draft = draft
     }
 
     deinit {
         sharedDataController.remove(self)
     }
+
+    func resetDraft() {
+        draft.reset()
+    }
+
+    func updateDraft(_ draft: SwapAssetFlowDraft) {
+        self.draft = draft
+    }
+
+    func checkAssetsLoaded() {
+        if let userAsset = draft.assetIn {
+            self.publish(.didSelectUserAsset(userAsset))
+        }
+
+        if let poolAsset = draft.assetOut {
+            self.publish(.didSelectPoolAsset(poolAsset))
+        }
+    }
 }
 
 extension SwapAssetFlowCoordinator {
-    func launch(account: Account?) {
+    func launch() {
         dataStore.reset()
-
-        self.account = account
 
         sharedDataController.add(self)
 
@@ -142,11 +166,8 @@ extension SwapAssetFlowCoordinator {
 
 extension SwapAssetFlowCoordinator {
     private func startSwapFlow() {
-        if let account = account {
-            openSwapAsset(
-                from: account,
-                by: .present
-            )
+        if draft.account != nil {
+            openSwapAsset(by: .present)
             return
         }
 
@@ -156,16 +177,31 @@ extension SwapAssetFlowCoordinator {
 
 extension SwapAssetFlowCoordinator {
     private func openSelectAccount() {
-        let screen = Screen.swapAccountSelection {
+        let screen = Screen.swapAccountSelection(swapAssetFlowCoordinator: self) {
              [unowned self] event, screen in
              switch event {
              case .didSelect(let accountHandle):
-                 self.account = accountHandle.value
+                 let account = accountHandle.value
+                 self.draft.account = account
 
-                 openSwapAsset(
-                    from: accountHandle.value,
-                    by: .push
-                 )
+                 if !draft.isOptedInToAssetIn {
+                     bannerController.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "swap-asset-not-opted-in-error".localized
+                     )
+                     return
+                 }
+
+                 if draft.shouldOptInToAssetOut {
+                     self.cacheAndOptInToAssetIfNeeded(draft.assetOutID)
+                     return
+                 }
+
+                 self.openSwapAsset(by: .push)
+             case .didOptInToAsset(let asset):
+                 let asset = StandardAsset(decoration: asset)
+                 self.draft.account?.append(asset)
+                 self.openSwapAsset(by: .push)
              }
          }
 
@@ -174,20 +210,43 @@ extension SwapAssetFlowCoordinator {
              by: .present
          )
     }
+
+    private func cacheAndOptInToAssetIfNeeded(
+        _ assetID: AssetID?
+    ) {
+        guard let assetID else { return }
+
+        assetCacher.eventHandler = {
+            [unowned self] event in
+            switch event {
+            case .didCacheAsset(let asset):
+                self.openOptInAsset(asset)
+            case .didFailCachingAsset:
+                break
+            }
+        }
+
+        assetCacher.cacheAssetDetail(assetID)
+    }
 }
 
 extension SwapAssetFlowCoordinator {
     private func openSwapAsset(
-        from account: Account,
         by style: Screen.Transition.Open
     ) {
+        guard let account = draft.account else { return }
+
         let transactionSigner = SwapTransactionSigner(
             api: api,
             analytics: analytics
         )
-        let swapController = ALGSwapController(
+        let swapControllerDraft = ALGSwapControllerDraft(
             account: account,
-            userAsset: asset ?? account.algo,
+            assetIn: draft.assetIn ?? account.algo,
+            assetOut: draft.assetOut
+        )
+        let swapController = ALGSwapController(
+            draft: swapControllerDraft,
             api: api,
             transactionSigner: transactionSigner
         )
@@ -826,10 +885,7 @@ extension SwapAssetFlowCoordinator {
                 }
 
                 let assetDecoration = AssetDecoration(asset: asset)
-                self.openOptInAsset(
-                    assetDecoration,
-                    swapController: swapController
-                )
+                self.openOptInAsset(assetDecoration)
             case .didOptInToAsset(let asset):
                 self.visibleScreen.popScreen()
                 self.publish(.didSelectPoolAsset(asset))
@@ -838,12 +894,12 @@ extension SwapAssetFlowCoordinator {
     }
 
     private func openOptInAsset(
-        _ asset: AssetDecoration,
-        swapController: SwapController
+        _ asset: AssetDecoration
     ) {
+        guard let account = draft.account else { return }
+
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
-        let account = swapController.account
         let draft = OptInAssetDraft(
             account: account,
             asset: asset
@@ -901,13 +957,13 @@ extension SwapAssetFlowCoordinator {
     }
 
     private func updateAccountIfNeeded() {
-        guard let account else { return }
+        guard let account = draft.account else { return }
 
         guard let updatedAccount = sharedDataController.accountCollection[account.address] else { return }
 
         if !updatedAccount.isAvailable { return }
 
-        self.account = updatedAccount.value
+        draft.account = updatedAccount.value
     }
 }
 

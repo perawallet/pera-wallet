@@ -300,7 +300,6 @@ extension SelectAssetScreen {
         _ swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
         didPublish event: SwapAssetFlowCoordinatorEvent
     ) {
-
         switch event {
         case .didApproveOptInToAsset(let asset):
             self.continueToOptInAsset(asset: asset)
@@ -341,7 +340,6 @@ extension SelectAssetScreen {
         }
     }
 }
-
 
 extension SelectAssetScreen {
     private func createTransactionController() -> TransactionController {

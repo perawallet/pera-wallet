@@ -30,15 +30,15 @@ extension HIPNetworkError {
     }
     
     var prettyDescription: String {
-        let defaulMessage = "title-generic-api-error".localized
+        let defaultMessage = "title-generic-api-error".localized
         
         switch self {
         case .client(_, let detail),
              .server(_, let detail):
             let apiDetail = detail as? HIPAPIError
-            return apiDetail?.message() ?? defaulMessage
+            return apiDetail?.message() ?? defaultMessage
         default:
-            return defaulMessage
+            return defaultMessage
         }
     }
 }

@@ -21,13 +21,11 @@ import UIKit
 
 struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
     let icon: ImageStyle
-    let iconAlignment: ResultView.IconViewAlignment
-    let spacingBetweenIconAndTitle: LayoutMetric
+    let iconSize: CGSize?
     let title: TextStyle
-    let titleHorizontalMargins: LayoutHorizontalMargins
-    let spacingBetweenTitleAndBody: LayoutMetric
+    let titleTopMargin: LayoutMetric
     let body: TextStyle
-    let bodyHorizontalMargins: LayoutHorizontalMargins
+    let bodyTopMargin: LayoutMetric
     let contentHorizontalPaddings: LayoutHorizontalPaddings
     let contentVerticalPaddings: LayoutVerticalPaddings
     let actionContentEdgeInsets: LayoutPaddings
@@ -44,13 +42,11 @@ struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
         let resultTheme = ResultViewCommonTheme()
 
         self.icon = resultTheme.icon
-        self.iconAlignment = resultTheme.iconAlignment
-        self.spacingBetweenIconAndTitle = resultTheme.spacingBetweenIconAndTitle
+        self.iconSize = nil
         self.title = resultTheme.title
-        self.titleHorizontalMargins = resultTheme.titleHorizontalMargins
-        self.spacingBetweenTitleAndBody = resultTheme.spacingBetweenTitleAndBody
+        self.titleTopMargin = resultTheme.titleTopMargin
         self.body = resultTheme.body
-        self.bodyHorizontalMargins = resultTheme.bodyHorizontalMargins
+        self.bodyTopMargin = resultTheme.bodyTopMargin
         self.contentHorizontalPaddings = (24, 24)
         self.contentVerticalPaddings = (16, 16)
         self.actionContentEdgeInsets = (14, 24, 14, 24)

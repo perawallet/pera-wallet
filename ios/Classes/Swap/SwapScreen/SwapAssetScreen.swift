@@ -96,6 +96,15 @@ final class SwapAssetScreen:
         )
         super.init(configuration: configuration)
 
+        if let poolAsset = dataController.poolAsset {
+            self.poolAssetViewModel = SwapAssetAmountOutViewModel(
+                asset: poolAsset,
+                quote: nil,
+                currency: configuration.sharedDataController.currency,
+                currencyFormatter: currencyFormatter
+            )
+        }
+
         dataStore.add(self)
         swapAssetFlowCoordinator?.add(self)
 
@@ -271,6 +280,8 @@ extension SwapAssetScreen {
 
         contextView.addArrangedSubview(emptyPoolAssetView)
 
+        emptyPoolAssetView.isHidden = dataController.poolAsset != nil
+
         emptyPoolAssetView.startObserving(event: .didSelectAsset) {
             [weak self] in
             guard let self = self else { return }
@@ -285,7 +296,7 @@ extension SwapAssetScreen {
     private func addPoolAsset() {
         poolAssetView.customize(theme.poolAsset)
 
-        poolAssetView.isHidden = true
+        poolAssetView.isHidden = dataController.poolAsset == nil
         contextView.addArrangedSubview(poolAssetView)
 
         poolAssetView.startObserving(event: .didSelectAsset) {
@@ -314,6 +325,8 @@ extension SwapAssetScreen {
          )
 
         swapActionView.isEnabled = false
+
+        swapAssetFlowCoordinator?.checkAssetsLoaded()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {

@@ -23,7 +23,10 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
     var eventHandler: ((CollectibleDetailDataControllerEvent) -> Void)?
 
     private var lastSnapshot: Snapshot?
-    private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.collectibleDetailSnapshot)
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.collectibleDetail.updates",
+        qos: .userInitiated
+    )
 
     private var ongoingEndpoint: EndpointOperatable?
 

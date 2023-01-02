@@ -42,11 +42,10 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
 
         self.input = input
         self.api = api
-        self.completionQueue =
-            DispatchQueue(
-                label: "com.algorand.queue.operation.accountFetch.\(address)",
-                qos: .userInitiated
-            )
+        self.completionQueue = DispatchQueue(
+            label: "pera.queue.operation.accountFetch.\(address)",
+            qos: .userInitiated
+        )
     }
     
     override func main() {

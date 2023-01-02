@@ -51,6 +51,9 @@ extension BarButton {
         if let highligtedImage = barButtonItem.image?.highlighted {
             setImage(highligtedImage, for: .highlighted)
         }
+        if let disabledImage = barButtonItem.image?.disabled {
+            setImage(disabledImage, for: .disabled)
+        }
         if let tint = barButtonItem.image?.tintColor {
             tintColor = tint
         }

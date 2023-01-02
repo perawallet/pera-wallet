@@ -48,8 +48,10 @@ final class AlgoStatisticsDataController {
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
     
-    private let algoPriceCalculationQueue =
-        DispatchQueue(label: "com.pera.queue.algoStatistics.algoPriceCalculation")
+    private let algoPriceCalculationQueue = DispatchQueue(
+        label: "pera.queue.algoStatistics.calculations",
+        qos: .userInitiated
+    )
     
     init(
         api: ALGAPI,

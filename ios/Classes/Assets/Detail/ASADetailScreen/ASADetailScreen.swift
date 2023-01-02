@@ -55,13 +55,17 @@ final class ASADetailScreen:
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
+        draft: SwapAssetFlowDraft(
+            account: dataController.account,
+            assetInID: dataController.asset.id
+        ),
         dataStore: swapDataStore,
         analytics: analytics,
         api: api!,
         sharedDataController: sharedDataController,
+        loadingController: loadingController!,
         bannerController: bannerController!,
-        presentingScreen: self,
-        asset: dataController.asset
+        presentingScreen: self
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
@@ -976,7 +980,7 @@ extension ASADetailScreen {
 
     private func navigateToSwapAsset() {
         analytics.track(.tapSwapInAlgoDetail())
-        swapAssetFlowCoordinator.launch(account: dataController.account)
+        swapAssetFlowCoordinator.launch()
     }
 
     private func navigateToSendTransaction() {

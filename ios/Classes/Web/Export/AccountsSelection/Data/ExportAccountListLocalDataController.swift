@@ -25,7 +25,10 @@ final class ExportAccountListLocalDataController: ExportAccountListDataControlle
     private lazy var accounts: OrderedDictionary<Index, Account> = [:]
     private lazy var selectedAccounts: OrderedDictionary<Index, Account> = [:]
 
-    private let snapshotQueue = DispatchQueue(label: "exportAccountListSnapshot")
+    private let snapshotQueue = DispatchQueue(
+        label: "pera.queue.exportAccounts.updates",
+        qos: .userInitiated
+    )
 
     private let sharedDataController: SharedDataController
     
