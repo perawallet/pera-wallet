@@ -27,6 +27,12 @@ final class NotificationFilterListLayout: NSObject {
         self.dataSource = dataSource
         super.init()
     }
+
+    class func build() -> UICollectionViewLayout {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 0
+        return flowLayout
+    }
 }
 
 extension NotificationFilterListLayout: UICollectionViewDelegateFlowLayout {
@@ -48,6 +54,26 @@ extension NotificationFilterListLayout: UICollectionViewDelegateFlowLayout {
         }
 
         return CGSize(theme.headerSize)
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let pushNotificationsLoadingCell = cell as? TitledToggleLoadingCell {
+            pushNotificationsLoadingCell.startAnimating()
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let pushNotificationsLoadingCell = cell as? TitledToggleLoadingCell {
+            pushNotificationsLoadingCell.stopAnimating()
+        }
     }
 }
 

@@ -22,17 +22,27 @@ import UIKit
 final class AccountPortfolioView:
     View,
     ViewModelBindable,
+    UIInteractable,
     ListReusable {
-    private lazy var titleView = Label()
-    private lazy var valueView = Label()
-    private lazy var secondaryValueView = Label()
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .showMinimumBalanceInfo: TargetActionInteraction()
+    ]
 
+    private lazy var titleView = UILabel()
+    private lazy var valueView = UILabel()
+    private lazy var secondaryValueView = UILabel()
+    private lazy var minimumBalanceContentView = UIView()
+    private lazy var minimumBalanceTitleView = UILabel()
+    private lazy var minimumBalanceValueView = UILabel()
+    private lazy var minimumBalanceInfoActionView = MacaroonUIKit.Button()
+    
     func customize(
         _ theme: AccountPortfolioViewTheme
     ) {
         addTitle(theme)
         addValue(theme)
         addSecondaryValue(theme)
+        addMinimumBalanceContent(theme)
     }
 
     func customizeAppearance(
@@ -66,6 +76,20 @@ final class AccountPortfolioView:
             secondaryValueView.text = nil
             secondaryValueView.attributedText = nil
         }
+
+        if let minimumBalanceTitle = viewModel?.minimumBalanceTitle {
+            minimumBalanceTitle.load(in: minimumBalanceTitleView)
+        } else {
+            minimumBalanceTitleView.text = nil
+            minimumBalanceTitleView.attributedText = nil
+        }
+
+        if let minimumBalanceValue = viewModel?.minimumBalanceValue {
+            minimumBalanceValue.load(in: minimumBalanceValueView)
+        } else {
+            minimumBalanceValueView.text = nil
+            minimumBalanceValueView.attributedText = nil
+        }
     }
     
     class func calculatePreferredSize(
@@ -90,13 +114,22 @@ final class AccountPortfolioView:
             multiline: false,
             fittingSize: .greatestFiniteMagnitude
         ) ?? .zero
+        let minimumBalanceTitle = viewModel.minimumBalanceTitle?.boundingSize(
+            multiline: false,
+            fittingSize: .greatestFiniteMagnitude
+        ) ?? .zero
+        let minimumBalanceInfoActionIcon = theme.minimumBalanceInfoAction.icon?[.normal]
+        let minimumBalanceInfoActionSize = minimumBalanceInfoActionIcon?.size ?? .zero
+        let minimumBalanceContentHeight = max(minimumBalanceTitle.height, minimumBalanceInfoActionSize.height)
         let preferredHeight =
             theme.titleTopPadding +
             titleSize.height +
             theme.spacingBetweenTitleAndValue +
             valueSize.height +
             theme.spacingBetweenTitleAndValue +
-            secondaryValueSize.height
+            secondaryValueSize.height +
+            theme.spacingBetweenSecondaryValueAndMinimumBalanceContent +
+            minimumBalanceContentHeight
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
@@ -111,7 +144,8 @@ extension AccountPortfolioView {
         titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.top == 0
-            $0.centerX.equalToSuperview()
+            $0.leading == theme.contentHorizontalPaddings.leading
+            $0.trailing == theme.contentHorizontalPaddings.trailing
         }
     }
     
@@ -139,8 +173,82 @@ extension AccountPortfolioView {
         secondaryValueView.snp.makeConstraints {
             $0.top == valueView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.leading == theme.contentHorizontalPaddings.leading
-            $0.bottom == 0
             $0.trailing == theme.contentHorizontalPaddings.trailing
         }
+    }
+
+    private func addMinimumBalanceContent(
+        _ theme: AccountPortfolioViewTheme
+    ) {
+        addSubview(minimumBalanceContentView)
+        minimumBalanceContentView.snp.makeConstraints {
+            $0.centerX == 0
+            $0.top == secondaryValueView.snp.bottom + theme.spacingBetweenSecondaryValueAndMinimumBalanceContent
+            $0.leading >= theme.contentHorizontalPaddings.leading
+            $0.trailing <= theme.contentHorizontalPaddings.trailing
+        }
+
+        addMinimumBalanceTitle(theme)
+        addMinimumBalanceValue(theme)
+        addMinimumBalanceInfoAction(theme)
+    }
+
+    private func addMinimumBalanceTitle(
+        _ theme: AccountPortfolioViewTheme
+    ) {
+        minimumBalanceTitleView.customizeAppearance(theme.minimumBalanceTitle)
+
+        minimumBalanceContentView.addSubview(minimumBalanceTitleView)
+        minimumBalanceTitleView.fitToHorizontalIntrinsicSize(compression: .defaultLow)
+        minimumBalanceTitleView.snp.makeConstraints {
+            $0.width >= self * theme.minimumBalanceTitleMinWidthRatio
+
+            let iconHeight = theme.minimumBalanceInfoAction.icon?[.normal]?.height ?? .zero
+            $0.greaterThanHeight(iconHeight)
+
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+        }
+    }
+
+    private func addMinimumBalanceValue(
+        _ theme: AccountPortfolioViewTheme
+    ) {
+        minimumBalanceValueView.customizeAppearance(theme.minimumBalanceValue)
+
+        minimumBalanceContentView.addSubview(minimumBalanceValueView)
+        minimumBalanceValueView.fitToHorizontalIntrinsicSize(compression: .defaultHigh)
+        minimumBalanceValueView.snp.makeConstraints {
+            $0.height == minimumBalanceTitleView
+            $0.top == 0
+            $0.leading == minimumBalanceTitleView.snp.trailing + theme.spacingBetweenMinimumBalanceTitleAndMinimumBalanceValue
+            $0.bottom == 0
+        }
+    }
+
+    private func addMinimumBalanceInfoAction(
+        _ theme: AccountPortfolioViewTheme
+    ) {
+        minimumBalanceInfoActionView.customizeAppearance(theme.minimumBalanceInfoAction)
+
+        minimumBalanceContentView.addSubview(minimumBalanceInfoActionView)
+        minimumBalanceInfoActionView.fitToHorizontalIntrinsicSize()
+        minimumBalanceInfoActionView.snp.makeConstraints {
+            $0.centerY == 0
+            $0.leading == minimumBalanceValueView.snp.trailing + theme.spacingBetweenMinimumBalanceValueAndMinimumBalanceInfoAction
+            $0.trailing == 0
+        }
+
+        startPublishing(
+            event: .showMinimumBalanceInfo,
+            for: minimumBalanceInfoActionView
+        )
+    }
+}
+
+extension AccountPortfolioView {
+    enum Event {
+        case showMinimumBalanceInfo
     }
 }

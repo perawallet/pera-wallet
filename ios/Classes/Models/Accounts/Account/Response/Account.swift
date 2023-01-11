@@ -174,6 +174,33 @@ final class Account: ALGEntityModel {
 }
 
 extension Account {
+    var primaryDisplayName: String {
+        return name.unwrap(or: address.shortAddressDisplay)
+    }
+
+    var secondaryDisplayName: String? {
+        let name = name
+        let address = address
+        let shortAddressDisplay = address.shortAddressDisplay
+
+        if type == .standard,
+           name == shortAddressDisplay {
+            return nil
+        }
+
+        let subtitle: String?
+
+        if (name != nil && name != shortAddressDisplay) {
+            subtitle = shortAddressDisplay
+        } else {
+            subtitle = typeTitle
+        }
+
+        return subtitle
+    }
+}
+
+extension Account {
     var allAssets: [Asset]? {
         if standardAssets == nil &&
            collectibleAssets == nil {

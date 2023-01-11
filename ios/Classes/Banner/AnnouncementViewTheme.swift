@@ -78,7 +78,7 @@ struct GenericAnnouncementViewTheme: AnnouncementViewTheme {
             .backgroundImage([.normal("banner-cta-background")]),
             .font(Fonts.DMSans.medium.make(13))
         ]
-        self.actionEdgeInsets = (0, 16, 0, 16)
+        self.actionEdgeInsets = (0, 20, 0, 20)
         self.actionHeight = 44
         self.close = [
             .backgroundImage([.normal("icon-generic-close-banner")])
@@ -118,7 +118,7 @@ struct GovernanceAnnouncementViewTheme: AnnouncementViewTheme {
         self.stackViewItemSpacing = 12
         self.stackViewButtonSpacing = 16
         self.title = [
-            .font(Fonts.DMSans.medium.make(15)),
+            .font(Fonts.DMSans.medium.make(19)),
             .textOverflow(FittingText()),
             .textColor(Colors.Banner.text)
         ]
@@ -131,7 +131,7 @@ struct GovernanceAnnouncementViewTheme: AnnouncementViewTheme {
             .backgroundImage([.normal("banner-cta-background")]),
             .font(Fonts.DMSans.medium.make(13))
         ]
-        self.actionEdgeInsets = (0, 16, 0, 16)
+        self.actionEdgeInsets = (0, 20, 0, 20)
         self.actionHeight = 44
         self.close = [
             .backgroundImage([.normal("icon-governance-close-banner")])

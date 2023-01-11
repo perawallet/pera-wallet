@@ -32,7 +32,7 @@ protocol CollectibleListDataController: AnyObject {
     func search(for query: String)
     func resetSearch()
 
-    typealias Filter = CollectiblesFilterSelectionViewController.Filter
+    typealias Filter = CollectibleAssetFilter
     var currentFilter: Filter { get }
 
     func filter(

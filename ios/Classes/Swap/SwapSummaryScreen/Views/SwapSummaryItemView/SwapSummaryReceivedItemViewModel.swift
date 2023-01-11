@@ -49,9 +49,10 @@ extension SwapSummaryReceivedItemViewModel {
         parsedTransactions: [ParsedSwapTransaction],
         currencyFormatter: CurrencyFormatter
     ) {
-        guard let assetOut = quote.assetOut else { return }
-
-        let totalReceivedAmount = parsedTransactions.reduce(0, { $0 + $1.receivedAmount })
+        guard let assetOut = quote.assetOut,
+              let totalReceivedAmount = quote.amountOutWithSlippage else {
+            return
+        }
 
         let decimalAmount = formatter.getDecimalAmount(
             of: totalReceivedAmount,

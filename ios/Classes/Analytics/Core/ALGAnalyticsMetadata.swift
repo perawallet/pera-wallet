@@ -58,6 +58,7 @@ enum ALGAnalyticsMetadataKey:
     case swapDate = "swap_date_format"
     case swapDateTimestamp = "swap_date_timestamp"
     case wcSessionTopic = "topic"
+    case totalAccount = "total_account"
     case transactionCount = "transaction_count"
     case transactionID = "tx_id"
     case accountCreationType = "type"

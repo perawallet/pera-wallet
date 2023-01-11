@@ -105,7 +105,7 @@ struct CollectibleListItemViewTheme:
         ]
         pendingLabel = [
             .textColor(Colors.Helpers.positive),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
         ]
         pendingLabelPaddings = (4, 8, 4, 8)
 

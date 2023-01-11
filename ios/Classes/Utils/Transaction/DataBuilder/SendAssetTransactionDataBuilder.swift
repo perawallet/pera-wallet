@@ -50,13 +50,16 @@ class SendAssetTransactionDataBuilder: TransactionDataBuilder {
         }
 
         var transactionError: NSError?
+        
+        let note = assetTransactionDraft.lockedNote ?? assetTransactionDraft.note
+        
         let draft = AssetTransactionDraft(
             from: assetTransactionDraft.from,
             toAccount: address,
             transactionParams: params,
             amount: amountDecimalValue.toFraction(of: assetTransactionDraft.assetDecimalFraction),
             assetIndex: assetIndex,
-            note: assetTransactionDraft.note?.data(using: .utf8),
+            note: note?.data(using: .utf8),
             closeTo: assetTransactionDraft.assetCreator
         )
 

@@ -208,6 +208,7 @@ extension SendCollectibleAccountListViewController {
         }
 
         UIView.animate(withDuration: 0.3) {
+            [unowned self] in
             self.listView.contentInset.top = isVisible ? self.theme.contentInsetTopForClipboard : 0
         }
     }

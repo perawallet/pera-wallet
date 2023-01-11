@@ -36,6 +36,9 @@ struct AlgoTransactionListing: TransactionListing {
     var type: TransactionTypeFilter {
         return .algos
     }
+    var asset: Asset? {
+        return accountHandle.value.algo
+    }
 
     var accountHandle: AccountHandle
 }

@@ -189,7 +189,6 @@ extension ManageAssetsViewController {
         let screen = Screen.collectibleDetail(
             asset: asset,
             account: account,
-            thumbnailImage: nil,
             quickAction: .optOut
         ) { event in
             switch event {
@@ -234,6 +233,7 @@ extension ManageAssetsViewController {
     ) -> TransactionController {
         let transactionController = TransactionController(
             api: api!,
+            sharedDataController: sharedDataController,
             bannerController: bannerController,
             analytics: analytics
         )

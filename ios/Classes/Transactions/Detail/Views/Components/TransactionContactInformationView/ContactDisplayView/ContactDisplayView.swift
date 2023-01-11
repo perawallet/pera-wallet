@@ -66,7 +66,7 @@ extension ContactDisplayView {
 
         addSubview(nameLabel)
         nameLabel.snp.makeConstraints {
-            $0.trailing.equalToSuperview().priority(.low)
+            $0.trailing.equalToSuperview().priority(.high)
             $0.top.bottom.equalToSuperview()
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
             $0.leading.equalToSuperview().priority(.high)

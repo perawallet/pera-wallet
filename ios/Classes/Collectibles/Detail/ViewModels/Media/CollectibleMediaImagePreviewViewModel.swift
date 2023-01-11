@@ -21,15 +21,21 @@ import MacaroonURLImage
 
 protocol CollectibleMediaImagePreviewViewModel: ViewModel {
     var image: ImageSource? { get set }
-    var isOwned: Bool { get set }
+    var displaysOffColorMedia: Bool { get set }
     var isFullScreenBadgeHidden: Bool { get set }
 }
 
 extension CollectibleMediaImagePreviewViewModel {
-    mutating func bindOwned(
-        _ asset: CollectibleAsset
+    mutating func bindDisplaysOffColorMedia(
+        _ asset: CollectibleAsset,
+        _ accountCollectibleStatus: AccountCollectibleStatus
     ) {
-        isOwned = asset.isOwned
+        switch accountCollectibleStatus {
+        case .notOptedIn, .owned:
+            displaysOffColorMedia = false
+        case .optedIn:
+            displaysOffColorMedia = true
+        }
     }
 
     mutating func bindIsFullScreenBadgeHidden(

@@ -18,6 +18,9 @@
 
 import Foundation
 import MacaroonUtils
+import MagpieCore
+import MagpieHipo
+import MagpieExceptions
 
 protocol SharedDataController: AnyObject {
     var assetDetailCollection: AssetDetailCollection { get set }
@@ -69,6 +72,13 @@ protocol SharedDataController: AnyObject {
     )
     func remove(
         _ observer: SharedDataControllerObserver
+    )
+    func getTransactionParams(
+        isCacheEnabled: Bool,
+        _ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
+    )
+    func getTransactionParams(
+        _ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
     )
 }
 

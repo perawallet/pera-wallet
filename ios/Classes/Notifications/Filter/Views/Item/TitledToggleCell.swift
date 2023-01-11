@@ -18,27 +18,32 @@
 import UIKit
 
 final class TitledToggleCell: BaseCollectionViewCell<TitledToggleView> {
+    static let theme: TitledToggleViewTheme = TitledToggleViewTheme()
+
+    var isOn: Bool {
+        get {
+            contextView.isOn
+        }
+        set {
+            if newValue == isOn {
+                return
+            }
+            
+            contextView.isOn = newValue
+        }
+    }
+    
     weak var delegate: TitledToggleCellDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        customize(TitledToggleViewTheme())
+        contextView.customize(Self.theme)
     }
 
     override func linkInteractors() {
         super.linkInteractors()
         contextView.delegate = self
-    }
-}
-
-extension TitledToggleCell {
-    func bindData(_ viewModel: TitledToggleViewModel?) {
-        contextView.bindData(viewModel)
-    }
-
-    private func customize(_ theme: TitledToggleViewTheme) {
-        contextView.customize(theme)
     }
 }
 

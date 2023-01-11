@@ -24,10 +24,14 @@ struct DiscoverDappDetailEvent: ALGAnalyticsEvent {
     fileprivate init(dappParameters: DiscoverDappParamaters) {
         self.name = .discoverDappDetail
 
-        self.metadata = [
-            .dappURL: dappParameters.url,
-            .dappName: dappParameters.name
-        ]
+        var tempMetadata: ALGAnalyticsMetadata = [:]
+        tempMetadata[.dappURL] = dappParameters.url
+
+        if let dappName = dappParameters.name {
+            tempMetadata[.dappName] = dappName
+        }
+
+        self.metadata = tempMetadata
     }
 }
 

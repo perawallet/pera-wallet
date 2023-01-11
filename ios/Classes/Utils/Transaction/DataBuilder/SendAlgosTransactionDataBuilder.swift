@@ -56,13 +56,15 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
             return nil
         }
 
+        let note = algosTransactionDraft.lockedNote ?? algosTransactionDraft.note
+        
         let draft = AlgosTransactionDraft(
             from: algosTransactionDraft.from,
             toAccount: address,
             transactionParams: params,
             amount: transactionAmount,
             isMaxTransaction: isMaxTransaction,
-            note: algosTransactionDraft.note?.data(using: .utf8)
+            note: note?.data(using: .utf8)
         )
 
         var transactionError: NSError?

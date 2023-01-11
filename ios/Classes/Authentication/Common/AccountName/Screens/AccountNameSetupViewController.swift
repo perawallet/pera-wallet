@@ -17,97 +17,180 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonForm
 
-final class AccountNameSetupViewController: BaseScrollViewController {
-    private lazy var accountNameSetupView = AccountNameSetupView()
-    private lazy var theme = Theme()
-    
-    private var keyboardController = KeyboardController()
+final class AccountNameSetupViewController:
+    BaseScrollViewController,
+    MacaroonForm.KeyboardControllerDataSource {
+    private lazy var theme = AccountNameSetupViewControllerTheme()
+
+    private lazy var titleView = UILabel()
+    private lazy var descriptionView = UILabel()
+    private lazy var nameInputView = FloatingTextInputFieldView()
+    private lazy var actionView = MacaroonUIKit.Button()
+
+    private lazy var keyboardController = MacaroonForm.KeyboardController(
+        scrollView: scrollView,
+        screen: self
+    )
 
     private let flow: AccountSetupFlow
     private let mode: AccountSetupMode
+    private let nameServiceName: String?
     private let accountAddress: PublicKey
 
     init(
         flow: AccountSetupFlow,
         mode: AccountSetupMode,
+        nameServiceName: String?,
         accountAddress: PublicKey,
         configuration: ViewControllerConfiguration
     ) {
         self.flow = flow
         self.mode = mode
+        self.nameServiceName = nameServiceName
         self.accountAddress = accountAddress
+
         super.init(configuration: configuration)
-    }
-    
-    override func setListeners() {
-        super.setListeners()
-        keyboardController.beginTracking()
-        accountNameSetupView.setListeners()
-    }
-    
-    override func linkInteractors() {
-        accountNameSetupView.linkInteractors()
-        (scrollView as? TouchDetectingScrollView)?.touchDetectingDelegate = self
-        keyboardController.dataSource = self
-        accountNameSetupView.delegate = self
-    }
-    
-    override func prepareLayout() {
-        super.prepareLayout()
-        addAccountNameSetupView()
+
+        keyboardController.activate()
     }
 
-    override func bindData() {
-        super.bindData()
-        accountNameSetupView.bindData(accountAddress.shortAddressDisplay)
+    deinit {
+        keyboardController.deactivate()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        nameInputView.beginEditing()
+    }
+
+    override func prepareLayout() {
+        super.prepareLayout()
+
+        scrollView.keyboardDismissMode = .onDrag
+
+        addUI()
     }
 
     override func configureAppearance() {
-        super.configureAppearance()
-        customizeBackground()
+        scrollView.contentInsetAdjustmentBehavior = .automatic
     }
 
-    private func customizeBackground() {
-        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        accountNameSetupView.beginEditing()
+    override func addFooter() {
+        super.addFooter()
+
+        var backgroundGradient = Gradient()
+        let baseGradientColor = Colors.Defaults.background.uiColor
+        backgroundGradient.colors = [
+            baseGradientColor.withAlphaComponent(0),
+            baseGradientColor
+        ]
+
+        footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
     }
 }
 
 extension AccountNameSetupViewController {
-    private func addAccountNameSetupView() {
-        accountNameSetupView.customize(theme.accountNameSetupViewViewTheme)
+    private func addUI() {
+        addBackground()
+        addTitle()
+        addDescription()
+        addNameInput()
+        addAction()
+    }
 
-        contentView.addSubview(accountNameSetupView)
-        accountNameSetupView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
+    private func addTitle() {
+        titleView.customizeAppearance(theme.title)
+
+        contentView.addSubview(titleView)
+        titleView.snp.makeConstraints {
+            $0.top == theme.contentEdgeInsets.top
+            $0.leading == theme.contentEdgeInsets.leading
+            $0.trailing == theme.contentEdgeInsets.trailing
         }
     }
+
+    private func addDescription() {
+        descriptionView.customizeAppearance(theme.description)
+
+        contentView.addSubview(descriptionView)
+        descriptionView.snp.makeConstraints {
+            $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndDescription
+            $0.leading == theme.contentEdgeInsets.leading
+            $0.trailing == theme.contentEdgeInsets.trailing
+        }
+    }
+
+    private func addNameInput() {
+        nameInputView.customize(theme.nameInput)
+
+        contentView.addSubview(nameInputView)
+        nameInputView.snp.makeConstraints {
+            $0.top == descriptionView.snp.bottom + theme.spacingBetweenDescriptionAndNameInput
+            $0.leading == theme.contentEdgeInsets.leading
+            $0.bottom == 0
+            $0.trailing == theme.contentEdgeInsets.trailing
+            $0.greaterThanHeight(theme.nameInputMinHeight)
+        }
+
+        nameInputView.delegate = self
+
+        bindNameInput()
+    }
+
+    private func addAction() {
+        actionView.customizeAppearance(theme.action)
+
+        footerView.addSubview(actionView)
+        actionView.contentEdgeInsets = UIEdgeInsets(theme.actionEdgeInsets)
+        actionView.snp.makeConstraints {
+            $0.top == theme.actionContentEdgeInsets.top
+            $0.leading == theme.actionContentEdgeInsets.leading
+            $0.trailing == theme.actionContentEdgeInsets.trailing
+            $0.bottom == theme.actionContentEdgeInsets.bottom
+        }
+
+        actionView.addTouch(
+            target: self,
+            action: #selector(setupAccountName)
+        )
+    }
 }
 
-extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
-    func accountNameSetupViewDidFinishAccountCreation(_ accountNameSetupView: AccountNameSetupView) {
-        analytics.track(.onboardWatchAccount(type: .create))
+extension AccountNameSetupViewController: FloatingTextInputFieldViewDelegate {
+    func floatingTextInputFieldViewShouldReturn(_ view: FloatingTextInputFieldView) -> Bool {
         setupAccountName()
+        return true
     }
-    
-    func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {}
 }
 
 extension AccountNameSetupViewController {
+    private func bindNameInput() {
+        let name = nameServiceName.unwrap(or: accountAddress.shortAddressDisplay)
+        nameInputView.text = name
+    }
+}
+
+extension AccountNameSetupViewController {
+    @objc
     private func setupAccountName() {
+        nameInputView.endEditing()
+
+        analytics.track(.onboardWatchAccount(type: .create))
+
         let accountName: String
-        if let nameInput = accountNameSetupView.accountNameInputView.text,
+        if let nameInput = nameInputView.text,
            !nameInput.isEmpty {
             accountName = nameInput
         } else {
-            accountName = accountAddress.shortAddressDisplay
+            let name = nameServiceName.unwrap(or: accountAddress.shortAddressDisplay)
+            accountName = name
         }
 
         session?.updateName(accountName, for: accountAddress)
@@ -183,30 +266,62 @@ extension AccountNameSetupViewController {
     }
 }
 
-extension AccountNameSetupViewController: KeyboardControllerDataSource {
-    func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
-        return 20
+extension AccountNameSetupViewController {
+    func keyboardController(
+        _ keyboardController: MacaroonForm.KeyboardController,
+        editingRectIn view: UIView
+    ) -> CGRect? {
+        return nameInputView.frame
     }
-    
-    func firstResponder(for keyboardController: KeyboardController) -> UIView? {
-        return accountNameSetupView.accountNameInputView
-    }
-    
-    func containerView(for keyboardController: KeyboardController) -> UIView {
-        return contentView
-    }
-    
-    func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
-        return 20
-    }
-}
 
-extension AccountNameSetupViewController: TouchDetectingScrollViewDelegate {
-    func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if accountNameSetupView.nextButton.frame.contains(point) ||
-            accountNameSetupView.accountNameInputView.frame.contains(point) {
-            return
+    func bottomInsetOverKeyboardWhenKeyboardDidShow(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        if let keyboard = keyboardController.keyboard {
+            footerBackgroundView.snp.updateConstraints {
+                $0.bottom == keyboard.height
+            }
+
+            let animator = UIViewPropertyAnimator(
+                duration: keyboard.animationDuration,
+                curve: keyboard.animationCurve
+            ) {
+                [unowned self] in
+                view.layoutIfNeeded()
+            }
+            animator.startAnimation()
         }
-        contentView.endEditing(true)
+
+        return spacingBetweenContentAndKeyboard()
+    }
+
+    private func spacingBetweenContentAndKeyboard() -> LayoutMetric {
+        return footerView.frame.height
+    }
+
+    func bottomInsetWhenKeyboardDidHide(
+        _ keyboardController: MacaroonForm.KeyboardController
+    ) -> LayoutMetric {
+        /// <note>
+        /// It doesn't scroll to the bottom during the transition to another screen. When the
+        /// screen is back, it will show the keyboard again anyway.
+        if isViewDisappearing {
+            return scrollView.contentInset.bottom
+        }
+
+        footerBackgroundView.snp.updateConstraints {
+            $0.bottom == 0
+        }
+
+        let animator = UIViewPropertyAnimator(
+            duration:  0.25,
+            curve: .easeOut
+        ) {
+            [unowned self] in
+            view.layoutIfNeeded()
+        }
+        animator.startAnimation()
+
+        return .zero
     }
 }

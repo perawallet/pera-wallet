@@ -315,9 +315,14 @@ extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
             guard let self = self else {
                 return
             }
+            
+            pinLimitViewController.dismissScreen()
 
             if isCompleted {
-                self.launchOnboarding()
+                self.closeScreen(by: .dismiss) {
+                    self.launchOnboarding()
+                }
+                
                 return
             }
 

@@ -25,6 +25,7 @@ final class ViewControllerConfiguration {
     let loadingController: LoadingController?
     let bannerController: BannerController?
     let toastPresentationController: ToastPresentationController?
+    let lastSeenNotificationController: LastSeenNotificationController?
     let analytics: ALGAnalytics
     let launchController: AppLaunchController
     
@@ -36,6 +37,7 @@ final class ViewControllerConfiguration {
         loadingControlller: LoadingController?,
         bannerController: BannerController?,
         toastPresentationController: ToastPresentationController?,
+        lastSeenNotificationController: LastSeenNotificationController?,
         analytics: ALGAnalytics,
         launchController: AppLaunchController
     ) {
@@ -46,6 +48,7 @@ final class ViewControllerConfiguration {
         self.loadingController = loadingControlller
         self.bannerController = bannerController
         self.toastPresentationController = toastPresentationController
+        self.lastSeenNotificationController = lastSeenNotificationController
         self.analytics = analytics
         self.launchController = launchController
     }

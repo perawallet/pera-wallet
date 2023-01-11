@@ -21,7 +21,7 @@ struct CollectibleDetailAssetIDItemViewModel: SecondaryListItemViewModel {
     var title: TextProvider?
     var accessory: SecondaryListItemValueViewModel?
 
-    init(asset: Asset) {
+    init(asset: CollectibleAsset) {
         bindTitle(asset)
 
         accessory = CollectibleDetailAssetIDItemValueViewModel(asset: asset)
@@ -29,7 +29,7 @@ struct CollectibleDetailAssetIDItemViewModel: SecondaryListItemViewModel {
 }
 
 extension CollectibleDetailAssetIDItemViewModel {
-    private mutating func bindTitle(_ asset: Asset) {
+    private mutating func bindTitle(_ asset: CollectibleAsset) {
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Text.gray))
 
@@ -44,13 +44,13 @@ fileprivate struct CollectibleDetailAssetIDItemValueViewModel: SecondaryListItem
     var icon: ImageStyle?
     var title: TextProvider?
 
-    init(asset: Asset) {
+    init(asset: CollectibleAsset) {
         bindTitle(asset: asset)
     }
 }
 
 extension CollectibleDetailAssetIDItemValueViewModel {
-    private mutating func bindTitle(asset: Asset) {
+    private mutating func bindTitle(asset: CollectibleAsset) {
         var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Link.primary))
 

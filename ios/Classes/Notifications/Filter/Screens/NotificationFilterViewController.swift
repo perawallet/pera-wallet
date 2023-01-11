@@ -19,35 +19,103 @@ import UIKit
 import MagpieCore
 import MagpieHipo
 import MagpieExceptions
+import MacaroonUtils
 
-final class NotificationFilterViewController: BaseViewController {
-    private lazy var notificationFilterView = NotificationFilterView()
+final class NotificationFilterViewController:
+    BaseViewController,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
 
-    private lazy var dataSource: NotificationFilterDataSource = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return NotificationFilterDataSource(sharedDataController: sharedDataController, api: api)
+    private lazy var listView: UICollectionView = {
+        let collectionViewLayout = NotificationFilterListLayout.build()
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: collectionViewLayout
+        )
+        collectionView.contentInset.top = 20
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .clear
+        collectionView.register(AccountNameSwitchCell.self)
+        collectionView.register(TitledToggleCell.self)
+        collectionView.register(TitledToggleLoadingCell.self)
+        collectionView.register(header: ToggleTitleHeaderSupplementaryView.self)
+        return collectionView
     }()
 
-    private lazy var listLayout = NotificationFilterListLayout(dataSource: dataSource)
+    private lazy var listDataSource = NotificationFilterDataSource(
+        sharedDataController: sharedDataController,
+        api: api!
+    )
+    private lazy var listLayout = NotificationFilterListLayout(dataSource: listDataSource)
+    
+    private let theme = NotificationFilterViewControllerTheme()
+
+    deinit {
+        stopObservingNotifications()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        getPushNotificationSettings {
+            [weak self] settings in
+            guard let self = self else {
+                return
+            }
+
+            self.updatePushNotificationsToggle(settings)
+        }
+    }
 
     override func configureAppearance() {
         super.configureAppearance()
+        
         title = "notifications-title".localized
     }
 
     override func linkInteractors() {
-        notificationFilterView.collectionView.dataSource = dataSource
-        notificationFilterView.collectionView.delegate = listLayout
-        dataSource.delegate = self
+        super.linkInteractors()
+
+        listView.dataSource = listDataSource
+        listView.delegate = listLayout
+        listDataSource.delegate = self
+
+        observeWhenApplicationWillEnterForeground {
+            [weak self] _ in
+            guard let self = self else {
+                return
+            }
+
+            if self.presentedViewController is UIAlertController {
+                return
+            }
+
+            self.updatePushNotificationsToggleIfNeeded()
+        }
     }
     
     override func prepareLayout() {
-        view.addSubview(notificationFilterView)
-        notificationFilterView.snp.makeConstraints {
-            $0.top.safeEqualToTop(of: self)
-            $0.leading.trailing.bottom.equalToSuperview()
+        super.prepareLayout()
+
+        addUI()
+    }
+    
+    private func addUI() {
+        addBackground()
+        addList()
+    }
+}
+
+extension NotificationFilterViewController {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+    
+    private func addList() {
+        view.addSubview(listView)
+        listView.snp.makeConstraints {
+            $0.setPaddings()
         }
     }
 }
@@ -57,7 +125,7 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
         _ notificationFilterDataSource: NotificationFilterDataSource,
         didChangePushNotificationsToggleValue value: Bool
     ) {
-        presentNotificationAlert(isNotificationEnabled: value)
+        presentAlertForPushNotificationsToggleChange(value)
     }
 
     func notificationFilterDataSource(
@@ -95,43 +163,78 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
 }
 
 extension NotificationFilterViewController {
-    private func presentNotificationAlert(isNotificationEnabled: Bool) {
-        let alertMessage: String = isNotificationEnabled ?
-        "settings-notification-disabled-go-settings-text".localized :
-        "settings-notification-enabled-go-settings-text".localized
+    private func presentAlertForPushNotificationsToggleChange(_ isOn: Bool) {
+        let alertTitle: String
+        let alertMessage: String
+
+        if isOn {
+            alertTitle = "settings-notification-disabled-go-settings-title".localized
+            alertMessage = "settings-notification-disabled-go-settings-text".localized
+        } else {
+            alertTitle = "settings-notification-enabled-go-settings-title".localized
+            alertMessage = "settings-notification-enabled-go-settings-text".localized
+        }
 
         let alertController = UIAlertController(
-            title: "settings-notification-go-settings-title".localized,
+            title: alertTitle,
             message: alertMessage,
             preferredStyle: .alert
         )
-        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
+
+        let openAppSettingsAction = UIAlertAction(
+            title: "title-launch-ios-settings".localized,
+            style: .default
+        ) { _ in
             UIApplication.shared.openAppSettings()
         }
+        alertController.addAction(openAppSettingsAction)
 
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { _ in
-            self.updatePushNotificationStatus()
-        }
-
-        alertController.addAction(settingsAction)
+        let cancelAction = UIAlertAction(
+            title: "title-cancel".localized,
+            style: .cancel
+        )
         alertController.addAction(cancelAction)
 
-        present(alertController, animated: true, completion: nil)
+        present(
+            alertController,
+            animated: true
+        )
     }
 
-    private func updatePushNotificationStatus() {
-        if let cell = notificationFilterView.collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? TitledToggleCell {
-            cell.bindData(TitledToggleViewModel())
+    private func updatePushNotificationsToggleIfNeeded() {
+        updatePushNotificationsToggle(nil)
+
+        getPushNotificationSettings {
+            [weak self] settings in
+            guard let self = self else {
+                return
+            }
+
+            self.updatePushNotificationsToggle(settings)
         }
     }
 
+    private func updatePushNotificationsToggle(_ settings: UNNotificationSettings?) {
+        listDataSource.currentPushNotificationsSettings = settings
+
+        asyncMain {
+            self.listView.reloadItems(at: [ IndexPath(item: 0, section: 0) ])
+        }
+    }
+
+    private func getPushNotificationSettings(_ completionHandler: @escaping (UNNotificationSettings) -> Void) {
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: completionHandler)
+    }
+}
+
+extension NotificationFilterViewController {
     private func updateNotificationFilter(of cell: AccountNameSwitchCell, with value: Bool) {
-        guard let indexPath = notificationFilterView.collectionView.indexPath(for: cell),
-              let account = dataSource.account(at: indexPath.item) else {
+        guard let indexPath = listView.indexPath(for: cell),
+              let account = listDataSource.account(at: indexPath.item) else {
                   return
               }
 
-        dataSource.updateNotificationFilter(for: account, to: value)
+        listDataSource.updateNotificationFilter(for: account, to: value)
     }
 
     private func updateAccount(_ account: AccountHandle) {
@@ -144,8 +247,8 @@ extension NotificationFilterViewController {
     }
 
     private func revertFilterSwitch(for account: AccountHandle) {
-        guard let index = dataSource.index(of: account),
-              let cell = notificationFilterView.collectionView.cellForItem(
+        guard let index = listDataSource.index(of: account),
+              let cell = listView.cellForItem(
                 at: IndexPath(item: index, section: 1)
               ) as? AccountNameSwitchCell else {
                   return

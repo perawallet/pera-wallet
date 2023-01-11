@@ -72,8 +72,10 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     }()
 
     private var transactionParams: TransactionParams?
-
     private var signedTransactions: [Data?] = []
+
+    private var isRejected = false
+
     private let wcSession: WCSession?
 
     let transactions: [WCTransaction]
@@ -142,7 +144,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
 
         loadingController?.stopLoading()
 
-        if !transactions.allSatisfy({ ($0.signerAccount?.requiresLedgerConnection() ?? false) }) {
+        if !transactions.allSatisfy({ ($0.requestedSigner.account?.requiresLedgerConnection() ?? false) }) {
             return
         }
 
@@ -256,7 +258,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
     private func getFirstSignableTransaction() -> WCTransaction? {
         return transactions.first { transaction in
-            transaction.signerAccount != nil
+            transaction.requestedSigner.account != nil
         }
     }
 
@@ -267,7 +269,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     }
 
     private func signTransaction(_ transaction: WCTransaction) {
-        if let signerAccount = transaction.signerAccount {
+        if let signerAccount = transaction.requestedSigner.account {
             wcTransactionSigner.signTransaction(transaction, with: dataSource.transactionRequest, for: signerAccount)
         } else {
             signedTransactions.append(nil)
@@ -282,7 +284,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     private func continueSigningTransactions(after transaction: WCTransaction) {
         if let index = transactions.firstIndex(of: transaction),
            let nextTransaction = transactions.nextElement(afterElementAt: index) {
-            if let signerAccount = nextTransaction.signerAccount {
+            if let signerAccount = nextTransaction.requestedSigner.account {
                 wcTransactionSigner.signTransaction(nextTransaction, with: transactionRequest, for: signerAccount)
             } else {
                 signedTransactions.append(nil)
@@ -396,8 +398,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         }
     }
 
-    private func presentSigningAlert() {
-
+    private func confirmTransaction() {
         let containsFutureTransaction = transactions.contains {
             guard let params = transactionParams else {
                 return false
@@ -405,14 +406,20 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
             return $0.isFutureTransaction(with: params)
         }
-        let description = containsFutureTransaction ?
-            "wallet-connect-transaction-warning-future".localized + "wallet-connect-transaction-warning-confirmation".localized :
-            "wallet-connect-transaction-warning-confirmation".localized
 
+        if containsFutureTransaction {
+            presentSigningFutureTransactionAlert()
+            return
+        }
+
+        confirmSigning()
+    }
+
+    private func presentSigningFutureTransactionAlert() {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
-            title: "transaction-request-signing-alert-title".localized,
-            description: .plain(description),
+            title: "wallet-connect-transaction-request-signing-future-transaction-alert-title".localized,
+            description: .plain("wallet-connect-transaction-request-signing-future-transaction-alert-description".localized),
             primaryActionButtonTitle: "title-accept".localized,
             secondaryActionButtonTitle: "title-cancel".localized,
             primaryAction: { [weak self] in
@@ -456,7 +463,7 @@ extension WCMainTransactionScreen: WCSingleTransactionRequestScreenDelegate {
     }
 
     func wcSingleTransactionRequestScreenDidConfirm(_ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen) {
-        presentSigningAlert()
+        confirmTransaction()
     }
 }
 
@@ -467,13 +474,15 @@ extension WCMainTransactionScreen: WCUnsignedRequestScreenDelegate {
     }
 
     func wcUnsignedRequestScreenDidConfirm(_ wcUnsignedRequestScreen: WCUnsignedRequestScreen) {
-        presentSigningAlert()
+        confirmTransaction()
     }
 }
 
 extension WCMainTransactionScreen {
 
     private func rejectSigning(reason: WCTransactionErrorResponse = .rejected(.user)) {
+        if isRejected { return }
+
         switch reason {
         case .rejected(let rejection):
             if rejection == .user {
@@ -482,13 +491,15 @@ extension WCMainTransactionScreen {
         default:
             showRejectionReasonBottomSheet(reason)
         }
+
+        self.isRejected = true
     }
 
     private func showRejectionReasonBottomSheet(_ reason: WCTransactionErrorResponse) {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
             title: "title-error".localized,
-            description: .plain(reason.message),
+            description: .plain("wallet-connect-no-account-for-transaction".localized(params: reason.message)),
             secondaryActionButtonTitle: "title-ok".localized,
             secondaryAction: { [weak self] in
                 guard let self = self else {
@@ -562,20 +573,20 @@ extension WCMainTransactionScreen: AssetCachable {
 
 extension WCMainTransactionScreen {
     private func getTransactionParams() {
-        api?.getTransactionParams { [weak self] response in
-             guard let self = self else {
-                 return
-             }
+        sharedDataController.getTransactionParams { [weak self] result in
+            guard let self else {
+                return
+            }
 
-             switch response {
-             case .failure:
-                 break
-             case let .success(params):
-                 self.transactionParams = params
-             }
+            switch result {
+            case .success(let params):
+                self.transactionParams = params
+            case .failure:
+                break
+            }
 
-             self.rejectIfTheNetworkIsInvalid()
-         }
+            self.rejectIfTheNetworkIsInvalid()
+        }
     }
 
     private func rejectIfTheNetworkIsInvalid() {

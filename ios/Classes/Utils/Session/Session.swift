@@ -37,6 +37,7 @@ class Session: Storable {
     private let currencyPreferenceKey = "com.algorand.algorand.currency.preference"
     private let userInterfacePrefenceKey = "com.algorand.algorand.interface.preference"
     private let announcementStateKey = "com.algorand.algorand.announcement.state"
+    private let lastSeenNotificationIDKey = "com.algorand.algorand.lastseen.notification.id"
     
     let algorandSDK = AlgorandSDK()
     
@@ -171,6 +172,17 @@ class Session: Storable {
                 save(data, for: announcementStateKey, to: .defaults)
             } catch {
                 return
+            }
+        }
+    }
+
+    var lastSeenNotificationID: Int? {
+        get {
+            return userDefaults.integer(forKey: lastSeenNotificationIDKey)
+        }
+        set {
+            if let notificationID = newValue {
+                userDefaults.set(notificationID, forKey: lastSeenNotificationIDKey)
             }
         }
     }

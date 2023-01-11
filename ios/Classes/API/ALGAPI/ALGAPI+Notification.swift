@@ -25,7 +25,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.devices)
             .method(.post)
             .body(draft)
@@ -40,13 +40,10 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.deviceDetail, args: draft.id)
             .method(.put)
             .body(draft)
-            .headers([
-                NetworkHeader(network)
-            ])
             .completionHandler(handler)
             .execute()
     }
@@ -57,7 +54,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.deviceDetail, args: draft.id)
             .method(.put)
             .body(draft)
@@ -71,7 +68,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ErrorModelResult<HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.devices)
             .method(.delete)
             .body(draft)
@@ -86,7 +83,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<NotificationMessageList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV2(network))
             .path(.notifications, args: id)
             .method(.get)
             .query(cursorQuery)
@@ -100,9 +97,36 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<NotificationFilterResponse, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.deviceAccountUpdate, args: draft.deviceId, draft.accountAddress)
             .method(.patch)
+            .body(draft)
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
+    func fetchNotificationStatus(
+        _ draft: NotificationStatusFetchDraft,
+        onCompleted handler: @escaping (Response.Result<NotificationStatus, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.deviceNotificationStatus, args: draft.deviceId)
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
+    func updateNotificationStatus(
+        _ draft: NotificationStatusUpdateDraft,
+        onCompleted handler: @escaping (Response.Result<LastSeenNotificationStatus, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.lastSeenNotificationStatus, args: draft.deviceId)
+            .method(.put)
             .body(draft)
             .completionHandler(handler)
             .execute()

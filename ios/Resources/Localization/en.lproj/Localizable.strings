@@ -13,6 +13,7 @@
 "title-start-using-pera-wallet" = "Start Using Pera Wallet";
 "title-share-qr" = "Share Address";
 "title-go-to-settings" = "Go To Settings";
+"title-launch-ios-settings" = "Launch iOS Settings";
 "title-error" = "Error";
 "title-save" = "Save";
 "title-close" = "Close";
@@ -88,6 +89,7 @@
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
+"account-not-found" = "Account not found";
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
 "title-disclaimer" = "DISCLAIMER";
@@ -171,8 +173,7 @@
 
 // MARK: Account Name Setup
 "account-details-title" = "Name your account";
-"account-name-setup-explanation" = "Account Name";
-"account-name-setup-placeholder" = "Account Name";
+"account-name-setup-placeholder" = "Account name";
 "account-name-setup-description" = "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 "account-name-setup-finish" = "Finish Account Creation";
 
@@ -237,9 +238,9 @@
 "accounts-transaction-your-balance" = "Balance";
 "accounts-transaction-value" = "Value";
 "transaction-item-app-id-title" = "Application ID: %d";
-"transaction-item-opt-out" = "Opt-Out";
+"transaction-item-opt-out" = "Opt-out";
 "transaction-item-receive-opt-out" = "Receive (Opt-out)";
-"transaction-item-opt-in" = "Opt-In / Self Transfer";
+"transaction-item-opt-in" = "Opt-in / Self Transfer";
 "transaction-item-self-transfer" = "Self Transfer";
 
 // MARK: Asset
@@ -249,15 +250,19 @@
 "asset-not-found-detail" = "Try different asset name or asset id";
 "asset-algos-title" = "Algo";
 "asset-algos-description" = "The Algo is the official cryptocurrency of the Algorand blockchain. The Algorand blockchain has been built to help create an open, borderless economy where everybody can participate. This new type of digital economy can only run on a truly digital currency that works instantly, for everybody. This is the Algo.";
+"asset-filter-title" = "Filter Assets";
+"asset-filter-selection-toggle-title" = "Hide assets with no balance";
+"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance.";
 "asset-remove-title" = "Remove Assets";
-"asset-remove-subtitle" = "To remove an asset, you must first transfer any remaining balance to another account.";
+"asset-opt-out-title" = "Asset Opt-out";
+"asset-remove-subtitle" = "To opt-out from an asset, you must first transfer any remaining balance to another account.";
 "asset-search-placeholder" = "Search Assets ID or Name";
 "asset-remove-confirmation-title" = "Remove Asset";
 "asset-manage-button" = "Manage";
 "asset-transfer-balance" = "Transfer Balance";
-"title-add-asset" = "Add New Asset";
-"asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
-"asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
+"title-add-asset" = "Opt-in to an Asset";
+"asset-add-warning" = "Before interacting with an asset, you must opt-in to it from your account. This prevents unauthorized asset transactions to be sent to you.";
+"asset-support-error" = "Unfortunately, this account is not opted-in to %@ asset. Please instruct the account to opt-in to the asset and then try again.";
 "asset-support-title" = "Account does not accept this asset";
 "asset-add-confirmation-title" = "Adding Asset";
 "asset-removing-status" = "Removing Asset";
@@ -265,32 +270,30 @@
 "asset-confirmation-not-fetched" = "Asset could not be fetched. Please try again later.";
 "internet-connection-error-title" = "Connect to the Internet";
 "internet-connection-error-detail" = "We couldn’t reach the server, make sure you are connected to the internet";
-"asset-remove-warning" = "To remove %@, the balance must be 0. Please transfer the balance to another account and try again.";
-"asset-remove-transaction-warning" = "You are about to remove %@ from %@. You will not be able to transact with this asset from this account unless you re-add it.";
-"asset-creation-fee-title" = "Add Asset Fee";
+"asset-remove-warning" = "To opt-out and remove %@ asset, the balance must be 0. Please transfer the balance to another account and try again.";
+"asset-remove-transaction-warning" = "You're about to remove and opt-out from the %@ asset with %@. You'll be unable to transact with this asset from this account unless you opt-in to it again.";
 "asset-min-transaction-error-title" = "Min Transaction Error!";
-"asset-min-transaction-error-message" = "You need at least %@ Algos to add this asset";
+"asset-min-transaction-error-message" = "You need at least %@ Algos to opt-in to this asset";
 "asset-you-already-own-message" = "You already own this asset";
-"asset-support-not-same-error" = "This account has added this asset but this is not the selected asset. Please select the correct asset, and then try again.";
 "asset-support-not-same-title" = "Account does not accept this asset";
-"asset-support-add-title" = "You are about to receive an asset!";
-"asset-support-add-message" = "You are about to receive an asset to %@. Would you like to add this asset to this account to receive it?";
+"asset-support-add-title" = "You're about to receive an asset";
+"asset-support-add-message" = "You're about to receive an asset on the account %@. Would you like to opt-in the asset to this account to receive it?";
 "asset-id-copied-title" = "ID copied to clipboard";
 "asset-copy-id" = "Copy ID";
 "asset-verified-title" = "Verified";
 "asset-support-your-add-title" = "Your accounts don't contain this asset";
-"asset-support-your-add-message" = "Your acounts don't contain this asset, please add this asset and try again.";
+"asset-support-your-add-message" = "Please opt-in to this asset and try again.";
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";
 "asset-no-value" = "N/A";
-"asset-quick-action-button-add" = "Add Asset";
-"asset-quick-action-title-opt-in" = "You can add this NFT to";
-"asset-quick-action-title-add" = "You can add this asset to";
+"asset-quick-action-button-add" = "Opt-in to Asset";
+"asset-quick-action-title-opt-in" = "You can opt-in to this NFT with";
+"asset-quick-action-title-add" = "You can opt-in to this asset with";
 "asset-quick-action-title-add-asset-without-account" = "You can opt-in to this asset from one of your accounts.";
 "asset-quick-action-title-add-nft-without-account" = "You can opt-in to this NFT from one of your accounts.";
-"asset-quick-action-title-remove" = "Opted in to";
-"asset-opt-in-successful-message" = "%@ successfully added to your account.";
-"asset-opt-out-successful-message" = "%@ successfully removed from your account.";
+"asset-quick-action-title-remove" = "Opted-in to";
+"asset-opt-in-successful-message" = "%@ successfully opted-in and added to your account.";
+"asset-opt-out-successful-message" = "%@ successfully opted-out and removed from your account.";
 "asset-search-not-found" = "We are not able to find this asset.";
 
 // MARK: Algos Send
@@ -387,9 +390,10 @@
 "settings-server-node-settings" = "Node Settings";
 "settings-backup-title" = "Backup";
 "settings-language" = "Language";
-"settings-notification-go-settings-title" = "Notifications";
-"settings-notification-disabled-go-settings-text" = "You have disabled notifications. Please go to Settings and enable this option.";
-"settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
+"settings-notification-enabled-go-settings-title" = "Notifications Enabled";
+"settings-notification-disabled-go-settings-title" = "Notifications Disabled";
+"settings-notification-disabled-go-settings-text" = "Push notifications are disabled in iOS Settings. To enable notifications, you must first allow push notifications for Pera Wallet by launching the Settings app.";
+"settings-notification-enabled-go-settings-text" = "Push notifications are enabled in iOS Settings. To disable notifications, you must first disallow push notifications for Pera Wallet by launching the Settings app.";
 "settings-delete-data-title" = "Delete All Data";
 "settings-logout-title" = "Remove All Accounts and Logout";
 "settings-logout-detail" = "You are about to delete all data in the wallet, including your stored accounts. Make sure to have your account passphrases stored elsewhere before confirming. You will not be able to restore your accounts otherwise. Are you sure you would like to proceed?";
@@ -411,7 +415,7 @@
 "settings-app-version" = "Pera Wallet Version %@";
 "settings-language-change-title" = "Set App Language";
 "settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
-"settings-support-title" = "Send Feedback";
+"settings-support-title" = "Get Help";
 "settings-security-title" = "Security";
 "settings-wallet-connect-title" = "WalletConnect Sessions";
 
@@ -511,13 +515,6 @@
 "total-rewards-title" = "%@ Rewards";
 "rewards-since-last-text" = "Since Last Transaction";
 
-// MARK: Notifications
-"notification-sent-success" = "Your transaction of %@ from %@ to %@ is complete.";
-"notification-sent-failed" = "Your transaction of %@ from %@ to %@ has failed.";
-"notification-received" = "%@ were sent to %@ by %@.";
-"notification-support-success" = "%@ has added %@ to their account. You can send them.";
-"notification-support-request" ="%@ is trying to send you %@ however, you do not support this. If you want, we can add to your account.";
-
 // MARK: Verified Asset Information
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does Asset Verification mean?";
@@ -602,7 +599,10 @@
 "notifications-title" = "Notifications";
 "notifications-empty-title" = "No current notifications";
 "notifications-empty-subtitle" = "Your recent transactions, asset requests and other notifications will appear here.";
-
+"notifications-trying-to-opt-in-for-watch-account-title" = "Opt-in Not Allowed";
+"notifications-trying-to-opt-in-for-watch-account-description" = "You cannot opt-in for this account: It's a read-only Watch Account.";
+"notifications-account-not-found-title" = "Account Removed";
+"notifications-account-not-found-description" = "You cannot take actions for this account: It was removed from this device.";
 "notifications-asset-not-found-title" = "Asset history not available";
 "notifications-asset-not-found-description" = "The history for this specific asset is not available.";
 
@@ -618,12 +618,9 @@
 "transaction-filter-try-again" = "Try Again";
 "transaction-filter-error-title" = "Something went wrong";
 "transaction-filter-error-subtitle" = "Sorry, something went wrong there.";
-"csv-download-title" = "Creating CSV File";
-"csv-download-error" = "Could not create a csv file for the transaction history.";
 "transaction-download-from" = "From: Address";
 "transaction-download-to" = "To: Address";
 "transaction-download-close-to" = "Close To: Address";
-"csv-loading-message" = "We are fetching your data. Please wait until your CSV is ready.";
 
 // MARK: Pin Limit
 "pin-limit-title" = "Pera Wallet app is locked";
@@ -678,9 +675,8 @@
 "watch-account-create" = "Create a watch\naccount";
 "watch-account-button" = "Create a Watch Account";
 "watch-account-paste" = "Paste";
-"watch-account-input-explanation" = "Account Address";
 "watch-account-explanation-title" = "You are creating a read-only view of an Algorand account.";
-"watch-account-input-placeholder" = "Paste Address or Scan QR";
+"watch-account-input-placeholder" = "Account address or short name";
 "watch-account-error-address" = "Please enter a valid address.";
 
 "settings-theme-set" = "Theme";
@@ -814,11 +810,12 @@
 "wallet-connect-session-error-not-reachable" = "WalletConnect is not reachable at the moment. Please try again later.";
 "wallet-connect-session-connection-approved-title" = "You are Connected to %@";
 "wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
+"wallet-connect-select-accounts" = "Select Accounts";
 
 // MARK: Wallet Connect Transaction Warning
 "wallet-connect-transaction-warning-rekey" = "This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.";
 "wallet-connect-transaction-warning-close-algos" = "This transaction is sending your full Algo balance.";
-"wallet-connect-transaction-warning-close-asset" = "This transaction is sending your full %@ balance and will remove %@ from your account.";
+"wallet-connect-transaction-warning-close-asset" = "This transaction is sending your full %@ balance. It'll opt-out and remove the %@ asset from your account.";
 "wallet-connect-transaction-warning-rekey-title" = "Rekey To";
 "wallet-connect-transaction-warning-close-asset-title" = "Close Asset To";
 "wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
@@ -827,6 +824,9 @@
 "wallet-connect-transaction-warning-initial-description" = "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know.";
 "wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future. ";
 "wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
+"wallet-connect-no-account-for-transaction" = "Your WalletConnect request failed with the following error: \n\n%@\n\nPlease try again by going back to the dApp where you initiated the request.";
+"wallet-connect-transaction-request-signing-future-transaction-alert-title" = "Future Transaction Detected";
+"wallet-connect-transaction-request-signing-future-transaction-alert-description" = "This transaction will be submitted in the future. Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
 
 // MARK: Wallet Connect Transaction Dapp Message
 "wallet-connect-transaction-dapp-show-more" = "Read More";
@@ -893,10 +893,10 @@
 
 "wallet-connect-transaction-group-algos-title" = "Payment to %@";
 "wallet-connect-transaction-group-asset-title" = "Asset Transfer to %@";
-"wallet-connect-transaction-group-asset-addition-title" = "Opting in to Asset #%@";
-"wallet-connect-transaction-group-possible-asset-addition-title" = "Possible Opting in to Asset #%@";
+"wallet-connect-transaction-group-asset-addition-title" = "Opting-in to Asset #%@";
+"wallet-connect-transaction-group-possible-asset-addition-title" = "Possible Opting-in to Asset #%@";
 "wallet-connect-transaction-group-app-call-title" = "Application Call to #%@";
-"wallet-connect-transaction-group-app-opt-in-title" = "Application Opt in to #%@";
+"wallet-connect-transaction-group-app-opt-in-title" = "Application Opt-in to #%@";
 "wallet-connect-transaction-group-app-close-title" = "Application Close to #%@";
 "wallet-connect-transaction-group-app-update-title" = "Application Update to #%@";
 "wallet-connect-transaction-group-app-delete-title" = "Application Delete to #%@";
@@ -934,8 +934,6 @@
 "wallet-connect-transaction-count" = "%d Transactions  ·  Group ID: %@";
 "wallet-connect-transaction-count-singular" = "1 Transaction  ·  Group ID: %@";
 "wallet-connect-group-transaction-header-title" = "GroupID: %@";
-
-"transaction-request-signing-alert-title" = "Are you sure?";
 
 // MARK: SingleTransactionRequest
 "single-transaction-request-show-detail-title" = "Show Transaction Details";
@@ -988,9 +986,8 @@
 
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Transaction";
+"send-transaction-preview-button" = "Confirm transfer";
 "send-transaction-preview-current-balance" = "Current\nBalance";
-
-"transaction-request-signing-alert-title" = "Are you sure?";
 
 // MARK: SingleTransactionRequest
 "single-transaction-request-show-detail-title" = "Show Transaction Details";
@@ -1025,13 +1022,12 @@
 
 // MARK: Collectible Receive
 "collectibles-receive-action" = "Receive an NFT";
-"collectibles-receive-account-list-header-description" = "Select the wallet account you would like to receive to:";
-"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
+"collectibles-receive-account-list-header-description" = "Select a wallet account:";
+"collectible-receive-account-list-info" = "Your account needs to be opted-in to the NFT before you can receive it. Make sure to check the Asset ID while confirming.";
 "collectibles-receive-asset-title" = "Opt-in to NFT";
 "collectibles-receive-asset-list-search-placeholder" = "Search Asset ID or NFT name";
-"collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
 "collectibles-receive-asset-list-search-no-content" = "No NFT Found";
-"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
+"collectible-receive-asset-list-info" = "You can search the NFT you want to opt-in to by pasting its name or Asset ID in the search bar below.";
 "collectible-receive-asset-list-selected-account" = "Selected account";
 
 // MARK: Collectible Send
@@ -1052,13 +1048,12 @@
 "collectible-detail-algo-explorer" = "Show on Algoexplorer";
 "collectible-detail-nft-explorer" = "Show on NFTExplorer";
 "collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
-"collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.";
-"collectible-detail-error-not-owner-watch-account" = "This watch account has opted in for this NFT, however doesn't own it.";
-"collectible-detail-opted-in" = "Opted in to";
-"collectible-detail-opt-out" = "Opt out";
-"collectible-detail-opt-out-success" = "%@ NFT successfully opted-out";
-"collectible-detail-opt-out-alert-title" = "Opt out from “%@”";
-"collectible-detail-opt-out-alert-message" = "You are about to opt out from this NFT with %@. You will not be able to transact with this asset until you opt in again.";
+"collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted-in for it. You can now transfer it to your account.";
+"collectible-detail-error-not-owner-watch-account" = "This watch account has opted-in for this NFT, however doesn't own it.";
+"collectible-detail-opted-in" = "Opted-in to";
+"collectible-detail-opt-out" = "Opt-out";
+"collectible-detail-opt-out-alert-title" = "Opt-out from “%@”";
+"collectible-detail-opt-out-alert-message" = "You're about to remove and opt-out from the %@ NFT with %@. You'll be unable to transact with this NFT from this account unless you opt-in to it again.";
 "collectible-detail-show-on" = "Show on";
 "collectible-detail-pera-explorer" = "Pera Explorer";
 "collectible-detail-tap-3D" = "3D card mode";
@@ -1071,8 +1066,8 @@
 "collectible-transfer-failed-verify-algo-desription" = "Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.";
 "collectible-transfer-failed-retry-desription" = "Please try again.";
 
-// MARK: Collectible Opt In Info
-"collectible-opt-in-info-title" = "Information about Opt-In";
+// MARK: Collectible Opt-in Info
+"collectible-opt-in-info-title" = "Information about Opt-in";
 "collectible-opt-in-info-description" = "To avoid spam transactions, Algorand blockchain only allows you to send and receive transactions for assets that have been previously opted-in to.";
 
 // MARK: Collectible Approve
@@ -1082,15 +1077,16 @@
 "collectible-approve-transaction-sender" = "Sender Account";
 "collectible-approve-transaction-to" = "To";
 "collectible-approve-transaction-fee" = "Transaction Fee";
-"collectible-approve-transaction-opt-out" = "Opt out from the NFT";
+"collectible-approve-transaction-opt-out" = "Opt-out from the NFT";
 
-// MARK: Collectible Opt Out Info
-"collectible-opt-out-info-title" = "Opt out from the NFT ";
-"collectible-opt-out-info-description" = "Algorand blockchain requires an account to opt in to an ASA before it can receive it. Now that you've transferred this NFT to another account, you can opt out from it. Opting out requires an additional transaction.";
+// MARK: Collectible Opt-out Info
+"collectible-opt-out-info-title" = "Opt-out from the NFT";
 
-// MARK: Collecitble Ask recipient to opt in
-"collectible-recipient-opt-in-title" = "Ask recipient to opt in";
-"collectible-recipient-opt-in-description" = "You can't send %@ to %@ because this wallet didn't opt in for this asset yet. Learn more about Opt-in";
+"collectible-opt-out-info-description" = "Algorand blockchain requires an account to opt-in to an ASA. Now that you've transferred this NFT to another account, you can opt-out from the NFT. Opting-out requires an additional transaction.";
+
+// MARK: Collecitble Ask recipient to opt-in
+"collectible-recipient-opt-in-title" = "Ask recipient to opt-in";
+"collectible-recipient-opt-in-description" = "You can't send %@ to %@ because this wallet didn't opt-in for this asset yet. Learn more about Opt-in";
 "collectible-recipient-opt-in-description-marked" = "Learn more about Opt-in";
 "collectible-recipient-opt-in-action-title" = "Request Opt-in";
 
@@ -1150,9 +1146,9 @@
 "inner-transaction-singular-count" = "1 Inner Transaction";
 "inner-transaction-plural-count" = "%@ Inner Transactions";
 
-// MARK: Opt In Asset
+// MARK: Opt-in Asset
 "opt-in-title-adding-nft" = "Opt-in to NFT";
-"opt-in-description-adding-nft" = "Opting in to an NFT requires requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
+"opt-in-description-adding-nft" = "Opting-in to an NFT requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
 
 // MARK: ASA Verification
 "asa-verification-title-trusted" = "Trusted ASA";
@@ -1295,7 +1291,7 @@
 
 // MARK: Web Export
 "web-export-account-list-title" = "Export to Pera Web";
-"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nNever accept a request that hasn’t been requested by you.";
+"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nDo not proceed if you did not initiate this request.";
 "web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";
 "web-export-account-list-no-content-body" = "We couldn't find any accounts eligible for export.";
 "web-export-accounts-domain-confirmation-title" = "Confirm Export Domain";
@@ -1310,11 +1306,23 @@
 "web-export-account-confirmation-list-description" = "You’re about to export these accounts to Pera Web securely:";
 "web-export-result-title" = "Accounts exported successfully!";
 "web-export-account-confirmation-list-description-singular" = "You’re about to export this account to Pera Web securely:";
-"web-export-result-title" = "Accounts exported successfully!";
 "web-export-result-title-singular" = "Account exported successfully!";
 "web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";
 "web-export-result-body-singular" = "You can now use this account on Pera Web Wallet.";
 "web-export-encryption-error-message" = "There was an error decrypting incoming data. Please try again by scanning the QR code once more.";
+
+// MARK: Minimum Balance
+"minimum-balance-title" = "Minimum balance";
+"minimum-balance-description" = "Minimum balance is the minimum amount of Algo you have to keep in an account. It increases every time the account is opted in to a smart contract, ASA or NFT.";
+"min-balance-title" = "Min Balance";
+
+// MARK: User Account Limit Error
+"user-account-limit-error-title" = "Too Many Accounts!";
+"user-account-limit-error-message" = "Looks like you already have 50 or more accounts in your wallet. To keep the app performance snappy, we currently don't support more than 50 accounts. To add another one, please remove an existing account first.";
+
+// MARK: Ongoing opt-in/opt-out Alert
+"ongoing-opt-in-request-description" = "There is an ongoing opt-in request for this asset with %@. Please wait for the ongoing opt-in request to finish before taking any action for this asset with this account.";
+"ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";
 
 // MARK: Discover
 "discover-search-input-placeholder" = "Search for any ASA";

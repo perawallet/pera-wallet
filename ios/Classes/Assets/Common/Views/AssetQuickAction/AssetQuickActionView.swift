@@ -92,7 +92,13 @@ extension AssetQuickActionView {
         button.draw(corner: theme.buttonCorner)
 
         addSubview(button)
+        button.fitToHorizontalIntrinsicSize()
         button.snp.makeConstraints {
+            let horizontalPaddings =
+            theme.spacingBetweenTitleAndButton +
+            2 * theme.horizontalPadding
+            $0.width <= (self - horizontalPaddings) * theme.buttonMaxWidthRatio
+
             $0.top == theme.topPadding
             $0.trailing == theme.horizontalPadding
             $0.bottom == theme.bottomPadding + safeAreaBottom
@@ -132,7 +138,7 @@ extension AssetQuickActionView {
         accountNameLabel.snp.makeConstraints {
             $0.centerY == accountTypeImageView
             $0.leading == accountTypeImageView.snp.trailing + theme.spacingBetweenAccountTypeAndName
-            $0.trailing <= button.snp.trailing - theme.spacingBetweenTitleAndButton
+            $0.trailing <= button.snp.leading - theme.spacingBetweenTitleAndButton
         }
     }
 }

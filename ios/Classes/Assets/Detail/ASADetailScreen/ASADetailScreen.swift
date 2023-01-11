@@ -25,7 +25,7 @@ final class ASADetailScreen:
     Container,
     OptionsViewControllerDelegate,
     ChoosePasswordViewControllerDelegate,
-    EditAccountViewControllerDelegate {
+    RenameAccountScreenDelegate {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -52,6 +52,7 @@ final class ASADetailScreen:
     private lazy var transitionToAccountActions = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToPassphrase = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToConfirmToDeleteAccount = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
@@ -178,7 +179,7 @@ extension ASADetailScreen {
 
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
         let account = dataController.account
-        let accountName = account.name ?? account.address.shortAddressDisplay
+        let accountName = account.primaryDisplayName
         let draft = QRCreationDraft(address: account.address, mode: .address, title: accountName)
         let screen: Screen = .qrGenerator(title: accountName, draft: draft, isTrackable: true)
         open(
@@ -241,8 +242,13 @@ extension ASADetailScreen {
     }
 
     func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController) {
-        open(
-            .editAccount(account: dataController.account, delegate: self),
+        let screen: Screen = .renameAccount(
+            account: dataController.account,
+            delegate: self
+        )
+
+        transitionToRenameAccount.perform(
+            screen,
             by: .present
         )
     }
@@ -271,6 +277,7 @@ extension ASADetailScreen {
 
     private func removeAccount() {
         sharedDataController.resetPollingAfterRemoving(dataController.account)
+        walletConnector.updateSessionsWithRemovingAccount(dataController.account)
         eventHandler?(.didRemoveAccount)
     }
 
@@ -298,11 +305,18 @@ extension ASADetailScreen {
 }
 
 /// <mark>
-/// EditAccountViewControllerDelegate
+/// RenameAccountScreenDelegate
 extension ASADetailScreen {
-    func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        updateUIWhenAccountDidRename()
-        eventHandler?(.didRenameAccount)
+    func renameAccountScreenDidTapDoneButton(_ screen: RenameAccountScreen) {
+        screen.closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.updateUIWhenAccountDidRename()
+            self.eventHandler?(.didRenameAccount)
+        }
     }
 }
 

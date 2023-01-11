@@ -32,13 +32,13 @@ struct AccountSelectionViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.title = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(Colors.Text.main)
         ]
         self.secondaryTitle = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]

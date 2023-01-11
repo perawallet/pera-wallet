@@ -68,12 +68,7 @@ extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleT
             account: nil,
             quickAction: nil,
             asset: assetDecoration
-        ) { event in
-            switch event {
-            case .didOptInToAsset: break
-            case .didOptOutFromAsset: break
-            }
-        }
+        )
         open(
             screen,
             by: .present

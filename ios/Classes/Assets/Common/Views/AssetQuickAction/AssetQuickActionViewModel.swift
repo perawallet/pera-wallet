@@ -76,7 +76,7 @@ extension AssetQuickActionViewModel {
                 self.title = .attributedString(
                     "asset-quick-action-title-opt-in"
                         .localized
-                        .footnoteRegular()
+                        .footnoteRegular(lineBreakMode: .byTruncatingTail)
                 )
                 return
             }
@@ -84,7 +84,7 @@ extension AssetQuickActionViewModel {
             self.title = .attributedString(
                 "asset-quick-action-title-add"
                     .localized
-                    .footnoteRegular()
+                    .footnoteRegular(lineBreakMode: .byTruncatingTail)
             )
         case .optInWithoutAccount:
             self.titleTopPadding = 26
@@ -93,7 +93,7 @@ extension AssetQuickActionViewModel {
                 self.title = .attributedString(
                     "asset-quick-action-title-add-nft-without-account"
                         .localized
-                        .footnoteRegular()
+                        .footnoteRegular(lineBreakMode: .byTruncatingTail)
                 )
                 return
             }
@@ -101,13 +101,13 @@ extension AssetQuickActionViewModel {
             self.title = .attributedString(
                 "asset-quick-action-title-add-asset-without-account"
                     .localized
-                    .footnoteRegular()
+                    .footnoteRegular(lineBreakMode: .byTruncatingTail)
             )
         case .optOut:
             self.title = .attributedString(
                 "asset-quick-action-title-remove"
                     .localized
-                    .footnoteRegular()
+                    .footnoteRegular(lineBreakMode: .byTruncatingTail)
             )
         }
     }
@@ -121,7 +121,7 @@ extension AssetQuickActionViewModel {
 
     private func bindAccountName(_ account: Account) {
         self.accountName = .attributedString(
-            (account.name ?? account.address.shortAddressDisplay).footnoteRegular()
+            account.primaryDisplayName.footnoteRegular(lineBreakMode: .byTruncatingTail)
         )
     }
 
@@ -139,7 +139,7 @@ extension AssetQuickActionViewModel {
                 self.buttonTitle = .attributedString(
                     "single-transaction-request-opt-in-title"
                         .localized
-                        .footnoteMedium()
+                        .footnoteMedium(lineBreakMode: .byTruncatingTail)
                 )
                 return
             }
@@ -147,7 +147,7 @@ extension AssetQuickActionViewModel {
             self.buttonTitle = .attributedString(
                 "asset-quick-action-button-add"
                     .localized
-                    .footnoteMedium()
+                    .footnoteMedium(lineBreakMode: .byTruncatingTail)
             )
         case .optInWithoutAccount:
             self.buttonIcon = img("icon-quick-action-plus")
@@ -158,7 +158,7 @@ extension AssetQuickActionViewModel {
                 self.buttonTitle = .attributedString(
                     "single-transaction-request-opt-in-title"
                         .localized
-                        .footnoteMedium()
+                        .footnoteMedium(lineBreakMode: .byTruncatingTail)
                 )
                 return
             }
@@ -166,14 +166,14 @@ extension AssetQuickActionViewModel {
             self.buttonTitle = .attributedString(
                 "asset-quick-action-button-add"
                     .localized
-                    .footnoteMedium()
+                    .footnoteMedium(lineBreakMode: .byTruncatingTail)
             )
         case .optOut:
             self.buttonIcon = img("icon-quick-action-remove")
             self.buttonTitle = .attributedString(
                 "title-remove"
                     .localized
-                    .footnoteMedium()
+                    .footnoteMedium(lineBreakMode: .byTruncatingTail)
             )
             self.buttonTitleColor = Colors.Helpers.negative
             self.buttonBackgroundColor = Colors.Defaults.background

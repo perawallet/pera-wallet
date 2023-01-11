@@ -31,7 +31,7 @@ extension AssetAmountInputViewModel {
     func getImageSource(_ asset: Asset) -> ImageSource {
         if asset.isAlgo {
             return AssetImageSource(
-                asset: "icon-algo-circle-green-swap".uiImage
+                asset: "icon-algo-circle".uiImage
             )
         }
 

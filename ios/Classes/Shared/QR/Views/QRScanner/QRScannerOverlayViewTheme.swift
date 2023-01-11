@@ -52,7 +52,7 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
         self.title = [
             .text("qr-scan-overlay-title".localized),
             .textAlignment(.center),
-            .textOverflow(SingleLineFittingText(lineBreakMode: .byTruncatingTail)),
+            .textOverflow(SingleLineText(lineBreakMode: .byTruncatingTail)),
             .textColor(Colors.Text.white),
             .font(Fonts.DMSans.regular.make(24))
         ]

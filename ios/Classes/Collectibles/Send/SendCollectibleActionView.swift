@@ -207,6 +207,7 @@ extension SendCollectibleActionView {
         closeActionView.customizeAppearance(theme.closeAction)
 
         contentView.addSubview(closeActionView)
+        closeActionView.fitToHorizontalIntrinsicSize()
         closeActionView.snp.makeConstraints {
             $0.setPaddings(theme.closeActionViewPaddings)
         }

@@ -298,13 +298,13 @@ extension HomeListLayout {
         if item.isGeneric {
             return GenericAnnouncementCell.calculatePreferredSize(
                 item,
-                for: GenericAnnouncementViewTheme(),
+                for: GenericAnnouncementCell.theme,
                 fittingIn: CGSize((width, .greatestFiniteMagnitude))
             )
         } else {
             return GovernanceAnnouncementCell.calculatePreferredSize(
                 item,
-                for: GovernanceAnnouncementViewTheme(),
+                for: GovernanceAnnouncementCell.theme,
                 fittingIn: CGSize((width, .greatestFiniteMagnitude))
             )
         }

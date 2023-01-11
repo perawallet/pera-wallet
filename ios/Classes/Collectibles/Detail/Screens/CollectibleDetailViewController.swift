@@ -42,6 +42,7 @@ final class CollectibleDetailViewController:
 
         return TransactionController(
             api: api,
+            sharedDataController: sharedDataController,
             bannerController: bannerController,
             analytics: analytics
         )
@@ -82,6 +83,7 @@ final class CollectibleDetailViewController:
 
     private lazy var mediaPreviewController = CollectibleMediaPreviewViewController(
         asset: asset,
+        accountCollectibleStatus: dataController.getCurrentAccountCollectibleStatus(),
         thumbnailImage: thumbnailImage,
         configuration: configuration
     )
@@ -130,6 +132,7 @@ final class CollectibleDetailViewController:
             switch event {
             case .didUpdate(let snapshot):
                 self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.updateMediaPreview()
             case .didFetch(let asset):
                 self.asset = asset
                 self.displayedMedia = asset.media.first
@@ -222,27 +225,20 @@ extension CollectibleDetailViewController {
 
     private func addAssetQuickActionIfNeeded() {
         guard let quickAction = quickAction else { return }
+        
+        let accountCollectibleStatus = dataController.getCurrentAccountCollectibleStatus()
 
         switch quickAction {
         case .optIn:
-            let optInStatus = dataController.hasOptedIn()
-
-            if optInStatus != .rejected { return }
-
-            addAssetQuickAction()
-            bindAssetOptInQuickAction()
-        case .optOut:
-            let optInStatus = dataController.hasOptedIn()
-            let optOutStatus = dataController.hasOptedOut()
-
-            /// <note>
-            /// It has already been opted out or not opted in.
-            if optOutStatus != .rejected || optInStatus == .rejected {
-                return
+            if accountCollectibleStatus == .notOptedIn {
+                addAssetQuickAction()
+                bindAssetOptInQuickAction()
             }
-
-            addAssetQuickAction()
-            bindAssetOptOutAction()
+        case .optOut:
+            if accountCollectibleStatus == .optedIn {
+                addAssetQuickAction()
+                bindAssetOptOutAction()
+            }
         }
     }
 
@@ -288,6 +284,11 @@ extension CollectibleDetailViewController {
 
     private func removeQuickAction() {
         assetQuickActionView.removeFromSuperview()
+    }
+    
+    private func updateMediaPreview() {
+        let accountCollectibleStatus = dataController.getCurrentAccountCollectibleStatus()
+        mediaPreviewController.updateAccountCollectibleStatus(accountCollectibleStatus)
     }
 }
 
@@ -487,12 +488,12 @@ extension CollectibleDetailViewController {
             ) as? SendCollectibleViewController
 
             controller?.eventHandler = {
-                [weak self, controller] event in
-                guard let self = self else { return }
+                [weak controller] event in
                 switch event {
                 case .didCompleteTransaction:
                     controller?.dismissScreen(animated: false) {
-                        self.popScreen(animated: false)
+                        [weak self] in
+                        self?.popScreen(animated: false)
                     }
                 }
             }
@@ -585,7 +586,7 @@ extension CollectibleDetailViewController {
                 return
             }
 
-            let accountName = self.account.name ?? self.account.address.shortAddressDisplay
+            let accountName = self.account.primaryDisplayName
 
             let draft = QRCreationDraft(
                 address: self.account.address,
@@ -625,14 +626,14 @@ extension CollectibleDetailViewController {
         cell.startObserving(event: .didTapAccessory) {
             [unowned self] in
 
-            let optInStatus = dataController.hasOptedIn()
+            let optInStatus = self.dataController.hasOptedIn()
 
             if optInStatus == .rejected {
-                openASADiscovery()
+                self.openASADiscovery()
                 return
             }
 
-            openASADetail()
+            self.openASADetail()
         }
 
         cell.startObserving(event: .didLongPressAccessory) {
@@ -647,12 +648,7 @@ extension CollectibleDetailViewController {
             account: account,
             quickAction: nil,
             asset: AssetDecoration(asset: asset)
-        ) { event in
-            switch event {
-            case .didOptInToAsset: break
-            case .didOptOutFromAsset: break
-            }
-        }
+        )
 
         open(
             screen,
@@ -809,12 +805,6 @@ extension CollectibleDetailViewController {
             }
             return
         }
-
-        bannerController?.presentSuccessBanner(
-            title: "collectible-detail-opt-out-success".localized(
-                params: asset.title ?? asset.name ?? .empty
-            )
-        )
 
         NotificationCenter.default.post(
             name: CollectibleListLocalDataController.didRemoveCollectible,

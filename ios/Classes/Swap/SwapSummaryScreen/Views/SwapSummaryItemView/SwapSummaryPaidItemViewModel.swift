@@ -49,9 +49,10 @@ extension SwapSummaryPaidItemViewModel {
         parsedTransactions: [ParsedSwapTransaction],
         currencyFormatter: CurrencyFormatter
     ) {
-        guard let assetIn = quote.assetIn else { return }
-
-        let totalPaidAmount = parsedTransactions.reduce(0, { $0 + $1.paidAmount })
+        guard let assetIn = quote.assetIn,
+              let totalPaidAmount = quote.amountInWithSlippage else {
+            return
+        }
 
         let decimalAmount = swapAssetValueFormatter.getDecimalAmount(
             of: totalPaidAmount,

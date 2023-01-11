@@ -51,9 +51,7 @@ extension SelectedAccountPreviewViewModel {
         bindIcon(draft.account.typeImage)
         bindTitle("collectible-receive-asset-list-selected-account".localized)
 
-        let value = account.name.unwrap(
-            or: account.address.shortAddressDisplay
-        )
+        let value = account.primaryDisplayName
 
         bindValue(value)
     }

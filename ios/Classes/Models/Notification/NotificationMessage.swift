@@ -21,34 +21,27 @@ import MacaroonUtils
 
 final class NotificationMessage: ALGEntityModel {
     let id: Int
-    let account: Int?
-    let notificationType: NotificationType?
+    let url: URL?
     let date: Date?
     let message: String?
-    let detail: NotificationDetail?
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.id = apiModel.id ?? 0
-        self.account = apiModel.account
-        self.notificationType = apiModel.type
+        self.url = apiModel.url
         /// <todo>
         /// Without format string ???
         self.date = apiModel.creationDatetime?.toDate()?.date
         self.message = apiModel.message
-        self.detail = apiModel.metadata
-        self.detail?.type = apiModel.type ?? .broadcast
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.id = id
-        apiModel.account = account
-        apiModel.type = notificationType
+        apiModel.url = url
         apiModel.creationDatetime = date?.toString(.standard)
         apiModel.message = message
-        apiModel.metadata = detail
         return apiModel
     }
 }
@@ -56,28 +49,22 @@ final class NotificationMessage: ALGEntityModel {
 extension NotificationMessage {
     struct APIModel: ALGAPIModel {
         var id: Int?
-        var account: Int?
-        var type: NotificationType?
+        var url: URL?
         var creationDatetime: String?
         var message: String?
-        var metadata: NotificationDetail?
 
         init() {
             self.id = nil
-            self.account = nil
-            self.type = nil
+            self.url = nil
             self.creationDatetime = nil
             self.message = nil
-            self.metadata = nil
         }
 
         enum CodingKeys: String, CodingKey {
             case id = "id"
-            case account = "account"
-            case type = "type"
+            case url = "url"
             case creationDatetime = "creation_datetime"
             case message = "message"
-            case metadata = "metadata"
         }
     }
 }

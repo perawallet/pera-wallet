@@ -18,6 +18,8 @@
 import UIKit
 
 let algorandWalletConnectChainID = 4160
+let algorandWalletConnectMainNetChainID = 416001
+let algorandWalletConnectTestNetChainID = 416002
 
 extension WalletConnectSession {
     func getClientMeta() -> ClientMeta {
@@ -35,21 +37,21 @@ extension WalletConnectSession {
         )
     }
 
-    func getApprovedWalletConnectionInfo(for account: String) -> WalletInfo {
+    func getApprovedWalletConnectionInfo(for accounts: [String], on network: ALGAPI.Network) -> WalletInfo {
         return WalletInfo(
             approved: true,
-            accounts: [account],
-            chainId: algorandWalletConnectChainID,
+            accounts: accounts,
+            chainId: dAppInfo.chainId ?? chainId(for: network),
             peerId: UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString,
             peerMeta: getClientMeta()
         )
     }
 
-    func getDeclinedWalletConnectionInfo() -> WalletInfo {
+    func getDeclinedWalletConnectionInfo(on network: ALGAPI.Network) -> WalletInfo {
         return WalletInfo(
             approved: false,
             accounts: [],
-            chainId: algorandWalletConnectChainID,
+            chainId: dAppInfo.chainId ?? chainId(for: network),
             peerId: UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString,
             peerMeta: getClientMeta()
         )
@@ -62,5 +64,14 @@ extension WalletConnectSession {
             walletMeta: WCWalletMeta(walletInfo: walletInfo, dappInfo: dAppInfo),
             date: Date()
         )
+    }
+
+    func chainId(for network: ALGAPI.Network) -> Int {
+        switch network {
+        case .testnet:
+            return dAppInfo.chainId ?? algorandWalletConnectTestNetChainID
+        case .mainnet:
+            return dAppInfo.chainId ?? algorandWalletConnectMainNetChainID
+        }
     }
 }

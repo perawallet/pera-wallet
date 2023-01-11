@@ -257,6 +257,10 @@ extension BaseViewController {
         return configuration.sharedDataController
     }
 
+    var lastSeenNotificationController: LastSeenNotificationController? {
+        return configuration.lastSeenNotificationController
+    }
+
     var analytics: ALGAnalytics {
         return configuration.analytics
     }

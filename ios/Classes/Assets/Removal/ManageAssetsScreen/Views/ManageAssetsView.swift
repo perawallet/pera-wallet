@@ -52,7 +52,6 @@ final class ManageAssetsView: View {
 extension ManageAssetsView {
     private func addTitleLabel(_ theme: ManageAssetsViewTheme) {
         titleLabel.customizeAppearance(theme.title)
-        titleLabel.editText = theme.titleText
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {

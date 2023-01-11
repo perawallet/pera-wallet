@@ -21,6 +21,7 @@ import UIKit
 
 class AccountPortfolioCell:
     CollectionCell<AccountPortfolioView>,
+    UIInteractable,
     ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
         return (45, 24, 8, 24)
@@ -35,11 +36,5 @@ class AccountPortfolioCell:
 
         contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
         contextView.customize(Self.theme)
-    }
-}
-
-class WatchAccountPortfolioCell: AccountPortfolioCell {
-    override class var contextPaddings: LayoutPaddings {
-        return (16, 24, 36, 24)
     }
 }

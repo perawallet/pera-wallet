@@ -23,6 +23,7 @@ struct OptOutBlockchainRequest: BlockchainRequest {
     let assetUnitName: String?
     let assetVerificationTier: AssetVerificationTier
     let isCollectibleAsset: Bool
+    let collectibleAssetTitle: String?
 
     init(
         account: Account,
@@ -34,6 +35,7 @@ struct OptOutBlockchainRequest: BlockchainRequest {
         self.assetUnitName = asset.unitName
         self.assetVerificationTier = asset.verificationTier
         self.isCollectibleAsset = asset.collectible != nil
+        self.collectibleAssetTitle = asset.collectible?.title
     }
 
     init(
@@ -45,6 +47,8 @@ struct OptOutBlockchainRequest: BlockchainRequest {
         self.assetName = asset.naming.name
         self.assetUnitName = asset.naming.unitName
         self.assetVerificationTier = asset.verificationTier
-        self.isCollectibleAsset = asset is CollectibleAsset
+        let collectibleAsset = asset as? CollectibleAsset
+        self.isCollectibleAsset = collectibleAsset != nil
+        self.collectibleAssetTitle = collectibleAsset?.title
     }
 }

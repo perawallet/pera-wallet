@@ -41,7 +41,7 @@ struct MultilineTextInputFieldViewCommonTheme: MultilineTextInputFieldViewTheme 
         self.textInputMinHeight = 48
         self.textContainerInsets = (24, 0, 0, 65)
         self.placeholder = [
-            .font(Fonts.DMSans.regular.make(15, .body)),
+            .font(Fonts.DMSans.regular.make(15)),
             .textOverflow(SingleLineFittingText()),
             .textColor(Colors.Text.grayLighter),
             .text(placeholder)

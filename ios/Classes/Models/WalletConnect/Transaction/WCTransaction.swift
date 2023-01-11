@@ -28,7 +28,7 @@ final class WCTransaction: Codable {
 
     /// ID is used to separate the transactions that contains exactly the same elements.
     private let id = UUID()
-    private(set) var signerAccount: Account?
+    private(set) var requestedSigner = WCTransactionRequestedSigner()
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -76,69 +76,12 @@ extension WCTransaction {
     }
 
     func findSignerAccount(in accountCollection: AccountCollection, on session: Session) {
-        if let authAddress = authAddress {
-            signerAccount = findAccount(authAddress, in: accountCollection, on: session)
-            return
-        }
-
-        switch signer() {
-        case .sender:
-            if let sender = transactionDetail?.sender {
-                signerAccount = findAccount(sender, in: accountCollection, on: session)
-                return
-            }
-        case let .current(address):
-            if let address = address {
-                signerAccount = findAccount(address, in: accountCollection, on: session)
-                return
-            }
-        case .multisig:
-            break
-        case .unsignable:
-            break
-        }
-    }
-
-    private func findAccount(
-        _ address: String,
-        in accountCollection: AccountCollection,
-        on session: Session
-    ) -> Account? {
-        for accountHandle in accountCollection where !accountHandle.value.isWatchAccount() {
-            let account = accountHandle.value
-
-            if account.isRekeyed() && (account.address == address || account.authAddress == address) {
-                return findRekeyedAccount(for: account, among: accountCollection)
-            }
-
-            if account.isLedger() && account.ledgerDetail != nil && account.address == address {
-                return account
-            }
-
-            if session.privateData(for: address) != nil && account.address == address {
-                return account
-            }
-        }
-
-        return nil
-    }
-
-    private func findRekeyedAccount(for account: Account, among accountCollection: AccountCollection) -> Account? {
-        guard let authAddress = account.authAddress else {
-            return nil
-        }
-
-        if account.rekeyDetail?[authAddress] != nil {
-            return account
-        } else {
-            if let authAccount = accountCollection[authAddress]?.value,
-                let ledgerDetail = authAccount.ledgerDetail {
-                account.addRekeyDetail(ledgerDetail, for: authAddress)
-                return account
-            }
-
-            return nil
-        }
+        requestedSigner.findSignerAccount(
+            in: accountCollection,
+            on: session, transactionDetail: transactionDetail,
+            authAddress: authAddress,
+            signer: signer()
+        )
     }
 
     func signer() -> Signer {

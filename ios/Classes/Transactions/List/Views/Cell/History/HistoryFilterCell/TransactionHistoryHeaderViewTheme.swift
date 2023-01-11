@@ -34,7 +34,7 @@ struct TransactionHistoryHeaderViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = Colors.Defaults.background
         self.titleLabel = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(15)),
         ]

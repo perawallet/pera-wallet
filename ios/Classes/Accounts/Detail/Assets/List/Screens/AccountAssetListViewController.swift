@@ -43,6 +43,7 @@ final class AccountAssetListViewController:
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
@@ -345,6 +346,21 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
         }
         
         switch listSection {
+        case .portfolio:
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+                return
+            }
+
+            switch itemIdentifier {
+            case .portfolio:
+                let cell = cell as! AccountPortfolioCell
+                cell.startObserving(event: .showMinimumBalanceInfo) {
+                    [unowned self] in
+                    openMinimumBalanceInfo()
+                }
+            default:
+                break
+            }
         case .assets:
             guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
                 return
@@ -572,6 +588,26 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension AccountAssetListViewController {
+    private func openMinimumBalanceInfo() {
+        let uiSheet = UISheet(
+            title: "minimum-balance-title".localized.bodyLargeMedium(),
+            body: "minimum-balance-description".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transitionToMinimumBalanceInfo.perform(
+            .sheetAction(sheet: uiSheet),
+            by: .presentWithoutNavigationController
+        )
+    }
+
     private func observeWhenUserIsOnboardedToSwap() {
         observe(notification: SwapDisplayStore.isOnboardedToSwapNotification) {
             [weak self] _ in

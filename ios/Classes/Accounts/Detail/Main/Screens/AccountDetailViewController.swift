@@ -26,6 +26,7 @@ final class AccountDetailViewController: PageContainer {
     
     private lazy var theme = Theme()
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
     private lazy var assetListScreen = AccountAssetListViewController(
         accountHandle: accountHandle,
@@ -367,7 +368,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
         let account = accountHandle.value
-        let accountName = account.name ?? account.address.shortAddressDisplay
+        let accountName = account.primaryDisplayName
         let draft = QRCreationDraft(
             address: account.address,
             mode: .address,
@@ -419,8 +420,13 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController) {
-        open(
-            .editAccount(account: accountHandle.value, delegate: self),
+        let screen: Screen = .renameAccount(
+            account: accountHandle.value,
+            delegate: self
+        )
+
+        transitionToRenameAccount.perform(
+            screen,
             by: .present
         )
     }
@@ -454,6 +460,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
     private func removeAccount() {
         sharedDataController.resetPollingAfterRemoving(accountHandle.value)
+        walletConnector.updateSessionsWithRemovingAccount(accountHandle.value)
         eventHandler?(.didRemove)
     }
 }
@@ -470,10 +477,17 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
     }
 }
 
-extension AccountDetailViewController: EditAccountViewControllerDelegate {
-    func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        bindNavigationTitle()
-        eventHandler?(.didEdit)
+extension AccountDetailViewController: RenameAccountScreenDelegate {
+    func renameAccountScreenDidTapDoneButton(_ screen: RenameAccountScreen) {
+        screen.closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.bindNavigationTitle()
+            self.eventHandler?(.didEdit)
+        }
     }
 }
 
@@ -506,10 +520,30 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
             by: .present
         )
     }
-
-    func managementOptionsViewControllerDidTapFilter(
+    
+    func managementOptionsViewControllerDidTapFilterAssets(
         _ managementOptionsViewController: ManagementOptionsViewController
-    ) {}
+    ) {
+        let eventHandler: AssetsFilterSelectionViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return}
+                
+                switch event {
+                case .didComplete: self.assetListScreen.reloadData()
+                case .didCancel: break
+                }
+            }
+        }
+        
+        open(
+            .assetsFilterSelection(eventHandler: eventHandler),
+            by: .present
+        )
+    }
 
     func managementOptionsViewControllerDidTapRemove(
         _ managementOptionsViewController: ManagementOptionsViewController
@@ -525,6 +559,10 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
         ) as? ManageAssetsViewController
         controller?.navigationController?.presentationController?.delegate = assetListScreen
     }
+    
+    func managementOptionsViewControllerDidTapFilterCollectibles(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
 }
 
 extension AccountDetailViewController {

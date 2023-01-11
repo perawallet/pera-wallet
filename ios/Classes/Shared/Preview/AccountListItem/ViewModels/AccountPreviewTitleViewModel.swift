@@ -41,11 +41,11 @@ struct AccountPreviewTitleViewModel:
 
 extension AccountPreviewTitleViewModel {
     mutating func bindPrimaryTitle(account: Account) {
-        primaryTitle = getPrimaryTitle(AccountNaming.getPrimaryName(for: account))
+        primaryTitle = getPrimaryTitle(account.primaryDisplayName)
     }
 
     mutating func bindSecondaryTitle(account: Account) {
-        secondaryTitle = getSecondaryTitle(AccountNaming.getSecondaryName(for: account))
+        secondaryTitle = getSecondaryTitle(account.secondaryDisplayName)
     }
 }
 

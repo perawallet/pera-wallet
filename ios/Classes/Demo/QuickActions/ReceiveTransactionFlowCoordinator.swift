@@ -55,7 +55,7 @@ extension ReceiveTransactionFlowCoordinator {
     }
 
     private func openQRGenerator(with account: Account, on screen: UIViewController? = nil) {
-        let accountName = account.name ?? account.address.shortAddressDisplay
+        let accountName = account.primaryDisplayName
         let draft = QRCreationDraft(
             address: account.address,
             mode: .address,

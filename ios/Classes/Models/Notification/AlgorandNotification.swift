@@ -19,26 +19,9 @@ import Foundation
 import MacaroonUtils
 
 final class AlgorandNotification: JSONModel {
-    var accountAddress: String? {
-        return detail.unwrap {
-            switch $0.type {
-            case .transactionSent,
-                 .assetTransactionSent:
-                return $0.senderAddress
-            case .transactionReceived,
-                 .assetTransactionReceived,
-                 .assetSupportRequest,
-                 .assetSupportSuccess:
-                return $0.receiverAddress
-            default:
-                return nil
-            }
-        }
-    }
-    
     let badge: Int?
     let alert: String?
-    let detail: NotificationDetail?
+    let detail: AlgorandNotificationDetail?
     let sound: String?
 
     init() {

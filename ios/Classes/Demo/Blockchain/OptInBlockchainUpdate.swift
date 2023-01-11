@@ -37,7 +37,12 @@ struct OptInBlockchainUpdate: BlockchainUpdate {
         self.collectibleAssetTitle = request.collectibleAssetTitle
         self.status = .pending
 
-        let name = request.assetName ?? request.assetUnitName ?? String(request.assetID)
+        let name: String
+        if request.isCollectibleAsset {
+            name = request.collectibleAssetTitle ?? request.assetName ?? String(request.assetID)
+        } else {
+            name = request.assetName ?? request.assetUnitName ?? String(request.assetID)
+        }
         self.notificationMessage = "asset-opt-in-successful-message".localized(name)
     }
 

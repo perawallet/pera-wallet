@@ -24,6 +24,12 @@ final class AccountAssetListAPIDataController:
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)?
 
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var minimumBalanceCalculator = TransactionFeeCalculator(
+        transactionDraft: nil,
+        transactionData: nil,
+        params: nil
+    )
+    private lazy var assetFilterOptions = AssetFilterOptions()
 
     private var accountHandle: AccountHandle
     private var assets: [StandardAsset] = []
@@ -116,23 +122,39 @@ extension AccountAssetListAPIDataController {
 
             let currency = self.sharedDataController.currency
             let currencyFormatter = self.currencyFormatter
-            let isWatchAccount = self.accountHandle.value.isWatchAccount()
-
-            let portfolio = AccountPortfolioItem(
-                accountValue: self.accountHandle,
-                currency: currency,
-                currencyFormatter: currencyFormatter
-            )
-            let portfolioItem = AccountPortfolioViewModel(portfolio)
 
             snapshot.appendSections([.portfolio])
 
+            let isWatchAccount = self.accountHandle.value.isWatchAccount()
+
             if isWatchAccount {
+                let portfolio = AccountPortfolioItem(
+                    accountValue: self.accountHandle,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
+                )
+                let portfolioItem = WatchAccountPortfolioViewModel(portfolio)
+
                 snapshot.appendItems(
                     [.watchPortfolio(portfolioItem)],
                     toSection: .portfolio
                 )
             } else {
+                let calculatedMinimumBalance =
+                    self.minimumBalanceCalculator
+                        .calculateMinimumAmount(
+                            for: self.accountHandle.value,
+                            with: .algosTransaction,
+                            calculatedFee: .zero,
+                            isAfterTransaction: false
+                        )
+                let portfolio = AccountPortfolioItem(
+                    accountValue: self.accountHandle,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter,
+                    minimumBalance: calculatedMinimumBalance
+                )
+                let portfolioItem = AccountPortfolioViewModel(portfolio)
                 snapshot.appendItems(
                     [.portfolio(portfolioItem)],
                     toSection: .portfolio
@@ -198,6 +220,10 @@ extension AccountAssetListAPIDataController {
                 if hasPendingOptOut {
                     return
                 }
+                
+                if self.shouldHideAssetWithNoBalance(asset) {
+                    return
+                }
 
                 let assetItem = AssetItem(
                     asset: asset,
@@ -213,19 +239,15 @@ extension AccountAssetListAPIDataController {
                 self.assetListItems = assetViewModels.sorted(
                     by: selectedAccountSortingAlgorithm.getFormula
                 )
-                assetItems.append(
-                    contentsOf: self.assetListItems.map({ viewModel in
-                        return .asset(viewModel)
-                    })
-                )
             } else {
                 self.assetListItems = assetViewModels
-                assetItems.append(
-                    contentsOf: self.assetListItems.map({ viewModel in
-                        return .asset(viewModel)
-                    })
-                )
             }
+
+            assetItems.append(
+                contentsOf: self.assetListItems.map({ viewModel in
+                    return .asset(viewModel)
+                })
+            )
 
             let pendingOptInAssets = monitor.filterPendingOptInAssetUpdates(for: account)
             for pendingOptInAsset in pendingOptInAssets {
@@ -355,6 +377,20 @@ extension AccountAssetListAPIDataController {
         }
 
         return "algo".containsCaseInsensitive(keyword)
+    }
+}
+
+extension AccountAssetListAPIDataController {
+    private func shouldHideAssetWithNoBalance(_ asset: Asset) -> Bool {
+        if asset.amount != .zero {
+            return false
+        }
+
+        if asset.isAlgo {
+            return false
+        }
+
+        return assetFilterOptions.hideAssetsWithNoBalanceInAssetList
     }
 }
 

@@ -23,6 +23,10 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    typealias EventHandler = (Event) -> Void
 
    var eventHandler: EventHandler?
+   
+   private lazy var transitionToEditNote = BottomSheetTransition(presentingViewController: self)
+
+   private var ledgerApprovalViewController: LedgerApprovalViewController?
 
    private lazy var transactionDetailView = SendTransactionPreviewView()
    private lazy var nextButtonContainer = UIView()
@@ -31,18 +35,26 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 
    private lazy var currencyFormatter = CurrencyFormatter()
 
-   private let draft: TransactionSendDraft
-   private let transactionController: TransactionController
+   private var draft: TransactionSendDraft
+   private lazy var transactionController = {
+      guard let api = api else {
+         fatalError("API should be set.")
+      }
+      return TransactionController(
+         api: api,
+         sharedDataController: sharedDataController,
+         bannerController: bannerController,
+         analytics: analytics
+      )
+   }()
 
    private var isLayoutFinalized = false
 
    init(
       draft: TransactionSendDraft,
-      transactionController: TransactionController,
       configuration: ViewControllerConfiguration
    ) {
       self.draft = draft
-      self.transactionController = transactionController
       super.init(configuration: configuration)
    }
 
@@ -90,13 +102,145 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       transactionController.delegate = self
       nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
    }
+
+   override func viewDidLoad() {
+      super.viewDidLoad()
+
+      fetchTransactionParams()
+   }
+
+   private func fetchTransactionParams() {
+      loadingController?.startLoadingWithMessage("title-loading".localized)
+
+      sharedDataController.getTransactionParams(isCacheEnabled: true) { [weak self] paramsResult in
+         guard let self else {
+            return
+         }
+
+         self.loadingController?.stopLoading()
+
+         switch paramsResult {
+         case .success(let params):
+            self.bindTransaction(with: params)
+         case .failure(let error):
+            self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+         }
+      }
+   }
+
+   /// <todo>: Add Unit Test for composing transaction and view model changes
+   private func bindTransaction(with params: TransactionParams) {
+      var transactionDraft = composeTransaction()
+      let builder: TransactionDataBuildable
+
+      if transactionDraft is AlgosTransactionSendDraft {
+         builder = SendAlgosTransactionDataBuilder(params: params, draft: transactionDraft, initialSize: nil)
+      } else if transactionDraft is AssetTransactionSendDraft {
+         builder = SendAssetTransactionDataBuilder(params: params, draft: transactionDraft)
+      } else {
+         return
+      }
+
+      let data = builder.composeData()
+
+      var error: NSError?
+      let json = AlgorandSDK().msgpackToJSON(data, error: &error)
+
+      guard let jsonData = json.data(using: .utf8) else {
+         return
+      }
+
+      do {
+
+         let transactionDetail = try JSONDecoder().decode(SDKTransaction.self, from: jsonData)
+         transactionDraft.fee = transactionDetail.fee
+
+         let currency = sharedDataController.currency
+
+         transactionDetailView.bindData(
+            SendTransactionPreviewViewModel(
+               transactionDraft,
+               currency: currency,
+               currencyFormatter: self.currencyFormatter
+            ),
+            currency: currency,
+            currencyFormatter: self.currencyFormatter
+         )
+      } catch {
+         self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+      }
+   }
+
+   private func composeTransaction() -> TransactionSendDraft {
+      guard let sendTransactionDraft = draft as? SendTransactionDraft else {
+         return draft
+      }
+
+      var transactionDraft: TransactionSendDraft
+
+      switch sendTransactionDraft.transactionMode {
+      case .algo:
+         transactionDraft = AlgosTransactionSendDraft(
+            from: draft.from,
+            toAccount: draft.toAccount,
+            amount: draft.amount,
+            fee: nil,
+            isMaxTransaction: draft.isMaxTransaction,
+            identifier: nil,
+            note: draft.note,
+            lockedNote: draft.lockedNote
+         )
+         transactionDraft.toContact = draft.toContact
+         transactionDraft.nameService = draft.nameService
+
+      case .asset(let asset):
+         var assetTransactionDraft = AssetTransactionSendDraft(
+            from: draft.from,
+            toAccount: draft.toAccount,
+            amount: draft.amount,
+            assetIndex: asset.id,
+            assetDecimalFraction: asset.decimals,
+            isVerifiedAsset: asset.verificationTier.isVerified,
+            note: draft.note,
+            lockedNote: draft.lockedNote
+         )
+         assetTransactionDraft.toContact = draft.toContact
+         assetTransactionDraft.asset = asset
+         assetTransactionDraft.nameService = draft.nameService
+
+         transactionDraft = assetTransactionDraft
+      }
+
+      return transactionDraft
+   }
+
+   private func composedTransactionType(draft: TransactionSendDraft) -> TransactionController.TransactionType {
+      if draft is AlgosTransactionSendDraft {
+         return .algosTransaction
+      } else if draft is AssetTransactionSendDraft {
+         return .assetTransaction
+      }
+
+      return .algosTransaction
+   }
 }
 
 extension SendTransactionPreviewScreen {
    @objc
    private func didTapNext() {
       loadingController?.startLoadingWithMessage("title-loading".localized)
-      transactionController.uploadTransaction()
+
+      let composedTransacation = composeTransaction()
+      let transactionType = composedTransactionType(draft: composedTransacation)
+
+      transactionController.delegate = self
+      transactionController.setTransactionDraft(composedTransacation)
+      transactionController.getTransactionParamsAndComposeTransactionData(for: transactionType)
+
+      if draft.from.requiresLedgerConnection() {
+         transactionController.initializeLedgerTransactionAccount()
+         transactionController.startTimer()
+      }
    }
 }
 
@@ -105,6 +249,27 @@ extension SendTransactionPreviewScreen {
       contentView.addSubview(transactionDetailView)
       transactionDetailView.snp.makeConstraints {
          $0.edges.equalToSuperview()
+      }
+      
+      transactionDetailView.startObserving(event: .performEditNote) {
+         [weak self] in
+         guard let self = self else {
+            return
+         }
+         
+         let isLocked = self.draft.lockedNote != nil
+         let editNote = self.draft.lockedNote ?? self.draft.note
+
+         let screen: Screen = .editNote(
+             note: editNote,
+             isLocked: isLocked,
+             delegate: self
+         )
+
+         self.transitionToEditNote.perform(
+             screen,
+             by: .present
+         )
       }
    }
 
@@ -116,7 +281,7 @@ extension SendTransactionPreviewScreen {
       }
 
       nextButton.customize(theme.nextButtonStyle)
-      nextButton.bindData(ButtonCommonViewModel(title: "title-send".localized))
+      nextButton.bindData(ButtonCommonViewModel(title: "send-transaction-preview-button".localized))
       nextButtonContainer.addSubview(nextButton)
       
       nextButton.snp.makeConstraints {
@@ -127,24 +292,77 @@ extension SendTransactionPreviewScreen {
    }
 
    private func addLinearGradient() {
-       let layer = CAGradientLayer()
-       layer.frame = CGRect(
-           origin: .zero,
-           size: CGSize(
+      let layer = CAGradientLayer()
+      layer.frame = CGRect(
+         origin: .zero,
+         size: CGSize(
             width: view.bounds.width,
             height: theme.linearGradientHeight + view.safeAreaBottom
-           )
-       )
+         )
+      )
 
-       let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0).cgColor
-       let color1 = Colors.Defaults.background.uiColor.cgColor
+      let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0).cgColor
+      let color1 = Colors.Defaults.background.uiColor.cgColor
 
-       layer.colors = [color0, color1]
-       nextButtonContainer.layer.insertSublayer(layer, at: 0)
+      layer.colors = [color0, color1]
+      nextButtonContainer.layer.insertSublayer(layer, at: 0)
+   }
+}
+
+extension SendTransactionPreviewScreen: EditNoteScreenDelegate {
+   func editNoteScreen(
+      _ screen: EditNoteScreen,
+      didUpdateNote note: String?
+   ) {
+      screen.closeScreen(by: .dismiss) {
+          [weak self] in
+          guard let self = self else {
+              return
+          }
+
+         self.draft.updateNote(note)
+
+         self.sharedDataController.getTransactionParams(isCacheEnabled: true) {
+            [weak self] paramsResult in
+            guard let self else {
+               return
+            }
+
+            switch paramsResult {
+            case .success(let params):
+               self.bindTransaction(with: params)
+            case .failure(let error):
+               self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+            }
+         }
+
+         self.eventHandler?(.didEditNote(note: note))
+      }
    }
 }
 
 extension SendTransactionPreviewScreen: TransactionControllerDelegate {
+   func transactionController(
+      _ transactionController: TransactionController,
+      didFailedComposing error: HIPTransactionError
+   ) {
+      loadingController?.stopLoading()
+
+      switch error {
+      case .network:
+         displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+      case let .inapp(transactionError):
+         displayTransactionError(from: transactionError)
+      }
+   }
+
+   func transactionController(
+      _ transactionController: TransactionController,
+      didComposedTransactionDataFor draft: TransactionSendDraft?
+   ) {
+      transactionController.uploadTransaction()
+   }
+
    func transactionController(
       _ transactionController: TransactionController,
       didCompletedTransaction id: TransactionID
@@ -177,30 +395,107 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       didFailedTransaction error: HIPTransactionError
    ) {
       loadingController?.stopLoading()
+
       switch error {
       case let .network(apiError):
-          switch apiError {
-          case .connection:
-              displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
-          default:
-              bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
-          }
+         switch apiError {
+         case .connection:
+            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+         default:
+            bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+         }
       default:
-          bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+         bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
       }
    }
 
-   func transactionControllerDidRequestUserApprovalFromLedger(_ transactionController: TransactionController) {
+   func transactionController(
+      _ transactionController: TransactionController,
+      didRequestUserApprovalFrom ledger: String
+   ) {
+      let ledgerApprovalTransition = BottomSheetTransition(
+         presentingViewController: self,
+         interactable: false
+      )
+      ledgerApprovalViewController = ledgerApprovalTransition.perform(
+         .ledgerApproval(mode: .approve, deviceName: ledger),
+         by: .present
+      )
 
+      ledgerApprovalViewController?.eventHandler = {
+         [weak self] event in
+         guard let self = self else { return }
+         switch event {
+         case .didCancel:
+            self.ledgerApprovalViewController?.dismissScreen()
+            self.loadingController?.stopLoading()
+         }
+      }
    }
 
    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
+      ledgerApprovalViewController?.dismissScreen()
+      loadingController?.stopLoading()
+   }
 
+   func transactionControllerDidRejectedLedgerOperation(
+      _ transactionController: TransactionController
+   ) {
+      loadingController?.stopLoading()
    }
 }
 
 extension SendTransactionPreviewScreen {
-    enum Event {
-        case didCompleteTransaction
-    }
+   private func displayTransactionError(from transactionError: TransactionError) {
+      switch transactionError {
+      case let .minimumAmount(amount):
+         currencyFormatter.formattingContext = .standalone()
+         currencyFormatter.currency = AlgoLocalCurrency()
+
+         let amountText = currencyFormatter.format(amount.toAlgos)
+
+         bannerController?.presentErrorBanner(
+            title: "asset-min-transaction-error-title".localized,
+            message: "send-algos-minimum-amount-custom-error".localized(
+               params: amountText.someString
+            )
+         )
+      case .invalidAddress:
+         bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: "send-algos-receiver-address-validation".localized
+         )
+      case let .sdkError(error):
+         bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: error.debugDescription
+         )
+      case .ledgerConnection:
+         let bottomTransition = BottomSheetTransition(presentingViewController: self)
+
+         bottomTransition.perform(
+            .bottomWarning(
+               configurator: BottomWarningViewConfigurator(
+                  image: "icon-info-green".uiImage,
+                  title: "ledger-pairing-issue-error-title".localized,
+                  description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                  secondaryActionButtonTitle: "title-ok".localized
+               )
+            ),
+            by: .presentWithoutNavigationController
+         )
+      default:
+         displaySimpleAlertWith(
+            title: "title-error".localized,
+            message: "title-internet-connection".localized
+         )
+      }
+   }
+}
+
+extension SendTransactionPreviewScreen {
+   enum Event {
+      case didCompleteTransaction
+      case didEditNote(note: String?)
+   }
 }

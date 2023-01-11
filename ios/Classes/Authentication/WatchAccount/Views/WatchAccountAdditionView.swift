@@ -60,9 +60,14 @@ final class WatchAccountAdditionView: View {
 
 extension WatchAccountAdditionView: ViewModelBindable {
     func bindData(_ viewModel: WatchAccountAdditionViewModel?) {
-        pasteButton.isHidden = (viewModel?.pasteButtonIsHidden).ifNil(true)
+        let isPasteButtonHidden = viewModel?.pasteButtonIsHidden ?? true
 
-        guard !pasteButton.isHidden else {
+        updatePasteButtonVisibility(
+            isVisible: !isPasteButtonHidden,
+            animated: true
+        )
+
+        guard !isPasteButtonHidden else {
             return
         }
 
@@ -72,6 +77,30 @@ extension WatchAccountAdditionView: ViewModelBindable {
     }
 }
 
+extension WatchAccountAdditionView {
+    private func updatePasteButtonVisibility(
+        isVisible: Bool,
+        animated: Bool = false
+    ) {
+        if animated {
+            let animator = UIViewPropertyAnimator(
+                duration: 0.2,
+                curve: .easeInOut
+            ) {
+                updateVisibility()
+            }
+            animator.startAnimation()
+
+            return
+        }
+
+        updateVisibility()
+
+        func updateVisibility() {
+            pasteButton.alpha = isVisible ? 1: 0
+        }
+    }
+}
 extension WatchAccountAdditionView {
     @objc
     private func didTapPaste() {
@@ -125,6 +154,11 @@ extension WatchAccountAdditionView {
             $0.leading.equalTo(addressInputView.snp.leading)
             $0.fitToSize(theme.pasteButtonSize)
         }
+
+        updatePasteButtonVisibility(
+            isVisible: false,
+            animated: false
+        )
     }
     
     private func addCreateWatchAccountButton(_ theme: WatchAccountAdditionViewTheme) {
@@ -148,7 +182,7 @@ extension WatchAccountAdditionView {
     ) -> MultilineTextInputFieldView {
         let view = MultilineTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
-            .font(Fonts.DMSans.regular.make(15, .body)),
+            .font(Fonts.DMSans.regular.make(15)),
             .tintColor(Colors.Text.main),
             .textColor(Colors.Text.main),
             .returnKeyType(.done)

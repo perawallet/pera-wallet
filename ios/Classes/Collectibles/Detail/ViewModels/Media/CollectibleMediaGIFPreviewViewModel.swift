@@ -22,12 +22,13 @@ import Prism
 
 struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewModel {
     var image: ImageSource?
-    var isOwned: Bool = true
+    var displaysOffColorMedia: Bool = false
     var isFullScreenBadgeHidden: Bool = false
 
     init(
         imageSize: CGSize,
         asset: CollectibleAsset,
+        accountCollectibleStatus: AccountCollectibleStatus,
         media: Media?
     ) {
         bindImage(
@@ -35,8 +36,7 @@ struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewMode
             asset: asset,
             media: media
         )
-
-        bindOwned(asset)
+        bindDisplaysOffColorMedia(asset, accountCollectibleStatus)
         bindIsFullScreenBadgeHidden(asset)
     }
 }

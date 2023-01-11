@@ -56,7 +56,7 @@ extension TransactionListItemViewModel {
 
         if let address = account,
            let localAccount = draft.localAccounts.first(matching: (\.address, address)) {
-            return localAccount.name
+            return localAccount.primaryDisplayName
         }
 
         return account.shortAddressDisplay

@@ -21,7 +21,11 @@ class WCMainTransactionDataSource: NSObject {
     weak var delegate: WCMainTransactionDataSourceDelegate?
 
     var hasValidGroupTransaction: Bool {
-        groupedTransactions.count == transactions.count
+        var totalTransactionCount = 0
+        for groupTransactions in groupedTransactions {
+            totalTransactionCount += groupTransactions.value.count
+        }
+        return totalTransactionCount == transactions.count
     }
 
     private let walletConnector: WalletConnector
@@ -114,7 +118,7 @@ extension WCMainTransactionDataSource {
             fatalError("Unexpected index")
         }
 
-        let account: Account? = transaction.signerAccount
+        let account: Account? = transaction.requestedSigner.account
 
         if transaction.transactionDetail?.isAssetConfigTransaction ?? false {
             if account == nil {

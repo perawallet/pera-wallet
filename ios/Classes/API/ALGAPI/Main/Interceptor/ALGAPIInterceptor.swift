@@ -41,8 +41,19 @@ final class ALGAPIInterceptor: APIInterceptor {
 
 extension ALGAPIInterceptor {
     private func setCommonHeaders(_ endpoint: EndpointOperatable) {
-        for header in sharedHeaders {
-            endpoint.setAdditionalHeader(header, policy: .alwaysOverride)
+        endpoint.setAdditionalHeader(AcceptGZIPEncodingHeader())
+
+        let rawPath = endpoint.request.path.decoded()
+        let apiPath = ALGAPIPath(rawValue: rawPath)
+
+        switch apiPath {
+        case .none:
+            break
+        case .exportTransactions:
+            break
+        default:
+            endpoint.setAdditionalHeader(AcceptJSONHeader())
+            endpoint.setAdditionalHeader(ContentTypeJSONHeader())
         }
     }
 
@@ -56,7 +67,9 @@ extension ALGAPIInterceptor {
             setAlgodHeaders(endpoint)
         case .indexer:
             setIndexerHeaders(endpoint)
-        case .mobile:
+        case .mobileV1:
+            setMobileHeaders(endpoint)
+        case .mobileV2:
             setMobileHeaders(endpoint)
         case .algoExplorer:
             break
@@ -77,7 +90,6 @@ extension ALGAPIInterceptor {
 
     private func setMobileHeaders(_ endpoint: EndpointOperatable) {
         endpoint.setAdditionalHeader(APIKeyHeader())
-        endpoint.setAdditionalHeader(NetworkHeader(apiBase.network), policy: .setIfNotExists)
         endpoint.setAdditionalHeader(AppNameHeader(application), policy: .alwaysOverride)
         endpoint.setAdditionalHeader(AppPackageNameHeader(application), policy: .alwaysOverride)
         endpoint.setAdditionalHeader(AppVersionHeader(application), policy: .alwaysOverride)
@@ -109,18 +121,6 @@ struct APIKeyHeader: Header {
     init() {
         self.key = "X-API-Key"
         self.value = Environment.current.apiKey
-    }
-}
-
-struct NetworkHeader: Header {
-    let key: String
-    let value: String?
-
-    init(
-        _ network: ALGAPI.Network?
-    ) {
-        self.key = "algorand-network"
-        self.value = network?.rawValue
     }
 }
 

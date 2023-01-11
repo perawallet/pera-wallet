@@ -78,7 +78,7 @@ extension SelectAssetListItemViewModel {
         let asset = item.asset
 
         if asset.isAlgo {
-            imageSource = AssetImageSource(asset: "icon-algo-circle-green-swap".uiImage)
+            imageSource = AssetImageSource(asset: "icon-algo-circle".uiImage)
             return
         }
 

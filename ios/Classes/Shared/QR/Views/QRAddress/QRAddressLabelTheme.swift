@@ -28,16 +28,12 @@ struct QRAddressLabelTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.title = [
-            .textAlignment(.center),
-            .textOverflow(SingleLineFittingText(lineBreakMode: .byTruncatingMiddle)),
+            .textOverflow(SingleLineText(lineBreakMode: .byTruncatingMiddle)),
             .textColor(Colors.Text.main),
-            .font(Fonts.DMSans.medium.make(19))
         ]
         self.address = [
-            .textAlignment(.center),
             .textOverflow(FittingText()),
-            .textColor(Colors.Text.main),
-            .font(Fonts.DMSans.regular.make(15))
+            .textColor(Colors.Text.gray),
         ]
 
         self.spacing = 12

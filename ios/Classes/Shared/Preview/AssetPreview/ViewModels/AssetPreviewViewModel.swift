@@ -84,7 +84,7 @@ extension AssetPreviewViewModel {
         }
 
         if asset.isAlgo {
-            imageSource = AssetImageSource(asset: "icon-algo-circle-green".uiImage)
+            imageSource = AssetImageSource(asset: "icon-algo-circle".uiImage)
             return
         }
 

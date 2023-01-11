@@ -20,13 +20,13 @@
 "account-name-setup-description" = "在使用Pera钱包时，请为账户取一个容易识别的名称。名称储存在本地，仅个人可见。";
 
 /* (No Comment) */
-"account-name-setup-explanation" = "账户名称";
-
-/* (No Comment) */
 "account-name-setup-finish" = "完成帐户创建";
 
 /* (No Comment) */
 "account-name-setup-placeholder" = "储蓄账户";
+
+/* (No Comment) */
+"account-not-found" = "Account not found";
 
 /* (No Comment) */
 "account-options-add-account-title" = "添加账户";
@@ -239,10 +239,16 @@
 "asset-copy-id" = "复制ID";
 
 /* (No Comment) */
-"asset-creation-fee-title" = "添加资产费用";
+"asset-detail-id-title" = "编号 %@";
 
 /* (No Comment) */
-"asset-detail-id-title" = "编号 %@";
+"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance.";
+
+/* (No Comment) */
+"asset-filter-selection-toggle-title" = "Hide assets with no balance";
+
+/* (No Comment) */
+"asset-filter-title" = "Filter Assets";
 
 /* (No Comment) */
 "asset-id-copied-title" = "编号已复制到剪贴板";
@@ -270,6 +276,9 @@
 
 /* (No Comment) */
 "asset-opt-out-successful-message" = "%@已成功从您的账户中移除。";
+
+/* (No Comment) */
+"asset-opt-out-title" = "Asset Opt-out";
 
 /* (No Comment) */
 "asset-quick-action-button-add" = "添加资产";
@@ -308,7 +317,7 @@
 "asset-removing-status" = "移除资产";
 
 /* (No Comment) */
-"asset-search-not-found" = "We are not able to find this asset.";
+"asset-search-not-found" = "我们无法找到这项资产。";
 
 /* (No Comment) */
 "asset-search-placeholder" = "搜索资产编号或名称";
@@ -321,9 +330,6 @@
 
 /* (No Comment) */
 "asset-support-error" = "很抱歉，本账户尚未添加该资产。请让账户所有者添加资产，并稍后再试。";
-
-/* (No Comment) */
-"asset-support-not-same-error" = "本账户已添加该资产，但这并非所选资产。请选择正确的资产后，再试一次。";
 
 /* (No Comment) */
 "asset-support-not-same-title" = "账户不接受该资产";
@@ -509,9 +515,6 @@
 "collectible-detail-opt-out-alert-title" = "从\"%@\"中选择退出";
 
 /* (No Comment) */
-"collectible-detail-opt-out-success" = "%@ NFT成功选择退出";
-
-/* (No Comment) */
 "collectible-detail-opted-in" = "选择加入至";
 
 /* (No Comment) */
@@ -550,13 +553,13 @@
 /* (No Comment) */
 "collectible-opt-in-info-description" = "为避免垃圾交易，Algorand区块链只允许您发送和接收先前选择的资产的交易。";
 
-/* MARK: Collectible Opt In Info */
+/* MARK: Collectible Opt-in Info */
 "collectible-opt-in-info-title" = "关于选择加入";
 
 /* (No Comment) */
 "collectible-opt-out-info-description" = "根据Algorand区块链的要求，账户需要选择加入ASA后，才能接收该ASA。您已经把该NFT转移到另一个账户上了，您现在可以选择退出该NFT。选择退出需要生成一个额外交易。";
 
-/* MARK: Collectible Opt Out Info */
+/* MARK: Collectible Opt-out Info */
 "collectible-opt-out-info-title" = "选择退出NFT ";
 
 /* (No Comment) */
@@ -577,7 +580,7 @@
 /* (No Comment) */
 "collectible-recipient-opt-in-description-marked" = "了解更多关于选择加入的信息";
 
-/* MARK: Collecitble Ask recipient to opt in */
+/* MARK: Collecitble Ask recipient to opt-in */
 "collectible-recipient-opt-in-title" = "要求接收人选择加入";
 
 /* (No Comment) */
@@ -627,9 +630,6 @@
 
 /* MARK: Collectible Receive */
 "collectibles-receive-action" = "接收NFT";
-
-/* (No Comment) */
-"collectibles-receive-asset-list-header-description" = "您需要选择加入NFT的ASA ID才能进行接收。粘贴ASA ID或在下方扫描。";
 
 /* (No Comment) */
 "collectibles-receive-asset-list-search-no-content" = "未找到NFT";
@@ -710,28 +710,19 @@
 "contacts-transactions-title" = "交易记录";
 
 /* (No Comment) */
-"csv-download-error" = "无法为交易记录创建CSV文件。";
-
-/* (No Comment) */
-"csv-download-title" = "创建CSV文件";
-
-/* (No Comment) */
-"csv-loading-message" = "我们正在获取您的数据。请等待您的CSV准备就绪。";
-
-/* (No Comment) */
 "default-error-message" = "出现错误";
 
 /* (No Comment) */
-"discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
+"discover-error-connection-body" = "您似乎无法连接到网络。请检查网络后再次尝试。";
 
 /* (No Comment) */
-"discover-error-connection-title" = "No Internet Connection";
+"discover-error-connection-title" = "无网络连接";
 
 /* (No Comment) */
-"discover-error-fallback-body" = "We can't get that information right now.";
+"discover-error-fallback-body" = "我们目前无法获取这些信息。";
 
 /* MARK: Discover */
-"discover-search-input-placeholder" = "Search for any ASA";
+"discover-search-input-placeholder" = "搜索任意ASA";
 
 /* (No Comment) */
 "edit-node-title" = "编辑备注";
@@ -1099,6 +1090,12 @@
 /* (No Comment) */
 "min-balance-title" = "最低余额要求";
 
+/* (No Comment) */
+"minimum-balance-description" = "Minimum balance is the minimum amount of Algo you have to keep in an account. It increases every time the account is opted in to a smart contract, ASA or NFT.";
+
+/* MARK: Minimum Balance */
+"minimum-balance-title" = "Minimum balance";
+
 /* MARK: MoonPay */
 "moonpay-buy-button-title" = "购买ALGO";
 
@@ -1217,19 +1214,10 @@
 "notification-filter-show-title" = "推送通知";
 
 /* (No Comment) */
-"notification-received" = "%@发送 %@ 至%@ 处。";
+"notifications-account-not-found-description" = "You cannot take actions for this account: It was removed from this device.";
 
 /* (No Comment) */
-"notification-sent-failed" = "您从 %@ 发送到%@ 的 %@ 交易失败。";
-
-/* MARK: Notifications */
-"notification-sent-success" = "您从 %@ 发送到%@ 的 %@ 交易已经完成。";
-
-/* (No Comment) */
-"notification-support-request" = "%@ 正在向您发送 %@ ，但是您尚不支持该交易。如果有需要，我们可以添加到您的账户上。";
-
-/* (No Comment) */
-"notification-support-success" = "%@ 已添加 %@ 到他们的账户。 您可以发送资产。";
+"notifications-account-not-found-title" = "Account Removed";
 
 /* (No Comment) */
 "notifications-asset-not-found-description" = "该资产的历史记录不可用";
@@ -1247,6 +1235,12 @@
 "notifications-title" = "通知";
 
 /* (No Comment) */
+"notifications-trying-to-opt-in-for-watch-account-description" = "You cannot opt-in for this account: It's a read-only Watch Account.";
+
+/* (No Comment) */
+"notifications-trying-to-opt-in-for-watch-account-title" = "Opt-in Not Allowed";
+
+/* (No Comment) */
 "number-abbreviation-billion" = "B";
 
 /* MARK: Number Abbreviation */
@@ -1261,13 +1255,19 @@
 /* (No Comment) */
 "number-abbreviation-trillion" = "T";
 
+/* MARK: Ongoing opt-in/opt-out Alert */
+"ongoing-opt-in-request-description" = "There is an ongoing opt-in request for this asset with %@. Please wait for the ongoing opt-in request to finish before taking any action for this asset with this account.";
+
+/* (No Comment) */
+"ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";
+
 /* (No Comment) */
 "opitons-collectibles-filter" = "筛选NFT";
 
 /* (No Comment) */
 "opt-in-description-adding-nft" = "若选择加入NFT，您需要发送一笔有最低交易费的交易。这笔交易将出现在交易历史记录中。";
 
-/* MARK: Opt In Asset */
+/* MARK: Opt-in Asset */
 "opt-in-title-adding-nft" = "选择加入NFT";
 
 /* (No Comment) */
@@ -1772,6 +1772,9 @@
 "send-transaction-max-same-account-error" = "无法向自己发送所有余额。请在选择其他账户或收款人后，再次尝试。";
 
 /* (No Comment) */
+"send-transaction-preview-button" = "Confirm transfer";
+
+/* (No Comment) */
 "send-transaction-preview-current-balance" = "现有\n余额";
 
 /* MARK: SendTransactionPreview */
@@ -1850,10 +1853,13 @@
 "settings-notification-disabled-go-settings-text" = "您已关闭通知提示。请到“设置”中开启通知提示。";
 
 /* (No Comment) */
+"settings-notification-disabled-go-settings-title" = "Notifications Disabled";
+
+/* (No Comment) */
 "settings-notification-enabled-go-settings-text" = "您已开启通知提示。请到“设置”中关闭通知提示。";
 
 /* (No Comment) */
-"settings-notification-go-settings-title" = "通知";
+"settings-notification-enabled-go-settings-title" = "Notifications Enabled";
 
 /* (No Comment) */
 "settings-rate-modal-description" = "请告诉我们您的体验如何？";
@@ -1985,7 +1991,7 @@
 "swap-asset-not-available" = "资产不可用。";
 
 /* (No Comment) */
-"swap-asset-not-opted-in-error" = "You are not opted in to source token. Pick another pool, or another eligible account to be able to swap.";
+"swap-asset-not-opted-in-error" = "您没有选择加入源代币。请选择其他池子或其他可用的账号进行交换。";
 
 /* (No Comment) */
 "swap-asset-pool-search-error" = "我们目前无法显示资产。请重试。";
@@ -2219,7 +2225,7 @@
 "title-disconnect" = "断开连接";
 
 /* (No Comment) */
-"title-discover" = "Discover";
+"title-discover" = "发现";
 
 /* (No Comment) */
 "title-done" = "完成";
@@ -2283,6 +2289,9 @@
 
 /* (No Comment) */
 "title-later" = "稍后";
+
+/* (No Comment) */
+"title-launch-ios-settings" = "Launch iOS Settings";
 
 /* (No Comment) */
 "title-learn-more" = "了解更多";
@@ -2378,7 +2387,7 @@
 "title-retry" = "重试";
 
 /* (No Comment) */
-"title-retry-later" = "Please try later.";
+"title-retry-later" = "请稍后再试。";
 
 /* (No Comment) */
 "title-save" = "保存";
@@ -2654,9 +2663,6 @@
 "transaction-option-list-swap-subtitle" = "在受欢迎的ASA交易对之间转换";
 
 /* (No Comment) */
-"transaction-request-signing-alert-title" = "确定吗？";
-
-/* (No Comment) */
 "transaction-result-completed-subtitle" = "您的订单被成功接收";
 
 /* (No Comment) */
@@ -2765,6 +2771,12 @@
 "url-copied" = "URL已复制到剪贴板";
 
 /* (No Comment) */
+"user-account-limit-error-message" = "Looks like you already have 50 or more accounts in your wallet. To keep the app performance snappy, we currently don't support more than 50 accounts. To add another one, please remove an existing account first.";
+
+/* MARK: User Account Limit Error */
+"user-account-limit-error-title" = "Too Many Accounts!";
+
+/* (No Comment) */
 "verification-info-body" = "Pera钱包的Algorand标准资产（ASA）验证计划让ASA创建者证明他们是该资产的持有者后得到自动验证。\nASA验证的主要目的是防止ASA假装附属于一个与之无关的项目并充当其代币。\nASA验证并不代表对项目的背书。Algorand和Pera都不会使用验证过程来背书项目。";
 
 /* (No Comment) */
@@ -2831,7 +2843,13 @@
 "wallet-connect-group-transaction-header-title" = "群组ID：%@";
 
 /* (No Comment) */
+"wallet-connect-no-account-for-transaction" = "Your WalletConnect request failed with the following error: \n\n%@\n\nPlease try again by going back to the dApp where you initiated the request.";
+
+/* (No Comment) */
 "wallet-connect-raw-transaction-title" = "原始交易";
+
+/* (No Comment) */
+"wallet-connect-select-accounts" = "Select Accounts";
 
 /* (No Comment) */
 "wallet-connect-session-connected" = "已连接";
@@ -3005,6 +3023,12 @@
 "wallet-connect-transaction-request-count-singular" = "交易请求（1）";
 
 /* (No Comment) */
+"wallet-connect-transaction-request-signing-future-transaction-alert-description" = "This transaction will be submitted in the future. Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-signing-future-transaction-alert-title" = "Future Transaction Detected";
+
+/* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "应用程序调用";
 
 /* (No Comment) */
@@ -3123,9 +3147,6 @@
 
 /* (No Comment) */
 "watch-account-explanation-title" = "您正在创建Algorand账户的只读模式。";
-
-/* (No Comment) */
-"watch-account-input-explanation" = "账户地址";
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "粘贴钱包地址或扫描二维码";

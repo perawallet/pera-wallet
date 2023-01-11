@@ -71,7 +71,7 @@ extension TransactionDetailViewModel {
         let accountAddress = account.address
 
         if receiverAddress == accountAddress {
-            userViewDetail = account.name ?? accountAddress.shortAddressDisplay
+            userViewDetail = account.primaryDisplayName
         } else {
             userViewDetail = receiverAddress
         }
@@ -151,7 +151,7 @@ extension TransactionDetailViewModel {
         let accountAddress = account.address
 
         if senderAddress == accountAddress {
-            userViewDetail = account.name ?? accountAddress.shortAddressDisplay
+            userViewDetail = account.primaryDisplayName
         } else {
             userViewDetail = senderAddress
         }

@@ -53,7 +53,7 @@ extension WCGroupTransactionLayout: UICollectionViewDelegateFlowLayout {
 
         let viewModel = WCGroupTransactionItemViewModel(
             transaction: transaction,
-            account: transaction.signerAccount,
+            account: transaction.requestedSigner.account,
             asset: asset(from: transaction),
             currency: sharedDataController.currency,
             currencyFormatter: currencyFormatter

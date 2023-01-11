@@ -141,7 +141,7 @@ struct StandardAssetImageViewModel:
                 )
             )
         case .algo:
-            self.image = "icon-algo-circle-green".uiImage
+            self.image = "icon-algo-circle".uiImage
         case .custom(let image):
             self.image = image
         }
@@ -183,7 +183,7 @@ struct AssetImageLargeViewModel:
                 )
             )
         case .algo:
-            self.image = "icon-algo-circle-green".uiImage
+            self.image = "icon-algo-circle".uiImage
         case .custom(let image):
             self.image = image
         }
@@ -225,7 +225,7 @@ struct AssetImageSmallViewModel:
                 )
             )
         case .algo:
-            self.image = "icon-algo-circle-green".uiImage
+            self.image = "icon-algo-circle".uiImage
         case .custom(let image):
             self.image = image
         }

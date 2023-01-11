@@ -24,7 +24,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<BuyAlgoSignedResponse>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.signBuyAlgo)
             .method(.post)
             .body(draft)

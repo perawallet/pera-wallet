@@ -70,7 +70,7 @@ struct SendCollectibleActionViewTheme:
         title = [
             .text(Self.getTitle("collectible-send-title".localized)),
             .textColor(Colors.Text.main),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText())
         ]
 
         titleViewHorizontalPaddings = (8, 24)
@@ -138,7 +138,7 @@ extension SendCollectibleActionViewTheme {
     ) -> EditText {
         return .attributedString(
             title
-                .bodyMedium()
+                .bodyMedium(lineBreakMode: .byTruncatingTail)
         )
     }
 }

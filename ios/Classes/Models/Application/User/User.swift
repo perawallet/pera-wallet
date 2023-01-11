@@ -82,6 +82,13 @@ final class User: Codable {
 }
 
 extension User {
+    var hasReachedTotalAccountLimit: Bool {
+        let limit = 50
+        return accounts.count == limit
+    }
+}
+
+extension User {
     func addAccount(_ account: AccountInformation) {
         accounts.append(account)
         syncronize()

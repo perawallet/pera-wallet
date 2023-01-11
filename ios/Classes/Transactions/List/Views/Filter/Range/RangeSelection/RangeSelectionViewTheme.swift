@@ -37,7 +37,7 @@ struct RangeSelectionViewTheme: StyleSheet, LayoutSheet {
         self.titleLabel = [
             .isInteractable(false),
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13)),
         ]

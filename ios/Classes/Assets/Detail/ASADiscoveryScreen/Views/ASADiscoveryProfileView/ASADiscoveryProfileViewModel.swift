@@ -52,7 +52,7 @@ struct ASADiscoveryProfileViewModel: ASAProfileViewModel {
 extension ASADiscoveryProfileViewModel {
     mutating func bindIcon(asset: Asset) {
         if asset.isAlgo {
-            icon = AssetImageSource(asset: "icon-algo-circle-green".uiImage)
+            icon = AssetImageSource(asset: "icon-algo-circle".uiImage)
             return
         }
 

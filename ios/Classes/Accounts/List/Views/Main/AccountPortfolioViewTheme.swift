@@ -23,15 +23,23 @@ struct AccountPortfolioViewTheme:
     StyleSheet,
     LayoutSheet {
     let contentHorizontalPaddings: LayoutHorizontalPaddings
-    var title: TextStyle
-    var titleTopPadding: LayoutMetric
-    var value: TextStyle
-    var secondaryValue: TextStyle
-    var spacingBetweenTitleAndValue: LayoutMetric
+    let title: TextStyle
+    let titleTopPadding: LayoutMetric
+    let value: TextStyle
+    let secondaryValue: TextStyle
+    let spacingBetweenTitleAndValue: LayoutMetric
+    let spacingBetweenSecondaryValueAndMinimumBalanceContent: LayoutMetric
+    let minimumBalanceTitle: TextStyle
+    let minimumBalanceTitleMinWidthRatio: LayoutMetric
+    let spacingBetweenMinimumBalanceTitleAndMinimumBalanceValue: LayoutMetric
+    let minimumBalanceValue: TextStyle
+    let spacingBetweenMinimumBalanceValueAndMinimumBalanceInfoAction: LayoutMetric
+    let minimumBalanceInfoAction: ButtonStyle
 
     init(
         _ family: LayoutFamily
     ) {
+        self.contentHorizontalPaddings = (24, 24)
         self.title = [
             .textColor(Colors.Text.gray)
         ]
@@ -47,6 +55,20 @@ struct AccountPortfolioViewTheme:
             .textAlignment(.center)
         ]
         self.spacingBetweenTitleAndValue = 8
-        self.contentHorizontalPaddings = (24, 24)
+        self.spacingBetweenSecondaryValueAndMinimumBalanceContent = 12
+        self.minimumBalanceTitle = [
+            .textColor(Colors.Text.gray),
+            .textOverflow(SingleLineText())
+        ]
+        self.minimumBalanceTitleMinWidthRatio = 0.1
+        self.spacingBetweenMinimumBalanceTitleAndMinimumBalanceValue = 4
+        self.minimumBalanceValue = [
+            .textColor(Colors.Text.gray),
+            .textOverflow(SingleLineText())
+        ]
+        self.spacingBetweenMinimumBalanceValueAndMinimumBalanceInfoAction = 8
+        self.minimumBalanceInfoAction = [
+            .icon([ .normal("icon-info-20") ])
+        ]
     }
 }

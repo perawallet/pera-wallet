@@ -26,7 +26,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<AssetDecorationList, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.availableSwapPoolAssets)
             .method(.get)
             .query(draft)
@@ -41,7 +41,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<PeraSwapFee, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.calculatePeraFee)
             .method(.post)
             .body(draft)
@@ -56,7 +56,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<SwapTransactionPreparation, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.prepareSwapTransaction)
             .method(.post)
             .body(draft)
@@ -70,7 +70,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<SwapQuoteList, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.swapQuote)
             .method(.post)
             .body(draft)

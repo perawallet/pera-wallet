@@ -68,7 +68,7 @@ extension AccountNameViewModel {
             return
         }
 
-        name = account.name.unwrap(or: account.address.shortAddressDisplay)
+        name = account.primaryDisplayName
     }
 
     private func bindName(from contact: Contact, with hasImage: Bool) {

@@ -33,7 +33,7 @@ final class WCSingleTransactionRequestBottomViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         let warningCount = transaction.transactionDetail?.warningCount ?? 0
-        senderAddress = transaction.signerAccount?.name ?? transaction.signerAccount?.address
+        senderAddress = transaction.requestedSigner.account?.name ?? transaction.requestedSigner.account?.address
         warningMessage = warningCount > 0 ? "node-settings-warning-title".localized: nil
         assetIcon = account?.typeImage
 

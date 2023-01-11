@@ -20,7 +20,8 @@ struct SendTransactionPreviewViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
     let separator: Separator
 
-    let transactionTextInformationViewCommonTheme: TransactionTextInformationViewTheme
+    let transactionTextInformationViewTheme: TransactionTextInformationViewTheme
+    let transactionActionInformationViewTheme: TransactionActionInformationViewTheme
     let transactionAccountInformationViewCommonTheme: TitledTransactionAccountNameViewTheme
     let commonTransactionAmountInformationViewTheme: TransactionAmountInformationViewTheme
     let smallMultipleAmountInformationViewTheme: TransactionMultipleAmountInformationViewTheme
@@ -37,7 +38,8 @@ struct SendTransactionPreviewViewTheme: LayoutSheet, StyleSheet {
         self.backgroundColor = Colors.Defaults.background
         self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
         self.commonTransactionAmountInformationViewTheme = TransactionAmountInformationViewTheme()
-        self.transactionTextInformationViewCommonTheme = TransactionTextInformationViewTheme()
+        self.transactionActionInformationViewTheme = TransactionActionInformationViewTheme()
+        self.transactionTextInformationViewTheme = TransactionTextInformationViewTheme()
         self.transactionAccountInformationViewCommonTheme = TitledTransactionAccountNameViewTheme(family)
 
         self.separatorTopPadding = -32

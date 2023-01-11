@@ -50,17 +50,17 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected transaction")
         }
 
-        let account: Account? = transaction.signerAccount
+        let account: Account? = transaction.requestedSigner.account
 
         if transaction.transactionDetail?.isAssetConfigTransaction ?? false {
-            if transaction.signerAccount == nil {
+            if transaction.requestedSigner.account == nil {
                 return dequeueUnsignableAssetConfigCell(in: collectionView, at: indexPath, for: transaction, with: account)
             }
 
             return dequeueAssetConfigCell(in: collectionView, at: indexPath, for: transaction, with: account)
         }
 
-        if transaction.signerAccount == nil {
+        if transaction.requestedSigner.account == nil {
             return dequeueUnsignableCell(in: collectionView, at: indexPath, for: transaction)
         }
 

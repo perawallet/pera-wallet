@@ -190,7 +190,7 @@ extension MultilineTextInputFieldView {
 extension MultilineTextInputFieldView {
     private func inputStateDidChange() {
         switch inputState {
-        case .none, .focus:
+        case .focus:
             updateFocusIndicatorAppearanceOnSuccess()
             assistiveView.editError = nil
         case .invalid(let validationError):
@@ -199,6 +199,9 @@ extension MultilineTextInputFieldView {
         case .incorrect(let error):
             updateFocusIndicatorAppearanceOnFailure()
             assistiveView.editError = error
+        case .none:
+            resetFocusIndicatorAppearance()
+            assistiveView.editError = nil
         }
     }
 }
@@ -255,9 +258,15 @@ extension MultilineTextInputFieldView {
         
         focusIndicatorView.customizeAppearance(theme.focusIndicator)
     }
+
+    private func resetFocusIndicatorAppearance() {
+        if let style = theme?.focusIndicator {
+            focusIndicatorView.customizeAppearance(style)
+        }
+    }
     
     private func updateFocusIndicatorAppearanceOnSuccess() {
-        if let style = theme?.focusIndicator {
+        if let style = theme?.focusIndicatorActive {
             focusIndicatorView.customizeAppearance(style)
         }
     }
@@ -353,7 +362,7 @@ extension MultilineTextInputFieldView {
     func addRightAccessoryItem(_ accessoryView: UIView) {
         addSubview(accessoryView)
         accessoryView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.centerY == textInputView
             $0.trailing == 0
         }
     }

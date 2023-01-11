@@ -56,7 +56,7 @@ extension AccountNameTitleViewModel {
 
 extension AccountNameTitleViewModel {
     mutating func bindTitle(_ account: Account) {
-        let title = AccountNaming.getPrimaryName(for: account)
+        let title = account.primaryDisplayName
 
         self.title = title.bodyRegular(
             alignment: .center,
@@ -65,7 +65,7 @@ extension AccountNameTitleViewModel {
     }
 
     mutating func bindSubtitle(_ account: Account) {
-        let subtitle = AccountNaming.getSecondaryName(for: account)
+        let subtitle = account.secondaryDisplayName
 
         self.subtitle = subtitle?.footnoteRegular(
             alignment: .center,
@@ -107,7 +107,7 @@ extension AccountNameTitleViewModel {
     }
 
     mutating func bindSubtitle(_ draft: SendTransactionAccountNameTitleDraft) {
-        let subtitle = AccountNaming.getPrimaryName(for: draft.account)
+        let subtitle = draft.account.primaryDisplayName
 
         self.subtitle = subtitle.footnoteRegular(
             alignment: .center,
@@ -139,9 +139,7 @@ extension AccountNameTitleViewModel {
     }
 
     mutating func bindSubtitle(_ draft: AccountNameTitleDraft) {
-        let subtitle = AccountNaming.getPrimaryName(for: draft.account)
-
-        self.subtitle = subtitle.footnoteRegular(
+        subtitle = draft.account.primaryDisplayName.footnoteRegular(
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )

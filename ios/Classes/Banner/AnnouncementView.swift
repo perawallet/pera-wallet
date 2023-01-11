@@ -29,8 +29,8 @@ final class AnnouncementView:
     ]
 
     private lazy var stackView = VStackView()
-    private lazy var titleView = Label()
-    private lazy var subtitleView = Label()
+    private lazy var titleView = UILabel()
+    private lazy var subtitleView = UILabel()
     private lazy var closeButton = MacaroonUIKit.Button()
     private lazy var actionView = MacaroonUIKit.Button()
     private lazy var imageView = ImageView()
@@ -74,9 +74,14 @@ final class AnnouncementView:
             subtitleView.hideViewInStack()
         }
 
-        if let ctaTitle = viewModel?.ctaTitle {
+        let actionTitle = viewModel?.ctaTitle
+        let shouldDisplayAction =
+            actionTitle != nil &&
+            viewModel?.ctaUrl != nil
+
+        if shouldDisplayAction {
             actionView.showViewInStack()
-            actionView.setTitle(ctaTitle, for: .normal)
+            actionView.setTitle(actionTitle!, for: .normal)
         } else {
             actionView.hideViewInStack()
         }
@@ -113,7 +118,11 @@ final class AnnouncementView:
             preferredHeight += size.height.ceil() + theme.stackViewItemSpacing
         }
 
-        if viewModel.ctaTitle != nil {
+        let shouldDisplayAction =
+            viewModel.ctaTitle != nil &&
+            viewModel.ctaUrl != nil
+
+        if shouldDisplayAction {
             preferredHeight += theme.stackViewButtonSpacing + theme.actionHeight
         }
 

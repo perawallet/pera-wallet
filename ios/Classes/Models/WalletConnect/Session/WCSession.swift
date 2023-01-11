@@ -24,12 +24,46 @@ final class WCSession:
     let peerMeta: WCPeerMeta
     let walletMeta: WCWalletMeta?
     let date: Date
+    var isSubscribed: Bool
+
+    private enum CodingKeys: CodingKey {
+        case urlMeta
+        case peerMeta
+        case walletMeta
+        case date
+        case isSubscribed
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.urlMeta = try container.decode(
+            WCURLMeta.self,
+            forKey: .urlMeta
+        )
+        self.peerMeta = try container.decode(
+            WCPeerMeta.self,
+            forKey: .peerMeta
+        )
+        self.walletMeta = try container.decodeIfPresent(
+            WCWalletMeta.self,
+            forKey: .walletMeta
+        )
+        self.date = try container.decode(
+            Date.self,
+            forKey: .date
+        )
+        self.isSubscribed = try container.decodeIfPresent(
+            Bool.self,
+            forKey: .isSubscribed
+        ) ?? false
+    }
 
     init(urlMeta: WCURLMeta, peerMeta: WCPeerMeta, walletMeta: WCWalletMeta?, date: Date) {
         self.urlMeta = urlMeta
         self.peerMeta = peerMeta
         self.walletMeta = walletMeta
         self.date = date
+        self.isSubscribed = false
     }
 
     var sessionBridgeValue: WalletConnectSession {

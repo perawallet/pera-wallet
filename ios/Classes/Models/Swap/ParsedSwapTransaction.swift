@@ -23,14 +23,6 @@ struct ParsedSwapTransaction {
     let receivedTransactions: [SDKTransaction]
     let otherTransactions: [SDKTransaction]
 
-    var paidAmount: UInt64 {
-        return paidTransactions.reduce(0, {$0 + $1.amount })
-    }
-
-    var receivedAmount: UInt64 {
-        return receivedTransactions.reduce(0, {$0 + $1.amount })
-    }
-
     var allFees: UInt64 {
         return paidTransactions.reduce(0, {$0 + ($1.fee ?? 0) })
     }

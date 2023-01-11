@@ -28,7 +28,7 @@ indirect enum Screen {
         account: Account?,
         quickAction: AssetQuickAction?,
         asset: AssetDecoration,
-        eventHandler: ASADiscoveryScreen.EventHandler
+        eventHandler: ASADiscoveryScreen.EventHandler? = nil
     )
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
@@ -36,7 +36,7 @@ indirect enum Screen {
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
     case passphraseView(flow: AccountSetupFlow, address: String)
     case passphraseVerify(flow: AccountSetupFlow)
-    case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, accountAddress: PublicKey)
+    case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, nameServiceName: String? = nil, accountAddress: PublicKey)
     case accountRecover(
         flow: AccountSetupFlow,
         initialMnemonic: String? = nil
@@ -46,7 +46,7 @@ indirect enum Screen {
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
-    case editAccount(account: Account, delegate: EditAccountViewControllerDelegate)
+    case renameAccount(account: Account, delegate: RenameAccountScreenDelegate)
     case contacts
     case notifications
     case addContact(address: String? = nil, name: String? = nil)
@@ -108,7 +108,10 @@ indirect enum Screen {
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions(delegate: AccountRecoverOptionsViewControllerDelegate)
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
-    case wcConnectionApproval(walletConnectSession: WalletConnectSession, delegate: WCConnectionApprovalViewControllerDelegate, completion: WalletConnectSessionConnectionCompletionHandler)
+    case wcConnection(
+        walletConnectSession: WalletConnectSession,
+        completion: WalletConnectSessionConnectionCompletionHandler
+    )
     case walletConnectSessionList
     case walletConnectSessionShortList
     case wcTransactionFullDappDetail(configurator: WCTransactionFullDappDetailConfigurator)
@@ -145,7 +148,7 @@ indirect enum Screen {
     )
     case transactionResult
     case transactionAccountSelect(draft: SendTransactionDraft)
-    case sendTransactionPreview(draft: TransactionSendDraft, transactionController: TransactionController)
+    case sendTransactionPreview(draft: TransactionSendDraft)
     case wcMainTransactionScreen(draft: WalletConnectRequestDraft, delegate: WCMainTransactionScreenDelegate)
     case wcSingleTransactionScreen(
         transactions: [WCTransaction],
@@ -157,7 +160,7 @@ indirect enum Screen {
         dataController: SortCollectibleListDataController,
         eventHandler: SortCollectibleListViewController.EventHandler
     )
-    case collectiblesFilterSelection(filter: CollectiblesFilterSelectionViewController.Filter)
+    case collectiblesFilterSelection(filter: CollectibleAssetFilter)
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
     )
@@ -165,9 +168,9 @@ indirect enum Screen {
     case collectibleDetail(
         asset: CollectibleAsset,
         account: Account,
-        thumbnailImage: UIImage?,
-        quickAction: AssetQuickAction?,
-        eventHandler: CollectibleDetailViewController.EventHandler
+        thumbnailImage: UIImage? = nil,
+        quickAction: AssetQuickAction? = nil,
+        eventHandler: CollectibleDetailViewController.EventHandler? = nil
     )
     case sendCollectible(draft: SendCollectibleDraft)
     case sendCollectibleAccountList(
@@ -192,6 +195,7 @@ indirect enum Screen {
         address: PublicKey,
         eventHandler: QRScanOptionsViewController.EventHandler
     )
+    case assetsFilterSelection(eventHandler: AssetsFilterSelectionViewController.EventHandler)
     case sortAccountAsset(
         dataController: SortAccountAssetListDataController,
         eventHandler: SortAccountAssetListViewController.EventHandler

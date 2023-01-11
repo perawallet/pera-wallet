@@ -27,10 +27,10 @@ final class CollectiblesFilterSelectionViewController: BaseScrollViewController 
     private lazy var toggleView = Toggle()
 
     private let theme: CollectiblesFilterSelectionViewControllerTheme
-    private let filter: Filter
+    private let filter: CollectibleAssetFilter
 
     init(
-        filter: Filter,
+        filter: CollectibleAssetFilter,
         theme: CollectiblesFilterSelectionViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
@@ -56,7 +56,7 @@ final class CollectiblesFilterSelectionViewController: BaseScrollViewController 
 
     @objc
     private func didChangeToggle(_ toggle: Toggle) {
-        let filter: Filter = toggleView.isOn ? .all : .owned
+        let filter: CollectibleAssetFilter = toggleView.isOn ? .all : .owned
         handlers.didChangeFilter?(filter)
     }
 }
@@ -118,13 +118,6 @@ extension CollectiblesFilterSelectionViewController {
 
 extension CollectiblesFilterSelectionViewController {
     struct Handlers {
-        var didChangeFilter: ((Filter) -> Void)?
-    }
-}
-
-extension CollectiblesFilterSelectionViewController {
-    enum Filter: Int {
-        case all = 1
-        case owned
+        var didChangeFilter: ((CollectibleAssetFilter) -> Void)?
     }
 }

@@ -99,9 +99,8 @@ extension BuyAlgoTransactionViewModel {
     }
     
     private mutating func bindAccountName(_ account: Account) {
-        let name = account.name ?? account.address.shortAddressDisplay
+        let name = account.primaryDisplayName
         
-
         accountName = .attributedString(
             name
                 .bodyRegular()

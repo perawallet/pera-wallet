@@ -18,7 +18,10 @@
 import Foundation
 
 final class ToggleTitleHeaderSupplementaryView: BaseSupplementaryView<ToggleTitleHeaderView> {
-    func customize(_ theme: ToggleTitleHeaderViewTheme) {
-        contextView.customize(theme)
+    static let theme = ToggleTitleHeaderViewTheme()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }

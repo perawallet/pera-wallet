@@ -17,24 +17,23 @@
 
 import MagpieCore
 import Foundation
+import MagpieExceptions
+import MagpieHipo
 
 class TransactionAPIConnector {
 
     private var api: ALGAPI
+    private let sharedDataController: SharedDataController
 
-    init(api: ALGAPI) {
+    init(api: ALGAPI, sharedDataController: SharedDataController) {
         self.api = api
+        self.sharedDataController = sharedDataController
     }
 
-    func getTransactionParams(then completion: @escaping (TransactionParams?, APIError?) -> Void) {
-        api.getTransactionParams { response in
-            switch response {
-            case let .success(params):
-                completion(params, nil)
-            case let .failure(error, _):
-                completion(nil, error)
-            }
-        }
+    func getTransactionParams(
+        then completion: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
+    ) {
+        sharedDataController.getTransactionParams(completion)
     }
 
     func uploadTransaction(_ signedTransaction: Data, then completion: @escaping (TransactionID?, APIError?) -> Void) {

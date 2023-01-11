@@ -24,6 +24,7 @@ import MagpieHipo
 final class SharedAPIDataController:
     SharedDataController,
     WeakPublisher {
+
     var observations: [ObjectIdentifier: WeakObservation] = [:]
 
     var assetDetailCollection: AssetDetailCollection = []
@@ -65,6 +66,12 @@ final class SharedAPIDataController:
         AccountAssetDescendingAmountAlgorithm(),
         AccountAssetAscendingAmountAlgorithm()
     ]
+
+    private lazy var deviceRegistrationController = DeviceRegistrationController(
+        target: target,
+        session: session,
+        api: api
+    )
     
     var isAvailable: Bool {
         return isFirstPollingRoundCompleted
@@ -80,23 +87,28 @@ final class SharedAPIDataController:
     )
     
     private var nextAccountCollection: AccountCollection = []
+
+    private var transactionParamsResult: Result<TransactionParams, HIPNetworkError<NoAPIModel>>?
     
     @Atomic(identifier: "sharedAPIDataController.status")
     private var status: Status = .idle
     @Atomic(identifier: "sharedAPIDataController.isFirstPollingRoundCompleted")
     private var isFirstPollingRoundCompleted = false
     
+    private let target: ALGAppTarget
     private let session: Session
     private let api: ALGAPI
     private let cache: Cache
 
     init(
+        target: ALGAppTarget,
         currency: CurrencyProvider,
         session: Session,
         api: ALGAPI
     ) {
         let cache = Cache()
 
+        self.target = target
         self.currency = currency
         self.session = session
         self.api = api
@@ -117,9 +129,64 @@ final class SharedAPIDataController:
 }
 
 extension SharedAPIDataController {
+    private func fetchTransactionParams(
+        _ handler: ((Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void)? = nil
+    ) {
+        api.getTransactionParams {
+            [weak self] response in
+            guard let self else {
+                return
+            }
+
+            switch response {
+            case .success(let transactionParams):
+                self.transactionParamsResult = .success(transactionParams)
+                handler?(.success(transactionParams))
+            case .failure(let apiError, let apiErrorDetail):
+                let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                self.transactionParamsResult = .failure(error)
+                handler?(.failure(error))
+            }
+        }
+    }
+
+    func getTransactionParams(
+        isCacheEnabled: Bool,
+        _ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
+    ) {
+        if isCacheEnabled, let transactionParamsResult = transactionParamsResult {
+            switch transactionParamsResult {
+            case .success:
+                handler(transactionParamsResult)
+                fetchTransactionParams()
+            case .failure:
+                fetchTransactionParams(handler)
+            }
+
+            return
+        }
+
+        fetchTransactionParams(handler)
+    }
+
+    func getTransactionParams(_ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void) {
+        getTransactionParams(isCacheEnabled: false, handler)
+    }
+}
+
+extension SharedAPIDataController {
     func startPolling() {
         $status.mutate { $0 = .running }
         blockProcessor.start()
+
+        fetchTransactionParams { result in
+            switch result {
+            case .success(let params):
+                self.transactionParamsResult = .success(params)
+            case .failure(let error):
+                self.transactionParamsResult = .failure(error)
+            }
+        }
     }
     
     func stopPolling() {
@@ -151,7 +218,9 @@ extension SharedAPIDataController {
         session.removePrivateData(for: address)
 
         accountCollection[address] = nil
-        
+
+        deviceRegistrationController.sendDeviceDetails()
+
         startPolling()
     }
 

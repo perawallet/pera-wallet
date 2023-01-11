@@ -26,19 +26,24 @@ class WalletConnector {
         return "walletConnector.userInfoKey.sessionRequest"
     }
 
-    private let walletConnectBridge = WalletConnectBridge()
-
     private lazy var sessionSource = WalletConnectSessionSource()
 
     weak var delegate: WalletConnectorDelegate?
 
+    private let api: ALGAPI
+    private let pushToken: String?
     private let analytics: ALGAnalytics
+    private let walletConnectBridge = WalletConnectBridge()
 
     private var ongoingConnections: [String: Bool] = [:]
 
     init(
+        api: ALGAPI,
+        pushToken: String?,
         analytics: ALGAnalytics
     ) {
+        self.api = api
+        self.pushToken = pushToken
         self.analytics = analytics
 
         walletConnectBridge.delegate = self
@@ -70,6 +75,73 @@ extension WalletConnector {
             ongoingConnections.removeValue(forKey: key)
             delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
         }
+    }
+    
+    func updateSessionsWithRemovingAccount(_ account: Account) {
+        allWalletConnectSessions.forEach {
+            guard let sessionAccounts = $0.walletMeta?.accounts,
+                  sessionAccounts.contains(account.address) else {
+                return
+            }
+                                    
+            if sessionAccounts.count == 1 {
+                disconnectFromSession($0)
+                return
+            }
+            
+                        
+            guard let sessionWalletInfo = $0.sessionBridgeValue.walletInfo else {
+                return
+            }
+                        
+            let newAccountsForSession = sessionWalletInfo.accounts.filter { oldSessionAccount in
+                oldSessionAccount != account.address
+            }
+
+            let newSessionWaletInfo = createNewSessionWalletInfo(
+                from: sessionWalletInfo,
+                newAccounts: newAccountsForSession
+            )
+            
+            do {
+                try walletConnectBridge.update(session: $0.sessionBridgeValue, with: newSessionWaletInfo)
+                
+                let newSession = createNewSession(
+                    from: $0,
+                    newSessionWalletInfo: newSessionWaletInfo
+                )
+                
+                updateWalletConnectSession(newSession, with: $0.urlMeta)
+            } catch {}
+        }
+    }
+    
+    func createNewSessionWalletInfo(
+        from oldWalletInfo: WalletConnectSessionWalletInfo,
+        newAccounts: [String]
+    ) -> WalletConnectSessionWalletInfo {
+        return WalletConnectSessionWalletInfo(
+            approved: oldWalletInfo.approved,
+            accounts: newAccounts,
+            chainId: oldWalletInfo.chainId,
+            peerId: oldWalletInfo.peerId,
+            peerMeta: oldWalletInfo.peerMeta
+        )
+    }
+    
+    func createNewSession(
+        from oldSession: WCSession,
+        newSessionWalletInfo: WalletConnectSessionWalletInfo
+    ) -> WCSession {
+        return WCSession(
+            urlMeta: oldSession.urlMeta,
+            peerMeta: oldSession.peerMeta,
+            walletMeta: WCWalletMeta(
+                walletInfo: newSessionWalletInfo,
+                dappInfo: oldSession.peerMeta.dappInfo
+            ),
+            date: oldSession.date
+        )
     }
 
     func disconnectFromSession(_ session: WCSession) {
@@ -122,6 +194,10 @@ extension WalletConnector {
     func getWalletConnectSession(with url: WCURLMeta) -> WCSession? {
         return sessionSource.getWalletConnectSession(with: url)
     }
+    
+    func updateWalletConnectSession(_ session: WCSession, with url: WCURLMeta) {
+        sessionSource.updateWalletConnectSession(session, with: url)
+    }
 
     func resetAllSessions() {
         sessionSource.resetAllSessions()
@@ -159,11 +235,20 @@ extension WalletConnector: WalletConnectBridgeDelegate {
                 return
             }
 
-            let wcSession = session.toWCSession()
-            self.addToSavedSessions(wcSession)
+            let connectedSession = session.toWCSession()
+            let localSession = self.sessionSource.getWalletConnectSession(with: connectedSession.urlMeta)
+            
+            if localSession == nil {
+                self.addToSavedSessions(connectedSession)
+            }
+
+            /// <todo>
+            /// Disabled supporting WC push notificataions for now 06.01.2023
+//            self.subscribeForNotificationsIfNeeded(localSession ?? connectedSession)
+            
             let key = session.url.absoluteString
             self.ongoingConnections.removeValue(forKey: key)
-            self.delegate?.walletConnector(self, didConnectTo: wcSession)
+            self.delegate?.walletConnector(self, didConnectTo: connectedSession)
         }
     }
 
@@ -181,6 +266,40 @@ extension WalletConnector: WalletConnectBridgeDelegate {
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didUpdate session: WalletConnectSession) {
         delegate?.walletConnector(self, didUpdate: session.toWCSession())
+    }
+}
+
+extension WalletConnector {
+    private func subscribeForNotificationsIfNeeded(_ session: WCSession) {
+        if session.isSubscribed {
+            return
+        }
+
+        let user = api.session.authenticatedUser
+        let deviceID = user?.getDeviceId(on: api.network)
+
+        let draft = SubscribeToWalletConnectSessionDraft(
+            deviceID: deviceID,
+            wcSession: session,
+            pushToken: pushToken
+        )
+
+        api.subscribeToWalletConnectSession(draft) {
+            [weak self] result in
+            guard let self = self else {
+                return
+            }
+
+            switch result {
+            case .success:
+                session.isSubscribed = true
+                self.addToSavedSessions(session)
+            default:
+                break
+            // The session is already saved before subscription call.
+            // The failure means there is no change. So, it is not needed to handle.
+            }
+        }
     }
 }
 

@@ -16,10 +16,11 @@
 //   QRAddressLabelViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-final class QRAddressLabelViewModel {
-    private(set) var title: String?
-    private(set) var address: String?
+final class QRAddressLabelViewModel: ViewModel {
+    private(set) var title: TextProvider?
+    private(set) var address: TextProvider?
     
     init(title: String, address: String) {
         bindTitle(title)
@@ -29,10 +30,16 @@ final class QRAddressLabelViewModel {
 
 extension QRAddressLabelViewModel {
     private func bindTitle(_ title: String) {
-        self.title = title
+        self.title = title.bodyLargeMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingMiddle
+        )
     }
 
     private func bindAddress(_ address: String) {
-        self.address = address
+        self.address = address.bodyRegular(
+            alignment: .center,
+            lineBreakMode: .byTruncatingMiddle
+        )
     }
 }

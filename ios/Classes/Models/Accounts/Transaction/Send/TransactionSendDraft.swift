@@ -29,3 +29,9 @@ protocol TransactionSendDraft {
     var toContact: Contact? { get set }
     var nameService: NameService? { get set }
 }
+
+extension TransactionSendDraft {
+    mutating func updateNote(_ note: String?) {
+        self.note = note
+    }
+}

@@ -60,7 +60,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.Result<NoAPIModel, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.backups, args: draft.qrExportInformations.backupIdentifier)
             .method(.put)
             .headers([

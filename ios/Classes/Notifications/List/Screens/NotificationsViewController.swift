@@ -23,15 +23,13 @@ final class NotificationsViewController:
     TransactionSignChecking,
     TransactionControllerDelegate {
     private var isInitialFetchCompleted = false
-    private lazy var isConnectedToInternet = api?.networkMonitor?.isConnected ?? true
 
     private lazy var notificationsView = NotificationsView()
 
     private lazy var dataSource = NotificationsDataSource(notificationsView.notificationsCollectionView)
     private lazy var dataController = NotificationsAPIDataController(
-        sharedDataController: sharedDataController,
         api: api!,
-        currencyFormatter: currencyFormatter
+        lastSeenNotificationController: lastSeenNotificationController
     )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
 
@@ -41,6 +39,7 @@ final class NotificationsViewController:
         }
         return TransactionController(
             api: api,
+            sharedDataController: sharedDataController,
             bannerController: bannerController,
             analytics: analytics
         )
@@ -49,11 +48,11 @@ final class NotificationsViewController:
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
 
     private lazy var currencyFormatter = CurrencyFormatter()
+
+    private lazy var deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
-    private var currentNotification: NotificationDetail?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -86,15 +85,56 @@ final class NotificationsViewController:
                 return
             }
 
-            guard
-                let notification = self.dataController.notifications[safe: indexPath.item],
-                let notificationDetail = notification.detail
-            else {
+            guard let notification = self.dataController.notifications[safe: indexPath.item] else {
                 return
             }
 
-            self.openAssetDetail(from: notificationDetail)
-            self.currentNotification = notificationDetail
+            let parserResult = self.deeplinkParser.discover(notification: notification)
+
+            switch parserResult {
+            case .success(let screen):
+                switch screen {
+                case let .asaDiscoveryWithOptInAction(account, assetID):
+                    self.openASADiscoveryWithOptInAction(
+                        account: account,
+                        assetID: assetID
+                    )
+                case let .asaDiscoveryWithOptOutAction(account, asset):
+                    self.openASADiscoveryWithOptOutAction(
+                        account: account,
+                        asset: asset
+                    )
+                case let .asaDetail(account, asset):
+                    self.openASADetail(
+                        account: account,
+                        asset: asset
+                    )
+                case let .collectibleDetail(account, asset):
+                    self.openCollectibleDetail(
+                        account: account,
+                        asset: asset
+                    )
+                default:
+                    break
+                }
+            case .failure(let error):
+                switch error {
+                case .tryingToOptInForWatchAccount:
+                    self.presentTryingToActForWatchAccountError()
+                case .tryingToActForAssetWithPendingOptInRequest(let accountName):
+                    self.presentTryingToActForAssetWithPendingOptInRequestError(accountName: accountName)
+                case .tryingToActForAssetWithPendingOptOutRequest(let accountName):
+                    self.presentTryingToActForAssetWithPendingOptOutRequestError(accountName: accountName)
+                case .accountNotFound:
+                    self.presentAccountNotFoundError()
+                case .assetNotFound:
+                    self.presentAssetNotFoundError()
+                default:
+                    break
+                }
+            case .none:
+                break
+            }
         }
 
         dataController.load()
@@ -192,116 +232,17 @@ extension NotificationsViewController {
             reloadNotifications()
         }
     }
+}
 
-    private func openAssetDetail(from notificationDetail: NotificationDetail) {
-        if notificationDetail.type == .assetSupportRequest {
-            guard let receiverAccount = dataController.getReceiverAccount(from: notificationDetail),
-                  let asset = notificationDetail.asset,
-                  let assetId = asset.id
-            else {
-                return
-            }
-
-            if receiverAccount.isWatchAccount() {
-                return
-            }
-
-            if dataController.canOptIn(
-                to: assetId,
-                for: receiverAccount
-            ) {
-                openOptInAsset(
-                    asset: asset,
-                    account: receiverAccount
-                )
-                return
-            }
-
-            displaySimpleAlertWith(title: "asset-you-already-own-message".localized)
-            return
-        }
-
-        let accountDetails = dataController.getUserAccount(from: notificationDetail)
-
-        if let account = accountDetails.account {
-            guard let accountHandle = sharedDataController.accountCollection[account.address] else {
-                return
-            }
-
-            let screen: Screen
-
-            guard let assetMode = accountDetails.asset else {
-                presentAssetNotFoundError()
-                return
-            }
-
-            switch assetMode {
-            case .algo:
-                let account = accountHandle.value
-                screen = .asaDetail(
-                    account: account,
-                    asset: account.algo
-                ) { [weak self] event in
-                    guard let self = self else { return }
-
-                    switch event {
-                    case .didRemoveAccount:
-                        self.dataController.reload()
-                        self.navigationController?.popToViewController(
-                            self,
-                            animated: true
-                        )
-                    case .didRenameAccount:
-                        self.dataController.reload()
-                    }
-                }
-            case .asset(let asset):
-                if let asset = asset as? StandardAsset {
-                    screen = .asaDetail(
-                        account: accountHandle.value,
-                        asset: asset
-                    ) { [weak self] event in
-                        guard let self = self else { return }
-
-                        switch event {
-                        case .didRemoveAccount:
-                            self.dataController.reload()
-                            self.navigationController?.popToViewController(
-                                self,
-                                animated: true
-                            )
-                        case .didRenameAccount:
-                            self.dataController.reload()
-                        }
-                    }
-                } else if let collectibleAsset = asset as? CollectibleAsset {
-                    openCollectible(
-                        asset: collectibleAsset,
-                        with: accountHandle.value
-                    )
-                    return
-                } else {
-                    presentAssetNotFoundError()
-                    return
-                }
-            }
-
-            open(screen, by: .push)
-        }
-    }
-
-    private func openOptInAsset(
-        asset: NotificationAsset,
-        account: Account
+extension NotificationsViewController {
+    private func openASADiscoveryWithOptInAction(
+        account: Account,
+        assetID: AssetID
     ) {
-        guard let assetID = asset.id else {
-            return
-        }
-
         if let asset = sharedDataController.assetDetailCollection[assetID] {
-            openOptInAsset(
-                asset: asset,
-                account: account
+            openASADiscoveryWithOptInAction(
+                account: account,
+                asset: asset
             )
             return
         }
@@ -330,9 +271,9 @@ extension NotificationsViewController {
                 }
 
                 if let asset = assetResponse.results.first {
-                    self.openOptInAsset(
-                        asset: asset,
-                        account: account
+                    self.openASADiscoveryWithOptInAction(
+                        account: account,
+                        asset: asset
                     )
                 }
             case .failure:
@@ -344,42 +285,77 @@ extension NotificationsViewController {
         }
     }
 
-    private func openOptInAsset(
-        asset: AssetDecoration,
-        account: Account
+    private func openASADiscoveryWithOptInAction(
+        account: Account,
+        asset: AssetDecoration
     ) {
-        let draft = OptInAssetDraft(
+        let screen = Screen.asaDiscovery(
             account: account,
+            quickAction: .optIn,
             asset: asset
         )
-        let screen = Screen.optInAsset(draft: draft) {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .performApprove:
-                self.continueToOptInAsset(
-                    asset: asset,
-                    account: account
-                )
-            case .performClose:
-                self.cancelOptInAsset()
-            }
-        }
-        transitionToOptInAsset.perform(
+
+        open(
             screen,
             by: .present
         )
     }
+}
+
+extension NotificationsViewController {
+    private func openASADiscoveryWithOptOutAction(
+        account: Account,
+        asset: AssetDecoration
+    ) {
+        let screen = Screen.asaDiscovery(
+            account: account,
+            quickAction: .optOut,
+            asset: asset
+        )
+
+        open(
+            screen,
+            by: .present
+        )
+    }
+}
+
+extension NotificationsViewController {
+    private func openASADetail(
+        account: Account,
+        asset: Asset
+    ) {
+        let screen = Screen.asaDetail(
+            account: account,
+            asset: asset
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didRemoveAccount:
+                self.dataController.reload()
+                self.navigationController?.popToViewController(
+                    self,
+                    animated: true
+                )
+            case .didRenameAccount:
+                self.dataController.reload()
+            }
+        }
+
+        open(
+            screen,
+            by: .push
+        )
+    }
     
-    private func openCollectible(
-        asset: CollectibleAsset,
-        with account: Account
+    private func openCollectibleDetail(
+        account: Account,
+        asset: CollectibleAsset
     ) {
         let screen = Screen.collectibleDetail(
             asset: asset,
-            account: account,
-            thumbnailImage: nil,
-            quickAction: nil
+            account: account
         ) { [weak self] event in
             guard let self = self else { return }
 
@@ -389,56 +365,66 @@ extension NotificationsViewController {
             case .didOptInToAsset: break
             }
         }
+
         open(
             screen,
             by: .push
         )
     }
-    
+}
+
+extension NotificationsViewController {
+    private func presentTryingToActForWatchAccountError() {
+        bannerController?.presentErrorBanner(
+            title: "notifications-trying-to-opt-in-for-watch-account-title".localized,
+            message: "notifications-trying-to-opt-in-for-watch-account-description".localized
+        )
+    }
+
+    private func presentTryingToActForAssetWithPendingOptInRequestError(accountName: String) {
+        bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: "ongoing-opt-in-request-description".localized(params: accountName)
+        )
+    }
+
+    private func presentTryingToActForAssetWithPendingOptOutRequestError(accountName: String) {
+        bannerController?.presentErrorBanner(
+            title: "title-error".localized,
+            message: "ongoing-opt-out-request-description".localized(params: accountName)
+        )
+    }
+
+    private func presentAccountNotFoundError() {
+        bannerController?.presentErrorBanner(
+            title: "notifications-account-not-found-title".localized,
+            message: "notifications-account-not-found-description".localized
+        )
+    }
+
     private func presentAssetNotFoundError() {
         bannerController?.presentErrorBanner(
             title: "notifications-asset-not-found-title".localized,
             message: "notifications-asset-not-found-description".localized
         )
     }
+}
 
-    private func continueToOptInAsset(
-        asset: AssetDecoration,
-        account: Account
-    ) {
-        dismiss(animated: true) {
-            [weak self] in
-            guard let self = self else { return }
-
-            var account = account
-
-            if !self.canSignTransaction(for: &account) { return }
-
-            let assetTransactionDraft = AssetTransactionSendDraft(
-                from: account,
-                assetIndex: asset.id
-            )
-            self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
-
-            self.loadingController?.startLoadingWithMessage("title-loading".localized)
-
-            if account.requiresLedgerConnection() {
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
-            }
-        }
-    }
-
-    private func cancelOptInAsset() {
-        dismiss(animated: true)
-    }
-
+extension NotificationsViewController {
     func transactionController(
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
         loadingController?.stopLoading()
+
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
 
         switch error {
         case let .inapp(transactionError):
@@ -453,6 +439,15 @@ extension NotificationsViewController {
         didFailedTransaction error: HIPTransactionError
     ) {
         loadingController?.stopLoading()
+
+        if let assetID = transactionController.assetTransactionDraft?.assetIndex,
+           let account = transactionController.assetTransactionDraft?.from {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            monitor.finishMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
 
         switch error {
         case let .network(apiError):
@@ -511,13 +506,6 @@ extension NotificationsViewController {
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         loadingController?.stopLoading()
-
-        guard let address = currentNotification?.receiverAddress,
-              let assetId = currentNotification?.asset?.id else {
-            return
-        }
-
-        dataController.addOptedInAsset(address, assetId)
     }
 
     func transactionController(

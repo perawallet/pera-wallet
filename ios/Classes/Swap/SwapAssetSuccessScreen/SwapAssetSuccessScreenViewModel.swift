@@ -61,12 +61,10 @@ extension SwapAssetSuccessScreenViewModel {
     ) {
         guard let amountIn = quote.amountIn,
               let assetIn = quote.assetIn,
-              let assetOut = quote.assetOut else {
+              let assetOut = quote.assetOut,
+              let amountOut = quote.amountOutWithSlippage else {
             return
         }
-
-        let swapTransaction = parsedSwapTransactions.first { $0.purpose == .swap }
-        guard let amountOut = swapTransaction?.receivedAmount else { return }
 
         var constraintRules = CurrencyFormattingContextRules()
         constraintRules.maximumFractionDigits = assetOut.decimals

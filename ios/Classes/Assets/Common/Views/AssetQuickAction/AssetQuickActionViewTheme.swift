@@ -24,6 +24,7 @@ struct AssetQuickActionViewTheme: StyleSheet, LayoutSheet {
     let bottomPadding: LayoutMetric
 
     let buttonContentInsets: LayoutPaddings
+    let buttonMaxWidthRatio: LayoutMetric
     let buttonCorner: Corner
 
     let title: TextStyle
@@ -50,11 +51,12 @@ struct AssetQuickActionViewTheme: StyleSheet, LayoutSheet {
         self.bottomPadding = 20
 
         self.buttonContentInsets = (12, 20, 12, 20)
+        self.buttonMaxWidthRatio = 0.6
         self.buttonCorner = Corner(radius: 4)
 
         self.title = [
             .textColor(Colors.Text.gray),
-            .textOverflow(FittingText())
+            .textOverflow(SingleLineText())
         ]
         self.spacingBetweenTitleAndButton = 16
 
@@ -62,7 +64,8 @@ struct AssetQuickActionViewTheme: StyleSheet, LayoutSheet {
         self.accountTypeImageSize = (20, 20)
 
         self.accountName = [
-            .textColor(Colors.Text.main)
+            .textColor(Colors.Text.main),
+            .textOverflow(SingleLineText())
         ]
         self.spacingBetweenAccountTypeAndName = 8
     }

@@ -58,7 +58,7 @@ extension AppCallTransactionDetailViewModel {
         let accountAddress = account.address
 
         if senderAddress == accountAddress {
-            sender = account.name ?? accountAddress.shortAddressDisplay
+            sender = account.primaryDisplayName
             return
         }
 

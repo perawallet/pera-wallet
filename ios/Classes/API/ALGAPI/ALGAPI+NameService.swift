@@ -24,7 +24,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<NameServiceList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.nameServicesSearch)
             .query(query)
             .method(.get)

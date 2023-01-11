@@ -21,15 +21,18 @@ final class AccountPortfolioItem {
     let portfolioValue: PortfolioValue
     let currency: CurrencyProvider
     let currencyFormatter: CurrencyFormatter
+    let minimumBalance: UInt64?
 
     init(
         accountValue: AccountHandle,
         currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        minimumBalance: UInt64? = nil
     ) {
         self.accountValue = accountValue
         self.portfolioValue = PortfolioValue(accountValue: accountValue)
         self.currency = currency
         self.currencyFormatter = currencyFormatter
+        self.minimumBalance = minimumBalance
     }
 }

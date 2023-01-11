@@ -34,10 +34,16 @@ extension URL {
     func straightened() -> URL? {
         var components = URLComponents(string: absoluteString)
 
-        if components?.scheme == nil {
+        /// <warning>
+        /// Only HTTP and HTTPS schemes are supported. Otherwise, it crashes.
+        switch components?.scheme {
+        case .none:
             components?.scheme = "https"
+            return components?.url
+        case "http", "https":
+            return components?.url
+        default:
+            return nil
         }
-
-        return components?.url
     }
 }

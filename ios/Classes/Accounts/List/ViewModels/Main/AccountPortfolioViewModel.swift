@@ -25,6 +25,8 @@ struct AccountPortfolioViewModel:
     private(set) var title: TextProvider?
     private(set) var primaryValue: TextProvider?
     private(set) var secondaryValue: TextProvider?
+    private(set) var minimumBalanceTitle: TextProvider?
+    private(set) var minimumBalanceValue: TextProvider?
 
     private(set) var currencyFormatter: CurrencyFormatter?
 
@@ -44,6 +46,7 @@ extension AccountPortfolioViewModel {
         bindTitle(portfolioItem)
         bindPrimaryValue(portfolioItem)
         bindSecondaryValue(portfolioItem)
+        bindMinimumBalance(portfolioItem)
     }
     
     mutating func bindTitle(
@@ -83,6 +86,41 @@ extension AccountPortfolioViewModel {
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )
+    }
+
+    mutating func bindMinimumBalance(
+        _ portfolioItem: AccountPortfolioItem
+    ) {
+        bindMinimumBalanceTitle(portfolioItem)
+        bindMinimumBalanceValue(portfolioItem)
+    }
+
+    mutating func bindMinimumBalanceTitle(
+        _ portfolioItem: AccountPortfolioItem
+    ) {
+        minimumBalanceTitle =
+            "min-balance-title"
+                .localized
+                .footnoteRegular(lineBreakMode: .byTruncatingTail)
+    }
+
+    mutating func bindMinimumBalanceValue(
+        _ portfolioItem: AccountPortfolioItem
+    ) {
+        guard let minimumBalance = portfolioItem.minimumBalance else {
+            assertionFailure("minimumBalance should be set.")
+            return
+        }
+
+        let formatter = portfolioItem.currencyFormatter
+        formatter.formattingContext = .standalone()
+        formatter.currency = AlgoLocalCurrency()
+        let unformattedMinimumBalance = minimumBalance.toAlgos
+        let formattedMinimumBalance = formatter.format(unformattedMinimumBalance)
+
+        let text = "\(formattedMinimumBalance ?? "-")"
+
+        minimumBalanceValue = text.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }
 

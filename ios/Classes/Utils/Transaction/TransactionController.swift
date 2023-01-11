@@ -24,6 +24,7 @@ class TransactionController {
     private(set) var currentTransactionType: TransactionType?
     
     private var api: ALGAPI
+    private let sharedDataController: SharedDataController
     private let bannerController: BannerController?
     private var params: TransactionParams?
     private var transactionDraft: TransactionSendDraft?
@@ -35,7 +36,7 @@ class TransactionController {
     private lazy var ledgerTransactionOperation =
         LedgerTransactionOperation(api: api, analytics: analytics)
 
-    private lazy var transactionAPIConnector = TransactionAPIConnector(api: api)
+    private lazy var transactionAPIConnector = TransactionAPIConnector(api: api, sharedDataController: sharedDataController)
 
     private var isLedgerRequiredTransaction: Bool {
         return transactionDraft?.from.requiresLedgerConnection() ?? false
@@ -45,10 +46,12 @@ class TransactionController {
     
     init(
         api: ALGAPI,
+        sharedDataController: SharedDataController,
         bannerController: BannerController?,
         analytics: ALGAnalytics
     ) {
         self.api = api
+        self.sharedDataController = sharedDataController
         self.bannerController = bannerController
         self.analytics = analytics
     }
@@ -138,17 +141,17 @@ extension TransactionController {
 extension TransactionController {
     func getTransactionParamsAndComposeTransactionData(for transactionType: TransactionType) {
         currentTransactionType = transactionType
-        transactionAPIConnector.getTransactionParams { params, error in
-            guard let params = params else {
-                self.resetLedgerOperationIfNeeded()
-                if let error = error {
-                    self.delegate?.transactionController(self, didFailedComposing: .network(.unexpected(error)))
-                }
-                return
-            }
 
-            self.params = params
-            self.composeTransactionData(for: transactionType)
+        transactionAPIConnector.getTransactionParams { result in
+            switch result {
+            case .success(let params):
+                self.params = params
+                self.composeTransactionData(for: transactionType)
+            case .failure:
+                self.resetLedgerOperationIfNeeded()
+
+                self.delegate?.transactionController(self, didFailedComposing: .network(.connection(.init(reason: .unexpected(.unknown)))))
+            }
         }
     }
     

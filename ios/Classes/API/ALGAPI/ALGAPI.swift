@@ -65,5 +65,20 @@ extension ALGAPI {
     enum Network: String {
         case testnet = "testnet"
         case mainnet = "mainnet"
+
+        var allowedChainIDs: [Int] {
+            switch self {
+            case .testnet:
+                return [
+                    algorandWalletConnectChainID,
+                    algorandWalletConnectTestNetChainID
+                ]
+            case .mainnet:
+                return [
+                    algorandWalletConnectChainID,
+                    algorandWalletConnectMainNetChainID
+                ]
+            }
+        }
     }
 }

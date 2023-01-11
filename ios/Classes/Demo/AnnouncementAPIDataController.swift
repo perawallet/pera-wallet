@@ -43,11 +43,11 @@ final class AnnouncementAPIDataController {
                 ///  If we support error handling necessary views, delegate will be called with errors
                 break
             case .success(let announcementList):
-                if let announcement = announcementList.results.first(where: { announcement in
-                    return !self.session.isAnnouncementHidden(announcement)
-                }) {
-                    self.delegate?.announcementAPIDataController(self, didFetch: announcement)
-                }
+                let announcements = announcementList.results
+                self.delegate?.announcementAPIDataController(
+                    self,
+                    didFetch: announcements
+                )
             }
         }
     }
@@ -58,5 +58,8 @@ final class AnnouncementAPIDataController {
 }
 
 protocol AnnouncementAPIDataControllerDelegate: AnyObject {
-    func announcementAPIDataController(_ dataController: AnnouncementAPIDataController, didFetch announcement: Announcement)
+    func announcementAPIDataController(
+        _ dataController: AnnouncementAPIDataController,
+        didFetch announcements: [Announcement]
+    )
 }

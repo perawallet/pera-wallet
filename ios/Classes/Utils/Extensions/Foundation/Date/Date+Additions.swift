@@ -16,10 +16,20 @@
 //  Date+Additions.swift
 
 import Foundation
+import SwiftDate
 
 extension Date {
-    
     var dayAfter: Date? {
         return Calendar.current.date(byAdding: .day, value: 1, to: self)
+    }
+}
+
+extension Date {
+    func isSameDay(_ other: Date) -> Bool {
+        let calendar = inDefaultRegion().calendar
+        return calendar.isDate(
+            self,
+            inSameDayAs: other
+        )
     }
 }

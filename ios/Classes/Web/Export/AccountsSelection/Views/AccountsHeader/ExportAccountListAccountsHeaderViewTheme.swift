@@ -38,7 +38,7 @@ struct ExportAccountListAccountsHeaderViewTheme:
         ]
         self.minimumHorizontalSpacing = 8
         self.info = [
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main),
         ]
         self.infoMinWidthRatio = 0.5

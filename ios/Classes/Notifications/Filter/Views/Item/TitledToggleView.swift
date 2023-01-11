@@ -19,6 +19,15 @@ import UIKit
 import MacaroonUIKit
 
 final class TitledToggleView: View {
+    var isOn: Bool {
+        get {
+            toggleView.isOn
+        }
+        set {
+            toggleView.setOn(newValue, animated: true)
+        }
+    }
+
     weak var delegate: TitledToggleViewDelegate?
 
     private lazy var titleLabel = UILabel()
@@ -35,7 +44,7 @@ final class TitledToggleView: View {
     }
 
     func setListeners() {
-        toggleView.addTarget(self, action: #selector(notifyDelegateToToggleValueChanged), for: .touchUpInside)
+        toggleView.addTarget(self, action: #selector(notifyDelegateToToggleValueChanged), for: .valueChanged)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
@@ -66,14 +75,8 @@ extension TitledToggleView {
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
             $0.centerY.equalToSuperview()
-            $0.trailing.equalTo(toggleView.snp.leading).inset(theme.horizontalPadding)
+            $0.trailing.equalTo(toggleView.snp.leading).offset(-theme.horizontalPadding)
         }
-    }
-}
-
-extension TitledToggleView: ViewModelBindable {
-    func bindData(_ viewModel: TitledToggleViewModel?) {
-        toggleView.setOn(viewModel?.isSelected ?? true, animated: true)
     }
 }
 

@@ -22,11 +22,16 @@ import MagpieExceptions
 final class NotificationFilterDataSource: NSObject {
     weak var delegate: NotificationFilterDataSourceDelegate?
 
+    var currentPushNotificationsSettings: UNNotificationSettings?
+
     private var accounts = [AccountHandle]()
 
     private let api: ALGAPI
 
-    init(sharedDataController: SharedDataController, api: ALGAPI) {
+    init(
+        sharedDataController: SharedDataController,
+        api: ALGAPI
+    ) {
         self.api = api
         super.init()
         accounts = sharedDataController.sortedAccounts()
@@ -40,7 +45,12 @@ extension NotificationFilterDataSource {
         }
 
         let draft = NotificationFilterDraft(deviceId: deviceId, accountAddress: account.value.address, receivesNotifications: value)
-        api.updateNotificationFilter(draft) { response in
+        api.updateNotificationFilter(draft) {
+            [weak self] response in
+            guard let self = self else {
+                return
+            }
+
             switch response {
             case let .success(result):
                 account.value.receivesNotification = result.receivesNotification
@@ -61,13 +71,19 @@ extension NotificationFilterDataSource: UICollectionViewDataSource {
         if section == 0 {
             return 1
         }
+
         return accounts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
-            return dequeuePushNotificationCell(in: collectionView, at: indexPath)
+            if currentPushNotificationsSettings != nil {
+                return dequeuePushNotificationsCell(in: collectionView, at: indexPath)
+            } else {
+                return dequeuePushNotificationsLoadingCell(in: collectionView, at: indexPath)
+            }
         }
+
         return dequeueAccountNotificationCell(in: collectionView, at: indexPath)
     }
 
@@ -79,15 +95,28 @@ extension NotificationFilterDataSource: UICollectionViewDataSource {
         if kind != UICollectionView.elementKindSectionHeader {
             fatalError("Unexpected element kind")
         }
+
         return dequeueHeaderView(in: collectionView, at: indexPath)
     }
 }
 
 extension NotificationFilterDataSource {
-    private func dequeuePushNotificationCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> TitledToggleCell {
-        let cell = collectionView.dequeue(TitledToggleCell.self, at: indexPath)
-        cell.bindData(TitledToggleViewModel())
+    private func dequeuePushNotificationsCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> TitledToggleCell {
+        let cell = collectionView.dequeue(
+            TitledToggleCell.self,
+            at: indexPath
+        )
         cell.delegate = self
+        let isOn = currentPushNotificationsSettings?.authorizationStatus == .authorized
+        cell.isOn = isOn
+        return cell
+    }
+
+    private func dequeuePushNotificationsLoadingCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> TitledToggleLoadingCell {
+        let cell = collectionView.dequeue(
+            TitledToggleLoadingCell.self,
+            at: indexPath
+        )
         return cell
     }
 
@@ -106,7 +135,6 @@ extension NotificationFilterDataSource {
             ToggleTitleHeaderSupplementaryView.self,
             at: indexPath
         )
-        headerView.customize(ToggleTitleHeaderViewTheme())
         return headerView
     }
 }
@@ -127,6 +155,7 @@ extension NotificationFilterDataSource {
 
 extension NotificationFilterDataSource: TitledToggleCellDelegate {
     func titledToggleCell(_ titledToggleCell: TitledToggleCell, didChangeToggleValue value: Bool) {
+        titledToggleCell.isOn = !value
         delegate?.notificationFilterDataSource(self, didChangePushNotificationsToggleValue: value)
     }
 }

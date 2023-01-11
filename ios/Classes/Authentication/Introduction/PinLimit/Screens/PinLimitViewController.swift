@@ -138,7 +138,6 @@ extension PinLimitViewController {
                     return
                 }
                 self.delegate?.pinLimitViewControllerDidResetAllData(self)
-                self.dismissScreen()
             }
         )
 

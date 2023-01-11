@@ -34,6 +34,7 @@ final class RekeyConfirmationViewController: BaseViewController {
         }
         return TransactionController(
             api: api,
+            sharedDataController: sharedDataController,
             bannerController: bannerController,
             analytics: analytics
         )

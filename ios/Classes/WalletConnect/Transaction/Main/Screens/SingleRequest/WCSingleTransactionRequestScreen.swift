@@ -234,12 +234,7 @@ extension WCSingleTransactionRequestScreen: WCSingleTransactionRequestViewDelega
             account: nil,
             quickAction: nil,
             asset: asset
-        ) { event in
-            switch event {
-            case .didOptInToAsset: break
-            case .didOptOutFromAsset: break
-            }
-        }
+        )
         open(
             screen,
             by: .present

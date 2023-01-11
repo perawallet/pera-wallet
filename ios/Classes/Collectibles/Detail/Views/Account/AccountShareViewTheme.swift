@@ -36,7 +36,7 @@ struct AccountShareViewTheme:
             .contentMode(.center)
         ]
         name = [
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textAlignment(.left),
             .textColor(Colors.Text.main)
         ]

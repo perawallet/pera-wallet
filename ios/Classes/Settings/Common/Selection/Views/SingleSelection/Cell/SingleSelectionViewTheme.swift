@@ -30,7 +30,7 @@ struct SingleSelectionViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(Colors.Text.main),
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText())
+            .textOverflow(SingleLineText())
         ]
         
         self.imageSize = (24, 24)

@@ -57,7 +57,18 @@ extension QRAddressLabel {
 
 extension QRAddressLabel: ViewModelBindable {
     func bindData(_ viewModel: QRAddressLabelViewModel?) {
-        titleLabel.text = viewModel?.title
-        addressLabel.text = viewModel?.address
+        if let title = viewModel?.title {
+            title.load(in: titleLabel)
+        } else {
+            titleLabel.text = nil
+            titleLabel.attributedText = nil
+        }
+
+        if let address = viewModel?.address {
+            address.load(in: addressLabel)
+        } else {
+            addressLabel.text = nil
+            addressLabel.attributedText = nil
+        }
     }
 }

@@ -24,8 +24,10 @@ final class HomeAPIDataController:
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
+    private let session: Session
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
+    private let walletConnector: WalletConnector
 
     private var visibleAnnouncement: Announcement?
 
@@ -37,11 +39,15 @@ final class HomeAPIDataController:
     )
 
     init(
-        _ sharedDataController: SharedDataController,
-        announcementDataController: AnnouncementAPIDataController
+        sharedDataController: SharedDataController,
+        session: Session,
+        announcementDataController: AnnouncementAPIDataController,
+        walletConnector: WalletConnector
     ) {
         self.sharedDataController = sharedDataController
+        self.session = session
         self.announcementDataController = announcementDataController
+        self.walletConnector = walletConnector
     }
     
     deinit {
@@ -84,6 +90,7 @@ extension HomeAPIDataController {
 
     func removeAccount(_ account: Account) {
         sharedDataController.resetPollingAfterRemoving(account)
+        walletConnector.updateSessionsWithRemovingAccount(account)
         reload()
     }
 }
@@ -251,7 +258,14 @@ extension HomeAPIDataController {
 }
 
 extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
-    func announcementAPIDataController(_ dataController: AnnouncementAPIDataController, didFetch announcement: Announcement) {
-        self.visibleAnnouncement = announcement
+    func announcementAPIDataController(
+        _ dataController: AnnouncementAPIDataController,
+        didFetch announcements: [Announcement]
+    ) {
+        let announcementToDisplay = announcements.first { announcement in
+            return !session.isAnnouncementHidden(announcement)
+        }
+
+        self.visibleAnnouncement = announcementToDisplay
     }
 }

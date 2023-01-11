@@ -42,11 +42,11 @@ extension AccountShareViewModel {
     private mutating func bindName(
         _ account: Account
     ) {
-        let nameValue = account.name.unwrap(or: account.address.shortAddressDisplay)
+        let nameValue = account.primaryDisplayName
 
         name = .attributedString(
             nameValue
-                .bodyRegular()
+                .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
     }
 }

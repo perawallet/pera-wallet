@@ -43,7 +43,7 @@ final class ASADetailScreenAPIDataController:
         self.api = api
         self.sharedDataController = sharedDataController
 
-        let defaultConfiguration = ASADetailScreenConfiguration(
+        lazy var defaultConfiguration = ASADetailScreenConfiguration(
             shouldDisplayAccountActionsBarButtonItem: true,
             shouldDisplayQuickActions: !account.isWatchAccount()
         )

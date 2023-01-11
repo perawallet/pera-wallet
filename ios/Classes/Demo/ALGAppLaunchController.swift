@@ -317,19 +317,45 @@ extension ALGAppLaunchController {
 
         switch parserResult {
         case .none:
-            return .success(.remoteNotification(notification))
+            return .success(.remoteNotification(notification: notification))
         case .success(let screen):
-            if notification.detail?.type == .assetSupportRequest {
+            let action = deeplinkParser.resolveNotificationAction(for: notification)
+
+            if action == .assetOptIn {
                 return .success(.deeplink(screen))
             }
 
             return .success(
                 waitForUserConfirmation
-                    ? .remoteNotification(notification, screen)
-                    : .deeplink(screen)
+                ? .remoteNotification(
+                    notification: notification,
+                    screen: screen
+                )
+                : .deeplink(screen)
             )
         case .failure(let error):
+            if shouldPresentNotificationForFailure(error) {
+                let uiState: AppLaunchUIState = .remoteNotification(
+                    notification: notification,
+                    error: error
+                )
+                return .success(uiState)
+            }
+
             return .failure(error)
+        }
+    }
+
+    private func shouldPresentNotificationForFailure(_ error: DeepLinkParser.Error) -> Bool {
+        switch error {
+        case .tryingToOptInForWatchAccount,
+             .tryingToActForAssetWithPendingOptInRequest,
+             .tryingToActForAssetWithPendingOptOutRequest,
+             .accountNotFound,
+             .assetNotFound:
+            return true
+        default:
+            return false
         }
     }
 

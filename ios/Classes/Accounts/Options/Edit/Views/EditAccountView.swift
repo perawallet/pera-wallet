@@ -22,7 +22,7 @@ final class EditAccountView: View {
     weak var delegate: EditAccountViewDelegate?
 
     private(set) lazy var accountNameInputView = createAccountNameTextInput(
-        placeholder: "account-name-setup-explanation".localized,
+        placeholder: "account-name-setup-placeholder".localized,
         floatingPlaceholder: "account-name-setup-placeholder".localized
     )
 
@@ -94,7 +94,7 @@ extension EditAccountView {
     ) -> FloatingTextInputFieldView {
         let view = FloatingTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
-            .font(Fonts.DMSans.regular.make(15, .body)),
+            .font(Fonts.DMSans.regular.make(15)),
             .tintColor(Colors.Text.main),
             .textColor(Colors.Text.main),
             .clearButtonMode(.whileEditing),

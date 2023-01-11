@@ -40,13 +40,13 @@ struct ContactContextViewTheme: StyleSheet, LayoutSheet {
         ]
         self.nameLabel = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.addressLabel = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMMono.regular.make(13))
         ]

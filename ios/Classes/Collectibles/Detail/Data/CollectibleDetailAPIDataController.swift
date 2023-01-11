@@ -18,8 +18,9 @@ import Foundation
 import MacaroonUtils
 import MagpieCore
 
-final class CollectibleDetailAPIDataController: CollectibleDetailDataController {
-
+final class CollectibleDetailAPIDataController:
+    CollectibleDetailDataController,
+    SharedDataControllerObserver {
     var eventHandler: ((CollectibleDetailDataControllerEvent) -> Void)?
 
     private var lastSnapshot: Snapshot?
@@ -30,9 +31,11 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
 
     private var ongoingEndpoint: EndpointOperatable?
 
-    private let api: ALGAPI
+    private var account: Account
     private var asset: CollectibleAsset
-    private let account: Account
+    private lazy var currentAccountCollectibleStatus: AccountCollectibleStatus = getAccountCollectibleStatus()
+    
+    private let api: ALGAPI
     private let quickAction: AssetQuickAction?
     private let sharedDataController: SharedDataController
 
@@ -48,11 +51,33 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
         self.account = account
         self.quickAction = quickAction
         self.sharedDataController = sharedDataController
+        
+        sharedDataController.add(self)
+    }
+    
+    deinit {
+        sharedDataController.remove(self)
     }
 }
 
 extension CollectibleDetailAPIDataController {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        if case .didFinishRunning = event {
+            let updatedAccountAssetStatus = getAccountCollectibleStatus()
+            
+            if currentAccountCollectibleStatus != updatedAccountAssetStatus {
+                currentAccountCollectibleStatus = updatedAccountAssetStatus
+                
+                self.deliverContentSnapshot()
+            }
+        }
+    }
+    
     func load() {
+        currentAccountCollectibleStatus = getAccountCollectibleStatus()
         deliverLoadingSnapshot()
         fetchAssetDetails()
     }
@@ -113,6 +138,30 @@ extension CollectibleDetailAPIDataController {
             for: account
         )
     }
+    
+    func getAccountCollectibleStatus() -> AccountCollectibleStatus {
+        guard let updatedAccount = sharedDataController.accountCollection[account.address]?.value,
+              let updatedAsset = updatedAccount[asset.id] as? CollectibleAsset else {
+            return .notOptedIn
+        }
+        
+        self.account = updatedAccount
+        self.asset = updatedAsset
+        
+        if asset.isOwned {
+            return .owned
+        }
+        
+        if hasOptedIn() == .optedIn {
+            return .optedIn
+        }
+        
+        return .notOptedIn
+    }
+    
+    func getCurrentAccountCollectibleStatus() -> AccountCollectibleStatus {
+        return currentAccountCollectibleStatus
+    }
 }
 
 extension CollectibleDetailAPIDataController {
@@ -149,24 +198,22 @@ extension CollectibleDetailAPIDataController {
     ) {
         var mediaItems: [CollectibleDetailItem] = [.media(asset)]
 
-        if let asset = account[asset.id] as? CollectibleAsset {
-            if !asset.isOwned {
-                mediaItems.append(
-                    .error(
-                        CollectibleMediaErrorViewModel(
-                            .notOwner(isWatchAccount: account.isWatchAccount())
-                        )
+        if currentAccountCollectibleStatus == .optedIn {
+            mediaItems.append(
+                .error(
+                    CollectibleMediaErrorViewModel(
+                        .notOwner(isWatchAccount: account.isWatchAccount())
                     )
                 )
-            } else if !asset.mediaType.isSupported {
-                mediaItems.append(
-                    .error(
-                        CollectibleMediaErrorViewModel(
-                            .unsupported
-                        )
+            )
+        } else if !asset.mediaType.isSupported {
+            mediaItems.append(
+                .error(
+                    CollectibleMediaErrorViewModel(
+                        .unsupported
                     )
                 )
-            }
+            )
         }
 
         snapshot.appendSections([.media])
@@ -303,7 +350,7 @@ extension CollectibleDetailAPIDataController {
                     CollectibleTransactionInformation(
                         icon: .account(account),
                         title: "collectible-detail-owner".localized,
-                        value: account.name.fallback(account.address.shortAddressDisplay),
+                        value: account.primaryDisplayName,
                         isCollectibleSpecificValue: false
                     )
                 )

@@ -76,7 +76,7 @@ extension TransferAssetBalanceViewModel {
         let asset = draft.asset
 
         let assetName = asset.naming.unitName ?? "title-unknown".localized
-        let accountName = draft.account.name ?? draft.account.address.shortAddressDisplay
+        let accountName = draft.account.primaryDisplayName
         
         let aDescription =
         "asset-remove-warning".localized

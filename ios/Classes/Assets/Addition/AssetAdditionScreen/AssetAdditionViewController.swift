@@ -160,6 +160,7 @@ extension AssetAdditionViewController {
     ) -> TransactionController {
         let transactionController = TransactionController(
             api: api!,
+            sharedDataController: sharedDataController,
             bannerController: bannerController,
             analytics: analytics
         )
@@ -323,7 +324,6 @@ extension AssetAdditionViewController {
         let screen = Screen.collectibleDetail(
             asset: collectibleAsset,
             account: account,
-            thumbnailImage: nil,
             quickAction: .optIn
         ) { event in
             switch event {

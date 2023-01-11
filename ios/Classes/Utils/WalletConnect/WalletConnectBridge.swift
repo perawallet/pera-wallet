@@ -41,6 +41,10 @@ extension WalletConnectBridge {
     func disconnect(from session: WalletConnectSession) throws {
         try walletConnectServer.disconnect(from: session)
     }
+    
+    func update(session: WalletConnectSession, with newWalletInfo: WalletConnectSessionWalletInfo) throws {
+        try walletConnectServer.updateSession(session, with: newWalletInfo)
+    }
 }
 
 extension WalletConnectBridge {

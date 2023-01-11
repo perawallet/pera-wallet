@@ -26,7 +26,7 @@ struct ToggleTitleHeaderViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.titleLabel = [
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textAlignment(.left),
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13)),

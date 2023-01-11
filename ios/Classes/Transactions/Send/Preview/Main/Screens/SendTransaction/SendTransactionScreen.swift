@@ -30,7 +30,10 @@ final class SendTransactionScreen: BaseViewController {
     var eventHandler: EventHandler?
 
     private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToEditNote = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToInsufficientAlgoBalance = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToAskReceiverToOptIn = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToOptInInformation = BottomSheetTransition(presentingViewController: self)
 
     private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var nextButton = Button()
@@ -77,19 +80,6 @@ final class SendTransactionScreen: BaseViewController {
         return draft.from.algo.amount == decimalAmount.toMicroAlgos
     }
 
-    private lazy var transactionController: TransactionController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return TransactionController(
-            api: api,
-            bannerController: bannerController,
-            analytics: analytics
-        )
-    }()
-
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
-
     private var transactionSendController: TransactionSendController?
 
     init(
@@ -99,6 +89,7 @@ final class SendTransactionScreen: BaseViewController {
     ) {
         self.draft = draft
         self.copyToClipboardController = copyToClipboardController
+        self.note = draft.lockedNote ?? draft.note
         super.init(configuration: configuration)
 
         guard let amount = draft.amount else {
@@ -169,8 +160,6 @@ final class SendTransactionScreen: BaseViewController {
         maxButton.addTarget(self, action: #selector(didTapMax), for: .touchUpInside)
         nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
         noteButton.addTarget(self, action: #selector(didTapNote), for: .touchUpInside)
-
-        transactionController.delegate = self
     }
 }
 
@@ -469,10 +458,22 @@ extension SendTransactionScreen: TransactionSignChecking {
     private func didTapNote() {
         let isLocked = draft.lockedNote != nil
         let editNote = draft.lockedNote ?? draft.note
-        modalTransition.perform(
-            .editNote(note: editNote, isLocked: isLocked, delegate: self),
+
+        let screen: Screen = .editNote(
+            note: editNote,
+            isLocked: isLocked,
+            delegate: self
+        )
+
+        transitionToEditNote.perform(
+            screen,
             by: .present
         )
+    }
+
+    private func didEditNote(note: String?) {
+        self.note = note
+        self.draft.updateNote(note)
     }
 
     private func redirectToPreview() {
@@ -517,6 +518,8 @@ extension SendTransactionScreen {
             switch event {
             case .didCompleteTransaction:
                 self.eventHandler?(.didCompleteTransaction)
+            case .didEditNote(let note):
+                self.didEditNote(note: note)
             }
         }
     }
@@ -712,17 +715,13 @@ extension SendTransactionScreen: NumpadViewDelegate {
     }
 
     private func getTransactionParams() {
-        api?.getTransactionParams { [weak self] response in
-            guard let self = self else {
-                return
-            }
-
-            switch response {
-            case let .success(params):
+        sharedDataController.getTransactionParams { result in
+            switch result {
+            case .success(let params):
                 self.transactionParams = params
                 self.amountValidator.setTransactionParams(params)
-            case .failure:
-                break
+            case .failure(let error):
+                self.bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
             }
         }
     }
@@ -731,132 +730,20 @@ extension SendTransactionScreen: NumpadViewDelegate {
 // MARK: - EditNoteScreenDelegate
 extension SendTransactionScreen: EditNoteScreenDelegate {
     func editNoteScreen(
-        _ editNoteScreen: EditNoteScreen,
+        _ screen: EditNoteScreen,
         didUpdateNote note: String?
     ) {
-        self.note = note
-        self.draft.note = note
-    }
-}
+        screen.closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
 
-// MARK: - TransactionControllerDelegate
-extension SendTransactionScreen: TransactionControllerDelegate {
-    func transactionController(
-        _ transactionController: TransactionController,
-        didFailedComposing error: HIPTransactionError
-    ) {
-        loadingController?.stopLoading()
-
-        switch error {
-        case .network:
-            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
-        case let .inapp(transactionError):
-            displayTransactionError(from: transactionError)
-        }
-    }
-
-    func transactionController(
-        _ transactionController: TransactionController,
-        didComposedTransactionDataFor draft: TransactionSendDraft?
-    ) {
-        loadingController?.stopLoading()
-
-        guard let draft = draft else {
-            return
-        }
-
-        let controller = open(
-            .sendTransactionPreview(
-                draft: draft,
-                transactionController: transactionController
-            ),
-            by: .push
-        ) as? SendTransactionPreviewScreen
-
-        controller?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCompleteTransaction:
-                self.eventHandler?(.didCompleteTransaction)
+            if self.draft.lockedNote == nil {
+                self.note = note
+                self.draft.note = note
             }
         }
-    }
-
-    private func displayTransactionError(from transactionError: TransactionError) {
-        switch transactionError {
-        case let .minimumAmount(amount):
-            currencyFormatter.formattingContext = .standalone()
-            currencyFormatter.currency = AlgoLocalCurrency()
-
-            let amountText = currencyFormatter.format(amount.toAlgos)
-
-            bannerController?.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(
-                    params: amountText.someString
-                )
-            )
-        case .invalidAddress:
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
-            )
-        case let .sdkError(error):
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: error.debugDescription
-            )
-        case .ledgerConnection:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-            bottomTransition.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "img-warning-circle".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
-        default:
-            displaySimpleAlertWith(
-                title: "title-error".localized,
-                message: "title-internet-connection".localized
-            )
-        }
-    }
-
-    func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
-        let ledgerApprovalTransition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
-        )
-
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.loadingController?.stopLoading()
-            }
-        }
-    }
-    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-    }
-
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {
-        loadingController?.stopLoading()
     }
 }
 
@@ -868,11 +755,21 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
                 return
             }
 
-            switch self.draft.transactionMode {
-            case .algo:
-                self.composeAlgosTransactionData()
-            case .asset:
-                self.composeAssetTransactionData()
+            let controller = self.open(
+                .sendTransactionPreview(
+                    draft: self.draft
+                ),
+                by: .push
+            ) as? SendTransactionPreviewScreen
+            controller?.eventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+                switch event {
+                case .didCompleteTransaction:
+                    self.eventHandler?(.didCompleteTransaction)
+                case .didEditNote(let note):
+                    self.didEditNote(note: note)
+                }
             }
         }
     }
@@ -920,7 +817,7 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             case .asset(let assetError):
                 switch assetError {
                 case .assetNotSupported(let address):
-                    self.presentAssetNotSupportedAlert(receiverAddress: address)
+                    self.presentAskReceiverToOptIn(receiverAddress: address)
                 case .minimumAmount:
                     self.bannerController?.presentErrorBanner(
                         title: "title-error".localized,
@@ -953,85 +850,96 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
     }
 }
 
-// MARK: - Compose Transaction
 extension SendTransactionScreen {
-    private func composeAlgosTransactionData() {
-        var transactionDraft = AlgosTransactionSendDraft(
-            from: draft.from,
-            toAccount: draft.toAccount,
-            amount: draft.amount,
-            fee: nil,
-            isMaxTransaction: draft.isMaxTransaction,
-            identifier: nil,
-            note: draft.note
-        )
-        transactionDraft.toContact = draft.toContact
-        transactionDraft.nameService = draft.nameService
-
-        transactionController.delegate = self
-        transactionController.setTransactionDraft(transactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .algosTransaction)
-
-        if draft.from.requiresLedgerConnection() {
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
-    }
-
-    private func composeAssetTransactionData() {
+    private func presentAskReceiverToOptIn(receiverAddress: String) {
         guard let asset = draft.asset else {
             return
         }
 
-        var transactionDraft = AssetTransactionSendDraft(
-            from: draft.from,
-            toAccount: draft.toAccount,
-            amount: draft.amount,
-            assetIndex: asset.id,
-            assetDecimalFraction: asset.decimals,
-            isVerifiedAsset: asset.verificationTier.isVerified,
-            note: draft.note
-        )
-        transactionDraft.toContact = draft.toContact
-        transactionDraft.asset = asset
-        transactionDraft.nameService = draft.nameService
+        let title: String
 
-        transactionController.delegate = self
-        transactionController.setTransactionDraft(transactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
-
-        if draft.from.requiresLedgerConnection() {
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
-    }
-
-    private func presentAssetNotSupportedAlert(receiverAddress: String?) {
-        guard let asset = draft.asset else {
-            return
+        if let asset = asset as? CollectibleAsset {
+            title =
+                asset.title.unwrapNonEmptyString() ??
+                asset.name.unwrapNonEmptyString() ??
+                "#\(String(asset.id))"
+        } else {
+            title =
+                asset.naming.unitName.unwrapNonEmptyString() ??
+                asset.naming.name.unwrapNonEmptyString() ??
+                "#\(String(asset.id))"
         }
 
-        let assetAlertDraft = AssetAlertDraft(
-            account: draft.from,
-            assetId: asset.id,
-            asset: AssetDecoration(asset: asset),
-            title: "asset-support-title".localized,
-            detail: "asset-support-error".localized,
-            actionTitle: "title-ok".localized
-        )
+        let description = "collectible-recipient-opt-in-description".localized(title, receiverAddress)
 
-        let senderAddress = draft.from.address
-        if let receiverAddress = receiverAddress {
-            let draft = AssetSupportDraft(
-                sender: senderAddress,
-                receiver: receiverAddress,
-                assetId: asset.id
+        let configuratorDescription = BottomWarningViewConfigurator.BottomWarningDescription.custom(
+            description: (description, [title, receiverAddress]),
+            markedWordWithHandler: (
+                word: "collectible-recipient-opt-in-description-marked".localized,
+                handler: {
+                    [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.dismiss(animated: true) {
+                        self.openOptInInformation()
+                    }
+                }
             )
-            api?.sendAssetSupportRequest(draft)
-        }
+        )
 
-        modalTransition.perform(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: nil),
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-green".uiImage,
+            title: "collectible-recipient-opt-in-title".localized,
+            description: configuratorDescription,
+            primaryActionButtonTitle: "collectible-recipient-opt-in-action-title".localized,
+            secondaryActionButtonTitle: "title-close".localized,
+            primaryAction: {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.sendOptInRequestToReceiver(receiverAddress)
+            }
+        )
+
+        transitionToAskReceiverToOptIn.perform(
+            .bottomWarning(
+                configurator: configurator
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func sendOptInRequestToReceiver(_ receiverAddress: String) {
+        let draft = AssetSupportDraft(
+            sender: draft.from.address,
+            receiver: receiverAddress,
+            assetId: draft.asset!.id
+        )
+        api?.sendAssetSupportRequest(
+            draft
+        )
+    }
+
+    private func openOptInInformation() {
+        let uiSheet = UISheet(
+            title: "collectible-opt-in-info-title".localized.bodyLargeMedium(),
+            body: "collectible-opt-in-info-description".localized.bodyRegular()
+        )
+
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transitionToOptInInformation.perform(
+            .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
         )
     }

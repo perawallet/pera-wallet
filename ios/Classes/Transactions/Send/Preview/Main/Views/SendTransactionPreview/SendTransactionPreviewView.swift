@@ -20,7 +20,12 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class SendTransactionPreviewView: View {
+final class SendTransactionPreviewView:
+    View,
+    UIInteractable {
+    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
+        .performEditNote: UIBlockInteraction()
+    ]
     private lazy var theme = SendTransactionPreviewViewTheme()
 
     private lazy var verticalStackView = UIStackView()
@@ -29,12 +34,14 @@ final class SendTransactionPreviewView: View {
     private(set) lazy var opponentView = TitledTransactionAccountNameView()
     private(set) lazy var feeView = TransactionAmountInformationView()
     private(set) lazy var balanceView = TransactionMultipleAmountInformationView()
-    private(set) lazy var noteView = TransactionTextInformationView()
+    private(set) lazy var noteView = TransactionActionInformationView()
+    private(set) lazy var lockedNoteView = TransactionTextInformationView()
 
     init() {
         super.init(frame: .zero)
 
         customize(theme)
+        setListeners()
     }
 
     func customize(_ theme: SendTransactionPreviewViewTheme) {
@@ -46,18 +53,21 @@ final class SendTransactionPreviewView: View {
         addFeeView(theme)
         addBalanceView(theme)
         addNoteView(theme)
+        addLockedNoteView(theme)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: ViewStyle) {}
-
-    func setNoteViewVisible(_ isVisible: Bool) {
-        if isVisible {
-            balanceView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
-            verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: balanceView)
+    
+    func setListeners() {
+        noteView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            let interaction = self.uiInteractions[.performEditNote]
+            interaction?.publish()
         }
-        noteView.isHidden = !isVisible
     }
 }
 
@@ -92,8 +102,14 @@ extension SendTransactionPreviewView {
         userView.customize(theme.transactionAccountInformationViewCommonTheme)
 
         verticalStackView.addArrangedSubview(userView)
-        verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: amountView)
-        amountView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
+        verticalStackView.setCustomSpacing(
+            theme.bottomPaddingForSeparator,
+            after: amountView
+        )
+        amountView.addSeparator(
+            theme.separator,
+            padding: theme.separatorTopPadding
+        )
     }
 
     private func addOpponentView(_ theme: SendTransactionPreviewViewTheme) {
@@ -110,8 +126,14 @@ extension SendTransactionPreviewView {
         )
 
         verticalStackView.addArrangedSubview(feeView)
-        feeView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
-        verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: feeView)
+        feeView.addSeparator(
+            theme.separator,
+            padding: theme.separatorTopPadding
+        )
+        verticalStackView.setCustomSpacing(
+            theme.bottomPaddingForSeparator,
+            after: feeView
+        )
     }
 
     private func addBalanceView(_ theme: SendTransactionPreviewViewTheme) {
@@ -123,17 +145,32 @@ extension SendTransactionPreviewView {
         )
 
         verticalStackView.addArrangedSubview(balanceView)
+        balanceView.addSeparator(
+            theme.separator,
+            padding: theme.separatorTopPadding
+        )
+        verticalStackView.setCustomSpacing(
+            theme.bottomPaddingForSeparator,
+            after: balanceView
+        )
     }
 
     private func addNoteView(_ theme: SendTransactionPreviewViewTheme) {
-        noteView.customize(theme.transactionTextInformationViewCommonTheme)
-        noteView.bindData(
+        noteView.customize(theme.transactionActionInformationViewTheme)
+        noteView.bindData(TransactionActionInformationViewModel())
+
+        verticalStackView.addArrangedSubview(noteView)
+    }
+    
+    private func addLockedNoteView(_ theme: SendTransactionPreviewViewTheme) {
+        lockedNoteView.customize(theme.transactionTextInformationViewTheme)
+        lockedNoteView.bindData(
             TransactionTextInformationViewModel(
                 title: "transaction-detail-note".localized
             )
         )
-
-        verticalStackView.addArrangedSubview(noteView)
+        
+        verticalStackView.addArrangedSubview(lockedNoteView)
     }
 }
 
@@ -187,10 +224,20 @@ extension SendTransactionPreviewView {
             )
         }
 
-        noteView.bindData(
-            TransactionTextInformationViewModel(detail: viewModel?.noteViewDetail)
-        )
+        if let lockedNote = viewModel?.lockedNoteView {
+            lockedNoteView.bindData(lockedNote)
+            lockedNoteView.isHidden = false
+            noteView.isHidden = true
+        } else {
+            noteView.bindData(viewModel?.noteView)
+            noteView.isHidden = false
+            lockedNoteView.isHidden = true
+        }
+    }
+}
 
-        setNoteViewVisible(!(viewModel?.noteViewDetail.isNilOrEmpty ?? true))
+extension SendTransactionPreviewView {
+    enum Event {
+        case performEditNote
     }
 }

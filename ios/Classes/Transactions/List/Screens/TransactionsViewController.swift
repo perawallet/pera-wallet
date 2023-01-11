@@ -17,6 +17,7 @@
 
 import UIKit
 import MagpieCore
+import MagpieExceptions
 import MacaroonUIKit
 
 class TransactionsViewController:
@@ -31,8 +32,6 @@ class TransactionsViewController:
     /// This should work with `Asset` type.
     private(set) var asset: Asset?
     private(set) var filterOption = TransactionFilterViewController.FilterOption.allTime
-
-    lazy var csvTransactions = [Transaction]()
 
     private lazy var listLayout = TransactionsListLayout(
         draft: draft,
@@ -310,9 +309,42 @@ extension TransactionsViewController: TransactionHistoryFilterCellDelegate {
     }
 
     func transactionHistoryFilterCellDidShareHistory(_ transactionHistoryFilterCell: TransactionHistoryFilterCell) {
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+
         analytics.track(.recordAccountDetailScreen(type: .tapTransactionDownload))
-        
-        fetchAllTransactionsForCSV()
+
+        let dateRange = dataController.filterOption.getDateRanges()
+
+        var exportDraft = ExportTransactionsDraft(account: draft.accountHandle.value)
+        exportDraft.asset = draft.asset
+        exportDraft.startDate = dateRange.from
+        exportDraft.endDate = dateRange.to
+
+        api?.exportTransactions(draft: exportDraft) {
+            [weak self] result in
+            guard let self else { return }
+
+            self.loadingController?.stopLoading()
+
+            switch result {
+            case .success(let file):
+                /// <note>
+                /// It shouldn't be possible but it is handled since it is a friction.
+                if file.isFault { return }
+
+                self.open(
+                    .shareActivity(items: [file.url]),
+                    by: .presentWithoutNavigationController
+                )
+            case .failure(_, let errorModel):
+                let title = "title-error".localized
+                let message = errorModel?.message() ?? "title-generic-api-error".localized
+                self.bannerController?.presentErrorBanner(
+                    title: title,
+                    message: message
+                )
+            }
+        }
     }
 }
 

@@ -25,7 +25,7 @@ struct TitledToggleViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.titleLabel = [
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textAlignment(.left),
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15)),

@@ -69,6 +69,7 @@ class AppDelegate:
         loadingController: loadingController,
         bannerController: bannerController,
         toastPresentationController: toastPresentationController,
+        lastSeenNotificationController: lastSeenNotificationController,
         analytics: analytics,
         launchController: appLaunchController
     )
@@ -78,7 +79,11 @@ class AppDelegate:
     private lazy var session = Session()
     private lazy var api = ALGAPI(session: session)
     private lazy var sharedDataController = createSharedDataController()
-    private lazy var walletConnector = WalletConnector(analytics: analytics)
+    private lazy var walletConnector = WalletConnector(
+        api: api,
+        pushToken: pushNotificationController.token,
+        analytics: analytics
+    )
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
     private lazy var toastPresentationController = ToastPresentationController(presentingView: window!)
     private lazy var bannerController = BannerController(presentingView: window!)
@@ -98,6 +103,9 @@ class AppDelegate:
         session: session,
         api: api,
         bannerController: bannerController
+    )
+    private lazy var lastSeenNotificationController = LastSeenNotificationController(
+        api: api
     )
     
     private lazy var networkBannerView = UIView()
@@ -131,6 +139,8 @@ class AppDelegate:
             object: self,
             userInfo: nil
         )
+
+        lastSeenNotificationController.checkStatus()
     }
     
     func applicationDidBecomeActive(
@@ -140,6 +150,8 @@ class AppDelegate:
         setNeedsNetworkBannerUpdateIfNeeded()
 
         appLaunchController.becomeActive()
+
+        lastSeenNotificationController.checkStatus()
     }
     
     func applicationWillResignActive(
@@ -327,7 +339,19 @@ extension AppDelegate {
                 presented: presentedViewController,
                 completion: completion
             )
-        case .remoteNotification(let notification, let screen):
+        case .remoteNotification(let notification, let screen, let error):
+            if let error = error {
+                pushNotificationController.present(notification: notification) {
+                    [unowned self] in
+                    let uiRepresentation = error.uiRepresentation
+                    bannerController.presentErrorBanner(
+                        title: uiRepresentation.title,
+                        message: uiRepresentation.description
+                    )
+                }
+                return
+            }
+
             guard let someScreen = screen else {
                 pushNotificationController.present(notification: notification)
                 return
@@ -347,6 +371,8 @@ extension AppDelegate {
                     WalletConnector.sessionRequestUserInfoKey: key
                 ]
             )
+        case .bottomWarning(let configurator):
+            router.launchWithBottomWarning(configurator: configurator)
         }
     }
 }
@@ -519,6 +545,7 @@ extension AppDelegate {
     private func createSharedDataController() -> SharedDataController {
         let currency = CurrencyAPIProvider(session: session, api: api)
         let sharedDataController = SharedAPIDataController(
+            target: ALGAppTarget.current,
             currency: currency,
             session: session,
             api: api

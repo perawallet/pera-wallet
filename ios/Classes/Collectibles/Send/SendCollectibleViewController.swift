@@ -36,6 +36,14 @@ final class SendCollectibleViewController:
         presentingViewController: approveCollectibleTransactionViewController!,
         interactable: false
     )
+    private lazy var transitionToAskReceiverToOptIn = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+    private lazy var transitionToOptInInformation = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
 
     private(set) lazy var sendCollectibleView = SendCollectibleView()
 
@@ -58,6 +66,7 @@ final class SendCollectibleViewController:
     private var draft: SendCollectibleDraft
     private lazy var transactionController = TransactionController(
         api: api!,
+        sharedDataController: sharedDataController,
         bannerController: bannerController,
         analytics: analytics
     )
@@ -67,7 +76,6 @@ final class SendCollectibleViewController:
     let theme: SendCollectibleViewControllerTheme
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
-    private var askRecipientToOptInViewController: BottomWarningViewController?
     private var approveCollectibleTransactionViewController: ApproveCollectibleTransactionViewController?
 
     private var ongoingFetchAccountsEnpoint: EndpointOperatable?
@@ -210,17 +218,17 @@ extension SendCollectibleViewController {
 
         cancelOngoingFetchAccountsEnpoint()
 
-        guard let recipientAddress = sendCollectibleActionView.addressInputViewText else {
+        guard let receiverAddress = sendCollectibleActionView.addressInputViewText else {
             return
         }
 
         let accountInShared = sharedDataController
             .accountCollection
-            .account(for: recipientAddress)
+            .account(for: receiverAddress)
 
         if let accountInShared = accountInShared {
 
-            if draft.fromAccount.address == recipientAddress,
+            if draft.fromAccount.address == receiverAddress,
                accountInShared.containsCollectibleAsset(draft.collectibleAsset.id) {
                 bannerController?.presentErrorBanner(
                     title: "asset-you-already-own-message".localized,
@@ -240,7 +248,7 @@ extension SendCollectibleViewController {
 
         ongoingFetchAccountsEnpoint =
         api?.fetchAccount(
-            AccountFetchDraft(publicKey: recipientAddress),
+            AccountFetchDraft(publicKey: receiverAddress),
             queue: .main,
             ignoreResponseOnCancelled: true
         ) {
@@ -252,7 +260,7 @@ extension SendCollectibleViewController {
             case .success(let accountResponse):
                 let fetchedAccount = accountResponse.account
 
-                if !fetchedAccount.isSameAccount(with: recipientAddress) {
+                if !fetchedAccount.isSameAccount(with: receiverAddress) {
                     self.bannerController?.presentErrorBanner(
                         title: "title-error".localized,
                         message: "send-algos-receiver-address-validation".localized
@@ -266,11 +274,11 @@ extension SendCollectibleViewController {
             case .failure(let error, _):
                 if error.isHttpNotFound {
                     self.draft.toAccount = Account(
-                        address: recipientAddress,
+                        address: receiverAddress,
                         type: .standard
                     )
 
-                    self.openAskRecipientToOptIn()
+                    self.openAskReceiverToOptIn()
                     return
                 }
 
@@ -289,7 +297,7 @@ extension SendCollectibleViewController {
 
         guard let collectibleAsset =
                 account.assets?.first(matching: (\.id, draft.collectibleAsset.id)) else {
-            openAskRecipientToOptIn()
+            openAskReceiverToOptIn()
             return
         }
 
@@ -302,7 +310,7 @@ extension SendCollectibleViewController {
         }
     }
 
-    private func openAskRecipientToOptIn() {
+    private func openAskReceiverToOptIn() {
         let asset = draft.collectibleAsset
         let title = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
         let to = draft.toContact?.address ?? draft.toAccount?.address
@@ -320,8 +328,9 @@ extension SendCollectibleViewController {
                         return
                     }
 
-                    self.askRecipientToOptInViewController?.dismissScreen {
-                        self.openOptInInformation()
+                    self.dismiss(animated: true) {
+                        [weak self] in
+                        self?.openOptInInformation()
                     }
                 }
             )
@@ -339,16 +348,16 @@ extension SendCollectibleViewController {
                     return
                 }
 
-                self.requestOptInToRecipeint()
+                self.sendOptInRequestToReceiver()
             }
         )
 
-        askRecipientToOptInViewController = bottomTransition.perform(
+        transitionToAskReceiverToOptIn.perform(
             .bottomWarning(
                 configurator: configurator
             ),
             by: .presentWithoutNavigationController
-        ) as? BottomWarningViewController
+        )
     }
 
     private func cancelOngoingFetchAccountsEnpoint() {
@@ -371,10 +380,8 @@ extension SendCollectibleViewController {
             by: .present
         ) as? SendCollectibleAccountListViewController
         screen?.eventHandler = {
-            [weak self] event in
-            guard let self = self else {
-                return
-            }
+            [weak self, weak screen] event in
+            guard let self = self else { return }
             self.sendCollectibleActionView.recustomizeTransferActionButtonAppearance(
                 self.theme.sendCollectibleViewTheme.actionViewTheme,
                 isEnabled: true
@@ -487,21 +494,26 @@ extension SendCollectibleViewController: TransactionSignChecking {
     }
 
     private func openOptInInformation() {
-        let configurator = BottomWarningViewConfigurator(
-            title: "collectible-opt-in-info-title".localized,
-            description: .plain("collectible-opt-in-info-description".localized),
-            secondaryActionButtonTitle: "title-close".localized
+        let uiSheet = UISheet(
+            title: "collectible-opt-in-info-title".localized.bodyLargeMedium(),
+            body: "collectible-opt-in-info-description".localized.bodyRegular()
         )
 
-        bottomTransition.perform(
-            .bottomWarning(
-                configurator: configurator
-            ),
+        let closeAction = UISheetAction(
+            title: "title-close".localized,
+            style: .cancel
+        ) { [unowned self] in
+            self.dismiss(animated: true)
+        }
+        uiSheet.addAction(closeAction)
+
+        transitionToOptInInformation.perform(
+            .sheetAction(sheet: uiSheet),
             by: .presentWithoutNavigationController
         )
     }
 
-    private func requestOptInToRecipeint() {
+    private func sendOptInRequestToReceiver() {
         let receiverAddress = sendCollectibleActionView.addressInputViewText
 
         if let receiverAddress = receiverAddress {

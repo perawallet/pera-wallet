@@ -69,7 +69,7 @@ extension AssetListItemViewModel {
         let asset = item.asset
 
         if asset.isAlgo {
-            imageSource = AssetImageSource(asset: "icon-algo-circle-green".uiImage)
+            imageSource = AssetImageSource(asset: "icon-algo-circle".uiImage)
             return
         }
 

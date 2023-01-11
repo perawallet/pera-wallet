@@ -103,8 +103,10 @@ extension RootViewController {
         let homeViewController = HomeViewController(
             swapDataStore: SwapDataLocalStore(),
             dataController: HomeAPIDataController(
-                appConfiguration.sharedDataController,
-                announcementDataController: announcementAPIDataController
+                sharedDataController: appConfiguration.sharedDataController,
+                session: appConfiguration.session,
+                announcementDataController: announcementAPIDataController,
+                walletConnector: appConfiguration.walletConnector
             ),
             copyToClipboardController: ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController

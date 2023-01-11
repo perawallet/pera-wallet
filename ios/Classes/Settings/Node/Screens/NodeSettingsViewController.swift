@@ -119,29 +119,22 @@ extension NodeSettingsViewController {
         _ node: AlgorandNode
     ) {
         willSelectNetwork(node.network)
-        
-        if pushNotificationController.token == nil {
-            selectOnPushDisabledDevice(node: node) {
-                network in
-                self.didSelectNetwork(network)
+
+        select(
+            node: node,
+            onChange: {
+                self.nodeSettingsView.reloadData()
+
+                NotificationCenter.default.post(
+                    name: Self.didUpdateNetwork,
+                    object: self
+                )
+            },
+            onComplete: {
+                [weak self] network in
+                self?.didSelectNetwork(network)
             }
-        } else {
-            selectOnPushEnabledDevice(
-                node: node,
-                onChange: {
-                    self.nodeSettingsView.reloadData()
-                    
-                    NotificationCenter.default.post(
-                        name: Self.didUpdateNetwork,
-                        object: self
-                    )
-                },
-                onComplete: {
-                    [weak self] network in
-                    self?.didSelectNetwork(network)
-                }
-            )
-        }
+        )
     }
     
     private func willSelectNetwork(
@@ -149,19 +142,8 @@ extension NodeSettingsViewController {
     ) {
         sharedDataController.stopPolling()
     }
-    
-    private func selectOnPushDisabledDevice(
-        node: AlgorandNode,
-        onComplete completion: (ALGAPI.Network) -> Void
-    ) {
-        session?.authenticatedUser?.setDefaultNode(node)
-        api?.setupNetworkBase(node.network)
-        sharedDataController.resetPolling()
-        
-        completion(node.network)
-    }
-    
-    private func selectOnPushEnabledDevice(
+
+    private func select(
         node: AlgorandNode,
         onChange change: () -> Void,
         onComplete completion: @escaping (ALGAPI.Network) -> Void

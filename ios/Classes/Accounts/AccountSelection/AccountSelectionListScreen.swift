@@ -267,6 +267,7 @@ extension AccountSelectionListScreen {
     private func createTransactionController() -> TransactionController {
         return TransactionController(
             api: api!,
+            sharedDataController: sharedDataController,
             bannerController: bannerController,
             analytics: analytics
         )

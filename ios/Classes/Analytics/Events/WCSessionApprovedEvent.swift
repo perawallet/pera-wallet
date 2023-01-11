@@ -26,14 +26,16 @@ struct WCSessionApprovedEvent: ALGAnalyticsEvent {
         topic: String,
         dappName: String,
         dappURL: String,
-        address: String
+        address: String,
+        totalAccount: Int
     ) {
         self.name = .wcSessionApproved
         self.metadata = [
             .wcSessionTopic: topic,
             .dappName: dappName,
             .dappURL: dappURL,
-            .accountAddress: address
+            .accountAddress: address,
+            .totalAccount: totalAccount
         ]
     }
 }
@@ -43,13 +45,15 @@ extension AnalyticsEvent where Self == WCSessionApprovedEvent {
         topic: String,
         dappName: String,
         dappURL: String,
-        address: String
+        address: String,
+        totalAccount: Int
     ) -> Self {
         return WCSessionApprovedEvent(
             topic: topic,
             dappName: dappName,
             dappURL: dappURL,
-            address: address
+            address: address,
+            totalAccount: totalAccount
         )
     }
 }

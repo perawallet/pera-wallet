@@ -25,7 +25,6 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
     let noContentViewTheme: NoContentViewTheme
     
     let title: TextStyle
-    let titleText: EditText
     let titleTopPadding: LayoutMetric
     
     let subtitle: TextStyle
@@ -44,20 +43,16 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = Colors.Defaults.background
         
         self.noContentViewTheme = NoContentViewCommonTheme()
-        
-        self.title = [
-            .textOverflow(SingleLineFittingText()),
-        ]
-        var titleAttributes = Typography.titleMediumAttributes()
-        titleAttributes.insert(.textColor(Colors.Text.main))
-        self.titleText = .attributedString(
-            "asset-remove-title"
-                .localized
-                .attributed(
-                    titleAttributes
-                )
-        )
 
+        let titleText =
+            "asset-opt-out-title"
+                .localized
+                .titleMedium(lineBreakMode: .byTruncatingTail)
+        self.title = [
+            .text(titleText),
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.main)
+        ]
         self.titleTopPadding = 32
         
         self.subtitle = [

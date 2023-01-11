@@ -24,7 +24,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<FiatCurrencyList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.currencies)
             .method(.get)
             .completionHandler(handler)
@@ -38,7 +38,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<FiatCurrency>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.mobile)
+            .base(.mobileV1(network))
             .path(.currencyDetail, args: currencyId)
             .method(.get)
             .completionHandler(handler)

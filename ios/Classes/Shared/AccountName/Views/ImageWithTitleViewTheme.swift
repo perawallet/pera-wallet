@@ -25,46 +25,6 @@ protocol ImageWithTitleViewTheme: StyleSheet, LayoutSheet {
     var imageSize: LayoutSize { get }
 }
 
-extension ImageWithTitleViewTheme {
-    var titleLabel: TextStyle {
-        return [
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left),
-            .textColor(Colors.Text.main),
-            .font(Fonts.DMSans.regular.make(15))
-        ]
-    }
-}
-
-struct AccountNameViewLargeTheme: ImageWithTitleViewTheme {
-    let horizontalPadding: LayoutMetric
-    let imageSize: LayoutSize
-
-    init(_ family: LayoutFamily) {
-        self.imageSize = (40, 40)
-        self.horizontalPadding = 16
-    }
-}
-
-struct AccountNameViewSmallTheme: ImageWithTitleViewTheme {
-    let horizontalPadding: LayoutMetric
-    let imageSize: LayoutSize
-    
-    var titleLabel: TextStyle {
-        return [
-            .textOverflow(SingleLineText()),
-            .textAlignment(.left),
-            .textColor(Colors.Text.main),
-            .font(Fonts.DMSans.regular.make(15))
-        ]
-    }
-
-    init(_ family: LayoutFamily) {
-        self.imageSize = (24, 24)
-        self.horizontalPadding = 12
-    }
-}
-
 struct SwitchAccountNameViewTheme: ImageWithTitleViewTheme {
     let horizontalPadding: LayoutMetric
     let imageSize: LayoutSize
