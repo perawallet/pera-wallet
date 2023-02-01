@@ -50,6 +50,7 @@
                 android:id="@+id/enterUrlInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textUri"
                 android:layout_marginTop="@dimen/spacing_xxxxlarge"
                 app:hint="@string/enter_url_of_web_wallet" />
 

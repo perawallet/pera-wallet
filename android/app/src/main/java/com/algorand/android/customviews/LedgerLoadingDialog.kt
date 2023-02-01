@@ -33,7 +33,6 @@ class LedgerLoadingDialog : BaseBottomSheet(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        listener = parentFragment as? Listener
         isCancelable = false
     }
 
@@ -103,7 +102,7 @@ class LedgerLoadingDialog : BaseBottomSheet(
         dismissAllowingStateLoss()
     }
 
-    interface Listener {
+    fun interface Listener {
         fun onLedgerLoadingCancelled(shouldStopResources: Boolean)
     }
 
@@ -115,11 +114,13 @@ class LedgerLoadingDialog : BaseBottomSheet(
 
         fun createLedgerLoadingDialog(
             ledgerName: String?,
+            listener: Listener,
             currentTransactionIndex: Int? = null,
             totalTransactionCount: Int? = null,
             isTransactionIndicatorVisible: Boolean = false
         ): LedgerLoadingDialog {
             return LedgerLoadingDialog().apply {
+                this.listener = listener
                 arguments = Bundle().apply {
                     putString(LEDGER_NAME_KEY, ledgerName)
                     if (currentTransactionIndex != null) putInt(CURRENT_TRANSACTION_INDEX, currentTransactionIndex)

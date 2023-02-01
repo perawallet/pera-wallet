@@ -830,7 +830,6 @@
     <string name="disclaimer">HAFTUNGSAUSSCHLUSS</string>
     <string name="export_to_pera_web">Zu Pera Web exportieren</string>
     <string name="you_re_about_to_share">Sie sind dabei, Ihre Passphrase zu teilen und in Pera Web Wallet zu importieren!</string>
-    <string name="never_accept_a">Nehmen Sie niemals eine Anfrage an, die nicht von Ihnen gestellt wurde.</string>
     <string name="confirm_export_domain">Export-Domain bestätigen</string>
     <string name="for_your_security_please_confirm">Zu Ihrer Sicherheit bestätigen Sie bitte, dass Sie Ihre Konten zu Pera Web exportieren, indem Sie den Domainnamen eingeben, den Sie auf Ihrem Computer sehen.</string>
     <string name="enter_url_of_web_wallet">URL der Web-Wallet eingeben</string>

@@ -182,7 +182,7 @@ class AsaProfilePreviewUseCase @Inject constructor(
                 asaStatusPreviewMapper.mapToAsaAccountSelectionStatusPreview(
                     statusLabelTextResId = R.string.you_can_opt_in_to_this,
                     peraButtonState = PeraButtonState.ADDITION,
-                    actionButtonTextResId = R.string.opt_in_to_asset
+                    actionButtonTextResId = R.string.opt_dash_in
                 )
             }
             !isUserOptedInAsset -> {
@@ -190,7 +190,7 @@ class AsaProfilePreviewUseCase @Inject constructor(
                     accountAddress = accountAddressUseCase.createAccountAddress(accountAddress),
                     statusLabelTextResId = R.string.you_can_add_this_asset,
                     peraButtonState = PeraButtonState.ADDITION,
-                    actionButtonTextResId = R.string.opt_in_to_asset
+                    actionButtonTextResId = R.string.opt_dash_in
                 )
             }
             isUserOptedInAsset && hasUserAmount -> {

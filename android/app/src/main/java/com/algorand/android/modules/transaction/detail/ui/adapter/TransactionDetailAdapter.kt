@@ -37,6 +37,7 @@ import com.algorand.android.modules.transaction.detail.ui.viewholder.Transaction
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionInnerTransactionListItemViewHolder
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionNoteViewHolder
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionOnCompletionViewHolder
+import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionRoundViewHolder
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionSenderViewHolder
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionStatusViewHolder
 import com.algorand.android.ui.common.walletconnect.WalletConnectExtrasChipGroupView
@@ -116,6 +117,7 @@ class TransactionDetailAdapter(
             TransactionDetailItem.ItemType.TRANSACTION_AMOUNT_ITEM.ordinal -> createTransactionAmountViewHolder(parent)
             TransactionDetailItem.ItemType.CHIP_GROUP_ITEM.ordinal -> createChipGroupViewHolder(parent)
             TransactionDetailItem.ItemType.DATE_ITEM.ordinal -> createDateViewHolder(parent)
+            TransactionDetailItem.ItemType.ROUND_ITEM.ordinal -> createRoundViewHolder(parent)
             TransactionDetailItem.ItemType.NOTE_ITEM.ordinal -> createNoteViewHolder(parent)
             TransactionDetailItem.ItemType.TRANSACTION_ID_ITEM.ordinal -> createTransactionIdViewHolder(parent)
             TransactionDetailItem.ItemType.DIVIDER_ITEM.ordinal -> createDividerViewHolder(parent)
@@ -169,6 +171,10 @@ class TransactionDetailAdapter(
 
     private fun createDateViewHolder(parent: ViewGroup): TransactionDateViewHolder {
         return TransactionDateViewHolder.create(parent)
+    }
+
+    private fun createRoundViewHolder(parent: ViewGroup): TransactionRoundViewHolder {
+        return TransactionRoundViewHolder.create(parent)
     }
 
     private fun createTransactionAssetInformationViewHolder(parent: ViewGroup): TransactionAssetInformationViewHolder {

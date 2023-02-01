@@ -54,6 +54,7 @@ class PeraFirebaseMessagingService : FirebaseMessagingService() {
         firebasePushTokenUseCase.setPushToken(token)
     }
 
+    @SuppressWarnings("LongMethod")
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         if (sharedPref.isNotificationActivated().not()) {
             return

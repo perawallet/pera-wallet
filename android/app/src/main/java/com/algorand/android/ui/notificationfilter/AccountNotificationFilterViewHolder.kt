@@ -29,7 +29,7 @@ class AccountNotificationFilterViewHolder(
             with(binding) {
                 nameTextView.text = accountListItem.itemConfiguration
                     .accountDisplayName
-                    ?.getDisplayTextOrAccountShortenedAddress()
+                    ?.getAccountPrimaryDisplayName()
 
                 if (accountListItem.itemConfiguration.accountIconResource != null) {
                     typeImageView.setAccountIconDrawable(

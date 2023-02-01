@@ -15,7 +15,7 @@ package com.algorand.android.utils
 import com.algorand.android.BuildConfig
 import com.algorand.android.models.Node
 
-const val CURRENT_DEFAULT_NODE_LIST_VERSION = 26
+const val CURRENT_DEFAULT_NODE_LIST_VERSION = 27
 
 const val MAINNET_CHAIN_ID = 416001L
 const val TESTNET_CHAIN_ID = 416002L
@@ -34,7 +34,7 @@ val mainNetNode = Node(
     isActive = false,
     isAddedDefault = true,
     networkSlug = MAINNET_NETWORK_SLUG,
-    mobileAlgorandAddress = BuildConfig.MOBILE_ALGORAND_BASE_URL
+    mobileAlgorandAddress = BuildConfig.MOBILE_ALGORAND_MAINNET_BASE_URL
 )
 
 val testNetNode = Node(
@@ -46,7 +46,7 @@ val testNetNode = Node(
     isActive = false,
     isAddedDefault = true,
     networkSlug = TESTNET_NETWORK_SLUG,
-    mobileAlgorandAddress = BuildConfig.MOBILE_ALGORAND_BASE_URL
+    mobileAlgorandAddress = BuildConfig.MOBILE_ALGORAND_TESTNET_BASE_URL
 )
 
 val betaNetNode = Node(

@@ -45,57 +45,65 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@id/notificationImageButton"
-                app:layout_constraintEnd_toEndOf="@id/portfolioValueTitleTextView"
-                app:layout_constraintStart_toStartOf="@id/portfolioValueTitleTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/notificationImageButton" />
         </Constraint>
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/portfolioValueTitleTextView"
             app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xsmall"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/notificationImageButton" />
-            <PropertySet android:alpha="1" />
-        </Constraint>
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+            <Transform
+                android:scaleX="1"
+                android:scaleY="1" />
+        </ConstraintOverride>
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/primaryPortfolioValue"
             app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xsmall"
-                app:layout_constraintBottom_toTopOf="@id/secondaryPortfolioValue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/portfolioValueTitleTextView"
-                app:layout_constraintVertical_bias="1"
-                app:layout_constraintVertical_chainStyle="packed" />
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
             <Transform
                 android:scaleX="1"
                 android:scaleY="1" />
-        </Constraint>
+        </ConstraintOverride>
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/secondaryPortfolioValue"
             app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xsmall"
-                app:layout_constraintBottom_toBottomOf="@id/toolbarLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/primaryPortfolioValue" />
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
             <Transform
                 android:scaleX="1"
                 android:scaleY="1" />
-        </Constraint>
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/toolbarPrimaryPortfolioValue"
+            app:visibilityMode="ignore">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+            <Transform
+                android:scaleX="0"
+                android:scaleY="0" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/toolbarSecondaryPortfolioValue"
+            app:visibilityMode="ignore">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+            <Transform
+                android:scaleX="0"
+                android:scaleY="0" />
+        </ConstraintOverride>
 
         <Constraint
             android:id="@id/loadingProgressBar"
@@ -163,60 +171,66 @@
             <Layout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xsmall"
                 app:layout_constraintBottom_toBottomOf="@id/notificationImageButton"
                 app:layout_constraintEnd_toStartOf="@id/portfolioValueTitleTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/notificationImageButton" />
         </Constraint>
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/portfolioValueTitleTextView"
             app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
             <PropertySet
                 android:alpha="0"
                 android:visibility="invisible" />
-        </Constraint>
+            <Transform
+                android:scaleX="0.8"
+                android:scaleY="0.8" />
+        </ConstraintOverride>
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/primaryPortfolioValue"
             app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                app:layout_constraintBottom_toTopOf="@id/secondaryPortfolioValue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/notificationImageButton"
-                app:layout_constraintVertical_bias="1"
-                app:layout_constraintVertical_chainStyle="packed" />
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
             <Transform
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                android:translationY="@dimen/spacing_small" />
-        </Constraint>
+                android:scaleX="0.8"
+                android:scaleY="0.8" />
+        </ConstraintOverride>
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/secondaryPortfolioValue"
             app:visibilityMode="ignore">
-            <Layout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/notificationImageButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/primaryPortfolioValue" />
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
             <Transform
-                android:scaleX="0.75"
-                android:scaleY="0.75" />
-        </Constraint>
+                android:scaleX="0.8"
+                android:scaleY="0.8" />
+        </ConstraintOverride>
+        <ConstraintOverride
+            android:id="@id/toolbarPrimaryPortfolioValue"
+            app:visibilityMode="ignore">
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+            <Transform
+                android:scaleX="1"
+                android:scaleY="1" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/toolbarSecondaryPortfolioValue"
+            app:visibilityMode="ignore">
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+            <Transform
+                android:scaleX="1"
+                android:scaleY="1" />
+        </ConstraintOverride>
 
         <Constraint
             android:id="@id/loadingProgressBar"

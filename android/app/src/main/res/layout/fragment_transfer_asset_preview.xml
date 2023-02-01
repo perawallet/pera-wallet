@@ -100,7 +100,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/to"
-            app:layout_constraintBottom_toBottomOf="@id/toUserView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/toUserView" />
 

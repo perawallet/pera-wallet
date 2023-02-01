@@ -16,6 +16,7 @@ import com.algorand.android.R
 import com.algorand.android.mapper.AssetActionMapper
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.BaseAccountAddress
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.assets.profile.asaprofile.ui.mapper.AsaStatusPreviewMapper
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.PeraButtonState
@@ -31,7 +32,6 @@ import com.algorand.android.nft.utils.CollectibleUtils
 import com.algorand.android.usecase.AccountAddressUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.AssetName
-import com.algorand.android.utils.toShortenedAddress
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
 
@@ -48,7 +48,8 @@ class CollectibleProfilePreviewUseCase @Inject constructor(
     private val collectibleMediaItemMapper: CollectibleMediaItemMapper,
     private val collectibleTraitItemMapper: CollectibleTraitItemMapper,
     private val collectibleDetailDecider: CollectibleDetailDecider,
-    private val nftAmountFormatDecider: NFTAmountFormatDecider
+    private val nftAmountFormatDecider: NFTAmountFormatDecider,
+    private val accountDisplayNameUseCase: AccountDisplayNameUseCase
 ) {
 
     fun createAssetAction(assetId: Long, accountAddress: String?): AssetAction {
@@ -99,8 +100,9 @@ class CollectibleProfilePreviewUseCase @Inject constructor(
                         traitListOfNFT = nftDetail.traits?.map { collectibleTraitItemMapper.mapToTraitItem(it) },
                         nftId = nftDetail.assetId,
                         nftDescription = nftDetail.description,
-                        creatorAccountAddressOfNFT = nftDetail.assetCreator?.publicKey.orEmpty(),
-                        formattedCreatorAccountAddressOfNFT = nftDetail.assetCreator?.publicKey.toShortenedAddress(),
+                        creatorAccountAddressOfNFT = accountDisplayNameUseCase.invoke(
+                            accountAddress = nftDetail.assetCreator?.publicKey.orEmpty()
+                        ),
                         formattedTotalSupply = nftAmountFormatDecider.decideNFTAmountFormat(
                             nftAmount = nftDetail.totalSupply,
                             fractionalDecimal = nftDetail.fractionDecimals

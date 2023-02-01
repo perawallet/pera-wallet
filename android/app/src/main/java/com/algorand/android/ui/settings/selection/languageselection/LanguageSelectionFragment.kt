@@ -15,7 +15,6 @@ package com.algorand.android.ui.settings.selection.languageselection
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.algorand.android.core.BaseActivity
 import com.algorand.android.core.DaggerBaseFragment
@@ -70,7 +69,7 @@ class LanguageSelectionFragment : DaggerBaseFragment(R.layout.fragment_selection
     private fun onDifferentLanguageListItemClick(languageListItem: LanguageListItem) {
         val langId = languageListItem.languageId
         (activity as BaseActivity).setLanguage(langId)
-        (activity as MainActivity).mainViewModel.refreshFirebasePushToken(null)
+        languageSelectionViewModel.refreshFirebasePushToken(null)
         languageSelectionViewModel.logLanguageChange(langId)
     }
 }

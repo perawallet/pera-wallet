@@ -355,7 +355,10 @@
                 android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
                 android:textColor="@color/link_primary"
                 app:drawableStartCompat="@drawable/ic_pera_round"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/showOnPeraExplorerLabelTextView"
                 app:layout_constraintTop_toBottomOf="@id/totalSupplyDividerView" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -424,21 +427,17 @@
 
     </ScrollView>
 
-    <include
+    <ViewStub
         android:id="@+id/collectibleStatusConstraintLayout"
-        layout="@layout/layout_asa_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <include
         android:id="@+id/progressbar"
-        layout="@layout/layout_full_screen_progress"
-        android:visibility="visible" />
+        layout="@layout/layout_full_screen_progress" />
 
 </FrameLayout>

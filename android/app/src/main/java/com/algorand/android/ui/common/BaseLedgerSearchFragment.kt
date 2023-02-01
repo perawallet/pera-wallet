@@ -238,7 +238,11 @@ abstract class BaseLedgerSearchFragment :
 
     private fun showError(errorMessage: String, @StringRes titleResId: Int = R.string.error_default_title) {
         setLoadingVisibility(isVisible = false)
-        showGlobalError(errorMessage, getString(titleResId))
+        showGlobalError(
+            errorMessage = errorMessage,
+            title = getString(titleResId),
+            tag = baseActivityTag
+        )
     }
 
     private fun startBluetoothSearch() {
@@ -276,7 +280,10 @@ abstract class BaseLedgerSearchFragment :
             return false
         }
         if (context?.isLocationEnabled() != true) {
-            showGlobalError(getString(R.string.please_ensure), getString(R.string.bluetooth_location_services))
+            showError(
+                errorMessage = getString(R.string.please_ensure),
+                titleResId = R.string.bluetooth_location_services
+            )
             navBack()
             return false
         }

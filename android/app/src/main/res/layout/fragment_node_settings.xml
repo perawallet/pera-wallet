@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -11,7 +10,7 @@
   ~ limitations under the License
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -28,6 +27,7 @@
 
     <include
         android:id="@+id/loadingLayout"
-        layout="@layout/layout_loading" />
+        layout="@layout/layout_full_screen_progress"
+        tools:visibility="visible" />
 
-</LinearLayout>
+</FrameLayout>

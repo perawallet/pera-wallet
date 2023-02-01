@@ -20,9 +20,9 @@ import com.algorand.android.models.AssetStatus.PENDING_FOR_SENDING
 import com.algorand.android.models.ui.AccountAssetItemButtonState
 import javax.inject.Inject
 
-class AssetItemActionButtonStateDecider @Inject constructor() {
+class AddAssetItemActionButtonStateDecider @Inject constructor() {
 
-    fun decideAssetItemActionButtonState(assetHolding: AssetHolding?): AccountAssetItemButtonState {
+    fun decideAddAssetItemActionButtonState(assetHolding: AssetHolding?): AccountAssetItemButtonState {
         return when (assetHolding?.status) {
             PENDING_FOR_REMOVAL, PENDING_FOR_ADDITION -> AccountAssetItemButtonState.PROGRESS
             PENDING_FOR_SENDING, OWNED_BY_ACCOUNT -> AccountAssetItemButtonState.CONFIRMATION

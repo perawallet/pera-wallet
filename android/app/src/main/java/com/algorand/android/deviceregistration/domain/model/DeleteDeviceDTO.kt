@@ -13,7 +13,6 @@
 package com.algorand.android.deviceregistration.domain.model
 
 data class DeleteDeviceDTO(
-    val networkSlug: String,
     val pushToken: String,
     val platform: String
 )

@@ -50,6 +50,13 @@ class TransactionDetailItemMapper @Inject constructor() {
         return TransactionDetailItem.StandardTransactionItem.DateItem(labelTextRes = labelTextRes, date = date)
     }
 
+    fun mapToRoundItem(
+        @StringRes labelTextRes: Int,
+        round: String
+    ): TransactionDetailItem.StandardTransactionItem.RoundItem {
+        return TransactionDetailItem.StandardTransactionItem.RoundItem(labelTextRes = labelTextRes, round = round)
+    }
+
     fun mapToPendingStatusItem(
         @StringRes transactionStatusTextRes: Int,
         @DrawableRes transactionStatusBackgroundColor: Int,

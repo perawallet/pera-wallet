@@ -22,6 +22,7 @@
         style="@style/TextView.TransactionLabelStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/spacing_small"
         app:layout_constraintBottom_toBottomOf="@id/onCompletionTextView"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"

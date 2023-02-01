@@ -12,18 +12,25 @@
 
 package com.algorand.android.ui.settings.selection.languageselection
 
-import javax.inject.Inject
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.models.Node
+import com.algorand.android.modules.firebase.token.FirebaseTokenManager
 import com.algorand.android.utils.analytics.logLanguageChange
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @HiltViewModel
 class LanguageSelectionViewModel @Inject constructor(
-    private val firebaseAnalytics: FirebaseAnalytics
+    private val firebaseAnalytics: FirebaseAnalytics,
+    private val firebaseTokenManager: FirebaseTokenManager
 ) : BaseViewModel() {
 
     fun logLanguageChange(newLanguageId: String) {
         firebaseAnalytics.logLanguageChange(newLanguageId)
+    }
+
+    fun refreshFirebasePushToken(previousNode: Node?) {
+        firebaseTokenManager.refreshFirebasePushToken(previousNode)
     }
 }

@@ -82,7 +82,8 @@
 
     <action
         android:id="@+id/action_global_lockFragment"
-        app:destination="@id/lockFragment" />
+        app:destination="@id/lockFragment"
+        app:launchSingleTop="true" />
 
     <action
         android:id="@+id/action_global_confirmationBottomSheet"
@@ -128,14 +129,9 @@
 
     <fragment
         android:id="@+id/lockFragment"
-        android:name="com.algorand.android.ui.lock.LockFragment"
+        android:name="com.algorand.android.modules.lock.ui.LockFragment"
         android:label="LockFragment"
         tools:layout="@layout/fragment_lock">
-        <action
-            android:id="@+id/action_lockFragment_to_homeNavigation"
-            app:destination="@id/homeNavigation"
-            app:popUpTo="@id/lockFragment"
-            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_lockFragment_to_warningConfirmationNavigation"
             app:destination="@id/warningConfirmationNavigation">
@@ -143,6 +139,10 @@
                 android:name="warningConfirmation"
                 app:argType="com.algorand.android.models.WarningConfirmation" />
         </action>
+        <action
+            android:id="@+id/action_lockFragment_pop"
+            app:popUpTo="@id/lockFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

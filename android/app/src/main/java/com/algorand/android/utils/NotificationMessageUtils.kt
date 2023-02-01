@@ -37,7 +37,7 @@ private fun Context.getAssetNameCharSequence(
         }
         if (!isShortNameNullOrBlank) {
             if (!isFullNameNullOrBlank) {
-                addSpace()
+                appendSpace()
             }
             color(ContextCompat.getColor(context, R.color.gray_500)) {
                 append(getString(R.string.ticker_asset_format, asset?.shortName?.toUpperCase(Locale.ENGLISH)))

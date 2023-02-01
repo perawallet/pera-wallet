@@ -28,7 +28,7 @@ class DeviceRegistrationUseCase @Inject constructor(
     fun registerDevice(token: String): Flow<DataResource<String>> = flow {
         when (val deviceId = deviceIdUseCase.getSelectedNodeDeviceId()) {
             null -> registerDeviceIdUseCase.registerDevice(token).collect { emit(it) }
-            else -> updatePushTokenUseCase.updatePushToken(deviceId, token, null).collect {
+            else -> updatePushTokenUseCase.updatePushToken(deviceId, token).collect {
                 if (it is DataResource.Error.Api && it.code == HttpURLConnection.HTTP_NOT_FOUND) {
                     registerDeviceIdUseCase.registerDevice(token).collect { emit(it) }
                 } else {

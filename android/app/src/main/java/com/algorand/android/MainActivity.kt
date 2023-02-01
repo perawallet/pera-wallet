@@ -39,11 +39,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import com.algorand.android.core.TransactionManager
-import com.algorand.android.customviews.AlertView
 import com.algorand.android.customviews.CoreActionsTabBarView
 import com.algorand.android.customviews.LedgerLoadingDialog
+import com.algorand.android.customviews.alertview.ui.AlertDialogQueueManager
+import com.algorand.android.customviews.alertview.ui.CustomAlertDialog
 import com.algorand.android.customviews.customsnackbar.CustomSnackbar
 import com.algorand.android.models.AccountCacheStatus
+import com.algorand.android.models.AlertMetadata
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetActionResult
@@ -58,9 +60,11 @@ import com.algorand.android.models.TransactionManagerResult
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.modules.assets.action.optin.UnsupportedAssetNotificationRequestActionBottomSheet
+import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
 import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
 import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
+import com.algorand.android.modules.firebase.token.FirebaseTokenManager
 import com.algorand.android.modules.perawebview.ui.BasePeraWebViewFragment
 import com.algorand.android.modules.qrscanning.QrScannerViewModel
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.WalletConnectConnectionBottomSheet
@@ -80,7 +84,6 @@ import com.algorand.android.utils.handleIntentWithBundle
 import com.algorand.android.utils.inappreview.InAppReviewManager
 import com.algorand.android.utils.isNotificationCanBeShown
 import com.algorand.android.utils.navigateSafe
-import com.algorand.android.utils.preference.isPasswordChosen
 import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.showWithStateCheck
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
@@ -91,13 +94,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.properties.Delegates
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity :
     CoreMainActivity(),
-    AlertView.AlertViewListener,
     UnsupportedAssetNotificationRequestActionBottomSheet.RequestAssetConfirmationListener,
     WalletConnectConnectionBottomSheet.Callback,
     ReceiveAccountSelectionFragment.ReceiveAccountSelectionFragmentListener {
@@ -125,11 +126,26 @@ class MainActivity :
     @Inject
     lateinit var errorProvider: WalletConnectTransactionErrorProvider
 
-    var isAppUnlocked: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
-        if (oldValue != newValue && newValue && isAssetSetupCompleted) {
+    @Inject
+    lateinit var firebaseTokenManager: FirebaseTokenManager
+
+    @Inject
+    lateinit var autoLockManager: AutoLockManager
+
+    private val isAppUnlocked: Boolean
+        get() = autoLockManager.isAppUnlocked
+
+    private val autoLockManagerListener = object : AutoLockManager.AutoLockManagerListener {
+        override fun onLock() {
+            nav(MainNavigationDirections.actionGlobalLockFragment())
+        }
+
+        override fun onUnlock() {
             handleRedirection()
         }
     }
+
+    private val alertViewDialog by lazy { CustomAlertDialog(this) }
 
     private var isAssetSetupCompleted: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
         if (oldValue != newValue && newValue && isAppUnlocked) {
@@ -149,15 +165,6 @@ class MainActivity :
         binding.coreActionsTabBarView.setCoreActionButtonEnabled(it == AccountCacheStatus.DONE)
     }
 
-    private val autoLockManagerObserver = Observer<Event<Any>> {
-        it.consume()?.let {
-            if (accountManager.isThereAnyRegisteredAccount() && isAppUnlocked && sharedPref.isPasswordChosen()) {
-                isAppUnlocked = false
-                nav(MainNavigationDirections.actionGlobalLockFragment())
-            }
-        }
-    }
-
     private val newNotificationObserver = Observer<Event<NotificationMetadata>> {
         it?.consume()?.let { newNotificationData ->
             with(newNotificationData) {
@@ -167,7 +174,7 @@ class MainActivity :
                 }
                 when (notificationType) {
                     NotificationType.ASSET_SUPPORT_REQUEST -> handleAssetSupportRequest(this)
-                    else -> binding.alertView.addAlertNotification(this)
+                    else -> showForegroundNotification(this)
                 }
             }
         }
@@ -305,6 +312,57 @@ class MainActivity :
         }
     }
 
+    private val ledgerLoadingDialogListener = LedgerLoadingDialog.Listener { shouldStopResources ->
+        hideLedgerLoadingDialog()
+        if (shouldStopResources) {
+            transactionManager.manualStopAllResources()
+        }
+    }
+
+    private val alertDialogQueueManagerListener = object : AlertDialogQueueManager.Listener {
+        override fun onDisplayAlertView(alertMetadata: AlertMetadata) {
+            alertViewDialog.displayAlertView(alertMetadata)
+        }
+
+        override fun onDismissAlertView() {
+            alertViewDialog.dismissCurrentAlertView()
+        }
+
+        override fun onQueueCompleted() {
+            alertViewDialog.cancel()
+        }
+    }
+
+    private val customAlertDialogListener = object : CustomAlertDialog.Listener {
+        override fun onTransactionAlertClick(accountAddress: String, assetId: Long) {
+            if (accountAddress.isBlank()) return
+            val accountCacheData = accountCacheManager.getCacheData(accountAddress) ?: return
+            val assetInformation = accountCacheData.assetsInformation.firstOrNull { it.assetId == assetId } ?: return
+            nav(
+                HomeNavigationDirections.actionGlobalAssetProfileNavigation(
+                    assetInformation.assetId,
+                    accountCacheData.account.address
+                )
+            )
+        }
+
+        override fun onAlertViewHidden() {
+            alertDialogQueueManager.showNextAlert()
+        }
+
+        override fun onAlertViewCancelled() {
+            alertDialogQueueManager.removeHeadOfQueue()
+        }
+    }
+
+    private val firebaseTokenManagerListener = FirebaseTokenManager.Listener {
+        onNewNodeActivated()
+    }
+
+    private val activeNodeCollector: suspend (Node?) -> Unit = { activatedNode ->
+        checkIfConnectedToTestNetOrBetaNet(activatedNode)
+    }
+
     private fun retryLatestAssetAdditionTransaction() {
         mainViewModel.getLatestAddAssetTransaction()?.let { transactionData ->
             sendAssetOperationTransaction(transactionData)
@@ -345,17 +403,17 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        with(mainViewModel) {
-            setupAutoLockManager(lifecycle)
-            setDeepLinkHandlerListener(deepLinkHandlerListener)
-        }
+        mainViewModel.setDeepLinkHandlerListener(deepLinkHandlerListener)
+        firebaseTokenManager.setListener(firebaseTokenManagerListener)
+        autoLockManager.setListener(autoLockManagerListener)
         setupCoreActionsTabBarView()
 
-        binding.alertView.apply {
+        alertDialogQueueManager.apply {
             setScope(lifecycle.coroutineScope)
-            setListener(this@MainActivity)
-            accounts = accountManager.getAccounts()
+            setListener(alertDialogQueueManagerListener)
         }
+
+        alertViewDialog.setListener(customAlertDialogListener)
 
         initObservers()
 
@@ -377,19 +435,6 @@ class MainActivity :
         }
     }
 
-    override fun onAlertNotificationClick(publicKeyToActivate: String?, assetIdToActivate: Long?) {
-        if (publicKeyToActivate != null && assetIdToActivate != null) {
-            val accountCacheData = accountCacheManager.getCacheData(publicKeyToActivate)
-            val assetInformation = accountCacheManager.getAssetInformation(publicKeyToActivate, assetIdToActivate)
-            if (accountCacheData != null && assetInformation != null) {
-                nav(
-                    HomeNavigationDirections
-                        .actionGlobalAssetProfileNavigation(assetInformation.assetId, accountCacheData.account.address)
-                )
-            }
-        }
-    }
-
     private fun showAssetOperationForegroundNotification(assetOperationResult: AssetOperationResult) {
         val safeAssetName = assetOperationResult.assetName.getName(resources)
         val messageDescription = getString(assetOperationResult.resultTitleResId, safeAssetName)
@@ -406,24 +451,7 @@ class MainActivity :
 
         mainViewModel.assetOperationResultLiveData.observe(this, addAssetResultObserver)
 
-        lifecycleScope.launch {
-            // Drop 1 added to get any list changes.
-            accountManager.accounts.drop(1).collect { accounts ->
-                mainViewModel.refreshFirebasePushToken(null)
-                binding.alertView.accounts = accounts
-            }
-        }
-
-        contactsDao.getAllLiveData().observe(
-            this,
-            Observer { contactList ->
-                binding.alertView.contacts = contactList
-            }
-        )
-
         transactionManager.transactionManagerResultLiveData.observe(this, transactionManagerResultObserver)
-
-        mainViewModel.autoLockLiveData.observe(this, autoLockManagerObserver)
 
         mainViewModel.accountBalanceSyncStatus.observe(this, assetSetupCompletedObserver)
 
@@ -441,6 +469,11 @@ class MainActivity :
         }
 
         walletConnectViewModel.setWalletConnectSessionTimeoutListener(::onWalletConnectSessionTimedOut)
+
+        collectLatestOnLifecycle(
+            flow = mainViewModel.activeNodeFlow,
+            collection = activeNodeCollector
+        )
     }
 
     private fun navigateToConnectionIssueBottomSheet() {
@@ -501,7 +534,7 @@ class MainActivity :
 
     private fun handlePendingIntent(): Boolean {
         return pendingIntent?.run {
-            val canPendingBeHandled = isAssetSetupCompleted && isAppUnlocked && mainViewModel.isLockNeeded().not()
+            val canPendingBeHandled = isAssetSetupCompleted && (isAppUnlocked || !mainViewModel.shouldAppLocked())
             if (canPendingBeHandled) {
                 if (dataString != null) {
                     mainViewModel.handleDeepLink(dataString.orEmpty())
@@ -582,10 +615,8 @@ class MainActivity :
         }
     }
 
-    fun onNewNodeActivated(previousNode: Node, activatedNode: Node) {
-        mainViewModel.refreshFirebasePushToken(previousNode)
-        mainViewModel.resetBlockPolling()
-        checkIfConnectedToTestNet()
+    private fun onNewNodeActivated() {
+        mainViewModel.onNewNodeActivated()
     }
 
     override fun onSessionRequestResult(wCSessionRequestResult: WCSessionRequestResult) {
@@ -608,7 +639,14 @@ class MainActivity :
     fun signAddAssetTransaction(assetActionResult: AssetActionResult) {
         if (!assetActionResult.publicKey.isNullOrBlank()) {
             val accountCacheData = accountCacheManager.getCacheData(assetActionResult.publicKey) ?: return
-            val transactionData = TransactionData.AddAsset(accountCacheData, assetActionResult.asset)
+            val transactionData = TransactionData.AddAsset(
+                senderAccountAddress = accountCacheData.account.address,
+                assetInformation = assetActionResult.asset,
+                senderAuthAddress = accountCacheData.authAddress,
+                isSenderRekeyedToAnotherAccount = accountCacheData.isRekeyedToAnotherAccount(),
+                senderAccountType = accountCacheData.account.type,
+                senderAccountDetail = accountCacheData.account.detail
+            )
             mainViewModel.setLatestAddAssetTransaction(transactionData)
             sendAssetOperationTransaction(transactionData)
         }
@@ -617,9 +655,15 @@ class MainActivity :
     fun signRemoveAssetTransaction(assetActionResult: AssetActionResult) {
         if (!assetActionResult.publicKey.isNullOrBlank()) {
             val accountCacheData = accountCacheManager.getCacheData(assetActionResult.publicKey) ?: return
-            val transactionData = with(assetActionResult) {
-                TransactionData.RemoveAsset(accountCacheData, asset, asset.creatorPublicKey.orEmpty())
-            }
+            val transactionData = TransactionData.RemoveAsset(
+                senderAccountAddress = accountCacheData.account.address,
+                assetInformation = assetActionResult.asset,
+                creatorPublicKey = assetActionResult.asset.creatorPublicKey.orEmpty(),
+                senderAuthAddress = accountCacheData.authAddress,
+                isSenderRekeyedToAnotherAccount = accountCacheData.isRekeyedToAnotherAccount(),
+                senderAccountType = accountCacheData.account.type,
+                senderAccountDetail = accountCacheData.account.detail
+            )
             sendAssetOperationTransaction(transactionData)
         }
     }
@@ -672,7 +716,7 @@ class MainActivity :
 
     private fun showLedgerLoadingDialog(ledgerName: String?) {
         if (ledgerLoadingDialog == null) {
-            ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(ledgerName)
+            ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(ledgerName, ledgerLoadingDialogListener)
             ledgerLoadingDialog?.showWithStateCheck(supportFragmentManager)
         }
     }

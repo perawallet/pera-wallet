@@ -38,7 +38,7 @@ class MobileHeaderInterceptor(
 
     private val defaultAppName = packageName.split('.')
         .run { elementAtOrNull(THIRD_ITEM_INDEX) ?: elementAtOrNull(SECOND_ITEM_INDEX).orEmpty() }
-        .capitalize()
+        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
     var currentActiveNode: Node? = null
 
@@ -48,10 +48,6 @@ class MobileHeaderInterceptor(
         val requestBuilder = request.newBuilder()
 
         currentActiveNode?.let { currentActiveNode ->
-            if (request.header(ALGORAND_NETWORK_KEY) == null) {
-                requestBuilder.addHeader(ALGORAND_NETWORK_KEY, currentActiveNode.networkSlug)
-            }
-
             val baseUrl = currentActiveNode.mobileAlgorandAddress.toHttpUrlOrNull()
             if (baseUrl != null) {
                 val newUrl = chain.request().url.newBuilder()

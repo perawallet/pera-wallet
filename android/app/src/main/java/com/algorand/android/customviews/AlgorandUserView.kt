@@ -33,6 +33,7 @@ import com.algorand.android.utils.extensions.changeTextAppearance
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.extensions.setContactIconDrawable
+import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.loadImage
 import com.algorand.android.utils.viewbinding.viewBinding
 
@@ -48,13 +49,17 @@ class AlgorandUserView @JvmOverloads constructor(
     fun setContact(user: User, enableAddressCopy: Boolean = true, showTooltip: Boolean = false) {
         with(binding) {
             mainTextView.apply {
+                maxLines = MAX_LINES_FOR_CONTACT
                 text = user.name
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
-            accountIconImageView.setContactIconDrawable(
-                uri = user.imageUriAsString?.toUri(),
-                iconSize = R.dimen.account_icon_size_normal
-            )
+            accountIconImageView.apply {
+                setContactIconDrawable(
+                    uri = user.imageUriAsString?.toUri(),
+                    iconSize = R.dimen.account_icon_size_normal
+                )
+                show()
+            }
             addContactButton.hide()
         }
         if (enableAddressCopy) enableLongPressToCopyText(user.publicKey)
@@ -70,13 +75,17 @@ class AlgorandUserView @JvmOverloads constructor(
     ) {
         with(binding) {
             mainTextView.apply {
+                maxLines = MAX_LINES_FOR_CONTACT
                 text = name
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
-            accountIconImageView.setContactIconDrawable(
-                uri = imageUriAsString,
-                iconSize = R.dimen.account_icon_size_normal
-            )
+            accountIconImageView.apply {
+                setContactIconDrawable(
+                    uri = imageUriAsString,
+                    iconSize = R.dimen.account_icon_size_normal
+                )
+                show()
+            }
             addContactButton.hide()
         }
         if (enableAddressCopy) enableLongPressToCopyText(publicKey)
@@ -92,6 +101,7 @@ class AlgorandUserView @JvmOverloads constructor(
     ) {
         with(binding) {
             mainTextView.apply {
+                maxLines = MAX_LINES_FOR_ADDRESS
                 text = displayAddress
                 changeTextAppearance(R.style.TextAppearance_Body_Mono)
             }
@@ -110,18 +120,25 @@ class AlgorandUserView @JvmOverloads constructor(
 
     fun setNftDomainAddress(nftDomainAddress: String, nftDomainServiceLogoUrl: String?) {
         with(binding) {
-            mainTextView.text = nftDomainAddress
-            context.loadImage(
-                nftDomainServiceLogoUrl.orEmpty(),
-                onResourceReady = { accountIconImageView.setImageDrawable(it) },
-                onLoadFailed = { accountIconImageView.setImageResource(R.drawable.ic_nfd_round) }
-            )
+            mainTextView.apply {
+                text = nftDomainAddress
+                maxLines = MAX_LINES_FOR_NFT_DOMAIN
+            }
+            accountIconImageView.apply {
+                context.loadImage(
+                    nftDomainServiceLogoUrl.orEmpty(),
+                    onResourceReady = { setImageDrawable(it) },
+                    onLoadFailed = { setImageResource(R.drawable.ic_nfd_round) }
+                )
+                show()
+            }
         }
     }
 
     fun setAccount(accountCacheData: AccountCacheData?, enableAddressCopy: Boolean = true) {
         with(binding) {
             mainTextView.apply {
+                maxLines = MAX_LINES_FOR_ACCOUNT
                 text = accountCacheData?.account?.name
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
@@ -129,10 +146,13 @@ class AlgorandUserView @JvmOverloads constructor(
                 val accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(
                     accountCacheData.account.type
                 )
-                accountIconImageView.setAccountIconDrawable(
-                    accountIconResource = accountIconResource,
-                    iconSize = R.dimen.account_icon_size_normal
-                )
+                accountIconImageView.apply {
+                    setAccountIconDrawable(
+                        accountIconResource = accountIconResource,
+                        iconSize = R.dimen.account_icon_size_normal
+                    )
+                    show()
+                }
                 if (enableAddressCopy) enableLongPressToCopyText(accountCacheData.account.address)
             }
             addContactButton.hide()
@@ -148,6 +168,7 @@ class AlgorandUserView @JvmOverloads constructor(
     ) {
         with(binding) {
             mainTextView.apply {
+                maxLines = MAX_LINES_FOR_ACCOUNT
                 text = name
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
@@ -156,6 +177,7 @@ class AlgorandUserView @JvmOverloads constructor(
                     accountIconResource = it,
                     iconSize = R.dimen.account_icon_size_normal
                 )
+                accountIconImageView.show()
             } ?: accountIconImageView.hide()
             addContactButton.hide()
             if (enableAddressCopy) enableLongPressToCopyText(publicKey)
@@ -185,5 +207,9 @@ class AlgorandUserView @JvmOverloads constructor(
 
     companion object {
         private const val TUTORIAL_SHOW_DELAY = 600L
+        private const val MAX_LINES_FOR_CONTACT = 1
+        private const val MAX_LINES_FOR_ACCOUNT = 1
+        private const val MAX_LINES_FOR_NFT_DOMAIN = 1
+        private const val MAX_LINES_FOR_ADDRESS = Int.MAX_VALUE
     }
 }

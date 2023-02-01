@@ -14,8 +14,8 @@ package com.algorand.android.modules.swap.transactionsummary.ui.usecase
 
 import android.content.res.Resources
 import com.algorand.android.R
-import com.algorand.android.models.Account
 import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.currency.domain.model.Currency
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
 import com.algorand.android.modules.swap.transactionsummary.ui.mapper.BaseSwapTransactionSummaryItemMapper
@@ -28,7 +28,6 @@ import com.algorand.android.modules.swap.transactionsummary.ui.model.BaseSwapTra
 import com.algorand.android.modules.transaction.detail.domain.model.TransactionSign
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.ALGO_DECIMALS
-import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.formatAsAlgoAmount
@@ -42,7 +41,8 @@ import kotlinx.coroutines.flow.flow
 class SwapTransactionSummaryPreviewUseCase @Inject constructor(
     private val swapTransactionSummaryPreviewMapper: SwapTransactionSummaryPreviewMapper,
     private val baseSwapTransactionSummaryItemMapper: BaseSwapTransactionSummaryItemMapper,
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) {
 
     fun getSwapSummaryPreview(
@@ -98,10 +98,9 @@ class SwapTransactionSummaryPreviewUseCase @Inject constructor(
     }
 
     private fun createSwapAccountItem(swapQuote: SwapQuote): SwapAccountItemTransaction {
-        val accountDetail = accountDetailUseCase.getCachedAccountDetail(swapQuote.accountAddress.orEmpty())?.data
-        val accountDisplayName = accountDetail?.account?.run {
-            AccountDisplayName.create(address, name, type)
-        } ?: AccountDisplayName.create(swapQuote.accountAddress.orEmpty(), "", Account.defaultAccountType)
+        val accountDetail = accountDetailUseCase.getCachedAccountDetail(swapQuote.accountAddress)?.data
+        val safeAccountAddress = accountDetail?.account?.address ?: swapQuote.accountAddress
+        val accountDisplayName = getAccountDisplayNameUseCase.invoke(safeAccountAddress)
         val accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(accountDetail?.account?.type)
         return baseSwapTransactionSummaryItemMapper.mapToSwapAccountItem(
             accountDisplayName = accountDisplayName,

@@ -37,6 +37,8 @@ abstract class BaseFragment(
     abstract val fragmentConfiguration: FragmentConfiguration
 
     private val fragmentTag: String = this::class.simpleName.orEmpty()
+    protected val baseActivityTag: String
+        get() = (activity as? BaseActivity)?.getTag().orEmpty()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

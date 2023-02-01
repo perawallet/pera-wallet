@@ -74,14 +74,14 @@ class CollectibleDetailFragment : BaseCollectibleDetailFragment() {
             setNFTDescription(nftDescription)
             setNFTOwnerAccount(optedInAccountTypeDrawableResId, optedInAccountDisplayName, formattedNFTAmount)
             setNFTId(nftId)
-            setCollectibleAssetIdClickListener(nftId, optedInAccountDisplayName.getAccountAddress())
-            setNFTCreatorAccount(creatorAccountAddressOfNFT, formattedCreatorAccountAddressOfNFT)
+            setCollectibleAssetIdClickListener(nftId, optedInAccountDisplayName.getRawAccountAddress())
+            setNFTCreatorAccount(creatorAccountAddressOfNFT)
             setNFTTraits(traitListOfNFT)
             setShowOnPeraExplorer(peraExplorerUrl)
             setNFTTotalSupply(formattedTotalSupply)
             globalErrorEvent?.consume()?.run { if (this.isNotBlank()) showGlobalError(this) }
             fractionalCollectibleSendEvent?.consume()?.run {
-                navToSendAlgoNavigation(optedInAccountDisplayName.getAccountAddress(), nftId)
+                navToSendAlgoNavigation(optedInAccountDisplayName.getRawAccountAddress(), nftId)
             }
             pureCollectibleSendEvent?.consume()?.run { navToCollectibleSendFragment() }
             optOutNFTEvent?.consume()?.run { navToOptOutNavigation(this) }

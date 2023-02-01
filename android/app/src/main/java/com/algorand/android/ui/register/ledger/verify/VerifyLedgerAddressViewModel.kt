@@ -12,14 +12,16 @@
 
 package com.algorand.android.ui.register.ledger.verify
 
-import javax.inject.Inject
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Account
 import com.algorand.android.usecase.AccountAdditionUseCase
 import com.algorand.android.utils.Event
-import dagger.hilt.android.lifecycle.HiltViewModel
 import com.algorand.android.utils.analytics.CreationType
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class VerifyLedgerAddressViewModel @Inject constructor(
@@ -131,6 +133,8 @@ class VerifyLedgerAddressViewModel @Inject constructor(
 
     fun addNewAccount(account: Account, creationType: CreationType?) {
         // TODO: Handle error case
-        accountAdditionUseCase.addNewAccount(account, creationType)
+        viewModelScope.launch {
+            accountAdditionUseCase.addNewAccount(account, creationType)
+        }
     }
 }

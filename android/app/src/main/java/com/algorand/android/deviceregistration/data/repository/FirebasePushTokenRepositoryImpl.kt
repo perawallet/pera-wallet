@@ -55,7 +55,7 @@ class FirebasePushTokenRepositoryImpl @Inject constructor(
             deleteDeviceDTO.platform
         )
         requestWithHipoErrorHandler(hipoErrorHandler) {
-            mobileAlgorandApi.deletePushToken(deleteDeviceDTO.networkSlug, pushTokenDeleteRequest)
+            mobileAlgorandApi.deletePushToken(pushTokenDeleteRequest)
         }.use(
             onSuccess = { emit(Result.Success(it)) },
             onFailed = { exception, code -> emit(Result.Error(exception, code)) }

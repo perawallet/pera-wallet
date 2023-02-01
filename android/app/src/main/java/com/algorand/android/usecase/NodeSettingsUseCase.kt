@@ -14,21 +14,34 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.models.Node
-import com.algorand.android.network.AlgodInterceptor
-import com.algorand.android.network.IndexerInterceptor
-import com.algorand.android.network.MobileHeaderInterceptor
+import com.algorand.android.modules.firebase.token.FirebaseTokenManager
 import com.algorand.android.repository.NodeRepository
+import com.algorand.android.ui.settings.node.ui.mapper.NodeSettingsPreviewMapper
+import com.algorand.android.ui.settings.node.ui.model.NodeSettingsPreview
+import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import com.algorand.android.utils.defaultNodeList
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 class NodeSettingsUseCase @Inject constructor(
-    private val mobileHeaderInterceptor: MobileHeaderInterceptor,
-    private val indexerInterceptor: IndexerInterceptor,
-    private val algodInterceptor: AlgodInterceptor,
-    private val nodeRepository: NodeRepository
+    private val nodeRepository: NodeRepository,
+    private val firebaseTokenManager: FirebaseTokenManager,
+    private val nodeSettingsPreviewMapper: NodeSettingsPreviewMapper
 ) {
+
+    fun getNodeSettingsPreviewFlow(): Flow<NodeSettingsPreview?> {
+        return combine(
+            nodeRepository.getAllNodesAsFlow(),
+            firebaseTokenManager.firebasePushTokenStatusFlow
+        ) { nodeList, pushTokenStatus ->
+            nodeSettingsPreviewMapper.mapToNodeSettingsPreview(
+                isLoading = pushTokenStatus is DataResource.Loading,
+                nodeList = nodeList
+            )
+        }
+    }
 
     suspend fun setNodeListToDatabase(nodeList: List<Node>) {
         nodeRepository.setNodeListToDatabase(nodeList)
@@ -42,22 +55,14 @@ class NodeSettingsUseCase @Inject constructor(
         return getActiveNodeOrDefault().networkSlug == TESTNET_NETWORK_SLUG
     }
 
-    fun setSelectedNode(nodeList: List<Node>?, selectedItem: Node): List<Node> {
-        return nodeList?.apply {
+    suspend fun setSelectedNode(selectedItem: Node): List<Node> {
+        return nodeRepository.getAllNodes().apply {
             forEach { it.isActive = false }
             firstOrNull { it.nodeDatabaseId == selectedItem.nodeDatabaseId }?.apply { isActive = true }
-        }.orEmpty()
+        }
     }
 
     suspend fun getActiveNodeOrDefault(): Node {
         return nodeRepository.getAllNodes().firstOrNull { it.isActive } ?: defaultNodeList.first()
-    }
-
-    fun activateNewNode(newNode: Node) {
-        newNode.activate(
-            indexerInterceptor,
-            mobileHeaderInterceptor,
-            algodInterceptor
-        )
     }
 }

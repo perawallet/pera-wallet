@@ -253,7 +253,7 @@
     <color name="testnet_text">@color/gray_900</color>
 
     <!-- Algo Icon -->
-    <color name="algo_icon_bg">@color/turquoise_600</color>
+    <color name="algo_icon_bg">@color/black</color>
     <color name="algo_icon">@color/white</color>
 
     <color name="button_stroke_color">@color/gray_100</color>
@@ -357,5 +357,4 @@
 
     <color name="negative_market_value_background_color">@color/salmon_500_alpha_24</color>
     <color name="positive_market_value_background">@color/turquoise_700_alpha_10</color>
-
 </resources>

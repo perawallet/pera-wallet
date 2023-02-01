@@ -30,7 +30,7 @@ class AccountSelectionViewHolder(
     fun bind(accountSelection: AccountSelection, showBalance: Boolean, defaultSelectedAccountAddress: String?) {
         with(binding) {
             with(accountSelection) {
-                nameTextView.text = accountDisplayName?.getDisplayTextOrAccountShortenedAddress()
+                nameTextView.text = accountDisplayName?.getAccountPrimaryDisplayName()
                 if (accountIconResource != null) {
                     typeImageView.setAccountIconDrawable(accountIconResource, R.dimen.account_icon_size_large)
                 }

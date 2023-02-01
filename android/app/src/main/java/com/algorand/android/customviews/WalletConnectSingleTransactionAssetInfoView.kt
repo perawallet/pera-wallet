@@ -19,6 +19,7 @@ import android.text.style.AbsoluteSizeSpan
 import android.util.AttributeSet
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.setPadding
 import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.databinding.CustomWalletConnectTransactionShortAmountViewBinding
@@ -43,6 +44,10 @@ class WalletConnectSingleTransactionAssetInfoView @JvmOverloads constructor(
     private val binding = viewBinding(CustomWalletConnectTransactionShortAmountViewBinding::inflate)
 
     private var listener: WalletConnectSingleTransactionAssetInfoViewListener? = null
+
+    init {
+        initRootView()
+    }
 
     fun setTransactionShortAmount(walletConnectTransactionAmount: WalletConnectTransactionAmount) {
         with(walletConnectTransactionAmount) {
@@ -147,6 +152,11 @@ class WalletConnectSingleTransactionAssetInfoView @JvmOverloads constructor(
             appOnCompleteTextView.setText(appOnComplete.displayTextResId)
             appOnCompleteGroup.show()
         }
+    }
+
+    private fun initRootView() {
+        val padding = resources.getDimension(R.dimen.spacing_normal).toInt()
+        setPadding(padding)
     }
 
     fun interface WalletConnectSingleTransactionAssetInfoViewListener {

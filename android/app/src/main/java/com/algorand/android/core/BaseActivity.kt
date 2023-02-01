@@ -28,6 +28,10 @@ abstract class BaseActivity : LocalizationActivity() {
         topToast?.show(title, description)
     }
 
+    fun getTag(): String {
+        return activityTag
+    }
+
     override fun onStop() {
         topToast?.dismissAnimated()
         super.onStop()

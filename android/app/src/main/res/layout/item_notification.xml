@@ -34,7 +34,7 @@
         app:layout_constraintBottom_toBottomOf="@id/descriptionTextView"
         app:layout_constraintStart_toEndOf="@id/readStatusImageView"
         app:layout_constraintTop_toTopOf="@id/descriptionTextView"
-        tools:srcCompat="@drawable/ic_algo_green_round" />
+        tools:srcCompat="@drawable/ic_algo_round" />
 
     <TextView
         android:id="@+id/descriptionTextView"

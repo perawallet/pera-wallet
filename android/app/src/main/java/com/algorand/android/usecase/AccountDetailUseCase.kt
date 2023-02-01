@@ -1,3 +1,5 @@
+@file:SuppressWarnings("TooManyFunctions")
+
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +21,15 @@ import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.models.AccountIconResource
+import com.algorand.android.models.AssetStatus.PENDING_FOR_REMOVAL
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.repository.AccountRepository
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.canSignTransaction
 import com.algorand.android.utils.exceptions.AccountNotFoundException
+import com.algorand.android.utils.extensions.getAssetHoldingOrNull
+import com.algorand.android.utils.extensions.getAssetStatusOrNull
 import com.algorand.android.utils.isRekeyedToAnotherAccount
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.toShortenedAddress
@@ -40,7 +46,8 @@ class AccountDetailUseCase @Inject constructor(
     private val accountRepository: AccountRepository,
     private val accountInformationUseCase: AccountInformationUseCase,
     private val accountManager: AccountManager,
-    private val accountSummaryMapper: AccountSummaryMapper
+    private val accountSummaryMapper: AccountSummaryMapper,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) : BaseUseCase() {
 
     fun getAccountDetailCacheFlow() = accountRepository.getAccountDetailCacheFlow()
@@ -102,9 +109,13 @@ class AccountDetailUseCase @Inject constructor(
         return getCachedAccountDetail(publicKey)?.data?.accountInformation?.getAllAssetIds()?.contains(assetId) ?: false
     }
 
+    fun isAssetPendingForRemovalFromAccount(accountAddress: String, assetId: Long): Boolean {
+        return getCachedAccountDetail(accountAddress)?.data?.getAssetStatusOrNull(assetId) == PENDING_FOR_REMOVAL
+    }
+
     fun isAssetBalanceZero(publicKey: String, assetId: Long): Boolean? {
         getCachedAccountDetail(publicKey)?.let { account ->
-            account.data?.accountInformation?.assetHoldingList?.firstOrNull { it.assetId == assetId }?.let {
+            account.data?.getAssetHoldingOrNull(assetId)?.let {
                 return it.amount == BigInteger.ZERO
             }
         } ?: return null
@@ -140,7 +151,11 @@ class AccountDetailUseCase @Inject constructor(
         return accountInformationUseCase.getAccountInformation(account.address).map { accountInformationData ->
             when (accountInformationData) {
                 is DataResource.Success -> {
-                    val accountDetail = AccountDetail(account, accountInformationData.data)
+                    val accountDetail = AccountDetail(
+                        account = account,
+                        accountInformation = accountInformationData.data,
+                        nameServiceName = getAccountNameService(account.address)
+                    )
                     DataResource.Success(accountDetail)
                 }
                 is DataResource.Error.Api -> {
@@ -161,7 +176,12 @@ class AccountDetailUseCase @Inject constructor(
     // TODO this function shouldn't return nullable model also it should be moved into its own UseCase
     fun getAccountSummary(publicKey: String): AccountDetailSummary? {
         val accountDetail = getCachedAccountDetail(publicKey)?.data ?: return null
-        return accountSummaryMapper.mapTo(accountDetail, canAccountSignTransaction(publicKey))
+        return accountSummaryMapper.mapToAccountDetailSummary(
+            canSignTransaction = canAccountSignTransaction(publicKey),
+            accountType = accountDetail.account.type,
+            accountAddress = publicKey,
+            accountDisplayName = getAccountDisplayNameUseCase.invoke(publicKey)
+        )
     }
 
     fun getAccountType(publicKey: String): Account.Type? {
@@ -212,5 +232,13 @@ class AccountDetailUseCase @Inject constructor(
                 cachedAccount.value.data != null &&
                 (canAccountSignTransaction(cachedAccount.key) || excludeWatchAccounts.not())
         }
+    }
+
+    fun setAccountNameService(accountAddress: String, nameServiceName: String?) {
+        accountRepository.getCachedAccountDetail(accountAddress)?.data?.nameServiceName = nameServiceName
+    }
+
+    private fun getAccountNameService(accountAddress: String): String? {
+        return accountRepository.getCachedAccountDetail(accountAddress)?.data?.nameServiceName
     }
 }

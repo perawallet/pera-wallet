@@ -21,6 +21,7 @@ import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.FragmentNavigator
@@ -28,8 +29,10 @@ import androidx.navigation.fragment.NavHostFragment
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseActivity
 import com.algorand.android.customviews.CustomToolbar
+import com.algorand.android.customviews.alertview.ui.AlertDialogQueueManager
 import com.algorand.android.database.ContactDao
 import com.algorand.android.databinding.ActivityMainBinding
+import com.algorand.android.models.Node
 import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.network.IndexerInterceptor
@@ -50,6 +53,7 @@ import com.algorand.android.utils.showLightStatusBarIcons
 import com.algorand.android.utils.viewbinding.viewBinding
 import javax.inject.Inject
 import kotlin.properties.Delegates
+import kotlinx.coroutines.launch
 
 abstract class CoreMainActivity : BaseActivity() {
 
@@ -71,10 +75,6 @@ abstract class CoreMainActivity : BaseActivity() {
     @Inject
     lateinit var sharedPref: SharedPreferences
 
-    lateinit var navController: NavController
-
-    protected val binding by viewBinding(ActivityMainBinding::inflate)
-
     @Inject
     lateinit var parityManager: ParityManager
 
@@ -84,7 +84,14 @@ abstract class CoreMainActivity : BaseActivity() {
     @Inject
     lateinit var assetCacheManager: AssetCacheManager
 
-    var isBottomBarNavigationVisible by Delegates.observable(true) { _, oldValue, newValue ->
+    @Inject
+    lateinit var alertDialogQueueManager: AlertDialogQueueManager
+
+    lateinit var navController: NavController
+
+    protected val binding by viewBinding(ActivityMainBinding::inflate)
+
+    var isBottomBarNavigationVisible by Delegates.observable(false) { _, oldValue, newValue ->
         if (newValue != oldValue) {
             binding.bottomNavigationView.isVisible = newValue
             binding.coreActionsTabBarView.apply {
@@ -102,7 +109,7 @@ abstract class CoreMainActivity : BaseActivity() {
         }
     }
 
-    private var isConnectedToTestNet: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
+    private var isConnectedToTestNetOrBetaNet: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
         if (oldValue != newValue) {
             handleStatusBarChanges(statusBarConfiguration)
             handleBottomBarNavigationForChosenNetwork()
@@ -118,8 +125,6 @@ abstract class CoreMainActivity : BaseActivity() {
         if (savedInstanceState != null) {
             isBottomBarNavigationVisible = savedInstanceState.getBoolean(IS_BOTTOM_BAR_VISIBLE_KEY)
         }
-        checkIfConnectedToTestNet()
-
         initializeCoreManagers()
     }
 
@@ -144,7 +149,7 @@ abstract class CoreMainActivity : BaseActivity() {
 
     private fun getStartDestinationFragmentId(): Int {
         return if (accountManager.isThereAnyRegisteredAccount() || sharedPref.getRegisterSkip()) {
-            R.id.lockFragment
+            R.id.homeNavigation
         } else {
             R.id.loginNavigation
         }
@@ -152,7 +157,7 @@ abstract class CoreMainActivity : BaseActivity() {
 
     private fun handleStatusBarChanges(statusBarConfiguration: StatusBarConfiguration) {
         val intendedStatusBarColor =
-            if (statusBarConfiguration.showNodeStatus && isConnectedToTestNet) {
+            if (statusBarConfiguration.showNodeStatus && isConnectedToTestNetOrBetaNet) {
                 R.color.testnet_bg
             } else {
                 statusBarConfiguration.backgroundColor
@@ -164,7 +169,7 @@ abstract class CoreMainActivity : BaseActivity() {
     fun handleBottomBarNavigationForChosenNetwork() {
         binding.bottomNavigationView.menu.forEach { menuItem ->
             if (menuItem.itemId == R.id.discoverNavigation) {
-                menuItem.isEnabled = isConnectedToTestNet.not()
+                menuItem.isEnabled = isConnectedToTestNetOrBetaNet.not()
             }
         }
     }
@@ -182,9 +187,10 @@ abstract class CoreMainActivity : BaseActivity() {
         }
     }
 
-    fun checkIfConnectedToTestNet() {
-        isConnectedToTestNet = indexerInterceptor.currentActiveNode?.networkSlug == TESTNET_NETWORK_SLUG ||
-            indexerInterceptor.currentActiveNode?.networkSlug == BETANET_NETWORK_SLUG
+    fun checkIfConnectedToTestNetOrBetaNet(activeNode: Node?) {
+        isConnectedToTestNetOrBetaNet = with(activeNode?.networkSlug) {
+            this == TESTNET_NETWORK_SLUG || this == BETANET_NETWORK_SLUG
+        }
     }
 
     fun navBack() {
@@ -222,7 +228,7 @@ abstract class CoreMainActivity : BaseActivity() {
     ) {
         val safeTitle = title ?: getString(R.string.error_default_title)
         val safeErrorMessage = errorMessage?.toString() ?: getString(R.string.unknown_error)
-        binding.alertView.addAlertError(
+        alertDialogQueueManager.addAlertError(
             title = safeTitle,
             description = safeErrorMessage,
             tag = tag
@@ -233,10 +239,12 @@ abstract class CoreMainActivity : BaseActivity() {
         notificationMetadata: NotificationMetadata,
         tag: String = activityTag
     ) {
-        binding.alertView.addAlertNotification(
-            notificationMetadata = notificationMetadata,
-            tag = tag
-        )
+        lifecycleScope.launch {
+            alertDialogQueueManager.addAlertNotification(
+                notificationMetadata = notificationMetadata,
+                tag = tag
+            )
+        }
     }
 
     fun showAlertSuccess(
@@ -244,7 +252,7 @@ abstract class CoreMainActivity : BaseActivity() {
         successMessage: String?,
         tag: String
     ) {
-        binding.alertView.addAlertSuccess(
+        alertDialogQueueManager.addAlertSuccess(
             title = title,
             description = successMessage,
             tag = tag
@@ -252,7 +260,7 @@ abstract class CoreMainActivity : BaseActivity() {
     }
 
     fun removeAlertsWithTag(tag: String) {
-        binding.alertView.removeAlertsWithTag(tag)
+        alertDialogQueueManager.removeAlertsWithTag(tag)
     }
 
     fun showProgress() {

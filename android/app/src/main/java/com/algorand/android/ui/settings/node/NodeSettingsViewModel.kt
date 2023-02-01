@@ -12,56 +12,46 @@
 
 package com.algorand.android.ui.settings.node
 
-import javax.inject.Inject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.algorand.android.banner.domain.usecase.BannersUseCase
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Node
-import com.algorand.android.usecase.CoreCacheUseCase
+import com.algorand.android.modules.firebase.token.FirebaseTokenManager
+import com.algorand.android.ui.settings.node.ui.model.NodeSettingsPreview
 import com.algorand.android.usecase.NodeSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
+import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class NodeSettingsViewModel @Inject constructor(
-    private val coreCacheUseCase: CoreCacheUseCase,
     private val nodeSettingsUseCase: NodeSettingsUseCase,
-    private val bannersUseCase: BannersUseCase
+    private val firebaseTokenManager: FirebaseTokenManager
 ) : BaseViewModel() {
 
-    private val _nodeListLiveData = MutableLiveData<List<Node>>()
-    val nodeListLiveData: LiveData<List<Node>> = _nodeListLiveData
+    private val _nodeSettingsFlow = MutableStateFlow<NodeSettingsPreview?>(null)
+    val nodeSettingsFlow: StateFlow<NodeSettingsPreview?> get() = _nodeSettingsFlow
 
     init {
-        viewModelScope.launch {
-            nodeSettingsUseCase.getAllNodeAsFlow().collectLatest {
-                _nodeListLiveData.postValue(it)
+        initNodeSettingsPreview()
+    }
+
+    private fun initNodeSettingsPreview() {
+        viewModelScope.launch(Dispatchers.IO) {
+            nodeSettingsUseCase.getNodeSettingsPreviewFlow().collect {
+                _nodeSettingsFlow.value = it
             }
         }
     }
 
-    private suspend fun setNodeListToDatabase(nodeList: List<Node>) {
-        viewModelScope.launch {
-            nodeSettingsUseCase.setNodeListToDatabase(nodeList)
-        }
-    }
-
-    private fun activateNode(node: Node) {
-        nodeSettingsUseCase.activateNewNode(node)
-    }
-
-    fun onNodeChanged(activatedNode: Node, onNodeSwitchingFinished: (previousNode: Node) -> Unit) {
-        viewModelScope.launch {
+    fun onNodeChanged(activatedNode: Node) {
+        viewModelScope.launch(Dispatchers.IO) {
             val previousSelectedNode = nodeSettingsUseCase.getActiveNodeOrDefault()
-            nodeSettingsUseCase.setSelectedNode(_nodeListLiveData.value, activatedNode).apply {
-                coreCacheUseCase.handleNodeChange()
-                activateNode(activatedNode)
-                setNodeListToDatabase(this)
-                onNodeSwitchingFinished.invoke(previousSelectedNode)
-            }
+            val updatedNodeList = nodeSettingsUseCase.setSelectedNode(activatedNode)
+            nodeSettingsUseCase.setNodeListToDatabase(updatedNodeList)
+            firebaseTokenManager.refreshFirebasePushToken(previousSelectedNode)
         }
     }
 }

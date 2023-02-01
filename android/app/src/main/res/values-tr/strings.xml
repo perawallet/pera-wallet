@@ -840,7 +840,6 @@
     <string name="disclaimer">SORUMLULUK REDDİ</string>
     <string name="export_to_pera_web">Pera Web\'e Aktarma</string>
     <string name="you_re_about_to_share">Parolanızı Pera Web Wallet ile paylaşmak ve içe aktarmak üzeresiniz!</string>
-    <string name="never_accept_a">Tarafınızdan talep edilmeyen hiçbir isteği kabul etmeyin.</string>
     <string name="confirm_export_domain">Etki Alanını Dışa Aktarma Onayı</string>
     <string name="for_your_security_please_confirm">Güvenliğiniz için hesaplarınızı Pera Web\'e bilgisayarınızda gördüğünüz etki alanı adını girerek aktarmakta olduğunuzu lütfen onaylayın.</string>
     <string name="enter_url_of_web_wallet">Web Wallet\'ın URL\'sini Girin</string>

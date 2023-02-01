@@ -829,7 +829,6 @@
     <string name="disclaimer">DESCARGO DE RESPONSABILIDAD</string>
     <string name="export_to_pera_web">Exportar a Pera Web</string>
     <string name="you_re_about_to_share">¡Estás a punto de compartir e importar tu frase secreta a Pera Web Wallet!</string>
-    <string name="never_accept_a">No aceptes nunca una solicitud que no haya sido solicitada por ti.</string>
     <string name="confirm_export_domain">Confirmar dominio de exportación</string>
     <string name="for_your_security_please_confirm">Para tu seguridad, confirma que estás exportando tus cuentas a Pera Web ingresando el nombre de dominio que ves en tu computadora.</string>
     <string name="enter_url_of_web_wallet">Ingresa la URL del monedero web</string>

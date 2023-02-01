@@ -86,9 +86,7 @@ class CollectibleSendPreviewUseCase @Inject constructor(
         accountInformationUseCase.getAccountInformation(publicKey).collect {
             it.useSuspended(
                 onSuccess = { accountInformation ->
-                    val isReceiverOptedInToAsset = accountInformation.assetHoldingList.any { assetHolding ->
-                        assetHolding.assetId == collectibleId
-                    }
+                    val isReceiverOptedInToAsset = accountInformation.hasAsset(collectibleId)
                     if (isReceiverOptedInToAsset) {
                         emit(previousState.copy(navigateToApprovalBottomSheetEvent = Event(Unit)))
                     } else {
@@ -116,8 +114,8 @@ class CollectibleSendPreviewUseCase @Inject constructor(
             when (dataResource) {
                 is DataResource.Success -> {
                     addAssetSendingToAccountCache(
-                        signedTransactionDetail.accountCacheData.accountInformation.address,
-                        signedTransactionDetail.assetInformation.assetId
+                        publicKey = signedTransactionDetail.senderAccountAddress,
+                        assetId = signedTransactionDetail.assetInformation.assetId
                     )
                     getTransactionSentSuccessPreview(previousState)
                 }
@@ -137,8 +135,8 @@ class CollectibleSendPreviewUseCase @Inject constructor(
                     val sendTransaction = getSendTransactionInGroupIfExists(signedTransactionDetail)
                     sendTransaction?.let {
                         addAssetSendingToAccountCache(
-                            it.accountCacheData.accountInformation.address,
-                            it.assetInformation.assetId
+                            publicKey = it.senderAccountAddress,
+                            assetId = it.assetInformation.assetId
                         )
                     }
                     getTransactionSentSuccessPreview(previousState)

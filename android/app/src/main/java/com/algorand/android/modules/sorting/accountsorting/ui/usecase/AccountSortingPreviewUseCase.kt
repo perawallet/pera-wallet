@@ -16,6 +16,7 @@ import com.algorand.android.R
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ButtonConfiguration
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.mapper.BaseSortingListItemMapper
 import com.algorand.android.modules.sorting.accountsorting.domain.mapper.SortingPreviewMapper
@@ -30,6 +31,7 @@ import com.algorand.android.usecase.SaveLocalAccountsUseCase
 import javax.inject.Inject
 
 // TODO: 8.08.2022 Move account sorting feature to UI layer
+@SuppressWarnings("LongParameterList")
 open class AccountSortingPreviewUseCase @Inject constructor(
     private val baseSortingListItemMapper: BaseSortingListItemMapper,
     private val sortingTypeCreator: SortingTypeCreator,
@@ -40,6 +42,7 @@ open class AccountSortingPreviewUseCase @Inject constructor(
     private val getAccountValueUseCase: GetAccountValueUseCase,
     private val getSortedLocalAccountsUseCase: GetSortedLocalAccountsUseCase,
     private val saveLocalAccountsUseCase: SaveLocalAccountsUseCase,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) {
 
     fun getInitialSortingPreview(): AccountSortingPreview {
@@ -132,7 +135,7 @@ open class AccountSortingPreviewUseCase @Inject constructor(
                 val accountValue = getAccountValueUseCase.getAccountValue(this)
                 accountItemConfigurationMapper.mapTo(
                     accountAddress = account.address,
-                    accountName = account.name,
+                    accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
                     accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
                     accountType = account.type,
                     accountPrimaryValue = accountValue.primaryAccountValue,
@@ -147,7 +150,7 @@ open class AccountSortingPreviewUseCase @Inject constructor(
                 this?.run {
                     accountItemConfigurationMapper.mapTo(
                         accountAddress = address,
-                        accountName = name,
+                        accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
                         accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
                         showWarningIcon = true
                     )

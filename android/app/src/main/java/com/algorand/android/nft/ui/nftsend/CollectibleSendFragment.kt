@@ -212,7 +212,7 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
         val transactionData = collectibleSendViewModel.createSendTransactionData() ?: return
         nav(
             CollectibleSendFragmentDirections.actionCollectibleSendFragmentToCollectibleTransactionApproveBottomSheet(
-                senderPublicKey = transactionData.accountCacheData.account.address,
+                senderPublicKey = transactionData.senderAccountAddress,
                 receiverPublicKey = transactionData.targetUser.publicKey,
                 fee = (transactionData.calculatedFee ?: transactionData.projectedFee).toFloat(),
                 nftId = collectibleSendViewModel.nftId,

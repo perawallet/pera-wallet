@@ -29,7 +29,6 @@ class AssetTransferPreviewMapper @Inject constructor() {
     ): AssetTransferPreview {
         with(transactionData) {
             return AssetTransferPreview(
-                accountCacheData = accountCacheData,
                 amount = amount,
                 assetInformation = assetInformation,
                 targetUser = targetUser,
@@ -37,7 +36,10 @@ class AssetTransferPreviewMapper @Inject constructor() {
                 currencySymbol = currencySymbol,
                 fee = calculatedFee ?: projectedFee,
                 note = note,
-                isNoteEditable = isNoteEditable
+                isNoteEditable = isNoteEditable,
+                senderAccountType = senderAccountType,
+                senderAccountName = senderAccountName,
+                senderAccountAddress = senderAccountAddress
             )
         }
     }

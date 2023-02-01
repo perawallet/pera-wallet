@@ -24,7 +24,7 @@ import com.algorand.android.assetsearch.ui.mapper.BaseAssetSearchItemMapper
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ui.AccountAssetItemButtonState
-import com.algorand.android.modules.assets.addition.domain.usecase.AssetItemActionButtonStateDecider
+import com.algorand.android.modules.assets.addition.domain.usecase.AddAssetItemActionButtonStateDecider
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.AccountNameIconUseCase
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class ReceiveCollectiblePreviewUseCase @Inject constructor(
     private val assetSearchItemMapper: BaseAssetSearchItemMapper,
     private val accountNameIconUseCase: AccountNameIconUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val assetItemActionButtonStateDecider: AssetItemActionButtonStateDecider
+    private val addAssetItemActionButtonStateDecider: AddAssetItemActionButtonStateDecider
 ) {
 
     fun getSearchPaginationFlow(
@@ -72,10 +72,8 @@ class ReceiveCollectiblePreviewUseCase @Inject constructor(
         return combine(searchedAssetsFlow, accountCollectiblesFlow) { searchedAssets, accountDetail ->
             searchedAssets.map { baseSearchedAsset ->
                 val accountInformation = accountDetail?.data?.accountInformation
-                val assetHolding = accountInformation?.assetHoldingList?.firstOrNull {
-                    it.assetId == baseSearchedAsset.assetId
-                }
-                val assetActionButtonState = assetItemActionButtonStateDecider.decideAssetItemActionButtonState(
+                val assetHolding = accountInformation?.getAssetHoldingOrNull(baseSearchedAsset.assetId)
+                val assetActionButtonState = addAssetItemActionButtonStateDecider.decideAddAssetItemActionButtonState(
                     assetHolding = assetHolding
                 )
                 getSearchItemMappedAssetDetail(baseSearchedAsset, assetActionButtonState)
@@ -119,7 +117,7 @@ class ReceiveCollectiblePreviewUseCase @Inject constructor(
         }
     }
 
-    fun getReceiverAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource?> {
+    fun getReceiverAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource> {
         return accountNameIconUseCase.getAccountDisplayTextAndIcon(publicKey)
     }
 }

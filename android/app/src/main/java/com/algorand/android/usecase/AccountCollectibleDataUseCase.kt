@@ -27,6 +27,8 @@ import com.algorand.android.modules.parity.domain.usecase.SecondaryCurrencyParit
 import com.algorand.android.nft.domain.model.CollectibleMediaType
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
+import com.algorand.android.utils.extensions.getAssetHoldingList
+import com.algorand.android.utils.extensions.getAssetHoldingOrNull
 import com.algorand.android.utils.formatAmountByCollectibleFractionalDigit
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -106,7 +108,7 @@ class AccountCollectibleDataUseCase @Inject constructor(
         cachedAssetList: List<SimpleCollectibleDetail>
     ): List<BaseAccountAssetData> {
         return mutableListOf<BaseAccountAssetData>().apply {
-            account.accountInformation.assetHoldingList.forEach { assetHolding ->
+            account.getAssetHoldingList().forEach { assetHolding ->
                 cachedAssetList.firstOrNull { it.assetId == assetHolding.assetId }?.let { assetItem ->
                     val accountAssetData = when (assetHolding.status) {
                         OWNED_BY_ACCOUNT -> createCollectibleData(assetHolding, assetItem)
@@ -130,7 +132,7 @@ class AccountCollectibleDataUseCase @Inject constructor(
     }
 
     private fun getAccountOwnedCollectibleIdList(account: AccountDetail): List<Long> {
-        return account.accountInformation.assetHoldingList.mapNotNull { assetHolding ->
+        return account.getAssetHoldingList().mapNotNull { assetHolding ->
             assetHolding.assetId.takeIf { assetHolding.status == OWNED_BY_ACCOUNT }
         }
     }
@@ -261,7 +263,7 @@ class AccountCollectibleDataUseCase @Inject constructor(
 
     fun getAccountCollectibleDetail(accountAddress: String, collectibleId: Long): BaseOwnedCollectibleData? {
         val accountDetail = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data ?: return null
-        val assetHolding = accountDetail.accountInformation.assetHoldingList.firstOrNull { it.assetId == collectibleId }
+        val assetHolding = accountDetail.getAssetHoldingOrNull(collectibleId)
         val collectibleDetail = simpleCollectibleUseCase.getCachedCollectibleById(collectibleId)?.data
         if (assetHolding == null || collectibleDetail == null) return null
         return createCollectibleData(assetHolding, collectibleDetail)

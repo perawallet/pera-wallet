@@ -35,8 +35,8 @@ class AccountItemViewHolder(
                 )
                 setStartIconDrawable(accountIconDrawable)
                 setPrimaryValueText(portfolioValue)
-                setTitleText(accountDisplayName.getDisplayTextOrAccountShortenedAddress())
-                setDescriptionText(accountDisplayName.getAccountShortenedAddressOrAccountType(resources))
+                setTitleText(accountDisplayName.getAccountPrimaryDisplayName())
+                setDescriptionText(accountDisplayName.getAccountSecondaryDisplayName(resources))
             }
         }
     }

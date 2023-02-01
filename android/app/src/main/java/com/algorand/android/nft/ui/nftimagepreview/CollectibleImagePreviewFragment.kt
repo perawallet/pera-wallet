@@ -51,7 +51,7 @@ class CollectibleImagePreviewFragment : BaseFragment(R.layout.fragment_collectib
         backgroundColor = R.color.black
     )
 
-    override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
+    override val fragmentConfiguration = FragmentConfiguration()
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -80,6 +80,11 @@ class CollectibleImagePreviewFragment : BaseFragment(R.layout.fragment_collectib
         loadCollectiblePreview()
         animateBackgroundColor(R.color.background, R.color.black)
         setImageDimensionRatioWithDelay()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getAppToolbar()?.configure(toolbarConfiguration)
     }
 
     private fun setImageDimensionRatioWithDelay() {

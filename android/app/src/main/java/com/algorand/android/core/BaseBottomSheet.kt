@@ -67,6 +67,11 @@ abstract class BaseBottomSheet(@LayoutRes private val layoutResId: Int) : Bottom
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        removeAlertsWithTag(bottomSheetTag)
+    }
+
     protected fun setDraggableEnabled(isEnabled: Boolean) {
         val bottomSheet = getBottomSheetFrameLayout() ?: return
         BottomSheetBehavior.from(bottomSheet).isDraggable = isEnabled
@@ -128,6 +133,10 @@ abstract class BaseBottomSheet(@LayoutRes private val layoutResId: Int) : Bottom
     fun onAccountAddressCopied(accountAddress: String) {
         context?.copyToClipboard(textToCopy = accountAddress, showToast = false)
         showTopToast(getString(R.string.address_copied_to_clipboard), accountAddress.toShortenedAddress())
+    }
+
+    private fun removeAlertsWithTag(tag: String) {
+        (activity as? MainActivity)?.removeAlertsWithTag(tag)
     }
 
     companion object {

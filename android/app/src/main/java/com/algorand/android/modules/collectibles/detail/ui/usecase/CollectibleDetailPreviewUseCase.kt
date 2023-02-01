@@ -16,6 +16,7 @@ import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.collectibles.detail.base.domain.decider.CollectibleDetailDecider
 import com.algorand.android.modules.collectibles.detail.base.domain.usecase.GetCollectibleDetailUseCase
 import com.algorand.android.modules.collectibles.detail.base.ui.mapper.CollectibleMediaItemMapper
@@ -29,11 +30,11 @@ import com.algorand.android.nft.domain.model.BaseCollectibleDetail
 import com.algorand.android.usecase.AccountCollectibleDataUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetBaseOwnedAssetDataUseCase
-import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.Event
 import javax.inject.Inject
 
+@SuppressWarnings("LongParameterList")
 open class CollectibleDetailPreviewUseCase @Inject constructor(
     private val nftDetailPreviewMapper: NFTDetailPreviewMapper,
     private val getCollectibleDetailUseCase: GetCollectibleDetailUseCase,
@@ -44,7 +45,8 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
     private val collectibleDetailDecider: CollectibleDetailDecider,
     private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase,
     private val baseAssetDrawableProviderDecider: AssetDrawableProviderDecider,
-    private val nftAmountFormatDecider: NFTAmountFormatDecider
+    private val nftAmountFormatDecider: NFTAmountFormatDecider,
+    private val accountDisplayNameUseCase: AccountDisplayNameUseCase
 ) {
 
     fun getOptOutEventPreview(preview: NFTDetailPreview?, nftId: Long, accountAddress: String): NFTDetailPreview? {
@@ -91,10 +93,8 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
                     optedInAccountTypeDrawableResId = AccountIconResource.getAccountIconResourceByAccountType(
                         accountType = accountDetail?.account?.type
                     ).iconResId,
-                    optedInAccountDisplayName = AccountDisplayName.create(
-                        accountAddress = accountDetail?.account?.address.orEmpty(),
-                        accountName = accountDetail?.account?.name.orEmpty(),
-                        type = accountDetail?.account?.type
+                    optedInAccountDisplayName = accountDisplayNameUseCase.invoke(
+                        accountAddress = accountDetail?.account?.address.orEmpty()
                     ),
                     formattedNFTAmount = nftAmountFormatDecider.decideNFTAmountFormat(
                         nftAmount = collectibleDetail?.amount,
@@ -110,7 +110,9 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
                         baseCollectibleDetail = baseNFTDetail
                     ),
                     nftDescription = baseNFTDetail.description,
-                    creatorAccountOfNFT = baseNFTDetail.assetCreator?.publicKey.orEmpty(),
+                    creatorAccountOfNFT = accountDisplayNameUseCase.invoke(
+                        accountAddress = baseNFTDetail.assetCreator?.publicKey.orEmpty(),
+                    ),
                     nftId = baseNFTDetail.assetId,
                     formattedTotalSupply = nftAmountFormatDecider.decideNFTAmountFormat(
                         nftAmount = baseNFTDetail.totalSupply,

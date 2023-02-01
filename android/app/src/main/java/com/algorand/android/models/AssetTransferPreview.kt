@@ -17,7 +17,9 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 data class AssetTransferPreview(
-    val accountCacheData: AccountCacheData,
+    val senderAccountAddress: String,
+    val senderAccountName: String,
+    val senderAccountType: Account.Type?,
     val amount: BigInteger,
     val assetInformation: AssetInformation,
     val targetUser: TargetUser,

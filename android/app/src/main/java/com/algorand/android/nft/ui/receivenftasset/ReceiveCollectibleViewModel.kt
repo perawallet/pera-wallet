@@ -53,7 +53,7 @@ class ReceiveCollectibleViewModel @Inject constructor(
         receiveCollectiblePreviewUseCase.invalidateDataSource()
     }
 
-    fun getReceiverAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource?> {
+    fun getReceiverAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource> {
         return receiveCollectiblePreviewUseCase.getReceiverAccountDisplayTextAndIcon(publicKey)
     }
 

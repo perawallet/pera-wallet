@@ -13,5 +13,4 @@
 package com.algorand.android.modules.swap.slippagetolerance.ui.util
 
 const val MAX_SWAP_SLIPPAGE_TOLERANCE: Float = 10f
-const val MIN_SWAP_SLIPPAGE_TOLERANCE: Float = 0f
-const val DEFAULT_SLIPPAGE_TOLERANCE = 0.005f
+const val MIN_SWAP_SLIPPAGE_TOLERANCE: Float = 0.01f

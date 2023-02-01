@@ -40,7 +40,6 @@ import com.algorand.android.usecase.GetLocalAccountsFromSharedPrefUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.ALGORAND_KEYSTORE_URI
 import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.AutoLockManager
 import com.algorand.android.utils.ENCRYPTED_SHARED_PREF_NAME
 import com.algorand.android.utils.KEYSET_HANDLE
 import com.algorand.android.utils.KEY_TEMPLATE_AES256_GCM
@@ -179,12 +178,6 @@ object AppModule {
     @Provides
     fun provideBluetoothManager(@ApplicationContext appContext: Context): BluetoothManager? {
         return ContextCompat.getSystemService<BluetoothManager>(appContext, BluetoothManager::class.java)
-    }
-
-    @Singleton
-    @Provides
-    fun provideAutoLockManager(): AutoLockManager {
-        return AutoLockManager()
     }
 
     // TODO Move this into tracking di module

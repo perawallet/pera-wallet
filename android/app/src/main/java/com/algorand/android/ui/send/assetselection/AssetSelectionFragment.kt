@@ -25,8 +25,10 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.AssetSelectionPreview
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
+import com.algorand.android.nft.ui.nfttransferconfirmed.CollectibleTransferConfirmedFragment.Companion.SEND_PURE_COLLECTIBLE_RESULT_KEY
 import com.algorand.android.ui.send.assetselection.adapter.SelectSendingAssetAdapter
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.algorand.android.utils.useFragmentResultListenerValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -58,11 +60,22 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
         binding.assetsToSendRecyclerView.adapter = assetSelectionAdapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        initSavedStateListener()
+    }
+
     private fun initObservers() {
         viewLifecycleOwner.collectLatestOnLifecycle(
             assetSelectionViewModel.assetSelectionPreview,
             assetSelectionPreviewCollector
         )
+    }
+
+    private fun initSavedStateListener() {
+        useFragmentResultListenerValue<Boolean>(SEND_PURE_COLLECTIBLE_RESULT_KEY) { isSent ->
+            if (isSent) nav(AssetSelectionFragmentDirections.actionSendAlgoNavigationPop())
+        }
     }
 
     private fun updateUiWithPreview(assetSelectionPreview: AssetSelectionPreview) {

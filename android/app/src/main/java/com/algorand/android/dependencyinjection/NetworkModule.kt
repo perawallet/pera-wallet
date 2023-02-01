@@ -130,6 +130,7 @@ object NetworkModule {
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .connectTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .build()
@@ -195,7 +196,7 @@ object NetworkModule {
         gson: Gson
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.MOBILE_ALGORAND_BASE_URL)
+            .baseUrl(BuildConfig.MOBILE_ALGORAND_MAINNET_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(mobileAlgorandHttpClient)
             .build()

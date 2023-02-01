@@ -13,6 +13,7 @@
 package com.algorand.android.ui.settings.developersettings
 
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
@@ -23,6 +24,7 @@ class DeveloperSettingsPreviewUseCase @Inject constructor(
     private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
     private val getAccountValueUseCase: GetAccountValueUseCase,
     private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) {
 
     suspend fun getFirstAccountAddress(): String? {
@@ -32,7 +34,7 @@ class DeveloperSettingsPreviewUseCase @Inject constructor(
                 val accountValue = getAccountValueUseCase.getAccountValue(this)
                 accountItemConfigurationMapper.mapTo(
                     accountAddress = account.address,
-                    accountName = account.name,
+                    accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
                     accountType = account.type,
                     accountPrimaryValue = accountValue.primaryAccountValue
                 )
@@ -41,7 +43,7 @@ class DeveloperSettingsPreviewUseCase @Inject constructor(
                 this?.run {
                     accountItemConfigurationMapper.mapTo(
                         accountAddress = address,
-                        accountName = name,
+                        accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
                         accountType = type
                     )
                 }

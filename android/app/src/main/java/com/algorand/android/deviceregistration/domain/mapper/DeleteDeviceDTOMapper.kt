@@ -17,9 +17,8 @@ import javax.inject.Inject
 
 class DeleteDeviceDTOMapper @Inject constructor() {
 
-    fun mapToDeleteDeviceDTO(networkSlug: String, pushToken: String, platform: String): DeleteDeviceDTO {
+    fun mapToDeleteDeviceDTO(pushToken: String, platform: String): DeleteDeviceDTO {
         return DeleteDeviceDTO(
-            networkSlug = networkSlug,
             pushToken = pushToken,
             platform = platform
         )

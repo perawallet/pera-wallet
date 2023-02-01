@@ -52,13 +52,13 @@ class WalletConnectConnectionAccountItemViewHolder(
 
     private fun setAccountTitleText(accountDisplayName: AccountDisplayName?) {
         binding.statefulAccountItemView.run {
-            setTitleText(accountDisplayName?.getDisplayTextOrAccountShortenedAddress())
+            setTitleText(accountDisplayName?.getAccountPrimaryDisplayName())
         }
     }
 
     private fun setAccountDescriptionText(accountDisplayName: AccountDisplayName?) {
         binding.statefulAccountItemView.run {
-            setDescriptionText(accountDisplayName?.getAccountShortenedAddressOrAccountType(resources))
+            setDescriptionText(accountDisplayName?.getAccountSecondaryDisplayName(resources))
         }
     }
 

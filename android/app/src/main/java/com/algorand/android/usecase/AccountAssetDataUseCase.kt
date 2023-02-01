@@ -22,6 +22,8 @@ import com.algorand.android.models.AssetStatus.PENDING_FOR_REMOVAL
 import com.algorand.android.models.AssetStatus.PENDING_FOR_SENDING
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
+import com.algorand.android.utils.extensions.getAssetHoldingList
+import com.algorand.android.utils.extensions.getAssetIdList
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -79,7 +81,7 @@ class AccountAssetDataUseCase @Inject constructor(
     ): List<BaseAccountAssetData> {
         val assetDataList = mutableListOf<BaseAccountAssetData>()
         if (includeAlgo) assetDataList.add(accountAlgoAmountUseCase.getAccountAlgoAmount(account.account.address))
-        account.accountInformation.assetHoldingList.forEach { assetHolding ->
+        account.getAssetHoldingList().forEach { assetHolding ->
             cachedAssetList.firstOrNull { it.assetId == assetHolding.assetId }?.let { assetItem ->
                 val accountAssetData = when (assetHolding.status) {
                     OWNED_BY_ACCOUNT -> accountAssetAmountUseCase.getAssetAmount(assetHolding, assetItem)
@@ -99,13 +101,13 @@ class AccountAssetDataUseCase @Inject constructor(
     }
 
     private fun getAccountOwnedAssetIdList(account: AccountDetail): List<Long> {
-        return account.accountInformation.assetHoldingList.mapNotNull { assetHolding ->
+        return account.getAssetHoldingList().mapNotNull { assetHolding ->
             assetHolding.assetId.takeIf { assetHolding.status == OWNED_BY_ACCOUNT }
         }
     }
 
     private fun getAccountAllCachedAssetList(account: AccountDetail): List<AssetDetail> {
-        val accountAssetIdList = account.accountInformation.assetHoldingList.map { it.assetId }
+        val accountAssetIdList = account.getAssetIdList()
         return assetDetailUseCase.getCachedAssetDetail(accountAssetIdList).mapNotNull { it.data }
     }
 
@@ -121,7 +123,7 @@ class AccountAssetDataUseCase @Inject constructor(
     private fun createAccountOtherAssetsData(accountInformation: AccountInformation): List<OwnedAssetData> {
         val cachedAssetList = getCachedAssetList(accountInformation)
         return mutableListOf<OwnedAssetData>().apply {
-            accountInformation.assetHoldingList.forEach { assetHolding ->
+            accountInformation.getAssetHoldingList().forEach { assetHolding ->
                 cachedAssetList.firstOrNull { it.assetId == assetHolding.assetId }?.let { assetItem ->
                     val accountAssetData = accountAssetAmountUseCase.getAssetAmount(assetHolding, assetItem)
                     add(accountAssetData)

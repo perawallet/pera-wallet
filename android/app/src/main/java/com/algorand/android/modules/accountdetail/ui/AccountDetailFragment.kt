@@ -319,8 +319,8 @@ class AccountDetailFragment :
 
     private fun configureToolbarName(accountDetailSummary: AccountDetailSummary) {
         with(binding.toolbar) {
-            changeTitle(accountDetailSummary.accountDisplayName.getDisplayTextOrAccountShortenedAddress())
-            accountDetailSummary.accountDisplayName.getAccountShortenedAddressOrAccountType(resources)?.let {
+            changeTitle(accountDetailSummary.accountDisplayName.getAccountPrimaryDisplayName())
+            accountDetailSummary.accountDisplayName.getAccountSecondaryDisplayName(resources)?.let {
                 changeSubtitle(it)
             }
         }

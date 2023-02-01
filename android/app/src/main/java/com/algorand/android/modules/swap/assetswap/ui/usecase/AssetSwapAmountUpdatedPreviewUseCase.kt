@@ -17,7 +17,7 @@ import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapType
 import com.algorand.android.modules.swap.assetswap.ui.mapper.SelectedAssetAmountDetailMapper
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.modules.swap.assetswap.ui.utils.SwapAmountUtils
-import com.algorand.android.modules.swap.slippagetolerance.ui.util.DEFAULT_SLIPPAGE_TOLERANCE
+import com.algorand.android.modules.swap.common.domain.usecase.GetSwapSlippageToleranceUseCase
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.formatAsPercentage
@@ -30,7 +30,8 @@ import kotlinx.coroutines.flow.flow
 class AssetSwapAmountUpdatedPreviewUseCase @Inject constructor(
     private val selectedAssetAmountDetailMapper: SelectedAssetAmountDetailMapper,
     private val assetSwapCreateQuotePreviewUseCase: AssetSwapCreateQuotePreviewUseCase,
-    private val displayedCurrencyUseCase: DisplayedCurrencyUseCase
+    private val displayedCurrencyUseCase: DisplayedCurrencyUseCase,
+    private val getSwapSlippageToleranceUseCase: GetSwapSlippageToleranceUseCase
 ) {
 
     fun getUpdatedPreview(
@@ -75,7 +76,7 @@ class AssetSwapAmountUpdatedPreviewUseCase @Inject constructor(
             toAssetId = toAssetId,
             amount = amount,
             swapType = swapType,
-            slippage = DEFAULT_SLIPPAGE_TOLERANCE,
+            slippage = getSwapSlippageToleranceUseCase(),
             previousState = previousState,
             swapTypeAssetDecimal = assetDecimal,
             isMaxAndPercentageButtonEnabled = true,

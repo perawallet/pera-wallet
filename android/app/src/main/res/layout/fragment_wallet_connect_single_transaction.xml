@@ -28,7 +28,7 @@
 
     <com.algorand.android.customviews.CustomToolbar
         android:id="@+id/customToolbar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/default_toolbar_height"
         android:layout_marginTop="@dimen/spacing_small"
         app:layout_constraintEnd_toEndOf="parent"

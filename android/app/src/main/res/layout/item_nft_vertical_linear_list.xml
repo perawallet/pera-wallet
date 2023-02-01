@@ -17,13 +17,6 @@
     android:layout_height="wrap_content"
     android:paddingHorizontal="@dimen/spacing_xlarge">
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/nftAmountBarrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="end"
-        app:constraint_referenced_ids="nftCollectionTextView" />
-
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/nftStartIconImageView"
         android:layout_width="40dp"
@@ -80,7 +73,6 @@
         android:id="@+id/nftCollectionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_normal"
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Footnote.Sans"
@@ -90,9 +82,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/nftAmountTextView"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@id/nftStartIconImageView"
+        app:layout_constraintStart_toStartOf="@id/nftNameTextView"
         app:layout_constraintTop_toBottomOf="@id/nftNameTextView"
-        tools:text="@tools:sample/lorem[12312]"
+        tools:text="@tools:sample/lorem[3]"
         tools:visibility="visible" />
 
     <TextView
@@ -106,11 +98,20 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/nftCollectionTextView"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/firstColumnBarrier"
         app:layout_constraintTop_toBottomOf="@id/nftNameTextView"
         app:layout_constraintVertical_bias="0"
-        app:layout_goneMarginStart="@dimen/spacing_normal"
-        tools:text="x0.0000000000000012"
+        tools:text="@tools:sample/lorem[2]"
         tools:visibility="visible" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/firstColumnBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="nftCollectionTextView, nftStartIconImageView"
+        app:layout_goneMarginStart="@dimen/spacing_normal" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

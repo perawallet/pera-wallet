@@ -27,7 +27,7 @@ sealed class BaseAccountAndAssetListItem : BaseSortingField.NumericSortingField,
     ) : BaseAccountAndAssetListItem() {
 
         override val alphabeticSortingField: String? = itemConfiguration.accountDisplayName
-            ?.getDisplayTextOrAccountShortenedAddress()
+            ?.getAccountPrimaryDisplayName()
 
         override val numericSortingField: BigDecimal? = itemConfiguration.primaryValue
     }

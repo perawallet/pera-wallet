@@ -268,9 +268,9 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
 
     private fun setToolbarTitle(accountDisplayName: AccountDisplayName) {
         with(binding.toolbar) {
-            changeTitle(accountDisplayName.getDisplayTextOrAccountShortenedAddress())
-            setOnTitleLongClickListener { onAccountAddressCopied(accountDisplayName.getAccountAddress()) }
-            accountDisplayName.getAccountShortenedAddressOrAccountType(resources)?.let { changeSubtitle(it) }
+            changeTitle(accountDisplayName.getAccountPrimaryDisplayName())
+            setOnTitleLongClickListener { onAccountAddressCopied(accountDisplayName.getRawAccountAddress()) }
+            accountDisplayName.getAccountSecondaryDisplayName(resources)?.let { changeSubtitle(it) }
         }
     }
 

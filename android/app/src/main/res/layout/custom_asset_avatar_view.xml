@@ -40,7 +40,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_asset_avatar_border"
         android:padding="1dp"
-        tools:srcCompat="@drawable/ic_algo_green_round" />
+        tools:srcCompat="@drawable/ic_algo_round" />
 
     <ProgressBar
         android:id="@+id/assetAvatarProgressBar"

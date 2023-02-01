@@ -103,15 +103,21 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
                     assetTransaction.receiverUser.publicKey,
                     selectedAccountCacheData
                 )
+                val note = assetTransaction.xnote ?: assetTransaction.note
                 SenderAccountSelectionFragmentDirections
                     .actionSenderAccountSelectionFragmentToAssetTransferPreviewFragment(
                         TransactionData.Send(
-                            selectedAccountCacheData,
-                            assetTransaction.amount,
-                            selectedAsset,
-                            assetTransaction.note,
-                            assetTransaction.xnote,
-                            targetUser
+                            senderAccountAddress = selectedAccountCacheData.account.address,
+                            senderAccountDetail = selectedAccountCacheData.account.detail,
+                            senderAccountType = selectedAccountCacheData.account.type,
+                            senderAuthAddress = selectedAccountCacheData.authAddress,
+                            senderAccountName = selectedAccountCacheData.account.name,
+                            isSenderRekeyedToAnotherAccount = selectedAccountCacheData.isRekeyedToAnotherAccount(),
+                            minimumBalance = selectedAccountCacheData.getMinBalance(),
+                            amount = assetTransaction.amount,
+                            assetInformation = selectedAsset,
+                            note = note,
+                            targetUser = targetUser
                         )
                     )
             }

@@ -12,9 +12,13 @@
 
 package com.algorand.android.utils
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 
 /**
  * awaitOrdered works like awaitAll.
@@ -50,4 +54,20 @@ inline fun <T1, T2, T3, T4, T5, T6, R> combine(
             args[5] as T6,
         )
     }
+}
+
+fun CoroutineScope.launchIO(call: suspend () -> Unit): Job {
+    return launch(Dispatchers.IO) { call() }
+}
+
+fun CoroutineScope.launchMain(call: suspend () -> Unit): Job {
+    return launch(Dispatchers.Main) { call() }
+}
+
+fun CoroutineScope.launchDefault(call: suspend () -> Unit): Job {
+    return launch(Dispatchers.Default) { call() }
+}
+
+fun CoroutineScope.launchUnconfined(call: suspend () -> Unit): Job {
+    return launch(Dispatchers.Unconfined) { call() }
 }

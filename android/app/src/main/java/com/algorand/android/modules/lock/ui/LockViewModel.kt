@@ -10,21 +10,23 @@
  * limitations under the License
  */
 
-package com.algorand.android.ui.lock
+package com.algorand.android.modules.lock.ui
 
 import android.app.NotificationManager
-import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
 import com.algorand.android.usecase.DeleteAllDataUseCase
 import com.algorand.android.usecase.LockUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LockViewModel @Inject constructor(
     private val deleteAllDataUseCase: DeleteAllDataUseCase,
-    private val lockUseCase: LockUseCase
+    private val lockUseCase: LockUseCase,
+    private val autoLockManager: AutoLockManager
 ) : BaseViewModel() {
 
     fun deleteAllData(notificationManager: NotificationManager?, onDeletionCompleted: () -> Unit) {
@@ -35,10 +37,6 @@ class LockViewModel @Inject constructor(
 
     fun shouldShowBiometricDialog(): Boolean {
         return lockUseCase.shouldShowBiometricDialog()
-    }
-
-    fun isPinCodeEnabled(): Boolean {
-        return lockUseCase.isPinCodeEnabled()
     }
 
     fun getCurrentPassword(): String? {
@@ -59,5 +57,9 @@ class LockViewModel @Inject constructor(
 
     fun setLockPenaltyRemainingTime(penaltyRemainingTime: Long) {
         lockUseCase.setLockPenaltyRemainingTime(penaltyRemainingTime)
+    }
+
+    fun onAuthSucceed() {
+        autoLockManager.onAppUnlocked()
     }
 }

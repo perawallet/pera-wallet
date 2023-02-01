@@ -27,12 +27,12 @@ import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.appendAssetName
+import com.algorand.android.utils.browser.getAlgoExplorerUrl
+import com.algorand.android.utils.browser.getGoalSeekerUrl
 import com.algorand.android.utils.decodeBase64IfUTF8
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.formatAsAlgoAmount
-import com.algorand.android.utils.formatAsTxString
-import com.algorand.android.utils.browser.getAlgoExplorerUrl
-import com.algorand.android.utils.browser.getGoalSeekerUrl
+import com.algorand.android.utils.formatAsDateAndTime
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
 import com.algorand.android.utils.isNotEqualTo
 import java.math.BigInteger
@@ -186,7 +186,7 @@ open class BaseTransactionDetailPreviewUseCase constructor(
     }
 
     protected fun getTransactionFormattedDate(roundTimeAsTimestamp: Long?): String {
-        return roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp()?.formatAsTxString().orEmpty()
+        return roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp()?.formatAsDateAndTime().orEmpty()
     }
 
     protected fun isTransactionCloseTo(baseTransactionDetail: BaseTransactionDetail): Boolean {

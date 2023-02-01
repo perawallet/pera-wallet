@@ -21,6 +21,7 @@
         style="@style/TextAppearance.Body.Sans"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/spacing_small"
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="@id/transactionAmountTextView"
         app:layout_constraintEnd_toStartOf="@id/guideline"

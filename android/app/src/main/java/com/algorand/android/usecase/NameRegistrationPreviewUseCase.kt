@@ -68,7 +68,7 @@ class NameRegistrationPreviewUseCase @Inject constructor(
         return nameRegistrationPreviewMapper.mapToWatchAccountUpdatedPreview()
     }
 
-    fun addNewAccount(account: Account, creationType: CreationType?) {
+    suspend fun addNewAccount(account: Account, creationType: CreationType?) {
         accountAdditionUseCase.addNewAccount(account, creationType)
     }
 

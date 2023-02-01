@@ -44,7 +44,7 @@ import javax.inject.Inject
 
 abstract class TransactionBaseFragment(
     @LayoutRes layoutResId: Int
-) : DaggerBaseFragment(layoutResId), LedgerLoadingDialog.Listener {
+) : DaggerBaseFragment(layoutResId) {
 
     @Inject
     lateinit var transactionManager: TransactionManager
@@ -89,6 +89,13 @@ abstract class TransactionBaseFragment(
                     onSignTransactionCancelledByLedger()
                 }
             }
+        }
+    }
+
+    private val ledgerLoadingDialogListener = LedgerLoadingDialog.Listener { shouldStopResources ->
+        hideLoading()
+        if (shouldStopResources) {
+            transactionManager.manualStopAllResources()
         }
     }
 
@@ -151,7 +158,7 @@ abstract class TransactionBaseFragment(
 
     private fun showLedgerLoading(ledgerName: String?) {
         if (ledgerLoadingDialog == null) {
-            ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(ledgerName)
+            ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(ledgerName, ledgerLoadingDialogListener)
             ledgerLoadingDialog?.showWithStateCheck(childFragmentManager)
         }
     }
@@ -161,9 +168,8 @@ abstract class TransactionBaseFragment(
     }
 
     fun sendTransaction(transactionData: TransactionData) {
-        val accountCacheData = transactionData.accountCacheData
 
-        when (accountCacheData.account.type) {
+        when (transactionData.senderAccountType) {
             Account.Type.LEDGER, Account.Type.REKEYED, Account.Type.REKEYED_AUTH -> {
                 if (isBluetoothEnabled().not()) {
                     bleWaitingTransactionData = transactionData
@@ -179,7 +185,7 @@ abstract class TransactionBaseFragment(
 
     fun sendGroupTransaction(transactionDataList: List<TransactionData>) {
         if (transactionDataList.all {
-                with(it.accountCacheData.account.type) {
+                with(it.senderAccountType) {
                     this == Account.Type.LEDGER || this == Account.Type.REKEYED || this == Account.Type.REKEYED_AUTH
                 }
             }
@@ -234,11 +240,6 @@ abstract class TransactionBaseFragment(
             titleResId = R.string.error_cancelled_title
         )
         showTransactionError(transactionManagerResult)
-    }
-
-    override fun onLedgerLoadingCancelled(shouldStopResources: Boolean) {
-        hideLoading()
-        transactionManager.manualStopAllResources()
     }
 
     interface TransactionFragmentListener {

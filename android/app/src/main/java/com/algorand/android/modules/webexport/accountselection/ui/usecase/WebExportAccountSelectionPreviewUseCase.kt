@@ -96,7 +96,7 @@ class WebExportAccountSelectionPreviewUseCase @Inject constructor(
 
     private fun getDescriptionItem(): BaseAccountMultipleSelectionListItem.TextItem {
         return baseAccountMultipleSelectionListItemMapper.mapToTextItem(
-            textResId = R.string.never_accept_a,
+            textResId = R.string.do_not_proceed_if_you,
             textAppearanceResId = R.style.TextAppearance_Footnote_Description,
             topMarginResId = R.dimen.spacing_xxsmall
         )

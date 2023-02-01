@@ -948,7 +948,6 @@
 
     <string name="export_to_pera_web">Export to Pera Web</string>
     <string name="you_re_about_to_share">You\'re about to share and import your passphrase into Pera Web Wallet!</string>
-    <string name="never_accept_a">Never accept a request that hasn\'t been requested by you.</string>
 
     <string name="confirm_export_domain">Confirm Export Domain</string>
     <string name="for_your_security_please_confirm">For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.</string>
@@ -1007,7 +1006,6 @@
     <string name="remove_asset">Remove Asset</string>
     <string name="opt_in_to_an">Opt-in to an Asset</string>
     <string name="asset_opt_out">Asset Opt-out</string>
-    <string name="opt_in_to_asset">Opt-in to Asset</string>
 
     <string name="account_not_found">Account not found</string>
     <string name="account_address_or_short_name">Account address or short name</string>
@@ -1030,4 +1028,9 @@
     <string name="search_nfts">Search NFTs</string>
     <string name="you_need_to_opt_in">You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.</string>
     <string name="you_need_to_opt_in_to">You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.</string>
+
+    <string name="round">Round</string>
+    <string name="do_not_proceed_if_you">Do not proceed if you did not initiate this request.</string>
+
+    <string name="this_asset_is">This asset is already pending removal.</string>
 </resources>

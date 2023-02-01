@@ -69,7 +69,9 @@ class NameRegistrationViewModel @Inject constructor(
 
     fun addNewAccount(account: Account, creationType: CreationType?) {
         // TODO: Handle error case
-        nameRegistrationPreviewUseCase.addNewAccount(account, creationType)
+        viewModelScope.launch {
+            nameRegistrationPreviewUseCase.addNewAccount(account, creationType)
+        }
     }
 
     private fun getInitialPreview(): NameRegistrationPreview {

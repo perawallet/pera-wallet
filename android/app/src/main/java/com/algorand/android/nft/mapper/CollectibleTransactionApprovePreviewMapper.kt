@@ -22,7 +22,7 @@ class CollectibleTransactionApprovePreviewMapper @Inject constructor() {
     fun mapToPreview(
         senderAccountPublicKey: String,
         senderAccountDisplayText: String,
-        senderAccountIconResource: AccountIconResource?,
+        senderAccountIconResource: AccountIconResource,
         receiverAccountPublicKey: String,
         receiverAccountDisplayText: String,
         receiverAccountIconResource: AccountIconResource?,

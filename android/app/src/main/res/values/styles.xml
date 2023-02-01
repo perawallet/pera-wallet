@@ -41,6 +41,7 @@
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="peraChipStyle">@style/PeraChip</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme" />

@@ -10,7 +10,7 @@
  * limitations under the License
  */
 
-package com.algorand.android.ui.lock
+package com.algorand.android.modules.lock.ui
 
 import android.app.NotificationManager
 import android.content.Context
@@ -21,7 +21,6 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.DialPadView
@@ -34,7 +33,6 @@ import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBot
 import com.algorand.android.ui.splash.LauncherActivity
 import com.algorand.android.utils.extensions.invisible
 import com.algorand.android.utils.extensions.show
-import com.algorand.android.utils.getNavigationBackStackCount
 import com.algorand.android.utils.getTimeAsMinSecondPair
 import com.algorand.android.utils.showBiometricAuthentication
 import com.algorand.android.utils.startSavedStateListener
@@ -60,13 +58,6 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
     private var penaltyRemainingTime: Long = 0L
 
     private var biometricHandler: Handler? = null
-
-    /**
-     *  TODO: Handle this case with a more solid approach.
-     *  This is added to fix lock screen is appearing two times.
-     *  https://linear.app/hipo/issue/PER-2744/android-wallet-connect-transaction-is-lost-after-enter-pin-screen-is
-     **/
-    private var enteredCorrectPin: Boolean = false
 
     private val pinCodeListener = object : SixDigitPasswordView.Listener {
         override fun onPinCodeCompleted(pinCode: String) {
@@ -113,33 +104,12 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (lockViewModel.isPinCodeEnabled().not()) {
-            handleNextNavigation()
-        }
-    }
-
-    private fun handleNextNavigation() {
-        enteredCorrectPin = true
-        if (activity?.getNavigationBackStackCount() == 0) {
-            nav(LockFragmentDirections.actionLockFragmentToHomeNavigation())
-        } else {
-            navBack()
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         initDialogSavedStateListener()
         setRemainingTime(lockViewModel.getLockPenaltyRemainingTime())
         setLockAttemptCount(lockViewModel.getLockAttemptCount())
         showShowBiometricAuthenticationIfNeed()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (enteredCorrectPin) (activity as? MainActivity)?.isAppUnlocked = true
     }
 
     private fun initDialogSavedStateListener() {
@@ -160,9 +130,9 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
             biometricHandler = Handler()
             biometricHandler?.post {
                 activity?.showBiometricAuthentication(
-                    getString(R.string.app_name),
-                    getString(R.string.please_scan_your_fingerprint_or),
-                    getString(R.string.cancel),
+                    titleText = getString(R.string.app_name),
+                    descriptionText = getString(R.string.please_scan_your_fingerprint_or),
+                    negativeButtonText = getString(R.string.cancel),
                     successCallback = { onEnteredCorrectPassword() }
                 )
             }
@@ -254,7 +224,12 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
     private fun onEnteredCorrectPassword() {
         lockAttemptCount = 0
         penaltyRemainingTime = 0
-        handleNextNavigation()
+        nav(LockFragmentDirections.actionLockFragmentPop())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lockViewModel.onAuthSucceed()
     }
 
     companion object {

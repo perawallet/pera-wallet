@@ -21,6 +21,7 @@ import com.algorand.android.models.BaseAccountAndAssetListItem
 import com.algorand.android.modules.sorting.accountsorting.domain.model.AccountSortingType
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetSortedLocalAccountsUseCase
+import com.algorand.android.utils.extensions.hasAsset
 import javax.inject.Inject
 
 class GetSortedAccountsByPreferenceUseCase @Inject constructor(
@@ -87,9 +88,7 @@ class GetSortedAccountsByPreferenceUseCase @Inject constructor(
             .filter { accountDetail ->
                 accountFilterAssetId == null ||
                     accountFilterAssetId == ALGO_ID ||
-                    accountDetail?.accountInformation?.assetHoldingList?.any { assetHolding ->
-                        assetHolding.assetId == accountFilterAssetId
-                    } == true
+                    accountDetail?.hasAsset(accountFilterAssetId) == true
             }.mapIndexedNotNull { index, accountDetail ->
                 configureListItem(
                     accountDetail = accountDetail,

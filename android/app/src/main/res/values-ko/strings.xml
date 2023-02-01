@@ -818,7 +818,6 @@
     <string name="disclaimer">고지사항</string>
     <string name="export_to_pera_web">Pera Web으로 내보내기</string>
     <string name="you_re_about_to_share">Pera Web Wallet으로 비밀문구를 공유하고 가져오려고 합니다!</string>
-    <string name="never_accept_a">요청한 적이 없다면 요청을 수락하지 마세요.</string>
     <string name="confirm_export_domain">도메인 내보내기 확인</string>
     <string name="for_your_security_please_confirm">보안을 위해 컴퓨터에 표시되는 도메인 이름을 입력하여 계정을 Pera Web으로 내보내고 있는지 확인해주세요.</string>
     <string name="enter_url_of_web_wallet">웹 지갑의 URL을 입력하세요</string>

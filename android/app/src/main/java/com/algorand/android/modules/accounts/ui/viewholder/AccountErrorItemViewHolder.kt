@@ -35,8 +35,8 @@ class AccountErrorItemViewHolder(
         with(binding) {
             with(item.accountListItem.itemConfiguration) {
                 setAccountStartIconDrawable(accountIconResource)
-                setAccountTitleText(accountDisplayName?.getDisplayTextOrAccountShortenedAddress())
-                setAccountDescriptionText(accountDisplayName?.getAccountShortenedAddressOrAccountType(root.resources))
+                setAccountTitleText(accountDisplayName?.getAccountPrimaryDisplayName())
+                setAccountDescriptionText(accountDisplayName?.getAccountSecondaryDisplayName(root.resources))
                 setAccountEndIconDrawable()
                 root.setOnClickListener { listener.onAccountClick(accountAddress) }
                 root.setOnLongClickListener(getOnLongClickListener(item.canCopyable, accountAddress))

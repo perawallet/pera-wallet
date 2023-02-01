@@ -21,7 +21,7 @@ import com.algorand.android.assetsearch.domain.usecase.SearchAssetUseCase
 import com.algorand.android.assetsearch.ui.mapper.BaseAssetSearchItemMapper
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
 import com.algorand.android.models.ui.AccountAssetItemButtonState
-import com.algorand.android.modules.assets.addition.domain.usecase.AssetItemActionButtonStateDecider
+import com.algorand.android.modules.assets.addition.domain.usecase.AddAssetItemActionButtonStateDecider
 import com.algorand.android.usecase.AccountDetailUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +34,7 @@ class AddAssetPreviewUseCase @Inject constructor(
     private val assetSearchQueryMapper: AssetSearchQueryMapper,
     private val assetSearchItemMapper: BaseAssetSearchItemMapper,
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val assetItemActionButtonStateDecider: AssetItemActionButtonStateDecider
+    private val addAssetItemActionButtonStateDecider: AddAssetItemActionButtonStateDecider
 ) {
 
     fun getSearchPaginationFlow(
@@ -61,10 +61,8 @@ class AddAssetPreviewUseCase @Inject constructor(
         return combine(searchedAssetFlow, accountDetailFlow) { searchedAsset, accountDetail ->
             searchedAsset.map { baseSearchedAsset ->
                 val accountInformation = accountDetail?.data?.accountInformation
-                val assetHolding = accountInformation?.assetHoldingList?.firstOrNull {
-                    it.assetId == baseSearchedAsset.assetId
-                }
-                val assetActionButtonState = assetItemActionButtonStateDecider.decideAssetItemActionButtonState(
+                val assetHolding = accountInformation?.getAssetHoldingOrNull(baseSearchedAsset.assetId)
+                val assetActionButtonState = addAssetItemActionButtonStateDecider.decideAddAssetItemActionButtonState(
                     assetHolding = assetHolding
                 )
                 getSearchItemMappedAssetDetail(baseSearchedAsset, assetActionButtonState)

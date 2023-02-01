@@ -20,6 +20,8 @@ abstract class BaseInnerTransactionItemViewHolder(
     itemView: ViewGroup
 ) : BaseViewHolder<TransactionDetailItem>(itemView) {
 
+    abstract override fun bind(item: TransactionDetailItem)
+
     interface InnerTransactionItemListener {
 
         fun onStandardTransactionClick(

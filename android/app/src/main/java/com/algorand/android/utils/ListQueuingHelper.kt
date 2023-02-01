@@ -20,16 +20,21 @@ open class ListQueuingHelper<E, D> @Inject constructor() {
     val currentItem: E?
         get() = _currentItem
 
-    private val dequeuedItemList = mutableListOf<D?>()
-    private var enqueuedItemCount = -1
+    protected open val totalItemCount
+        get() = enqueuedItemCount
+    protected open val currentItemIndex
+        get() = dequeuedItemList.size + 1
+
+    protected val dequeuedItemList = mutableListOf<D?>()
+    protected var enqueuedItemCount = -1
     private val enqueuedItemList = mutableListOf<E>()
     private var _currentItem: E? by Delegates.observable(null) { _, _, newValue ->
         if (newValue != null) {
             listener?.onNextItemToBeDequeued(
                 item = newValue,
                 // list index starts from zero, so we need to add 1 manually
-                currentItemIndex = dequeuedItemList.size + 1,
-                totalItemCount = enqueuedItemCount
+                currentItemIndex = currentItemIndex,
+                totalItemCount = totalItemCount
             )
         }
     }
@@ -43,7 +48,7 @@ open class ListQueuingHelper<E, D> @Inject constructor() {
         this.listener = listener
     }
 
-    fun initItemsToBeEnqueued(enqueuedItems: List<E>) {
+    open fun initItemsToBeEnqueued(enqueuedItems: List<E>) {
         clearCachedData()
         enqueuedItemList.addAll(enqueuedItems)
         enqueuedItemCount = enqueuedItemList.size

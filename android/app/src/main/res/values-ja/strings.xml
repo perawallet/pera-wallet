@@ -818,7 +818,6 @@
     <string name="disclaimer">免責事項</string>
     <string name="export_to_pera_web">Pera Webにエクスポートする</string>
     <string name="you_re_about_to_share">Pera Web Walletとパスフレーズを共有し、インポートしようとしています！</string>
-    <string name="never_accept_a">ご自身のものでないリクエストは絶対に受け入れないでください。</string>
     <string name="confirm_export_domain">ドメインエクスポートの確認</string>
     <string name="for_your_security_please_confirm">セキュリティのため、パソコンに表示されているドメイン名を入力して、Pera Webにアカウントをエクスポートしていることをご確認ください。</string>
     <string name="enter_url_of_web_wallet">Web WalletのURLを入力してください</string>

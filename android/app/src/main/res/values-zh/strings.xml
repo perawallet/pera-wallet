@@ -828,7 +828,6 @@
     <string name="disclaimer">免责声明</string>
     <string name="export_to_pera_web">导出到Pera网络</string>
     <string name="you_re_about_to_share">您将会分享您的密码，并将密码导入到Pera网络钱包上！</string>
-    <string name="never_accept_a">请不要接受任何您未提出的请求。</string>
     <string name="confirm_export_domain">确认导出域名</string>
     <string name="for_your_security_please_confirm">为了您的安全，请通过输入您在电脑上所看到的的域名，以确认您在把账户导出到Pera网络上。</string>
     <string name="enter_url_of_web_wallet">输入网络钱包地址</string>

@@ -27,7 +27,7 @@ data class AccountInformation(
     val amount: BigInteger,
     val participation: Participation?,
     val rekeyAdminAddress: String?,
-    private val allAssetHoldingList: MutableSet<AssetHolding>,
+    private val allAssetHoldingMap: HashMap<Long, AssetHolding>,
     val createdAtRound: Long?,
     val appsLocalState: List<CreatedAppLocalState>? = null,
     val appsTotalSchema: CreatedAppStateScheme? = null,
@@ -36,20 +36,20 @@ data class AccountInformation(
     val lastFetchedRound: Long?
 ) : Parcelable {
 
-    val assetHoldingList: List<AssetHolding>
-        get() = allAssetHoldingList.filterNot { it.isDeleted }
+    val assetHoldingMap: HashMap<Long, AssetHolding>
+        get() = allAssetHoldingMap?.filterNot { it.value.isDeleted } as? HashMap<Long, AssetHolding> ?: hashMapOf()
 
     fun isCreated(): Boolean {
         return createdAtRound != null
     }
 
     fun setAssetHoldingStatus(assetId: Long, status: AssetStatus) {
-        allAssetHoldingList.firstOrNull { it.assetId == assetId }?.status = status
+        allAssetHoldingMap?.get(assetId)?.status = status
     }
 
     fun addPendingAssetHolding(assetHolding: AssetHolding) {
         if (!AssetStatus.isPending(assetHolding.status)) return
-        allAssetHoldingList.add(assetHolding)
+        allAssetHoldingMap?.put(assetHolding.assetId, assetHolding)
     }
 
     fun isRekeyed(): Boolean {
@@ -61,7 +61,7 @@ data class AccountInformation(
         assetInformationList.add(
             AssetInformation.getAlgorandAsset(amount)
         )
-        assetHoldingList.forEach { assetHolding ->
+        assetHoldingMap.values.forEach { assetHolding ->
             accountCacheManager.getAssetDescription(assetHolding.assetId)?.let { assetDescription ->
                 assetInformationList.add(AssetInformation.createAssetInformation(assetHolding, assetDescription))
             }
@@ -70,14 +70,14 @@ data class AccountInformation(
     }
 
     fun getAllAssetIds(): List<Long> {
-        return assetHoldingList.map { it.assetId }
+        return assetHoldingMap.keys.toList()
     }
 
     fun getAllAssetIdsIncludeAlgorand(): List<Long> {
-        return assetHoldingList.map { it.assetId }.toMutableList().apply { add(0, ALGO_ID) }
+        return getAllAssetIds().toMutableList().apply { add(0, ALGO_ID) }
     }
 
-    fun getOptedInAssetsCount() = allAssetHoldingList.size
+    fun getOptedInAssetsCount() = allAssetHoldingMap?.size ?: 0
 
     fun getMinAlgoBalance(): BigInteger {
         return calculateMinBalance(
@@ -87,21 +87,41 @@ data class AccountInformation(
     }
 
     fun isAssetSupported(assetId: Long): Boolean {
-        return assetId == ALGO_ID || assetHoldingList.any { it.assetId == assetId }
+        return assetId == ALGO_ID || hasAsset(assetId)
     }
 
     fun getBalance(assetId: Long): BigInteger {
         return if (assetId == ALGO_ID) {
             amount
         } else {
-            assetHoldingList.firstOrNull { it.assetId == assetId }?.amount ?: ZERO
+            getAssetHoldingOrNull(assetId)?.amount ?: ZERO
         }
     }
 
     fun doesUserHasParticipationKey() =
         !(participation == null || participation.voteParticipationKey == DEFAULT_PARTICIPATION_KEY)
 
-    fun isThereAnyDifferentAsset() = assetHoldingList.isNotEmpty()
+    fun isThereAnyDifferentAsset() = assetHoldingMap.isNotEmpty()
 
     fun isThereAnOptedInApp() = appsLocalState?.isNotEmpty() == true || totalCreatedApps > 0
+
+    fun hasAsset(assetId: Long): Boolean {
+        return assetHoldingMap.containsKey(assetId)
+    }
+
+    fun getAssetHoldingOrNull(assetId: Long): AssetHolding? {
+        return assetHoldingMap.get(assetId)
+    }
+
+    fun getAssetStatusOrNull(assetId: Long): AssetStatus? {
+        return getAssetHoldingOrNull(assetId)?.status
+    }
+
+    fun getAssetHoldingList(): List<AssetHolding> {
+        return assetHoldingMap.values.toList()
+    }
+
+    fun getAssetIdList(): List<Long> {
+        return assetHoldingMap.keys.toList()
+    }
 }

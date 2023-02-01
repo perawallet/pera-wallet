@@ -17,6 +17,7 @@ import com.algorand.android.models.AssetHolding
 import com.algorand.android.models.AssetStatus
 import com.algorand.android.models.PendingAssetHoldings
 import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.utils.extensions.getAssetHoldingList
 import javax.inject.Inject
 
 class AccountAssetStatusUpdateHelper @Inject constructor(
@@ -25,7 +26,7 @@ class AccountAssetStatusUpdateHelper @Inject constructor(
 
     fun getAssetStatusUpdatedAccount(accountDetail: AccountDetail): AccountDetail {
         val cachedAccountAssetHoldings = accountDetailUseCase.getCachedAccountDetail(accountDetail.account.address)
-            ?.data?.accountInformation?.assetHoldingList ?: return accountDetail
+            ?.data?.getAssetHoldingList() ?: return accountDetail
         val (pendingAssetAdditions, pendingAssetRemovals, pendingAssetSendings) = getPendingAssetHoldings(
             cachedAccountAssetHoldings
         )
@@ -40,7 +41,7 @@ class AccountAssetStatusUpdateHelper @Inject constructor(
     ): AccountDetail {
         pendingAssetRemovals.forEach { pendingAsset ->
             accountDetail.accountInformation.apply {
-                assetHoldingList.firstOrNull { it.assetId == pendingAsset.assetId }?.status = pendingAsset.status
+                getAssetHoldingOrNull(pendingAsset.assetId)?.status = pendingAsset.status
             }
         }
         return accountDetail
@@ -52,7 +53,7 @@ class AccountAssetStatusUpdateHelper @Inject constructor(
     ): AccountDetail {
         return accountDetail.apply {
             pendingAssetAdditions.forEach { assetHolding ->
-                if (!accountInformation.assetHoldingList.any { it.assetId == assetHolding.assetId }) {
+                if (!accountInformation.hasAsset(assetHolding.assetId)) {
                     accountInformation.addPendingAssetHolding(assetHolding)
                 }
             }
@@ -65,8 +66,7 @@ class AccountAssetStatusUpdateHelper @Inject constructor(
     ): AccountDetail {
         return accountDetail.apply {
             pendingAssetSendings.forEach { assetHolding ->
-                val fetchedAssetHolding =
-                    accountInformation.assetHoldingList.firstOrNull { it.assetId == assetHolding.assetId }
+                val fetchedAssetHolding = accountInformation.getAssetHoldingOrNull(assetHolding.assetId)
                 if (fetchedAssetHolding != null && fetchedAssetHolding.amount.isEqualTo(assetHolding.amount)) {
                     fetchedAssetHolding.status = assetHolding.status
                 }

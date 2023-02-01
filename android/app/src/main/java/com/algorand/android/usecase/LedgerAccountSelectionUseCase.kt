@@ -130,7 +130,7 @@ class LedgerAccountSelectionUseCase @Inject constructor(
         accountInformation: AccountInformation,
         coroutineScope: CoroutineScope
     ) {
-        val assetIds = accountInformation.assetHoldingList.map { it.assetId }.toSet()
+        val assetIds = accountInformation.getAssetIdList().toSet()
         val filteredAssetList = simpleAssetDetailUseCase.getChunkedAndFilteredAssetList(assetIds)
         assetFetchAndCacheUseCase.processFilteredAssetIdList(filteredAssetList, coroutineScope)
     }

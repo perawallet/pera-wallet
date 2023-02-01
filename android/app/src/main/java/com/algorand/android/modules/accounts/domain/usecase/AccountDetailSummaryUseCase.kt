@@ -21,16 +21,19 @@ import javax.inject.Inject
 class AccountDetailSummaryUseCase @Inject constructor(
     private val getLocalAccountsUseCase: GetLocalAccountsUseCase,
     private val accountSummaryMapper: AccountSummaryMapper,
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) {
 
     fun getAccountDetailSummary(accountAddress: String): AccountDetailSummary {
-        val accountDetail = getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache().first {
+        val accountDetail = getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache().firstOrNull {
             it.address == accountAddress
         }
         return accountSummaryMapper.mapToAccountDetailSummary(
-            account = accountDetail,
-            canSignTransaction = accountDetailUseCase.canAccountSignTransaction(accountAddress)
+            canSignTransaction = accountDetailUseCase.canAccountSignTransaction(accountAddress),
+            accountDisplayName = getAccountDisplayNameUseCase.invoke(accountAddress),
+            accountAddress = accountAddress,
+            accountType = accountDetail?.type
         )
     }
 }

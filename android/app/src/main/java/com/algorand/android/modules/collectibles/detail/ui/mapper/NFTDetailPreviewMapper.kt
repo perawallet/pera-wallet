@@ -19,7 +19,6 @@ import com.algorand.android.modules.collectibles.detail.ui.model.NFTDetailPrevie
 import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.Event
-import com.algorand.android.utils.toShortenedAddress
 import javax.inject.Inject
 
 class NFTDetailPreviewMapper @Inject constructor() {
@@ -35,7 +34,7 @@ class NFTDetailPreviewMapper @Inject constructor() {
         mediaListOfNFT: List<BaseCollectibleMediaItem>,
         traitListOfNFT: List<CollectibleTraitItem>?,
         nftDescription: String?,
-        creatorAccountOfNFT: String,
+        creatorAccountOfNFT: AccountDisplayName,
         nftId: Long,
         formattedTotalSupply: String,
         peraExplorerUrl: String,
@@ -59,7 +58,6 @@ class NFTDetailPreviewMapper @Inject constructor() {
             mediaListOfNFT = mediaListOfNFT,
             traitListOfNFT = traitListOfNFT,
             nftDescription = nftDescription,
-            formattedCreatorAccountAddressOfNFT = creatorAccountOfNFT.toShortenedAddress(),
             creatorAccountAddressOfNFT = creatorAccountOfNFT,
             nftId = nftId,
             formattedTotalSupply = formattedTotalSupply,

@@ -37,7 +37,7 @@ class AlgoDrawableProvider : BaseAssetDrawableProvider() {
         onResourceFailed: (Drawable?) -> Unit,
         onUriReady: (String) -> Unit
     ) {
-        val algoDrawable = AppCompatResources.getDrawable(imageView.context, R.drawable.ic_algo_green_round)
+        val algoDrawable = AppCompatResources.getDrawable(imageView.context, R.drawable.ic_algo_round)
         imageView.setImageDrawable(algoDrawable)
         if (algoDrawable != null) {
             onResourceReady(algoDrawable)
@@ -45,6 +45,6 @@ class AlgoDrawableProvider : BaseAssetDrawableProvider() {
     }
 
     override fun createPlaceHolder(context: Context, width: Int): Drawable? {
-        return AppCompatResources.getDrawable(context, R.drawable.ic_algo_green_round)
+        return AppCompatResources.getDrawable(context, R.drawable.ic_algo_round)
     }
 }

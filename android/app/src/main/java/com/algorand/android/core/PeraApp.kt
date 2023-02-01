@@ -22,10 +22,11 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDex
 import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate
 import com.algorand.android.migration.MigrationManager
+import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
 import com.algorand.android.utils.coremanager.ApplicationStatusObserver
+import com.algorand.android.modules.firebase.token.FirebaseTokenManager
 import com.algorand.android.utils.preference.getSavedThemePreference
 import com.algorand.android.utils.walletconnect.WalletConnectManager
-import com.google.android.play.core.missingsplits.MissingSplitsManagerFactory
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
 import javax.inject.Inject
@@ -41,6 +42,12 @@ open class PeraApp : Application() {
 
     @Inject
     lateinit var migrationManager: MigrationManager
+
+    @Inject
+    lateinit var firebaseTokenManager: FirebaseTokenManager
+
+    @Inject
+    lateinit var autoLockManager: AutoLockManager
 
     @Inject
     lateinit var walletConnectManager: WalletConnectManager
@@ -60,22 +67,24 @@ open class PeraApp : Application() {
         super.onCreate()
         migrationManager.makeMigrations()
 
-        // https://developer.android.com/guide/app-bundle/sideload-check
-        if (MissingSplitsManagerFactory.create(this).disableAppIfMissingRequiredSplits()) {
-            // Skip app initialization because missing required drawables.
-            return
-        }
         AppCompatDelegate.setDefaultNightMode(sharedPref.getSavedThemePreference().convertToSystemAbbr())
         accountManager.initAccounts()
 
         bindLifecycleAwareComponents()
+        bindActivityLifecycleAwareComponents()
     }
 
     private fun bindLifecycleAwareComponents() {
         with(ProcessLifecycleOwner.get().lifecycle) {
+            addObserver(autoLockManager)
             addObserver(walletConnectManager)
             addObserver(applicationStatusObserver)
+            addObserver(firebaseTokenManager)
         }
+    }
+
+    private fun bindActivityLifecycleAwareComponents() {
+        registerActivityLifecycleCallbacks(autoLockManager)
     }
 
     // https://issuetracker.google.com/issues/141726323

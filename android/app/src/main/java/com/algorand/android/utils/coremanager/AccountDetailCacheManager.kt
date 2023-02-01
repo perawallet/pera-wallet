@@ -64,6 +64,9 @@ class AccountDetailCacheManager(
                     if (shouldRefresh) {
                         updateAccountDetailsAndLastKnownBlockForAccounts(coroutineScope)
                     }
+                },
+                onFailed = {
+                    updateAccountDetailsAndLastKnownBlockForAccounts(coroutineScope)
                 }
             )
         }

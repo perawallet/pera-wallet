@@ -15,6 +15,8 @@ package com.algorand.android.nft.utils
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.utils.CacheResult
+import com.algorand.android.utils.extensions.hasAsset
+import com.algorand.android.utils.extensions.getAssetHoldingOrNull
 import com.algorand.android.utils.isGreaterThan
 import java.math.BigInteger
 import javax.inject.Inject
@@ -22,9 +24,8 @@ import javax.inject.Inject
 class CollectibleUtils @Inject constructor() {
 
     fun isCollectibleOwnedByTheUser(accountDetail: CacheResult<AccountDetail>?, collectibleAssetId: Long): Boolean {
-        val assetHolding = accountDetail?.data?.accountInformation?.assetHoldingList?.firstOrNull {
-            it.assetId == collectibleAssetId
-        } ?: return false
+        val assetHolding = accountDetail?.data?.getAssetHoldingOrNull(collectibleAssetId)
+            ?: return false
         return assetHolding.amount isGreaterThan BigInteger.ZERO
     }
 
@@ -32,16 +33,11 @@ class CollectibleUtils @Inject constructor() {
         accountDetail: CacheResult<AccountDetail>?,
         collectibleAssetId: Long
     ): Boolean {
-        accountDetail?.data?.accountInformation?.assetHoldingList?.firstOrNull {
-            it.assetId == collectibleAssetId
-        } ?: return false
-        return true
+        return accountDetail?.data?.hasAsset(collectibleAssetId) ?: false
     }
 
     fun isCollectibleOwnedByTheUser(accountDetail: AccountDetail?, collectibleAssetId: Long): Boolean {
-        val assetHolding = accountDetail?.accountInformation?.assetHoldingList?.firstOrNull {
-            it.assetId == collectibleAssetId
-        } ?: return false
+        val assetHolding = accountDetail?.getAssetHoldingOrNull(collectibleAssetId) ?: return false
         return assetHolding.amount isGreaterThan BigInteger.ZERO
     }
 
@@ -49,10 +45,7 @@ class CollectibleUtils @Inject constructor() {
         accountDetail: CacheResult<AccountDetail>?,
         collectibleAssetId: Long
     ): Boolean {
-        accountDetail?.data?.accountInformation?.assetHoldingList?.firstOrNull {
-            it.assetId == collectibleAssetId
-        } ?: return false
-        return true
+        return accountDetail?.data?.hasAsset(collectibleAssetId) ?: false
     }
 
     fun isCollectibleOwnedByAnyUser(
@@ -83,9 +76,7 @@ class CollectibleUtils @Inject constructor() {
         publicKey: String
     ): Account? {
         val selectedAccount = accountDetailList.firstOrNull { it.data?.account?.address == publicKey }
-        val isCollectibleOwnedBySelectedAccount = selectedAccount
-            ?.data?.accountInformation?.assetHoldingList
-            ?.any { it.assetId == collectibleAssetId } ?: false
+        val isCollectibleOwnedBySelectedAccount = selectedAccount?.data?.hasAsset(collectibleAssetId) ?: false
         return selectedAccount?.data?.account.takeIf { isCollectibleOwnedBySelectedAccount }
     }
 }

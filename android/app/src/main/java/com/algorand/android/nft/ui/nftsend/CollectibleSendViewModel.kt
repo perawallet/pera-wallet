@@ -92,13 +92,19 @@ class CollectibleSendViewModel @Inject constructor(
         val senderAccountCacheData = accountCacheManager.getCacheData(accountAddress) ?: return null
         val targetUser = TargetUser(publicKey = selectedAccountAddressFlow.value)
         return TransactionData.Send(
-            accountCacheData = senderAccountCacheData,
             amount = BigInteger.ONE,
             assetInformation = AssetInformation(
                 assetId = nftId,
                 verificationTier = null
             ),
-            targetUser = targetUser
+            targetUser = targetUser,
+            senderAccountAddress = senderAccountCacheData.account.address,
+            senderAccountDetail = senderAccountCacheData.account.detail,
+            senderAccountType = senderAccountCacheData.account.type,
+            senderAuthAddress = senderAccountCacheData.authAddress,
+            senderAccountName = senderAccountCacheData.account.name,
+            isSenderRekeyedToAnotherAccount = senderAccountCacheData.isRekeyedToAnotherAccount(),
+            minimumBalance = senderAccountCacheData.getMinBalance()
         )
     }
 
@@ -106,13 +112,18 @@ class CollectibleSendViewModel @Inject constructor(
         val senderAccountCacheData = accountCacheManager.getCacheData(accountAddress) ?: return null
         val targetUser = TargetUser(publicKey = selectedAccountAddressFlow.value)
         return TransactionData.SendAndRemoveAsset(
-            accountCacheData = senderAccountCacheData,
             amount = BigInteger.ONE,
             assetInformation = AssetInformation(
                 assetId = nftId,
                 verificationTier = null
             ),
-            targetUser = targetUser
+            targetUser = targetUser,
+            senderAccountAddress = senderAccountCacheData.account.address,
+            senderAccountDetail = senderAccountCacheData.account.detail,
+            senderAccountType = senderAccountCacheData.account.type,
+            senderAuthAddress = senderAccountCacheData.authAddress,
+            senderAccountName = senderAccountCacheData.account.name,
+            isSenderRekeyedToAnotherAccount = senderAccountCacheData.isRekeyedToAnotherAccount()
         )
     }
 

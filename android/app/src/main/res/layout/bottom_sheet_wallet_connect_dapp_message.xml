@@ -35,7 +35,7 @@
         android:padding="1dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/modalityLineView"
-        tools:srcCompat="@drawable/ic_algo_green_round" />
+        tools:srcCompat="@drawable/ic_algo_round" />
 
     <TextView
         android:id="@+id/appNameTextView"

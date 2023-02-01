@@ -53,4 +53,10 @@ interface NodeDao {
         deleteAll()
         insertNodeList(nodeList)
     }
+
+    @Query("SELECT * FROM node WHERE is_active = 1")
+    suspend fun getActiveNode(): Node?
+
+    @Query("SELECT * FROM node WHERE is_active = 1")
+    fun getActiveNodeAsFlow(): Flow<Node?>
 }

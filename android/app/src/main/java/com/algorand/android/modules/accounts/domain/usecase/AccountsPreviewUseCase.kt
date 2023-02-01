@@ -44,13 +44,14 @@ import com.algorand.android.modules.tutorialdialog.data.model.Tutorial
 import com.algorand.android.modules.tutorialdialog.data.model.Tutorial.ACCOUNT_ADDRESS_COPY
 import com.algorand.android.modules.tutorialdialog.data.model.Tutorial.SWAP
 import com.algorand.android.modules.tutorialdialog.domain.usecase.TutorialUseCase
-import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.usecase.AssetCacheManagerUseCase
 import com.algorand.android.usecase.NodeSettingsUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.combine
+import com.algorand.android.utils.extensions.getAssetHoldingList
 import com.algorand.android.utils.formatAsCurrency
 import java.math.BigDecimal
 import javax.inject.Inject
@@ -67,7 +68,6 @@ class AccountsPreviewUseCase @Inject constructor(
     private val accountManager: AccountManager,
     private val accountPreviewMapper: AccountPreviewMapper,
     private val accountListItemMapper: AccountListItemMapper,
-    private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
     private val bannersUseCase: BannersUseCase,
     private val baseBannerItemMapper: BaseBannerItemMapper,
     private val nodeSettingsUseCase: NodeSettingsUseCase,
@@ -80,7 +80,9 @@ class AccountsPreviewUseCase @Inject constructor(
     private val notificationStatusUseCase: NotificationStatusUseCase,
     private val getSwapFeatureRedDotVisibilityUseCase: GetSwapFeatureRedDotVisibilityUseCase,
     private val tutorialUseCase: TutorialUseCase,
-    private val swapNavigationDestinationHelper: SwapNavigationDestinationHelper
+    private val swapNavigationDestinationHelper: SwapNavigationDestinationHelper,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val assetCacheManagerUseCase: AssetCacheManagerUseCase
 ) {
 
     suspend fun dismissTutorial(tutorialId: Int) {
@@ -99,7 +101,7 @@ class AccountsPreviewUseCase @Inject constructor(
             bannersUseCase.getBanner(),
             tutorialUseCase.getTutorial(),
             nodeSettingsUseCase.getAllNodeAsFlow(),
-            assetDetailUseCase.getCachedAssetsFlow()
+            assetCacheManagerUseCase.getAssetCacheStatusFlow(),
         ) { selectedCurrencyParityCache, accountDetailCache, banner, tutorial, _, _ ->
             val isTestnetBadgeVisible = nodeSettingsUseCase.isSelectedNodeTestnet()
             val localAccounts = accountManager.getAccounts()
@@ -190,11 +192,10 @@ class AccountsPreviewUseCase @Inject constructor(
         tutorial: Tutorial?
     ): AccountPreview {
         val isThereAnyAssetNeedsToBeCached = accountDetailCache.values.any {
-            !it.data?.accountInformation?.assetHoldingList.isNullOrEmpty()
+            !it.data?.getAssetHoldingList().isNullOrEmpty()
         }
         return if (
-            assetDetailUseCase.getCachedAssetList().isEmpty() &&
-            simpleCollectibleUseCase.getCachedCollectibleList().isEmpty() &&
+            !assetCacheManagerUseCase.isCacheStatusAtLeastEmpty() &&
             isThereAnyAssetNeedsToBeCached
         ) {
             accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
@@ -300,7 +301,7 @@ class AccountsPreviewUseCase @Inject constructor(
                 }
                 accountItemConfigurationMapper.mapTo(
                     accountAddress = account.address,
-                    accountName = account.name,
+                    accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
                     accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
                     accountType = account.type,
                     accountPrimaryValueText = accountBalance.primaryAccountValue.formatAsCurrency(
@@ -320,7 +321,7 @@ class AccountsPreviewUseCase @Inject constructor(
                 this?.run {
                     accountItemConfigurationMapper.mapTo(
                         accountAddress = address,
-                        accountName = name,
+                        accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
                         accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
                         showWarningIcon = true
                     )
@@ -378,7 +379,7 @@ class AccountsPreviewUseCase @Inject constructor(
             onLoadedAccountConfiguration = {
                 accountItemConfigurationMapper.mapTo(
                     accountAddress = account.address,
-                    accountName = account.name,
+                    accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
                     accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
                     accountType = account.type,
                     showWarningIcon = true
@@ -388,7 +389,7 @@ class AccountsPreviewUseCase @Inject constructor(
                 this?.run {
                     accountItemConfigurationMapper.mapTo(
                         accountAddress = address,
-                        accountName = name,
+                        accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
                         accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
                         accountType = type,
                         showWarningIcon = true

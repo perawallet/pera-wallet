@@ -39,7 +39,7 @@ import com.algorand.android.models.AssetInformation
 import com.algorand.android.utils.exceptions.InvalidAnnotationException
 import java.util.Locale
 
-fun SpannableStringBuilder.addSpace() {
+fun Appendable.appendSpace() {
     append(" ")
 }
 
@@ -59,7 +59,7 @@ fun SpannableStringBuilder.addAssetName(
     }
     if (!isShortNameNullOrBlank) {
         if (!isFullNameNullOrBlank) {
-            addSpace()
+            appendSpace()
         }
         color(ContextCompat.getColor(context, R.color.gray_500)) {
             append(context.getString(R.string.ticker_asset_format, shortName?.uppercase(Locale.ENGLISH)))
@@ -84,9 +84,9 @@ fun SpannableStringBuilder.addVerifiedIcon(
     iconRes: Int = R.drawable.ic_verified_asset
 ) {
     inSpans(CenteredImageSpan(context, iconRes)) {
-        addSpace()
+        appendSpace()
     }
-    addSpace()
+    appendSpace()
 }
 
 fun SpannableStringBuilder.addUnnamedAssetName(context: Context) {
@@ -99,9 +99,9 @@ fun SpannableStringBuilder.addUnnamedAssetName(context: Context) {
 
 fun SpannableStringBuilder.addAlgorandIcon(context: Context) {
     inSpans(CenteredImageSpan(context, R.drawable.ic_algo_sign)) {
-        addSpace()
+        appendSpace()
     }
-    addSpace()
+    appendSpace()
 }
 
 fun TextView.setXmlStyledString(

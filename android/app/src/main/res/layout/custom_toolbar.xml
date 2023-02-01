@@ -52,7 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_algo_green_round"
+        tools:srcCompat="@drawable/ic_algo_round"
         tools:visibility="visible" />
 
     <TextView
@@ -62,6 +62,11 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
+        android:layout_marginTop="@dimen/spacing_xxsmall"
+        app:autoSizeMaxTextSize="@dimen/text_size_15"
+        app:autoSizeMinTextSize="@dimen/text_size_11"
+        app:autoSizeTextType="uniform"
+        app:layout_goneMarginBottom="@dimen/spacing_xxsmall"
         android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/toolbarSubtitleTextView"
@@ -77,7 +82,11 @@
         android:drawablePadding="@dimen/spacing_xxsmall"
         android:ellipsize="end"
         android:gravity="center"
+        android:layout_marginBottom="@dimen/spacing_xxsmall"
         android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_15"
+        app:autoSizeMinTextSize="@dimen/text_size_11"
+        app:autoSizeTextType="uniform"
         android:textAppearance="@style/TextAppearance.Footnote.Sans"
         android:textColor="@color/secondary_text_color"
         android:visibility="gone"

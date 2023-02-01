@@ -18,6 +18,5 @@ data class DeviceUpdateDTO(
     val accountPublicKeys: List<String>,
     val application: String,
     val platform: String,
-    val locale: String,
-    val networkSlug: String?
+    val locale: String
 )

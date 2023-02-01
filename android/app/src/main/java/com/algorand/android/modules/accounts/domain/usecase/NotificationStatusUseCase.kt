@@ -18,14 +18,12 @@ import com.algorand.android.models.Result
 import com.algorand.android.modules.accounts.data.mapper.LastSeenNotificationDTOMapper
 import com.algorand.android.modules.accounts.domain.repository.NotificationStatusRepository
 import com.algorand.android.modules.accounts.domain.repository.NotificationStatusRepository.Companion.REPOSITORY_INJECTION_NAME
-import com.algorand.android.usecase.GetActiveNodeUseCase
 import javax.inject.Inject
 import javax.inject.Named
 
 class NotificationStatusUseCase @Inject constructor(
     @Named(REPOSITORY_INJECTION_NAME) private val notificationStatusRepository: NotificationStatusRepository,
     private val deviceIdUseCase: DeviceIdUseCase,
-    private val getActiveNodeUseCase: GetActiveNodeUseCase,
     private val lastSeenNotificationDTOMapper: LastSeenNotificationDTOMapper
 ) {
 
@@ -44,8 +42,7 @@ class NotificationStatusUseCase @Inject constructor(
         notificationStatusRepository.putLastSeenNotificationId(
             deviceId = deviceId,
             lastSeenNotificationDTO = lastSeenNotificationDTOMapper.mapToLastSeenNotificationDTO(
-                notificationId = notificationListItem.id,
-                networkSlug = getActiveNodeUseCase.getActiveNode()?.networkSlug
+                notificationId = notificationListItem.id
             )
         ).use(
             onSuccess = { lastSeenNotificationDTO ->

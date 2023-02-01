@@ -15,6 +15,7 @@ package com.algorand.android.modules.collectibles.profile.ui.model
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
 import com.algorand.android.modules.collectibles.detail.base.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.modules.collectibles.detail.base.ui.model.CollectibleTraitItem
+import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AssetName
 
 data class CollectibleProfilePreview(
@@ -24,8 +25,7 @@ data class CollectibleProfilePreview(
     val mediaListOfNFT: List<BaseCollectibleMediaItem>,
     val traitListOfNFT: List<CollectibleTraitItem>?,
     val nftDescription: String?,
-    val creatorAccountAddressOfNFT: String,
-    val formattedCreatorAccountAddressOfNFT: String,
+    val creatorAccountAddressOfNFT: AccountDisplayName,
     val nftId: Long,
     val formattedTotalSupply: String,
     val peraExplorerUrl: String,

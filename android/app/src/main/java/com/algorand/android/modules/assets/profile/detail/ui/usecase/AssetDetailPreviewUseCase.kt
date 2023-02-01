@@ -13,6 +13,7 @@
 package com.algorand.android.modules.assets.profile.detail.ui.usecase
 
 import androidx.navigation.NavDirections
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.discover.home.domain.model.TokenDetailInfo
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
@@ -44,7 +45,8 @@ class AssetDetailPreviewUseCase @Inject constructor(
     private val swapNavigationDestinationHelper: SwapNavigationDestinationHelper,
     private val getAssetDetailUseCase: GetAssetDetailUseCase,
     private val getSelectedAssetExchangeValueUseCase: GetSelectedAssetExchangeValueUseCase,
-    private val algoAssetInformationProvider: AlgoAssetInformationProvider
+    private val algoAssetInformationProvider: AlgoAssetInformationProvider,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) {
 
     fun updatePreviewForDiscoverMarketEvent(currentPreview: AssetDetailPreview): AssetDetailPreview {
@@ -103,8 +105,7 @@ class AssetDetailPreviewUseCase @Inject constructor(
                 assetDetail?.hasUsdValue() == true
             assetDetailPreviewMapper.mapToAssetDetailPreview(
                 baseOwnedAssetDetail = baseOwnedAssetDetail,
-                accountAddress = accountAddress,
-                accountName = account?.name.orEmpty(),
+                accountDisplayName = getAccountDisplayNameUseCase.invoke(accountAddress),
                 accountType = account?.type,
                 canAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(accountAddress),
                 isQuickActionButtonsVisible = isQuickActionButtonsVisible,

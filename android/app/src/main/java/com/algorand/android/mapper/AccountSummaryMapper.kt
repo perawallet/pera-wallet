@@ -14,7 +14,6 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.utils.AccountDisplayName
@@ -22,22 +21,16 @@ import javax.inject.Inject
 
 class AccountSummaryMapper @Inject constructor() {
 
-    fun mapTo(accountDetail: AccountDetail, canSignTransaction: Boolean): AccountDetailSummary {
-        return with(accountDetail) {
-            AccountDetailSummary(
-                accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
-                accountDisplayName = AccountDisplayName.create(account.address, account.name, account.type),
-                publicKey = accountInformation.address,
-                canSignTransaction = canSignTransaction
-            )
-        }
-    }
-
-    fun mapToAccountDetailSummary(account: Account, canSignTransaction: Boolean): AccountDetailSummary {
+    fun mapToAccountDetailSummary(
+        accountDisplayName: AccountDisplayName,
+        accountAddress: String,
+        accountType: Account.Type?,
+        canSignTransaction: Boolean
+    ): AccountDetailSummary {
         return AccountDetailSummary(
-            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
-            accountDisplayName = AccountDisplayName.create(account.address, account.name, account.type),
-            publicKey = account.address,
+            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(accountType),
+            accountDisplayName = accountDisplayName,
+            publicKey = accountAddress,
             canSignTransaction = canSignTransaction
         )
     }

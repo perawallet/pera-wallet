@@ -25,6 +25,7 @@ sealed class BaseTransactionDetail : Parcelable {
     abstract val senderAccountAddress: String?
     abstract val receiverAccountAddress: String?
     abstract val roundTimeAsTimestamp: Long?
+    abstract val confirmedRound: Long?
     abstract val fee: BigInteger
     abstract val noteInBase64: String?
 
@@ -41,6 +42,7 @@ sealed class BaseTransactionDetail : Parcelable {
         override val senderAccountAddress: String?,
         override val receiverAccountAddress: String?,
         override val roundTimeAsTimestamp: Long?,
+        override val confirmedRound: Long?,
         override val fee: BigInteger,
         override val noteInBase64: String?,
         override val closeToAccountAddress: String?,
@@ -59,6 +61,7 @@ sealed class BaseTransactionDetail : Parcelable {
         override val senderAccountAddress: String?,
         override val receiverAccountAddress: String?,
         override val roundTimeAsTimestamp: Long?,
+        override val confirmedRound: Long?,
         override val fee: BigInteger,
         override val noteInBase64: String?,
         override val closeToAccountAddress: String?,
@@ -77,6 +80,7 @@ sealed class BaseTransactionDetail : Parcelable {
         override val senderAccountAddress: String?,
         override val receiverAccountAddress: String?,
         override val roundTimeAsTimestamp: Long?,
+        override val confirmedRound: Long?,
         override val fee: BigInteger,
         override val noteInBase64: String?,
         override val closeToAccountAddress: String? = null,
@@ -97,6 +101,7 @@ sealed class BaseTransactionDetail : Parcelable {
         override val senderAccountAddress: String?,
         override val receiverAccountAddress: String? = null,
         override val roundTimeAsTimestamp: Long?,
+        override val confirmedRound: Long?,
         override val fee: BigInteger,
         override val noteInBase64: String?,
         override val closeToAccountAddress: String? = null,
@@ -124,6 +129,7 @@ sealed class BaseTransactionDetail : Parcelable {
         override val senderAccountAddress: String? = null,
         override val receiverAccountAddress: String? = null,
         override val roundTimeAsTimestamp: Long? = null,
+        override val confirmedRound: Long?,
         override val fee: BigInteger = BigInteger.ZERO,
         override val noteInBase64: String? = null,
         override val closeToAccountAddress: String? = null,

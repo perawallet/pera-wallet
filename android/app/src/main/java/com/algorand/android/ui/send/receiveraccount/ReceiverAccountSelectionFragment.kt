@@ -182,6 +182,7 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
 
     private fun handleNextNavigation(targetUser: TargetUser) {
         val assetTransaction = receiverAccountSelectionViewModel.assetTransaction
+        val note = assetTransaction.xnote ?: assetTransaction.note
         val selectedAccountCacheData = receiverAccountSelectionViewModel.getFromAccountCachedData() ?: return
         val selectedAsset = receiverAccountSelectionViewModel.getSelectedAssetInformation() ?: return
         val minBalanceCalculatedAmount = assetTransaction.amount
@@ -189,12 +190,17 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
             ReceiverAccountSelectionFragmentDirections
                 .actionReceiverAccountSelectionFragmentToAssetTransferPreviewFragment(
                     TransactionData.Send(
-                        selectedAccountCacheData,
-                        minBalanceCalculatedAmount,
-                        selectedAsset,
-                        assetTransaction.note,
-                        assetTransaction.xnote,
-                        targetUser
+                        senderAccountAddress = selectedAccountCacheData.account.address,
+                        senderAccountDetail = selectedAccountCacheData.account.detail,
+                        senderAccountType = selectedAccountCacheData.account.type,
+                        senderAuthAddress = selectedAccountCacheData.authAddress,
+                        senderAccountName = selectedAccountCacheData.account.name,
+                        isSenderRekeyedToAnotherAccount = selectedAccountCacheData.isRekeyedToAnotherAccount(),
+                        minimumBalance = selectedAccountCacheData.getMinBalance(),
+                        amount = minBalanceCalculatedAmount,
+                        assetInformation = selectedAsset,
+                        note = note,
+                        targetUser = targetUser
                     )
                 )
         )

@@ -13,12 +13,12 @@
 package com.algorand.android.ui.notificationfilter
 
 import android.content.SharedPreferences
-import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
 import com.algorand.android.database.NotificationFilterDao
 import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
@@ -27,6 +27,7 @@ import com.algorand.android.utils.Resource
 import com.algorand.android.utils.preference.isNotificationActivated
 import com.algorand.android.utils.preference.setNotificationPreference
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -40,7 +41,8 @@ class NotificationFilterViewModel @Inject constructor(
     private val getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
     private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
     private val getAccountValueUseCase: GetAccountValueUseCase,
-    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase
+    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) : BaseViewModel() {
 
     val notificationFilterOperation = MutableStateFlow<Resource<Unit>?>(null)
@@ -55,7 +57,7 @@ class NotificationFilterViewModel @Inject constructor(
                         val accountValue = getAccountValueUseCase.getAccountValue(this)
                         accountItemConfigurationMapper.mapTo(
                             accountAddress = account.address,
-                            accountName = account.name,
+                            accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
                             accountType = account.type,
                             accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
                             accountPrimaryValue = accountValue.primaryAccountValue
@@ -65,7 +67,7 @@ class NotificationFilterViewModel @Inject constructor(
                         this?.run {
                             accountItemConfigurationMapper.mapTo(
                                 accountAddress = address,
-                                accountName = name,
+                                accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
                                 accountType = type,
                                 accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
                                 showWarningIcon = true

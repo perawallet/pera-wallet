@@ -12,6 +12,7 @@
 
 package com.algorand.android.utils.walletconnect
 
+import android.util.Base64
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -233,7 +234,15 @@ class WalletConnectManager @Inject constructor(
     fun processWalletConnectSignResult(walletConnectSignResult: WalletConnectSignResult) {
         with(walletConnectSignResult) {
             if (this is WalletConnectSignResult.Success) {
-                walletConnectClient.approveRequest(sessionId, requestId, signedTransaction)
+                walletConnectClient.approveRequest(
+                    sessionId = sessionId,
+                    requestId = requestId,
+                    payload = signedTransaction.map {
+                        it?.let {
+                            Base64.encodeToString(it, Base64.DEFAULT)
+                        }
+                    }
+                )
                 transaction?.run { eventLogger.logTransactionRequestConfirmation(this) }
                 _requestResultLiveData.postValue(
                     Event(Resource.Success(AnnotatedString(R.string.transaction_succesfully_confirmed)))

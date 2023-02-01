@@ -44,7 +44,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
-class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap), LedgerLoadingDialog.Listener {
+class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_left_arrow,
@@ -116,12 +116,18 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap), Ledger
         }
     }
 
+    private val ledgerLoadingDialogListener = LedgerLoadingDialog.Listener { shouldStopResources ->
+        ledgerLoadingDialog = null
+        confirmSwapViewModel.onLedgerDialogCancelled()
+    }
+
     private fun showLedgerWaitingForApprovalBottomSheet(
         ledgerDialogPayload: LedgerDialogPayload
     ) {
         if (ledgerLoadingDialog == null) {
             ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(
                 ledgerName = ledgerDialogPayload.ledgerName,
+                listener = ledgerLoadingDialogListener,
                 currentTransactionIndex = ledgerDialogPayload.currentTransactionIndex,
                 totalTransactionCount = ledgerDialogPayload.totalTransactionCount,
                 isTransactionIndicatorVisible = ledgerDialogPayload.isTransactionIndicatorVisible
@@ -240,8 +246,8 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap), Ledger
             AccountIconDrawable.create(context, accountIconResource, iconSize)?.run {
                 setSubtitleStartDrawable(this)
             }
-            changeSubtitle(accountDisplayName.getDisplayTextOrAccountShortenedAddress())
-            setOnTitleLongClickListener { onAccountAddressCopied(accountDisplayName.getAccountAddress()) }
+            changeSubtitle(accountDisplayName.getAccountPrimaryDisplayName())
+            setOnTitleLongClickListener { onAccountAddressCopied(accountDisplayName.getRawAccountAddress()) }
         }
     }
 
@@ -272,10 +278,5 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap), Ledger
                 )
             }
         }
-    }
-
-    override fun onLedgerLoadingCancelled(shouldStopResources: Boolean) {
-        ledgerLoadingDialog = null
-        confirmSwapViewModel.onLedgerDialogCancelled()
     }
 }

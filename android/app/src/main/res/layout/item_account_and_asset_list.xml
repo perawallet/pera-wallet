@@ -48,7 +48,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearance="@style/AccountAssetItemStartImageShapeAppearance"
-        tools:srcCompat="@drawable/ic_algo_green_round" />
+        tools:srcCompat="@drawable/ic_algo_round" />
 
     <ProgressBar
         android:id="@+id/startIconProgressBar"

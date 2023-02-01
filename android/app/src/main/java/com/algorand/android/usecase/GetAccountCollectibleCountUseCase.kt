@@ -13,6 +13,7 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
+import com.algorand.android.utils.extensions.getAssetHoldingList
 import javax.inject.Inject
 
 class GetAccountCollectibleCountUseCase @Inject constructor(
@@ -23,7 +24,7 @@ class GetAccountCollectibleCountUseCase @Inject constructor(
     fun getAccountCollectibleCount(publicKey: String): Int {
         val cachedCollectibles = simpleCollectibleUseCase.getCachedCollectibleList().mapNotNull { it.value.data }
         val accountDetail = accountDetailUseCase.getCachedAccountDetail(publicKey)?.data
-        val accountHoldings = accountDetail?.accountInformation?.assetHoldingList
+        val accountHoldings = accountDetail?.getAssetHoldingList()
         var collectibleCount = 0
         accountHoldings?.forEach { assetHolding ->
             if (cachedCollectibles.firstOrNull { it.assetId == assetHolding.assetId } != null) collectibleCount++

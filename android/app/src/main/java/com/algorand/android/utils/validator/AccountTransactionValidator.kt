@@ -25,6 +25,7 @@ import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetAccountMinimumBalanceUseCase
 import com.algorand.android.utils.MIN_FEE
 import com.algorand.android.utils.exceptions.WarningException
+import com.algorand.android.utils.extensions.hasAsset
 import com.algorand.android.utils.isEqualTo
 import com.algorand.android.utils.isLesserThan
 import com.algorand.android.utils.isValidAddress
@@ -48,7 +49,7 @@ class AccountTransactionValidator @Inject constructor(
     fun isSelectedAssetValid(fromAccountPublicKey: String, assetId: Long): Boolean {
         val accountDetail = accountDetailUseCase.getCachedAccountDetail(fromAccountPublicKey)?.data
         val isAlgo = assetId == ALGO_ID
-        return accountDetail?.accountInformation?.assetHoldingList?.any { it.assetId == assetId } == true || isAlgo
+        return isAlgo || accountDetail?.hasAsset(assetId) == true
     }
 
     fun isSelectedAssetSupported(accountInformation: AccountInformation, assetId: Long): Boolean {

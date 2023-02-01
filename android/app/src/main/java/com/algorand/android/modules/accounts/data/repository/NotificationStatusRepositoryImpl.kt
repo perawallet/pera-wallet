@@ -49,13 +49,11 @@ class NotificationStatusRepositoryImpl @Inject constructor(
         )
         mobileAlgorandApi.putLastSeenNotification(
             deviceId = deviceId,
-            lastSeenRequest = lastSeenNotificationRequest,
-            networkSlug = lastSeenNotificationDTO.networkSlug
+            lastSeenRequest = lastSeenNotificationRequest
         )
     }.map { lastSeenNotificationResponse ->
         lastSeenNotificationDTOMapper.mapToLastSeenNotificationDTO(
-            notificationId = lastSeenNotificationResponse.lastSeenNotificationId,
-            networkSlug = lastSeenNotificationDTO.networkSlug
+            notificationId = lastSeenNotificationResponse.lastSeenNotificationId
         )
     }
 

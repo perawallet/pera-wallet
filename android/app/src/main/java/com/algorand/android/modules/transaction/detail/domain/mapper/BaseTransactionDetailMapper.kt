@@ -34,6 +34,7 @@ class BaseTransactionDetailMapper @Inject constructor() {
                 ?: assetFreezeTransaction?.receiverAddress.orEmpty(),
                 closeToAccountAddress = payment?.closeToAddress ?: assetTransfer?.closeTo,
                 roundTimeAsTimestamp = roundTimeAsTimestamp,
+                confirmedRound = confirmedRound,
                 transactionAmount = payment?.amount ?: assetTransfer?.amount ?: BigInteger.ZERO,
                 transactionCloseAmount = closeAmount,
                 fee = fee?.toBigInteger() ?: BigInteger.valueOf(MIN_FEE),
@@ -53,6 +54,7 @@ class BaseTransactionDetailMapper @Inject constructor() {
                 receiverAccountAddress = payment?.receiverAddress ?: assetTransfer?.receiverAddress
                 ?: assetFreezeTransaction?.receiverAddress.orEmpty(),
                 roundTimeAsTimestamp = roundTimeAsTimestamp,
+                confirmedRound = confirmedRound,
                 transactionAmount = payment?.amount ?: assetTransfer?.amount ?: BigInteger.ZERO,
                 fee = fee?.toBigInteger() ?: BigInteger.valueOf(MIN_FEE),
                 noteInBase64 = noteInBase64,
@@ -75,6 +77,7 @@ class BaseTransactionDetailMapper @Inject constructor() {
                 receiverAccountAddress = payment?.receiverAddress ?: assetTransfer?.receiverAddress
                 ?: assetFreezeTransaction?.receiverAddress.orEmpty(),
                 roundTimeAsTimestamp = roundTimeAsTimestamp,
+                confirmedRound = confirmedRound,
                 fee = fee?.toBigInteger() ?: BigInteger.valueOf(MIN_FEE),
                 noteInBase64 = noteInBase64,
                 assetId = createdAssetIndex ?: assetConfiguration?.assetId,
@@ -99,6 +102,7 @@ class BaseTransactionDetailMapper @Inject constructor() {
                 receiverAccountAddress = payment?.receiverAddress ?: assetTransfer?.receiverAddress
                 ?: assetFreezeTransaction?.receiverAddress.orEmpty(),
                 roundTimeAsTimestamp = roundTimeAsTimestamp,
+                confirmedRound = confirmedRound,
                 fee = fee?.toBigInteger() ?: BigInteger.valueOf(MIN_FEE),
                 noteInBase64 = noteInBase64,
                 onCompletion = applicationCall?.onCompletion,
@@ -121,6 +125,7 @@ class BaseTransactionDetailMapper @Inject constructor() {
                 receiverAccountAddress = payment?.receiverAddress ?: assetTransfer?.receiverAddress
                 ?: assetFreezeTransaction?.receiverAddress.orEmpty(),
                 roundTimeAsTimestamp = roundTimeAsTimestamp,
+                confirmedRound = confirmedRound,
                 fee = fee?.toBigInteger() ?: BigInteger.valueOf(MIN_FEE),
                 noteInBase64 = noteInBase64
             )

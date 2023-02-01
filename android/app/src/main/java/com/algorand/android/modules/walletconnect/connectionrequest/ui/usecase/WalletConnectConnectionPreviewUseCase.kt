@@ -20,6 +20,7 @@ import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.ui.AccountAssetItemButtonState.CHECKED
 import com.algorand.android.models.ui.AccountAssetItemButtonState.UNCHECKED
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.mapper.BaseWalletConnectConnectionItemMapper
@@ -36,7 +37,8 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
     private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
     private val baseWalletConnectConnectionItemMapper: BaseWalletConnectConnectionItemMapper,
     private val walletConnectConnectionPreviewMapper: WalletConnectConnectionPreviewMapper,
-    private val wCSessionRequestResultMapper: WCSessionRequestResultMapper
+    private val wCSessionRequestResultMapper: WCSessionRequestResultMapper,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) {
 
     suspend fun getWalletConnectConnectionPreview(
@@ -84,7 +86,7 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
             excludedAccountTypes = listOf(Account.Type.WATCH),
             onLoadedAccountConfiguration = {
                 accountItemConfigurationMapper.mapTo(
-                    accountName = account.name,
+                    accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
                     accountAddress = account.address,
                     accountType = account.type,
                     accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type)
@@ -93,7 +95,7 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
             onFailedAccountConfiguration = {
                 this?.run {
                     accountItemConfigurationMapper.mapTo(
-                        accountName = name,
+                        accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
                         accountAddress = address,
                         accountType = type,
                         accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type)

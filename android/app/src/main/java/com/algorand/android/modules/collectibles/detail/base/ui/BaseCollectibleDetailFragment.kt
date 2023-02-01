@@ -205,8 +205,8 @@ abstract class BaseCollectibleDetailFragment : BaseFragment(R.layout.fragment_co
     ) {
         with(binding) {
             with(nftOwnerAccountTextView) {
-                text = ownerAddress.getDisplayTextOrAccountShortenedAddress()
-                setOnLongClickListener { onAccountAddressCopied(ownerAddress.getAccountAddress()); true }
+                text = ownerAddress.getAccountPrimaryDisplayName()
+                setOnLongClickListener { onAccountAddressCopied(ownerAddress.getRawAccountAddress()); true }
             }
             nftOwnerAccountIconImageView.setImageResource(optedInAccountTypeDrawableResId)
             accountOwnedNFTCountTextView.text = getString(R.string.asset_amount_with_x, formattedNFTAmount)
@@ -221,18 +221,20 @@ abstract class BaseCollectibleDetailFragment : BaseFragment(R.layout.fragment_co
         }
     }
 
-    protected fun setNFTCreatorAccount(
-        creatorAccountAddressOfNFT: String,
-        formattedCreatorAccountAddressOfNFT: String
-    ) {
+    protected fun setNFTCreatorAccount(creatorAccountAddressOfNFT: AccountDisplayName) {
         with(binding) {
-            creatorAccountGroup.isVisible = creatorAccountAddressOfNFT.isNotBlank()
+            creatorAccountGroup.isVisible = creatorAccountAddressOfNFT.getRawAccountAddress().isNotBlank()
             creatorAccountTextView.apply {
-                text = formattedCreatorAccountAddressOfNFT
-                setOnLongClickListener { onAccountAddressCopied(formattedCreatorAccountAddressOfNFT); true }
+                text = creatorAccountAddressOfNFT.getAccountPrimaryDisplayName()
+                setOnLongClickListener {
+                    onAccountAddressCopied(creatorAccountAddressOfNFT.getRawAccountAddress()); true
+                }
                 setOnClickListener {
                     val activeNodeSlug = baseCollectibleDetailViewModel.getActiveNodeSlug()
-                    context.openAccountAddressInAlgoExplorer(creatorAccountAddressOfNFT, activeNodeSlug)
+                    context.openAccountAddressInAlgoExplorer(
+                        accountAddress = creatorAccountAddressOfNFT.getRawAccountAddress(),
+                        networkSlug = activeNodeSlug
+                    )
                 }
             }
         }
@@ -281,9 +283,9 @@ abstract class BaseCollectibleDetailFragment : BaseFragment(R.layout.fragment_co
         reenterTransition = null
     }
 
-    protected fun updateBottomPadding() {
+    protected fun updateBottomPadding(measuredHeight: Int) {
         with(binding.collectibleDetailScrollView) {
-            updatePadding(bottom = resources.getDimensionPixelSize(R.dimen.asa_action_layout_height))
+            updatePadding(bottom = measuredHeight + resources.getDimensionPixelSize(R.dimen.spacing_large))
             clipToPadding = false
         }
     }

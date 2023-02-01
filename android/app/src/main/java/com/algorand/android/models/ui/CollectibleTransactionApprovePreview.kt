@@ -17,7 +17,7 @@ import com.algorand.android.models.AccountIconResource
 data class CollectibleTransactionApprovePreview(
     val senderAccountPublicKey: String,
     val senderAccountDisplayText: String,
-    val senderAccountIconResource: AccountIconResource?,
+    val senderAccountIconResource: AccountIconResource,
     val receiverAccountPublicKey: String,
     val receiverAccountDisplayText: String,
     val receiverAccountIconResource: AccountIconResource?,

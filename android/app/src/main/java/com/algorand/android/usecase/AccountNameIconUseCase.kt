@@ -22,19 +22,19 @@ class AccountNameIconUseCase @Inject constructor(
     private val contactRepository: ContactRepository,
 ) {
 
-    fun getAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource?> {
+    fun getAccountDisplayTextAndIcon(accountAddress: String): Pair<String, AccountIconResource> {
         return with(accountDetailUseCase) {
-            getAccountName(publicKey) to getAccountIcon(publicKey)
+            getAccountName(accountAddress) to getAccountIcon(accountAddress)
         }
     }
 
-    suspend fun getAccountOrContactDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource?> {
-        val localReceiver = accountDetailUseCase.getCachedAccountDetail(publicKey)?.data
+    suspend fun getAccountOrContactDisplayTextAndIcon(accountAddress: String): Pair<String, AccountIconResource?> {
+        val localReceiver = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data
         if (localReceiver != null) {
-            return accountDetailUseCase.getAccountName(publicKey) to
+            return accountDetailUseCase.getAccountName(accountAddress) to
                 AccountIconResource.getAccountIconResourceByAccountType(localReceiver.account.type)
         }
-        val contactReceiver = contactRepository.getAllContacts().firstOrNull { it.publicKey == publicKey }
-        return (contactReceiver?.name ?: publicKey.toShortenedAddress()) to null
+        val contactReceiver = contactRepository.getAllContacts().firstOrNull { it.publicKey == accountAddress }
+        return (contactReceiver?.name ?: accountAddress.toShortenedAddress()) to null
     }
 }

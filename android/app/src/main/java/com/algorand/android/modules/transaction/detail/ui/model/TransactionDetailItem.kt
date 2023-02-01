@@ -32,6 +32,7 @@ sealed class TransactionDetailItem : RecyclerListItem {
         ACCOUNT_ITEM,
         STATUS_ITEM,
         DATE_ITEM,
+        ROUND_ITEM,
         TRANSACTION_ID_ITEM,
         NOTE_ITEM,
         CHIP_GROUP_ITEM,
@@ -411,6 +412,23 @@ sealed class TransactionDetailItem : RecyclerListItem {
 
             override fun areContentsTheSame(other: RecyclerListItem): Boolean {
                 return other is DateItem && this == other
+            }
+        }
+
+        data class RoundItem(
+            @StringRes
+            val labelTextRes: Int,
+            val round: String
+        ) : StandardTransactionItem() {
+
+            override val itemType: ItemType = ItemType.ROUND_ITEM
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is RoundItem && labelTextRes == other.labelTextRes
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is RoundItem && this == other
             }
         }
 

@@ -20,6 +20,8 @@ import com.algorand.android.usecase.AssetFetchAndCacheUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.CacheResult
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 
@@ -30,8 +32,9 @@ class AssetCacheManager(
     private val assetFetchAndCacheUseCase: AssetFetchAndCacheUseCase
 ) : BaseCacheManager() {
 
-    var cacheStatus: AssetCacheStatus = AssetCacheStatus.NOT_STARTED
-        private set
+    private val _cacheStatusFlow = MutableStateFlow<AssetCacheStatus>(AssetCacheStatus.NOT_STARTED)
+    val cacheStatusFlow: StateFlow<AssetCacheStatus>
+        get() = _cacheStatusFlow
 
     private val accountCacheAndAccountCollector: suspend (
         AccountCacheStatus,
@@ -52,11 +55,8 @@ class AssetCacheManager(
             .launchIn(coroutineScope)
     }
 
-    override fun doBeforeJobStarts() {
-        updateCacheStatus(AssetCacheStatus.STARTED)
-    }
-
     override suspend fun doJob(coroutineScope: CoroutineScope) {
+        updateCacheStatus(AssetCacheStatus.LOADING)
         val assetIdsOfAccounts = getAllAssetIdsOfAccounts()
         val filteredAssetIdLists = simpleAssetDetailUseCase.getChunkedAndFilteredAssetList(assetIdsOfAccounts)
         if (filteredAssetIdLists.isEmpty()) {
@@ -74,15 +74,15 @@ class AssetCacheManager(
             .toSet()
     }
 
-    private fun updateCacheStatus(newStatus: AssetCacheStatus) {
-        if (newStatus.ordinal > cacheStatus.ordinal) {
-            cacheStatus = newStatus
+    private suspend fun updateCacheStatus(newStatus: AssetCacheStatus) {
+        if (newStatus.ordinal > _cacheStatusFlow.value.ordinal) {
+            _cacheStatusFlow.emit(newStatus)
         }
     }
 
     enum class AssetCacheStatus {
         NOT_STARTED,
-        STARTED,
+        LOADING,
         EMPTY,
         INITIALIZED;
 

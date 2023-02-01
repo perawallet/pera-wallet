@@ -12,37 +12,34 @@
 
 package com.algorand.android.modules.collectibles.profile.ui
 
-import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.algorand.android.R
+import com.algorand.android.databinding.LayoutAsaStatusBinding
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
 import com.algorand.android.modules.collectibles.detail.base.ui.BaseCollectibleDetailFragment
 import com.algorand.android.modules.collectibles.profile.ui.model.CollectibleProfilePreview
 import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
-import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.openTextShareBottomMenuChooser
 import com.algorand.android.utils.setDrawable
+import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
 
+    private val asaStatusViewStubBinding by viewBinding { LayoutAsaStatusBinding.bind(inflateNFTStatusLayout()) }
+
     override val baseCollectibleDetailViewModel: CollectibleProfileViewModel by viewModels()
 
     private val collectibleProfileCollector: suspend (CollectibleProfilePreview?) -> Unit = {
         if (it != null) initCollectibleProfilePreview(it)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initUi()
-        initObservers()
     }
 
     override fun initObservers() {
@@ -62,7 +59,7 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
             setNFTDescription(nftDescription)
             setNFTId(nftId)
             setCollectibleAssetIdClickListener(nftId, accountAddress)
-            setNFTCreatorAccount(creatorAccountAddressOfNFT, formattedCreatorAccountAddressOfNFT)
+            setNFTCreatorAccount(creatorAccountAddressOfNFT)
             setNFTTraits(traitListOfNFT)
             setShowOnPeraExplorer(peraExplorerUrl)
             setProgressBarVisibility(isLoadingVisible)
@@ -72,8 +69,7 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
 
     private fun setAsaStatusPreview(collectibleStatusPreview: AsaStatusPreview?) {
         with(collectibleStatusPreview ?: return) {
-            binding.collectibleStatusConstraintLayout.root.show()
-            updateBottomPadding()
+            asaStatusViewStubBinding.root.doOnLayout { updateBottomPadding(it.measuredHeight) }
             initAsaStatusValue(this)
             initAsaStatusLabel(statusLabelTextResId)
             initAsaStatusActionButton(this)
@@ -81,11 +77,11 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
     }
 
     private fun initAsaStatusLabel(@StringRes statusLabelTextResId: Int) {
-        binding.collectibleStatusConstraintLayout.statusLabelTextView.setText(statusLabelTextResId)
+        asaStatusViewStubBinding.statusLabelTextView.setText(statusLabelTextResId)
     }
 
     private fun initAsaStatusValue(asaStatusPreview: AsaStatusPreview) {
-        binding.collectibleStatusConstraintLayout.statusValueTextView.apply {
+        asaStatusViewStubBinding.statusValueTextView.apply {
             when (asaStatusPreview) {
                 is AsaStatusPreview.AdditionStatus -> {
                     isVisible = asaStatusPreview.accountName != null
@@ -132,11 +128,9 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
         }
     }
 
-    private fun initAsaStatusActionButton(
-        asaStatusPreview: AsaStatusPreview
-    ) {
+    private fun initAsaStatusActionButton(asaStatusPreview: AsaStatusPreview) {
         with(asaStatusPreview.peraButtonState) {
-            with(binding.collectibleStatusConstraintLayout.assetStatusActionButton) {
+            with(asaStatusViewStubBinding.assetStatusActionButton) {
                 setIconDrawable(iconResourceId = iconDrawableResId)
                 setBackgroundColor(colorResId = backgroundColorResId)
                 setIconTint(iconTintResId = iconTintColorResId)
@@ -198,11 +192,7 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
         )
     }
 
-    override fun navToImagePreviewFragment(
-        imageUrl: String,
-        view: View,
-        cachedMediaUri: String
-    ) {
+    override fun navToImagePreviewFragment(imageUrl: String, view: View, cachedMediaUri: String) {
         exitTransition = getImageDetailTransitionAnimation(isGrowing = false)
         reenterTransition = getImageDetailTransitionAnimation(isGrowing = true)
         val transitionName = view.transitionName
@@ -230,5 +220,12 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
 
     override fun onNavBack() {
         navBack()
+    }
+
+    private fun inflateNFTStatusLayout(): View {
+        return with(binding.collectibleStatusConstraintLayout) {
+            layoutResource = R.layout.layout_asa_status
+            inflate()
+        }
     }
 }

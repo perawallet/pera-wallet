@@ -14,15 +14,16 @@ package com.algorand.android.ui.settings.node
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentNodeSettingsBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.Node
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.ui.settings.node.ui.model.NodeSettingsPreview
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,8 +36,8 @@ class NodeSettingsFragment : DaggerBaseFragment(R.layout.fragment_node_settings)
         startIconClick = ::navBack
     )
 
-    private val nodeListObserver = Observer<List<Node>> {
-        nodeAdapter.setNewList(it)
+    private val nodeSettingsPreviewCollector: suspend (value: NodeSettingsPreview?) -> Unit = { preview ->
+        if (preview != null) initPreview(preview)
     }
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
@@ -54,7 +55,17 @@ class NodeSettingsFragment : DaggerBaseFragment(R.layout.fragment_node_settings)
     }
 
     private fun initObserver() {
-        nodeSettingsViewModel.nodeListLiveData.observe(viewLifecycleOwner, nodeListObserver)
+        collectLatestOnLifecycle(
+            flow = nodeSettingsViewModel.nodeSettingsFlow,
+            collection = nodeSettingsPreviewCollector
+        )
+    }
+
+    private fun initPreview(nodeSettingsPreview: NodeSettingsPreview) {
+        with(nodeSettingsPreview) {
+            binding.loadingLayout.root.isVisible = isLoading
+            nodeAdapter.setNewList(nodeList)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -62,11 +73,6 @@ class NodeSettingsFragment : DaggerBaseFragment(R.layout.fragment_node_settings)
     }
 
     private fun onDifferentNodeSelected(activatedNode: Node) {
-        nodeSettingsViewModel.onNodeChanged(
-            activatedNode = activatedNode,
-            onNodeSwitchingFinished = { previousNode ->
-                (activity as? MainActivity)?.onNewNodeActivated(previousNode, activatedNode)
-            }
-        )
+        nodeSettingsViewModel.onNodeChanged(activatedNode = activatedNode)
     }
 }

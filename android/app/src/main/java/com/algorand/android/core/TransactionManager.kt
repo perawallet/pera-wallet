@@ -23,7 +23,6 @@ import com.algorand.android.ledger.LedgerBleOperationManager
 import com.algorand.android.ledger.LedgerBleSearchManager
 import com.algorand.android.ledger.operations.TransactionOperation
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.LedgerBleResult
@@ -146,7 +145,7 @@ class TransactionManager @Inject constructor(
             currentItemIndex: Int,
             totalItemCount: Int
         ) {
-            val accountDetail = transaction.accountCacheData.account.detail
+            val accountDetail = transaction.senderAccountDetail
             if (accountDetail == null) {
                 setSignFailed(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
             } else {
@@ -216,10 +215,10 @@ class TransactionManager @Inject constructor(
     }
 
     private fun TransactionData.signTxn(accountDetail: Account.Detail, checkIfRekeyed: Boolean = true) {
-        if (checkIfRekeyed && accountCacheData.isRekeyedToAnotherAccount()) {
+        if (checkIfRekeyed && isSenderRekeyedToAnotherAccount) {
             when (accountDetail) {
                 is Account.Detail.RekeyedAuth -> {
-                    accountDetail.rekeyedAuthDetail[accountCacheData.authAddress].let { rekeyedAuthDetail ->
+                    accountDetail.rekeyedAuthDetail[senderAuthAddress].let { rekeyedAuthDetail ->
                         if (rekeyedAuthDetail != null) {
                             signTxn(rekeyedAuthDetail, checkIfRekeyed = false)
                         } else {
@@ -247,7 +246,7 @@ class TransactionManager @Inject constructor(
                     checkAndCacheSignedTransaction(transactionByteArray?.signTx(accountDetail.secretKey))
                 }
                 else -> {
-                    val exceptionMessage = "${accountCacheData.account.type} cannot sign by itself."
+                    val exceptionMessage = "$senderAccountType cannot sign by itself."
                     recordException(Exception(exceptionMessage))
                     setSignFailed(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
                 }
@@ -256,7 +255,7 @@ class TransactionManager @Inject constructor(
     }
 
     private fun TransactionData.signTxnWithCheckingOtherAccounts() {
-        when (val authAccountDetail = accountCacheManager.getCacheData(accountCacheData.authAddress)?.account?.detail) {
+        when (val authAccountDetail = accountCacheManager.getCacheData(senderAuthAddress)?.account?.detail) {
             is Account.Detail.Standard -> {
                 checkAndCacheSignedTransaction(transactionByteArray?.signTx(authAccountDetail.secretKey))
             }
@@ -276,12 +275,18 @@ class TransactionManager @Inject constructor(
             is TransactionData.Send -> {
                 projectedFee = calculatedFee ?: transactionParams.getTxFee()
                 // calculate isMax before calculating real amount because while isMax true fee will be deducted.
-                isMax = isTransactionMax(amount, accountCacheData.account.address, assetInformation.assetId)
+                isMax = isTransactionMax(amount, senderAccountAddress, assetInformation.assetId)
                 // TODO: 10.08.2022 Get all those calculations from a single AmountTransactionValidationUseCase
-                amount = calculateAmount(amount, isMax, accountCacheData, assetInformation.assetId, projectedFee)
-                    ?: return null
+                amount = calculateAmount(
+                    projectedAmount = amount,
+                    isMax = isMax,
+                    isSenderRekeyedToAnotherAccount = isSenderRekeyedToAnotherAccount,
+                    senderMinimumBalance = minimumBalance,
+                    assetId = assetInformation.assetId,
+                    fee = projectedFee
+                ) ?: return null
 
-                if (accountCacheData.isRekeyedToAnotherAccount()) {
+                if (isSenderRekeyedToAnotherAccount) {
                     // if account is rekeyed to another account, min balance should be deducted from the amount.
                     // after it'll be deducted, isMax will be false to not write closeToAddress.
                     isMax = false
@@ -292,7 +297,7 @@ class TransactionManager @Inject constructor(
                 }
 
                 transactionParams.makeTx(
-                    senderAddress = accountCacheData.account.address,
+                    senderAddress = senderAccountAddress,
                     receiverAddress = targetUser.publicKey,
                     amount = amount,
                     assetId = assetInformation.assetId,
@@ -301,12 +306,12 @@ class TransactionManager @Inject constructor(
                 )
             }
             is TransactionData.AddAsset -> {
-                transactionParams.makeAddAssetTx(accountCacheData.account.address, assetInformation.assetId)
+                transactionParams.makeAddAssetTx(senderAccountAddress, assetInformation.assetId)
             }
             is TransactionData.RemoveAsset -> {
-                if (shouldCreateAssetRemoveTransaction(accountCacheData.account.address, assetInformation.assetId)) {
+                if (shouldCreateAssetRemoveTransaction(senderAccountAddress, assetInformation.assetId)) {
                     transactionParams.makeRemoveAssetTx(
-                        senderAddress = accountCacheData.account.address,
+                        senderAddress = senderAccountAddress,
                         creatorPublicKey = creatorPublicKey,
                         assetId = assetInformation.assetId
                     )
@@ -316,14 +321,14 @@ class TransactionManager @Inject constructor(
             }
             is TransactionData.SendAndRemoveAsset -> {
                 transactionParams.makeSendAndRemoveAssetTx(
-                    senderAddress = accountCacheData.account.address,
+                    senderAddress = senderAccountAddress,
                     receiverAddress = targetUser.publicKey,
                     assetId = assetInformation.assetId,
                     amount = amount
                 )
             }
             is TransactionData.Rekey -> {
-                transactionParams.makeRekeyTx(accountCacheData.account.address, rekeyAdminAddress)
+                transactionParams.makeRekeyTx(senderAccountAddress, rekeyAdminAddress)
             }
         }
 
@@ -381,13 +386,14 @@ class TransactionManager @Inject constructor(
     private fun calculateAmount(
         projectedAmount: BigInteger,
         isMax: Boolean,
-        accountCacheData: AccountCacheData,
+        isSenderRekeyedToAnotherAccount: Boolean,
+        senderMinimumBalance: Long,
         assetId: Long,
         fee: Long
     ): BigInteger? {
         val calculatedAmount = if (isMax && assetId == AssetInformation.ALGO_ID) {
-            if (accountCacheData.isRekeyedToAnotherAccount()) {
-                projectedAmount - fee.toBigInteger() - accountCacheData.getMinBalance().toBigInteger()
+            if (isSenderRekeyedToAnotherAccount) {
+                projectedAmount - fee.toBigInteger() - senderMinimumBalance.toBigInteger()
             } else {
                 projectedAmount - fee.toBigInteger()
             }
@@ -396,10 +402,10 @@ class TransactionManager @Inject constructor(
         }
 
         if (calculatedAmount isLesserThan BigInteger.ZERO) {
-            if (accountCacheData.isRekeyedToAnotherAccount()) {
+            if (isSenderRekeyedToAnotherAccount) {
                 val errorMinBalance = AnnotatedString(
                     stringResId = R.string.the_transaction_cannot_be,
-                    replacementList = listOf("min_balance" to accountCacheData.getMinBalance().formatAsAlgoString())
+                    replacementList = listOf("min_balance" to senderMinimumBalance.formatAsAlgoString())
                 )
                 postResult(Defined(errorMinBalance))
             } else {
@@ -429,7 +435,7 @@ class TransactionManager @Inject constructor(
     }
 
     private fun TransactionData.isCloseToSameAccount(): Boolean {
-        if (this is TransactionData.Send && isMax && accountCacheData.account.address == targetUser.publicKey) {
+        if (this is TransactionData.Send && isMax && senderAccountAddress == targetUser.publicKey) {
             postResult(Defined(AnnotatedString(R.string.you_can_not_send_your)))
             return true
         }
@@ -442,7 +448,7 @@ class TransactionManager @Inject constructor(
         }
 
         // every asset addition increases min balance by $MIN_BALANCE_PER_ASSET
-        var minBalance = accountCacheManager.getMinBalanceOfAccount(accountCacheData.account.address)
+        var minBalance = accountCacheManager.getMinBalanceOfAccount(senderAccountAddress)
         when (this) {
             is TransactionData.AddAsset ->
                 minBalance += minBalancePerAssetAsBigInteger
@@ -455,7 +461,7 @@ class TransactionManager @Inject constructor(
         }
 
         val balance = accountCacheManager.getAssetInformation(
-            accountCacheData.account.address,
+            senderAccountAddress,
             AssetInformation.ALGO_ID
         )?.amount ?: run {
             setSignFailed(Defined(AnnotatedString(stringResId = R.string.minimum_balance_required)))

@@ -29,12 +29,12 @@
         app:autoSizeMaxTextSize="@dimen/text_size_36"
         app:autoSizeMinTextSize="@dimen/text_size_19"
         app:autoSizeTextType="uniform"
-        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/assetCurrencyAmountTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="18,446,744,073,709,551,615 ALGO" />
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@tools:sample/lorem[33]" />
 
     <TextView
         android:id="@+id/assetCurrencyAmountTextView"
@@ -44,11 +44,11 @@
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_small"
         android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/assetAmountTextView"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="$12.232.00" />
+        tools:text="@tools:sample/lorem[3]" />
 
     <TextView
         android:id="@+id/assetNameTextView"
@@ -56,12 +56,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/spacing_small"
+        android:ellipsize="end"
         android:gravity="center"
-        app:layout_constrainedWidth="true"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@id/assetIdTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="MOSAIC" />
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:drawableStart="@drawable/ic_asa_trusted"
+        tools:text="@tools:sample/lorem[33]" />
 
     <TextView
         android:id="@+id/assetIdTextView"
@@ -69,10 +73,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xsmall"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/assetNameTextView"
-        tools:text="13141" />
+        tools:text="@tools:sample/lorem[3]" />
 
     <TextView
         android:id="@+id/appIdTextView"
@@ -80,12 +86,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/spacing_small"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
         app:drawableTint="@color/verified_icon_color"
-        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/applicationIdLabelTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="# 3492381" />
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@tools:sample/lorem[33]" />
 
     <TextView
         android:id="@+id/applicationIdLabelTextView"
@@ -94,6 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xsmall"
         android:text="@string/application_id"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appIdTextView" />
@@ -104,11 +115,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/spacing_small"
-        app:layout_constrainedWidth="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@id/appOnCompleteLabelTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Opt-in" />
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@tools:sample/lorem[33]" />
 
     <TextView
         android:id="@+id/appOnCompleteLabelTextView"
@@ -117,6 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xsmall"
         android:text="@string/on_completion"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appOnCompleteTextView" />
@@ -126,7 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="assetShortNameTextView,assetCurrencyAmountTextView,assetAmountTextView"
+        app:constraint_referenced_ids="assetCurrencyAmountTextView,assetAmountTextView"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group

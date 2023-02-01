@@ -32,8 +32,7 @@ class AssetDetailPreviewMapper @Inject constructor(
     @SuppressWarnings("LongParameterList")
     fun mapToAssetDetailPreview(
         baseOwnedAssetDetail: BaseAccountAssetData.BaseOwnedAssetData,
-        accountAddress: String,
-        accountName: String,
+        accountDisplayName: AccountDisplayName,
         accountType: Account.Type?,
         canAccountSignTransaction: Boolean,
         isQuickActionButtonsVisible: Boolean,
@@ -50,7 +49,7 @@ class AssetDetailPreviewMapper @Inject constructor(
                 formattedPrimaryValue = formattedAmount,
                 formattedSecondaryValue = getSelectedCurrencyParityValue().getFormattedValue(),
                 accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(accountType),
-                accountDisplayName = AccountDisplayName.create(accountAddress, accountName, accountType),
+                accountDisplayName = accountDisplayName,
                 baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
                 assetPrismUrl = prismUrl,
                 verificationTierConfiguration =

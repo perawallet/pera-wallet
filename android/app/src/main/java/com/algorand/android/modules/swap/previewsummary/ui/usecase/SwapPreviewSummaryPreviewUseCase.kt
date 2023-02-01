@@ -41,9 +41,8 @@ class SwapPreviewSummaryPreviewUseCase @Inject constructor(
                 formattedExchangeFee = exchangeFeeAmount.formatAsCurrency(Currency.ALGO.symbol),
                 formattedPeraFee = peraFeeAmount.formatAsCurrency(Currency.ALGO.symbol),
                 formattedTotalFee = totalFee.formatAsCurrency(Currency.ALGO.symbol),
-                accountDisplayName = accountDisplayNameUseCase
-                    .getAccountDisplayName(swapQuote.accountAddress.orEmpty()),
-                accountIconResource = accountDetailUseCase.getAccountIcon(swapQuote.accountAddress.orEmpty())
+                accountDisplayName = accountDisplayNameUseCase.invoke(swapQuote.accountAddress),
+                accountIconResource = accountDetailUseCase.getAccountIcon(swapQuote.accountAddress)
             )
         }
     }

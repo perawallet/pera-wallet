@@ -25,6 +25,7 @@ import com.algorand.android.databinding.ItemNftVerticalLinearListBinding
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 import com.algorand.android.nft.utils.NFTItemClickListener
+import com.algorand.android.utils.appendSpace
 
 class OwnedNFTLinearVerticalViewHolder(
     private val binding: ItemNftVerticalLinearListBinding,
@@ -98,7 +99,9 @@ class OwnedNFTLinearVerticalViewHolder(
             text = if (amountVisible) {
                 StringBuilder().apply {
                     if (binding.nftCollectionTextView.isVisible) {
+                        appendSpace()
                         append(resources.getString(R.string.interpunct))
+                        appendSpace()
                     }
                     append(resources.getString(R.string.asset_amount_with_x, amount))
                 }

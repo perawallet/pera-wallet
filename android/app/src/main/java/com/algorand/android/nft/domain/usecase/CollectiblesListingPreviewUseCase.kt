@@ -32,9 +32,8 @@ import com.algorand.android.nft.utils.CollectibleUtils
 import com.algorand.android.repository.FailedAssetRepository
 import com.algorand.android.usecase.AccountCollectibleDataUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.usecase.AssetCacheManagerUseCase
 import com.algorand.android.utils.CacheResult
-import com.algorand.android.utils.coremanager.AssetCacheManager
-import com.algorand.android.utils.coremanager.AssetCacheManager.AssetCacheStatus.EMPTY
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -44,7 +43,7 @@ class CollectiblesListingPreviewUseCase @Inject constructor(
     private val collectibleListingItemMapper: CollectibleListingItemMapper,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val failedAssetRepository: FailedAssetRepository,
-    private val assetCacheManager: AssetCacheManager,
+    private val assetCacheManagerUseCase: AssetCacheManagerUseCase,
     private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase,
     private val collectibleItemSortUseCase: CollectibleItemSortUseCase,
     private val shouldDisplayWatchAccountNFTsPreferenceUseCase: ShouldDisplayWatchAccountNFTsPreferenceUseCase,
@@ -73,7 +72,7 @@ class CollectiblesListingPreviewUseCase @Inject constructor(
             accountCollectibleDataUseCase.getAllAccountsAllCollectibleDataFlow()
         ) { accountDetailList, failedAssets, accountsAllCollectibles ->
             val canUserSignTransaction = canAnyAccountSignTransaction(accountDetailList.values)
-            if (assetCacheManager.cacheStatus isAtLeast EMPTY) {
+            if (assetCacheManagerUseCase.isCacheStatusAtLeastEmpty()) {
                 val nftListingType = getNFTListingViewTypePreferenceUseCase()
                 val collectibleListData = prepareCollectiblesListItems(
                     searchKeyword = searchKeyword,

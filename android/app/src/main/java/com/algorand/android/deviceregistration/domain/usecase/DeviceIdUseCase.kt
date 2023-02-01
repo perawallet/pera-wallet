@@ -14,7 +14,7 @@ package com.algorand.android.deviceregistration.domain.usecase
 
 import com.algorand.android.deviceregistration.domain.repository.UserDeviceIdRepository
 import com.algorand.android.models.Node
-import com.algorand.android.usecase.NodeSettingsUseCase
+import com.algorand.android.usecase.GetActiveNodeUseCase
 import com.algorand.android.utils.MAINNET_NETWORK_SLUG
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import javax.inject.Inject
@@ -23,7 +23,7 @@ import javax.inject.Named
 class DeviceIdUseCase @Inject constructor(
     @Named(UserDeviceIdRepository.USER_DEVICE_ID_REPOSITORY_INJECTION_NAME)
     private val userDeviceIdRepository: UserDeviceIdRepository,
-    private val nodeSettingsUseCase: NodeSettingsUseCase
+    private val getActiveNodeUseCase: GetActiveNodeUseCase
 ) {
 
     suspend fun getSelectedNodeDeviceId(): String? {
@@ -49,5 +49,5 @@ class DeviceIdUseCase @Inject constructor(
         }
     }
 
-    private suspend fun getSelectedNetworkSlug(): String = nodeSettingsUseCase.getActiveNodeOrDefault().networkSlug
+    private fun getSelectedNetworkSlug() = getActiveNodeUseCase.getActiveNode()?.networkSlug
 }

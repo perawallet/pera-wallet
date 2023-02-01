@@ -13,6 +13,5 @@
 package com.algorand.android.modules.accounts.domain.model
 
 data class LastSeenNotificationDTO(
-    val notificationId: Long?,
-    val networkSlug: String?
+    val notificationId: Long?
 )

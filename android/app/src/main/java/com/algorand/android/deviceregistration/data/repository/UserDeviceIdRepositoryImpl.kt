@@ -72,7 +72,7 @@ class UserDeviceIdRepositoryImpl @Inject constructor(
     override suspend fun updateDeviceId(deviceUpdateDTO: DeviceUpdateDTO): Flow<Result<String>> = flow {
         val deviceUpdateRequest = deviceUpdateRequestMapper.mapToDeviceUpdateRequest(deviceUpdateDTO)
         val result = request {
-            with(deviceUpdateDTO) { mobileAlgorandApi.putUpdateDevice(deviceId, deviceUpdateRequest, networkSlug) }
+            with(deviceUpdateDTO) { mobileAlgorandApi.putUpdateDevice(deviceId, deviceUpdateRequest) }
         }.map {
             it.userId.orEmpty()
         }

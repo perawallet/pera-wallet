@@ -55,13 +55,13 @@ data class TransactionOperation(
         get() = transactionData.transactionByteArray
 
     override val accountAddress: String
-        get() = transactionData.accountCacheData.account.address
+        get() = transactionData.senderAccountAddress
 
     override val accountAuthAddress: String?
-        get() = transactionData.accountCacheData.authAddress
+        get() = transactionData.senderAuthAddress
 
     override val isRekeyedToAnotherAccount: Boolean
-        get() = transactionData.accountCacheData.isRekeyedToAnotherAccount()
+        get() = transactionData.isSenderRekeyedToAnotherAccount
 }
 
 data class ExternalTransactionOperation(

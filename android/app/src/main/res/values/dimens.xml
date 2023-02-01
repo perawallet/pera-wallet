@@ -186,4 +186,7 @@
     <!-- Asset Transfer Amount Fragment -->
     <dimen name="algorand_amount_text_view_height">48dp</dimen>
 
+    <!-- TextView Height -->
+    <dimen name="primary_portfolio_value_height">48dp</dimen>
+
 </resources>

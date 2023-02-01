@@ -17,6 +17,7 @@ import com.algorand.android.mapper.AccountSelectionListItemMapper
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseAccountSelectionListItem
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
@@ -30,7 +31,8 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
     private val getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
     private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
     private val getAccountValueUseCase: GetAccountValueUseCase,
-    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase
+    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) {
 
     // TODO: 11.03.2022 Use flow here to get realtime updates
@@ -53,7 +55,7 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
                     val primaryAccountValue = accountValue.primaryAccountValue
                     accountItemConfigurationMapper.mapTo(
                         accountAddress = account.address,
-                        accountName = account.name,
+                        accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
                         accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
                         accountPrimaryValueText = if (showHoldings) {
                             primaryAccountValue.formatAsCurrency(
@@ -72,7 +74,7 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
                     this?.run {
                         accountItemConfigurationMapper.mapTo(
                             accountAddress = address,
-                            accountName = name,
+                            accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
                             accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
                             showWarningIcon = true,
                             accountType = type

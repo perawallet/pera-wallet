@@ -85,7 +85,7 @@ class SwapPreviewSummaryBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_swap
         with(binding) {
             val iconSize = resources.getDimensionPixelSize(R.dimen.account_icon_size_normal)
             val accountIconDrawable = AccountIconDrawable.create(root.context, accountIconResource, iconSize)
-            val accountName = accountDisplayName.getDisplayTextOrAccountShortenedAddress()
+            val accountName = accountDisplayName.getAccountPrimaryDisplayName()
             accountTextView.apply {
                 setDrawable(start = accountIconDrawable)
                 text = accountName

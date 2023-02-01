@@ -168,7 +168,9 @@ class AccountsFragment :
             with(binding) {
                 portfolioValueTitleTextView.isInvisible = !isVisible
                 primaryPortfolioValue.isInvisible = !isVisible
+                toolbarPrimaryPortfolioValue.isInvisible = !isVisible
                 secondaryPortfolioValue.isInvisible = !isVisible
+                toolbarSecondaryPortfolioValue.isInvisible = !isVisible
                 accountsRecyclerView.isInvisible = !isVisible
                 if (isVisible.not()) binding.accountsFragmentMotionLayout.transitionToState(R.id.start)
                 accountsFragmentMotionLayout.getTransition(R.id.accountsFragmentTransition).isEnabled = isVisible
@@ -203,7 +205,9 @@ class AccountsFragment :
     private fun setPortfolioValues(portfolioValues: BasePortfolioValueItem) {
         with(binding) {
             primaryPortfolioValue.apply { text = portfolioValues.getPrimaryAccountValue(context) }
+            toolbarPrimaryPortfolioValue.apply { text = portfolioValues.getPrimaryAccountValue(context) }
             secondaryPortfolioValue.apply { text = portfolioValues.getSecondaryAccountValue(context) }
+            toolbarSecondaryPortfolioValue.apply { text = portfolioValues.getSecondaryAccountValue(context) }
             portfolioValueTitleTextView.apply {
                 setTextColor(ContextCompat.getColor(root.context, portfolioValues.titleColorResId))
                 setDrawableTintColor(portfolioValues.titleColorResId)

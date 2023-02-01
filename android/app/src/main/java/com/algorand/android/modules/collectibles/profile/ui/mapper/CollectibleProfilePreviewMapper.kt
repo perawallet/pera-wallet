@@ -16,6 +16,7 @@ import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatus
 import com.algorand.android.modules.collectibles.detail.base.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.modules.collectibles.detail.base.ui.model.CollectibleTraitItem
 import com.algorand.android.modules.collectibles.profile.ui.model.CollectibleProfilePreview
+import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AssetName
 import javax.inject.Inject
 
@@ -30,8 +31,7 @@ class CollectibleProfilePreviewMapper @Inject constructor() {
         mediaListOfNFT: List<BaseCollectibleMediaItem>,
         traitListOfNFT: List<CollectibleTraitItem>?,
         nftDescription: String?,
-        creatorAccountAddressOfNFT: String,
-        formattedCreatorAccountAddressOfNFT: String,
+        creatorAccountAddressOfNFT: AccountDisplayName,
         nftId: Long,
         formattedTotalSupply: String,
         peraExplorerUrl: String,
@@ -48,7 +48,6 @@ class CollectibleProfilePreviewMapper @Inject constructor() {
             traitListOfNFT = traitListOfNFT,
             nftDescription = nftDescription,
             creatorAccountAddressOfNFT = creatorAccountAddressOfNFT,
-            formattedCreatorAccountAddressOfNFT = formattedCreatorAccountAddressOfNFT,
             nftId = nftId,
             formattedTotalSupply = formattedTotalSupply,
             peraExplorerUrl = peraExplorerUrl,

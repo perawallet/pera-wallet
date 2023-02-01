@@ -829,7 +829,6 @@
     <string name="disclaimer">AVISO LEGAL</string>
     <string name="export_to_pera_web">Exportar à Pera Web</string>
     <string name="you_re_about_to_share">Você está prestes a compartilhar e importar sua frase senha à Pera Web Wallet!</string>
-    <string name="never_accept_a">Jamais aceite uma solicitação que não tenha sido feita por você.</string>
     <string name="confirm_export_domain">Confirmar Domínio de Exportação</string>
     <string name="for_your_security_please_confirm">Para sua segurança, confirme que você está exportando suas contas para a Pera Web inserindo o nome de domínio que você vê em seu computador.</string>
     <string name="enter_url_of_web_wallet">Insira URL da Web Wallet</string>

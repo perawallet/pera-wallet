@@ -17,6 +17,7 @@ import com.algorand.android.mapper.AccountSelectionMapper
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AccountSelection
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
@@ -30,7 +31,8 @@ class AccountSelectionUseCase @Inject constructor(
     private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
     private val getAccountValueUseCase: GetAccountValueUseCase,
     private val parityUseCase: ParityUseCase,
-    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase
+    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) {
 
     suspend fun getAccountFilteredByAssetId(assetId: Long): List<AccountSelection> {
@@ -43,7 +45,7 @@ class AccountSelectionUseCase @Inject constructor(
                 onLoadedAccountConfiguration = {
                     val accountValue = getAccountValueUseCase.getAccountValue(this)
                     accountItemConfigurationMapper.mapTo(
-                        accountName = account.name,
+                        accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
                         accountAddress = account.address,
                         accountType = account.type,
                         accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
@@ -59,7 +61,7 @@ class AccountSelectionUseCase @Inject constructor(
                 onFailedAccountConfiguration = {
                     this?.run {
                         accountItemConfigurationMapper.mapTo(
-                            accountName = name,
+                            accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
                             accountAddress = address,
                             accountType = type,
                             accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),

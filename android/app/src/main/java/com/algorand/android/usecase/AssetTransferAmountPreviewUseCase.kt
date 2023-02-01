@@ -34,7 +34,8 @@ class AssetTransferAmountPreviewUseCase @Inject constructor(
     private val parityUseCase: ParityUseCase,
     private val currencyUseCase: CurrencyUseCase,
     private val amountTransactionValidationUseCase: AmountTransactionValidationUseCase,
-    private val assetTransferAmountAssetPreviewMapper: AssetTransferAmountAssetPreviewMapper
+    private val assetTransferAmountAssetPreviewMapper: AssetTransferAmountAssetPreviewMapper,
+    private val accountNameIconUseCase: AccountNameIconUseCase
 ) {
 
     fun getAssetTransferAmountPreview(
@@ -51,12 +52,15 @@ class AssetTransferAmountPreviewUseCase @Inject constructor(
             displayCurrencySymbol = getDisplayCurrencySymbol(assetId)
         )
         val decimalSeparator = getDecimalSeparator()
+        val (accountName, accountIconResource) = accountNameIconUseCase.getAccountDisplayTextAndIcon(senderAddress)
         return assetTransferAmountPreviewMapper.mapToSuccessPreview(
             assetTransferAmountAssetPreview = assetTransferAmountAssetPreviewMapper.mapTo(accountAssetData),
             enteredAmountSelectedCurrencyValue = enteredAmountSelectedCurrencyValue,
             decimalSeparator = decimalSeparator,
             selectedAmount = amount,
-            senderAddress = senderAddress
+            senderAddress = senderAddress,
+            accountName = accountName,
+            accountIconResource = accountIconResource
         )
     }
 

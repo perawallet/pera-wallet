@@ -14,13 +14,18 @@ package com.algorand.android.models
 
 import android.os.Parcelable
 import com.algorand.android.utils.MIN_FEE
-import kotlinx.parcelize.Parcelize
 import java.math.BigInteger
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 sealed class TransactionData : Parcelable {
 
-    abstract val accountCacheData: AccountCacheData
+    abstract val senderAccountAddress: String
+    abstract val senderAccountType: Account.Type?
+    abstract val senderAuthAddress: String?
+    abstract val isSenderRekeyedToAnotherAccount: Boolean
+    abstract val senderAccountDetail: Account.Detail?
+
     open var calculatedFee: Long? = null
     open var transactionByteArray: ByteArray? = null
     open var amount: BigInteger = BigInteger.ZERO
@@ -28,8 +33,14 @@ sealed class TransactionData : Parcelable {
     abstract fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail
 
     data class Send(
-        override val accountCacheData: AccountCacheData,
+        override val senderAccountAddress: String,
+        override val senderAuthAddress: String?,
+        override val isSenderRekeyedToAnotherAccount: Boolean,
+        override val senderAccountType: Account.Type?,
+        override val senderAccountDetail: Account.Detail?,
         override var amount: BigInteger,
+        val minimumBalance: Long,
+        val senderAccountName: String,
         val assetInformation: AssetInformation,
         val note: String? = null,
         val xnote: String? = null,
@@ -41,49 +52,62 @@ sealed class TransactionData : Parcelable {
             return SignedTransactionDetail.Send(
                 signedTransactionData = signedTransactionData,
                 amount = amount,
-                accountCacheData = accountCacheData,
                 targetUser = targetUser,
                 isMax = isMax,
                 fee = calculatedFee ?: 0,
                 assetInformation = assetInformation,
                 note = note,
-                xnote = xnote
+                xnote = xnote,
+                senderAccountAddress = senderAccountAddress,
+                senderAccountName = senderAccountName,
+                senderAccountType = senderAccountType
             )
         }
     }
 
     data class AddAsset(
-        override val accountCacheData: AccountCacheData,
-        val assetInformation: AssetInformation,
-        val shouldWaitForConfirmation: Boolean = false
+        override val senderAccountAddress: String,
+        override val isSenderRekeyedToAnotherAccount: Boolean,
+        override val senderAccountType: Account.Type?,
+        override val senderAccountDetail: Account.Detail?,
+        override val senderAuthAddress: String?,
+        val assetInformation: AssetInformation
     ) : TransactionData() {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
             return SignedTransactionDetail.AssetOperation.AssetAddition(
                 signedTransactionData = signedTransactionData,
-                accountCacheData = accountCacheData,
-                assetInformation = assetInformation,
-                shouldWaitForConfirmation = shouldWaitForConfirmation
+                senderAccountAddress = senderAccountAddress,
+                assetInformation = assetInformation
             )
         }
     }
 
     data class RemoveAsset(
-        override val accountCacheData: AccountCacheData,
+        override val senderAccountAddress: String,
+        override val senderAuthAddress: String?,
+        override val senderAccountType: Account.Type?,
+        override val senderAccountDetail: Account.Detail?,
+        override val isSenderRekeyedToAnotherAccount: Boolean,
         val assetInformation: AssetInformation,
         val creatorPublicKey: String
     ) : TransactionData() {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
             return SignedTransactionDetail.AssetOperation.AssetRemoval(
                 signedTransactionData = signedTransactionData,
-                accountCacheData = accountCacheData,
+                senderAccountAddress = senderAccountAddress,
                 assetInformation = assetInformation
             )
         }
     }
 
     data class SendAndRemoveAsset(
-        override val accountCacheData: AccountCacheData,
+        override val senderAccountAddress: String,
+        override val senderAccountDetail: Account.Detail?,
+        override val senderAuthAddress: String?,
+        override val senderAccountType: Account.Type?,
+        override val isSenderRekeyedToAnotherAccount: Boolean,
         override var amount: BigInteger,
+        val senderAccountName: String,
         val assetInformation: AssetInformation,
         val note: String? = null,
         val targetUser: TargetUser,
@@ -92,27 +116,38 @@ sealed class TransactionData : Parcelable {
             return SignedTransactionDetail.Send(
                 signedTransactionData = signedTransactionData,
                 amount = amount,
-                accountCacheData = accountCacheData,
                 targetUser = targetUser,
                 isMax = false,
                 fee = calculatedFee ?: 0,
                 assetInformation = assetInformation,
-                note = note
+                note = note,
+                senderAccountAddress = senderAccountAddress,
+                senderAccountName = senderAccountName,
+                senderAccountType = senderAccountType
             )
         }
     }
 
     data class Rekey(
-        override val accountCacheData: AccountCacheData,
+        override val senderAccountAddress: String,
+        override val isSenderRekeyedToAnotherAccount: Boolean,
+        override val senderAccountType: Account.Type?,
+        override val senderAccountDetail: Account.Detail?,
+        override val senderAuthAddress: String?,
+        val senderAccountAuthTypeAndDetail: Account.Detail?,
+        val senderAccountName: String,
         val rekeyAdminAddress: String,
         val ledgerDetail: Account.Detail.Ledger,
     ) : TransactionData() {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
             return SignedTransactionDetail.RekeyOperation(
-                signedTransactionData,
-                accountCacheData,
-                rekeyAdminAddress,
-                ledgerDetail
+                signedTransactionData = signedTransactionData,
+                accountAddress = senderAccountAddress,
+                accountDetail = senderAccountDetail,
+                rekeyedAccountDetail = senderAccountAuthTypeAndDetail,
+                rekeyAdminAddress = rekeyAdminAddress,
+                ledgerDetail = ledgerDetail,
+                accountName = senderAccountName
             )
         }
     }

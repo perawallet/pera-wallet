@@ -120,8 +120,8 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
 
     private val accountDisplayNameCollector: suspend (AccountDisplayName) -> Unit = { accountDisplayName ->
         getAppToolbar()?.run {
-            changeSubtitle(accountDisplayName.getDisplayTextOrAccountShortenedAddress())
-            setOnTitleLongClickListener { onAccountAddressCopied(accountDisplayName.getAccountAddress()) }
+            changeSubtitle(accountDisplayName.getAccountPrimaryDisplayName())
+            setOnTitleLongClickListener { onAccountAddressCopied(accountDisplayName.getRawAccountAddress()) }
         }
     }
 

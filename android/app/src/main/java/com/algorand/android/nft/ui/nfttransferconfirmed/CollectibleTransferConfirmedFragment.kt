@@ -18,6 +18,7 @@ import com.algorand.android.R
 import com.algorand.android.SendCollectibleNavigationDirections
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
+import com.algorand.android.utils.setFragmentNavigationResult
 import com.google.android.material.button.MaterialButton
 
 class CollectibleTransferConfirmedFragment : BaseInfoFragment() {
@@ -40,7 +41,12 @@ class CollectibleTransferConfirmedFragment : BaseInfoFragment() {
     override fun setFirstButton(materialButton: MaterialButton) {
         materialButton.setText(R.string.got_it)
         materialButton.setOnClickListener {
+            setFragmentNavigationResult(SEND_PURE_COLLECTIBLE_RESULT_KEY, true)
             nav(SendCollectibleNavigationDirections.actionSendCollectibleNavigationPop())
         }
+    }
+
+    companion object {
+        const val SEND_PURE_COLLECTIBLE_RESULT_KEY = "send_pure_collectible_result_key"
     }
 }

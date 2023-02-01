@@ -30,23 +30,24 @@ import com.algorand.android.modules.accountblockpolling.data.model.ShouldRefresh
 import com.algorand.android.models.TrackTransactionRequest
 import com.algorand.android.models.VerifiedAssetDetail
 import com.algorand.android.modules.walletconnect.subscription.data.model.WalletConnectSessionSubscriptionBody
-import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
 import com.algorand.android.modules.accounts.data.model.LastSeenNotificationRequest
 import com.algorand.android.modules.accounts.data.model.LastSeenNotificationResponse
 import com.algorand.android.modules.accounts.data.model.NotificationStatusResponse
+import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
 import com.algorand.android.modules.currency.data.model.CurrencyOptionResponse
 import com.algorand.android.modules.nftdomain.data.model.NftDomainSearchResponse
 import com.algorand.android.modules.parity.data.model.CurrencyDetailResponse
+import com.algorand.android.modules.fetchnameservices.data.model.FetchNameServicesRequestBody
+import com.algorand.android.modules.fetchnameservices.data.model.FetchNameServicesResponse
 import com.algorand.android.modules.swap.assetselection.toasset.data.model.AvailableSwapAssetListResponse
-import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsRequestBody
-import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsResponse
 import com.algorand.android.modules.swap.assetswap.data.model.PeraFeeRequestBody
 import com.algorand.android.modules.swap.assetswap.data.model.PeraFeeResponse
 import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteRequestBody
 import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteResultResponse
-import com.algorand.android.modules.webexport.model.WebBackupRequestBody
+import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsRequestBody
+import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsResponse
 import com.algorand.android.modules.webexport.accountconfirmation.data.model.ExportBackupResponse
-import com.algorand.android.network.MobileHeaderInterceptor.Companion.ALGORAND_NETWORK_KEY
+import com.algorand.android.modules.webexport.model.WebBackupRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -77,13 +78,11 @@ interface MobileAlgorandApi {
     @PUT("v1/devices/{device_id}/")
     suspend fun putUpdateDevice(
         @Path("device_id") deviceId: String,
-        @Body deviceUpdateRequest: DeviceUpdateRequest,
-        @Header(ALGORAND_NETWORK_KEY) networkSlug: String?
+        @Body deviceUpdateRequest: DeviceUpdateRequest
     ): Response<DeviceRegistrationResponse>
 
     @HTTP(method = "DELETE", path = "v1/devices/", hasBody = true)
     suspend fun deletePushToken(
-        @Header(ALGORAND_NETWORK_KEY) networkSlug: String,
         @Body pushTokenDeleteRequest: PushTokenDeleteRequest
     ): Response<Unit>
 
@@ -109,8 +108,7 @@ interface MobileAlgorandApi {
     @PUT("v1/devices/{device_id}/update-last-seen-notification/")
     suspend fun putLastSeenNotification(
         @Path("device_id") deviceId: String,
-        @Body lastSeenRequest: LastSeenNotificationRequest,
-        @Header(ALGORAND_NETWORK_KEY) networkSlug: String?
+        @Body lastSeenRequest: LastSeenNotificationRequest
     ): Response<LastSeenNotificationResponse>
 
     @GET
@@ -214,4 +212,9 @@ interface MobileAlgorandApi {
 
     @GET("v1/discover/assets/trending/")
     suspend fun getTrendingAssets(): Response<List<AssetSearchResponse>>
+
+    @POST("v1/accounts/names/bulk-read/")
+    suspend fun readAccountsNameServices(
+        @Body fetchNameServicesRequestBody: FetchNameServicesRequestBody
+    ): Response<FetchNameServicesResponse>
 }

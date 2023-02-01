@@ -24,8 +24,10 @@ import com.algorand.android.models.AccountBalance
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.models.LedgerInformationListItem
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
+import com.algorand.android.utils.extensions.getAssetHoldingList
 import com.algorand.android.utils.formatAsCurrency
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -42,7 +44,8 @@ class LedgerInformationUseCase @Inject constructor(
     private val ledgerInformationAccountItemMapper: LedgerInformationAccountItemMapper,
     private val ledgerInformationAssetItemMapper: LedgerInformationAssetItemMapper,
     private val ledgerInformationCanSignByItemMapper: LedgerInformationCanSignByItemMapper,
-    private val currencyUseCase: CurrencyUseCase
+    private val currencyUseCase: CurrencyUseCase,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) : BaseUseCase() {
 
     suspend fun getLedgerInformationListItem(
@@ -84,7 +87,15 @@ class LedgerInformationUseCase @Inject constructor(
     ): List<LedgerInformationListItem> {
         return mutableListOf<LedgerInformationListItem>().apply {
             add(ledgerInformationTitleItemMapper.mapTo(R.string.ledger_account))
-            add(ledgerInformationAccountItemMapper.mapTo(accountDetail, portfolioValue))
+            add(
+                ledgerInformationAccountItemMapper.mapTo(
+                    accountAddress = accountDetail.account.address,
+                    accountType = accountDetail.account.type,
+                    accountAssetCount = accountDetail.accountInformation.assetHoldingMap.count(),
+                    portfolioValue = portfolioValue,
+                    accountDisplayName = getAccountDisplayNameUseCase.invoke(accountDetail.account.address)
+                )
+            )
         }
     }
 
@@ -93,8 +104,8 @@ class LedgerInformationUseCase @Inject constructor(
             val algoAssetData = accountAlgoAmountUseCase.getAccountAlgoAmount(accountDetail)
             add(ledgerInformationTitleItemMapper.mapTo(R.string.assets))
             add(ledgerInformationAssetItemMapper.mapTo(algoAssetData))
-            if (accountDetail.accountInformation.assetHoldingList.isNotEmpty()) {
-                accountDetail.accountInformation.assetHoldingList.forEach {
+            if (accountDetail.getAssetHoldingList().isNotEmpty()) {
+                accountDetail.getAssetHoldingList().forEach {
                     val assetQueryItem = simpleAssetDetailUseCase.getCachedAssetDetail(it.assetId)?.data
                         ?: return@forEach
                     val accountAssetData = accountAssetAmountUseCase.getAssetAmount(it, assetQueryItem)

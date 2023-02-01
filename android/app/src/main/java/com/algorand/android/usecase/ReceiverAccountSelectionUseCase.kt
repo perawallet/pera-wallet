@@ -15,7 +15,6 @@ package com.algorand.android.usecase
 
 import com.algorand.android.R
 import com.algorand.android.SendAlgoNavigationDirections
-import com.algorand.android.core.AccountManager
 import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AnnotatedString
@@ -50,7 +49,6 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val accountTransactionValidator: AccountTransactionValidator,
     private val assetRepository: AssetRepository,
-    private val accountManager: AccountManager,
     private val accountSelectionListUseCase: AccountSelectionListUseCase,
     private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase,
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
@@ -65,7 +63,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         latestCopiedMessage: String?
     ): Flow<List<BaseAccountSelectionListItem>> {
         val contactList = fetchContactList(query)
-        val accountList = fetchAccountList(assetId, query)
+        val accountList = fetchAccountList(query)
         val nftDomainAccountList = fetchNftDomainAccountList(query)
         val queriedAddress = query.takeIf { it.isValidAddress() }
         return combine(
@@ -142,12 +140,11 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         emit(nftDomainAccounts)
     }
 
-    private fun fetchAccountList(assetId: Long, query: String) = flow {
-        val localAccounts = accountSelectionListUseCase.createAccountSelectionListAccountItemsFilteredByAssetId(
+    private fun fetchAccountList(query: String) = flow {
+        val localAccounts = accountSelectionListUseCase.createAccountSelectionListAccountItems(
             showHoldings = false,
             shouldIncludeWatchAccounts = true,
-            showFailedAccounts = false,
-            assetId = assetId
+            showFailedAccounts = false
         ).filter { it.displayName.contains(query, true) || it.publicKey.contains(query, true) }
         emit(localAccounts)
     }

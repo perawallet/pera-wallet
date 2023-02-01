@@ -26,8 +26,14 @@ class LockPenaltyRemainingTimeLocalSource @Inject constructor(
         return sharedPref.getLong(key, defaultValue)
     }
 
-    override fun getDataOrNull(): Long {
-        return sharedPref.getLong(key, defaultLockPenaltyRemainingTimePreference)
+    override fun getDataOrNull(): Long? {
+        return with(sharedPref) {
+            if (contains(key)) {
+                getLong(key, -1L)
+            } else {
+                null
+            }
+        }
     }
 
     override fun saveData(data: Long) {
@@ -36,6 +42,5 @@ class LockPenaltyRemainingTimeLocalSource @Inject constructor(
 
     companion object {
         private const val LOCK_PENALTY_REMAINING_KEY = "lock_penalty_remaining"
-        const val defaultLockPenaltyRemainingTimePreference = 0L
     }
 }

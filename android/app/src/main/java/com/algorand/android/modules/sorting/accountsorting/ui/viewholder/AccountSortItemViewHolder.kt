@@ -33,8 +33,8 @@ class AccountSortItemViewHolder(
         with(binding) {
             with(item.accountListItem.itemConfiguration) {
                 setAccountStartIconDrawable(accountIconResource)
-                setAccountTitleText(accountDisplayName?.getDisplayTextOrAccountShortenedAddress())
-                setAccountDescriptionText(accountDisplayName?.getAccountShortenedAddressOrAccountType(root.resources))
+                setAccountTitleText(accountDisplayName?.getAccountPrimaryDisplayName())
+                setAccountDescriptionText(accountDisplayName?.getAccountSecondaryDisplayName(root.resources))
                 setAccountItemDragButton()
             }
         }

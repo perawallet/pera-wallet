@@ -167,7 +167,17 @@ class RekeyConfirmationFragment : TransactionBaseFragment(R.layout.fragment_reke
     private fun onConfirmClick() {
         loadingDialogFragment = LoadingDialogFragment.show(childFragmentManager, R.string.rekeying_account)
         rekeyConfirmationViewModel.getAccountCacheData(args.rekeyAddress)?.let { safeAccountCacheData ->
-            val rekeyTx = TransactionData.Rekey(safeAccountCacheData, args.rekeyAdminAddress, args.ledgerDetail)
+            val rekeyTx = TransactionData.Rekey(
+                senderAccountAddress = safeAccountCacheData.account.address,
+                senderAccountDetail = safeAccountCacheData.account.detail,
+                senderAccountType = safeAccountCacheData.account.type,
+                senderAuthAddress = safeAccountCacheData.authAddress,
+                senderAccountName = safeAccountCacheData.account.name,
+                isSenderRekeyedToAnotherAccount = safeAccountCacheData.isRekeyedToAnotherAccount(),
+                rekeyAdminAddress = args.rekeyAdminAddress,
+                ledgerDetail = args.ledgerDetail,
+                senderAccountAuthTypeAndDetail = safeAccountCacheData.getAuthTypeAndDetail()
+            )
             sendTransaction(rekeyTx)
         }
     }

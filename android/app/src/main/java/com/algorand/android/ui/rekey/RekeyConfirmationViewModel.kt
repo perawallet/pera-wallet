@@ -12,22 +12,21 @@
 
 package com.algorand.android.ui.rekey
 
-import javax.inject.Inject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.repository.TransactionsRepository
+import com.algorand.android.usecase.AccountAdditionUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.MIN_FEE
 import com.algorand.android.utils.Resource
-import com.algorand.android.utils.analytics.logRekeyEvent
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.algorand.android.utils.analytics.CreationType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlin.math.max
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -35,10 +34,9 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class RekeyConfirmationViewModel @Inject constructor(
-    private val firebaseAnalytics: FirebaseAnalytics,
-    private val accountManager: AccountManager,
     private val accountCacheManager: AccountCacheManager,
-    private val transactionsRepository: TransactionsRepository
+    private val transactionsRepository: TransactionsRepository,
+    private val accountAdditionUseCase: AccountAdditionUseCase
 ) : BaseViewModel() {
 
     private var sendTransactionJob: Job? = null
@@ -70,22 +68,24 @@ class RekeyConfirmationViewModel @Inject constructor(
                 onSuccess = {
                     with(transactionDetail) {
                         val newRekeyedAuthDetailMap = mutableMapOf<String, Account.Detail.Ledger>().apply {
-                            if (accountCacheData.account.detail is Account.Detail.RekeyedAuth) {
-                                putAll(accountCacheData.account.detail.rekeyedAuthDetail)
+                            if (accountDetail is Account.Detail.RekeyedAuth) {
+                                putAll(accountDetail.rekeyedAuthDetail)
                             }
                             put(rekeyAdminAddress, ledgerDetail)
                         }
                         val authAccount = Account.create(
-                            publicKey = accountCacheData.account.address,
+                            publicKey = accountAddress,
                             detail = Account.Detail.RekeyedAuth.create(
-                                accountCacheData.getAuthTypeAndDetail(),
-                                newRekeyedAuthDetailMap
+                                authDetail = rekeyedAccountDetail,
+                                rekeyedAuthDetail = newRekeyedAuthDetailMap
                             ),
-                            accountName = accountCacheData.account.name
+                            accountName = accountName
                         )
-                        accountManager.addNewAccount(authAccount)
+                        accountAdditionUseCase.addNewAccount(
+                            tempAccount = authAccount,
+                            creationType = CreationType.REKEYED
+                        )
                     }
-                    firebaseAnalytics.logRekeyEvent()
                     transactionResourceLiveData.postValue(Event(Resource.Success(Any())))
                 },
                 onFailed = { exception, _ ->

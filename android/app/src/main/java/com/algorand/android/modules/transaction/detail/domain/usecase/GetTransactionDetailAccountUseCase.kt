@@ -16,8 +16,8 @@ import androidx.annotation.StringRes
 import androidx.core.net.toUri
 import com.algorand.android.R
 import com.algorand.android.core.AccountManager
-import com.algorand.android.modules.transaction.detail.ui.mapper.TransactionDetailItemMapper
 import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.transaction.detail.ui.mapper.TransactionDetailItemMapper
 import com.algorand.android.modules.transaction.detail.ui.model.TransactionDetailItem
 import com.algorand.android.repository.ContactRepository
 import com.algorand.android.utils.toShortenedAddress
@@ -30,11 +30,11 @@ class GetTransactionDetailAccountUseCase @Inject constructor(
 ) {
 
     suspend fun getTransactionToAccount(publicKey: String): TransactionDetailItem.StandardTransactionItem.AccountItem {
-        val foundContact = getAccountFromContactByPublicKey(publicKey, R.string.to)
-        if (foundContact != null) return foundContact
-
         val foundAccount = getAccountFromLocalAccountsByPublicKey(publicKey, R.string.to)
         if (foundAccount != null) return foundAccount
+
+        val foundContact = getAccountFromContactByPublicKey(publicKey, R.string.to)
+        if (foundContact != null) return foundContact
 
         return createNormalAccountItem(publicKey, R.string.to)
     }
@@ -43,12 +43,17 @@ class GetTransactionDetailAccountUseCase @Inject constructor(
         publicKey: String,
         showToolTipView: Boolean
     ): TransactionDetailItem.StandardTransactionItem.AccountItem {
-        val foundContact = getAccountFromContactByPublicKey(publicKey, R.string.to)
-        if (foundContact != null) return foundContact
-
         val foundAccount = getAccountFromLocalAccountsByPublicKey(publicKey, R.string.from, showToolTipView)
         if (foundAccount != null) return foundAccount
-        return createNormalAccountItem(publicKey, R.string.from, showToolTipView)
+
+        val foundContact = getAccountFromContactByPublicKey(publicKey, R.string.from)
+        if (foundContact != null) return foundContact
+
+        return createNormalAccountItem(
+            publicKey = publicKey,
+            labelTextResource = R.string.from,
+            showToolTipView = showToolTipView
+        )
     }
 
     suspend fun getTransactionCloseToAccount(
@@ -60,7 +65,10 @@ class GetTransactionDetailAccountUseCase @Inject constructor(
         val foundAccount = getAccountFromLocalAccountsByPublicKey(publicKey, R.string.close_to)
         if (foundAccount != null) return foundAccount
 
-        return createNormalAccountItem(publicKey, R.string.close_to)
+        return createNormalAccountItem(
+            publicKey = publicKey,
+            labelTextResource = R.string.close_to
+        )
     }
 
     private suspend fun getAccountFromContactByPublicKey(
@@ -110,7 +118,7 @@ class GetTransactionDetailAccountUseCase @Inject constructor(
     ): TransactionDetailItem.StandardTransactionItem.AccountItem.NormalItem {
         return transactionDetailItemMapper.mapToNormalAccountItem(
             labelTextRes = labelTextResource,
-            displayAddress = publicKey.toShortenedAddress(),
+            displayAddress = publicKey,
             publicKey = publicKey,
             isAccountAdditionButtonVisible = true,
             isCopyButtonVisible = true,

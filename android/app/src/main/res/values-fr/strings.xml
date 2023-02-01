@@ -828,7 +828,6 @@
     <string name="disclaimer">CLAUSE DE NON-RESPONSABILITÉ</string>
     <string name="export_to_pera_web">Exporter vers Pera Web</string>
     <string name="you_re_about_to_share">Vous êtes sur le point de partager et d\'importer votre phrase secrète vers Pera Web Wallet!</string>
-    <string name="never_accept_a">N\'acceptez jamais une demande que vous n\'avez pas initiée.</string>
     <string name="confirm_export_domain">Confirmer Exportation Domaine</string>
     <string name="for_your_security_please_confirm">Pour votre sécurité, veuillez confirmer que vous exportez vos comptes vers Pera Web en saisissant le nom de domaine que vous voyez sur votre ordinateur.</string>
     <string name="enter_url_of_web_wallet">Entrez l\'URL du Web Wallet</string>

@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class LastSeenNotificationDTOMapper @Inject constructor() {
 
-    fun mapToLastSeenNotificationDTO(notificationId: Long?, networkSlug: String?): LastSeenNotificationDTO {
-        return LastSeenNotificationDTO(notificationId = notificationId, networkSlug = networkSlug)
+    fun mapToLastSeenNotificationDTO(notificationId: Long?): LastSeenNotificationDTO {
+        return LastSeenNotificationDTO(notificationId = notificationId)
     }
 }

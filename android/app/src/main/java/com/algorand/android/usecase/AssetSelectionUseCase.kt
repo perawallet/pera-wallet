@@ -126,9 +126,7 @@ class AssetSelectionUseCase @Inject constructor(
             accountInformationUseCase.getAccountInformation(it).collect {
                 it.useSuspended(
                     onSuccess = { accountInformation ->
-                        val isReceiverOptedInToAsset = accountInformation.assetHoldingList.any { assetHolding ->
-                            assetHolding.assetId == assetId
-                        } || assetId == ALGO_ID
+                        val isReceiverOptedInToAsset = assetId == ALGO_ID || accountInformation.hasAsset(assetId)
                         if (!isReceiverOptedInToAsset) {
                             emit(loadingFinishedStatePreview.copy(navigateToOptInEvent = Event(assetId)))
                         } else {

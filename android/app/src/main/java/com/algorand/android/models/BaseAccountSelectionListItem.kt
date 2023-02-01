@@ -17,6 +17,9 @@ import androidx.annotation.StringRes
 
 abstract class BaseAccountSelectionListItem : RecyclerListItem {
 
+    abstract override fun areItemsTheSame(other: RecyclerListItem): Boolean
+    abstract override fun areContentsTheSame(other: RecyclerListItem): Boolean
+
     data class HeaderItem(@StringRes val titleRes: Int) : BaseAccountSelectionListItem() {
 
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
@@ -62,7 +65,7 @@ abstract class BaseAccountSelectionListItem : RecyclerListItem {
 
             override val displayName: String = accountListItem.itemConfiguration
                 .accountDisplayName
-                ?.getDisplayTextOrAccountShortenedAddress()
+                ?.getAccountPrimaryDisplayName()
                 .orEmpty()
 
             override val publicKey: String = accountListItem.itemConfiguration.accountAddress
@@ -84,7 +87,7 @@ abstract class BaseAccountSelectionListItem : RecyclerListItem {
 
             override val displayName: String = accountListItem.itemConfiguration
                 .accountDisplayName
-                ?.getDisplayTextOrAccountShortenedAddress()
+                ?.getAccountPrimaryDisplayName()
                 .orEmpty()
 
             override val publicKey: String = accountListItem.itemConfiguration.accountAddress

@@ -21,7 +21,6 @@ import com.algorand.android.utils.DataResource
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 
 class UpdatePushTokenUseCase @Inject constructor(
@@ -31,12 +30,8 @@ class UpdatePushTokenUseCase @Inject constructor(
     accountManager: AccountManager
 ) : BaseDeviceIdOperationUseCase(accountManager) {
 
-    suspend fun updatePushToken(
-        deviceId: String,
-        token: String?,
-        networkSlug: String?
-    ): Flow<DataResource<String>> = flow {
-        val deviceUpdateDTO = getDeviceUpdateDTO(deviceId, token, networkSlug)
+    suspend fun updatePushToken(deviceId: String, token: String?): Flow<DataResource<String>> = flow {
+        val deviceUpdateDTO = getDeviceUpdateDTO(deviceId, token)
         userDeviceIdRepository.updateDeviceId(deviceUpdateDTO).collect {
             when (it) {
                 is Result.Success -> {
@@ -49,15 +44,14 @@ class UpdatePushTokenUseCase @Inject constructor(
         }
     }
 
-    private fun getDeviceUpdateDTO(deviceId: String, token: String?, networkSlug: String?): DeviceUpdateDTO {
+    private fun getDeviceUpdateDTO(deviceId: String, token: String?): DeviceUpdateDTO {
         return deviceUpdateDTOMapper.mapToDeviceUpdateDTO(
             deviceId = deviceId,
             token = token,
             accountPublicKeyList = getAccountPublicKeys(),
             application = getApplicationName(),
             platform = PLATFORM_NAME,
-            locale = getLocaleLanguageCode(),
-            networkSlug = networkSlug
+            locale = getLocaleLanguageCode()
         )
     }
 }

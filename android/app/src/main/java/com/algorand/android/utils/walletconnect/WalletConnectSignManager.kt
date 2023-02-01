@@ -150,10 +150,7 @@ class WalletConnectSignManager @Inject constructor(
         with(transaction) {
             when (val result = walletConnectSignValidator.canTransactionBeSigned(this)) {
                 is WalletConnectSignResult.CanBeSigned -> {
-                    val signableTransactions = transactionList.flatten().filter {
-                        getSignerAccountType(it.signer.address?.decodedAddress) != null
-                    }
-                    signHelper.initItemsToBeEnqueued(signableTransactions)
+                    signHelper.initItemsToBeEnqueued(transactionList.flatten())
                 }
                 is WalletConnectSignResult.Error -> postResult(result)
                 else -> {

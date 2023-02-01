@@ -34,6 +34,7 @@ import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.common.warningconfirmation.BaseMaximumBalanceWarningBottomSheet
 import com.algorand.android.ui.send.shared.AddNoteBottomSheet
 import com.algorand.android.utils.ALGO_SHORT_NAME
+import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
@@ -141,7 +142,14 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
     private fun updateUIWithPreview(assetTransferAmountPreview: AssetTransferAmountPreview) {
         with(assetTransferAmountPreview) {
             assetPreview?.let {
-                getAppToolbar()?.changeTitle(getString(R.string.send_format, it.shortName.getName()))
+                getAppToolbar()?.apply {
+                    changeTitle(getString(R.string.send_format, it.shortName.getName()))
+                    accountName?.let { changeSubtitle(it) }
+                    accountIconResource?.let {
+                        val iconSize = resources.getDimensionPixelSize(R.dimen.account_icon_size_xsmall)
+                        AccountIconDrawable.create(context, it, iconSize)?.let { setSubtitleStartDrawable(it) }
+                    }
+                }
                 binding.algorandApproximateValueTextView.isVisible = it.isAmountInSelectedCurrencyVisible
                 updateEnteredAmountCurrencyValue(
                     enteredAmountSelectedCurrencyValue,
@@ -313,16 +321,22 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
             )
             val selectedAccountCacheData = assetTransferAmountViewModel.getAccountCachedData() ?: return
             val selectedAsset = assetTransferAmountViewModel.getAssetInformation() ?: return
+            val note = assetTransaction.xnote ?: assetTransaction.note
             nav(
                 AssetTransferAmountFragmentDirections
                     .actionAssetTransferAmountFragmentToAssetTransferPreviewFragment(
                         TransactionData.Send(
-                            selectedAccountCacheData,
-                            amount,
-                            selectedAsset,
-                            transactionNote,
-                            lockedNote,
-                            targetUser
+                            senderAccountAddress = selectedAccountCacheData.account.address,
+                            senderAccountDetail = selectedAccountCacheData.account.detail,
+                            senderAccountType = selectedAccountCacheData.account.type,
+                            senderAuthAddress = selectedAccountCacheData.authAddress,
+                            senderAccountName = selectedAccountCacheData.account.name,
+                            isSenderRekeyedToAnotherAccount = selectedAccountCacheData.isRekeyedToAnotherAccount(),
+                            minimumBalance = selectedAccountCacheData.getMinBalance(),
+                            amount = amount,
+                            assetInformation = selectedAsset,
+                            note = note,
+                            targetUser = targetUser
                         )
                     )
             )

@@ -22,6 +22,7 @@
         style="@style/TextView.TransactionLabelStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/spacing_small"
         android:gravity="start"
         app:layout_constraintBottom_toBottomOf="@id/feeView"
         app:layout_constraintEnd_toStartOf="@id/guideline"

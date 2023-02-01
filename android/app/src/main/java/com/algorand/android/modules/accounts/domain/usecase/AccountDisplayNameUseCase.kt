@@ -12,17 +12,25 @@
 
 package com.algorand.android.modules.accounts.domain.usecase
 
-import com.algorand.android.usecase.GetLocalAccountsUseCase
+import com.algorand.android.mapper.AccountDisplayNameMapper
+import com.algorand.android.models.Account
+import com.algorand.android.usecase.GetCachedAccountDetailUseCase
 import com.algorand.android.utils.AccountDisplayName
+import com.algorand.android.utils.toShortenedAddress
 import javax.inject.Inject
 
 class AccountDisplayNameUseCase @Inject constructor(
-    private val getLocalAccountsUseCase: GetLocalAccountsUseCase
+    private val accountDisplayNameMapper: AccountDisplayNameMapper,
+    private val getCachedAccountDetailUseCase: GetCachedAccountDetailUseCase
 ) {
 
-    fun getAccountDisplayName(accountAddress: String): AccountDisplayName {
-        val accountDetail = getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache()
-            .firstOrNull { it.address == accountAddress }
-        return AccountDisplayName.create(accountAddress, accountDetail?.name.orEmpty(), accountDetail?.type)
+    operator fun invoke(accountAddress: String): AccountDisplayName {
+        val accountDetail = getCachedAccountDetailUseCase.invoke(accountAddress)?.data
+        return accountDisplayNameMapper.mapToAccountDisplayName(
+            accountAddress = accountAddress,
+            accountName = accountDetail?.account?.name.orEmpty().ifBlank { accountAddress.toShortenedAddress() },
+            nfDomainName = accountDetail?.nameServiceName,
+            type = accountDetail?.account?.type ?: Account.defaultAccountType
+        )
     }
 }

@@ -16,4 +16,18 @@ import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.utils.ListQueuingHelper
 import javax.inject.Inject
 
-class WalletConnectSigningHelper @Inject constructor() : ListQueuingHelper<BaseWalletConnectTransaction, ByteArray>()
+class WalletConnectSigningHelper @Inject constructor() : ListQueuingHelper<BaseWalletConnectTransaction, ByteArray>() {
+
+    override val totalItemCount
+        get() = transactionToSignCount
+
+    override val currentItemIndex
+        get() = dequeuedItemList.filterNotNull().size + 1
+
+    private var transactionToSignCount = enqueuedItemCount
+
+    override fun initItemsToBeEnqueued(enqueuedItems: List<BaseWalletConnectTransaction>) {
+        transactionToSignCount = enqueuedItems.filter { it.signer.address?.decodedAddress != null }.size
+        super.initItemsToBeEnqueued(enqueuedItems)
+    }
+}

@@ -27,7 +27,6 @@ import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 
 @SuppressWarnings("LongParameterList")
@@ -159,6 +158,12 @@ class StandardTransactionDetailPreviewUseCase @Inject constructor(
                 transactionDetailItemMapper.mapToDateItem(
                     labelTextRes = R.string.date,
                     date = getTransactionFormattedDate(baseTransactionDetail.roundTimeAsTimestamp)
+                )
+            )
+            add(
+                transactionDetailItemMapper.mapToRoundItem(
+                    labelTextRes = R.string.round,
+                    round = baseTransactionDetail.confirmedRound?.toString().orEmpty()
                 )
             )
             add(

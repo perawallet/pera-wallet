@@ -19,7 +19,6 @@ import com.algorand.android.utils.DataResource
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 
 class DeleteDeviceUseCase @Inject constructor(
@@ -28,10 +27,10 @@ class DeleteDeviceUseCase @Inject constructor(
     private val deleteDeviceDTOMapper: DeleteDeviceDTOMapper
 ) {
 
-    suspend fun deleteDevice(networkSlug: String): Flow<DataResource<Unit>> = flow {
+    suspend fun deleteDevice(): Flow<DataResource<Unit>> = flow {
         val pushToken = firebasePushTokenRepository.getPushTokenOrNull()?.data ?: return@flow
         emit(DataResource.Loading())
-        val deletePushTokenDTO = deleteDeviceDTOMapper.mapToDeleteDeviceDTO(networkSlug, pushToken, PLATFORM_NAME)
+        val deletePushTokenDTO = deleteDeviceDTOMapper.mapToDeleteDeviceDTO(pushToken, PLATFORM_NAME)
         firebasePushTokenRepository.deleteDeviceFromApi(deletePushTokenDTO).collect {
             it.use(
                 onSuccess = { emit(DataResource.Success(Unit)) },

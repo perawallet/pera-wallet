@@ -14,6 +14,7 @@ package com.algorand.android.mapper
 
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AccountInformationResponsePayload
+import com.algorand.android.models.AssetHolding
 import com.algorand.android.models.Participation
 import java.math.BigInteger
 import javax.inject.Inject
@@ -26,15 +27,17 @@ class AccountInformationMapper @Inject constructor(
         accountInformationPayload: AccountInformationResponsePayload?,
         currentRound: Long?
     ): AccountInformation {
-        val assetHoldingList = accountInformationPayload?.allAssetHoldingList
-            ?.map { assetHoldingsMapper.mapToAssetHoldings(it) }
-            ?.toMutableSet()
+        val assetHoldingMap = hashMapOf<Long, AssetHolding>().apply {
+            accountInformationPayload?.allAssetHoldingList
+                ?.map { assetHoldingsMapper.mapToAssetHoldings(it) }
+                ?.forEach { assetHolding -> put(assetHolding.assetId, assetHolding) }
+        }
         return AccountInformation(
             address = accountInformationPayload?.address.orEmpty(),
             amount = accountInformationPayload?.amount ?: BigInteger.ZERO,
             participation = accountInformationPayload?.participation,
             rekeyAdminAddress = accountInformationPayload?.rekeyAdminAddress,
-            allAssetHoldingList = assetHoldingList ?: mutableSetOf(),
+            allAssetHoldingMap = assetHoldingMap,
             createdAtRound = accountInformationPayload?.createdAtRound,
             appsLocalState = accountInformationPayload?.appsLocalState,
             appsTotalSchema = accountInformationPayload?.appsTotalSchema,
@@ -50,7 +53,7 @@ class AccountInformationMapper @Inject constructor(
             amount = BigInteger.ZERO,
             participation = Participation(),
             rekeyAdminAddress = null,
-            allAssetHoldingList = mutableSetOf(),
+            allAssetHoldingMap = hashMapOf(),
             createdAtRound = null,
             lastFetchedRound = null
         )

@@ -23,8 +23,7 @@ class DeviceUpdateDTOMapper @Inject constructor() {
         accountPublicKeyList: List<String>,
         application: String,
         platform: String,
-        locale: String,
-        networkSlug: String?
+        locale: String
     ): DeviceUpdateDTO {
         return DeviceUpdateDTO(
             deviceId = deviceId,
@@ -32,8 +31,7 @@ class DeviceUpdateDTOMapper @Inject constructor() {
             accountPublicKeys = accountPublicKeyList,
             application = application,
             platform = platform,
-            locale = locale,
-            networkSlug = networkSlug
+            locale = locale
         )
     }
 }

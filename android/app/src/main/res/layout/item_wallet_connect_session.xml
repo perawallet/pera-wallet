@@ -26,7 +26,7 @@
         android:layout_marginTop="@dimen/spacing_xxsmall"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_algo_green_round" />
+        tools:srcCompat="@drawable/ic_algo_round" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/moreButton"

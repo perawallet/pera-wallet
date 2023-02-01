@@ -34,11 +34,41 @@
         android:layout_height="wrap_content"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/notificationImageButton"
-        app:layout_constraintEnd_toEndOf="@id/portfolioValueTitleTextView"
-        app:layout_constraintStart_toStartOf="@id/portfolioValueTitleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/notificationImageButton"
         tools:srcCompat="@drawable/ic_algo"
         tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/toolbarPrimaryPortfolioValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Title.Large.Sans.Medium"
+        android:textSize="@dimen/text_size_13"
+        app:layout_constraintBottom_toTopOf="@id/toolbarSecondaryPortfolioValue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolbarLayout"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="¦107,114.72" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/toolbarSecondaryPortfolioValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="@dimen/text_size_11"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarPrimaryPortfolioValue"
+        tools:text="≈ $105,413.95" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/notificationImageButton"
@@ -57,6 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xsmall"
+        android:layout_marginHorizontal="@dimen/spacing_xxlarge"
         android:drawablePadding="@dimen/spacing_xsmall"
         android:text="@string/portfolio_value"
         android:textAppearance="@style/TextAppearance.Body.Sans"
@@ -72,10 +103,11 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/primaryPortfolioValue"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/primary_portfolio_value_height"
         android:layout_marginTop="@dimen/spacing_xsmall"
         android:gravity="center"
         android:maxLines="1"
+        android:layout_marginHorizontal="@dimen/spacing_xxlarge"
         android:textAppearance="@style/TextAppearance.Title.Large.Sans.Medium"
         app:autoSizeMaxTextSize="@dimen/text_size_36"
         app:autoSizeMinTextSize="@dimen/text_size_13"
@@ -91,6 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xsmall"
         android:gravity="center"
+        android:layout_marginHorizontal="@dimen/spacing_xxlarge"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Body.Sans"
         android:textColor="@color/secondary_text_color"

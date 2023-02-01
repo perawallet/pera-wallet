@@ -13,12 +13,12 @@
 
 package com.algorand.android.repository
 
+import com.algorand.android.modules.autolockmanager.domain.usecase.ShouldAppLockedUseCase.Companion.defaultLockPenaltyRemainingTimePreference
 import com.algorand.android.sharedpref.BiometricRegistrationLocalSource
 import com.algorand.android.sharedpref.BiometricRegistrationLocalSource.Companion.defaultBiometricRegistrationPreference
 import com.algorand.android.sharedpref.LockAttemptCountLocalSource
 import com.algorand.android.sharedpref.LockAttemptCountLocalSource.Companion.defaultLockAttemptCountPreference
 import com.algorand.android.sharedpref.LockPenaltyRemainingTimeLocalSource
-import com.algorand.android.sharedpref.LockPenaltyRemainingTimeLocalSource.Companion.defaultLockPenaltyRemainingTimePreference
 import com.algorand.android.sharedpref.LockPreferencesLocalSource
 import javax.inject.Inject
 

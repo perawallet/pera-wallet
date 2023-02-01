@@ -33,8 +33,8 @@ class AccountItemViewHolder(
         with(binding) {
             with(item.accountListItem.itemConfiguration) {
                 setAccountStartIconDrawable(accountIconResource)
-                setAccountTitleText(accountDisplayName?.getDisplayTextOrAccountShortenedAddress())
-                setAccountDescriptionText(accountDisplayName?.getAccountShortenedAddressOrAccountType(root.resources))
+                setAccountTitleText(accountDisplayName?.getAccountPrimaryDisplayName())
+                setAccountDescriptionText(accountDisplayName?.getAccountSecondaryDisplayName(root.resources))
                 setAccountPrimaryValueText(primaryValueText)
                 setAccountSecondaryValueText(secondaryValueText)
                 root.setOnClickListener { listener.onAccountClick(accountAddress) }

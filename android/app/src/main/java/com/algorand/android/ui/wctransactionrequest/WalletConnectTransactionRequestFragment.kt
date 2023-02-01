@@ -53,9 +53,8 @@ import com.algorand.android.utils.walletconnect.isFutureTransaction
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
-    R.layout.fragment_wallet_connect_transaction_request
-), LedgerLoadingDialog.Listener, TransactionRequestAction {
+class WalletConnectTransactionRequestFragment :
+    DaggerBaseFragment(R.layout.fragment_wallet_connect_transaction_request), TransactionRequestAction {
 
     override val fragmentConfiguration = FragmentConfiguration()
 
@@ -94,6 +93,13 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
                 peerMeta = peerMeta
             )
         )
+    }
+
+    private val ledgerLoadingDialogListener = LedgerLoadingDialog.Listener { shouldStopResources ->
+        hideLoading()
+        if (shouldStopResources) {
+            transactionRequestViewModel.stopAllResources()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -203,6 +209,7 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
         if (ledgerLoadingDialog == null) {
             ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(
                 ledgerName = ledgerName,
+                listener = ledgerLoadingDialogListener,
                 currentTransactionIndex = currentTransactionIndex,
                 totalTransactionCount = totalTransactionCount,
                 isTransactionIndicatorVisible = isTransactionIndicatorVisible
@@ -297,16 +304,10 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
         nav(HomeNavigationDirections.actionGlobalLedgerConnectionIssueBottomSheet())
     }
 
-    override fun onLedgerLoadingCancelled(shouldStopResources: Boolean) {
-        hideLoading()
-        if (shouldStopResources) {
-            transactionRequestViewModel.stopAllResources()
-        }
-    }
-
     private fun hideLoading() {
         binding.progressBar.root.hide()
         ledgerLoadingDialog?.dismissAllowingStateLoss()
+        ledgerLoadingDialog = null
     }
 
     private fun showLoading() {

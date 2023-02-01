@@ -26,7 +26,9 @@ sealed class SignedTransactionDetail : Parcelable {
     data class Send(
         override val signedTransactionData: ByteArray,
         val amount: BigInteger,
-        val accountCacheData: AccountCacheData,
+        val senderAccountType: Account.Type?,
+        val senderAccountName: String,
+        val senderAccountAddress: String,
         val targetUser: TargetUser,
         val isMax: Boolean,
         var fee: Long,
@@ -37,13 +39,13 @@ sealed class SignedTransactionDetail : Parcelable {
 
     sealed class AssetOperation : SignedTransactionDetail() {
 
-        abstract val accountCacheData: AccountCacheData
+        abstract val senderAccountAddress: String
         abstract val assetInformation: AssetInformation
 
         @Parcelize
         data class AssetAddition(
             override val signedTransactionData: ByteArray,
-            override val accountCacheData: AccountCacheData,
+            override val senderAccountAddress: String,
             override val assetInformation: AssetInformation,
             override val shouldWaitForConfirmation: Boolean = false
         ) : AssetOperation()
@@ -51,7 +53,7 @@ sealed class SignedTransactionDetail : Parcelable {
         @Parcelize
         data class AssetRemoval(
             override val signedTransactionData: ByteArray,
-            override val accountCacheData: AccountCacheData,
+            override val senderAccountAddress: String,
             override val assetInformation: AssetInformation
         ) : AssetOperation()
     }
@@ -59,7 +61,10 @@ sealed class SignedTransactionDetail : Parcelable {
     @Parcelize
     data class RekeyOperation(
         override val signedTransactionData: ByteArray,
-        val accountCacheData: AccountCacheData,
+        val accountDetail: Account.Detail?,
+        val rekeyedAccountDetail: Account.Detail?,
+        val accountAddress: String,
+        val accountName: String,
         val rekeyAdminAddress: String,
         val ledgerDetail: Account.Detail.Ledger
     ) : SignedTransactionDetail()

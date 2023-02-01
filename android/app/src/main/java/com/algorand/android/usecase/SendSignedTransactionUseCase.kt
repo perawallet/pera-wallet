@@ -24,6 +24,7 @@ import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.MAINNET_NETWORK_SLUG
 import com.algorand.android.utils.analytics.logTransactionEvent
 import com.algorand.android.utils.exception.AccountAlreadyOptedIntoAssetException
+import com.algorand.android.utils.exception.AssetAlreadyPendingForRemovalException
 import com.algorand.android.utils.exceptions.TransactionConfirmationAwaitException
 import com.algorand.android.utils.exceptions.TransactionIdNullException
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -48,6 +49,10 @@ class SendSignedTransactionUseCase @Inject constructor(
         send(DataResource.Loading())
         if (signedTransactionDetail is AssetAddition && isAccountAlreadyOptedIntoAsset(signedTransactionDetail)) {
             send(DataResource.Error.Local(AccountAlreadyOptedIntoAssetException()))
+        } else if (signedTransactionDetail is SignedTransactionDetail.AssetOperation.AssetRemoval &&
+            isAssetPendingForRemovalFromAccount(signedTransactionDetail)
+        ) {
+            send(DataResource.Error.Local(AssetAlreadyPendingForRemovalException()))
         } else {
             transactionsRepository.sendSignedTransaction(signedTransactionDetail.signedTransactionData).use(
                 onSuccess = { sendTransactionResponse ->
@@ -101,7 +106,7 @@ class SendSignedTransactionUseCase @Inject constructor(
                 firebaseAnalytics.logTransactionEvent(
                     amount = amount,
                     assetId = assetInformation.assetId,
-                    accountType = accountCacheData.account.type ?: Account.Type.STANDARD,
+                    accountType = senderAccountType ?: Account.Type.STANDARD,
                     isMax = isMax,
                     transactionId = taxId
                 )
@@ -111,7 +116,16 @@ class SendSignedTransactionUseCase @Inject constructor(
 
     private fun isAccountAlreadyOptedIntoAsset(transaction: AssetAddition): Boolean {
         return accountDetailUseCase.isAssetOwnedByAccount(
-            publicKey = transaction.accountCacheData.account.address,
+            publicKey = transaction.senderAccountAddress,
+            assetId = transaction.assetInformation.assetId
+        )
+    }
+
+    private fun isAssetPendingForRemovalFromAccount(
+        transaction: SignedTransactionDetail.AssetOperation.AssetRemoval
+    ): Boolean {
+        return accountDetailUseCase.isAssetPendingForRemovalFromAccount(
+            accountAddress = transaction.senderAccountAddress,
             assetId = transaction.assetInformation.assetId
         )
     }
@@ -120,13 +134,13 @@ class SendSignedTransactionUseCase @Inject constructor(
         when (signedTransactionDetail) {
             is AssetAddition -> {
                 assetAdditionUseCase.addAssetAdditionToAccountCache(
-                    publicKey = signedTransactionDetail.accountCacheData.account.address,
+                    publicKey = signedTransactionDetail.senderAccountAddress,
                     assetInformation = signedTransactionDetail.assetInformation
                 )
             }
             is SignedTransactionDetail.AssetOperation.AssetRemoval -> {
                 accountAssetRemovalUseCase.addAssetDeletionToAccountCache(
-                    publicKey = signedTransactionDetail.accountCacheData.account.address,
+                    publicKey = signedTransactionDetail.senderAccountAddress,
                     assetId = signedTransactionDetail.assetInformation.assetId
                 )
             }
