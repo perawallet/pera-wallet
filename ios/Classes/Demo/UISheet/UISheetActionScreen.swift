@@ -49,6 +49,7 @@ final class UISheetActionScreen:
     override func prepareLayout() {
         super.prepareLayout()
 
+        addBackground()
         addContext()
 
         if !sheet.actions.isEmpty {
@@ -71,6 +72,10 @@ final class UISheetActionScreen:
 }
 
 extension UISheetActionScreen {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
     private func addContext() {
         contentView.addSubview(contextView)
 

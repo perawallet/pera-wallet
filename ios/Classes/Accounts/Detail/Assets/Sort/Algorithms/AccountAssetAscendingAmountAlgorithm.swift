@@ -20,7 +20,11 @@ struct AccountAssetAscendingAmountAlgorithm: AccountAssetSortingAlgorithm {
     let id: String
     let name: String
 
-    init() {
+    private let currency: CurrencyProvider
+
+    init(currency: CurrencyProvider) {
+        self.currency = currency
+
         self.id = "cache.value.accountAssetAscendingAmountAlgorithm"
         self.name = "title-lowest-value-to-highest".localized
     }
@@ -28,28 +32,53 @@ struct AccountAssetAscendingAmountAlgorithm: AccountAssetSortingAlgorithm {
 
 extension AccountAssetAscendingAmountAlgorithm {
     func getFormula(
-        viewModel: AssetListItemViewModel,
-        otherViewModel: AssetListItemViewModel
+        asset: Asset,
+        otherAsset: Asset
     ) -> Bool {
-        guard let assetPreviewCurrencyValue = viewModel.valueInUSD,
-              let otherAssetPreviewCurrencyValue = otherViewModel.valueInUSD else {
-            return false
+        let assetCurrencyValue = getValueInUSD(for: asset)
+        let otherAssetCurrencyValue = getValueInUSD(for: otherAsset)
+        if assetCurrencyValue != otherAssetCurrencyValue {
+            return assetCurrencyValue < otherAssetCurrencyValue
         }
 
-        if assetPreviewCurrencyValue != otherAssetPreviewCurrencyValue {
-            return assetPreviewCurrencyValue < otherAssetPreviewCurrencyValue
+        let assetTitle =
+            asset.naming.name.unwrapNonEmptyString() ??
+            "title-unknown".localized
+        let otherAssetTitle =
+            otherAsset.naming.name.unwrapNonEmptyString() ??
+            "title-unknown".localized
+        if assetTitle != otherAssetTitle {
+            let result = assetTitle.localizedCaseInsensitiveCompare(otherAssetTitle)
+            return result == .orderedAscending
         }
 
-        if let assetPreviewTitle = viewModel.title?.primaryTitle?.string,
-           let otherAssetPreviewTitle = otherViewModel.title?.primaryTitle?.string {
-            return assetPreviewTitle < otherAssetPreviewTitle
-        }
-
-        if let assetPreviewID = viewModel.asset?.id,
-           let otherAssetPreviewID = otherViewModel.asset?.id {
-            return assetPreviewID < otherAssetPreviewID
+        let assetID = asset.id
+        let otherAssetID = otherAsset.id
+        if assetID != otherAssetID {
+            return assetID < otherAssetID
         }
 
         return false
+    }
+
+    private func getValueInUSD(for asset: Asset) -> Decimal {
+        var valueInUSD: Decimal = 0.0
+
+        if asset.isAlgo {
+            guard let fiatCurrencyValue = try? currency.fiatValue?.unwrap() else {
+                return valueInUSD
+            }
+
+            let exchanger = CurrencyExchanger(currency: fiatCurrencyValue)
+            valueInUSD = (try? exchanger.exchangeAlgoToUSD(amount: asset.decimalAmount)) ?? 0
+        } else {
+            guard currency.primaryValue != nil else {
+                return valueInUSD
+            }
+
+            valueInUSD = asset.totalUSDValue ?? 0
+        }
+
+        return valueInUSD
     }
 }

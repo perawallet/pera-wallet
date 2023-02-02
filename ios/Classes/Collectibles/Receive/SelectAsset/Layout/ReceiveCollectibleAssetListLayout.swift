@@ -78,7 +78,7 @@ extension ReceiveCollectibleAssetListLayout {
                     collectionView.bounds.width -
                     sectionHorizontalInsets.leading -
                     sectionHorizontalInsets.trailing
-                return CGSize(width: width, height: 72)
+                return CGSize(width: width, height: 75)
             case .noContent:
                 return sizeForSearchNoContent(
                     collectionView

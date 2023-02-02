@@ -224,7 +224,7 @@ extension SelectAssetScreen {
 
             switch itemIdentifier {
             case .asset(let item):
-                eventHandler?(.didSelectAsset(item.model))
+                eventHandler?(.didSelectAsset(item.asset))
             default:
                 break
             }

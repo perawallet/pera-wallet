@@ -24,6 +24,8 @@ struct OptOutBlockchainUpdate: BlockchainUpdate {
     let assetVerificationTier: AssetVerificationTier
     let isCollectibleAsset: Bool
     let collectibleAssetTitle: String?
+    let collectibleAssetThumbnailImage: URL?
+    let collectibleAssetCollectionName: String?
     let status: Status
     let notificationMessage: String
 
@@ -35,6 +37,8 @@ struct OptOutBlockchainUpdate: BlockchainUpdate {
         self.assetVerificationTier = request.assetVerificationTier
         self.isCollectibleAsset = request.isCollectibleAsset
         self.collectibleAssetTitle = request.collectibleAssetTitle
+        self.collectibleAssetThumbnailImage = request.collectibleAssetThumbnailImage
+        self.collectibleAssetCollectionName = request.collectibleAssetCollectionName
         self.status = .pending
 
         let name: String
@@ -57,6 +61,8 @@ struct OptOutBlockchainUpdate: BlockchainUpdate {
         self.assetVerificationTier = update.assetVerificationTier
         self.isCollectibleAsset = update.isCollectibleAsset
         self.collectibleAssetTitle = update.collectibleAssetTitle
+        self.collectibleAssetThumbnailImage = update.collectibleAssetThumbnailImage
+        self.collectibleAssetCollectionName = update.collectibleAssetCollectionName
         self.status = status
         self.notificationMessage = update.notificationMessage
     }

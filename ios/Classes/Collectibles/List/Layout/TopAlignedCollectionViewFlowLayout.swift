@@ -16,7 +16,7 @@
 
 import UIKit
 
-final class TopAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
+final class TopAlignedCollectionViewFlowLayout: CollectionViewSwitchableFlowLayout {
     override func layoutAttributesForElements(
         in rect: CGRect
     ) -> [UICollectionViewLayoutAttributes]? {

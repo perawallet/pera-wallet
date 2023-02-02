@@ -24,11 +24,8 @@ struct CurrencyFormattingListItemContextHandler: CurrencyFormattingContextHandli
         if shouldRound(rawNumber) {
             return makeRoundingRules(rawNumber)
         } else {
-            if let currency = currency {
-                return makeNonRoundingRules(
-                    rawNumber,
-                    for: currency
-                )
+            if let currency = currency, !currency.isAlgo {
+                return makeNonRoundingRulesForFiatCurrency(rawNumber)
             } else {
                 return makeNonRoundingRules(rawNumber)
             }
@@ -40,9 +37,13 @@ struct CurrencyFormattingListItemContextHandler: CurrencyFormattingContextHandli
         for currency: LocalCurrency?
     ) -> CurrencyFormattingContextInput {
         if shouldRound(rawNumber) {
-            return round(rawNumber)
+            return makeRoundingInput(rawNumber)
         } else {
-            return rawNumber
+            if let currency = currency, !currency.isAlgo {
+                return makeNonRoundingInputForFiatCurrency(rawNumber)
+            } else {
+                return rawNumber
+            }
         }
     }
 }
@@ -56,17 +57,6 @@ extension CurrencyFormattingListItemContextHandler {
         rules.minimumFractionDigits = 2
         rules.maximumFractionDigits = 2
         return rules
-    }
-
-    private func makeNonRoundingRules(
-        _ rawNumber: NSDecimalNumber,
-        for currency: LocalCurrency
-    ) -> CurrencyFormattingContextRules {
-        if currency.isAlgo {
-            return makeNonRoundingRules(rawNumber)
-        } else {
-            return makeNonRoundingRulesForFiatCurrency(rawNumber)
-        }
     }
 
     private func makeNonRoundingRules(
@@ -126,9 +116,9 @@ extension CurrencyFormattingListItemContextHandler {
         return rawNumber.compare(minRoundingNumber) != .orderedAscending
     }
 
-    private func round(
+    private func makeRoundingInput(
         _ rawNumber: NSDecimalNumber
-    ) -> NumberRoundingResult {
+    ) -> CurrencyFormattingContextInput {
         let rounder = NumberRounder()
         rounder.roundingMode = .down
         rounder.supportedRoundingUnits = [
@@ -139,5 +129,18 @@ extension CurrencyFormattingListItemContextHandler {
             QuintillionNumberRoundingUnit()
         ]
         return rounder.round(rawNumber)
+    }
+
+    private func makeNonRoundingInputForFiatCurrency(
+        _ rawNumber: NSDecimalNumber
+    ) -> CurrencyFormattingContextInput {
+        let minNonZeroInput = FiatCurrencyMinimumNonZeroInput()
+        let minNonZeroValue = minNonZeroInput.number.decimalValue
+
+        switch abs(rawNumber.decimalValue) {
+        case 0: return rawNumber
+        case 0..<minNonZeroValue: return minNonZeroInput
+        default: return rawNumber
+        }
     }
 }

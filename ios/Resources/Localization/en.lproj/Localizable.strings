@@ -68,7 +68,7 @@
 "title-home" = "Home";
 "title-discover" = "Discover";
 "title-price" = "Price";
-"title-collectibles" = "Collectibles";
+"title-collectibles" = "NFTs";
 "settings-title" = "Settings";
 "title-watch-account" = "Watch Account";
 "title-ledger-account" = "Ledger Account";
@@ -96,6 +96,7 @@
 "title-select-account" = "Select Account";
 "title-to" = "To";
 "title-try-again" = "Try Again";
+"filter" = "Filter";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -252,7 +253,9 @@
 "asset-algos-description" = "The Algo is the official cryptocurrency of the Algorand blockchain. The Algorand blockchain has been built to help create an open, borderless economy where everybody can participate. This new type of digital economy can only run on a truly digital currency that works instantly, for everybody. This is the Algo.";
 "asset-filter-title" = "Filter Assets";
 "asset-filter-selection-toggle-title" = "Hide assets with no balance";
-"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance.";
+"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance";
+"asset-filter-selection-display-collectible-assets-filter-title" = "Display NFTs in asset list";
+"asset-filter-selection-display-collectible-assets-filter-description" = "NFTs assets will be shown in the asset list of your account";
 "asset-remove-title" = "Remove Assets";
 "asset-opt-out-title" = "Asset Opt-out";
 "asset-remove-subtitle" = "To opt-out from an asset, you must first transfer any remaining balance to another account.";
@@ -295,6 +298,7 @@
 "asset-opt-in-successful-message" = "%@ successfully opted-in and added to your account.";
 "asset-opt-out-successful-message" = "%@ successfully opted-out and removed from your account.";
 "asset-search-not-found" = "We are not able to find this asset.";
+"asset-detail-markets-title" = "Markets";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";
@@ -350,9 +354,8 @@
 "options-unmute-notification" = "Unmute Notifications";
 "options-copy-address" = "Copy Address";
 "options-manage-assets" = "Manage Assets";
-"options-manage-collectibles" = "Manage Collectibles";
+"options-manage-collectibles" = "Manage NFTs";
 "options-sort-title" = "Sort";
-"opitons-collectibles-filter" = "Filter NFTs";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
@@ -375,7 +378,7 @@
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
 "accounts-title-overview" = "Overview";
-"accounts-title-collectibles" = "Collectibles";
+"accounts-title-collectibles" = "NFTs";
 "accounts-title-history" = "History";
 "contacts-title-assets" = "Assets";
 "title-select-asset" = "Select Asset";
@@ -1007,7 +1010,7 @@
 "pera-announcement-action-title" = "Start Using Pera Wallet";
 
 // MARK: Collectible Common
-"collectibles-empty-title" = "Collectibles";
+"collectibles-empty-title" = "NFTs";
 "collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
 
 // MARK: Collectible List
@@ -1016,9 +1019,11 @@
 "collectibles-empty-secondary-action-title" =  "Show hidden NFTs (%@)";
 
 // MARK: Collectible Filter Selection
-"collectible-filter-selection-title" = "Filter";
+"collectible-filter-selection-title" = "Filter NFTs";
 "collectible-filter-selection-toggle-title" = "Display opted-in NFTs";
 "collectible-filter-selection-toggle-description" = "You can show/hide NFTs that are opted-in but not owned";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
 
 // MARK: Collectible Receive
 "collectibles-receive-action" = "Receive an NFT";
@@ -1037,12 +1042,10 @@
 "collectible-send-account-list-title" = "Select the receiver account";
 
 // MARK: Collectible Detail
-"collectible-detail-share" = "Share";
 "collectible-detail-description" = "Description";
 "collectible-detail-owner" = "Owner";
-"collectible-detail-collection-name" = "Collection Name";
 "collectible-detail-creator-name" = "Creator Name";
-"collectible-detail-creator-address" = "Creator Wallet Address";
+"collectible-detail-creator-account" = "Creator Account";
 "collectible-detail-properties" = "Properties";
 "collectible-detail-view-transaction" = "View Transaction";
 "collectible-detail-algo-explorer" = "Show on Algoexplorer";
@@ -1056,7 +1059,7 @@
 "collectible-detail-opt-out-alert-message" = "You're about to remove and opt-out from the %@ NFT with %@. You'll be unable to transact with this NFT from this account unless you opt-in to it again.";
 "collectible-detail-show-on" = "Show on";
 "collectible-detail-pera-explorer" = "Pera Explorer";
-"collectible-detail-tap-3D" = "3D card mode";
+"collectible-detail-tap-3D" = "3D mode";
 
 // MARK: Collectible Transfer
 "collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";
@@ -1091,6 +1094,7 @@
 "collectible-recipient-opt-in-action-title" = "Request Opt-in";
 
 // MARK: Number Abbreviation
+"number-abbreviation-thousand" = "K";
 "number-abbreviation-million" = "M";
 "number-abbreviation-billion" = "B";
 "number-abbreviation-trillion" = "T";
@@ -1329,3 +1333,4 @@
 "discover-error-fallback-body" = "We can't get that information right now.";
 "discover-error-connection-title" = "No Internet Connection";
 "discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
+"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";

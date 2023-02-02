@@ -22,8 +22,9 @@ import Prism
 
 struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewModel {
     var image: ImageSource?
-    var displaysOffColorMedia: Bool = false
-    var isFullScreenBadgeHidden: Bool = false
+    var overlayImage: UIImage?
+    var is3DModeActionHidden: Bool = false
+    var isFullScreenActionHidden: Bool = false
 
     init(
         imageSize: CGSize,
@@ -36,7 +37,8 @@ struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewMode
             asset: asset,
             media: media
         )
-        bindDisplaysOffColorMedia(asset, accountCollectibleStatus)
+        bindOverlayImage(asset, accountCollectibleStatus)
+        bindIs3DModeActionHidden(asset)
         bindIsFullScreenBadgeHidden(asset)
     }
 }

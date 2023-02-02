@@ -113,7 +113,7 @@
 "accounts-title" = "Hesaplar";
 
 /* (No Comment) */
-"accounts-title-collectibles" = "Koleksiyon";
+"accounts-title-collectibles" = "NFTs";
 
 /* (No Comment) */
 "accounts-title-history" = "Geçmiş";
@@ -242,7 +242,16 @@
 "asset-detail-id-title" = "%@ Kimliği";
 
 /* (No Comment) */
-"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance.";
+"asset-detail-markets-title" = "Markets";
+
+/* (No Comment) */
+"asset-filter-selection-display-collectible-assets-filter-description" = "NFTs assets will be shown in the asset list of your account";
+
+/* (No Comment) */
+"asset-filter-selection-display-collectible-assets-filter-title" = "Display NFTs in asset list";
+
+/* (No Comment) */
+"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance";
 
 /* (No Comment) */
 "asset-filter-selection-toggle-title" = "Hide assets with no balance";
@@ -482,15 +491,12 @@
 "collectible-detail-algo-explorer" = "Algoexplorer'da Göster";
 
 /* (No Comment) */
-"collectible-detail-collection-name" = "Koleksiyon Adı";
-
-/* (No Comment) */
-"collectible-detail-creator-address" = "İçerik Üreticisinin Cüzdan Adresi";
+"collectible-detail-creator-account" = "Creator Account";
 
 /* (No Comment) */
 "collectible-detail-creator-name" = "İçerik Üreticisinin Adı";
 
-/* (No Comment) */
+/* MARK: Collectible Detail */
 "collectible-detail-description" = "Açıklama";
 
 /* (No Comment) */
@@ -526,20 +532,23 @@
 /* (No Comment) */
 "collectible-detail-properties" = "Özellikler";
 
-/* MARK: Collectible Detail */
-"collectible-detail-share" = "Paylaş";
-
 /* (No Comment) */
 "collectible-detail-show-on" = "Göster";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "3D kart modu";
+"collectible-detail-tap-3D" = "3D mode";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "İşlemi Görüntüle";
 
+/* (No Comment) */
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
+
+/* (No Comment) */
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
+
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "Filtrele";
+"collectible-filter-selection-title" = "Filter NFTs";
 
 /* (No Comment) */
 "collectible-filter-selection-toggle-description" = "Katılım sağlanan ancak sahip olunmayan NFT'leri gösterebilir/gizleyebilirsiniz";
@@ -620,7 +629,7 @@
 "collectibles-empty-secondary-action-title" = "Gizli NFT'leri Göster (%@)";
 
 /* MARK: Collectible Common */
-"collectibles-empty-title" = "Koleksiyon";
+"collectibles-empty-title" = "NFTs";
 
 /* (No Comment) */
 "collectibles-list-input-placeholder" = "NFT Arama";
@@ -721,6 +730,9 @@
 /* (No Comment) */
 "discover-error-fallback-body" = "Bu bilgileri şu anda alamıyoruz.";
 
+/* (No Comment) */
+"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+
 /* MARK: Discover */
 "discover-search-input-placeholder" = "Herhangi bir ASA varlığını arayın";
 
@@ -786,6 +798,9 @@
 
 /* (No Comment) */
 "feedback-title-note" = "Not";
+
+/* (No Comment) */
+"filter" = "Filter";
 
 /* (No Comment) */
 "governance-banner-action" = "Başlayın";
@@ -1243,7 +1258,7 @@
 /* (No Comment) */
 "number-abbreviation-billion" = "Mlyr";
 
-/* MARK: Number Abbreviation */
+/* (No Comment) */
 "number-abbreviation-million" = "Mlyn";
 
 /* (No Comment) */
@@ -1251,6 +1266,9 @@
 
 /* (No Comment) */
 "number-abbreviation-quintillion" = "Kn";
+
+/* MARK: Number Abbreviation */
+"number-abbreviation-thousand" = "K";
 
 /* (No Comment) */
 "number-abbreviation-trillion" = "T";
@@ -1260,9 +1278,6 @@
 
 /* (No Comment) */
 "ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";
-
-/* (No Comment) */
-"opitons-collectibles-filter" = "NFT'leri Filtrele";
 
 /* (No Comment) */
 "opt-in-description-adding-nft" = "Bir NFT'ye katılmak, işlemin minimum işlem ücretiyle gönderilmesini gerektirir. Bu, işlem geçmişinizde görünür.";
@@ -1283,7 +1298,7 @@
 "options-manage-assets" = "Varlıkları Yönet";
 
 /* (No Comment) */
-"options-manage-collectibles" = "Koleksiyonları Yönet";
+"options-manage-collectibles" = "Manage NFTs";
 
 /* (No Comment) */
 "options-mute-notification" = "Bildirimleri Sessize Al";
@@ -2192,7 +2207,7 @@
 "title-close" = "Kapat";
 
 /* (No Comment) */
-"title-collectibles" = "Koleksiyon";
+"title-collectibles" = "NFTs";
 
 /* (No Comment) */
 "title-confirm" = "Onayla";

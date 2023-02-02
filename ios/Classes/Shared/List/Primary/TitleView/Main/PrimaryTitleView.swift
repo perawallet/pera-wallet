@@ -20,7 +20,8 @@ import UIKit
 
 final class PrimaryTitleView:
     View,
-    ViewModelBindable {
+    ViewModelBindable,
+    ListReusable {
     private lazy var primaryTitleView = Label()
     private lazy var primaryTitleAccessoryView = ImageView()
     private lazy var secondaryTitleView = Label()

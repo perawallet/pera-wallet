@@ -35,12 +35,11 @@ final class AccountAssetListViewController:
     private lazy var theme = Theme()
 
     private lazy var listLayout = AccountAssetListLayout(
-        isWatchAccount: accountHandle.value.isWatchAccount(),
+        isWatchAccount: dataController.account.value.isWatchAccount(),
         listDataSource: listDataSource
     )
 
     private lazy var listDataSource = AccountAssetListDataSource(listView)
-    private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
@@ -68,16 +67,20 @@ final class AccountAssetListViewController:
     private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
     private var positionYForVisibleAccountActionsMenuAction: CGFloat?
 
-    private var accountHandle: AccountHandle
+    private var query: AccountAssetListQuery
+
+    private let dataController: AccountAssetListDataController
 
     private let copyToClipboardController: CopyToClipboardController
 
     init(
-        accountHandle: AccountHandle,
+        query: AccountAssetListQuery,
+        dataController: AccountAssetListDataController,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
-        self.accountHandle = accountHandle
+        self.query = query
+        self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
@@ -100,28 +103,35 @@ final class AccountAssetListViewController:
 
             switch event {
             case .didUpdate(let updates):
-                let address = self.accountHandle.value.address
+                self.eventHandler?(.didUpdate(self.dataController.account))
 
-                if let accountHandle = self.sharedDataController.accountCollection[address] {
-                    self.accountHandle = accountHandle
-                    self.eventHandler?(.didUpdate(accountHandle))
-                }
-
-                if updates.isNewSearch {
+                switch updates.operation {
+                case .customize:
+                    self.listView.scrollToTop(animated: false)
+                case .search:
                     let bottom = self.listView.contentSize.height
                     let minBottom = self.calculateMinEmptySpacingToScrollSearchInputFieldToTop()
                     self.listView.contentInset.bottom = max(bottom, minBottom)
+                case .refresh:
+                    break
                 }
 
                 self.listDataSource.apply(
                     updates.snapshot,
                     animatingDifferences: true
-                ) {
-                    updates.completion?()
+                ) { [weak self] in
+                    guard let self else { return }
+
+                    if updates.operation == .search {
+                        self.keyboardController.scrollToEditingRect(
+                            afterContentDidChange: true,
+                            animated: false
+                        )
+                    }
                 }
             }
         }
-        dataController.load()
+        dataController.load(query: query)
     }
 
     override func viewDidLayoutSubviews() {
@@ -135,14 +145,25 @@ final class AccountAssetListViewController:
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        reloadDataIfThereIsPendingUpdates()
+        startAnimatingLoadingIfNeededWhenViewDidAppear()
+
+        if !isViewFirstAppeared {
+            reloadIfNeededForPendingAssetRequests()
+        }
 
         analytics.track(.recordAccountDetailScreen(type: .tapAssets))
     }
 
     override func viewDidAppearAfterInteractiveDismiss() {
         super.viewDidAppearAfterInteractiveDismiss()
-        reloadDataIfThereIsPendingUpdates()
+
+        startAnimatingLoadingIfNeededWhenViewDidAppear()
+        reloadIfNeededForPendingAssetRequests()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopAnimatingLoadingIfNeededWhenViewDidDisappear()
     }
 
     override func prepareLayout() {
@@ -160,13 +181,18 @@ final class AccountAssetListViewController:
         observeWhenUserIsOnboardedToSwap()
     }
 
-    func reloadData() {
-        dataController.reload()
+    func reloadData(_ filters: AssetFilterOptions?) {
+        query.update(withFilters: filters)
+        dataController.load(query: query)
     }
 
-    func reloadDataIfThereIsPendingUpdates() {
-        if isViewFirstAppeared { return }
-        dataController.reloadIfThereIsPendingUpdates()
+    func reloadData(_ order: AccountAssetSortingAlgorithm?) {
+        query.update(withSort: order)
+        dataController.load(query: query)
+    }
+
+    private func reloadIfNeededForPendingAssetRequests() {
+        dataController.reloadIfNeededForPendingAssetRequests()
     }
 }
 
@@ -175,7 +201,7 @@ extension AccountAssetListViewController {
         addListBackground()
         addList()
 
-        if !accountHandle.value.isWatchAccount() {
+        if !dataController.account.value.isWatchAccount() {
             addAccountActionsMenuAction()
             updateSafeAreaWhenViewDidLayoutSubviews()
         }
@@ -221,7 +247,7 @@ extension AccountAssetListViewController {
         /// triggers auto-scrolling to the top because of the applying snapshot (The system just
         /// does it if the user pulls down the list extending the bounds of the content even if
         /// there isn't anything to update.)
-        let thresholdHeight: CGFloat = accountHandle.value.isWatchAccount() ? 150 : 250
+        let thresholdHeight: CGFloat = dataController.account.value.isWatchAccount() ? 150 : 250
         let preferredHeight: CGFloat = thresholdHeight - listView.contentOffset.y
 
         listBackgroundView.snp.updateConstraints {
@@ -277,7 +303,7 @@ extension AccountAssetListViewController {
             theme.spacingBetweenListAndAccountActionsMenuAction +
             theme.accountActionsMenuActionSize.h +
             theme.accountActionsMenuActionBottomPadding
-            additionalSafeAreaInsets.bottom = listSafeAreaBottom
+        additionalSafeAreaInsets.bottom = listSafeAreaBottom
     }
 }
 
@@ -322,8 +348,57 @@ extension AccountAssetListViewController {
             return false
         }
 
-        let currentContentOffset = listView.contentOffset
-        return currentContentOffset.y >= positionY
+        let listHeight = listView.bounds.height
+        let listContentHeight = listView.contentSize.height
+
+        if listContentHeight - listHeight <= positionY {
+            return false
+        }
+
+        let listContentOffset = listView.contentOffset
+        return listContentOffset.y >= positionY
+    }
+}
+
+extension AccountAssetListViewController {
+    private func startAnimatingLoadingIfNeededWhenViewDidAppear() {
+        if isViewFirstAppeared { return }
+
+        for cell in listView.visibleCells {
+            if let pendingAssetCell = cell as? PendingAssetListItemCell {
+                pendingAssetCell.startLoading()
+                return
+            }
+
+            if let pendingCollectibleAssetCell = cell as? PendingCollectibleAssetListItemCell {
+                pendingCollectibleAssetCell.startLoading()
+                return
+            }
+
+            if let assetLoadingCell = cell as? AccountAssetListLoadingCell {
+                assetLoadingCell.startAnimating()
+                return
+            }
+        }
+    }
+
+    private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
+        for cell in listView.visibleCells {
+            if let pendingAssetCell = cell as? PendingAssetListItemCell {
+                pendingAssetCell.stopLoading()
+                return
+            }
+
+            if let pendingCollectibleAssetCell = cell as? PendingCollectibleAssetListItemCell {
+                pendingCollectibleAssetCell.stopLoading()
+                return
+            }
+
+            if let assetLoadingCell = cell as? AccountAssetListLoadingCell {
+                assetLoadingCell.stopAnimating()
+                return
+            }
+        }
     }
 }
 
@@ -410,6 +485,12 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             case .search:
                 let itemCell = cell as? SearchBarItemCell
                 itemCell?.delegate = self
+            case .assetLoading:
+                startAnimatingListLoadingIfNeeded(cell)
+            case .pendingAsset:
+                startAnimatingListLoadingIfNeeded(cell as? PendingAssetListItemCell)
+            case .pendingCollectibleAsset:
+                startAnimatingListLoadingIfNeeded(cell as? PendingCollectibleAssetListItemCell)
             default:
                 return
             }
@@ -463,6 +544,38 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             return
         }
     }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: indexPath.section] else {
+            return
+        }
+
+        switch listSection {
+        case .assets:
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+                return
+            }
+
+            switch itemIdentifier {
+            case .assetLoading:
+                stopAnimatingListLoadingIfNeeded(cell)
+            case .pendingAsset:
+                stopAnimatingListLoadingIfNeeded(cell as? PendingAssetListItemCell)
+            case .pendingCollectibleAsset:
+                stopAnimatingListLoadingIfNeeded(cell as? PendingCollectibleAssetListItemCell)
+            default:
+                break
+            }
+        default:
+            break
+        }
+    }
     
     func collectionView(
         _ collectionView: UICollectionView,
@@ -507,23 +620,40 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 /// Normally, we should handle account error or asset error here even if it is
                 /// impossible to have an error. Either we should refactor the flow, or we should
                 /// handle the errors.
-                if let asset = item.asset {
-                    let screen = Screen.asaDetail(
-                        account: accountHandle.value,
-                        asset: asset
-                    ) { [weak self] event in
-                        guard let self = self else { return }
+                let screen = Screen.asaDetail(
+                    account: dataController.account.value,
+                    asset: item.asset
+                ) { [weak self] event in
+                    guard let self = self else { return }
 
-                        switch event {
-                        case .didRenameAccount: self.eventHandler?(.didRenameAccount)
-                        case .didRemoveAccount: self.eventHandler?(.didRemoveAccount)
-                        }
+                    switch event {
+                    case .didRenameAccount: self.eventHandler?(.didRenameAccount)
+                    case .didRemoveAccount: self.eventHandler?(.didRemoveAccount)
                     }
-                    open(
-                        screen,
-                        by: .push
-                    )
                 }
+                open(
+                    screen,
+                    by: .push
+                )
+            case .collectibleAsset(let item):
+                let screen = Screen.collectibleDetail(
+                    asset: item.asset,
+                    account: dataController.account.value,
+                    thumbnailImage: nil,
+                    quickAction: nil
+                ) { [weak self] event in
+                    guard let self = self else { return }
+
+                    switch event {
+                    case .didOptOutAssetFromAccount: self.popScreen()
+                    case .didOptOutFromAssetWithQuickAction: break
+                    case .didOptInToAsset: break
+                    }
+                }
+                open(
+                    screen,
+                    by: .push
+                )
             default:
                 break
             }
@@ -588,6 +718,38 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension AccountAssetListViewController {
+    private func startAnimatingListLoadingIfNeeded(_ cell: PendingAssetListItemCell?) {
+        cell?.startLoading()
+    }
+
+    private func stopAnimatingListLoadingIfNeeded(_ cell: PendingAssetListItemCell?) {
+        cell?.stopLoading()
+    }
+}
+
+extension AccountAssetListViewController {
+    private func startAnimatingListLoadingIfNeeded(_ cell: UICollectionViewCell) {
+        let loadingCell = cell as? AccountAssetListLoadingCell
+        loadingCell?.startAnimating()
+    }
+
+    private func stopAnimatingListLoadingIfNeeded(_ cell: UICollectionViewCell) {
+        let loadingCell = cell as? AccountAssetListLoadingCell
+        loadingCell?.stopAnimating()
+    }
+}
+
+extension AccountAssetListViewController {
+    private func startAnimatingListLoadingIfNeeded(_ cell: PendingCollectibleAssetListItemCell?) {
+        cell?.startLoading()
+    }
+
+    private func stopAnimatingListLoadingIfNeeded(_ cell: PendingCollectibleAssetListItemCell?) {
+        cell?.stopLoading()
+    }
+}
+
+extension AccountAssetListViewController {
     private func openMinimumBalanceInfo() {
         let uiSheet = UISheet(
             title: "minimum-balance-title".localized.bodyLargeMedium(),
@@ -642,15 +804,9 @@ extension AccountAssetListViewController {
             afterContentDidChange: false,
             animated: true
         )
-        dataController.search(for: cell.input) {
-            [weak self] in
-            guard let self = self else { return }
 
-            self.keyboardController.scrollToEditingRect(
-                afterContentDidChange: true,
-                animated: false
-            )
-        }
+        query.keyword = cell.input
+        dataController.load(query: query)
     }
 
     func searchBarItemCellDidTapRightAccessory(
@@ -671,16 +827,20 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController {
     private func getAsset(
         at indexPath: IndexPath
-    ) -> StandardAsset? {
+    ) -> Asset? {
         guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
             return nil
         }
 
-        guard case AccountAssetsItem.asset = itemIdentifier else {
-            return nil
+        if case AccountAssetsItem.asset(let item) = itemIdentifier {
+            return item.asset
         }
 
-        return dataController[indexPath.item]
+        if case AccountAssetsItem.collectibleAsset(let item) = itemIdentifier {
+            return item.asset
+        }
+
+        return nil
     }
 }
 

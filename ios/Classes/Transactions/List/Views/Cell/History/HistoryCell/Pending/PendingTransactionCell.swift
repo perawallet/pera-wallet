@@ -26,7 +26,6 @@ final class PendingTransactionCell: BaseCollectionViewCell<PendingTransactionVie
     override func prepareForReuse() {
         super.prepareForReuse()
         contextView.prepareForReuse()
-        stopAnimating()
     }
 
     func bindData(_ viewModel: TransactionListItemViewModel) {

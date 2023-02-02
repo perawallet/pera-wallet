@@ -122,7 +122,16 @@ extension RootViewController {
             NavigationContainer(rootViewController: discoverViewController)
         )
 
+        let collectibleListQuery = CollectibleListQuery(
+            filteringBy: .init(),
+            sortingBy: appConfiguration.sharedDataController.selectedCollectibleSortingAlgorithm
+        )
         let collectibleListViewController = CollectiblesViewController(
+            query: collectibleListQuery,
+            dataController: CollectibleListLocalDataController(
+                galleryAccount: .all,
+                sharedDataController: appConfiguration.sharedDataController
+            ),
             copyToClipboardController: ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
             ),

@@ -14,22 +14,34 @@
 
 //   CollectibleDescriptionViewTheme.swift
 
+import Foundation
 import MacaroonUIKit
+import UIKit
 
 struct CollectibleDescriptionViewTheme:
     StyleSheet,
     LayoutSheet {
-    let paddings: LayoutPaddings
-    let description: TextStyle
+    var description: TextStyle
+    var descriptionURLColor: Color
+    var toggleTruncationAction: ButtonStyle
+    var toggleTruncationActionContentEdgeInsets: UIEdgeInsets
 
-    init(
-        _ family: LayoutFamily
-    ) {
-        self.paddings = (0, 0, 12, 0)
+    init(_ family: LayoutFamily) {
         self.description = [
-            .textAlignment(.left),
             .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
+        self.descriptionURLColor = Colors.Link.primary
+        self.toggleTruncationAction = [
+            .font(Typography.bodyMedium()),
+            .titleColor([ .normal(Colors.Helpers.positive) ]),
+            .title(
+                TextSet(
+                    "title-show-more".localized,
+                    selected: "title-show-less".localized
+                )
+            )
+        ]
+        self.toggleTruncationActionContentEdgeInsets = .init(top: 6, left: 0, bottom: 2, right: 0)
     }
 }

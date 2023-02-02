@@ -42,16 +42,3 @@ struct AlgoExplorerExternalSource: CollectibleExternalSource {
         ).link
     }
 }
-
-struct NFTExplorerExternalSource: CollectibleExternalSource {
-    let image = img("icon-nft-explorer")
-    let title = "collectible-detail-nft-explorer".localized
-    let url: URL?
-
-    init(asset: AssetID, network: ALGAPI.Network) {
-        url = AlgorandWeb.NftExplorer.asset(
-            isMainnet: network == .mainnet,
-            param: String(asset)
-        ).link
-    }
-}

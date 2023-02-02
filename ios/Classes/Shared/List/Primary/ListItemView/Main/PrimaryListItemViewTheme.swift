@@ -23,6 +23,8 @@ protocol PrimaryListItemViewTheme:
     LayoutSheet {
     var icon: URLImageViewStyleLayoutSheet { get }
     var iconSize: LayoutSize { get }
+    var loadingIndicator: ImageStyle { get }
+    var loadingIndicatorSize: LayoutSize { get }
     var contentHorizontalPadding: LayoutMetric { get }
     var contentMinWidthRatio: LayoutMetric { get }
     var title: PrimaryTitleViewTheme { get }

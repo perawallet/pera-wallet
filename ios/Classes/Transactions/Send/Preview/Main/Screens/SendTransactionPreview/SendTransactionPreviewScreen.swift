@@ -389,7 +389,7 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
          )
       }
    }
-   
+
    func transactionController(
       _ transactionController: TransactionController,
       didFailedTransaction error: HIPTransactionError

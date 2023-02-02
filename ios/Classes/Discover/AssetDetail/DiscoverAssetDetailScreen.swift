@@ -18,7 +18,7 @@ import Foundation
 import WebKit
 import MacaroonUtils
 
-final class DiscoverAssetDetailScreen: InAppBrowserScreen, WKScriptMessageHandler {
+final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen, WKScriptMessageHandler {
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
@@ -49,7 +49,7 @@ final class DiscoverAssetDetailScreen: InAppBrowserScreen, WKScriptMessageHandle
     ) {
         self.assetParameters = assetParameters
         self.swapDataStore = swapDataStore
-        super.init(configuration: configuration)
+        super.init(configuration: configuration, discoverURL: .assetDetail(parameters: assetParameters))
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -63,20 +63,12 @@ final class DiscoverAssetDetailScreen: InAppBrowserScreen, WKScriptMessageHandle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let generatedUrl = DiscoverURLGenerator.generateUrl(
-            discoverUrl: .assetDetail(parameters: assetParameters),
-            theme: traitCollection.userInterfaceStyle,
-            session: session
-        )
-        load(url: generatedUrl)
         listenEvents()
     }
 
     override func customizeTabBarAppearence() {
         tabBarHidden = true
     }
-
-
 }
 
 extension DiscoverAssetDetailScreen {

@@ -29,8 +29,10 @@ struct OptOutAssetListItem: Hashable {
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(model.id)
-        hasher.combine(model.naming.name)
-        hasher.combine(model.naming.unitName)
+        hasher.combine(viewModel.content?.title?.primaryTitle?.string)
+        hasher.combine(viewModel.content?.title?.secondaryTitle?.string)
+        hasher.combine(viewModel.content?.primaryValue?.string)
+        hasher.combine(viewModel.content?.secondaryValue?.string)
     }
 
     static func == (
@@ -39,7 +41,9 @@ struct OptOutAssetListItem: Hashable {
     ) -> Bool {
         return
             lhs.model.id == rhs.model.id &&
-            lhs.model.naming.name == rhs.model.naming.name &&
-            lhs.model.naming.unitName == rhs.model.naming.unitName
+            lhs.viewModel.content?.title?.primaryTitle?.string == rhs.viewModel.content?.title?.primaryTitle?.string &&
+            lhs.viewModel.content?.title?.secondaryTitle?.string == rhs.viewModel.content?.title?.secondaryTitle?.string &&
+            lhs.viewModel.content?.primaryValue?.string == rhs.viewModel.content?.primaryValue?.string &&
+            lhs.viewModel.content?.secondaryValue?.string == rhs.viewModel.content?.secondaryValue?.string
     }
 }

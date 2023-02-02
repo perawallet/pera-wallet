@@ -21,6 +21,7 @@ import UIKit
 protocol UISheetActionScreenTheme:
     StyleSheet,
     LayoutSheet {
+    var background: ViewStyle { get }
     var contextEdgeInsets: LayoutPaddings { get }
     var image: ImageStyle { get }
     var imageLayoutOffset: LayoutOffset { get }
@@ -69,6 +70,7 @@ extension UISheetActionScreenTheme {
 
 struct UISheetActionScreenCommonTheme:
     UISheetActionScreenTheme {
+    var background: ViewStyle
     var contextEdgeInsets: LayoutPaddings
     var image: ImageStyle
     var imageLayoutOffset: LayoutOffset
@@ -82,6 +84,9 @@ struct UISheetActionScreenCommonTheme:
     init(
         _ family: LayoutFamily
     ) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
         self.contextEdgeInsets = (36, 24, 24, 24)
         self.image = []
         self.imageLayoutOffset = (0, 0)

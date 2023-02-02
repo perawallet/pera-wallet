@@ -23,6 +23,7 @@ final class ManageAssetsListLocalDataController:
     var eventHandler: ((ManageAssetsListDataControllerEvent) -> Void)?
 
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
     
     private(set) var account: Account
 
@@ -39,8 +40,6 @@ final class ManageAssetsListLocalDataController:
 
     private var lastQuery: String? = nil
 
-    private var assetItems: [AssetID: ManageAssetSearchItem] = [:]
-
     weak var dataSource: ManageAssetsListDataSource?
 
     init(
@@ -55,14 +54,6 @@ final class ManageAssetsListLocalDataController:
     
     deinit {
         sharedDataController.remove(self)
-    }
-    
-    subscript(index: Int) -> Asset? {
-        return searchResults[safe: index]
-    }
-    
-    subscript(assetID: AssetID) -> Asset? {
-        return searchResults.first(matching: (\.id, assetID))
     }
 }
 
@@ -169,20 +160,18 @@ extension ManageAssetsListLocalDataController {
             
             var assetItems: [ManageAssetSearchItem] = []
 
-            let currency = self.sharedDataController.currency
-            let currencyFormatter = self.currencyFormatter
-
             self.searchResults.forEach { asset in
-                let item = AssetItem(
-                    asset: asset,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter
-                )
-                let optOutAssetListItem = OptOutAssetListItem(item: item)
-                let assetItem = ManageAssetSearchItem.asset(optOutAssetListItem)
-                assetItems.append(assetItem)
+                if let collectibleAsset = asset as? CollectibleAsset {
+                    let collectibleAssetItem = self.makeCollectibleAssetItem(collectibleAsset)
+                    assetItems.append(collectibleAssetItem)
+                    return
+                }
 
-                self.assetItems[asset.id] = assetItem
+                if let standardAsset = asset as? StandardAsset {
+                    let assetItem = self.makeStandardAssetItem(standardAsset)
+                    assetItems.append(assetItem)
+                    return
+                }
             }
 
             snapshot.appendSections([.assets])
@@ -194,7 +183,29 @@ extension ManageAssetsListLocalDataController {
             return snapshot
         }
     }
-    
+
+    private func makeStandardAssetItem(_ asset: StandardAsset) -> ManageAssetSearchItem {
+        let currency = sharedDataController.currency
+        let currencyFormatter = currencyFormatter
+        let item = AssetItem(
+            asset: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        let optOutAssetListItem = OptOutAssetListItem(item: item)
+        return .asset(optOutAssetListItem)
+    }
+
+    private func makeCollectibleAssetItem(_ asset: CollectibleAsset) -> ManageAssetSearchItem {
+        let item = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let optOutCollectibleAssetListItem = OptOutCollectibleAssetListItem(item: item)
+        return .collectibleAsset(optOutCollectibleAssetListItem)
+    }
+
     private func deliverNoContentSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()

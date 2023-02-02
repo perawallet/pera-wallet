@@ -26,6 +26,7 @@ final class Algo: Asset {
     let decimals: Int = 6
     let decimalAmount: Decimal
     let total: UInt64?
+    let totalSupply: Decimal?
     let usdValue: Decimal? = nil
     let totalUSDValue: Decimal? = nil
     var state: AssetState = .ready
@@ -38,6 +39,8 @@ final class Algo: Asset {
     let discordURL: URL?
     let telegramURL: URL?
     let twitterURL: URL?
+    let algoPriceChangePercentage: Decimal = 0
+    let isAvailableOnDiscover: Bool = true
 
     let naming: AssetNaming = AssetNaming(
         id: 0,
@@ -55,7 +58,12 @@ final class Algo: Asset {
         /// <note>
         /// decimalAmount = amount * 10^-(decimals)
         self.decimalAmount = Decimal(sign: .plus, exponent: -decimals, significand: Decimal(amount))
-        self.total = 10_000_000_000_000_000
+
+        /// microTotalSupply
+        let total: UInt64 = 10_000_000_000_000_000
+        self.total = total
+        /// totalSupply = total * 10^-(decimals)
+        self.totalSupply = Decimal(sign: .plus, exponent: -decimals, significand: Decimal(total))
         self.description = "asset-algos-description".localized
         self.projectURL = AlgorandWeb.algorand.link
         self.discordURL = URL(string: "https://discord.com/invite/algorand")

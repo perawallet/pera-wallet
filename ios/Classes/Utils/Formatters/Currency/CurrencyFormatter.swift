@@ -70,6 +70,13 @@ extension CurrencyFormatter {
     private func format(
         _ input: CurrencyFormattingContextInput
     ) -> String? {
+        func finalString(from formattedString: String) -> String {
+            var components: [String?] = []
+            components.append(input.prefix)
+            components.append(formattedString)
+            return components.compound(" ")
+        }
+
         let number = input.number
 
         guard let formattedString = numberFormatter.string(from: number) else {
@@ -77,21 +84,19 @@ extension CurrencyFormatter {
         }
 
         guard let suffix = input.suffix.unwrapNonEmptyString() else {
-            return formattedString
+            return finalString(from: formattedString)
         }
 
         guard let endIndexOfNumber = formattedString.lastIndex(where: \.isNumber) else {
-            return formattedString
+            return finalString(from: formattedString)
         }
 
-        let startIndexOfSuffix = formattedString.index(after: endIndexOfNumber)
-
-        var finalString = formattedString
-        finalString.insert(
+        var decoratedFormattedString = formattedString
+        decoratedFormattedString.insert(
             contentsOf: suffix,
-            at: startIndexOfSuffix
+            at: formattedString.index(after: endIndexOfNumber)
         )
-        return finalString
+        return finalString(from: decoratedFormattedString)
     }
 }
 

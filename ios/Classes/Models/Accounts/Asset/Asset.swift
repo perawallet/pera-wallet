@@ -25,7 +25,8 @@ protocol Asset: AnyObject {
     var optedInAtRound: UInt64? { get }
     var creator: AssetCreator? { get }
     var decimals: Int { get }
-    var total: UInt64? {get}
+    var total: UInt64? { get }
+    var totalSupply: Decimal? { get }
 
     var url: String? { get }
     var verificationTier: AssetVerificationTier { get }
@@ -52,6 +53,9 @@ protocol Asset: AnyObject {
     var discordURL: URL? { get }
     var telegramURL: URL? { get }
     var twitterURL: URL? { get }
+
+    var algoPriceChangePercentage: Decimal { get }
+    var isAvailableOnDiscover: Bool { get }
 
     var isAlgo: Bool { get }
 

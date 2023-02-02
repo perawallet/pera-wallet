@@ -48,7 +48,7 @@ final class ShimmerView:
 
         observeWhenApplicationWillEnterForeground {
             [weak self] _ in
-            self?.restartAnimating()
+            self?.startAnimating()
         }
     }
 

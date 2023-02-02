@@ -20,8 +20,8 @@ import UIKit
 
 final class CollectibleMediaVideoPreviewCell:
     CollectionCell<CollectibleMediaVideoPreviewView>,
-    ViewModelBindable {
-
+    ViewModelBindable,
+    UIInteractable {
     static let theme = CollectibleMediaVideoPreviewViewTheme()
 
     override init(

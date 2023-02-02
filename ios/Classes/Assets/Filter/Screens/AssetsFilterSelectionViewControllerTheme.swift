@@ -16,55 +16,24 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 struct AssetsFilterSelectionViewControllerTheme:
     StyleSheet,
     LayoutSheet {
-    let minimumHorizontalSpacing: LayoutMetric
-    let contentEdgeInsets: LayoutPaddings
-    
-    let title: TextStyle
-    let titleMaxWidthRatio: LayoutMetric
-    let titleMinHeight: LayoutMetric
-    
-    let description: TextStyle
-    let descriptionTopMargin: LayoutMetric
-    
-    init(_ family: LayoutFamily) {
-        self.minimumHorizontalSpacing = 8
-        self.contentEdgeInsets = (40, 24, 16, 24)
-        
-        self.title = [
-            .text(Self.getTitle()),
-            .textColor(Colors.Text.main),
-            .textOverflow(FittingText())
-        ]
-        self.titleMaxWidthRatio = 0.7
-        self.titleMinHeight = 32
-        
-        self.description = [
-            .text(Self.getDescription()),
-            .textColor(Colors.Text.gray),
-            .textOverflow(FittingText())
-        ]
-        self.descriptionTopMargin = 8
-    }
-}
+    let background: ViewStyle
+    let contentPaddings: LayoutPaddings
+    let spacingBetweenFilterItems: LayoutMetric
+    let filterItem: AssetFilterItemViewTheme
 
-extension AssetsFilterSelectionViewControllerTheme {
-    private static func getTitle() -> EditText {
-        return .attributedString(
-            "asset-filter-selection-toggle-title"
-                .localized
-                .bodyRegular()
-        )
-    }
-    
-    private static func getDescription() -> EditText {
-        return .attributedString(
-            "asset-filter-selection-toggle-description"
-                .localized
-                .footnoteRegular()
-        )
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
+        self.contentPaddings = (40, 24, 16, 24)
+        self.spacingBetweenFilterItems = 24
+        self.filterItem = AssetFilterItemViewTheme(family)
     }
 }

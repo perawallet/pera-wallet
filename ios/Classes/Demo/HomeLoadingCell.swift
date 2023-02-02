@@ -27,10 +27,6 @@ final class HomeLoadingCell:
         }
     }
 
-    func restartAnimating() {
-        contextView.restartAnimating()
-    }
-
     func startAnimating() {
         contextView.startAnimating()
     }

@@ -570,15 +570,9 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         if let assetID = getAssetID(from: transactionController),
            let asset = optInTransactions[assetID]?.asset,
            asset.isCollectible  {
-            let account = dataController.account
-            let collectibleAsset = CollectibleAsset(decoration: asset)
-
             NotificationCenter.default.post(
                 name: CollectibleListLocalDataController.didAddCollectible,
-                object: self,
-                userInfo: [
-                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, collectibleAsset)
-                ]
+                object: self
             )
         }
 

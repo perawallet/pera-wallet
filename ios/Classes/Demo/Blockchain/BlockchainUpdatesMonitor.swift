@@ -37,6 +37,12 @@ extension BlockchainUpdatesMonitor {
         }
     }
 
+    func filterPendingOptInAssetUpdates() -> [OptInBlockchainUpdate] {
+        return table.reduce(into: [OptInBlockchainUpdate]()) {
+            $0 += $1.value.filterPendingOptInAssetUpdates().values
+        }
+    }
+
     func filterPendingOptInAssetUpdates(for account: Account) -> [AssetID : OptInBlockchainUpdate] {
         let address = account.address
         let monitor = table[address]
@@ -124,6 +130,12 @@ extension BlockchainUpdatesMonitor {
         }
     }
 
+    func filterPendingOptOutAssetUpdates() -> [OptOutBlockchainUpdate] {
+        return table.reduce(into: [OptOutBlockchainUpdate]()) {
+            $0 += $1.value.filterPendingOptOutAssetUpdates().values
+        }
+    }
+
     func filterPendingOptOutAssetUpdates(for account: Account) -> [AssetID : OptOutBlockchainUpdate] {
         let address = account.address
         let monitor = table[address]
@@ -199,6 +211,79 @@ extension BlockchainUpdatesMonitor {
         guard var monitor = table[address] else { return }
 
         monitor.finishMonitoringOptOutUpdates(forAssetID: assetID)
+
+        $table.mutate { $0[address] = monitor }
+    }
+}
+
+extension BlockchainUpdatesMonitor {
+    func filterSentPureCollectibleAssetUpdates() -> [SendPureCollectibleAssetBlockchainUpdate] {
+        return table.reduce(into: [SendPureCollectibleAssetBlockchainUpdate]()) {
+            $0 += $1.value.filterSentPureCollectibleAssetUpdates().values
+        }
+    }
+
+    /// <todo>
+    /// We may change the naming to pending send to pending transfer. It fits better.
+    func filterPendingSendPureCollectibleAssetUpdates() -> [SendPureCollectibleAssetBlockchainUpdate] {
+        return table.reduce(into: [SendPureCollectibleAssetBlockchainUpdate]()) {
+            $0 += $1.value.filterPendingSendPureCollectibleAssetUpdates().values
+        }
+    }
+
+    func filterPendingSendPureCollectibleAssetUpdates(for account: Account) -> [AssetID : SendPureCollectibleAssetBlockchainUpdate] {
+        let address = account.address
+        let monitor = table[address]
+        return monitor?.filterPendingSendPureCollectibleAssetUpdates() ?? [:]
+    }
+}
+
+extension BlockchainUpdatesMonitor {
+    func hasPendingSendPureCollectibleAssetRequest(
+        assetID: AssetID,
+        for account: Account
+    ) -> Bool {
+        let address = account.address
+        let monitor = table[address]
+        return monitor?.hasPendingSendPureCollectibleAssetRequest(assetID: assetID) ?? false
+    }
+
+    func startMonitoringSendPureCollectibleAssetUpdates(_ request: SendPureCollectibleAssetBlockchainRequest) {
+        let address = request.accountAddress
+
+        var monitor = table[address] ?? .init(accountAddress: address)
+        monitor.startMonitoringSendPureCollectibleAssetUpdates(request)
+
+        $table.mutate { $0[address] = monitor }
+    }
+
+    func stopMonitoringSendPureCollectibleAssetUpdates(
+        forAssetID assetID: AssetID,
+        for account: Account
+    ) {
+        let address = account.address
+
+        guard var monitor = table[address] else { return }
+
+        monitor.stopMonitoringSendPureCollectibleAssetUpdates(forAssetID: assetID)
+
+        $table.mutate { $0[address] = monitor }
+    }
+
+    func finishMonitoringSendPureCollectibleAssetUpdates(associatedWith update: SendPureCollectibleAssetBlockchainUpdate) {
+        finishMonitoringSendPureCollectibleAssetUpdates(
+            forAssetID: update.assetID,
+            forAccountAddress: update.accountAddress
+        )
+    }
+
+    private func finishMonitoringSendPureCollectibleAssetUpdates(
+        forAssetID assetID: AssetID,
+        forAccountAddress address: String
+    ) {
+        guard var monitor = table[address] else { return }
+
+        monitor.stopMonitoringSendPureCollectibleAssetUpdates(forAssetID: assetID)
 
         $table.mutate { $0[address] = monitor }
     }

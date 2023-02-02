@@ -196,12 +196,16 @@ extension HomeLoadingView {
             $0.trailing == 0
         }
 
-        (1...6).forEach { _ in
+        (1...theme.numberOfAccounts).forEach { i in
             let accountView = PreviewLoadingView()
             accountView.customize(theme.account)
             accountsView.addArrangedSubview(accountView)
             accountView.snp.makeConstraints {
                 $0.fitToHeight(theme.accountHeight)
+            }
+
+            if i != theme.numberOfAccounts {
+                accountView.addSeparator(theme.accountSeparator)
             }
         }
     }

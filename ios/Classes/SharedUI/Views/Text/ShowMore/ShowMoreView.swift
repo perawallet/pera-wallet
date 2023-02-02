@@ -23,8 +23,10 @@ import UIKit
 final class ShowMoreView:
     View,
     ViewModelBindable {
+    weak var delegate: ShowMoreViewDelegate?
+
     private lazy var titleView = Label()
-    private lazy var bodyView = UILabel()
+    private lazy var bodyView = ALGActiveLabel()
     private lazy var fullBodyView = UILabel()
     private lazy var truncatedBodyView = UILabel()
     private lazy var toggleTruncationActionView = MacaroonUIKit.Button()
@@ -99,8 +101,16 @@ extension ShowMoreView {
     }
 
     private func addBody(_ theme: ShowMoreViewTheme) {
-        bodyView.customizeAppearance(theme.body)
-        bodyView.customizeBaseAppearance(textOverflow: theme.truncatedBodyOverflow)
+        bodyView.customize { label in
+            label.customizeAppearance(theme.body)
+            label.customizeBaseAppearance(textOverflow: theme.truncatedBodyOverflow)
+            label.enabledTypes = [.url]
+            label.URLColor = theme.bodyURLColor.uiColor
+            label.handleURLTap {
+                [unowned self] url in
+                self.delegate?.showMoreViewDidTapURL(self, url: url)
+            }
+        }
 
         addSubview(bodyView)
         bodyView.fitToVerticalIntrinsicSize()
@@ -187,4 +197,8 @@ extension ShowMoreView {
 
         updateWhenToggleTruncationDidChange()
     }
+}
+
+protocol ShowMoreViewDelegate: AnyObject {
+    func showMoreViewDidTapURL(_ view: ShowMoreView, url: URL)
 }

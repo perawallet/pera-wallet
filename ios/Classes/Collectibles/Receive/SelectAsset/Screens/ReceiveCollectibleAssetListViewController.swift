@@ -350,7 +350,7 @@ extension ReceiveCollectibleAssetListViewController {
         case .empty(let item):
             switch item {
             case .loading:
-                let loadingCell = cell as? PreviewLoadingCell
+                let loadingCell = cell as? CollectibleListItemLoadingCell
                 loadingCell?.startAnimating()
             default:
                 break
@@ -386,7 +386,7 @@ extension ReceiveCollectibleAssetListViewController {
         case .empty(let item):
             switch item {
             case .loading:
-                let loadingCell = cell as? PreviewLoadingCell
+                let loadingCell = cell as? CollectibleListItemLoadingCell
                 loadingCell?.stopAnimating()
             default:
                 break
@@ -551,7 +551,7 @@ extension ReceiveCollectibleAssetListViewController {
             if let assetCell = cell as? OptInAssetListItemCell,
                assetCell.accessory == .loading {
                 assetCell.accessory = .loading
-            } else if let loadingCell = cell as? PreviewLoadingCell {
+            } else if let loadingCell = cell as? CollectibleListItemLoadingCell {
                 loadingCell.startAnimating()
             }
         }
@@ -611,24 +611,9 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        guard
-            let assetID = getAssetID(from: transactionController),
-            let assetDetail = optInTransactions[assetID]?.asset
-        else {
-            return
-        }
-
-        let collectibleAsset = CollectibleAsset(
-            asset: ALGAsset(id: assetDetail.id),
-            decoration: assetDetail
-        )
-
         NotificationCenter.default.post(
             name: CollectibleListLocalDataController.didAddCollectible,
-            object: self,
-            userInfo: [
-                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (dataController.account, collectibleAsset)
-            ]
+            object: self
         )
 
         delegate?.receiveCollectibleAssetListViewController(

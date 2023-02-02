@@ -23,13 +23,18 @@ import MacaroonURLImage
 final class CollectibleMediaVideoPreviewView:
     View,
     ViewModelBindable,
-    ListReusable {
+    ListReusable,
+    UIInteractable {
+    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
+        .perform3DModeAction: TargetActionInteraction(),
+        .performFullScreenAction: TargetActionInteraction()
+    ]
 
     private lazy var placeholderView = URLImagePlaceholderView()
     private(set) lazy var videoPlayerView = VideoPlayerView()
-    private lazy var overlayView = UIView()
-    private lazy var fullScreenBadge = ImageView()
-
+    private lazy var overlayView = UIImageView()
+    private lazy var threeDModeActionView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
+    private lazy var fullScreenActionView = MacaroonUIKit.Button()
     private(set) var isReadyForDisplay = false
 
     private var playerStateObserver: NSKeyValueObservation?
@@ -44,7 +49,8 @@ final class CollectibleMediaVideoPreviewView:
         addPlaceholderView(theme)
         addVideoPlayerView(theme)
         addOverlayView(theme)
-        addFullScreenBadge(theme)
+        add3DModeAction(theme)
+        addFullScreenAction(theme)
     }
 
     func customizeAppearance(
@@ -89,29 +95,45 @@ extension CollectibleMediaVideoPreviewView {
     private func addOverlayView(
         _ theme: CollectibleMediaVideoPreviewViewTheme
     ) {
-        overlayView.customizeAppearance(theme.overlay)
-        overlayView.layer.draw(corner: theme.corner)
-        overlayView.clipsToBounds = true
-        overlayView.alpha = 0.0
-
         addSubview(overlayView)
         overlayView.snp.makeConstraints {
             $0.setPaddings()
         }
     }
 
-    private func addFullScreenBadge(
+    private func add3DModeAction(
         _ theme: CollectibleMediaVideoPreviewViewTheme
     ) {
-        fullScreenBadge.customizeAppearance(theme.fullScreenBadge)
-        fullScreenBadge.layer.draw(corner: theme.corner)
+        threeDModeActionView.customizeAppearance(theme.threeDAction)
 
-        fullScreenBadge.contentEdgeInsets = theme.fullScreenBadgeContentEdgeInsets
-        addSubview(fullScreenBadge)
-        fullScreenBadge.snp.makeConstraints {
+        addSubview(threeDModeActionView)
+        threeDModeActionView.contentEdgeInsets = UIEdgeInsets(theme.threeDActionContentEdgeInsets)
+        threeDModeActionView.snp.makeConstraints {
+            $0.leading == theme.threeDModeActionPaddings.leading
+            $0.bottom == theme.threeDModeActionPaddings.bottom
+        }
+
+        startPublishing(
+            event: .perform3DModeAction,
+            for: threeDModeActionView
+        )
+    }
+
+    private func addFullScreenAction(
+        _ theme: CollectibleMediaVideoPreviewViewTheme
+    ) {
+        fullScreenActionView.customizeAppearance(theme.fullScreenAction)
+
+        addSubview(fullScreenActionView)
+        fullScreenActionView.snp.makeConstraints {
             $0.trailing == theme.fullScreenBadgePaddings.trailing
             $0.bottom == theme.fullScreenBadgePaddings.bottom
         }
+
+        startPublishing(
+            event: .performFullScreenAction,
+            for: fullScreenActionView
+        )
     }
 }
 
@@ -141,10 +163,10 @@ extension CollectibleMediaVideoPreviewView {
         videoPlayerView.player = videoPlayer
 
         addObservers()
-        
-        overlayView.alpha = viewModel.displaysOffColorMedia ? 0.4 : 0.0
 
-        fullScreenBadge.isHidden = viewModel.isFullScreenBadgeHidden
+        overlayView.image = viewModel.overlayImage
+        threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
+        fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
     }
 
     class func calculatePreferredSize(
@@ -181,8 +203,9 @@ extension CollectibleMediaVideoPreviewView {
         stopVideo()
         videoPlayerView.player = nil
         placeholderView.prepareForReuse()
-        overlayView.alpha = 0.0
-        fullScreenBadge.isHidden = false
+        overlayView.image = nil
+        threeDModeActionView.isHidden = false
+        fullScreenActionView.isHidden = false
     }
 }
 
@@ -202,5 +225,12 @@ extension CollectibleMediaVideoPreviewView {
             name: .AVPlayerItemDidPlayToEndTime,
             object: nil
         )
+    }
+}
+
+extension CollectibleMediaVideoPreviewView {
+    enum Event {
+        case performFullScreenAction
+        case perform3DModeAction
     }
 }

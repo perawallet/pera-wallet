@@ -46,8 +46,4 @@ extension DiscoverSearchListLoadingCell {
     func stopAnimating() {
         contextView.stopAnimating()
     }
-
-    func restartAnimating() {
-        contextView.restartAnimating()
-    }
 }

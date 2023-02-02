@@ -95,6 +95,15 @@ protocol NumberRoundingUnit {
     var abbreviation: NumberAbbreviation { get }
 }
 
+struct ThousandNumberRoundingUnit: NumberRoundingUnit {
+    let powerOf10: Int16 = -3
+    let scale: Int16 = 2
+    let abbreviation: NumberAbbreviation = .init(
+        short: "number-abbreviation-thousand".localized,
+        long: ""
+    )
+}
+
 struct MillionNumberRoundingUnit: NumberRoundingUnit {
     let powerOf10: Int16 = -6
     let scale: Int16 = 2

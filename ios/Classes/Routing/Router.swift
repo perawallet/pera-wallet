@@ -667,6 +667,10 @@ class Router:
         case let .accountDetail(accountHandle, eventHandler):
             let aViewController = AccountDetailViewController(
                 accountHandle: accountHandle,
+                dataController: AccountDetailAPIDataController(
+                    account: accountHandle,
+                    sharedDataController: appConfiguration.sharedDataController
+                ),
                 swapDataStore: SwapDataLocalStore(),
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
@@ -1002,11 +1006,14 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .collectiblesFilterSelection(filter):
-            viewController = CollectiblesFilterSelectionViewController(
-                filter: filter,
-                configuration: configuration
-            )
+        case let .collectiblesFilterSelection(uiInteractions):
+            let aViewController = CollectiblesFilterSelectionViewController()
+            aViewController.uiInteractions = uiInteractions
+            viewController = aViewController
+        case let .accountCollectibleListFilterSelection(uiInteractions):
+            let aViewController = AccountCollectibleListFilterSelectionViewController()
+            aViewController.uiInteractions = uiInteractions
+            viewController = aViewController
         case let .receiveCollectibleAccountList(dataController):
             viewController = ReceiveCollectibleAccountListViewController(
                 dataController: dataController,
@@ -1110,9 +1117,9 @@ class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .assetsFilterSelection(let eventHandler):
-            let aViewController = AssetsFilterSelectionViewController(configuration: configuration)
-            aViewController.eventHandler = eventHandler
+        case let .assetsFilterSelection(uiInteractions):
+            let aViewController = AssetsFilterSelectionViewController()
+            aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case .sortAccountAsset(let dataController, let eventHandler):
             let aViewController = SortAccountAssetListViewController(
@@ -1346,11 +1353,13 @@ class Router:
                 swapDataStore: SwapDataLocalStore(),
                 configuration: configuration
             )
-        case .discoverDappDetail(let dappParameters):
-            viewController = DiscoverDappDetailScreen(
+        case .discoverDappDetail(let dappParameters, let eventHandler):
+            let screen = DiscoverDappDetailScreen(
                 dappParameters: dappParameters,
                 configuration: configuration
             )
+            screen.eventHandler = eventHandler
+            viewController = screen
         }
 
         return viewController as? T
@@ -1462,6 +1471,7 @@ extension Router {
     func walletConnector(
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
+        with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         let bannerController = appConfiguration.bannerController
@@ -1484,21 +1494,22 @@ extension Router {
         }
         
         let sharedDataController = appConfiguration.sharedDataController
-        let accounts = sharedDataController.accountCollection
 
-        guard accounts.contains(where: { !$0.value.isWatchAccount() }) else {
+        let hasNonWatchAccount = sharedDataController.accountCollection.contains {
+            !$0.value.isWatchAccount()
+        }
+
+        if !hasNonWatchAccount {
             asyncMain { [weak bannerController] in
                 bannerController?.presentErrorBanner(
                     title: "title-error".localized,
                     message: "wallet-connect-session-error-no-account".localized
                 )
-                
-                completion(
-                    session.getDeclinedWalletConnectionInfo(on: api.network)
-                )
             }
             return
         }
+
+        let shouldShowConnectionApproval = preferences?.prefersConnectionApproval ?? true
 
         asyncMain { [weak self] in
             guard let self = self else { return }
@@ -1530,7 +1541,9 @@ extension Router {
                     screen?.dismissScreen {
                         [weak self] in
                         guard let self = self else { return }
-                        
+
+                        if !shouldShowConnectionApproval { return }
+
                         self.presentWCSessionsApprovedModal(dAppName: dappName)
                     }
                 }
@@ -1581,18 +1594,18 @@ extension Router {
         observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
             [weak self] notification in
             guard let self = self else { return }
-            
-            let userInfoKey = WalletConnector.sessionRequestUserInfoKey
-            let maybeSessionKey = notification.userInfo?[userInfoKey] as? String
 
-            guard let sessionKey = maybeSessionKey else {
+            let preferencesKey = WalletConnector.sessionRequestPreferencesKey
+            let preferences = notification.userInfo?[preferencesKey] as? WalletConnectorPreferences
+
+            guard let preferences else {
                 return
             }
             
             let walletConnector = self.appConfiguration.walletConnector
             
             walletConnector.delegate = self
-            walletConnector.connect(to: sessionKey)
+            walletConnector.connect(with: preferences)
         }
     }
 }

@@ -113,7 +113,7 @@
 "accounts-title" = "账户";
 
 /* (No Comment) */
-"accounts-title-collectibles" = "收藏品";
+"accounts-title-collectibles" = "NFTs";
 
 /* (No Comment) */
 "accounts-title-history" = "历史";
@@ -242,7 +242,16 @@
 "asset-detail-id-title" = "编号 %@";
 
 /* (No Comment) */
-"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance.";
+"asset-detail-markets-title" = "Markets";
+
+/* (No Comment) */
+"asset-filter-selection-display-collectible-assets-filter-description" = "NFTs assets will be shown in the asset list of your account";
+
+/* (No Comment) */
+"asset-filter-selection-display-collectible-assets-filter-title" = "Display NFTs in asset list";
+
+/* (No Comment) */
+"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance";
 
 /* (No Comment) */
 "asset-filter-selection-toggle-title" = "Hide assets with no balance";
@@ -482,15 +491,12 @@
 "collectible-detail-algo-explorer" = "在Algo浏览器上显示";
 
 /* (No Comment) */
-"collectible-detail-collection-name" = "收藏品名称";
-
-/* (No Comment) */
-"collectible-detail-creator-address" = "创作者钱包地址";
+"collectible-detail-creator-account" = "Creator Account";
 
 /* (No Comment) */
 "collectible-detail-creator-name" = "创作者名称";
 
-/* (No Comment) */
+/* MARK: Collectible Detail */
 "collectible-detail-description" = "描述";
 
 /* (No Comment) */
@@ -526,20 +532,23 @@
 /* (No Comment) */
 "collectible-detail-properties" = "财产";
 
-/* MARK: Collectible Detail */
-"collectible-detail-share" = "分享";
-
 /* (No Comment) */
 "collectible-detail-show-on" = "显示在";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "3D卡模式";
+"collectible-detail-tap-3D" = "3D mode";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "查看交易";
 
+/* (No Comment) */
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
+
+/* (No Comment) */
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
+
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "筛选";
+"collectible-filter-selection-title" = "Filter NFTs";
 
 /* (No Comment) */
 "collectible-filter-selection-toggle-description" = "您可以显示/隐藏选择加入但并未持有的 NFT";
@@ -620,7 +629,7 @@
 "collectibles-empty-secondary-action-title" = "显示隐藏的NFT（%@）";
 
 /* MARK: Collectible Common */
-"collectibles-empty-title" = "收藏品";
+"collectibles-empty-title" = "NFTs";
 
 /* (No Comment) */
 "collectibles-list-input-placeholder" = "搜索NFT";
@@ -721,6 +730,9 @@
 /* (No Comment) */
 "discover-error-fallback-body" = "我们目前无法获取这些信息。";
 
+/* (No Comment) */
+"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+
 /* MARK: Discover */
 "discover-search-input-placeholder" = "搜索任意ASA";
 
@@ -786,6 +798,9 @@
 
 /* (No Comment) */
 "feedback-title-note" = "备注";
+
+/* (No Comment) */
+"filter" = "Filter";
 
 /* (No Comment) */
 "governance-banner-action" = "开始";
@@ -1243,7 +1258,7 @@
 /* (No Comment) */
 "number-abbreviation-billion" = "B";
 
-/* MARK: Number Abbreviation */
+/* (No Comment) */
 "number-abbreviation-million" = "M";
 
 /* (No Comment) */
@@ -1251,6 +1266,9 @@
 
 /* (No Comment) */
 "number-abbreviation-quintillion" = "Qi";
+
+/* MARK: Number Abbreviation */
+"number-abbreviation-thousand" = "K";
 
 /* (No Comment) */
 "number-abbreviation-trillion" = "T";
@@ -1260,9 +1278,6 @@
 
 /* (No Comment) */
 "ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";
-
-/* (No Comment) */
-"opitons-collectibles-filter" = "筛选NFT";
 
 /* (No Comment) */
 "opt-in-description-adding-nft" = "若选择加入NFT，您需要发送一笔有最低交易费的交易。这笔交易将出现在交易历史记录中。";
@@ -1283,7 +1298,7 @@
 "options-manage-assets" = "管理资产";
 
 /* (No Comment) */
-"options-manage-collectibles" = "管理收藏品";
+"options-manage-collectibles" = "Manage NFTs";
 
 /* (No Comment) */
 "options-mute-notification" = "通知免打扰";
@@ -2192,7 +2207,7 @@
 "title-close" = "关闭";
 
 /* (No Comment) */
-"title-collectibles" = "收藏品";
+"title-collectibles" = "NFTs";
 
 /* (No Comment) */
 "title-confirm" = "确认";

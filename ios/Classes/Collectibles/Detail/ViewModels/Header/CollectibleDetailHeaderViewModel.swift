@@ -42,14 +42,14 @@ extension CollectibleDetailHeaderViewModel {
 
         title = .attributedString(
             text
-                .bodyLargeMedium()
+                .bodyMedium(lineBreakMode: .byTruncatingTail)
         )
     }
 
     mutating func bindTitleStyle() {
         titleStyle = [
             .textColor(Colors.Text.main),
-            .textOverflow(FittingText())
+            .textOverflow(SingleLineText())
         ]
     }
 }

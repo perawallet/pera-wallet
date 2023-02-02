@@ -26,9 +26,9 @@ final class CollectibleDetailLoadingView:
     private lazy var image = ShimmerView()
     private lazy var title = ShimmerView()
     private lazy var subtitle = ShimmerView()
+    private lazy var amount = ShimmerView()
 
-    private lazy var leftAction = ShimmerView()
-    private lazy var rightAction = ShimmerView()
+    private lazy var actionView = ShimmerView()
 
     private lazy var descriptionTitle = ShimmerView()
     private lazy var descriptionValueFirstLine = ShimmerView()
@@ -46,11 +46,11 @@ final class CollectibleDetailLoadingView:
     private func build(
         _ theme: CollectibleDetailLoadingViewTheme
     ) {
-        addImage(theme)
         addTitle(theme)
         addSubtitle(theme)
-        addLeftAction(theme)
-        addRightAction(theme)
+        addAmount(theme)
+        addImage(theme)
+        addAction(theme)
         addDescriptionTitle(theme)
         addDescriptionValueFirstLine(theme)
         addDescriptionValueSecondLine(theme)
@@ -74,6 +74,18 @@ final class CollectibleDetailLoadingView:
     ) -> CGSize {
         let width = size.width
 
+        let title =
+        theme.titlePaddings.top +
+        theme.titleViewHeight
+
+        let subtitle =
+        theme.subtitleTopPadding +
+        theme.subtitleViewHeight
+
+        let amount =
+        theme.amountTopPadding +
+        theme.amountViewHeight
+
         let imageHeight =
         width -
         theme.imagePaddings.leading -
@@ -81,24 +93,12 @@ final class CollectibleDetailLoadingView:
 
         let image = theme.imagePaddings.top + imageHeight
 
-        let title =
-        theme.titleTopPadding +
-        theme.titleViewHeight
-
-        let subtitle =
-        theme.subtitleTopPadding +
-        theme.subtitleViewHeight
-
         let action =
         theme.actionTopPadding +
         theme.actionHeight
 
-        let separator =
-        theme.spacingBetweenDescriptionAndSeparator +
-        theme.separator.size +
-        theme.spacingBetweenDescriptionAndSeparator
-
         let description =
+        theme.spacingBetweenDescriptionAndAction +
         theme.descriptionHeight +
         theme.descriptionValueFirstLineTopMargin +
         theme.descriptionValueLineHeight +
@@ -106,11 +106,11 @@ final class CollectibleDetailLoadingView:
         theme.descriptionValueLineHeight
 
         let preferredHeight =
-        image +
         title +
         subtitle +
+        amount +
+        image +
         action +
-        separator +
         description
 
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
@@ -118,18 +118,6 @@ final class CollectibleDetailLoadingView:
 }
 
 extension CollectibleDetailLoadingView {
-    private func addImage(
-        _ theme: CollectibleDetailLoadingViewTheme
-    ) {
-        image.draw(corner: theme.corner)
-
-        addSubview(image)
-        image.snp.makeConstraints {
-            $0.height == image.snp.width
-
-            $0.setPaddings(theme.imagePaddings)
-        }
-    }
 
     private func addTitle(
         _ theme: CollectibleDetailLoadingViewTheme
@@ -138,8 +126,8 @@ extension CollectibleDetailLoadingView {
 
         addSubview(title)
         title.snp.makeConstraints {
-            $0.top == image.snp.bottom + theme.titleTopPadding
-            $0.leading == image
+            $0.top == theme.titlePaddings.top
+            $0.leading == theme.titlePaddings.trailing
             $0.width == self * theme.titleWidthMultiplier
             $0.fitToHeight(theme.titleViewHeight)
         }
@@ -153,37 +141,52 @@ extension CollectibleDetailLoadingView {
         addSubview(subtitle)
         subtitle.snp.makeConstraints {
             $0.top == title.snp.bottom + theme.subtitleTopPadding
-            $0.leading == image
+            $0.leading == title
             $0.width == self * theme.subtitleWidthMultiplier
             $0.fitToHeight(theme.subtitleViewHeight)
         }
     }
 
-    private func addLeftAction(
+    private func addAmount(
         _ theme: CollectibleDetailLoadingViewTheme
     ) {
-        leftAction.draw(corner: theme.corner)
+        amount.draw(corner: theme.corner)
 
-        addSubview(leftAction)
-        leftAction.snp.makeConstraints {
-            $0.top == subtitle.snp.bottom + theme.actionTopPadding
-            $0.leading == image
-            $0.fitToHeight(theme.actionHeight)
+        addSubview(amount)
+        amount.snp.makeConstraints {
+            $0.top == subtitle.snp.bottom + theme.amountTopPadding
+            $0.leading == title
+            $0.width == self * theme.amountWidthMultiplier
+            $0.fitToHeight(theme.amountViewHeight)
         }
     }
 
-    private func addRightAction(
+    private func addImage(
         _ theme: CollectibleDetailLoadingViewTheme
     ) {
-        rightAction.draw(corner: theme.corner)
+        image.draw(corner: theme.imageCorner)
 
-        addSubview(rightAction)
-        rightAction.snp.makeConstraints {
-            $0.top == leftAction
+        addSubview(image)
+        image.snp.makeConstraints {
+            $0.height == image.snp.width
+
+            $0.top == amount.snp.bottom + theme.imagePaddings.top
+            $0.leading == theme.imagePaddings.leading
+            $0.trailing == theme.imagePaddings.trailing
+        }
+    }
+
+    private func addAction(
+        _ theme: CollectibleDetailLoadingViewTheme
+    ) {
+        actionView.draw(corner: theme.corner)
+
+        addSubview(actionView)
+        actionView.snp.makeConstraints {
+            $0.top == image.snp.bottom + theme.actionTopPadding
+            $0.leading == image
             $0.trailing == image
-            $0.leading == leftAction.snp.trailing + theme.spacingBetweeenActions
             $0.fitToHeight(theme.actionHeight)
-            $0.width == leftAction.snp.width
         }
     }
 
@@ -192,15 +195,9 @@ extension CollectibleDetailLoadingView {
     ) {
         descriptionTitle.draw(corner: theme.corner)
 
-        let separator = attachSeparator(
-            theme.separator,
-            to: rightAction,
-            margin: theme.spacingBetweenDescriptionAndSeparator
-        )
-
         addSubview(descriptionTitle)
         descriptionTitle.snp.makeConstraints {
-            $0.top == separator.snp.bottom + theme.spacingBetweenDescriptionAndSeparator
+            $0.top == actionView.snp.bottom + theme.spacingBetweenDescriptionAndAction
             $0.leading == image
             $0.fitToHeight(theme.descriptionHeight)
             $0.width == self * theme.descriptionWidthMultiplier

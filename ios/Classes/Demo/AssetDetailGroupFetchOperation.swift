@@ -141,6 +141,9 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
 
                 let pendingOptOutAssets = self.input.blockchainRequests.optOutAssets
                 var optedOutAssets: Set<AssetID> = Set(pendingOptOutAssets.keys)
+
+                let pendingSendPureCollectibleAssets = self.input.blockchainRequests.sendPureCollectibleAssets
+                var sentPureCollectibleAssets: Set<AssetID> = Set(pendingSendPureCollectibleAssets.keys)
                 
                 assets.enumerated().forEach { index, asset in
                     let id = asset.id
@@ -171,6 +174,13 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                     if pendingOptOutAssets[id] != nil {
                         optedOutAssets.remove(id)
                     }
+
+                    if pendingSendPureCollectibleAssets[id] != nil {
+                        let isOwned = asset.amount != 0
+                        if isOwned {
+                            sentPureCollectibleAssets.remove(id)
+                        }
+                    }
                 }
                 
                 account.setStandardAssets(
@@ -185,7 +195,8 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
 
                 let blockchainUpdates = BlockchainAccountBatchUpdates(
                     optedInAssets: optedInAssets,
-                    optedOutAssets: optedOutAssets
+                    optedOutAssets: optedOutAssets,
+                    sentPureCollectibleAssets: sentPureCollectibleAssets
                 )
                 let output = Output(
                     account: account,

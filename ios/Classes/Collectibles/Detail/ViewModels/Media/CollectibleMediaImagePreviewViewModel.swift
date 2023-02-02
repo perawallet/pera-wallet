@@ -21,29 +21,38 @@ import MacaroonURLImage
 
 protocol CollectibleMediaImagePreviewViewModel: ViewModel {
     var image: ImageSource? { get set }
-    var displaysOffColorMedia: Bool { get set }
-    var isFullScreenBadgeHidden: Bool { get set }
+    var overlayImage: UIImage? { get set }
+    var is3DModeActionHidden: Bool { get set }
+    var isFullScreenActionHidden: Bool { get set }
 }
 
 extension CollectibleMediaImagePreviewViewModel {
-    mutating func bindDisplaysOffColorMedia(
+    mutating func bindOverlayImage(
         _ asset: CollectibleAsset,
         _ accountCollectibleStatus: AccountCollectibleStatus
     ) {
         switch accountCollectibleStatus {
         case .notOptedIn, .owned:
-            displaysOffColorMedia = false
+            overlayImage = nil
         case .optedIn:
-            displaysOffColorMedia = true
+            overlayImage = "overlay-bg".uiImage
         }
+    }
+
+    mutating func bindIs3DModeActionHidden(
+        _ asset: CollectibleAsset
+    ) {
+        is3DModeActionHidden = !asset.mediaType.isSupported
     }
 
     mutating func bindIsFullScreenBadgeHidden(
         _ asset: CollectibleAsset
     ) {
-        isFullScreenBadgeHidden = !asset.mediaType.isSupported
+        isFullScreenActionHidden = !asset.mediaType.isSupported
     }
+}
 
+extension CollectibleMediaImagePreviewViewModel {
     func getPlaceholder(
         _ aPlaceholder: String
     ) -> ImagePlaceholder {

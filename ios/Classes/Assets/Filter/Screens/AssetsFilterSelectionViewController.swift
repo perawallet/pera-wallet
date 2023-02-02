@@ -18,128 +18,165 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AssetsFilterSelectionViewController: BaseScrollViewController {
-    typealias EventHandler = (Event) -> Void
-    
-    var eventHandler: EventHandler?
-    
-    private lazy var contextView = MacaroonUIKit.BaseView()
-    private lazy var toggleTitleView = Label()
-    private lazy var toggleDescriptionView = Label()
-    private lazy var toggleView = Toggle()
-    
+final class AssetsFilterSelectionViewController: ScrollScreen {
+    var uiInteractions = UIInteractions()
+
+    private lazy var contextView = VStackView()
+    private lazy var hideAssetsWithNoBalanceInAssetListFilterItemView = AssetFilterItemView()
+    private lazy var displayCollectibleAssetsInAssetListFilterItemView = AssetFilterItemView()
+    private lazy var displayOptedInCollectibleAssetsFilterInAssetListItemView = AssetFilterItemView()
+
+    private lazy var filterOptions = AssetFilterOptions()
+
     private let theme: AssetsFilterSelectionViewControllerTheme
-    private var filterOptions = AssetFilterOptions()
-    
-    init(
-        theme: AssetsFilterSelectionViewControllerTheme = .init(),
-        configuration: ViewControllerConfiguration
-    ) {
+
+    init(theme: AssetsFilterSelectionViewControllerTheme = .init()) {
         self.theme = theme
-        
-        super.init(configuration: configuration)
     }
-    
-    override func configureNavigationBarAppearance() {
-        bindNavigationItemTitle()
+
+    override func configureNavigationBar() {
+        super.configureNavigationBar()
+
         addBarButtons()
+        bindNavigationItemTitle()
+
+        navigationItem.largeTitleDisplayMode =  .never
     }
-    
-    override func prepareLayout() {
-        super.prepareLayout()
-        
-        addContent()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        addUI()
     }
 }
 
 extension AssetsFilterSelectionViewController {
+    private func addBarButtons() {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Link.primary.uiColor)) {
+            [unowned self] in
+            self.performChanges()
+        }
+
+        rightBarButtonItems = [doneBarButtonItem]
+    }
+
     private func bindNavigationItemTitle() {
         title = "asset-filter-title".localized
     }
-    
-    private func addBarButtons() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Link.primary.uiColor)) {
-            [weak self] in
-            guard let self = self else { return }
-            self.performChanges()
+}
+
+extension AssetsFilterSelectionViewController {
+    private func addUI() {
+        addBackground()
+        addContext()
+    }
+
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
+    private func addContext() {
+        contentView.addSubview(contextView)
+        contextView.spacing = theme.spacingBetweenFilterItems
+        contextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: theme.contentPaddings.top,
+            leading: theme.contentPaddings.leading,
+            bottom: theme.contentPaddings.bottom,
+            trailing: theme.contentPaddings.trailing
+        )
+        contextView.isLayoutMarginsRelativeArrangement = true
+        contextView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
         }
-        
-        rightBarButtonItems = [doneBarButtonItem]
+
+        addFilterItems()
+    }
+
+    private func addFilterItems() {
+        addHideAssetsWithNoBalanceInAssetListFilterItemView()
+        addDisplayCollectibleAssetsInAssetListFilterItemView()
+        addDisplayOptedInCollectibleAssetsFilterInAssetListItemView()
+    }
+
+    private func addHideAssetsWithNoBalanceInAssetListFilterItemView() {
+        hideAssetsWithNoBalanceInAssetListFilterItemView.customize(theme.filterItem)
+        hideAssetsWithNoBalanceInAssetListFilterItemView.bindData(HideAssetsWithNoBalanceInAssetListFilterItemViewModel())
+
+        hideAssetsWithNoBalanceInAssetListFilterItemView.isOn = filterOptions.hideAssetsWithNoBalanceInAssetList
+
+        contextView.addArrangedSubview(hideAssetsWithNoBalanceInAssetListFilterItemView)
+    }
+
+    private func addDisplayCollectibleAssetsInAssetListFilterItemView() {
+        displayCollectibleAssetsInAssetListFilterItemView.customize(theme.filterItem)
+        displayCollectibleAssetsInAssetListFilterItemView.bindData(DisplayCollectibleAssetsInAssetListFilterItemViewModel())
+
+        displayCollectibleAssetsInAssetListFilterItemView.isOn = filterOptions.displayCollectibleAssetsInAssetList
+
+        contextView.addArrangedSubview(displayCollectibleAssetsInAssetListFilterItemView)
+
+        displayCollectibleAssetsInAssetListFilterItemView.startObserving(event: .valueChanged) {
+            [unowned self, displayCollectibleAssetsInAssetListFilterItemView] in
+
+            if !displayCollectibleAssetsInAssetListFilterItemView.isOn {
+                displayOptedInCollectibleAssetsFilterInAssetListItemView.isOn = false
+            }
+
+            displayOptedInCollectibleAssetsFilterInAssetListItemView.isEnabled = displayCollectibleAssetsInAssetListFilterItemView.isOn
+        }
+    }
+
+    private func addDisplayOptedInCollectibleAssetsFilterInAssetListItemView() {
+        displayOptedInCollectibleAssetsFilterInAssetListItemView.customize(theme.filterItem)
+        displayOptedInCollectibleAssetsFilterInAssetListItemView.bindData(DisplayOptedInCollectibleAssetsFilterInAssetListItemViewModel())
+
+        displayOptedInCollectibleAssetsFilterInAssetListItemView.isOn = filterOptions.displayOptedInCollectibleAssetsInAssetList
+        displayOptedInCollectibleAssetsFilterInAssetListItemView.isEnabled = displayCollectibleAssetsInAssetListFilterItemView.isOn
+
+        contextView.addArrangedSubview(displayOptedInCollectibleAssetsFilterInAssetListItemView)
     }
 }
 
 extension AssetsFilterSelectionViewController {
     private func performChanges() {
         if !hasChanges() {
-            eventHandler?(.didCancel)
+            uiInteractions.didCancel?()
             return
         }
 
-        saveOptions()
-        eventHandler?(.didComplete)
+        saveFilters()
+        uiInteractions.didComplete?()
     }
 
-    private func saveOptions() {
-        filterOptions.hideAssetsWithNoBalanceInAssetList = toggleView.isOn
+    private func saveFilters() {
+        filterOptions.hideAssetsWithNoBalanceInAssetList = hideAssetsWithNoBalanceInAssetListFilterItemView.isOn
+        filterOptions.displayCollectibleAssetsInAssetList = displayCollectibleAssetsInAssetListFilterItemView.isOn
+        filterOptions.displayOptedInCollectibleAssetsInAssetList = displayOptedInCollectibleAssetsFilterInAssetListItemView.isOn
     }
 
     private func hasChanges() -> Bool {
-        return filterOptions.hideAssetsWithNoBalanceInAssetList != toggleView.isOn
+        if filterOptions.hideAssetsWithNoBalanceInAssetList != hideAssetsWithNoBalanceInAssetListFilterItemView.isOn {
+            return true
+        }
+
+        if filterOptions.displayCollectibleAssetsInAssetList != displayCollectibleAssetsInAssetListFilterItemView.isOn {
+            return true
+        }
+
+        if filterOptions.displayOptedInCollectibleAssetsInAssetList != displayOptedInCollectibleAssetsFilterInAssetListItemView.isOn {
+            return true
+        }
+
+        return false
     }
 }
 
 extension AssetsFilterSelectionViewController {
-    private func addContent() {
-        contentView.addSubview(contextView)
-        contextView.snp.makeConstraints {
-            $0.setPaddings(theme.contentEdgeInsets)
-        }
-        
-        addToggleTitle()
-        addToggle()
-        addToggleDescription()
-    }
-    
-    private func addToggleTitle() {
-        toggleTitleView.customizeAppearance(theme.title)
-        
-        contextView.addSubview(toggleTitleView)
-        toggleTitleView.snp.makeConstraints {
-            $0.width <= contextView * theme.titleMaxWidthRatio
-            $0.leading == 0
-            $0.top == 0
-            $0.greaterThanHeight(theme.titleMinHeight)
-        }
-    }
-    
-    private func addToggle() {
-        contextView.addSubview(toggleView)
-        toggleView.fitToHorizontalIntrinsicSize()
-        toggleView.snp.makeConstraints {
-            $0.leading >= toggleTitleView.snp.trailing + theme.minimumHorizontalSpacing
-            $0.trailing == 0
-            $0.centerY == toggleTitleView
-        }
-        
-        toggleView.isOn = filterOptions.hideAssetsWithNoBalanceInAssetList
-    }
-    
-    private func addToggleDescription() {
-        toggleDescriptionView.customizeAppearance(theme.description)
-        
-        contextView.addSubview(toggleDescriptionView)
-        toggleDescriptionView.snp.makeConstraints {
-            $0.leading == 0
-            $0.top == toggleTitleView.snp.bottom + theme.descriptionTopMargin
-            $0.width == toggleTitleView
-            $0.bottom == 0
-        }
-    }
-}
-
-extension AssetsFilterSelectionViewController {
-    enum Event {
-        case didComplete
-        case didCancel
+    struct UIInteractions {
+        var didComplete: (() -> Void)?
+        var didCancel: (() -> Void)?
     }
 }

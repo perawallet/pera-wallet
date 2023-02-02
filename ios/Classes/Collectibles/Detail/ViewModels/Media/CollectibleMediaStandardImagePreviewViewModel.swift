@@ -22,8 +22,9 @@ import Prism
 
 struct CollectibleMediaStandardImagePreviewViewModel: CollectibleMediaImagePreviewViewModel {
     var image: ImageSource?
-    var displaysOffColorMedia: Bool = false
-    var isFullScreenBadgeHidden: Bool = false
+    var overlayImage: UIImage?
+    var is3DModeActionHidden: Bool = false
+    var isFullScreenActionHidden: Bool = false
 
     init(
         imageSize: CGSize,
@@ -36,7 +37,9 @@ struct CollectibleMediaStandardImagePreviewViewModel: CollectibleMediaImagePrevi
             asset: asset,
             media: media
         )
-        bindDisplaysOffColorMedia(asset, accountCollectibleStatus)
+
+        bindOverlayImage(asset, accountCollectibleStatus)
+        bindIs3DModeActionHidden(asset)
         bindIsFullScreenBadgeHidden(asset)
     }
 }
@@ -57,7 +60,7 @@ extension CollectibleMediaStandardImagePreviewViewModel {
 
             image = PNGImageSource(
                 url: prismURL,
-                shape: .rounded(4),
+                shape: .rounded(12),
                 placeholder: getPlaceholder(placeholder)
             )
             return

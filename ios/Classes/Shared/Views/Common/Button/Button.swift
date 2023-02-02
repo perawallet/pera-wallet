@@ -74,9 +74,9 @@ final class Button: MacaroonUIKit.Button, TripleShadowDrawable {
         addIndicator(theme)
     }
 
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    func prepareLayout(_ layoutSheet: ButtonTheme) {}
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    func customizeAppearance(_ styleSheet: ButtonTheme) {}
 
     func bindData(_ viewModel: ButtonViewModel?) {
         bindTitle(viewModel)

@@ -29,27 +29,26 @@ struct AccountAssetDescendingTitleAlgorithm: AccountAssetSortingAlgorithm {
 
 extension AccountAssetDescendingTitleAlgorithm {
     func getFormula(
-        viewModel: AssetListItemViewModel,
-        otherViewModel: AssetListItemViewModel
+        asset: Asset,
+        otherAsset: Asset
     ) -> Bool {
         let assetTitle =
-            viewModel.title?.primaryTitle?.string ??
-            viewModel.title?.secondaryTitle?.string ??
-            viewModel.asset.unwrap { String($0.id) }
+            asset.naming.name.unwrapNonEmptyString() ??
+            "title-unknown".localized
         let otherAssetTitle =
-            otherViewModel.title?.primaryTitle?.string ??
-            otherViewModel.title?.secondaryTitle?.string ??
-            viewModel.asset.unwrap { String($0.id) }
-
-        guard let anAssetTitle = assetTitle.unwrapNonEmptyString() else {
-            return true
+            otherAsset.naming.name.unwrapNonEmptyString() ??
+            "title-unknown".localized
+        if assetTitle != otherAssetTitle {
+            let result = assetTitle.localizedCaseInsensitiveCompare(otherAssetTitle)
+            return result == .orderedDescending
         }
 
-        guard let anOtherAssetTitle = otherAssetTitle.unwrapNonEmptyString() else {
-            return false
+        let assetID = asset.id
+        let otherAssetID = otherAsset.id
+        if assetID != otherAssetID {
+            return assetID > otherAssetID
         }
 
-        let result = anAssetTitle.localizedCaseInsensitiveCompare(anOtherAssetTitle)
-        return result == .orderedDescending
+        return false
     }
 }

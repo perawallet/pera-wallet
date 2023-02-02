@@ -29,7 +29,7 @@ final class CollectibleTransactionInfoView:
     private lazy var titleView = Label()
     private lazy var valueContent = MacaroonUIKit.BaseView()
     private lazy var iconView = ImageView()
-    private lazy var valueView = Label()
+    private lazy var valueView = UILabel()
 
     func customize(
         _ theme: CollectibleTransactionInfoViewTheme

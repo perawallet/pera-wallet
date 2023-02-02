@@ -23,7 +23,7 @@ final class Collectible: ALGEntityModel {
     let mediaType: MediaType?
     let thumbnailImage: URL?
     let title: String?
-    let collectionName: String?
+    let collection: CollectibleCollection?
     let media: [Media]
     let description: String?
     let properties: [CollectibleTrait]?
@@ -35,7 +35,7 @@ final class Collectible: ALGEntityModel {
         self.mediaType = apiModel.mediaType
         self.thumbnailImage = apiModel.primaryImage
         self.title = apiModel.title
-        self.collectionName = apiModel.collectionName
+        self.collection = apiModel.collection
         self.media = apiModel.media.unwrapMap(Media.init)
         self.description = apiModel.description
         self.properties = apiModel.traits
@@ -47,7 +47,7 @@ final class Collectible: ALGEntityModel {
         apiModel.mediaType = mediaType
         apiModel.primaryImage = thumbnailImage
         apiModel.title = title
-        apiModel.collectionName = collectionName
+        apiModel.collection = collection
         apiModel.media = media.map { $0.encode() }
         apiModel.description = description
         apiModel.traits = properties
@@ -61,7 +61,7 @@ extension Collectible {
         var mediaType: MediaType?
         var primaryImage: URL?
         var title: String?
-        var collectionName: String?
+        var collection: CollectibleCollection?
         var media: [Media.APIModel]?
         var description: String?
         var traits: [CollectibleTrait]?
@@ -71,7 +71,7 @@ extension Collectible {
             self.mediaType = nil
             self.primaryImage = nil
             self.title = nil
-            self.collectionName = nil
+            self.collection = nil
             self.media = []
             self.description = nil
             self.traits = nil
@@ -82,7 +82,7 @@ extension Collectible {
             case mediaType = "media_type"
             case primaryImage = "primary_image"
             case title
-            case collectionName = "collection_name"
+            case collection
             case media
             case description
             case traits

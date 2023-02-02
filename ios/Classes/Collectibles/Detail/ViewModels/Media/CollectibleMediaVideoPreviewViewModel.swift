@@ -22,8 +22,9 @@ import MacaroonURLImage
 struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     private(set) var placeholder: ImagePlaceholder?
     private(set) var url: URL?
-    private(set) var displaysOffColorMedia: Bool = false
-    private(set) var isFullScreenBadgeHidden: Bool = false
+    private(set) var overlayImage: UIImage?
+    private(set) var is3DModeActionHidden: Bool = false
+    private(set) var isFullScreenActionHidden: Bool = false
 
     init(
         asset: CollectibleAsset,
@@ -32,7 +33,8 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     ) {
         bindPlaceholder(asset)
         bindURL(media)
-        bindDisplaysOffColorMedia(asset, accountCollectibleStatus)
+        bindOverlayImage(asset, accountCollectibleStatus)
+        bindIs3DActionHidden(asset)
         bindIsFullScreenBadgeHidden(asset)
     }
 }
@@ -55,23 +57,29 @@ extension CollectibleMediaVideoPreviewViewModel {
 
         url = media.downloadURL
     }
-    
-    mutating func bindDisplaysOffColorMedia(
+
+    private mutating func bindOverlayImage(
         _ asset: CollectibleAsset,
         _ accountCollectibleStatus: AccountCollectibleStatus
     ) {
         switch accountCollectibleStatus {
         case .notOptedIn, .owned:
-            displaysOffColorMedia = false
+            overlayImage = nil
         case .optedIn:
-            displaysOffColorMedia = true
+            overlayImage = "overlay-bg".uiImage
         }
+    }
+
+    private mutating func bindIs3DActionHidden(
+        _ asset: CollectibleAsset
+    ) {
+        is3DModeActionHidden = !asset.mediaType.isSupported
     }
 
     private mutating func bindIsFullScreenBadgeHidden(
         _ asset: CollectibleAsset
     ) {
-        isFullScreenBadgeHidden = !asset.mediaType.isSupported
+        isFullScreenActionHidden = !asset.mediaType.isSupported
     }
 }
 

@@ -62,6 +62,11 @@ final class CollectibleDetailViewController:
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = CollectibleDetailLayout.build()
+        collectionViewLayout.sectionIdentifierProvider = {
+            [unowned self] section in
+            self.dataSource.snapshot().sectionIdentifiers[safe: section]
+        }
+        
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout
@@ -75,10 +80,22 @@ final class CollectibleDetailViewController:
 
     private lazy var assetQuickActionView = AssetQuickActionView()
 
-    private lazy var listLayout = CollectibleDetailLayout(dataSource: dataSource)
+    private lazy var listLayout = CollectibleDetailLayout(
+        dataSource: dataSource,
+        collectibleDescriptionProvider: {
+            [weak self] in
+            guard let self else { return nil }
+            return self.collectibleDescriptionViewModel
+        }
+    )
     private lazy var dataSource = CollectibleDetailDataSource(
         collectionView: listView,
-        mediaPreviewController: mediaPreviewController
+        mediaPreviewController: mediaPreviewController,
+        collectibleDescriptionProvider: {
+            [weak self] in
+            guard let self else { return nil }
+            return self.collectibleDescriptionViewModel
+        }
     )
 
     private lazy var mediaPreviewController = CollectibleMediaPreviewViewController(
@@ -89,6 +106,8 @@ final class CollectibleDetailViewController:
     )
 
     private lazy var currencyFormatter = CurrencyFormatter()
+
+    private lazy var collectibleDescriptionViewModel = CollectibleDescriptionViewModel(asset: asset, isTruncated: true)
 
     private var asset: CollectibleAsset
     private var account: Account
@@ -182,6 +201,12 @@ final class CollectibleDetailViewController:
         transactionController.stopTimer()
     }
 
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+
+        addBarButtons()
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
 
@@ -212,6 +237,21 @@ final class CollectibleDetailViewController:
     override func linkInteractors() {
         super.linkInteractors()
         linkMediaPreviewInteractors()
+    }
+}
+
+extension CollectibleDetailViewController {
+    private func addBarButtons() {
+        let shareBarButtonItem = ALGBarButtonItem(kind: .share) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.shareCollectible()
+        }
+
+        rightBarButtonItems = [shareBarButtonItem]
     }
 }
 
@@ -366,25 +406,17 @@ extension CollectibleDetailViewController {
         case .loading:
             let loadingCell = cell as? CollectibleDetailLoadingCell
             loadingCell?.startAnimating()
-        case .action(let item):
+        case .accountInformation:
             linkInteractors(
-                cell as! CollectibleDetailActionCell,
-                for: item
+                cell as! CollectibleDetailAccountInformationCell
             )
-        case .watchAccountAction(let item):
+        case .sendAction:
             linkInteractors(
-                cell as! CollectibleDetailWatchAccountActionCell,
-                for: item
+                cell as! CollectibleDetailSendActionCell
             )
-        case .collectibleCreatorAccountAction(let item):
+        case .optOutAction:
             linkInteractors(
-                cell as! CollectibleDetailCreatorAccountActionCell,
-                for: item
-            )
-        case .optedInAction(let item):
-            linkInteractors(
-                cell as! CollectibleDetailOptedInActionCell,
-                for: item
+                cell as! CollectibleDetailOptOutActionCell
             )
         case .information(let item):
             if item.actionURL != nil {
@@ -393,13 +425,12 @@ extension CollectibleDetailViewController {
                     for: item
                 )
             }
+        case .creatorAccount:
+            linkInteractors(cell as! CollectibleDetailCreatorAccountItemCell)
         case .assetID:
             linkInteractors(cell as! CollectibleDetailAssetIDItemCell)
-        case .external(let item):
-            linkInteractors(
-                cell as! CollectibleExternalSourceCell,
-                for: item
-            )
+        case .description:
+            linkInteractors(cell as! CollectibleDescriptionCell )
         default:
             break
         }
@@ -435,12 +466,19 @@ extension CollectibleDetailViewController {
             }
         }
     }
+    private func linkInteractors(
+        _ cell: CollectibleDetailAccountInformationCell
+    ) {
+        cell.startObserving(event: .didLongPressTitle) {
+            [unowned self] in
+            self.copyToClipboardController.copyAddress(account)
+        }
+    }
 
     private func linkInteractors(
-        _ cell: CollectibleDetailActionCell,
-        for item: CollectibleDetailActionViewModel
+        _ cell: CollectibleDetailSendActionCell
     ) {
-        cell.startObserving(event: .performSend) {
+        cell.startObserving(event: .performAction) {
             [weak self] in
             guard let self = self,
                   let asset = self.account[self.asset.id] as? CollectibleAsset else {
@@ -498,15 +536,6 @@ extension CollectibleDetailViewController {
                 }
             }
         }
-
-        cell.startObserving(event: .performShare) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.shareCollectible()
-        }
     }
 
     private func shareCollectible() {
@@ -533,75 +562,13 @@ extension CollectibleDetailViewController {
     }
 
     private func linkInteractors(
-        _ cell: CollectibleDetailWatchAccountActionCell,
-        for item: CollectibleDetailActionViewModel
+        _ cell: CollectibleDetailOptOutActionCell
     ) {
-        cell.startObserving(event: .performShare) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.shareCollectible()
-        }
-    }
-
-    private func linkInteractors(
-        _ cell: CollectibleDetailCreatorAccountActionCell,
-        for item: CollectibleDetailActionViewModel
-    ) {
-        cell.startObserving(event: .performShare) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.shareCollectible()
-        }
-    }
-
-    private func linkInteractors(
-        _ cell: CollectibleDetailOptedInActionCell,
-        for item: CollectibleDetailOptedInActionViewModel
-    ) {
-        cell.startObserving(event: .performOptOut) {
+        cell.startObserving(event: .performAction) {
             [weak self] in
             guard let self = self else { return }
 
             self.openOptOutAsset()
-        }
-
-        cell.startObserving(event: .performCopy) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.copyToClipboardController.copyAddress(self.account)
-        }
-
-        cell.startObserving(event: .performShareQR) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            let accountName = self.account.primaryDisplayName
-
-            let draft = QRCreationDraft(
-                address: self.account.address,
-                mode: .address,
-                title: accountName
-            )
-
-            self.open(
-                .qrGenerator(
-                    title: accountName,
-                    draft: draft,
-                    isTrackable: true
-                ),
-                by: .present
-            )
         }
     }
 
@@ -617,6 +584,26 @@ extension CollectibleDetailViewController {
             }
 
             self.open(actionURL)
+        }
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleDetailCreatorAccountItemCell
+    ) {
+        cell.startObserving(event: .didTapAccessory) {
+            [unowned self] in
+            let creator = self.asset.creator!.address
+            let source = AlgoExplorerExternalSource(
+                address: creator,
+                network: self.api!.network
+            )
+            self.open(source.url)
+        }
+
+        cell.startObserving(event: .didLongPressAccessory) {
+            [unowned self] in
+            let creator = self.asset.creator!.address
+            self.copyToClipboardController.copyAddress(creator)
         }
     }
 
@@ -639,8 +626,13 @@ extension CollectibleDetailViewController {
         cell.startObserving(event: .didLongPressAccessory) {
             [unowned self] in
             self.copyToClipboardController.copyID(self.asset)
-            return
         }
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleDescriptionCell
+    ) {
+        cell.delegate = self
     }
 
     private func openASADiscovery() {
@@ -675,20 +667,6 @@ extension CollectibleDetailViewController {
             screen,
             by: .push
         )
-    }
-
-    private func linkInteractors(
-        _ cell: CollectibleExternalSourceCell,
-        for item: CollectibleExternalSourceViewModel
-    ) {
-        cell.startObserving(event: .performAction) {
-            [weak self] in
-            guard let self = self else { return }
-
-            if let url = item.source?.url {
-                self.open(url)
-            }
-        }
     }
 }
 
@@ -783,10 +761,7 @@ extension CollectibleDetailViewController {
 
                 NotificationCenter.default.post(
                     name: CollectibleListLocalDataController.didAddCollectible,
-                    object: self,
-                    userInfo: [
-                        CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
-                    ]
+                    object: self
                 )
                 
                 eventHandler?(.didOptInToAsset)
@@ -795,10 +770,7 @@ extension CollectibleDetailViewController {
 
                 NotificationCenter.default.post(
                     name: CollectibleListLocalDataController.didRemoveCollectible,
-                    object: self,
-                    userInfo: [
-                        CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
-                    ]
+                    object: self
                 )
 
                 eventHandler?(.didOptOutFromAssetWithQuickAction)
@@ -808,10 +780,7 @@ extension CollectibleDetailViewController {
 
         NotificationCenter.default.post(
             name: CollectibleListLocalDataController.didRemoveCollectible,
-            object: self,
-            userInfo: [
-                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
-            ]
+            object: self
         )
 
         eventHandler?(.didOptOutAssetFromAccount)
@@ -967,6 +936,32 @@ extension CollectibleDetailViewController {
         default:
             break
         }
+    }
+}
+
+extension CollectibleDetailViewController: CollectibleDescriptionCellDelegate {
+    func collectibleDescriptionCellDidTapURL(_ cell: CollectibleDescriptionCell, url: URL) {
+        open(url)
+    }
+
+    func collectibleDescriptionCellDidShowMore(_ cell: CollectibleDescriptionCell) {
+        updateCollectibleDescriptionCell(cell, isTruncated: false)
+    }
+
+    func collectibleDescriptionCellDidShowLess(_ cell: CollectibleDescriptionCell) {
+        updateCollectibleDescriptionCell(cell, isTruncated: true)
+    }
+
+    private func updateCollectibleDescriptionCell(_ cell: CollectibleDescriptionCell, isTruncated: Bool) {
+        let viewModel = CollectibleDescriptionViewModel(
+            asset: asset,
+            isTruncated: isTruncated
+        )
+        collectibleDescriptionViewModel = viewModel
+
+        cell.bindData(viewModel)
+
+        listView.collectionViewLayout.invalidateLayout()
     }
 }
 

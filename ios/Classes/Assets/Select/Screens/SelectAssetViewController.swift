@@ -30,6 +30,7 @@ final class SelectAssetViewController:
         collectionView.backgroundColor = .clear
         collectionView.register(PreviewLoadingCell.self)
         collectionView.register(AssetListItemCell.self)
+        collectionView.register(CollectibleListItemCell.self)
         return collectionView
     }()
 
@@ -176,13 +177,14 @@ extension SelectAssetViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        guard let item = listDataSource[indexPath] else {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
             return
         }
 
-        let asset = item.model
+        let asset = itemIdentifier.asset
 
-        if let collectibleAsset = asset as? CollectibleAsset, collectibleAsset.isPure {
+        if let collectibleAsset = asset as? CollectibleAsset,
+           collectibleAsset.isPure {
             openSendCollectible(collectibleAsset)
             return
         }

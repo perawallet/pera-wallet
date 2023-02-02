@@ -18,7 +18,23 @@ import Foundation
 import UIKit
 
 extension UICollectionViewDiffableDataSource {
-    func getSectionIdentifier(at indexPath: IndexPath) -> SectionIdentifierType? {
-        return snapshot().sectionIdentifiers[safe: indexPath.section]
+    typealias Snapshot = NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType>
+
+    func reload(
+        _ snapshot: Snapshot,
+        completion: (() -> Void)? = nil
+    ) {
+        if #available(iOS 15, *) {
+            applySnapshotUsingReloadData(
+                snapshot,
+                completion: completion
+            )
+        } else {
+            apply(
+                snapshot,
+                animatingDifferences: true,
+                completion: completion
+            )
+        }
     }
 }

@@ -22,8 +22,8 @@ class WalletConnector {
         )
     }
     
-    static var sessionRequestUserInfoKey: String {
-        return "walletConnector.userInfoKey.sessionRequest"
+    static var sessionRequestPreferencesKey: String {
+        return "walletConnector.preferences"
     }
 
     private lazy var sessionSource = WalletConnectSessionSource()
@@ -36,6 +36,7 @@ class WalletConnector {
     private let walletConnectBridge = WalletConnectBridge()
 
     private var ongoingConnections: [String: Bool] = [:]
+    private var preferences: WalletConnectorPreferences?
 
     init(
         api: ALGAPI,
@@ -56,7 +57,13 @@ extension WalletConnector {
         walletConnectBridge.register(handler)
     }
 
-    func connect(to session: String) {
+    /// <note>:
+    /// `preferences` value repsents user preferences for specific wallet connection
+    func connect(with preferences: WalletConnectorPreferences) {
+        self.preferences = preferences
+
+        let session = preferences.session
+
         guard let url = WalletConnectURL(session) else {
             delegate?.walletConnector(self, didFailWith: .failedToCreateSession(qr: session))
             return
@@ -220,7 +227,7 @@ extension WalletConnector: WalletConnectBridgeDelegate {
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         // Get user approval or rejection for the session
-        delegate?.walletConnector(self, shouldStart: session, then: completion)
+        delegate?.walletConnector(self, shouldStart: session, with: preferences, then: completion)
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didFailToConnect url: WalletConnectURL) {
@@ -316,6 +323,7 @@ protocol WalletConnectorDelegate: AnyObject {
     func walletConnector(
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
+        with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     )
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession)
@@ -328,6 +336,7 @@ extension WalletConnectorDelegate {
     func walletConnector(
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
+        with preferences: WalletConnectorPreferences?,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
 

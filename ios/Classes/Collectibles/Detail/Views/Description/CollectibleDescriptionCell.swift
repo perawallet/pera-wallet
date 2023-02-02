@@ -21,12 +21,38 @@ import UIKit
 final class CollectibleDescriptionCell:
     CollectionCell<CollectibleDescriptionView>,
     ViewModelBindable {
-    static let theme = CollectibleDescriptionViewTheme()
+    weak var delegate: CollectibleDescriptionCellDelegate?
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
+    override class var contextPaddings: LayoutPaddings {
+        return theme.contextPaddings
     }
+
+    static let theme = CollectibleDescriptionCellTheme()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        contextView.customize(Self.theme.context)
+        contextView.delegate = self
+    }
+}
+
+extension CollectibleDescriptionCell: CollectibleDescriptionViewDelegate {
+    func collectibleDescriptionViewDidTapURL(_ view: CollectibleDescriptionView, url: URL) {
+        delegate?.collectibleDescriptionCellDidTapURL(self, url: url)
+    }
+
+    func collectibleDescriptionViewDidShowMore(_ view: CollectibleDescriptionView) {
+        delegate?.collectibleDescriptionCellDidShowMore(self)
+    }
+
+    func collectibleDescriptionViewDidShowLess(_ view: CollectibleDescriptionView) {
+        delegate?.collectibleDescriptionCellDidShowLess(self)
+    }
+}
+
+protocol CollectibleDescriptionCellDelegate: AnyObject {
+    func collectibleDescriptionCellDidTapURL(_ cell: CollectibleDescriptionCell, url: URL)
+    func collectibleDescriptionCellDidShowMore(_ cell: CollectibleDescriptionCell)
+    func collectibleDescriptionCellDidShowLess(_ cell: CollectibleDescriptionCell)
 }

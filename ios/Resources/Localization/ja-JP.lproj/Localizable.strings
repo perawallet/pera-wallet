@@ -113,7 +113,7 @@
 "accounts-title" = "アカウント";
 
 /* (No Comment) */
-"accounts-title-collectibles" = "コレクティブル";
+"accounts-title-collectibles" = "NFTs";
 
 /* (No Comment) */
 "accounts-title-history" = "履歴";
@@ -242,7 +242,16 @@
 "asset-detail-id-title" = "ID %@";
 
 /* (No Comment) */
-"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance.";
+"asset-detail-markets-title" = "Markets";
+
+/* (No Comment) */
+"asset-filter-selection-display-collectible-assets-filter-description" = "NFTs assets will be shown in the asset list of your account";
+
+/* (No Comment) */
+"asset-filter-selection-display-collectible-assets-filter-title" = "Display NFTs in asset list";
+
+/* (No Comment) */
+"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance";
 
 /* (No Comment) */
 "asset-filter-selection-toggle-title" = "Hide assets with no balance";
@@ -482,15 +491,12 @@
 "collectible-detail-algo-explorer" = "Show on Algoexplorerで表示する";
 
 /* (No Comment) */
-"collectible-detail-collection-name" = "コレクション名";
-
-/* (No Comment) */
-"collectible-detail-creator-address" = "制作者ウォレットアドレス";
+"collectible-detail-creator-account" = "Creator Account";
 
 /* (No Comment) */
 "collectible-detail-creator-name" = "制作者名";
 
-/* (No Comment) */
+/* MARK: Collectible Detail */
 "collectible-detail-description" = "詳細";
 
 /* (No Comment) */
@@ -526,20 +532,23 @@
 /* (No Comment) */
 "collectible-detail-properties" = "プロパティ";
 
-/* MARK: Collectible Detail */
-"collectible-detail-share" = "シェア";
-
 /* (No Comment) */
 "collectible-detail-show-on" = "表示方法";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "3Dカードモード";
+"collectible-detail-tap-3D" = "3D mode";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "トランザクションを見る";
 
+/* (No Comment) */
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
+
+/* (No Comment) */
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
+
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "フィルター";
+"collectible-filter-selection-title" = "Filter NFTs";
 
 /* (No Comment) */
 "collectible-filter-selection-toggle-description" = "オプトインしているが、所有していないNFTの表示/非表示が可能です";
@@ -620,7 +629,7 @@
 "collectibles-empty-secondary-action-title" = "隠されたNFTを表示 (%@)";
 
 /* MARK: Collectible Common */
-"collectibles-empty-title" = "コレクティブル";
+"collectibles-empty-title" = "NFTs";
 
 /* (No Comment) */
 "collectibles-list-input-placeholder" = "NFTの検索";
@@ -721,6 +730,9 @@
 /* (No Comment) */
 "discover-error-fallback-body" = "現在、その情報を取得できません。";
 
+/* (No Comment) */
+"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+
 /* MARK: Discover */
 "discover-search-input-placeholder" = "任意のASAを検索する";
 
@@ -786,6 +798,9 @@
 
 /* (No Comment) */
 "feedback-title-note" = "メモ";
+
+/* (No Comment) */
+"filter" = "Filter";
 
 /* (No Comment) */
 "governance-banner-action" = "始める";
@@ -1243,7 +1258,7 @@
 /* (No Comment) */
 "number-abbreviation-billion" = "B";
 
-/* MARK: Number Abbreviation */
+/* (No Comment) */
 "number-abbreviation-million" = "M";
 
 /* (No Comment) */
@@ -1251,6 +1266,9 @@
 
 /* (No Comment) */
 "number-abbreviation-quintillion" = "Qi";
+
+/* MARK: Number Abbreviation */
+"number-abbreviation-thousand" = "K";
 
 /* (No Comment) */
 "number-abbreviation-trillion" = "T";
@@ -1260,9 +1278,6 @@
 
 /* (No Comment) */
 "ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";
-
-/* (No Comment) */
-"opitons-collectibles-filter" = "NFTのフィルタリング";
 
 /* (No Comment) */
 "opt-in-description-adding-nft" = "NFTをオプトインするには、最低トランザクション手数料の発生するトランザクションを送信する必要があります。これはお客様の取引履歴に表示されます。";
@@ -1283,7 +1298,7 @@
 "options-manage-assets" = "資産の管理";
 
 /* (No Comment) */
-"options-manage-collectibles" = "コレクションの管理";
+"options-manage-collectibles" = "Manage NFTs";
 
 /* (No Comment) */
 "options-mute-notification" = "通知のミュート";
@@ -2192,7 +2207,7 @@
 "title-close" = "閉じる";
 
 /* (No Comment) */
-"title-collectibles" = "コレクティブル";
+"title-collectibles" = "NFTs";
 
 /* (No Comment) */
 "title-confirm" = "確認";

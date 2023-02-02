@@ -48,13 +48,17 @@ extension OptInAssetListItemViewModel {
             .setImageQuality(.normal)
             .build()
         /// <todo>
-        /// Find a bettet way of formatting name
+        /// Find a better way of formatting name
         let title = asset.name.isNilOrEmpty
             ? "title-unknown".localized
             : asset.name
         let placeholderText = TextFormatter.assetShortName.format(title)
+        let placeholderImage =
+            asset.isCollectible
+            ? "placeholder-bg".uiImage
+            : "asset-image-placeholder-border".uiImage
         let placeholder = ImagePlaceholder.init(
-            image: .init(asset: "asset-image-placeholder-border".uiImage),
+            image: .init(asset: placeholderImage),
             text: .string(placeholderText)
         )
         icon = PNGImageSource(url: url, shape: iconShape, placeholder: placeholder)

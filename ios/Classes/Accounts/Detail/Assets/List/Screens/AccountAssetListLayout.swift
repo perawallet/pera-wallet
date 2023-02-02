@@ -85,15 +85,40 @@ extension AccountAssetListLayout {
             return CGSize(theme.assetManagementItemSize)
         case .search:
             return CGSize(theme.searchItemSize)
+        case .assetLoading:
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAssetLoadingItemAt: indexPath
+            )
         case let .asset(item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForAssetCellItem: item,
+                sizeForAssetCellItem: item.viewModel,
                 atSection: indexPath.section
             )
-        case .pendingAsset:
-            return CGSize(theme.assetItemSize)
+        case let .pendingAsset(item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForPendingAssetCellItem: item.viewModel,
+                atSection: indexPath.section
+            )
+        case let .collectibleAsset(item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForCollectibleAssetCellItem: item.viewModel,
+                atSection: indexPath.section
+            )
+        case let .pendingCollectibleAsset(item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForPendingCollectibleAssetCellItem: item.viewModel,
+                atSection: indexPath.section
+            )
         case .quickActions:
             let width = calculateContentWidth(
                 collectionView,
@@ -192,6 +217,21 @@ extension AccountAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
+        sizeForAssetLoadingItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        return AccountAssetListLoadingCell.calculatePreferredSize(
+            for: AccountAssetListLoadingCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
         sizeForAssetCellItem item: AssetListItemViewModel,
         atSection section: Int
     ) -> CGSize {
@@ -208,6 +248,87 @@ extension AccountAssetListLayout {
         let newSize = AssetListItemCell.calculatePreferredSize(
             item,
             for: AssetListItemCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForPendingAssetCellItem item: AssetListItemViewModel,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = PendingAssetListItemCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = PendingAssetListItemCell.calculatePreferredSize(
+            item,
+            for: PendingAssetListItemCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForCollectibleAssetCellItem item: CollectibleListItemViewModel,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = CollectibleListItemCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = CollectibleListItemCell.calculatePreferredSize(
+            item,
+            for: CollectibleListItemCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForPendingCollectibleAssetCellItem item: CollectibleListItemViewModel,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = PendingCollectibleAssetListItemCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = PendingCollectibleAssetListItemCell.calculatePreferredSize(
+            item,
+            for: PendingCollectibleAssetListItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

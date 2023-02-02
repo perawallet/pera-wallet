@@ -22,15 +22,18 @@ final class CollectibleDetailLayout: NSObject {
     private static let theme = Theme()
     
     private let dataSource: CollectibleDetailDataSource
+    private let collectibleDescriptionProvider: () -> CollectibleDescriptionViewModel?
 
     init(
-        dataSource: CollectibleDetailDataSource
+        dataSource: CollectibleDetailDataSource,
+        collectibleDescriptionProvider: @escaping () -> CollectibleDescriptionViewModel?
     ) {
         self.dataSource = dataSource
+        self.collectibleDescriptionProvider = collectibleDescriptionProvider
         super.init()
     }
 
-    class func build() -> UICollectionViewLayout {
+    class func build() -> CollectibleDetailCollectionViewFlowLayout {
         let flowLayout = CollectibleDetailCollectionViewFlowLayout(Self.theme)
         flowLayout.minimumLineSpacing = 0
         return flowLayout
@@ -59,9 +62,19 @@ extension CollectibleDetailLayout {
             insets.left = 0
             insets.right = 0
             return insets
+        case .name:
+            insets.top = Self.theme.nameTopPadding
+            insets.left = 0
+            insets.right = 0
+            return insets
+        case .accountInformation:
+            insets.top = Self.theme.accountInformationTopPadding
+            insets.left = 0
+            insets.right = 0
+            return insets
         case .media:
             insets.top = Self.theme.mediaTopPadding
-            insets.bottom = 0
+            insets.bottom = Self.theme.mediaBottomPadding
             insets.left = 0
             insets.right = 0
             return insets
@@ -76,10 +89,6 @@ extension CollectibleDetailLayout {
         case .properties:
             insets.top = Self.theme.propertiesTopPadding
             insets.bottom = Self.theme.propertiesBottomPadding
-            return insets
-        case .external:
-            insets.top = Self.theme.externalTopPadding
-            insets.bottom = Self.theme.externalBottomPadding
             return insets
         }
     }
@@ -137,6 +146,18 @@ extension CollectibleDetailLayout {
                 collectionView,
                 layout: collectionViewLayout
             )
+        case .name(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForNameItem: item
+            )
+        case .accountInformation(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAccountInformationItem: item
+            )
         case .media(let item):
             return listView(
                 collectionView,
@@ -149,31 +170,37 @@ extension CollectibleDetailLayout {
                 layout: collectionViewLayout,
                 sizeForErrorItem: item
             )
-        case .action(let item),
-                .watchAccountAction(let item),
-                .collectibleCreatorAccountAction(let item):
-            return listView(
+        case .sendAction:
+            return sizeForSendActionItem(
                 collectionView,
-                layout: collectionViewLayout,
-                sizeForActionItem: item
+                layout: collectionViewLayout
             )
-        case .optedInAction(let item):
-            return listView(
+        case .optOutAction:
+            return sizeForOptedInActionItem(
                 collectionView,
-                layout: collectionViewLayout,
-                sizeForOptedInActionItem: item
+                layout: collectionViewLayout
             )
-        case .description(let item):
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForDescriptionItem: item
-            )
+        case .description:
+            let descriptionItem = collectibleDescriptionProvider()
+            if let descriptionItem {
+                return listView(
+                    collectionView,
+                    layout: collectionViewLayout,
+                    sizeForDescriptionItem: descriptionItem
+                )
+            }
+            return .zero
         case .information(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForInformationItem: item
+            )
+        case .creatorAccount(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForCreatorAccountItem: item
             )
         case .assetID(let item):
             return listView(
@@ -186,12 +213,6 @@ extension CollectibleDetailLayout {
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForPropertyItem: item
-            )
-        case .external(let item):
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForExternalSourceItem: item
             )
         }
     }
@@ -208,13 +229,14 @@ extension CollectibleDetailLayout {
         }
 
         switch listSection {
-        case .media,
-                .action,
-                .loading:
+        case .name,
+             .accountInformation,
+             .media,
+             .action,
+             .loading:
             return .zero
         case .description,
-                .properties,
-                .external:
+             .properties:
             let width = calculateContentWidth(collectionView)
             return CGSize((width, Self.theme.headerHeight))
         }
@@ -231,6 +253,34 @@ extension CollectibleDetailLayout {
         return CollectibleDetailLoadingView.calculatePreferredSize(
             for: CollectibleDetailLoadingView.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForNameItem item: CollectibleDetailNameItemIdentifier
+    ) -> CGSize {
+        let width = calculateContentWidth(listView)
+
+        return CollectibleDetailNameCell.calculatePreferredSize(
+            item.viewModel,
+            for: CollectibleDetailNameCell.theme,
+            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
+        )
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAccountInformationItem item: CollectibleDetailAccountInformationItemIdentifier
+    ) -> CGSize {
+        let width = calculateContentWidth(listView)
+
+        return CollectibleDetailAccountInformationCell.calculatePreferredSize(
+            item.viewModel,
+            for: CollectibleDetailAccountInformationCell.theme,
+            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
         )
     }
 
@@ -261,30 +311,26 @@ extension CollectibleDetailLayout {
         )
     }
 
-    private func listView(
+    private func sizeForSendActionItem(
         _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForActionItem item: CollectibleDetailActionViewModel
+        layout listViewLayout: UICollectionViewLayout
     ) -> CGSize {
         let width = calculateContentWidth(listView)
 
-        return CollectibleDetailActionCell.calculatePreferredSize(
-            item,
-            for: CollectibleDetailActionCell.theme,
+        return CollectibleDetailSendActionCell.calculatePreferredSize(
+            for: CollectibleDetailSendActionCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
     }
 
-    private func listView(
+    private func sizeForOptedInActionItem(
         _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForOptedInActionItem item: CollectibleDetailOptedInActionViewModel
+        layout listViewLayout: UICollectionViewLayout
     ) -> CGSize {
         let width = calculateContentWidth(listView)
 
-        return CollectibleDetailOptedInActionCell.calculatePreferredSize(
-            item,
-            for: CollectibleDetailOptedInActionCell.theme,
+        return CollectibleDetailOptOutActionCell.calculatePreferredSize(
+            for: CollectibleDetailOptOutActionCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
     }
@@ -316,6 +362,19 @@ extension CollectibleDetailLayout {
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
     }
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForCreatorAccountItem item: CollectibleDetailCreatorAccountItemIdentifier
+    ) -> CGSize {
+        let width = calculateContentWidth(listView)
+
+        return CollectibleDetailCreatorAccountItemCell.calculatePreferredSize(
+            item.viewModel,
+            for: CollectibleDetailCreatorAccountItemCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+    }
 
     private func listView(
         _ listView: UICollectionView,
@@ -341,20 +400,6 @@ extension CollectibleDetailLayout {
             item,
             for: CollectiblePropertyCell.theme,
             fittingIn: CGSize((width, Self.theme.propertyHeight))
-        )
-    }
-
-    private func listView(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForExternalSourceItem item: CollectibleExternalSourceViewModel
-    ) -> CGSize {
-        let width = calculateContentWidth(listView)
-
-        return CollectibleExternalSourceCell.calculatePreferredSize(
-            item,
-            for: CollectibleExternalSourceCell.theme,
-            fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
     }
 }

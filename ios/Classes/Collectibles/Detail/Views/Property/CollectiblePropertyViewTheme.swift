@@ -19,11 +19,9 @@ import MacaroonUIKit
 struct CollectiblePropertyViewTheme:
     StyleSheet,
     LayoutSheet {
+    let background: ImageStyle
     let name: TextStyle
     let value: TextStyle
-    let corner: Corner
-    let border: Border
-
     let horizontalInset: LayoutMetric
     let verticallInset: LayoutMetric
     let labelPadding: LayoutMetric
@@ -31,22 +29,19 @@ struct CollectiblePropertyViewTheme:
     init(
         _ family: LayoutFamily
     ) {
+        self.background = [
+            .image("property-bg")
+        ]
         self.name = [
             .textOverflow(SingleLineText()),
             .textAlignment(.left),
-            .textColor(Colors.Text.gray)
+            .textColor(Colors.Text.grayLighter)
         ]
         self.value = [
             .textOverflow(SingleLineText()),
             .textAlignment(.left),
             .textColor(Colors.Text.main)
         ]
-        self.corner = Corner(radius: 8)
-        self.border = Border(
-            color: Colors.Layer.grayLighter.uiColor,
-            width: 2
-        )
-
         self.horizontalInset = 16
         self.verticallInset = 8
         self.labelPadding = 4

@@ -59,20 +59,32 @@ extension SelectAssetViewControllerListLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        if let item = listDataSource[indexPath] {
+        let itemIdentifier = listDataSource.itemIdentifier(for: indexPath)
+
+        switch itemIdentifier {
+        case .asset(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForAssetItem: item,
+                sizeForAssetListItem: item,
                 atSection: indexPath.section
             )
-        } else {
+        case .collectibleAsset(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForLoadingItemAtSection: indexPath.section
+                sizeForCollectibleAssetListItem: item,
+                atSection: indexPath.section
             )
+        default:
+            break
         }
+        
+        return listView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForLoadingItemAtSection: indexPath.section
+        )
     }
 }
 
@@ -92,7 +104,7 @@ extension SelectAssetViewControllerListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetItem item: SelectAssetListItem,
+        sizeForAssetListItem item: SelectAssetListItem,
         atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = AssetListItemCell.reuseIdentifier
@@ -108,6 +120,33 @@ extension SelectAssetViewControllerListLayout {
         let newSize = AssetListItemCell.calculatePreferredSize(
             item.viewModel,
             for: AssetListItemCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForCollectibleAssetListItem item: SelectCollectibleAssetListItem,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = CollectibleListItemCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = CollectibleListItemCell.calculatePreferredSize(
+            item.viewModel,
+            for: CollectibleListItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

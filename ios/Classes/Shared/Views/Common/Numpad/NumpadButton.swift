@@ -20,7 +20,7 @@ import MacaroonUIKit
 import MacaroonUtils
 import Foundation
 
-final class NumpadButton: UIButton, ViewComposable {
+final class NumpadButton: UIButton {
     override var intrinsicContentSize: CGSize {
         return CGSize(theme.size)
     }
@@ -62,9 +62,9 @@ final class NumpadButton: UIButton, ViewComposable {
         }
     }
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    func customizeAppearance(_ styleSheet: NumpadButtonViewTheme) {}
 
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    func prepareLayout(_ layoutSheet: NumpadButtonViewTheme) {}
 }
 
 extension NumpadButton {

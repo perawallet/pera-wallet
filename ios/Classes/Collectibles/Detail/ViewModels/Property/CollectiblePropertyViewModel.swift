@@ -41,7 +41,7 @@ extension CollectiblePropertyViewModel {
 
         name = .attributedString(
             aName
-                .captionRegular(
+                .captionMedium(
                     lineBreakMode: .byTruncatingTail
                 )
         )
@@ -56,7 +56,7 @@ extension CollectiblePropertyViewModel {
 
         value = .attributedString(
             aValue
-                .bodyRegular(
+                .footnoteRegular(
                     lineBreakMode: .byTruncatingTail
                 )
         )

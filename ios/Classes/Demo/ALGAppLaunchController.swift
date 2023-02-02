@@ -284,8 +284,11 @@ extension ALGAppLaunchController {
                 forRemoteNotificationWithUserInfo: userInfo,
                 waitForUserConfirmation: waitForUserConfirmation
             )
-        case .walletConnectSessionRequest(let url):
-            result = determineUIStateIfPossible(forWalletConnectSessionRequest: url)
+        case let .walletConnectSessionRequest(url, prefersConnectionApproval):
+            result = determineUIStateIfPossible(
+                forWalletConnectSessionRequest: url,
+                prefersConnectionApproval: prefersConnectionApproval
+            )
         case .walletConnectRequest(let draft):
             result = determineUIStateIfPossible(forWalletConnectRequest: draft)
         case .buyAlgo(let draft):
@@ -372,16 +375,25 @@ extension ALGAppLaunchController {
     }
     
     private func determineUIStateIfPossible(
-        forWalletConnectSessionRequest request: URL
+        forWalletConnectSessionRequest request: URL,
+        prefersConnectionApproval: Bool
     ) -> DeeplinkResult {
         let parserResult = deeplinkParser.discover(walletConnectSessionRequest: request)
         
         switch parserResult {
-        case .none: return nil
-        case .success(let key): return .success(.walletConnectSessionRequest(key))
-        case .failure(let error): return .failure(error)
+        case .none:
+            return nil
+        case .success(let session):
+            let preferences = WalletConnectorPreferences(
+                session: session,
+                prefersConnectionApproval: prefersConnectionApproval
+            )
+            return .success(.walletConnectSessionRequest(preferences))
+        case .failure(let error):
+            return .failure(error)
         }
     }
+
     
     private func determineUIStateIfPossible(
         forWalletConnectRequest draft: WalletConnectRequestDraft

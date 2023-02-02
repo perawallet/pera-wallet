@@ -19,4 +19,5 @@ import Foundation
 struct BlockchainAccountBatchUpdates {
     var optedInAssets: Set<AssetID> = []
     var optedOutAssets: Set<AssetID> = []
+    var sentPureCollectibleAssets: Set<AssetID> = []
 }

@@ -38,11 +38,27 @@ final class CollectibleMediaImagePreviewCell:
     override func setListeners() {
         contextView.handlers.didLoadImage = {
             [weak self] image in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
             self.handlers.didLoadImage?(image)
+        }
+        contextView.handlers.didTap3DModeAction = {
+            [weak self] in
+            guard let self else {
+                return
+            }
+
+            self.handlers.didTap3DModeAction?()
+        }
+        contextView.handlers.didTapFullScreenAction = {
+            [weak self] in
+            guard let self else {
+                return
+            }
+
+            self.handlers.didTapFullScreenAction?()
         }
     }
 }
@@ -50,5 +66,7 @@ final class CollectibleMediaImagePreviewCell:
 extension CollectibleMediaImagePreviewCell {
     struct Handlers {
         var didLoadImage: ((UIImage) -> Void)?
+        var didTap3DModeAction: (() -> Void)?
+        var didTapFullScreenAction: (() -> Void)?
     }
 }

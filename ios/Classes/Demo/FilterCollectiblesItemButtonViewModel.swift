@@ -23,8 +23,8 @@ struct FilterCollectiblesItemButtonViewModel: ListItemButtonViewModel {
     let subtitle: EditText?
 
     init() {
-        icon = "icon-collectibles-filter"
-        title = Self.getTitle("opitons-collectibles-filter".localized)
+        icon = "icon-asset-filter"
+        title = Self.getTitle("filter".localized)
         subtitle = nil
     }
 }

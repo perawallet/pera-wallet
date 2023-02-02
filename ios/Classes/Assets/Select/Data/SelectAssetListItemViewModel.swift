@@ -29,8 +29,6 @@ struct SelectAssetListItemViewModel:
     var secondaryValue: TextProvider?
     var asset: Asset?
 
-    private(set) var valueInUSD: Decimal?
-
     init(
         item: AssetItem,
         account: Account
@@ -99,18 +97,7 @@ extension SelectAssetListItemViewModel {
             .setImageQuality(.normal)
             .build()
 
-        let title = asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
-        : asset.naming.name
-
-        let placeholderText = TextFormatter.assetShortName.format(title)
-        let placeholder = Self.getPlaceholder(
-            placeholderText,
-            with: TextAttributes(
-                font: Fonts.DMSans.regular.make(13),
-                lineHeightMultiplier: 1.18
-            )
-        )
+        let placeholder = getPlaceholder(asset)
 
         imageSource = PNGImageSource(
             url: url,
@@ -159,11 +146,9 @@ extension SelectAssetListItemViewModel {
 
         if !account.isOptedIn(to: asset.id) {
             secondaryValue = nil
-            valueInUSD = 0
             return
         }
 
-        valueInUSD = asset.totalUSDValue ?? 0
         let formatter = item.currencyFormatter
         formatter.formattingContext = item.currencyFormattingContext ?? .listItem
 
@@ -172,18 +157,15 @@ extension SelectAssetListItemViewModel {
             if asset.isAlgo {
                 guard let fiatRawCurrency = try item.currency.fiatValue?.unwrap() else {
                     secondaryValue = nil
-                    valueInUSD = 0
                     return
                 }
 
                 exchanger = CurrencyExchanger(currency: fiatRawCurrency)
-                valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
 
                 formatter.currency = fiatRawCurrency
             } else {
                 guard let currencyValue = item.currency.primaryValue else {
                     secondaryValue = nil
-                    valueInUSD = 0
                     return
                 }
 
@@ -207,39 +189,38 @@ extension SelectAssetListItemViewModel {
             )
         } catch {
             secondaryValue = nil
-            valueInUSD = 0
         }
     }
 }
 
 extension SelectAssetListItemViewModel {
-    static func getPlaceholder(
-        _ aPlaceholder: String?,
-        with attributes: TextAttributes
+    func getPlaceholder(
+        _ asset: Asset
     ) -> ImagePlaceholder? {
+        let title = asset.naming.name.isNilOrEmpty
+            ? "title-unknown".localized
+        : asset.naming.name
+
+        let aPlaceholder = TextFormatter.assetShortName.format(title)
+
         guard let aPlaceholder = aPlaceholder else {
             return nil
         }
 
-        let font = attributes.font
-        let lineHeightMultiplier = attributes.lineHeightMultiplier
-
+        let isCollectible = asset is CollectibleAsset
+        let placeholderImage =
+            isCollectible ?
+            "placeholder-bg".uiImage :
+            "asset-image-placeholder-border".uiImage
         let placeholderText: EditText = .attributedString(
-            aPlaceholder.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.center),
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aPlaceholder
+                .footnoteRegular(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
         )
-
         return ImagePlaceholder(
-            image: AssetImageSource(
-                asset: "asset-image-placeholder-border".uiImage
-            ),
+            image: .init(asset: placeholderImage),
             text: placeholderText
         )
     }

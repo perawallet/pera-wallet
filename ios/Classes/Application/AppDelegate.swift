@@ -363,12 +363,12 @@ extension AppDelegate {
             }
         case .deeplink(let screen):
             router.launch(deeplink: screen)
-        case .walletConnectSessionRequest(let key):
+        case .walletConnectSessionRequest(let preferences):
             NotificationCenter.default.post(
                 name: WalletConnector.didReceiveSessionRequestNotification,
                 object: nil,
                 userInfo: [
-                    WalletConnector.sessionRequestUserInfoKey: key
+                    WalletConnector.sessionRequestPreferencesKey: preferences
                 ]
             )
         case .bottomWarning(let configurator):
@@ -409,6 +409,11 @@ extension AppDelegate {
             for update in optedOutUpdates {
                 bannerController.presentSuccessBanner(title: update.notificationMessage)
                 monitor.finishMonitoringOptOutUpdates(associatedWith: update)
+            }
+
+            let sentPureCollectibleAssetUpdates = monitor.filterSentPureCollectibleAssetUpdates()
+            for update in sentPureCollectibleAssetUpdates {
+                monitor.finishMonitoringSendPureCollectibleAssetUpdates(associatedWith: update)
             }
         }
     }

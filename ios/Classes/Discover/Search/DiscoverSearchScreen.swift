@@ -332,7 +332,7 @@ extension DiscoverSearchScreen {
 
         for cell in listView.visibleCells {
             if let listLoadingCell = cell as? DiscoverSearchListLoadingCell {
-                listLoadingCell.restartAnimating()
+                listLoadingCell.startAnimating()
                 break
             }
 

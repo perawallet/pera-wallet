@@ -77,6 +77,13 @@ extension ManageAssetsListLayout {
                 sizeForAssetCellItem: item,
                 forSectionAt: indexPath.section
             )
+        case .collectibleAsset(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForCollectibleAssetCellItem: item,
+                forSectionAt: indexPath.section
+            )
         case .empty(let item):
             return sizeForNoContent(
                 collectionView,
@@ -106,7 +113,35 @@ extension ManageAssetsListLayout {
         let newSize = OptOutAssetListItemCell.calculatePreferredSize(
             item.viewModel,
             for: OptOutAssetListItemCell.theme,
-            fittingIn:maxSize
+            fittingIn: maxSize
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForCollectibleAssetCellItem item: OptOutCollectibleAssetListItem,
+        forSectionAt section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = OptOutCollectibleAssetListItemCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let newSize = OptOutCollectibleAssetListItemCell.calculatePreferredSize(
+            item.viewModel,
+            for: OptOutCollectibleAssetListItemCell.theme.context,
+            fittingIn: maxSize
         )
 
         sizeCache[sizeCacheIdentifier] = newSize

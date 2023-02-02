@@ -31,7 +31,7 @@ final class ReceiveCollectibleAssetListDataSource:
                 switch item {
                 case .loading:
                     return collectionView.dequeue(
-                        PreviewLoadingCell.self,
+                        CollectibleListItemLoadingCell.self,
                         at: indexPath
                     )
                 case .noContent:
@@ -67,7 +67,7 @@ final class ReceiveCollectibleAssetListDataSource:
         }
 
         [
-            PreviewLoadingCell.self,
+            CollectibleListItemLoadingCell.self,
             NoContentCell.self,
             OptInAssetListItemCell.self,
             ReceiveCollectibleInfoBoxCell.self,

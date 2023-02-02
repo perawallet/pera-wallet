@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "customize.pdf",
+      "filename" : "icon-asset-filter.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "customize-dark.pdf",
+      "filename" : "icon-asset-filter-dark.pdf",
       "idiom" : "universal"
     }
   ],

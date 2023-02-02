@@ -44,6 +44,7 @@ final class ASAAboutScreen:
     private lazy var transitionToTotalSupply = BottomSheetTransition(presentingViewController: self)
 
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var amountFormatter = CollectibleAmountFormatter()
     private lazy var mailComposer = MailComposer()
 
     private var asset: Asset
@@ -211,7 +212,8 @@ extension ASAAboutScreen {
         let viewModel = AssetStatisticsSectionViewModel(
             asset: asset,
             currency: sharedDataController.currency,
-            currencyFormatter: currencyFormatter
+            currencyFormatter: currencyFormatter,
+            amountFormatter: amountFormatter
         )
         statisticsView.bindData(viewModel)
 
@@ -434,6 +436,8 @@ extension ASAAboutScreen {
         )
 
         bindDescriptionData()
+
+        descriptionView.delegate = self
     }
 
     private func bindDescriptionData() {
@@ -556,6 +560,12 @@ extension ASAAboutScreen {
         mailComposer.delegate = self
         mailComposer.configureMail(for: .report(assetId: asset.id))
         mailComposer.present(from: self)
+    }
+}
+
+extension ASAAboutScreen: ShowMoreViewDelegate {
+    func showMoreViewDidTapURL(_ view: ShowMoreView, url: URL) {
+        open(url)
     }
 }
 

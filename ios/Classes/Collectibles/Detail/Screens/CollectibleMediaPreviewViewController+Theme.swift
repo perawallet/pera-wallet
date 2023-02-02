@@ -23,8 +23,6 @@ extension CollectibleMediaPreviewViewController {
         let cellSpacing: LayoutMetric
         let horizontalInset: LayoutMetric
         let pageControlScale: LayoutMetric
-        let tap3DActionViewTopPadding: LayoutMetric
-        let tap3DActionView: ButtonStyle
 
         init(
             _ family: LayoutFamily
@@ -32,22 +30,6 @@ extension CollectibleMediaPreviewViewController {
             self.cellSpacing = 12
             self.horizontalInset = 24
             self.pageControlScale = 0.5
-            self.tap3DActionViewTopPadding = 16
-            self.tap3DActionView = [
-                .icon([.normal("icon-3d"), .highlighted("icon-3d")]),
-                .titleColor([ .normal(Colors.Text.grayLighter) ]),
-                .title(Self.getTitle())
-            ]
         }
-    }
-}
-
-extension CollectibleMediaPreviewViewController.Theme {
-    private static func getTitle() -> EditText {
-        return .attributedString(
-            "collectible-detail-tap-3D"
-                .localized
-                .footnoteMedium()
-        )
     }
 }

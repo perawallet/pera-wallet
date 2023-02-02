@@ -185,14 +185,14 @@ final class HomeViewController:
         _ animated: Bool
     ) {
         super.viewWillAppear(animated)
+
+        startAnimatingLoadingIfNeededWhenViewWillAppear()
+
         switchToHighlightedNavigationBarAppearance()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
-        loadingCell?.restartAnimating()
 
         if isViewFirstAppeared {
             presentPasscodeFlowIfNeeded()
@@ -215,9 +215,7 @@ final class HomeViewController:
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
-        loadingCell?.stopAnimating()
+        stopAnimatingLoadingIfNeededWhenViewDidDisappear()
     }
 
     override func linkInteractors() {
@@ -233,6 +231,20 @@ final class HomeViewController:
 
             self.configureNewNotificationBarButton()
         }
+    }
+}
+
+extension HomeViewController {
+    private func startAnimatingLoadingIfNeededWhenViewWillAppear() {
+        if isViewFirstAppeared { return }
+
+        let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
+        loadingCell?.startAnimating()
+    }
+
+    private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
+        let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
+        loadingCell?.stopAnimating()
     }
 }
 
@@ -485,6 +497,7 @@ extension HomeViewController {
         cell.startObserving(event: .action) {
             [weak self] in
             guard let self = self else { return }
+
             self.triggerBannerCTA(item: item)
 
             self.analytics.track(.recordHomeScreen(type: .visitGovernance))
@@ -549,10 +562,17 @@ extension HomeViewController {
     private func triggerBannerCTA(item: AnnouncementViewModel) {
         if let url = item.ctaUrl {
             let title = item.title
-            let dappDetail = DiscoverDappParamaters(name: title, url: url.absoluteString)
+            let dappDetail = DiscoverDappParamaters(
+                name: title,
+                url: url.absoluteString,
+                favorites: nil
+            )
 
             self.open(
-                .discoverDappDetail(dappDetail),
+                .discoverDappDetail(
+                    dappDetail,
+                    eventHandler: nil
+                ),
                 by: .push
             )
         }

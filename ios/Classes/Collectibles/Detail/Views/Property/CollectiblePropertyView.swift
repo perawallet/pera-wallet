@@ -21,6 +21,7 @@ final class CollectiblePropertyView:
     View,
     ListReusable,
     ViewModelBindable {
+    private lazy var backgroundView = UIImageView()
     private lazy var contentView = UIView()
     private lazy var nameLabel = Label()
     private lazy var valueLabel = Label()
@@ -28,10 +29,8 @@ final class CollectiblePropertyView:
     func customize(
         _ theme: CollectiblePropertyViewTheme
     ) {
-        layer.draw(border: theme.border)
-        layer.draw(corner: theme.corner)
-
-        addContentView(theme)
+        addBackground(theme)
+        addContent(theme)
     }
 
     func customizeAppearance(
@@ -44,18 +43,27 @@ final class CollectiblePropertyView:
 }
 
 extension CollectiblePropertyView {
-    private func addContentView(_ theme: CollectiblePropertyViewTheme) {
-        addSubview(contentView)
+    private func addBackground(_ theme: CollectiblePropertyViewTheme) {
+        backgroundView.customizeAppearance(theme.background)
+
+        addSubview(backgroundView)
+        backgroundView.snp.makeConstraints {
+            $0.edges == 0
+        }
+    }
+
+    private func addContent(_ theme: CollectiblePropertyViewTheme) {
+        backgroundView.addSubview(contentView)
         contentView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(theme.verticallInset)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
 
-        addNameLabel(theme)
-        addValueLabel(theme)
+        addName(theme)
+        addValue(theme)
     }
 
-    private func addNameLabel(_ theme: CollectiblePropertyViewTheme) {
+    private func addName(_ theme: CollectiblePropertyViewTheme) {
         nameLabel.customizeAppearance(theme.name)
 
         contentView.addSubview(nameLabel)
@@ -67,7 +75,7 @@ extension CollectiblePropertyView {
         }
     }
 
-    private func addValueLabel(_ theme: CollectiblePropertyViewTheme) {
+    private func addValue(_ theme: CollectiblePropertyViewTheme) {
         valueLabel.customizeAppearance(theme.value)
 
         contentView.addSubview(valueLabel)

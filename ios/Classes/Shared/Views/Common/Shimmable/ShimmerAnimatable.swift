@@ -24,7 +24,6 @@ protocol ShimmerAnimatable {
 
     func startAnimating()
     func stopAnimating()
-    func restartAnimating()
 
     func composeAnimationLayer() -> CAGradientLayer
     func composeAnimation() -> CABasicAnimation
@@ -42,7 +41,7 @@ extension ShimmerAnimatable where Self: UIView {
         layer.mask = gradientLayer
 
         let animation = composeAnimation()
-        gradientLayer.add(animation, forKey: animation.keyPath)
+        gradientLayer.add(animation, forKey: configuration.animationKey)
     }
 
     func stopAnimating() {
@@ -53,13 +52,8 @@ extension ShimmerAnimatable where Self: UIView {
         layer.mask = nil
     }
 
-    func restartAnimating() {
-        stopAnimating()
-        startAnimating()
-    }
-
     var isAnimating: Bool {
-        layer.mask != nil
+        return layer.animation(forKey: configuration.animationKey) != nil
     }
 
     func composeAnimationLayer() -> CAGradientLayer {

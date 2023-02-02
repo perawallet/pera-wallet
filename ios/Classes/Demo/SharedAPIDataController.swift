@@ -38,7 +38,7 @@ final class SharedAPIDataController:
     var selectedAccountAssetSortingAlgorithm: AccountAssetSortingAlgorithm? {
         didSet { cache.accountAssetSortingAlgorithmName = selectedAccountAssetSortingAlgorithm?.name }
     }
-
+    
     private(set) var accountCollection: AccountCollection = []
 
     private(set) var currency: CurrencyProvider
@@ -63,8 +63,8 @@ final class SharedAPIDataController:
     private(set) lazy var accountAssetSortingAlgorithms: [AccountAssetSortingAlgorithm] = [
         AccountAssetAscendingTitleAlgorithm(),
         AccountAssetDescendingTitleAlgorithm(),
-        AccountAssetDescendingAmountAlgorithm(),
-        AccountAssetAscendingAmountAlgorithm()
+        AccountAssetDescendingAmountAlgorithm(currency: currency),
+        AccountAssetAscendingAmountAlgorithm(currency: currency)
     ]
 
     private lazy var deviceRegistrationController = DeviceRegistrationController(
@@ -421,6 +421,13 @@ extension SharedAPIDataController {
 
         for assetID in blockchainUpdates.optedOutAssets {
             blockchainUpdatesMonitor.stopMonitoringOptOutUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
+        for assetID in blockchainUpdates.sentPureCollectibleAssets {
+            blockchainUpdatesMonitor.stopMonitoringSendPureCollectibleAssetUpdates(
                 forAssetID: assetID,
                 for: account
             )

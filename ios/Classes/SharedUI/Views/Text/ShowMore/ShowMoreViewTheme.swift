@@ -24,6 +24,7 @@ struct ShowMoreViewTheme:
     var title: TextStyle
     var spacingBetweenTitleAndBody: LayoutMetric
     var body: TextStyle
+    var bodyURLColor: Color
     var fullBodyOverflow: TextOverflow
     var truncatedBodyOverflow: TextOverflow
     var toggleTruncationAction: ButtonStyle
@@ -51,6 +52,7 @@ struct ShowMoreViewTheme:
             .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
+        self.bodyURLColor = Colors.Link.primary
         self.fullBodyOverflow = FittingText()
         self.truncatedBodyOverflow = MultilineText(numberOfLines: numberOfLinesLimit)
         self.toggleTruncationAction = [

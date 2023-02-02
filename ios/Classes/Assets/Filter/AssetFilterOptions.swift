@@ -21,7 +21,17 @@ struct AssetFilterOptions {
         get { cache.hideAssetsWithNoBalanceInAssetList }
         set { cache.hideAssetsWithNoBalanceInAssetList = newValue }
     }
-    
+
+    var displayCollectibleAssetsInAssetList: Bool {
+        get { cache.displayCollectibleAssetsInAssetList }
+        set { cache.displayCollectibleAssetsInAssetList = newValue }
+    }
+
+    var displayOptedInCollectibleAssetsInAssetList: Bool {
+        get { cache.displayOptedInCollectibleAssetsInAssetList }
+        set { cache.displayOptedInCollectibleAssetsInAssetList = newValue }
+    }
+
     private let cache: AssetFilterOptionsCache
     
     init(cache: AssetFilterOptionsCache = .init()) {

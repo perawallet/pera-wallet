@@ -286,7 +286,7 @@ extension AccountSelectScreen: QRScannerViewControllerDelegate {
 
 extension AccountSelectScreen: TransactionSendControllerDelegate {
     func transactionSendControllerDidValidate(_ controller: TransactionSendController) {
-        stopLoadingIfNeeded { [weak self] in
+        stopLoading { [weak self] in
             guard let self = self else {
                 return
             }
@@ -314,7 +314,7 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
         _ controller: TransactionSendController,
         didFailValidation error: TransactionSendControllerError
     ) {
-        stopLoadingIfNeeded { [weak self] in
+        stopLoading { [weak self] in
             guard let self = self else {
                 return
             }
@@ -374,12 +374,7 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
         }
     }
 
-    private func stopLoadingIfNeeded(execute: @escaping () -> Void) {
-        guard !draft.from.requiresLedgerConnection() else {
-            execute()
-            return
-        }
-
+    private func stopLoading(execute: @escaping () -> Void) {
         loadingController?.stopLoadingAfter(seconds: 0.3, on: .main) {
             execute()
         }

@@ -17,6 +17,9 @@
 import UIKit
 
 final class CollectibleDetailCollectionViewFlowLayout: UICollectionViewFlowLayout {
+    typealias SectionIdentifierProvider = (Int) -> CollectibleDetailSection?
+    var sectionIdentifierProvider: SectionIdentifierProvider?
+
     private let theme: CollectibleDetailLayout.Theme
 
     init(
@@ -39,8 +42,9 @@ final class CollectibleDetailCollectionViewFlowLayout: UICollectionViewFlowLayou
 
         /// <note> Filter attributes to compute only cell attributes & properties section
         let propertiesAttributes = attributes?.filter {
-            let section = CollectibleDetailSection(rawValue: $0.indexPath.section)
-            return section == .properties && $0.representedElementCategory == .cell
+            let section = $0.indexPath.section
+            let sectionIdentifier = sectionIdentifierProvider?(section)
+            return sectionIdentifier == .properties && $0.representedElementCategory == .cell
         }
 
         guard let propertiesAttributes = propertiesAttributes,

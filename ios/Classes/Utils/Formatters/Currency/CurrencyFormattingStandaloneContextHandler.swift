@@ -49,7 +49,11 @@ struct CurrencyFormattingStandaloneContextHandler: CurrencyFormattingContextHand
         _ rawNumber: NSDecimalNumber,
         for currency: LocalCurrency?
     ) -> CurrencyFormattingContextInput {
-        return rawNumber
+        if let currency = currency, !currency.isAlgo {
+            return makeInputForFiatCurrency(rawNumber)
+        } else {
+            return rawNumber
+        }
     }
 }
 
@@ -114,6 +118,21 @@ extension CurrencyFormattingStandaloneContextHandler {
 
         if let maximumFractionDigits = constraints.maximumFractionDigits {
             rules.maximumFractionDigits = maximumFractionDigits
+        }
+    }
+}
+
+extension CurrencyFormattingStandaloneContextHandler {
+    private func makeInputForFiatCurrency(
+        _ rawNumber: NSDecimalNumber
+    ) -> CurrencyFormattingContextInput {
+        let minNonZeroInput = FiatCurrencyMinimumNonZeroInput()
+        let minNonZeroValue = minNonZeroInput.number.decimalValue
+
+        switch abs(rawNumber.decimalValue) {
+        case 0: return rawNumber
+        case 0..<minNonZeroValue: return minNonZeroInput
+        default: return rawNumber
         }
     }
 }

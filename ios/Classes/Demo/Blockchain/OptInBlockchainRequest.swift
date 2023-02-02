@@ -24,6 +24,8 @@ struct OptInBlockchainRequest: BlockchainRequest {
     let assetVerificationTier: AssetVerificationTier
     let isCollectibleAsset: Bool
     let collectibleAssetTitle: String?
+    let collectibleAssetThumbnailImage: URL?
+    let collectibleAssetCollectionName: String?
 
     init(
         account: Account,
@@ -36,6 +38,8 @@ struct OptInBlockchainRequest: BlockchainRequest {
         self.assetVerificationTier = asset.verificationTier
         self.isCollectibleAsset = asset.collectible != nil
         self.collectibleAssetTitle = asset.collectible?.title
+        self.collectibleAssetThumbnailImage = asset.collectible?.thumbnailImage
+        self.collectibleAssetCollectionName = asset.collectible?.collection?.name
     }
 
     init(
@@ -50,5 +54,7 @@ struct OptInBlockchainRequest: BlockchainRequest {
         let collectibleAsset = asset as? CollectibleAsset
         self.isCollectibleAsset = collectibleAsset != nil
         self.collectibleAssetTitle = collectibleAsset?.title
+        self.collectibleAssetThumbnailImage = collectibleAsset?.thumbnailImage
+        self.collectibleAssetCollectionName = collectibleAsset?.collection?.name
     }
 }

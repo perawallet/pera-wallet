@@ -19,6 +19,7 @@ import MacaroonUIKit
 
 struct UISheetActionScreenImageTheme:
     UISheetActionScreenTheme {
+    let background: ViewStyle
     let contextEdgeInsets: LayoutPaddings
     let image: ImageStyle
     let imageLayoutOffset: LayoutOffset
@@ -32,6 +33,9 @@ struct UISheetActionScreenImageTheme:
     init(
         _ family: LayoutFamily
     ) {
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
         self.contextEdgeInsets = (32, 24, 24, 24)
         self.image = [
             .contentMode(.top)

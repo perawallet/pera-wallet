@@ -30,6 +30,10 @@ struct DiscoverDappDetailNavigationViewModel: ViewModel {
     init(_ model: DiscoverDappParamaters) {
         bind(model)
     }
+    
+    init(title: String?, subtitle: String?) {
+        bind(title, subtitle)
+    }
 }
 
 extension DiscoverDappDetailNavigationViewModel {
@@ -41,6 +45,11 @@ extension DiscoverDappDetailNavigationViewModel {
     mutating func bind(_ model: DiscoverDappParamaters) {
         bindTitle(model)
         bindSubtitle(model)
+    }
+    
+    mutating func bind(_ title: String?, _ subtitle: String?) {
+        bindTitle(title)
+        bindSubtitle(subtitle)
     }
 }
 
@@ -62,6 +71,13 @@ extension DiscoverDappDetailNavigationViewModel {
             lineBreakMode: .byTruncatingTail
         )
     }
+    
+    mutating func bindTitle(_ item: String?) {
+        self.title = item?.bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
 
     mutating func bindSubtitle(_ item: WKBackForwardListItem) {
         let subtitle = item.url.presentationString
@@ -76,6 +92,13 @@ extension DiscoverDappDetailNavigationViewModel {
         let subtitle = URL(string: item.url)?.presentationString
 
         self.subtitle = subtitle?.captionMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
+        )
+    }
+    
+    mutating func bindSubtitle(_ item: String?) {
+        self.subtitle = item?.captionMedium(
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )

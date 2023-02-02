@@ -40,7 +40,7 @@ final class SearchInputView:
         )
     }
 
-    private lazy var textInputBackgroundView = BaseView()
+    private lazy var textInputBackgroundView = MacaroonUIKit.BaseView()
     private lazy var textInputView = TextField()
     private lazy var textLeftInputAccessoryView = UIImageView()
     private lazy var textRightInputAccessoryView = UIButton()
@@ -133,7 +133,7 @@ extension SearchInputView {
         textInputBackgroundView.customizeAppearance(
             theme.textInputBackground
         )
-        textInputBackgroundView.layer.draw(corner: theme.textInputBackgroundRadius)
+        textInputBackgroundView.draw(corner: theme.textInputBackgroundRadius)
     }
 
     private func customizeTextInputAppearance(_ theme: SearchInputViewTheme) {

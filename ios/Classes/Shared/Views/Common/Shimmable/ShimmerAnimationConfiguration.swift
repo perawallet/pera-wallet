@@ -60,6 +60,7 @@ struct ShimmerAnimationConfiguration {
     }
     
     struct Animation {
+        let animationKey: String = "animation.key.shimmer"
         let keyPath = #keyPath(CAGradientLayer.locations)
         let fromValue = [-1, -0.5, 0]
         let toValue = [1, 1.5, 2]

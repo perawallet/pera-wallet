@@ -25,7 +25,8 @@ struct AssetStatisticsSectionViewModel: ViewModel {
     init(
         asset: Asset,
         currency: CurrencyProvider,
-        currencyFormatter: CurrencyFormatter
+        currencyFormatter: CurrencyFormatter,
+        amountFormatter: CollectibleAmountFormatter
     ) {
         bindTitle()
         bindPrice(
@@ -35,7 +36,7 @@ struct AssetStatisticsSectionViewModel: ViewModel {
         )
         bindTotalSupply(
             asset: asset,
-            currencyFormatter: currencyFormatter
+            amountFormatter: amountFormatter
         )
     }
 }
@@ -62,11 +63,11 @@ extension AssetStatisticsSectionViewModel {
 
     mutating func bindTotalSupply(
         asset: Asset,
-        currencyFormatter: CurrencyFormatter
+        amountFormatter: CollectibleAmountFormatter
     ) {
         totalSupply = AssetStatisticsSectionTotalSupplyViewModel(
             asset: asset,
-            currencyFormatter: currencyFormatter
+            amountFormatter: amountFormatter
         )
     }
 }

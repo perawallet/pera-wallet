@@ -17,9 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-struct AssetNameViewModel:
-    PrimaryTitleViewModel,
-    Hashable {
+struct AssetNameViewModel: PrimaryTitleViewModel {
     var primaryTitle: TextProvider?
     var primaryTitleAccessory: Image?
     var secondaryTitle: TextProvider?
@@ -31,48 +29,104 @@ struct AssetNameViewModel:
         bindPrimaryTitleAccessory(asset)
         bindSecondaryTitle(asset)
     }
+
+    init(update: OptInBlockchainUpdate) {
+        bindPrimaryTitle(update: update)
+        bindPrimaryTitleAccessory(update: update)
+        bindSecondaryTitle(update: update)
+    }
+
+    init(update: OptOutBlockchainUpdate) {
+        bindPrimaryTitle(update: update)
+        bindPrimaryTitleAccessory(update: update)
+        bindSecondaryTitle(update: update)
+    }
 }
 
 extension AssetNameViewModel {
     mutating func bindPrimaryTitle(
         _ asset: Asset
     ) {
-        let aTitle: String
-        if let name = asset.naming.name.unwrap(where: { !$0.isEmpty }) {
-            aTitle = name
-        } else {
-            aTitle = "title-unknown".localized
-        }
-
-        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
-
-        if asset.verificationTier.isSuspicious {
-            attributes.insert(.textColor(Colors.Helpers.negative))
-        } else {
-            attributes.insert(.textColor(Colors.Text.main))
-        }
-
-        primaryTitle = aTitle.attributed(attributes)
+        primaryTitle = getPrimaryTitle(
+            assetName: asset.naming.name,
+            assetVerificationTier: asset.verificationTier
+        )
     }
 
     mutating func bindPrimaryTitleAccessory(
         _ asset: Asset
     ) {
-        switch asset.verificationTier {
-        case .trusted: primaryTitleAccessory = "icon-trusted"
-        case .verified: primaryTitleAccessory = "icon-verified"
-        case .unverified: primaryTitleAccessory = nil
-        case .suspicious: primaryTitleAccessory = "icon-suspicious"
-        }
+        primaryTitleAccessory = getPrimaryTitleAccessory(asset.verificationTier)
     }
 
     mutating func bindSecondaryTitle(
         _ asset: Asset
     ) {
-        guard let unitName = asset.naming.unitName else {
-            return
+        secondaryTitle = getSecondaryTitle(asset.naming.unitName)
+    }
+}
+
+extension AssetNameViewModel {
+    mutating func bindPrimaryTitle(update: OptInBlockchainUpdate) {
+        primaryTitle = getPrimaryTitle(
+            assetName: update.assetName,
+            assetVerificationTier: update.assetVerificationTier
+        )
+    }
+
+    mutating func bindPrimaryTitleAccessory(update: OptInBlockchainUpdate) {
+        primaryTitleAccessory = getPrimaryTitleAccessory(update.assetVerificationTier)
+    }
+
+    mutating func bindSecondaryTitle(update: OptInBlockchainUpdate) {
+        secondaryTitle = getSecondaryTitle(update.assetUnitName)
+    }
+}
+
+extension AssetNameViewModel {
+    mutating func bindPrimaryTitle(update: OptOutBlockchainUpdate) {
+        primaryTitle = getPrimaryTitle(
+            assetName: update.assetName,
+            assetVerificationTier: update.assetVerificationTier
+        )
+    }
+
+    mutating func bindPrimaryTitleAccessory(update: OptOutBlockchainUpdate) {
+        primaryTitleAccessory = getPrimaryTitleAccessory(update.assetVerificationTier)
+    }
+
+    mutating func bindSecondaryTitle(update: OptOutBlockchainUpdate) {
+        secondaryTitle = getSecondaryTitle(update.assetUnitName)
+    }
+}
+
+extension AssetNameViewModel {
+    private func getPrimaryTitle(
+        assetName: String?,
+        assetVerificationTier: AssetVerificationTier
+    ) -> TextProvider {
+        let title = assetName.unwrapNonEmptyString() ?? "title-unknown".localized
+
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
+        if assetVerificationTier.isSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        } else {
+            attributes.insert(.textColor(Colors.Text.main))
         }
 
-        secondaryTitle = unitName.footnoteRegular(lineBreakMode: .byTruncatingTail)
+        return title.attributed(attributes)
+    }
+
+    private func getPrimaryTitleAccessory(_ assetVerificationTier: AssetVerificationTier) -> Image? {
+        switch assetVerificationTier {
+        case .trusted: return "icon-trusted"
+        case .verified: return  "icon-verified"
+        case .unverified: return nil
+        case .suspicious: return "icon-suspicious"
+        }
+    }
+
+    private func getSecondaryTitle(_ assetUnitName: String?) -> TextProvider? {
+        return assetUnitName?.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

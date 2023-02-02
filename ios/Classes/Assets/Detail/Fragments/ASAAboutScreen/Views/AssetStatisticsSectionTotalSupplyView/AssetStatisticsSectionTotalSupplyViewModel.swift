@@ -24,13 +24,13 @@ struct AssetStatisticsSectionTotalSupplyViewModel: PrimaryTitleViewModel {
 
     init(
         asset: Asset,
-        currencyFormatter: CurrencyFormatter
+        amountFormatter: CollectibleAmountFormatter
     ) {
         bindTitle()
         bindIcon()
         bindSubtitle(
             asset: asset,
-            currencyFormatter: currencyFormatter
+            amountFormatter: amountFormatter
         )
     }
 }
@@ -50,23 +50,16 @@ extension AssetStatisticsSectionTotalSupplyViewModel {
 
     mutating func bindSubtitle(
         asset: Asset,
-        currencyFormatter: CurrencyFormatter
+        amountFormatter: CollectibleAmountFormatter
     ) {
-        guard let microTotalSupply = asset.total.unwrap(Decimal.init) else {
+        guard let totalSupply = asset.totalSupply else {
             bindSubtitle(text: nil)
             return
         }
 
-        /// totalSupply = total * 10^-(decimals)
-        let decimals = asset.decimals
-        let totalSupply = Decimal(sign: .plus, exponent: -decimals, significand: microTotalSupply)
+        amountFormatter.formattingContext = .listItem
 
-        /// <note>
-        /// The total supply isn't a value based on any currency.
-        currencyFormatter.formattingContext = .listItem
-        currencyFormatter.currency = nil
-
-        let text = currencyFormatter.format(totalSupply)
+        let text = amountFormatter.format(totalSupply)
         bindSubtitle(text: text)
     }
 

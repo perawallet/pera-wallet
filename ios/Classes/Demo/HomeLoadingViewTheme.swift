@@ -40,7 +40,9 @@ struct HomeLoadingViewTheme:
     var spacingBetweenAccountsHeaderAndPortfolio: LayoutMetric
     var accountsContentEdgeInsets: NSDirectionalEdgeInsets
     var account: PreviewLoadingViewTheme
+    var accountSeparator: Separator
     var accountHeight: LayoutMetric
+    var numberOfAccounts: Int
 
     init(
         _ family: LayoutFamily
@@ -72,5 +74,11 @@ struct HomeLoadingViewTheme:
         self.accountsContentEdgeInsets = .init(top: 8, leading: 0, bottom: 24, trailing: 0)
         self.account = PreviewLoadingViewCommonTheme()
         self.accountHeight = 76
+        self.accountSeparator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((56, 0))
+        )
+        self.numberOfAccounts = 6
     }
 }

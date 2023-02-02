@@ -21,6 +21,8 @@ import UIKit
 struct AssetListItemTheme: PrimaryListItemViewTheme {
     let icon: URLImageViewStyleLayoutSheet
     let iconSize: LayoutSize
+    let loadingIndicator: ImageStyle
+    let loadingIndicatorSize: LayoutSize
     let contentHorizontalPadding: LayoutMetric
     let contentMinWidthRatio: LayoutMetric
     let title: PrimaryTitleViewTheme
@@ -33,6 +35,11 @@ struct AssetListItemTheme: PrimaryListItemViewTheme {
     ) {
         self.icon = URLImageViewAssetTheme()
         self.iconSize = (40, 40)
+        self.loadingIndicator = [
+            .image("loading-indicator"),
+            .contentMode(.scaleAspectFit)
+        ]
+        self.loadingIndicatorSize = (16, 16)
         self.contentHorizontalPadding = 16
         self.contentMinWidthRatio = 0.25
         self.title = AssetNameViewTheme()

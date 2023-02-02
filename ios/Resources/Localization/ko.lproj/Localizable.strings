@@ -113,7 +113,7 @@
 "accounts-title" = "계정";
 
 /* (No Comment) */
-"accounts-title-collectibles" = "수집품";
+"accounts-title-collectibles" = "NFTs";
 
 /* (No Comment) */
 "accounts-title-history" = "내역";
@@ -242,7 +242,16 @@
 "asset-detail-id-title" = "ID %@";
 
 /* (No Comment) */
-"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance.";
+"asset-detail-markets-title" = "Markets";
+
+/* (No Comment) */
+"asset-filter-selection-display-collectible-assets-filter-description" = "NFTs assets will be shown in the asset list of your account";
+
+/* (No Comment) */
+"asset-filter-selection-display-collectible-assets-filter-title" = "Display NFTs in asset list";
+
+/* (No Comment) */
+"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance";
 
 /* (No Comment) */
 "asset-filter-selection-toggle-title" = "Hide assets with no balance";
@@ -482,15 +491,12 @@
 "collectible-detail-algo-explorer" = "Algoexplorer에서 보기";
 
 /* (No Comment) */
-"collectible-detail-collection-name" = "컬렉션 이름";
-
-/* (No Comment) */
-"collectible-detail-creator-address" = "크리에이터 지갑 주소";
+"collectible-detail-creator-account" = "Creator Account";
 
 /* (No Comment) */
 "collectible-detail-creator-name" = "크리에이터 이름";
 
-/* (No Comment) */
+/* MARK: Collectible Detail */
 "collectible-detail-description" = "설명";
 
 /* (No Comment) */
@@ -526,20 +532,23 @@
 /* (No Comment) */
 "collectible-detail-properties" = "속성";
 
-/* MARK: Collectible Detail */
-"collectible-detail-share" = "공유";
-
 /* (No Comment) */
 "collectible-detail-show-on" = "보기:";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "3D 카드 모드";
+"collectible-detail-tap-3D" = "3D mode";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "트랜잭션 보기";
 
+/* (No Comment) */
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
+
+/* (No Comment) */
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
+
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "필터";
+"collectible-filter-selection-title" = "Filter NFTs";
 
 /* (No Comment) */
 "collectible-filter-selection-toggle-description" = "옵트인되었지만 소유하지 않은 NFT를 표시하거나 숨길 수 있습니다.";
@@ -620,7 +629,7 @@
 "collectibles-empty-secondary-action-title" = "숨겨진 NFT 표시(%@)";
 
 /* MARK: Collectible Common */
-"collectibles-empty-title" = "수집품";
+"collectibles-empty-title" = "NFTs";
 
 /* (No Comment) */
 "collectibles-list-input-placeholder" = "NFT 검색";
@@ -721,6 +730,9 @@
 /* (No Comment) */
 "discover-error-fallback-body" = "현재 정보를 가져올 수 없습니다.";
 
+/* (No Comment) */
+"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+
 /* MARK: Discover */
 "discover-search-input-placeholder" = "전체 ASA에서 검색";
 
@@ -786,6 +798,9 @@
 
 /* (No Comment) */
 "feedback-title-note" = "참조";
+
+/* (No Comment) */
+"filter" = "Filter";
 
 /* (No Comment) */
 "governance-banner-action" = "시작";
@@ -1243,7 +1258,7 @@
 /* (No Comment) */
 "number-abbreviation-billion" = "십억";
 
-/* MARK: Number Abbreviation */
+/* (No Comment) */
 "number-abbreviation-million" = "백만";
 
 /* (No Comment) */
@@ -1251,6 +1266,9 @@
 
 /* (No Comment) */
 "number-abbreviation-quintillion" = "100경";
+
+/* MARK: Number Abbreviation */
+"number-abbreviation-thousand" = "K";
 
 /* (No Comment) */
 "number-abbreviation-trillion" = "조";
@@ -1260,9 +1278,6 @@
 
 /* (No Comment) */
 "ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";
-
-/* (No Comment) */
-"opitons-collectibles-filter" = "NFT 필터링";
 
 /* (No Comment) */
 "opt-in-description-adding-nft" = "NFT 옵트인 시 최소 트랜잭션 수수료의 트랜잭션을 전송해야 합니다. 해당 정보는 트랜잭션 내역에 표시됩니다.";
@@ -1283,7 +1298,7 @@
 "options-manage-assets" = "자산 관리";
 
 /* (No Comment) */
-"options-manage-collectibles" = "수집품 관리";
+"options-manage-collectibles" = "Manage NFTs";
 
 /* (No Comment) */
 "options-mute-notification" = "알림 음소거";
@@ -2192,7 +2207,7 @@
 "title-close" = "닫기";
 
 /* (No Comment) */
-"title-collectibles" = "수집품";
+"title-collectibles" = "NFTs";
 
 /* (No Comment) */
 "title-confirm" = "확정";

@@ -18,106 +18,134 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectiblesFilterSelectionViewController: BaseScrollViewController {
-    lazy var handlers = Handlers()
+final class CollectiblesFilterSelectionViewController: ScrollScreen {
+    var uiInteractions = UIInteractions()
 
-    private lazy var contextView = MacaroonUIKit.BaseView()
-    private lazy var toggleTitleView = Label()
-    private lazy var toggleDescriptionView = Label()
-    private lazy var toggleView = Toggle()
+    private lazy var contextView = VStackView()
+    private lazy var displayOptedInCollectibleAssetsInCollectibleListFilterItemView = AssetFilterItemView()
+    private lazy var displayWatchAccountCollectibleAssetsInCollectibleListItemView = AssetFilterItemView()
+
+    private lazy var filterOptions = CollectibleFilterOptions()
 
     private let theme: CollectiblesFilterSelectionViewControllerTheme
-    private let filter: CollectibleAssetFilter
 
-    init(
-        filter: CollectibleAssetFilter,
-        theme: CollectiblesFilterSelectionViewControllerTheme = .init(),
-        configuration: ViewControllerConfiguration
-    ) {
-        self.filter = filter
+    init(theme: CollectiblesFilterSelectionViewControllerTheme = .init()) {
         self.theme = theme
-
-        super.init(configuration: configuration)
     }
 
-    override func configureNavigationBarAppearance() {
-        bindNavigationItemTitle()
+    override func configureNavigationBar() {
+        super.configureNavigationBar()
+
+        addBarButtons()
+
+        navigationItem.largeTitleDisplayMode =  .never
+        navigationItem.title = "collectible-filter-selection-title".localized
     }
 
-    override func prepareLayout() {
-        super.prepareLayout()
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-        addContent()
-    }
-
-    override func setListeners() {
-        toggleView.addTarget(self, action: #selector(didChangeToggle(_:)), for: .touchUpInside)
-    }
-
-    @objc
-    private func didChangeToggle(_ toggle: Toggle) {
-        let filter: CollectibleAssetFilter = toggleView.isOn ? .all : .owned
-        handlers.didChangeFilter?(filter)
+        addUI()
     }
 }
 
 extension CollectiblesFilterSelectionViewController {
-    private func bindNavigationItemTitle() {
-        title = "collectible-filter-selection-title".localized
+    private func addBarButtons() {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done(Colors.Link.primary.uiColor)) {
+            [unowned self] in
+            self.performChanges()
+        }
+
+        rightBarButtonItems = [doneBarButtonItem]
     }
 }
 
 extension CollectiblesFilterSelectionViewController {
-    private func addContent() {
+    private func addUI() {
+        addBackground()
+        addContext()
+    }
+
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+    
+    private func addContext() {
         contentView.addSubview(contextView)
+        contextView.spacing = theme.spacingBetweenFilterItems
+        contextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: theme.contentPaddings.top,
+            leading: theme.contentPaddings.leading,
+            bottom: theme.contentPaddings.bottom,
+            trailing: theme.contentPaddings.trailing
+        )
+        contextView.isLayoutMarginsRelativeArrangement = true
         contextView.snp.makeConstraints {
-            $0.setPaddings(theme.contentEdgeInsets)
-        }
-
-        addToggleTitle()
-        addToggle()
-        addToggleDescription()
-    }
-
-    private func addToggleTitle() {
-        toggleTitleView.customizeAppearance(theme.title)
-
-        contextView.addSubview(toggleTitleView)
-        toggleTitleView.snp.makeConstraints {
-            $0.width <= contextView * theme.titleMaxWidthRatio
+            $0.top == 0
             $0.leading == 0
-            $0.top == theme.titleTopPadding
-            $0.greaterThanHeight(theme.titleMinHeight)
-        }
-    }
-
-    private func addToggle() {
-        contextView.addSubview(toggleView)
-        toggleView.fitToHorizontalIntrinsicSize()
-        toggleView.snp.makeConstraints {
-            $0.leading >= toggleTitleView.snp.trailing + theme.minimumHorizontalSpacing
-            $0.trailing == 0
-            $0.centerY == toggleTitleView
-        }
-
-        toggleView.isOn = filter == .all
-    }
-
-    private func addToggleDescription() {
-        toggleDescriptionView.customizeAppearance(theme.description)
-
-        contextView.addSubview(toggleDescriptionView)
-        toggleDescriptionView.snp.makeConstraints {
-            $0.leading == 0
-            $0.top == toggleTitleView.snp.bottom + theme.descriptionTopMargin
-            $0.width == toggleTitleView
             $0.bottom == 0
+            $0.trailing == 0
         }
+
+        addFilterItems()
+    }
+
+    private func addFilterItems() {
+        addDisplayOptedInCollectibleAssetsInCollectibleListFilterItem()
+        addDisplayWatchAccountCollectibleAssetsInCollectibleListItem()
+    }
+
+    private func addDisplayOptedInCollectibleAssetsInCollectibleListFilterItem() {
+        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.customize(theme.filterItem)
+        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.bindData(DisplayOptedInCollectibleAssetsInCollectibleListFilterItemViewModel())
+
+        displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn = filterOptions.displayOptedInCollectibleAssetsInCollectibleList
+
+        contextView.addArrangedSubview(displayOptedInCollectibleAssetsInCollectibleListFilterItemView)
+    }
+
+    private func addDisplayWatchAccountCollectibleAssetsInCollectibleListItem() {
+        displayWatchAccountCollectibleAssetsInCollectibleListItemView.customize(theme.filterItem)
+        displayWatchAccountCollectibleAssetsInCollectibleListItemView.bindData(DisplayWatchAccountCollectibleAssetsInCollectibleListFilterItemViewModel())
+
+        displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn = filterOptions.displayWatchAccountCollectibleAssetsInCollectibleList
+
+        contextView.addArrangedSubview(displayWatchAccountCollectibleAssetsInCollectibleListItemView)
     }
 }
 
 extension CollectiblesFilterSelectionViewController {
-    struct Handlers {
-        var didChangeFilter: ((CollectibleAssetFilter) -> Void)?
+    private func performChanges() {
+        if !hasChanges() {
+            uiInteractions.didCancel?()
+            return
+        }
+
+        saveFilters()
+        uiInteractions.didComplete?()
+    }
+
+    private func saveFilters() {
+        filterOptions.displayOptedInCollectibleAssetsInCollectibleList = displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn
+        filterOptions.displayWatchAccountCollectibleAssetsInCollectibleList = displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn
+    }
+
+    private func hasChanges() -> Bool {
+        if filterOptions.displayOptedInCollectibleAssetsInCollectibleList != displayOptedInCollectibleAssetsInCollectibleListFilterItemView.isOn {
+            return true
+        }
+
+        if filterOptions.displayWatchAccountCollectibleAssetsInCollectibleList != displayWatchAccountCollectibleAssetsInCollectibleListItemView.isOn {
+            return true
+        }
+
+        return false
+    }
+}
+
+extension CollectiblesFilterSelectionViewController {
+    struct UIInteractions {
+        var didComplete: (() -> Void)?
+        var didCancel: (() -> Void)?
     }
 }

@@ -104,19 +104,7 @@ extension AssetPreviewViewModel {
             .setExpectedImageSize(size)
             .setImageQuality(.normal)
             .build()
-
-        let title = asset.naming.name.isNilOrEmpty
-            ? "title-unknown".localized
-        : asset.naming.name
-
-        let placeholderText = TextFormatter.assetShortName.format(title)
-        let placeholder = AssetListItemViewModel.getPlaceholder(
-            placeholderText,
-            with: TextAttributes(
-                font: Fonts.DMSans.regular.make(13),
-                lineHeightMultiplier: 1.18
-            )
-        )
+        let placeholder = getPlaceholder(asset)
 
         imageSource = PNGImageSource(
             url: url,
@@ -201,7 +189,36 @@ extension AssetPreviewViewModel {
 }
 
 extension AssetPreviewViewModel {
+    func getPlaceholder(
+        _ asset: Asset
+    ) -> ImagePlaceholder? {
+        let title =
+            asset.naming.name.isNilOrEmpty
+            ? "title-unknown".localized
+            : asset.naming.name
 
+        let aPlaceholder = TextFormatter.assetShortName.format(title)
+
+        guard let aPlaceholder = aPlaceholder else {
+            return nil
+        }
+
+        let isCollectible = asset is CollectibleAsset
+        let placeholderImage =
+            isCollectible ?
+            "placeholder-bg".uiImage :
+            "asset-image-placeholder-border".uiImage
+        let placeholderText: EditText = .attributedString(
+            aPlaceholder
+                .footnoteRegular(
+                    alignment: .center
+                )
+        )
+        return ImagePlaceholder(
+            image: AssetImageSource(asset: placeholderImage),
+            text: placeholderText
+        )
+    }
 }
 
 extension AssetPreviewViewModel {

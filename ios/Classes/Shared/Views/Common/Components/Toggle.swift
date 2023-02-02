@@ -19,6 +19,10 @@ import UIKit
 import MacaroonUIKit
 
 final class Toggle: UISwitch {
+    override var isUserInteractionEnabled: Bool {
+        didSet { updateBackgroundColorIfNeeded(old: oldValue) }
+    }
+
     private lazy var theme = Theme()
 
     override init(frame: CGRect) {
@@ -34,20 +38,38 @@ final class Toggle: UISwitch {
 
     private func customize(_ theme: Theme) {
         layer.cornerRadius = theme.cornerRadius
-        backgroundColor = theme.backgroundColor.uiColor
+        backgroundColor = theme.backgroundColor[.normal]
         onTintColor = theme.onTintColor.uiColor
+    }
+}
+
+extension Toggle {
+    func updateBackgroundColorIfNeeded(old: Bool) {
+        if old == isUserInteractionEnabled {
+            return
+        }
+
+        if isUserInteractionEnabled {
+            backgroundColor = theme.backgroundColor[.normal]
+        } else {
+            backgroundColor = theme.backgroundColor[.disabled]
+        }
     }
 }
 
 extension Toggle {
     struct Theme: LayoutSheet, StyleSheet {
         let cornerRadius: LayoutMetric
-        let backgroundColor: Color
+        let backgroundColor: StateColorGroup
         let onTintColor: Color
 
         init(_ family: LayoutFamily) {
             cornerRadius = 16
-            backgroundColor = Colors.Switches.offBackground
+            let baseBackgroundColor = Colors.Switches.offBackground
+            backgroundColor = [
+                .normal(baseBackgroundColor),
+                .disabled(baseBackgroundColor.uiColor.withAlphaComponent(0.4))
+            ]
             onTintColor = Colors.Switches.background
         }
     }

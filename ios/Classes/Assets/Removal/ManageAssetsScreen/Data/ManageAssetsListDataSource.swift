@@ -26,17 +26,35 @@ final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<Manag
             
             switch itemIdentifier {
             case let .asset(item):
-                let cell = collectionView.dequeue(OptOutAssetListItemCell.self, at: indexPath)
+                let cell = collectionView.dequeue(
+                    OptOutAssetListItemCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item.viewModel)
+                return cell
+            case let .collectibleAsset(item):
+                let cell = collectionView.dequeue(
+                    OptOutCollectibleAssetListItemCell.self,
+                    at: indexPath
+                )
                 cell.bindData(item.viewModel)
                 return cell
             case .empty(let item):
-                let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
+                let cell = collectionView.dequeue(
+                    NoContentCell.self,
+                    at: indexPath
+                )
                 cell.bindData(item)
                 return cell
             }
         }
-        
-        collectionView.register(OptOutAssetListItemCell.self)
-        collectionView.register(NoContentCell.self)
+
+        [
+            OptOutAssetListItemCell.self,
+            OptOutCollectibleAssetListItemCell.self,
+            NoContentCell.self
+        ].forEach {
+            collectionView.register($0)
+        }
     }
 }

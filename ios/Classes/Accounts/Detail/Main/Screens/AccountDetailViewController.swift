@@ -28,17 +28,8 @@ final class AccountDetailViewController: PageContainer {
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
-    private lazy var assetListScreen = AccountAssetListViewController(
-        accountHandle: accountHandle,
-        copyToClipboardController: copyToClipboardController,
-        configuration: configuration
-    )
-
-    private lazy var collectibleListScreen = AccountCollectibleListViewController(
-        account: accountHandle,
-        copyToClipboardController: copyToClipboardController,
-        configuration: configuration
-    )
+    private lazy var assetListScreen = createAssetListScreen()
+    private lazy var collectibleListScreen = createCollectibleListScreen()
     
     private lazy var transactionListScreen = AccountTransactionListViewController(
         draft: AccountTransactionListing(accountHandle: accountHandle),
@@ -73,6 +64,8 @@ final class AccountDetailViewController: PageContainer {
 
     private var accountHandle: AccountHandle
 
+    private let dataController: AccountDetailDataController
+
     /// <todo>
     /// Normally, we shouldn't retain data store or create flow coordinator here but our currenct
     /// routing approach hasn't been refactored yet.
@@ -81,11 +74,13 @@ final class AccountDetailViewController: PageContainer {
 
     init(
         accountHandle: AccountHandle,
+        dataController: AccountDetailDataController,
         swapDataStore: SwapDataStore,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.accountHandle = accountHandle
+        self.dataController = dataController
         self.swapDataStore = swapDataStore
         self.copyToClipboardController = copyToClipboardController
 
@@ -499,14 +494,13 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
             [weak self] event in
             guard let self = self else { return }
 
-            self.dismiss(animated: true) {
-                [weak self] in
-                guard let self = self else { return }
-
-                switch event {
-                case .didComplete: self.assetListScreen.reloadData()
-                }
+            switch event {
+            case .didComplete:
+                let order = self.sharedDataController.selectedAccountAssetSortingAlgorithm
+                self.assetListScreen.reloadData(order)
             }
+
+            self.dismiss(animated: true)
         }
 
         open(
@@ -524,23 +518,22 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
     func managementOptionsViewControllerDidTapFilterAssets(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {
-        let eventHandler: AssetsFilterSelectionViewController.EventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            
-            self.dismiss(animated: true) {
-                [weak self] in
-                guard let self = self else { return}
-                
-                switch event {
-                case .didComplete: self.assetListScreen.reloadData()
-                case .didCancel: break
-                }
-            }
+        var uiInteractions = AssetsFilterSelectionViewController.UIInteractions()
+        uiInteractions.didComplete = {
+            [unowned self] in
+
+            let filters = AssetFilterOptions()
+            self.assetListScreen.reloadData(filters)
+
+            self.dismiss(animated: true)
+        }
+        uiInteractions.didCancel =  {
+            [unowned self] in
+            self.dismiss(animated: true)
         }
         
         open(
-            .assetsFilterSelection(eventHandler: eventHandler),
+            .assetsFilterSelection(uiInteractions: uiInteractions),
             by: .present
         )
     }
@@ -563,6 +556,35 @@ extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
     func managementOptionsViewControllerDidTapFilterCollectibles(
         _ managementOptionsViewController: ManagementOptionsViewController
     ) {}
+}
+
+extension AccountDetailViewController {
+    private func createAssetListScreen() -> AccountAssetListViewController {
+        let query = AccountAssetListQuery(
+            filteringBy: .init(),
+            sortingBy: sharedDataController.selectedAccountAssetSortingAlgorithm
+        )
+        return AccountAssetListViewController(
+            query: query,
+            dataController: dataController.assetListDataController,
+            copyToClipboardController: copyToClipboardController,
+            configuration: configuration
+        )
+    }
+
+    private func createCollectibleListScreen() -> AccountCollectibleListViewController {
+        let query = CollectibleListQuery(
+            filteringBy: .init(),
+            sortingBy: sharedDataController.selectedCollectibleSortingAlgorithm
+        )
+        return AccountCollectibleListViewController(
+            account: accountHandle,
+            query: query,
+            dataController: dataController.collectibleListDataController,
+            copyToClipboardController: copyToClipboardController,
+            configuration: configuration
+        )
+    }
 }
 
 extension AccountDetailViewController {

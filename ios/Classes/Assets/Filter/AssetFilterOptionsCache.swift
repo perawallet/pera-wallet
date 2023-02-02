@@ -1,4 +1,4 @@
-// Copyright 2023 Pera Wallet, LDA
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,6 +23,18 @@ final class AssetFilterOptionsCache {
         get { userDefaults.bool(forKey: hideAssetsWithNoBalanceInAssetListKey) }
         set { userDefaults.set(newValue, forKey: hideAssetsWithNoBalanceInAssetListKey) }
     }
-    
+
+    var displayCollectibleAssetsInAssetList: Bool {
+        get { userDefaults.bool(forKey: displayCollectibleAssetsInAssetListKey) }
+        set { userDefaults.set(newValue, forKey: displayCollectibleAssetsInAssetListKey) }
+    }
+
+    var displayOptedInCollectibleAssetsInAssetList: Bool {
+        get { userDefaults.bool(forKey: displayOptedInCollectibleAssetsInAssetListKey) }
+        set { userDefaults.set(newValue, forKey: displayOptedInCollectibleAssetsInAssetListKey) }
+    }
+
     private let hideAssetsWithNoBalanceInAssetListKey = "cache.key.hideAssetsWithNoBalanceInAssetList"
+    private let displayCollectibleAssetsInAssetListKey = "cache.key.displayCollectibleAssetsInAssetList"
+    private let displayOptedInCollectibleAssetsInAssetListKey = "cache.key.displayOptedInCollectibleAssetsInAssetList"
 }

@@ -35,6 +35,7 @@ final class ASADetailScreen:
     private lazy var errorView = makeError()
     private lazy var profileView = ASAProfileView()
     private lazy var quickActionsView = ASADetailQuickActionsView()
+    private lazy var marketInfoView = ASADetailMarketView()
 
     private lazy var pagesFragmentScreen = PageContainer(configuration: configuration)
     private lazy var activityFragmentScreen = ASAActivityScreen(
@@ -98,6 +99,10 @@ final class ASADetailScreen:
 
     private var isDisplayStateTransitionAnimationInProgress: Bool {
         return displayStateInteractiveTransitionAnimator?.state == .active
+    }
+
+    private var shouldDisplayMarketInfo: Bool {
+        dataController.asset.isAvailableOnDiscover
     }
 
     /// <todo>
@@ -374,6 +379,8 @@ extension ASADetailScreen {
             addQuickActions()
         }
 
+        addMarketInfo()
+
         addPagesFragment()
     }
 
@@ -416,6 +423,8 @@ extension ASADetailScreen {
         bindUIData()
         removeLoading()
         removeError()
+        removeMarketInfoIfNeeded()
+        updateUIWhenViewLayoutDidChangeIfNeeded()
     }
 
     private func updateUIWhenDataDidFailToLoad(_ error: ASADetailScreenDataController.Error) {
@@ -426,11 +435,13 @@ extension ASADetailScreen {
     private func updateUI(for state: DisplayState) {
         updateProfile(for: state)
         updateQuickActions(for: state)
+        updateMarketInfo(for: state)
         updatePagesFragment(for: state)
     }
 
     private func bindUIData() {
         bindProfileData()
+        bindMarketData()
         bindPagesFragmentData()
     }
 
@@ -615,6 +626,10 @@ extension ASADetailScreen {
         quickActionsView.alpha = state.isFolded ? 0 : 1
     }
 
+    private func updateMarketInfo(for state: DisplayState) {
+        marketInfoView.alpha = state.isFolded ? 0 : 1
+    }
+
     private func addPagesFragment() {
         pagesFragmentScreen.view.customizeAppearance(theme.pagesFragmentBackground)
 
@@ -703,6 +718,57 @@ extension ASADetailScreen {
         let asset = dataController.asset
         aboutFragmentScreen.bindData(asset: asset)
     }
+
+    private func addMarketInfo() {
+        marketInfoView.customize(theme.marketInfo)
+
+        let topView: UIView
+
+        if dataController.configuration.shouldDisplayQuickActions {
+            topView = quickActionsView
+        } else {
+            topView = profileView
+        }
+
+        view.addSubview(marketInfoView)
+        marketInfoView.snp.makeConstraints {
+            $0.top == topView.snp.bottom + theme.spacingBetweenProfileAndQuickActions
+            $0.leading == theme.profileHorizontalEdgeInsets.leading
+            $0.trailing == theme.profileHorizontalEdgeInsets.trailing
+        }
+
+        marketInfoView.startObserving(event: .market) {
+            [unowned self] in
+            let asset = self.dataController.asset
+
+            let assetDetail = DiscoverAssetParameters(asset: asset)
+            self.open(
+                .discoverAssetDetail(assetDetail),
+                by: .push
+            )
+        }
+
+        bindMarketData()
+    }
+
+    private func bindMarketData() {
+        let asset = dataController.asset
+        let viewModel = ASADetailMarketViewModel(
+            assetItem: .init(
+                asset: asset,
+                currency: sharedDataController.currency,
+                currencyFormatter: currencyFormatter
+            )
+        )
+        marketInfoView.bindData(viewModel)
+    }
+
+    private func removeMarketInfoIfNeeded() {
+        guard !shouldDisplayMarketInfo else {
+            return
+        }
+        marketInfoView.removeFromSuperview()
+    }
 }
 
 extension ASADetailScreen {
@@ -729,6 +795,13 @@ extension ASADetailScreen {
                 theme.spacingBetweenProfileAndQuickActions +
                 quickActionsView.bounds.height
             maxHeight += quickActionsHeight
+        }
+
+        if shouldDisplayMarketInfo {
+            let marketInfoHeight =
+                theme.spacingBetweenProfileAndQuickActions +
+                marketInfoView.bounds.height
+            maxHeight += marketInfoHeight
         }
 
         let height = maxHeight - minHeight
@@ -922,6 +995,7 @@ extension ASADetailScreen {
                     relativeDuration: 0.25
                 ) { [unowned self] in
                     self.updateQuickActions(for: state)
+                    self.updateMarketInfo(for: state)
                 }
             }
 
@@ -949,6 +1023,7 @@ extension ASADetailScreen {
                     relativeDuration: 0.25
                 ) { [unowned self] in
                     self.updateQuickActions(for: state)
+                    self.updateMarketInfo(for: state)
                 }
             }
 

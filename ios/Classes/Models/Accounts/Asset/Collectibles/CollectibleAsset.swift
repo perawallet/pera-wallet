@@ -23,6 +23,7 @@ final class CollectibleAsset: Asset {
     let amount: UInt64
     let decimals: Int
     let total: UInt64?
+    let totalSupply: Decimal?
     let decimalAmount: Decimal
     let isFrozen: Bool?
     let isDeleted: Bool?
@@ -38,7 +39,7 @@ final class CollectibleAsset: Asset {
     let standard: CollectibleStandard?
     let mediaType: MediaType
     let title: String?
-    let collectionName: String?
+    let collection: CollectibleCollection?
     let url: String?
     let description: String?
     let properties: [CollectibleTrait]?
@@ -50,6 +51,8 @@ final class CollectibleAsset: Asset {
     let twitterURL: URL?
     let isAlgo = false
     let isFault = false
+    let algoPriceChangePercentage: Decimal
+    let isAvailableOnDiscover: Bool
 
     var state: AssetState = .ready
 
@@ -95,13 +98,14 @@ final class CollectibleAsset: Asset {
         self.name = decoration.name
         self.unitName = decoration.unitName
         self.total = decoration.total
+        self.totalSupply = decoration.totalSupply
         self.verificationTier = decoration.verificationTier
         self.thumbnailImage = decoration.collectible?.thumbnailImage
         self.mediaType = decoration.collectible?.mediaType ?? .unknown("")
         self.standard = decoration.collectible?.standard ?? .unknown("")
         self.media = decoration.collectible?.media ?? []
         self.title = decoration.collectible?.title
-        self.collectionName = decoration.collectible?.collectionName
+        self.collection = decoration.collectible?.collection
         self.url = decoration.url
         self.description = decoration.collectible?.description
         self.properties = decoration.collectible?.properties
@@ -124,6 +128,8 @@ final class CollectibleAsset: Asset {
         self.decimalAmount = decimalAmount
         self.usdValue = usdValue
         self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
+        self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
+        self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
     }
 
     init(decoration: AssetDecoration) {
@@ -135,13 +141,14 @@ final class CollectibleAsset: Asset {
         self.name = decoration.name
         self.unitName = decoration.unitName
         self.total = decoration.total
+        self.totalSupply = decoration.totalSupply
         self.verificationTier = decoration.verificationTier
         self.thumbnailImage = decoration.collectible?.thumbnailImage
         self.mediaType = decoration.collectible?.mediaType ?? .unknown("")
         self.standard = decoration.collectible?.standard ?? .unknown("")
         self.media = decoration.collectible?.media ?? []
         self.title = decoration.collectible?.title
-        self.collectionName = decoration.collectible?.collectionName
+        self.collection = decoration.collectible?.collection
         self.url = decoration.url
         self.description = decoration.collectible?.description
         self.properties = decoration.collectible?.properties
@@ -156,6 +163,8 @@ final class CollectibleAsset: Asset {
         self.decimalAmount = 0
         self.usdValue = decoration.usdValue
         self.totalUSDValue = 0
+        self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
+        self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
     }
 }
 
@@ -179,7 +188,7 @@ extension CollectibleAsset: Comparable {
             lhs.verificationTier == rhs.verificationTier &&
             lhs.thumbnailImage == rhs.thumbnailImage &&
             lhs.title == rhs.title &&
-            lhs.collectionName == rhs.collectionName &&
+            lhs.collection?.name == rhs.collection?.name &&
             lhs.optedInAtRound == rhs.optedInAtRound
     }
 

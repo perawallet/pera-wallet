@@ -25,10 +25,14 @@ enum DeeplinkSource {
     /// true => Show message and wait for the user to confirm before taking any action.
     /// false => Take the action immediately.
     case remoteNotification(UserInfo, waitForUserConfirmation: Bool)
-    case walletConnectSessionRequest(URL)
+    case walletConnectSessionRequest(URL, prefersConnectionApproval: Bool = true)
     case walletConnectRequest(WalletConnectRequestDraft)
     case buyAlgo(BuyAlgoDraft)
     case qrText(QRText)
+
+    static func walletConnectSessionRequestForDiscover(_ url: URL) -> DeeplinkSource {
+        return .walletConnectSessionRequest(url, prefersConnectionApproval: false)
+    }
 }
 
 extension DeeplinkSource {

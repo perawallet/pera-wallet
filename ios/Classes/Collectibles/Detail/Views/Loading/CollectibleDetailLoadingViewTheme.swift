@@ -19,64 +19,53 @@ import MacaroonUIKit
 struct CollectibleDetailLoadingViewTheme:
     LayoutSheet,
     StyleSheet {
-    let imagePaddings: LayoutPaddings
-
+    let corner: Corner
     let titleViewHeight: LayoutMetric
-    let titleTopPadding: LayoutMetric
+    let titlePaddings: LayoutPaddings
     let titleWidthMultiplier: LayoutMetric
-
     let subtitleViewHeight: LayoutMetric
     let subtitleTopPadding: LayoutMetric
     let subtitleWidthMultiplier: LayoutMetric
-
+    let imageCorner: Corner
+    let imagePaddings: LayoutPaddings
+    let amountViewHeight: LayoutMetric
+    let amountTopPadding: LayoutMetric
+    let amountWidthMultiplier: LayoutMetric
     let actionTopPadding: LayoutMetric
     let actionHeight: LayoutMetric
-    let spacingBetweeenActions: LayoutMetric
-
+    let spacingBetweenDescriptionAndAction: LayoutMetric
     let descriptionHeight: LayoutMetric
     let descriptionWidthMultiplier: LayoutMetric
-
     let descriptionValueLineHeight: LayoutMetric
     let descriptionValueLineSpacing: LayoutMetric
     let descriptionValueFirstLineTopMargin: LayoutMetric
     let descriptionValueFirstLineWidthMultiplier: LayoutMetric
     let descriptionValueSecondLineWidthMultiplier: LayoutMetric
 
-    let corner: Corner
-
-    let spacingBetweenDescriptionAndSeparator: LayoutMetric
-    let separator: Separator
-
     init(
         _ family: LayoutFamily
     ) {
-        imagePaddings = (12, 24, .noMetric, 24)
-
-        titleTopPadding = 36
-        titleViewHeight = 16
-        titleWidthMultiplier = 0.20
-
-        subtitleTopPadding = 8
-        subtitleViewHeight = 20
-        subtitleWidthMultiplier = 0.30
-
-        descriptionHeight = 24
-        descriptionWidthMultiplier = 0.30
-
-        descriptionValueLineHeight = 20
-        descriptionValueLineSpacing = 4
-        descriptionValueFirstLineTopMargin = 20
-        descriptionValueFirstLineWidthMultiplier = 0.80
-        descriptionValueSecondLineWidthMultiplier = 0.60
-
-        corner = Corner(radius: 4)
-
-        separator = Separator(color: Colors.Layer.grayLighter, size: 1)
-
-        spacingBetweenDescriptionAndSeparator = 32
-
-        actionTopPadding = 20
-        actionHeight = 52
-        spacingBetweeenActions = 16
+        self.corner = Corner(radius: 4)
+        self.titlePaddings = (10, 24, .noMetric, 24)
+        self.titleViewHeight = 28
+        self.titleWidthMultiplier = 0.45
+        self.subtitleTopPadding = 4
+        self.subtitleViewHeight = 20
+        self.subtitleWidthMultiplier = 0.35
+        self.amountTopPadding = 21
+        self.amountViewHeight = 20
+        self.amountWidthMultiplier = 0.4
+        self.imageCorner = Corner(radius: 12)
+        self.imagePaddings = (20, 24, .noMetric, 24)
+        self.actionTopPadding = 24
+        self.actionHeight = 52
+        self.spacingBetweenDescriptionAndAction = 24
+        self.descriptionHeight = 24
+        self.descriptionWidthMultiplier = 0.30
+        self.descriptionValueLineHeight = 20
+        self.descriptionValueLineSpacing = 4
+        self.descriptionValueFirstLineTopMargin = 20
+        self.descriptionValueFirstLineWidthMultiplier = 0.80
+        self.descriptionValueSecondLineWidthMultiplier = 0.60
     }
 }

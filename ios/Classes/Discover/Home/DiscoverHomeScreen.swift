@@ -20,7 +20,7 @@ import MacaroonUtils
 import MacaroonUIKit
 
 final class DiscoverHomeScreen:
-    InAppBrowserScreen,
+    PeraInAppBrowserScreen,
     NavigationBarLargeTitleConfigurable,
     UIScrollViewDelegate {
     var navigationBarScrollView: UIScrollView {
@@ -30,7 +30,7 @@ final class DiscoverHomeScreen:
     var isNavigationBarAppeared: Bool {
         return isViewAppeared
     }
-
+    
     private lazy var theme = DiscoverHomeScreenTheme()
 
     private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
@@ -45,6 +45,10 @@ final class DiscoverHomeScreen:
 
     deinit {
         navigationBarLargeTitleController.deactivate()
+    }
+
+    init(configuration: ViewControllerConfiguration) {
+        super.init(configuration: configuration, discoverURL: .home)
     }
 
     override func configureNavigationBarAppearance() {
@@ -78,13 +82,6 @@ final class DiscoverHomeScreen:
         events.forEach { event in
             contentController.add(self, name: event.rawValue)
         }
-
-        let generatedUrl = DiscoverURLGenerator.generateUrl(
-            discoverUrl: .home,
-            theme: traitCollection.userInterfaceStyle,
-            session: session
-        )
-        load(url: generatedUrl)
     }
 
     override func viewDidLayoutSubviews() {
@@ -195,10 +192,40 @@ extension DiscoverHomeScreen: WKScriptMessageHandler {
     }
 
     private func openDappDetail(_ dappDetail: DiscoverDappParamaters) {
+        let screen = Screen.discoverDappDetail(dappDetail) {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            switch event {
+            case let .addToFavorites(dappDetails):
+                self.addToFavorites(dappDetails)
+            case let .removeFromFavorites(dappDetails):
+                self.removeFromFavorites(dappDetails)
+            }
+        }
+        
         open(
-            .discoverDappDetail(dappDetail),
+            screen,
             by: .push
         )
+    }
+    
+    private func addToFavorites(_ dapp: DiscoverFavouriteDappDetails) {
+        updateFavorites(dapp: dapp)
+    }
+    
+    private func removeFromFavorites(_ dapp: DiscoverFavouriteDappDetails) {
+        updateFavorites(dapp: dapp)
+    }
+    
+    private func updateFavorites(dapp: DiscoverFavouriteDappDetails) {
+        guard let dappDetailsString = try? dapp.encodedString() else {
+            return
+        }
+        
+        let scriptString = "var message = '" + dappDetailsString + "'; handleMessage(message);"
+        
+        self.webView.evaluateJavaScript(scriptString)
     }
 
     private func openAssetDetail(_ assetDetail: DiscoverAssetParameters) {

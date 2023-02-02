@@ -24,8 +24,8 @@ final class DiscoverURLGenerator {
         session: Session?
     ) -> URL? {
         var queryItems: [URLQueryItem] = []
-        queryItems.append(.init(name: "version", value: "1"))
-        queryItems.append(.init(name: "theme", value: theme.peraThemeValue))
+        queryItems.append(.init(name: "version", value: "2"))
+        queryItems.append(.init(name: "theme", value: theme.peraRawValue))
         queryItems.append(.init(name: "platform", value: "ios"))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
         if #available(iOS 16, *) {
@@ -39,7 +39,9 @@ final class DiscoverURLGenerator {
             queryItems.append(.init(name: "region", value: Locale.current.regionCode))
         }
 
-        var components = URLComponents(string: Environment.current.discoverBaseUrl)
+        guard var components = URLComponents(string: Environment.current.discoverBaseUrl) else {
+            return nil
+        }
 
         switch discoverUrl {
         case .other(let url):
@@ -48,13 +50,14 @@ final class DiscoverURLGenerator {
             if let poolID = parameters.poolID {
                 queryItems.append(.init(name: "poolId", value: poolID))
             }
-            components?.path = "/token-detail/\(parameters.assetID)/"
+            components.path = "/token-detail/\(parameters.assetID)/"
         case .home:
             break
         }
 
-        components?.queryItems = queryItems
-        return components?.url
+        components.queryItems = queryItems
+
+        return components.url
     }
 }
 

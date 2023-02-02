@@ -113,7 +113,7 @@
 "accounts-title" = "Comptes";
 
 /* (No Comment) */
-"accounts-title-collectibles" = "Collections";
+"accounts-title-collectibles" = "NFTs";
 
 /* (No Comment) */
 "accounts-title-history" = "Historique";
@@ -242,7 +242,16 @@
 "asset-detail-id-title" = "ID %@";
 
 /* (No Comment) */
-"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance.";
+"asset-detail-markets-title" = "Markets";
+
+/* (No Comment) */
+"asset-filter-selection-display-collectible-assets-filter-description" = "NFTs assets will be shown in the asset list of your account";
+
+/* (No Comment) */
+"asset-filter-selection-display-collectible-assets-filter-title" = "Display NFTs in asset list";
+
+/* (No Comment) */
+"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance";
 
 /* (No Comment) */
 "asset-filter-selection-toggle-title" = "Hide assets with no balance";
@@ -482,15 +491,12 @@
 "collectible-detail-algo-explorer" = "Afficher sur Algoexplorer";
 
 /* (No Comment) */
-"collectible-detail-collection-name" = "Nom de la collection";
-
-/* (No Comment) */
-"collectible-detail-creator-address" = "Adresse du portefeuille du créateur";
+"collectible-detail-creator-account" = "Creator Account";
 
 /* (No Comment) */
 "collectible-detail-creator-name" = "Nom du créateur";
 
-/* (No Comment) */
+/* MARK: Collectible Detail */
 "collectible-detail-description" = "Description";
 
 /* (No Comment) */
@@ -526,20 +532,23 @@
 /* (No Comment) */
 "collectible-detail-properties" = "Propriétés";
 
-/* MARK: Collectible Detail */
-"collectible-detail-share" = "Partager";
-
 /* (No Comment) */
 "collectible-detail-show-on" = "Afficher sur";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "Mode carte 3D";
+"collectible-detail-tap-3D" = "3D mode";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "Afficher la transaction";
 
+/* (No Comment) */
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
+
+/* (No Comment) */
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
+
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "Filtrer";
+"collectible-filter-selection-title" = "Filter NFTs";
 
 /* (No Comment) */
 "collectible-filter-selection-toggle-description" = "Vous pouvez afficher/masquer les NFT qui sont activés mais qui ne vous appartiennent pas";
@@ -620,7 +629,7 @@
 "collectibles-empty-secondary-action-title" = "Afficher les NFT masqués (%@)";
 
 /* MARK: Collectible Common */
-"collectibles-empty-title" = "Collections";
+"collectibles-empty-title" = "NFTs";
 
 /* (No Comment) */
 "collectibles-list-input-placeholder" = "Rechercher des NFTs";
@@ -721,6 +730,9 @@
 /* (No Comment) */
 "discover-error-fallback-body" = "Nous ne pouvons pas obtenir ces informations pour le moment.";
 
+/* (No Comment) */
+"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+
 /* MARK: Discover */
 "discover-search-input-placeholder" = "Rechercher n'importe quel ASA";
 
@@ -786,6 +798,9 @@
 
 /* (No Comment) */
 "feedback-title-note" = "Note";
+
+/* (No Comment) */
+"filter" = "Filter";
 
 /* (No Comment) */
 "governance-banner-action" = "Commencer";
@@ -1243,7 +1258,7 @@
 /* (No Comment) */
 "number-abbreviation-billion" = "B";
 
-/* MARK: Number Abbreviation */
+/* (No Comment) */
 "number-abbreviation-million" = "M";
 
 /* (No Comment) */
@@ -1251,6 +1266,9 @@
 
 /* (No Comment) */
 "number-abbreviation-quintillion" = "Qi";
+
+/* MARK: Number Abbreviation */
+"number-abbreviation-thousand" = "K";
 
 /* (No Comment) */
 "number-abbreviation-trillion" = "T";
@@ -1260,9 +1278,6 @@
 
 /* (No Comment) */
 "ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";
-
-/* (No Comment) */
-"opitons-collectibles-filter" = "Filtrer les NFT";
 
 /* (No Comment) */
 "opt-in-description-adding-nft" = "L'activation d'un NFT nécessite l'envoi d'une transaction avec des frais de transaction minimum. Cela apparaîtra dans votre historique de transactions.";
@@ -1283,7 +1298,7 @@
 "options-manage-assets" = "Gérer les actifs";
 
 /* (No Comment) */
-"options-manage-collectibles" = "Gérer les collections";
+"options-manage-collectibles" = "Manage NFTs";
 
 /* (No Comment) */
 "options-mute-notification" = "Désactiver les notifications";
@@ -2192,7 +2207,7 @@
 "title-close" = "Fermer";
 
 /* (No Comment) */
-"title-collectibles" = "Collections";
+"title-collectibles" = "NFTs";
 
 /* (No Comment) */
 "title-confirm" = "Confirmer";

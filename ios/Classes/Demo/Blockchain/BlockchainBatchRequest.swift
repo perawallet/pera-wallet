@@ -25,4 +25,5 @@ struct BlockchainAccountBatchRequest {
     /// The dictionary is used to search faster.
     var optInAssets: [AssetID : Any] = [:]
     var optOutAssets: [AssetID: Any] = [:]
+    var sendPureCollectibleAssets: [AssetID: Any] = [:]
 }

@@ -21,60 +21,19 @@ import UIKit
 struct CollectiblesFilterSelectionViewControllerTheme:
     StyleSheet,
     LayoutSheet {
-    let minimumHorizontalSpacing: LayoutMetric
     let background: ViewStyle
-    let contentEdgeInsets: LayoutPaddings
-
-    let title: TextStyle
-    let titleTopPadding: LayoutMetric
-    let titleMaxWidthRatio: LayoutMetric
-    let titleMinHeight: LayoutMetric
-
-    let description: TextStyle
-    let descriptionTopMargin: LayoutMetric
+    let contentPaddings: LayoutPaddings
+    let spacingBetweenFilterItems: LayoutMetric
+    let filterItem: AssetFilterItemViewTheme
 
     init(
         _ family: LayoutFamily
     ) {
-        minimumHorizontalSpacing = 8
-        background = [
+        self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        contentEdgeInsets = (24, 24, 16, 24)
-
-        title = [
-            .text(Self.getTitle()),
-            .textColor(Colors.Text.main),
-            .textOverflow(FittingText())
-        ]
-        titleTopPadding = 20
-        titleMaxWidthRatio = 0.7
-        titleMinHeight = 32
-
-        description = [
-            .text(Self.getDescription()),
-            .textColor(Colors.Text.gray),
-            .textOverflow(FittingText())
-
-        ]
-        descriptionTopMargin = 12
-    }
-}
-
-extension CollectiblesFilterSelectionViewControllerTheme {
-    private static func getTitle() -> EditText {
-        return .attributedString(
-            "collectible-filter-selection-toggle-title"
-                .localized
-                .bodyRegular()
-        )
-    }
-
-    private static func getDescription() -> EditText {
-        return .attributedString(
-            "collectible-filter-selection-toggle-description"
-                .localized
-                .footnoteRegular()
-        )
+        self.contentPaddings = (40, 24, 16, 24)
+        self.spacingBetweenFilterItems = 24
+        self.filterItem = AssetFilterItemViewTheme(family)
     }
 }

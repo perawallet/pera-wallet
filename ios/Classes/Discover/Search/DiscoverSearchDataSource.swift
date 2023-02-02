@@ -168,25 +168,3 @@ extension DiscoverSearchDataSource {
         return cell
     }
 }
-
-extension UICollectionViewDiffableDataSource {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType>
-
-    func reload(
-        _ snapshot: Snapshot,
-        completion: (() -> Void)? = nil
-    ) {
-        if #available(iOS 15, *) {
-            applySnapshotUsingReloadData(
-                snapshot,
-                completion: completion
-            )
-        } else {
-            apply(
-                snapshot,
-                animatingDifferences: true,
-                completion: completion
-            )
-        }
-    }
-}

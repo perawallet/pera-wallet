@@ -25,9 +25,6 @@ protocol ManageAssetsListDataController: AnyObject {
     var account: Account { get }
     var dataSource: ManageAssetsListDataSource? { get set }
 
-    subscript(index: Int) -> Asset? { get }
-    subscript(assetID: AssetID) -> Asset? { get }
-
     func search(for query: String)
     func resetSearch()
     func hasOptedOut(
@@ -48,5 +45,6 @@ enum ManageAssetSearchSection:
 
 enum ManageAssetSearchItem: Hashable {
     case asset(OptOutAssetListItem)
+    case collectibleAsset(OptOutCollectibleAssetListItem)
     case empty(AssetListSearchNoContentViewModel)
 }

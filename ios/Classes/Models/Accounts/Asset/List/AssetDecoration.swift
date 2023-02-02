@@ -26,6 +26,7 @@ final class AssetDecoration: ALGEntityModel {
     let decimals: Int
     let usdValue: Decimal?
     let total: UInt64?
+    let totalSupply: Decimal?
     let creator: AssetCreator?
     let collectible: Collectible?
     let projectURL: URL?
@@ -37,6 +38,8 @@ final class AssetDecoration: ALGEntityModel {
     let discordURL: URL?
     let telegramURL: URL?
     let twitterURL: URL?
+    let algoPriceChangePercentage: Decimal
+    let isAvailableOnDiscover: Bool
 
     var state: AssetState = .ready
 
@@ -57,6 +60,7 @@ final class AssetDecoration: ALGEntityModel {
         self.decimals = apiModel.fractionDecimals ?? 0
         self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
         self.total = apiModel.total.unwrap { UInt64($0) }
+        self.totalSupply = apiModel.totalSupply
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
         self.projectURL = apiModel.projectURL
             .unwrapNonEmptyString()
@@ -76,6 +80,8 @@ final class AssetDecoration: ALGEntityModel {
         self.twitterURL = apiModel.twitterUsername
             .unwrapNonEmptyString()
             .unwrap(URL.twitterURL(username:))
+        self.algoPriceChangePercentage = apiModel.algoPriceChangePercentage ?? 0
+        self.isAvailableOnDiscover = apiModel.isAvailableOnDiscover ?? false
     }
     
     init(assetDetail: AssetDetail) {
@@ -85,6 +91,7 @@ final class AssetDecoration: ALGEntityModel {
         self.decimals = assetDetail.fractionDecimals
         self.usdValue = nil
         self.total = assetDetail.total
+        self.totalSupply = nil
         self.creator = AssetCreator(address: assetDetail.creator)
         self.projectURL = nil
         self.explorerURL = nil
@@ -96,6 +103,8 @@ final class AssetDecoration: ALGEntityModel {
         self.discordURL = nil
         self.telegramURL = nil
         self.twitterURL = nil
+        self.algoPriceChangePercentage = 0
+        self.isAvailableOnDiscover = false
     }
 
     func encode() -> APIModel {
@@ -106,6 +115,7 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.fractionDecimals = decimals
         apiModel.usdValue = usdValue.unwrap { String(describing: $0) }
         apiModel.total = total.unwrap { String(describing: $0) }
+        apiModel.totalSupply = totalSupply
         apiModel.creator = creator?.encode()
         apiModel.projectURL = projectURL?.absoluteString
         apiModel.explorerURL = explorerURL
@@ -117,6 +127,8 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.discordURL = discordURL?.absoluteString
         apiModel.telegramURL = telegramURL?.absoluteString
         apiModel.twitterUsername = twitterURL?.pathComponents.last
+        apiModel.algoPriceChangePercentage = algoPriceChangePercentage
+        apiModel.isAvailableOnDiscover = isAvailableOnDiscover
         return apiModel
     }
 
@@ -127,6 +139,7 @@ final class AssetDecoration: ALGEntityModel {
         self.decimals = asset.decimals
         self.usdValue = asset.usdValue
         self.total = asset.total
+        self.totalSupply = asset.totalSupply
         self.creator = asset.creator
         self.projectURL = asset.projectURL
         self.explorerURL = asset.explorerURL
@@ -138,6 +151,8 @@ final class AssetDecoration: ALGEntityModel {
         self.discordURL = asset.discordURL
         self.telegramURL = asset.telegramURL
         self.twitterURL = asset.twitterURL
+        self.algoPriceChangePercentage = asset.algoPriceChangePercentage
+        self.isAvailableOnDiscover = asset.isAvailableOnDiscover
     }
 }
 
@@ -154,12 +169,15 @@ extension AssetDecoration {
         var collectible: Collectible.APIModel?
         var url: String?
         var total: String?
+        var totalSupply: Decimal?
         var verificationTier: AssetVerificationTier?
         var logo: URL?
         var description: String?
         var discordURL: String?
         var telegramURL: String?
         var twitterUsername: String?
+        var algoPriceChangePercentage: Decimal?
+        var isAvailableOnDiscover: Bool?
 
         init() {
             self.assetId = 0
@@ -178,12 +196,15 @@ extension AssetDecoration {
             case collectible
             case url
             case total
+            case totalSupply = "total_supply"
             case verificationTier = "verification_tier"
             case logo
             case description
             case discordURL = "discord_url"
             case telegramURL = "telegram_url"
             case twitterUsername = "twitter_username"
+            case algoPriceChangePercentage = "last_24_hours_algo_price_change_percentage"
+            case isAvailableOnDiscover = "available_on_discover_mobile"
         }
     }
 }

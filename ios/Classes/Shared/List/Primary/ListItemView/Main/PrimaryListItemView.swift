@@ -24,6 +24,7 @@ final class PrimaryListItemView:
     ViewModelBindable,
     ListReusable {
     private lazy var iconView = URLImageView()
+    private lazy var loadingIndicatorView = ViewLoadingIndicator()
     private lazy var contentView = UIView()
     private lazy var titleView = PrimaryTitleView()
     private lazy var valueContentView = UIView()
@@ -127,6 +128,22 @@ extension PrimaryListItemView {
             $0.leading == 0
             $0.centerY == 0
         }
+
+        addLoadingIndicator(theme)
+    }
+
+    private func addLoadingIndicator(
+        _ theme: PrimaryListItemViewTheme
+    ) {
+        loadingIndicatorView.applyStyle(theme.loadingIndicator)
+
+        iconView.addSubview(loadingIndicatorView)
+        loadingIndicatorView.snp.makeConstraints {
+            $0.fitToSize(theme.loadingIndicatorSize)
+            $0.center.equalToSuperview()
+        }
+
+        loadingIndicatorView.isHidden = true
     }
 
     private func addContent(
@@ -151,7 +168,7 @@ extension PrimaryListItemView {
 
         contentView.addSubview(titleView)
         titleView.snp.makeConstraints {
-            $0.width >= (contentView - theme.minSpacingBetweenTitleAndValue)  * theme.contentMinWidthRatio
+            $0.width >= (contentView - theme.minSpacingBetweenTitleAndValue) * theme.contentMinWidthRatio
             $0.top >= 0
             $0.leading == 0
             $0.bottom <= 0
@@ -218,5 +235,23 @@ extension PrimaryListItemView {
             $0.bottom == 0
             $0.trailing == 0
         }
+    }
+}
+
+extension PrimaryListItemView {
+    var isLoading: Bool {
+        return loadingIndicatorView.isAnimating
+    }
+    
+    func startLoading() {
+        loadingIndicatorView.isHidden = false
+
+        loadingIndicatorView.startAnimating()
+    }
+
+    func stopLoading() {
+        loadingIndicatorView.isHidden = true
+
+        loadingIndicatorView.stopAnimating()
     }
 }

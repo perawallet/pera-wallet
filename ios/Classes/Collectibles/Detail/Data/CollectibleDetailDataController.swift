@@ -34,32 +34,59 @@ protocol CollectibleDetailDataController: AnyObject {
 enum CollectibleDetailSection:
     Int,
     Hashable {
+    case name
+    case accountInformation
     case media
     case action
-    case description
     case properties
-    case external
+    case description
     case loading
 }
 
 enum CollectibleDetailItem: Hashable {
     case loading
     case error(CollectibleMediaErrorViewModel)
+    case name(CollectibleDetailNameItemIdentifier)
+    case accountInformation(CollectibleDetailAccountInformationItemIdentifier)
     case media(CollectibleAsset)
-    case action(CollectibleDetailActionViewModel)
-    case watchAccountAction(CollectibleDetailActionViewModel)
-    case collectibleCreatorAccountAction(CollectibleDetailActionViewModel)
-    case optedInAction(CollectibleDetailOptedInActionViewModel)
-    case description(CollectibleDescriptionViewModel)
+    case sendAction
+    case optOutAction
+    case description
+    case creatorAccount(CollectibleDetailCreatorAccountItemIdentifier)
     case assetID(CollectibleDetailAssetIDItemIdentifier)
     case information(CollectibleTransactionInformation)
     case properties(CollectiblePropertyViewModel)
-    case external(CollectibleExternalSourceViewModel)
 }
 
-struct CollectibleDetailAssetIDItemIdentifier: Hashable {
-    private let id = UUID()
-    let viewModel: CollectibleDetailAssetIDItemViewModel
+struct CollectibleDetailNameItemIdentifier: Hashable {
+    private let name: String
+    let viewModel: CollectibleDetailNameViewModel
+
+    init(_ asset: CollectibleAsset) {
+        self.name = asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
+        self.viewModel = CollectibleDetailNameViewModel(asset)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.name == rhs.name
+    }
+}
+
+struct CollectibleDetailAccountInformationItemIdentifier: Hashable {
+    private let id: String
+    let viewModel: CollectibleDetailAccountInformationViewModel
+
+    init(_ item: CollectibleAssetItem) {
+        self.id = item.asset.amount.description.appending(item.account.primaryDisplayName)
+        self.viewModel = CollectibleDetailAccountInformationViewModel(item)
+    }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -70,6 +97,48 @@ struct CollectibleDetailAssetIDItemIdentifier: Hashable {
         rhs: Self
     ) -> Bool {
         return lhs.id == rhs.id
+    }
+}
+
+struct CollectibleDetailAssetIDItemIdentifier: Hashable {
+    private let assetID: AssetID
+    let viewModel: CollectibleDetailAssetIDItemViewModel
+
+    init(_ asset: CollectibleAsset) {
+        self.assetID = asset.id
+        self.viewModel = CollectibleDetailAssetIDItemViewModel(asset: asset)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(assetID)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.assetID == rhs.assetID
+    }
+}
+
+struct CollectibleDetailCreatorAccountItemIdentifier: Hashable {
+    private let address: PublicKey
+    let viewModel: CollectibleDetailCreatorAccountItemViewModel
+
+    init(_ asset: CollectibleAsset) {
+        self.address = asset.creator!.address
+        self.viewModel = CollectibleDetailCreatorAccountItemViewModel(asset: asset)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(address)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.address == rhs.address
     }
 }
 

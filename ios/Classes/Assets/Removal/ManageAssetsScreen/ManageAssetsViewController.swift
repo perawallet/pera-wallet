@@ -45,6 +45,7 @@ final class ManageAssetsViewController:
     }
 
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var collectibleAmountFormatter = CollectibleAmountFormatter()
 
     private let dataController: ManageAssetsListDataController
 
@@ -149,6 +150,15 @@ extension ManageAssetsViewController {
                 cell as? OptOutAssetListItemCell,
                 for: item
             )
+        case .collectibleAsset(let item):
+            configureAccessory(
+                cell as? OptOutCollectibleAssetListItemCell,
+                for: item
+            )
+            linkInteractors(
+                cell as? OptOutCollectibleAssetListItemCell,
+                for: item
+            )
         default:
             break
         }
@@ -158,25 +168,28 @@ extension ManageAssetsViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        guard case .asset(let item) = self.dataSource.itemIdentifier(for: indexPath) else { return }
+        let itemIdentifier = dataSource.itemIdentifier(for: indexPath)
 
-        let asset = item.model
-
-        if let collectibleAsset = asset as? CollectibleAsset {
+        if case .collectibleAsset(let item) = itemIdentifier {
             let cell = collectionView.cellForItem(at: indexPath)
-            let optOutCell = cell as? OptOutAssetListItemCell
+            let optOutCell = cell as? OptOutCollectibleAssetListItemCell
+            let asset = item.model
             openCollectibleDetail(
-                collectibleAsset,
+                asset,
                 from: optOutCell
             )
-        } else {
+            return
+        }
+
+        if case .asset(let item) = itemIdentifier {
             let cell = collectionView.cellForItem(at: indexPath)
             let optOutCell = cell as? OptOutAssetListItemCell
-            let assetDetail = AssetDecoration(asset: asset)
+            let assetDetail = AssetDecoration(asset: item.model)
             openASADiscovery(
                 assetDetail,
                 from: optOutCell
             )
+            return
         }
     }
 }
@@ -184,7 +197,7 @@ extension ManageAssetsViewController {
 extension ManageAssetsViewController {
     private func openCollectibleDetail(
         _ asset: CollectibleAsset,
-        from cell: OptOutAssetListItemCell? = nil
+        from cell: OptOutCollectibleAssetListItemCell? = nil
     ) {
         let screen = Screen.collectibleDetail(
             asset: asset,
@@ -260,7 +273,7 @@ extension ManageAssetsViewController {
     }
 
     private func findCell(
-        from asset: Asset
+        from asset: StandardAsset
     ) -> OptOutAssetListItemCell?  {
         let assetItem = AssetItem(
             asset: asset,
@@ -276,13 +289,40 @@ extension ManageAssetsViewController {
         } as? OptOutAssetListItemCell
     }
 
+    private func findCell(
+        from asset: CollectibleAsset
+    ) -> OptOutCollectibleAssetListItemCell?  {
+        let collectibleAssetItem = CollectibleAssetItem(
+            account: account,
+            asset: asset,
+            amountFormatter: collectibleAmountFormatter
+        )
+        let optOutCollectibleAssetListItem = OptOutCollectibleAssetListItem(item: collectibleAssetItem)
+        let listItem = ManageAssetSearchItem.collectibleAsset(optOutCollectibleAssetListItem)
+        let indexPath = dataSource.indexPath(for: listItem)
+
+        return indexPath.unwrap {
+            contextView.assetsCollectionView.cellForItem(at: $0)
+        } as? OptOutCollectibleAssetListItemCell
+    }
+
     private func restoreCellState(
         for transactionController: TransactionController
     ) {
         if let assetID = getAssetID(from: transactionController),
-           let assetDetail = optOutTransactions[assetID]?.asset,
-           let cell = findCell(from: assetDetail) {
-            cell.accessory = .remove
+           let asset = optOutTransactions[assetID]?.asset {
+
+            if let asset = asset as? StandardAsset,
+               let assetCell = findCell(from: asset) {
+                assetCell.accessory = .remove
+                return
+            }
+
+            if let collectibleAsset = asset as? CollectibleAsset,
+               let collectibleAssetCell = findCell(from: collectibleAsset) {
+                collectibleAssetCell.accessory = .remove
+                return
+            }
         }
     }
 }
@@ -312,6 +352,13 @@ extension ManageAssetsViewController {
             if let assetCell = cell as? OptOutAssetListItemCell,
                assetCell.accessory == .loading {
                 assetCell.accessory = .loading
+                return
+            }
+
+            if let collectibleAssetCell = cell as? OptOutCollectibleAssetListItemCell,
+               collectibleAssetCell.accessory == .loading {
+                collectibleAssetCell.accessory = .loading
+                return
             }
         }
     }
@@ -323,6 +370,20 @@ extension ManageAssetsViewController {
         for item: OptOutAssetListItem
     ) {
         let asset = item.model
+        let accessory = determineAccessory(asset)
+        cell?.accessory = accessory
+    }
+
+    private func configureAccessory(
+        _ cell: OptOutCollectibleAssetListItemCell?,
+        for item: OptOutCollectibleAssetListItem
+    ) {
+        let asset = item.model
+        let accessory = determineAccessory(asset)
+        cell?.accessory = accessory
+    }
+
+    private func determineAccessory(_ asset: Asset) -> OptOutAssetListItemAccessory {
         let status = dataController.hasOptedOut(asset)
 
         let accessory: OptOutAssetListItemAccessory
@@ -332,7 +393,7 @@ extension ManageAssetsViewController {
         case .optedOut: accessory = .loading
         }
 
-        cell?.accessory = accessory
+        return accessory
     }
 }
 
@@ -343,36 +404,61 @@ extension ManageAssetsViewController {
     ) {
         cell?.startObserving(event: .remove) {
             [unowned self] in
+            let asset = item.model
+            let optOutApprovalCompletion: () -> Void = {
+                [unowned cell] in
+                cell?.accessory = .loading
+            }
+            openOptOutAsset(asset, optOutApprovalCompletion: optOutApprovalCompletion)
+        }
+    }
 
+    private func linkInteractors(
+        _ cell: OptOutCollectibleAssetListItemCell?,
+        for item: OptOutCollectibleAssetListItem
+    ) {
+        cell?.startObserving(event: .remove) {
+            [unowned self] in
             let asset = item.model
 
-            if !self.isValidAssetDeletion(asset) {
-                self.openTransferAssetBalance(asset: asset)
-                return
+            let optOutApprovalCompletion: () -> Void = {
+                [unowned cell] in
+                cell?.accessory = .loading
             }
-
-            let account = self.dataController.account
-            let draft = OptOutAssetDraft(account: account, asset: asset)
-            let screen = Screen.optOutAsset(draft: draft) {
-                [weak self] event in
-                guard let self = self else { return }
-
-                switch event {
-                case .performApprove:
-                    cell?.accessory = .loading
-                    self.continueToOptOutAsset(
-                        asset: asset,
-                        account: self.account
-                    )
-                case .performClose:
-                    self.cancelOptOutAsset()
-                }
-            }
-            transitionToOptOutAsset.perform(
-                screen,
-                by: .present
-            )
+            openOptOutAsset(asset, optOutApprovalCompletion: optOutApprovalCompletion)
         }
+    }
+
+    private func openOptOutAsset(
+        _ asset: Asset,
+        optOutApprovalCompletion: @escaping () -> Void
+    ) {
+        if !self.isValidAssetDeletion(asset) {
+            self.openTransferAssetBalance(asset: asset)
+            return
+        }
+
+        let account = self.dataController.account
+        let draft = OptOutAssetDraft(account: account, asset: asset)
+        let screen = Screen.optOutAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performApprove:
+                optOutApprovalCompletion()
+                self.continueToOptOutAsset(
+                    asset: asset,
+                    account: self.account
+                )
+            case .performClose:
+                self.cancelOptOutAsset()
+            }
+        }
+        transitionToOptOutAsset.perform(
+            screen,
+            by: .present
+        )
     }
 
     private func continueToOptOutAsset(
@@ -484,15 +570,10 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         if let assetID = getAssetID(from: transactionController),
-           let collectibleAsset = optOutTransactions[assetID]?.asset as? CollectibleAsset {
-            let account = dataController.account
-
+           optOutTransactions[assetID]?.asset is CollectibleAsset {
             NotificationCenter.default.post(
                 name: CollectibleListLocalDataController.didRemoveCollectible,
-                object: self,
-                userInfo: [
-                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, collectibleAsset)
-                ]
+                object: self
             )
         }
 
@@ -617,7 +698,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
 extension ManageAssetsViewController {
     private func finishMonitoringOptOutUpdates(for transactionController: TransactionController) {
         if let assetID = getAssetID(from: transactionController) {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let monitor = sharedDataController.blockchainUpdatesMonitor
             let account = dataController.account
             monitor.finishMonitoringOptOutUpdates(
                 forAssetID: assetID,

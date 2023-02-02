@@ -77,7 +77,7 @@ struct SearchInputViewCommonTheme: SearchInputViewTheme {
         self.textInputContentEdgeInsets = (0, 12, 0, 12)
         self.textInputPaddings = (0, 0, 0, 0)
         self.textInputAccessorySize = (24, 24)
-        self.textInputBackgroundRadius = Corner(radius: 4)
+        self.textInputBackgroundRadius = Corner(radius: 8)
         self.textRightInputAccessoryViewPaddings = (0, .noMetric, 0, 12)
         self.textRightInputAccessoryViewMode = .whileEditing
         self.textClearInputAccessory = [
@@ -134,7 +134,7 @@ struct QRSearchInputViewTheme: SearchInputViewTheme {
         self.textInputContentEdgeInsets = (0, 12, 0, 12)
         self.textInputPaddings = (0, 0, 0, 0)
         self.textInputAccessorySize = (24, 24)
-        self.textInputBackgroundRadius = Corner(radius: 4)
+        self.textInputBackgroundRadius = Corner(radius: 8)
         self.textRightInputAccessoryViewPaddings = (0, .noMetric, 0, 12)
         self.textRightInputAccessoryViewMode = .whileEditing
         self.textClearInputAccessory = [

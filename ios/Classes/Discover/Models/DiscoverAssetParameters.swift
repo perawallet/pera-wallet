@@ -25,6 +25,15 @@ struct DiscoverAssetParameters: JSONModel {
         self.assetID = assetID
         self.poolID = nil
     }
+
+    init(asset: Asset) {
+        if asset.isAlgo {
+            self.assetID = "ALGO"
+        } else {
+            self.assetID = String(asset.id)
+        }
+        self.poolID = nil
+    }
 }
 
 extension DiscoverAssetParameters {

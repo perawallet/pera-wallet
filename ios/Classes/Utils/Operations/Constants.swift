@@ -26,14 +26,8 @@ enum Constants {
     }
 
     enum Notification {
-        enum InfoKey {
-            static let collectibleListAccountAssetPair = "collectibleListAccountAssetPair"
-            static let collectibleListFilter = "collectibleListFilter"
-        }
-
         static let collectibleListDidAddCollectible = "collectibleListDidAddCollectible"
         static let collectibleListDidRemoveCollectible = "collectibleListDidRemoveCollectible"
         static let collectibleListDidSendCollectible = "collectibleListDidSendCollectible"
-        static let collectibleListDidChangeFilter = "collectibleListDidChangeFilter"
     }
 }

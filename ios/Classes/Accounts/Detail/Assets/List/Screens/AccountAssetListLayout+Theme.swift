@@ -21,16 +21,14 @@ import MacaroonUIKit
 
 extension AccountAssetListLayout {
     struct Theme: LayoutSheet, StyleSheet {
-        let assetItemSize: LayoutSize
         let assetManagementItemSize: LayoutSize
-        let assetTitleItemSize: LayoutSize
         let searchItemSize: LayoutSize
+        let assetLoadingItemSize: LayoutSize
 
         init(_ family: LayoutFamily) {
-            self.assetItemSize = (UIScreen.main.bounds.width - 48, 72)
             self.assetManagementItemSize = (UIScreen.main.bounds.width - 48, 40)
-            self.assetTitleItemSize = (UIScreen.main.bounds.width - 48, 24)
             self.searchItemSize = (UIScreen.main.bounds.width, 72)
+            self.assetLoadingItemSize = (UIScreen.main.bounds.width - 48, 75)
         }
     }
 }

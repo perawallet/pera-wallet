@@ -663,11 +663,15 @@ extension SendCollectibleViewController {
 
         NotificationCenter.default.post(
             name: CollectibleListLocalDataController.didSendCollectible,
-            object: self,
-            userInfo: [
-                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (draft.fromAccount, draft.collectibleAsset)
-            ]
+            object: self
         )
+
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        let request = SendPureCollectibleAssetBlockchainRequest(
+            account: draft.fromAccount,
+            asset: draft.collectibleAsset
+        ) 
+        monitor.startMonitoringSendPureCollectibleAssetUpdates(request)
 
         approveCollectibleTransactionViewController?.stopLoading()
         approveCollectibleTransactionViewController?.dismissScreen {
