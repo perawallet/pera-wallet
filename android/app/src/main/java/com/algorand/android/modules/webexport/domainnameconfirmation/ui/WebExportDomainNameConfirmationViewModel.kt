@@ -23,10 +23,11 @@ import com.algorand.android.modules.webexport.utils.NAVIGATION_ENCRYPTION_KEY
 import com.algorand.android.modules.webexport.utils.NAVIGATION_MODIFICATION_KEY
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class WebExportDomainNameConfirmationViewModel @Inject constructor(
@@ -73,6 +74,12 @@ class WebExportDomainNameConfirmationViewModel @Inject constructor(
                     )
                 )
             }
+        }
+    }
+
+    fun onUrlInputActionButtonClicked() {
+        _domainNameConfirmationPreviewFlow.update {
+            webDomainNameConfirmationPreviewUseCase.getUpdatedPreviewWithUrlActionButtonEvent(it)
         }
     }
 

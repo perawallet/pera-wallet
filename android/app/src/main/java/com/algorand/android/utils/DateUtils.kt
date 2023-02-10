@@ -151,6 +151,8 @@ fun getCurrentSystemTimeAsMillis() = System.currentTimeMillis()
 
 fun convertMinToSec(min: Long) = min * MIN_TO_SEC_MULTIPLIER
 
+fun convertSecToMills(sec: Long) = sec * UNIX_TIME_STAMP_MULTIPLIER
+
 fun getZonedDateTimeAsSec() = ZonedDateTime.now().toEpochSecond()
 
 fun getZonedDateTimeFromSec(sec: Long): ZonedDateTime? {

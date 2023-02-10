@@ -21,5 +21,6 @@ data class WebExportDomainNameConfirmationPreview(
     val accountList: List<String>,
     val isContinueButtonEnabled: Boolean,
     val navigateToShowAuthenticationEvent: Event<Unit>?,
-    val navigateToAccountConfirmationEvent: Event<Unit>?
+    val navigateToAccountConfirmationEvent: Event<Unit>?,
+    val hideKeyboardEvent: Event<Unit>?
 )

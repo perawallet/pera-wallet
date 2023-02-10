@@ -59,7 +59,7 @@ class AutoLockManager @Inject constructor(
     override fun onActivityPaused(activity: Activity) {
         super.onActivityPaused(activity)
         if (activity !is MainActivity) return
-        autoLockManagerUseCase.setAppAtBackgroundTime(System.currentTimeMillis())
+        if (isAppUnlocked) autoLockManagerUseCase.setAppAtBackgroundTime(System.currentTimeMillis())
     }
 
     private fun lockApplication() {

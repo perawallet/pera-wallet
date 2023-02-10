@@ -31,7 +31,7 @@ class MobileHeaderInterceptor(
     private val clientType: String = DEFAULT_CLIENT_TYPE,
     private val osVersion: String = Build.VERSION.SDK_INT.toString(),
     private val deviceModel: String = Build.MODEL
-) : Interceptor {
+) : PeraInterceptor() {
 
     private val localLanguageTag: String
         get() = Locale.getDefault().language ?: Locale.ENGLISH.language
@@ -42,7 +42,7 @@ class MobileHeaderInterceptor(
 
     var currentActiveNode: Node? = null
 
-    override fun intercept(chain: Interceptor.Chain): Response {
+    override fun safeIntercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
 
         val requestBuilder = request.newBuilder()
@@ -77,8 +77,7 @@ class MobileHeaderInterceptor(
     }
 
     companion object {
-        const val ALGORAND_NETWORK_KEY = "algorand-network"
-        const val MOBILE_API_KEY_HEADER = "X-API-Key"
+        private const val MOBILE_API_KEY_HEADER = "X-API-Key"
         private const val KEY_APP_NAME = "App-Name"
         private const val KEY_CLIENT_TYPE = "Client-Type"
         private const val KEY_DEVICE_OS_VERSION = "Device-OS-Version"

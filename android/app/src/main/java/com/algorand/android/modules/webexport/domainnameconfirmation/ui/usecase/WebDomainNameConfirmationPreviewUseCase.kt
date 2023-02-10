@@ -38,7 +38,8 @@ class WebDomainNameConfirmationPreviewUseCase @Inject constructor(
             accountList = accountList,
             isEnabled = false,
             navigateToShowAuthenticationEvent = null,
-            navigateToAccountConfirmationEvent = null
+            navigateToAccountConfirmationEvent = null,
+            hideKeyboardEvent = null
         )
     }
 
@@ -47,7 +48,7 @@ class WebDomainNameConfirmationPreviewUseCase @Inject constructor(
         inputUrl: String
     ): WebExportDomainNameConfirmationPreview {
         return previousPreview.copy(
-            isContinueButtonEnabled = webExportDomainNameConfirmationUseCase.isInpUtUrlFromValidDomain(inputUrl)
+            isContinueButtonEnabled = webExportDomainNameConfirmationUseCase.isInputUrlValidDomain(inputUrl)
         )
     }
 
@@ -68,5 +69,15 @@ class WebDomainNameConfirmationPreviewUseCase @Inject constructor(
         return previousPreview.copy(
             navigateToAccountConfirmationEvent = Event(Unit)
         )
+    }
+
+    fun getUpdatedPreviewWithUrlActionButtonEvent(
+        previousPreview: WebExportDomainNameConfirmationPreview
+    ): WebExportDomainNameConfirmationPreview {
+        return if (previousPreview.isContinueButtonEnabled) {
+            getUpdatedPreviewWithClickDestination(previousPreview = previousPreview)
+        } else {
+            previousPreview.copy(hideKeyboardEvent = Event(Unit))
+        }
     }
 }

@@ -30,22 +30,11 @@ class WalletConnectSessionCachedData(
 
     private var callback: Callback? = null
 
-    private var retryCount: Int = INITIAL_RETRY_COUNT
+    var retryCount: Int = INITIAL_RETRY_COUNT
+        get() = if (field > MAX_SESSION_RETRY_COUNT) MAX_SESSION_RETRY_COUNT else field
 
     init {
         session.addCallback(this)
-    }
-
-    fun setRetryCount(count: Int) {
-        synchronized(this) {
-            retryCount = count
-        }
-    }
-
-    fun getRetryCount(): Int {
-        synchronized(this) {
-            return retryCount
-        }
     }
 
     fun addCallback(callback: Callback) {
@@ -85,7 +74,8 @@ class WalletConnectSessionCachedData(
 
         private val logTag = WalletConnectSessionCachedData::class.java.simpleName
 
-        const val INITIAL_RETRY_COUNT = 0
+        const val INITIAL_RETRY_COUNT = 1
+        private const val MAX_SESSION_RETRY_COUNT = 10
 
         fun create(
             session: WCSession,

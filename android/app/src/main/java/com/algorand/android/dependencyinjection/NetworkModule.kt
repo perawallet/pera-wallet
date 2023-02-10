@@ -76,6 +76,7 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(indexerInterceptor)
             .addInterceptor(loggingInterceptor)
+            .connectTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .build()
@@ -91,6 +92,7 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(algodInterceptor)
             .addInterceptor(loggingInterceptor)
+            .connectTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .build()
@@ -106,6 +108,9 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(mobileHeaderInterceptor)
             .addInterceptor(loggingInterceptor)
+            .connectTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
+            .readTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
+            .writeTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .build()
     }
 
@@ -117,6 +122,7 @@ object NetworkModule {
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .connectTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
             .build()

@@ -36,22 +36,16 @@ import com.algorand.android.usecase.GetActiveNodeChainIdUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.Resource.Error.Annotated
+import com.algorand.android.utils.convertSecToMills
 import com.algorand.android.utils.coremanager.ApplicationStatusObserver
 import com.algorand.android.utils.exception.InvalidWalletConnectUrlException
-import com.algorand.android.utils.exception.WalletConnectException
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Error
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Success
-import java.io.EOFException
-import java.net.ConnectException
-import java.net.ProtocolException
-import java.net.SocketException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
-import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlin.math.pow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -394,28 +388,12 @@ class WalletConnectManager @Inject constructor(
     private fun onSessionFailed(sessionId: Long, error: Session.Status.Error) {
         coroutineScope?.launch(Dispatchers.IO) {
             when (error.throwable.cause ?: error.throwable) {
-                is ProtocolException -> {
-                    _sessionResultFlow.emit(Event(Annotated(AnnotatedString(R.string.wallet_connect_is_not_reachable))))
-                }
                 is InvalidWalletConnectUrlException -> {
                     // TODO Add invalid url message here
                     _sessionResultFlow.emit(Event(Resource.OnLoadingFinished))
                 }
-                is EOFException -> {
-                    // TODO: According to this issue, this is a [OkHttp] related issue.
-                    //  So, I applied the recommended solution [https://github.com/square/okhttp/issues/7381] here.
-                    delay(RECONNECTION_DELAY)
-                    reconnectToDisconnectedSession(sessionId)
-                }
-                is ConnectException,
-                is UnknownHostException,
-                is SocketTimeoutException,
-                is TimeoutException,
-                is SocketException -> {
-                    addSessionAndDeleteIfNeed(sessionId)
-                }
                 else -> {
-                    recordException(WalletConnectException(throwable = error.throwable.cause ?: error.throwable))
+                    reconnectToSessionAfterDelay(sessionId)
                 }
             }
         }
@@ -455,25 +433,22 @@ class WalletConnectManager @Inject constructor(
      * while the app is in the background. It was causing session deletion in case of no internet connection. So, we are
      * trying to reconnect the user only while the app is in the foreground
      */
-    private suspend fun addSessionAndDeleteIfNeed(sessionId: Long) {
+    private suspend fun reconnectToSessionAfterDelay(sessionId: Long) {
         if (applicationStatusObserver.isAppOnBackground) return
-        if (isSessionRetryCountExceeded(sessionId)) {
-            val sessionEntity = walletConnectRepository.getSessionById(sessionId) ?: return
-            killSession(walletConnectMapper.createWalletConnectSession(sessionEntity))
-        } else {
-            delay(RE_CONNECT_SESSION_TIME_INTERVAL)
-            reconnectToDisconnectedSession(sessionId)
-        }
-    }
-
-    private fun isSessionRetryCountExceeded(sessionId: Long): Boolean {
-        val currentSessionRetryCount = walletConnectClient.getSessionRetryCount(sessionId)
-        return currentSessionRetryCount > SESSION_RECONNECT_MAX_RETRY_COUNT
+        val reconnectionDelay = calculateReconnectionDelay(sessionId)
+        delay(reconnectionDelay)
+        reconnectToDisconnectedSession(sessionId)
     }
 
     private fun increaseSessionRetryCount(sessionId: Long) {
         val increasedRetryCount = walletConnectClient.getSessionRetryCount(sessionId).inc()
         walletConnectClient.setSessionRetryCount(sessionId, increasedRetryCount)
+    }
+
+    private fun calculateReconnectionDelay(sessionId: Long): Long {
+        val sessionRetryCount = walletConnectClient.getSessionRetryCount(sessionId)
+        val retryIntervalAsSeconds = SESSION_RECONNECT_BASE_TIME_INTERVAL.pow(sessionRetryCount)
+        return convertSecToMills(retryIntervalAsSeconds.toLong())
     }
 
     override fun onCreate(owner: LifecycleOwner) {
@@ -496,8 +471,6 @@ class WalletConnectManager @Inject constructor(
     }
 
     companion object {
-        private const val RECONNECTION_DELAY = 100L
-        private const val SESSION_RECONNECT_MAX_RETRY_COUNT = 20
-        private const val RE_CONNECT_SESSION_TIME_INTERVAL = 3_000L
+        private const val SESSION_RECONNECT_BASE_TIME_INTERVAL = 3F
     }
 }

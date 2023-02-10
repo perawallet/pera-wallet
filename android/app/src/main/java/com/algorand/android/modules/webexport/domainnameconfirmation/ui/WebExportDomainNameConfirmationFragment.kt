@@ -26,6 +26,7 @@ import com.algorand.android.utils.KeyboardToggleListener
 import com.algorand.android.utils.addKeyboardToggleListener
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.collectOnLifecycle
+import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -69,6 +70,10 @@ class WebExportDomainNameConfirmationFragment : BaseFragment(R.layout.fragment_w
         it?.consume()?.run { navToAccountConfirmation() }
     }
 
+    private val hideKeyboardEventCollector: suspend (Event<Unit>?) -> Unit = {
+        it?.consume()?.run { view?.hideKeyboard() }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
@@ -93,7 +98,7 @@ class WebExportDomainNameConfirmationFragment : BaseFragment(R.layout.fragment_w
         with(binding) {
             enterUrlInputLayout.setInputTypeText()
             enterUrlInputLayout.setImeOptionsDone {
-                webExportDomainNameConfirmationViewModel.onNavigationToNextFragmentClicked()
+                webExportDomainNameConfirmationViewModel.onUrlInputActionButtonClicked()
             }
             enterUrlInputLayout.setOnTextChangeListener {
                 webExportDomainNameConfirmationViewModel.updatePreviewWithUrlInput(binding.enterUrlInputLayout.text)
@@ -119,6 +124,10 @@ class WebExportDomainNameConfirmationFragment : BaseFragment(R.layout.fragment_w
             viewLifecycleOwner.collectOnLifecycle(
                 map { it.navigateToShowAuthenticationEvent }.distinctUntilChanged(),
                 navigateToShowAuthenticationEventCollector
+            )
+            collectLatestOnLifecycle(
+                flow = map { it.hideKeyboardEvent }.distinctUntilChanged(),
+                collection = hideKeyboardEventCollector
             )
         }
     }

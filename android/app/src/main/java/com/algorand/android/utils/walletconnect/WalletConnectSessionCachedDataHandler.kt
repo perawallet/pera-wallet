@@ -27,8 +27,8 @@ class WalletConnectSessionCachedDataHandler @Inject constructor() {
     fun addNewCachedData(sessionCachedData: WalletConnectSessionCachedData) {
         getConnectedSessions { sessions ->
             val cachedSession = sessions.popIfOrNull { it.sessionId == sessionCachedData.sessionId }
-            val safeRetryCount = cachedSession?.getRetryCount() ?: INITIAL_RETRY_COUNT
-            sessionCachedData.setRetryCount(safeRetryCount)
+            val safeRetryCount = cachedSession?.retryCount ?: INITIAL_RETRY_COUNT
+            sessionCachedData.retryCount = safeRetryCount
             sessions.add(sessionCachedData)
         }
     }

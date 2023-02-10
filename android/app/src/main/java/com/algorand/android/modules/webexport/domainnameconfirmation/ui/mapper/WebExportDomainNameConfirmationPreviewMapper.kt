@@ -25,7 +25,8 @@ class WebExportDomainNameConfirmationPreviewMapper @Inject constructor() {
         accountList: List<String>,
         isEnabled: Boolean,
         navigateToShowAuthenticationEvent: Event<Unit>?,
-        navigateToAccountConfirmationEvent: Event<Unit>?
+        navigateToAccountConfirmationEvent: Event<Unit>?,
+        hideKeyboardEvent: Event<Unit>?
     ): WebExportDomainNameConfirmationPreview {
         return WebExportDomainNameConfirmationPreview(
             backupId = backupId,
@@ -34,7 +35,8 @@ class WebExportDomainNameConfirmationPreviewMapper @Inject constructor() {
             accountList = accountList,
             isContinueButtonEnabled = isEnabled,
             navigateToShowAuthenticationEvent = navigateToShowAuthenticationEvent,
-            navigateToAccountConfirmationEvent = navigateToAccountConfirmationEvent
+            navigateToAccountConfirmationEvent = navigateToAccountConfirmationEvent,
+            hideKeyboardEvent = hideKeyboardEvent
         )
     }
 }

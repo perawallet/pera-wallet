@@ -141,12 +141,12 @@ class WCWalletConnectClient(
 
     override fun getSessionRetryCount(sessionId: Long): Int {
         val sessionCacheData = sessionCachedDataHandler.getCachedDataById(sessionId)
-        return sessionCacheData?.getRetryCount() ?: INITIAL_RETRY_COUNT
+        return sessionCacheData?.retryCount ?: INITIAL_RETRY_COUNT
     }
 
     override fun setSessionRetryCount(sessionId: Long, retryCount: Int) {
         val sessionCacheData = sessionCachedDataHandler.getCachedDataById(sessionId) ?: return
-        sessionCacheData.setRetryCount(retryCount)
+        sessionCacheData.retryCount = retryCount
     }
 
     override fun clearSessionRetryCount(sessionId: Long) {

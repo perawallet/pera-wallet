@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 class WebExportDomainNameConfirmationUseCase @Inject constructor() {
 
-    fun isInpUtUrlFromValidDomain(inputUrl: String): Boolean {
-        return validDomainUrlList.contains(inputUrl)
+    fun isInputUrlValidDomain(inputUrl: String): Boolean {
+        return validDomainUrlList.contains(inputUrl.trim())
     }
 
     companion object {

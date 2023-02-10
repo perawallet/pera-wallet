@@ -19,11 +19,11 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 @Singleton
-class IndexerInterceptor : Interceptor {
+class IndexerInterceptor : PeraInterceptor() {
 
     var currentActiveNode: Node? = null
 
-    override fun intercept(chain: Interceptor.Chain): Response {
+    override fun safeIntercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
 
         val requestBuilder = request.newBuilder()
