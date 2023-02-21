@@ -54,10 +54,9 @@
     <string name="you_should_enter_your_correct_password">Para ver la frase secreta debes ingresar la contraseña correcta</string>
     <string name="there_s_no_biometric_registration">El dispositivo no cuenta con registros biométricos ni con funcionalidades biométricas</string>
     <string name="you_re_trying_to_send">Estás intentando enviar una transacción a una cuenta cuyo saldo es inferior al saldo mínimo. El monto debe ser de al menos <annotation replacement="amount">amountPlaceholder</annotation> Algo.</string>
-    <string name="transaction_amount">El monto de la transacción da como resultado un saldo menor al mínimo permitido de <annotation replacement="min_balance"> </annotation> Algo en la cuenta.</string>
+    <string name="transaction_amount">El monto de la transacción da como resultado un saldo menor al mínimo permitido de <annotation replacement="min_balance">minBalancePlaceHolder</annotation> Algo en la cuenta.</string>
     <string name="transaction_amount_cannot">El monto de la transacción no puede ser mayor que el importe disponible.</string>
     <string name="transaction_amount_results">El monto de la transacción da como resultado un saldo negativo.</string>
-    <string name="send_feedback">Enviar comentarios</string>
     <string name="note">Nota</string>
     <string name="rewards">Recompensas</string>
     <string name="show_rewards">Mostrar recompensas</string>
@@ -81,11 +80,12 @@
     <string name="you_already_have">Ya posees este activo.</string>
     <string name="adding_asset">Agregando activo</string>
     <string name="removing_asset">Eliminando activo</string>
+    <string name="unfortunately_this_account">Lamentablemente, esta cuenta no está suscrita al activo %1$s. Indícale al titular de la cuenta que se suscriba al activo %1$s e inténtalo nuevamente.</string>
     <string name="transfer_balance">Transferir el saldo</string>
     <string name="approve">Aprobar</string>
     <string name="account_does_not_accept">La cuenta no acepta este activo</string>
-    <string name="you_are_about_to_receive">¡Estas por recibir un activo!</string>
     <string name="min_transaction_error">Error en el mínimo de la transacción</string>
+    <string name="you_need_at_least">Necesitas al menos %1$s Algo para suscribirte a este activo</string>
     <string name="please_add_this">Agrega este activo e inténtalo nuevamente.</string>
     <string name="key_not_valid">La clave no es válida, asegúrate de tener la clave correcta.</string>
     <string name="scanned_qr_is_not_valid">El QR escaneado es inválido.</string>
@@ -133,6 +133,7 @@
     <string name="go_to_home">Volver al Inicio</string>
     <string name="accept">Aceptar</string>
     <string name="add_new_asset">Agregar nuevo activo</string>
+    <string name="try_different">Intenta con un nombre o ID de activo diferentes</string>
     <string name="copy_address">Copiar dirección</string>
     <string name="account_address">Dirección de la cuenta</string>
     <string name="keep_it">Conservarlo</string>
@@ -382,7 +383,7 @@
     <string name="enter_your_new_six_digit_pin">Ingresa tu nuevo\nPIN de 6 dígitos</string>
     <string name="re_enter_your_new_six_digit_pin">Vuelve a ingresar tu nuevo\nPIN de 6 dígitos</string>
     <string name="wrong_passphrase">Frase secreta incorrecta</string>
-    <string name="account_not_found_please_try">No se encontró la cuenta. Inténtalo nuevamente ingresando la frase secreta correcta.</string>
+    <string name="account_not_found">No se encontró la cuenta</string>
     <string name="account_is_verified">La cuenta está verificada</string>
     <string name="verified">Verificado</string>
     <string name="copy_id">Copiar ID</string>
@@ -440,6 +441,7 @@
     <string name="show_transaction_details">Mostrar información de la transacción</string>
     <string name="network_fee">Tarifa de la red</string>
     <string name="application_call">Llamada a la aplicación</string>
+    <string name="application_opt_in">Suscripción a la aplicación</string>
     <string name="application_close_to">Cerrar aplicación y enviar a</string>
     <string name="application_update">Actualizar aplicación</string>
     <string name="application_delete">Eliminar aplicación</string>
@@ -449,6 +451,7 @@
     <string name="asset_reconfiguration_request_with_asset_name">Solicitud de reconfiguración de activo <annotation replacement="asset_name">assetNamePlaceholder</annotation></string>
     <string name="asset_deletion_request_with_asset_name">Solicitud de eliminación de activo <annotation replacement="asset_name">assetNamePlaceholder</annotation></string>
     <string name="application_call_with_id">Llamada a la aplicación <annotation replacement="app_id">appIdPlaceholder</annotation></string>
+    <string name="application_opt_in_with_id">Suscripción a la aplicación <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_close_to_with_id">Cerrar aplicación y enviar a <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_update_with_id">Actualizar aplicación <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_delete_with_id">Borrar aplicación <annotation replacement="app_id">appIdPlaceholder</annotation></string>
@@ -555,13 +558,14 @@
     <string name="view_transaction">Ver transacción</string>
     <string name="show_on_algoexplorer">Mostrar en Algoexplorer</string>
     <string name="show_on_nftexplorer">Mostrar en NFTExplorer</string>
+    <string name="you_are_not_the_owner">Todavía no posees este NFT. Sin embargo, te suscribiste a él. Ya puedes transferirlo a tu cuenta.</string>
     <string name="we_don_t_support">Todavía no admitimos ese tipo de medio NFT.</string>
     <string name="we_can_t_display">No podemos mostrar la imagen en este momento.</string>
     <string name="transfer">Transferir</string>
     <string name="send_your_nft">Enviar NFT</string>
     <string name="paste_an_algorand_wallet_address">Pegar una dirección de monedero Algorand</string>
-    <string name="ask_recipient_to">Pídele al destinatario que acepte el activo</string>
-    <string name="you_cant_send">No puedes enviar <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> a <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> porque este monedero no aceptó recibir estos activos todavía. <annotation font="dmsans_medium"><annotation custom="learn_more">Obtén más información sobre la aceptación de activos</annotation></annotation></string>
+    <string name="ask_recipient_to">Pídele al destinatario que se suscriba</string>
+    <string name="you_cant_send">No puedes enviar <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> a <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> porque este monedero no se suscribió a estos activos todavía. <annotation font="dmsans_medium"><annotation custom="learn_more">Obtén más información sobre la suscripción de activos</annotation></annotation></string>
     <string name="request_opt_in">Solicitar aceptación de activos</string>
     <string name="information_about_opt">Información sobre la aceptación de activos</string>
     <string name="to_avoid_spammy">Para evitar transacciones spam, la blockchain Algorand solo te permite enviar y recibir transacciones para activos que ya aceptaste recibir o enviar.</string>
@@ -575,20 +579,26 @@
     <string name="transacting_fee">Tarifa de transacción</string>
     <string name="confirm_transfer">Confirmar transferencia</string>
     <string name="search_asset_id_or_nft">Buscar por ID de activo o nombre del NFT</string>
-    <string name="the_account_name">Se cambió con éxito la clave de la cuenta <annotation font="dmsans_bold">\"<annotation replacement="account_name"></annotation>\"</annotation>.</string>
+    <string name="the_account_name">Se cambió con éxito la clave de la cuenta <annotation font="dmsans_bold">\"<annotation replacement="account_name">accountNamePlaceHolder</annotation>\"</annotation>.</string>
+    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> suscribió <annotation replacement="asset">assetPlaceholder</annotation> a su cuenta. Puedes enviarle <annotation replacement="asset">assetPlaceholder</annotation>.</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> está intentando enviarte <annotation replacement="asset">assetPlaceholde</annotation>, pero no posees este activo. Pulsa aquí para suscribirlo a tu cuenta.</string>
     <string name="transaction_send_successful">Se completó la transacción de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> para <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>.</string>
     <string name="transaction_send_failed">Falló la transacción de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> para <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>.</string>
     <string name="the_only_way_to">La única manera de recuperar una cuenta de Algorand es con esta frase de recuperación.</string>
     <string name="monitor_activity_of">Supervisa la actividad de una cuenta sin necesidad de tener la frase secreta. Esto es útil para monitorear activos en almacenamiento en frío</string>
     <string name="this_transaction_fee_is_higher">Esta tarifa de transacción es más alta que la tarifa habitual de 0,001 Algo.</string>
+    <string name="you_are_about_to">Estás a punto de eliminar y dar de baja <annotation replacement="asset_name">assetNamePlaceholder</annotation> con \"<annotation replacement="account_name">accountNamePlaceholder</annotation>\". No podrás realizar transacciones con este activo desde esta cuenta a menos que vuelvas a suscribirte.</string>
     <string name="invalid_input_transaction_request">Entrada inválida: La solicitud de transacción contiene más de %1$d transacciones</string>
     <string name="selected_account">Cuenta seleccionada</string>
     <string name="your_nft_transfer_has_failed">¡Ocurrió un error en la transferencia de NFT!</string>
     <string name="please_try_again">Intenta nuevamente.</string>
+    <string name="opt_out">Darse de baja</string>
     <string name="nft_successfully_opted_out">Te diste de baja del NFT %1$s correctamente</string>
+    <string name="opted_in_to">Te suscribiste a</string>
     <string name="show_on">Mostrar en</string>
     <string name="you_are_about_to_remove_watch_account">Estás a punto de eliminar una cuenta en observación. ¿Estás seguro de que quieres continuar?</string>
     <string name="you_are_about_to_remove_main_account">Estás a punto de eliminar tu cuenta principal. ¿Estás seguro de que quieres continuar?</string>
+    <string name="this_watch_account_has_opted">Esta cuenta en observación se suscribió a este NFT, pero no lo posee.</string>
     <string name="display_opted_in_nfts">Mostrar NFT suscritos</string>
     <string name="filter">Filtrar</string>
     <string name="show_filtered_nfts_formatted">Mostrar NFT filtrados (%1$d)</string>
@@ -636,8 +646,10 @@
     <string name="algo_or_any_asa">Algo o un ASA a otra cuenta</string>
     <string name="view_or_copy">Ve o copia tu dirección de cuenta</string>
     <string name="use_wallet_connect">Usa Walletconnect o escanea una dirección de cuenta </string>
+    <string name="opt_out_from_the">Darse de baja del NFT</string>
     <string name="asset_configuration">Configuración de activos</string>
     <string name="scan_qr">Escanear QR</string>
+    <string name="algorand_blockchain">La blockchain de Algorand requiere una cuenta para suscribirse a un ASA antes de poder recibirlo. Ahora que has transferido este NFT a otra cuenta, puedes darlo de baja.</string>
     <string name="scanned_account_address">Se escaneó la dirección de la cuenta</string>
     <string name="send_transaction">Enviar transacción</string>
     <string name="add_new_contact">Agregar nuevo contacto</string>
@@ -665,6 +677,7 @@
     </plurals>
     <string name="inner_n_transactions">Transacciones\nInternas</string>
     <string name="inner_transactions">Transacciones internas</string>
+    <string name="your_accounts_don_t_contain_this">Tus cuentas no poseen este activo. Subscríbete este activo y vuelve a intentar.</string>
     <plurals name="show_count_more_assets">
         <item quantity="one">Mostrar +%1$d activo más</item>
         <item quantity="other">Mostrar +%1$d activos más</item>
@@ -697,6 +710,7 @@
     <string name="disconnect_all_sessions">Desconectar todas las sesiones</string>
     <string name="would_disconnect_all_sessions">¿Quieres desconectar todas las sesiones?</string>
     <string name="missing_asset">Activo faltante</string>
+    <string name="you_are_already">Ya te suscribiste a <annotation replacement="asset_name">assetNamePlaceholder</annotation> desde esta cuenta.</string>
     <string name="too_many_accounts">¡Tienes demasiadas cuentas!</string>
     <string name="looks_like_already_have_accounts">Parece que ya tienes %1$d o más cuentas en tu monedero. Para mantener un rendimiento ágil de la aplicación, actualmente no admitimos más de %1$d cuentas. Tendrás que eliminar una cuenta primero para poder agrear una cuenta nueva.</string>
     <string name="error_bluetooth_permission_message">Se debe autorizar el servicio de escaneo Bluetooth para poder buscar dispositivos Ledger cercanos.</string>
@@ -748,7 +762,10 @@
     <string name="sorry_there_was">Ocurrió un error al buscar algunas de tus cuentas. El valor de la cartera se calcula con las cuentas encontradas correctamente.</string>
     <string name="we_couldn_t_find_any_assets">No encontramos activos para eliminar.</string>
     <string name="the_algo_is_the_official_cryptocurrency">El Algo es la criptomoneda oficial de la blockchain de Algorand. La blockchain de Algorand se desarrolló para ayudar a crear una economía abierta y sin fronteras donde todos pueden participar. Este nuevo tipo de economía digital solo puede operar con una moneda verdaderamente digital que funcione al instante y para todos. Esa moneda es el Algo.</string>
+    <string name="opt_out_nft">Dar de baja el NFT</string>
+    <string name="you_are_about_to_opt">Estás a punto de dar de baja %1$s. No podrás realizar transacciones con este NFT desde esta cuenta a menos que vuelvas a agregarlo.</string>
     <string name="opt_in_to_nft">Suscribirse a un NFT</string>
+    <string name="opting_in_to_an_nft">Suscribirse a un NFT requiere enviar una transacción con una tarifa de transacción mínima. Esto aparecerá en tu historial de transacciones.</string>
     <string name="this_account_doesn_t">Esta cuenta no tiene saldo suficiente para esta transacción.</string>
     <string name="we_couldn_t">No pudimos detectar automáticamente el navegador con el que iniciaste la sesión de WalletConnect. Selecciónalo para volver a %1$s</string>
     <string name="select_a_browser">Elige un navegador</string>
@@ -863,4 +880,57 @@
     <string name="no_internet_connection">Sin conexión a Internet</string>
     <string name="you_dont_seem_to_be_connected">Parece que no tienes conexión a Internet. Comprueba tu conexión y vuelve a intentarlo.</string>
     <string name="we_cant_get_that_information">No se puede obtener esa información ahora. Inténtalo de nuevo más tarde.</string>
+    <string name="enter_your_pin">Ingresa tu PIN</string>
+    <string name="to_opt_out_from_an_asset">Para darse de baja de un activo, primero debes transferir el saldo restante a otra cuenta.</string>
+    <plurals name="account_nft_count">
+        <item quantity="one">%1$d NFT</item>
+        <item quantity="other">%1$d NFT</item>
+    </plurals>
+    <string name="this_transaction_is_sending_your">Esta transacción enviará tu saldo completo de %1$s . Dará de baja y eliminará el activo %1$s de tu cuenta \" %2$s \".</string>
+    <string name="account_not_found_please_try">No se encontró la cuenta. Inténtalo nuevamente ingresando la frase secreta correcta.</string>
+    <string name="to_opt_out_and_remove">Para dar de baja y eliminar <annotation replacement="asset_name">assetNamePlaceholder</annotation>, el saldo debe ser 0. Transfiere el saldo a otra cuenta e inténtalo nuevamente.</string>
+    <string name="nfts">NFT</string>
+    <plurals name="nft_count">
+        <item quantity="one">%1$d NFT</item>
+        <item quantity="other">%1$d NFT</item>
+    </plurals>
+    <string name="manage_nfts">Gestionar NFT</string>
+    <string name="asset_successfully_opted_in">%1$s se suscribió a tu cuenta correctamente.</string>
+    <string name="asset_successfully_opted_out_from_your">%1$s se dio de baja correctamente de tu cuenta.</string>
+    <string name="you_can_opt_in_to_this_nft">Puedes suscribirte a un NFT con</string>
+    <string name="transaction_confirmation_timed_out">Se agotó el tiempo de confirmación de la transacción. Verifica el estado de tu transacción.</string>
+    <string name="you_are_not_opted_in">No te suscribiste al token de origen. Elige otro fondo u otra cuenta compatible para poder intercambiar.</string>
+    <string name="min_balance">Saldo mínimo %1$s</string>
+    <string name="minimum_balance_is_the_minimum">El saldo mínimo es la cantidad mínima de Algo que debes tener en una cuenta. Aumenta cada vez que la cuenta se suscribe a un contrato inteligente, ASA o NFT.</string>
+    <string name="asset_id_copied_to_clipboard">ID de activo copiado al portapapeles</string>
+    <string name="pick_a_photo">Elige una foto para este contacto</string>
+    <string name="filter_assets">Filtrar activos</string>
+    <string name="hide_assets_with_no_balance">Ocultar activos sin saldo</string>
+    <string name="you_can_show_hide_assets">Puedes mostrar/ocultar activos sin saldo.</string>
+    <string name="your_accounts_don_t">Tus cuentas no tienen este activo.</string>
+    <string name="remove_asset">Eliminar activo</string>
+    <string name="opt_in_to_an">Suscribirse a un activo</string>
+    <string name="asset_opt_out">Darse de baja de un activo</string>
+    <string name="account_address_or_short_name">Dirección de la cuenta o nombre corto</string>
+    <string name="error_while_opting_to_the">Error al suscribirse al ASA. Intenta de nuevo</string>
+    <string name="retry">Reintentar</string>
+    <string name="before_interacting_with">Antes de interactuar con un activo, debes suscribirte a él desde tu cuenta. Esto evita que te envíen transacciones de activos que no hayan sido autorizados.</string>
+    <string name="you_already_own">Ya posees este activo</string>
+    <string name="markets">Mercados</string>
+    <string name="formatted_changed_percentage">%1$.2f%%</string>
+    <string name="display_nfts_in_asset_list">Mostrar NFT en la lista de activos</string>
+    <string name="nfts_assets_will_be_shown">Los activos NFT se mostrarán en la lista de activos de tu cuenta</string>
+    <string name="display_nfts_from_watch_accounts">Mostrar NFT de cuentas en observación</string>
+    <string name="this_will_show_nfts">Esto mostrará los NFT de tus cuentas en observación, así como de tus cuentas propias</string>
+    <string name="you_can_show_hide_nfts">Puedes mostrar/ocultar los NFT a los que te hayas suscrito, pero que no posees</string>
+    <string name="three_d_mode">Modo 3D</string>
+    <string name="creator_account">Cuenta de creador</string>
+    <string name="search_nfts">Buscar NFT</string>
+    <string name="you_need_to_opt_in">Debes suscribirte al ID del ASA del NFT para poder transferirlo a tu monedero. Pega el ID del ASA en la barra de búsqueda.</string>
+    <string name="you_need_to_opt_in_to">Debes suscribirte al ID del ASA del NFT para poder transferirlo a tu monedero.</string>
+    <string name="round">Ronda</string>
+    <string name="do_not_proceed_if_you">No procedas si no iniciaste esta solicitud.</string>
+    <string name="this_asset_is">Este activo ya está pendiente de eliminación.</string>
+    <string name="get_help">Obtener ayuda</string>
+    <string name="couldn_t_retrieve">Error al recuperar los detalles de la cuenta. Inténtalo de nuevo</string>
 </resources>

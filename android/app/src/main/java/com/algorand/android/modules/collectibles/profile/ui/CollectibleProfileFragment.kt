@@ -185,6 +185,10 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
         onAccountAddressCopied(baseCollectibleDetailViewModel.accountAddress)
     }
 
+    override fun navToCardViewerFragment(url: String) {
+        nav(CollectibleProfileFragmentDirections.actionCollectibleProfileFragmentToNftCardViewerNavigation(url))
+    }
+
     override fun onShareButtonClick() {
         context?.openTextShareBottomMenuChooser(
             title = baseCollectibleDetailViewModel.getNFTName()?.getName(resources).orEmpty(),

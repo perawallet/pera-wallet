@@ -117,7 +117,7 @@
             android:layout_height="wrap_content"
             app:settingsIcon="@drawable/ic_feedback"
             app:settingsShowArrow="true"
-            app:settingsText="@string/send_feedback" />
+            app:settingsText="@string/get_help" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/rateListItem"

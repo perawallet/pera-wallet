@@ -120,7 +120,7 @@ class CollectibleSendPreviewUseCase @Inject constructor(
                     getTransactionSentSuccessPreview(previousState)
                 }
                 is DataResource.Error -> getTransactionSentFailedPreview(dataResource, previousState)
-                else -> previousState.copy(isLoadingVisible = true)
+                is DataResource.Loading -> previousState.copy(isLoadingVisible = true)
             }
         }
     }

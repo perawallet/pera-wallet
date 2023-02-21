@@ -14,27 +14,13 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.core.BaseUseCase
-import com.algorand.android.mapper.AccountInformationMapper
-import com.algorand.android.mapper.LedgerAccountSelectionAccountItemMapper
-import com.algorand.android.mapper.LedgerAccountSelectionInstructionItemMapper
-import com.algorand.android.models.Account
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AccountSelectionListItem
-import com.algorand.android.repository.AccountRepository
-import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.Resource
-import javax.inject.Inject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.coroutineScope
 
-class LedgerAccountSelectionUseCase @Inject constructor(
+abstract class LedgerAccountSelectionUseCase constructor(
     private val assetFetchAndCacheUseCase: AssetFetchAndCacheUseCase,
-    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
-    private val accountCacheManager: AccountCacheManager,
-    private val accountRepository: AccountRepository,
-    private val ledgerAccountSelectionInstructionItemMapper: LedgerAccountSelectionInstructionItemMapper,
-    private val ledgerAccountSelectionAccountItemMapper: LedgerAccountSelectionAccountItemMapper,
-    private val accountInformationMapper: AccountInformationMapper
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase
 ) : BaseUseCase() {
 
     fun getAuthAccountOf(
@@ -61,77 +47,9 @@ class LedgerAccountSelectionUseCase @Inject constructor(
         }?.toTypedArray()
     }
 
-    suspend fun getAccountSelectionListItems(
-        ledgerAccountsInformation: Array<AccountInformation>,
-        bluetoothAddress: String,
-        bluetoothName: String?,
-        coroutineScope: CoroutineScope
-    ) = flow<Resource<List<AccountSelectionListItem>>> {
-        emit(Resource.Loading)
-        mutableListOf<AccountSelectionListItem>().apply {
-
-            val instructionItem = ledgerAccountSelectionInstructionItemMapper.mapTo(ledgerAccountsInformation.size)
-            add(instructionItem)
-
-            ledgerAccountsInformation.forEachIndexed { index, ledgerAccountInformation ->
-
-                // Cache ledger accounts assets
-                cacheLedgerAccountAssets(ledgerAccountInformation, coroutineScope)
-
-                val authAccountDetail = Account.Detail.Ledger(bluetoothAddress, bluetoothName, index)
-                val authAccountSelectionListItem = ledgerAccountSelectionAccountItemMapper.mapTo(
-                    accountInformation = ledgerAccountInformation,
-                    accountDetail = authAccountDetail,
-                    accountCacheManager = accountCacheManager
-                )
-                add(authAccountSelectionListItem)
-                val rekeyedAccountSelectionListItems = getRekeyedAccountsOfAuthAccount(
-                    ledgerAccountInformation.address, authAccountDetail, coroutineScope
-                )
-                addAll(rekeyedAccountSelectionListItems)
-            }
-            emit(Resource.Success(this))
-        }
-    }
-
-    private suspend fun getRekeyedAccountsOfAuthAccount(
-        rekeyAdminAddress: String,
-        ledgerDetail: Account.Detail.Ledger,
-        coroutineScope: CoroutineScope
-    ): List<AccountSelectionListItem.AccountItem> {
-        val deferredAccountSelectionListItems = mutableListOf<AccountSelectionListItem.AccountItem>()
-        accountRepository.getRekeyedAccounts(rekeyAdminAddress).use(
-            onSuccess = { rekeyedAccountsListResponse ->
-                val rekeyedAccounts = rekeyedAccountsListResponse.accountInformationList
-                    ?.filterNot { it.address == rekeyAdminAddress }
-                    ?.map {
-                        accountInformationMapper.mapToAccountInformation(it, rekeyedAccountsListResponse.currentRound)
-                    }
-                    ?.map { accountInformation ->
-
-                        // Cache rekeyed accounts assets
-                        cacheLedgerAccountAssets(accountInformation, coroutineScope)
-
-                        val detail = Account.Detail.RekeyedAuth.create(null, mapOf(rekeyAdminAddress to ledgerDetail))
-                        ledgerAccountSelectionAccountItemMapper.mapTo(
-                            accountInformation = accountInformation,
-                            accountDetail = detail,
-                            accountCacheManager = accountCacheManager
-                        )
-                    }
-                    .orEmpty()
-                deferredAccountSelectionListItems.addAll(rekeyedAccounts)
-            }
-        )
-        return deferredAccountSelectionListItems
-    }
-
-    private suspend fun cacheLedgerAccountAssets(
-        accountInformation: AccountInformation,
-        coroutineScope: CoroutineScope
-    ) {
+    protected suspend fun cacheLedgerAccountAssets(accountInformation: AccountInformation) {
         val assetIds = accountInformation.getAssetIdList().toSet()
         val filteredAssetList = simpleAssetDetailUseCase.getChunkedAndFilteredAssetList(assetIds)
-        assetFetchAndCacheUseCase.processFilteredAssetIdList(filteredAssetList, coroutineScope)
+        coroutineScope { assetFetchAndCacheUseCase.processFilteredAssetIdList(filteredAssetList, this) }
     }
 }

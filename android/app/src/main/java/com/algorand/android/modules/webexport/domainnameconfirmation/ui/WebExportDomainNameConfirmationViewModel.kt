@@ -65,6 +65,16 @@ class WebExportDomainNameConfirmationViewModel @Inject constructor(
         }
     }
 
+    fun onImeOptionDoneClicked() {
+        viewModelScope.launch {
+            _domainNameConfirmationPreviewFlow.emit(
+                webDomainNameConfirmationPreviewUseCase.getUpdatedPreviewWithImeOptionDoneClicked(
+                    previousPreview = _domainNameConfirmationPreviewFlow.value
+                )
+            )
+        }
+    }
+
     fun handlePasswordEntryResult(isPasscodeVerified: Boolean) {
         viewModelScope.launch {
             if (isPasscodeVerified) {

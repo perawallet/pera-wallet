@@ -13,12 +13,11 @@
 
 package com.algorand.android.models
 
-import androidx.annotation.DrawableRes
-
 data class TransactionRequestSenderInfo(
-    val senderDisplayedAddress: BaseWalletConnectDisplayedAddress? = null,
-    @DrawableRes val toAccountTypeImageResId: Int? = null,
+    val fromDisplayedAddress: BaseWalletConnectDisplayedAddress? = null,
     val toDisplayedAddress: BaseWalletConnectDisplayedAddress? = null,
+    val fromAccountIcon: AccountIconResource? = null,
+    val toAccountIcon: AccountIconResource? = null,
     val rekeyToAccountAddress: String? = null,
     val assetInformation: TransactionRequestAssetInformation? = null,
     val appId: Long? = null,

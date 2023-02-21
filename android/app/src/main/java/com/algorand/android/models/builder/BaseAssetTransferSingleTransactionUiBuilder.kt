@@ -18,6 +18,7 @@ import com.algorand.android.models.BaseAssetTransferTransaction
 import com.algorand.android.models.WalletConnectTransactionAmount
 import com.algorand.android.models.WalletConnectTransactionShortDetail
 import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
+import com.algorand.android.utils.AssetName
 import javax.inject.Inject
 
 class BaseAssetTransferSingleTransactionUiBuilder @Inject constructor(
@@ -34,7 +35,7 @@ class BaseAssetTransferSingleTransactionUiBuilder @Inject constructor(
     override fun buildTransactionShortDetail(txn: BaseAssetTransferTransaction): WalletConnectTransactionShortDetail {
         return with(txn) {
             WalletConnectTransactionShortDetail(
-                accountIconResource = createAccountIconResource(),
+                accountIconResource = getFromAccountIconResource(),
                 accountName = fromAccount?.name,
                 accountBalance = assetBalance,
                 warningCount = warningCount,
@@ -48,11 +49,11 @@ class BaseAssetTransferSingleTransactionUiBuilder @Inject constructor(
     override fun buildTransactionAmount(txn: BaseAssetTransferTransaction): WalletConnectTransactionAmount {
         return with(txn) {
             WalletConnectTransactionAmount(
-                assetName = walletConnectTransactionAssetDetail?.fullName,
+                assetName = AssetName.create(walletConnectTransactionAssetDetail?.fullName),
+                assetShortName = AssetName.createShortName(walletConnectTransactionAssetDetail?.shortName),
                 assetId = assetId,
                 transactionAmount = transactionAmount,
                 assetDecimal = assetDecimal,
-                assetShortName = walletConnectTransactionAssetDetail?.shortName,
                 formattedSelectedCurrencyValue = assetInformation?.formattedSelectedCurrencyValue,
                 verificationTierConfiguration =
                 verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier),

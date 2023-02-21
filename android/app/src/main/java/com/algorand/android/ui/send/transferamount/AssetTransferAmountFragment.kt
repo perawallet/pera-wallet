@@ -141,19 +141,12 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
 
     private fun updateUIWithPreview(assetTransferAmountPreview: AssetTransferAmountPreview) {
         with(assetTransferAmountPreview) {
+            updateToolbarWithPreview(this)
             assetPreview?.let {
-                getAppToolbar()?.apply {
-                    changeTitle(getString(R.string.send_format, it.shortName.getName()))
-                    accountName?.let { changeSubtitle(it) }
-                    accountIconResource?.let {
-                        val iconSize = resources.getDimensionPixelSize(R.dimen.account_icon_size_xsmall)
-                        AccountIconDrawable.create(context, it, iconSize)?.let { setSubtitleStartDrawable(it) }
-                    }
-                }
                 binding.algorandApproximateValueTextView.isVisible = it.isAmountInSelectedCurrencyVisible
                 updateEnteredAmountCurrencyValue(
-                    enteredAmountSelectedCurrencyValue,
-                    it.isAmountInSelectedCurrencyVisible
+                    formattedCurrencyValue = enteredAmountSelectedCurrencyValue,
+                    isAmountInSelectedCurrencyVisible = it.isAmountInSelectedCurrencyVisible
                 )
                 setAmountView(it.decimals)
                 setAssetNameView(
@@ -174,6 +167,19 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
             insufficientBalanceToPayFeeEvent?.consume()?.let { onInsufficientBalanceToPayFee() }
             minimumBalanceIsViolatedResultEvent?.consume()?.let { onMinimumBalanceViolated(it) }
             assetNotFoundErrorEvent?.consume()?.let { onAssetNotFound() }
+        }
+    }
+
+    private fun updateToolbarWithPreview(preview: AssetTransferAmountPreview) {
+        getAppToolbar()?.apply {
+            preview.accountName?.let { changeSubtitle(it) }
+            preview.accountIconResource?.let {
+                val iconSize = resources.getDimensionPixelSize(R.dimen.account_icon_size_xsmall)
+                AccountIconDrawable.create(context, it, iconSize)?.let { setSubtitleStartDrawable(it) }
+            }
+            preview.assetPreview?.let {
+                changeTitle(getString(R.string.send_format, it.shortName.getName()))
+            }
         }
     }
 

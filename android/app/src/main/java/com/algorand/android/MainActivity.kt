@@ -59,7 +59,6 @@ import com.algorand.android.models.TransactionData
 import com.algorand.android.models.TransactionManagerResult
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectTransaction
-import com.algorand.android.modules.assets.action.optin.UnsupportedAssetNotificationRequestActionBottomSheet
 import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
 import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
@@ -99,7 +98,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity :
     CoreMainActivity(),
-    UnsupportedAssetNotificationRequestActionBottomSheet.RequestAssetConfirmationListener,
     WalletConnectConnectionBottomSheet.Callback,
     ReceiveAccountSelectionFragment.ReceiveAccountSelectionFragmentListener {
 
@@ -396,7 +394,7 @@ class MainActivity :
                 publicKey = notificationMetadata.receiverPublicKey,
                 asset = assetInformation
             )
-            nav(HomeNavigationDirections.actionGlobalUnsupportedAssetNotificationRequestActionBottomSheet(assetAction))
+            nav(HomeNavigationDirections.actionGlobalAssetAdditionActionNavigation(assetAction))
         }
     }
 
@@ -630,10 +628,6 @@ class MainActivity :
                 is WCSessionRequestResult.RejectRequest -> rejectSession(result.wcSessionRequest)
             }
         }
-    }
-
-    override fun onUnsupportedAssetRequest(assetActionResult: AssetActionResult) {
-        signAddAssetTransaction(assetActionResult)
     }
 
     fun signAddAssetTransaction(assetActionResult: AssetActionResult) {

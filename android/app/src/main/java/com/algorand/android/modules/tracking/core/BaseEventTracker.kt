@@ -15,11 +15,11 @@ package com.algorand.android.modules.tracking.core
 import com.algorand.android.usecase.NodeSettingsUseCase
 import javax.inject.Inject
 
-abstract class BaseEventTracker(private val peraEventTracker: PeraEventTracker) {
+open class BaseEventTracker protected constructor(private val peraEventTracker: PeraEventTracker) {
     // TODO handle event tracking permission level in this class
 
     @Inject
-    lateinit var nodeSettingsUseCase: NodeSettingsUseCase
+    protected lateinit var nodeSettingsUseCase: NodeSettingsUseCase
 
     protected suspend fun logEvent(eventName: String) {
         peraEventTracker.logEvent(getFormattedEventName(eventName))

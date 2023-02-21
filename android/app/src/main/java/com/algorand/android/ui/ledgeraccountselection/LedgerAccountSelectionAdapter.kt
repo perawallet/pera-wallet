@@ -14,39 +14,38 @@ package com.algorand.android.ui.ledgeraccountselection
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.R
 import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.models.BaseDiffUtil
+import com.algorand.android.models.BaseViewHolder
 
 class LedgerAccountSelectionAdapter(
-    private val searchType: SearchType,
     private val listener: Listener,
-) : ListAdapter<AccountSelectionListItem, RecyclerView.ViewHolder>(BaseDiffUtil<AccountSelectionListItem>()) {
+) : ListAdapter<AccountSelectionListItem, BaseViewHolder<AccountSelectionListItem>>(BaseDiffUtil()) {
 
-    override fun submitList(list: List<AccountSelectionListItem>?) {
-        if (searchType == SearchType.REKEY) {
-            // Range is starting 1 because of instruction item
-            // We are handling notify change state manually cause ListAdapter does not update multiple items at the
-            // same time if the list size is the same
-            list?.let { notifyItemRangeChanged(1, it.count()) }
+    private val ledgerAccountSelectionViewHolderListener = object : LedgerAccountSelectionViewHolder.Listener {
+        override fun onAccountItemClick(accountItem: AccountSelectionListItem.AccountItem) {
+            listener.onAccountClick(accountItem)
         }
-        super.submitList(list)
+
+        override fun onAccountInfoClick(accountItem: AccountSelectionListItem.AccountItem) {
+            listener.onAccountInfoClick(accountItem)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is AccountSelectionListItem.AccountItem -> R.layout.item_account_selection
-            is AccountSelectionListItem.InstructionItem -> R.layout.item_ledger_selection_instruction
+        return getItem(position).itemType.ordinal
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<AccountSelectionListItem> {
+        return when (viewType) {
+            AccountSelectionListItem.ItemType.INSTRUCTION_ITEM.ordinal -> createInstructionItemViewHolder(parent)
+            AccountSelectionListItem.ItemType.ACCOUNT_ITEM.ordinal -> createAccountItemViewHolder(parent)
+            else -> throw Exception("$logTag: Unknown ViewType $viewType")
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            R.layout.item_ledger_selection_instruction -> createInstructionItemViewHolder(parent)
-            R.layout.item_account_selection -> createAccountItemViewHolder(parent)
-            else -> throw Exception("$logTag: Unknown ViewType $viewType")
-        }
+    override fun onBindViewHolder(holder: BaseViewHolder<AccountSelectionListItem>, position: Int) {
+        holder.bind(getItem(position))
     }
 
     private fun createInstructionItemViewHolder(parent: ViewGroup): LedgerSelectionInstructionViewHolder {
@@ -54,35 +53,7 @@ class LedgerAccountSelectionAdapter(
     }
 
     private fun createAccountItemViewHolder(parent: ViewGroup): LedgerAccountSelectionViewHolder {
-        return LedgerAccountSelectionViewHolder.create(parent, searchType).apply {
-            itemView.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    (getItem(bindingAdapterPosition) as? AccountSelectionListItem.AccountItem)?.let {
-                        notifyItemChanged(bindingAdapterPosition)
-                        listener.onAccountClick(it)
-                    }
-                }
-            }
-            binding.infoButton.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    (getItem(bindingAdapterPosition) as? AccountSelectionListItem.AccountItem)?.let {
-                        listener.onAccountInfoClick(it)
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is LedgerSelectionInstructionViewHolder -> {
-                holder.bind(getItem(position) as AccountSelectionListItem.InstructionItem, searchType)
-            }
-            is LedgerAccountSelectionViewHolder -> {
-                holder.bind(getItem(position) as AccountSelectionListItem.AccountItem)
-            }
-            else -> throw Exception("Unknown ViewHolder at $logTag")
-        }
+        return LedgerAccountSelectionViewHolder.create(parent, ledgerAccountSelectionViewHolderListener)
     }
 
     interface Listener {

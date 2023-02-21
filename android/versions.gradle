@@ -19,7 +19,7 @@ ext {
             constraintLayout : '2.1.4',
             fragment         : '1.5.2',
             coreKtx          : '1.8.0',
-            navigation       : '2.3.3',
+            navigation       : '2.5.3',
             paging           : '3.1.1',
             retrofit         : '2.9.0',
             okhttp           : '4.10.0',
@@ -34,7 +34,7 @@ ext {
             mpChart          : '3.1.0',
             browser          : '1.4.0',
             playcore         : '1.10.3',
-            ble              : '2.5.1',
+            ble              : '2.6.0',
             lottie           : '5.2.0',
             // TODO update desugar to 1.2.0 once gradle plugin 7.3.0 is stable
             desugar          : '1.1.5',

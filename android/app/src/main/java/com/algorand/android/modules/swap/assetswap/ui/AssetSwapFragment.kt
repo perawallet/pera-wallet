@@ -40,6 +40,7 @@ import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 
 @AndroidEntryPoint
 class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
@@ -76,6 +77,10 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
 
     private val loadingVisibilityCollector: suspend (Boolean?) -> Unit = { isLoadingVisible ->
         binding.progressBar.root.isVisible = isLoadingVisible == true
+    }
+
+    private val isAccountCachedCollector: suspend (Boolean) -> Unit = { isAccountCached ->
+        handleAccountCacheStatus(isAccountCached)
     }
 
     private val fromAssetAmountDetailCollector: suspend (SelectedAssetAmountDetail?) -> Unit = { amountDetail ->
@@ -143,7 +148,11 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
 
     @Suppress("LongMethod")
     private fun initObservers() {
-        with(assetSwapViewModel.assetSwapPreviewFlow) {
+        collectLatestOnLifecycle(
+            assetSwapViewModel.isAccountCachedResultFlow,
+            isAccountCachedCollector
+        )
+        with(assetSwapViewModel.assetSwapPreviewFlow.mapNotNull { it }) {
             with(viewLifecycleOwner) {
                 collectLatestOnLifecycle(
                     map { it.isLoadingVisible }.distinctUntilChanged(),
@@ -232,6 +241,13 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
         }
         useFragmentResultListenerValue<Float>(CHECKED_BALANCE_PERCENTAGE_KEY) { balancePercentage ->
             assetSwapViewModel.onBalancePercentageSelected(balancePercentage)
+        }
+    }
+
+    private fun handleAccountCacheStatus(isAccountCached: Boolean) {
+        if (!isAccountCached) {
+            showGlobalError(errorMessage = getString(R.string.couldn_t_retrieve), tag = baseActivityTag)
+            navBack()
         }
     }
 

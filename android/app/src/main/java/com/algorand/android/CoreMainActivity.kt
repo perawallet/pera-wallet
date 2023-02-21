@@ -139,7 +139,7 @@ abstract class CoreMainActivity : BaseActivity() {
     private fun startNavigation() {
         with(navController) {
             graph = navInflater.inflate(R.navigation.main_navigation).apply {
-                startDestination = getStartDestinationFragmentId()
+                setStartDestination(getStartDestinationFragmentId())
             }
             binding.bottomNavigationView.setupWithNavController(this, ::onMenuItemClicked)
         }

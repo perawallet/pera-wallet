@@ -56,13 +56,13 @@ class WalletConnectSingleTransactionAssetInfoView @JvmOverloads constructor(
                     setTransactionAmountGroup(
                         transactionAmount = transactionAmount,
                         assetDecimal = assetDecimal,
-                        assetShortName = assetShortName,
+                        assetShortName = assetShortName?.getName(context.resources),
                         formattedSelectedCurrencyValue = formattedSelectedCurrencyValue
                     )
                 }
                 assetName != null -> {
                     setAssetNameAndIdGroup(
-                        assetName = assetName,
+                        assetName = assetName.getName(context.resources),
                         assetId = assetId,
                         verificationTierConfiguration = verificationTierConfiguration,
                         accountAddress = fromDisplayedAddress?.fullAddress

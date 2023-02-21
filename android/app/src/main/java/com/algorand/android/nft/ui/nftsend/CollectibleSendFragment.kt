@@ -78,7 +78,10 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
     override val transactionFragmentListener = object : TransactionFragmentListener {
         override fun onSignTransactionFinished(signedTransactionDetail: SignedTransactionDetail) {
             if (signedTransactionDetail is SignedTransactionDetail.Send) {
-                collectibleSendViewModel.sendSignedTransaction(signedTransactionDetail)
+                val updateSignedTransactionDetail = signedTransactionDetail.apply {
+                    shouldWaitForConfirmation = true
+                }
+                collectibleSendViewModel.sendSignedTransaction(updateSignedTransactionDetail)
             }
         }
 

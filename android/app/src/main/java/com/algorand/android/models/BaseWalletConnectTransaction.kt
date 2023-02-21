@@ -43,8 +43,12 @@ abstract class BaseWalletConnectTransaction : Parcelable {
         return isRekeyedToAnotherAccount(authAddress, fromAccount?.address)
     }
 
-    fun createAccountIconResource(): AccountIconResource? {
+    fun getFromAccountIconResource(): AccountIconResource? {
         return fromAccount?.accountIconResource
+    }
+
+    fun getToAccountIconResource(): AccountIconResource? {
+        return toAccount?.accountIconResource
     }
 
     fun getAccountImageResource(): Int {

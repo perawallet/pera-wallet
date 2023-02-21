@@ -34,6 +34,7 @@ import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class DiscoverDetailFragment :
@@ -106,7 +107,8 @@ class DiscoverDetailFragment :
                             tokenId = tokenId,
                             poolId = preview.tokenDetail.poolId,
                             currency = discoverViewModel.getPrimaryCurrencyId(),
-                            locale = (activity as BaseActivity).getCurrentLanguage().language
+                            locale = (activity as? BaseActivity)?.getCurrentLanguage()?.language
+                                ?: Locale.getDefault().language
                         ),
                         getDiscoverAuthHeader()
                     )

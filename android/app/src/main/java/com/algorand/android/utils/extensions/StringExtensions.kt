@@ -86,3 +86,5 @@ fun String.addHashtagToStart(): String {
 fun String.encodeToURL(charset: String = Charsets.UTF_8.name()): String {
     return URLEncoder.encode(this, charset)
 }
+
+inline fun <T : CharSequence, R> T.mapNotBlank(block: (T) -> R): R? = if (isNotBlank()) block(this) else null

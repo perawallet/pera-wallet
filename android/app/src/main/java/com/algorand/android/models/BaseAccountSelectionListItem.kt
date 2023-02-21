@@ -15,7 +15,7 @@ package com.algorand.android.models
 import android.net.Uri
 import androidx.annotation.StringRes
 
-abstract class BaseAccountSelectionListItem : RecyclerListItem {
+sealed class BaseAccountSelectionListItem : RecyclerListItem {
 
     abstract override fun areItemsTheSame(other: RecyclerListItem): Boolean
     abstract override fun areContentsTheSame(other: RecyclerListItem): Boolean

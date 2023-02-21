@@ -14,20 +14,21 @@ package com.algorand.android.ui.ledgeraccountselection
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemLedgerSelectionInstructionBinding
 import com.algorand.android.models.AccountSelectionListItem
+import com.algorand.android.models.BaseViewHolder
 
 class LedgerSelectionInstructionViewHolder(
     private val binding: ItemLedgerSelectionInstructionBinding
-) : RecyclerView.ViewHolder(binding.root) {
+) : BaseViewHolder<AccountSelectionListItem>(binding.root) {
 
-    fun bind(item: AccountSelectionListItem.InstructionItem, searchType: SearchType) {
+    override fun bind(item: AccountSelectionListItem) {
+        if (item !is AccountSelectionListItem.InstructionItem) return
         binding.titleTextView.apply {
             text = resources.getQuantityString(R.plurals.account_found, item.accountCount, item.accountCount)
         }
-        setDescriptionTextView(searchType)
+        setDescriptionTextView(item.searchType)
     }
 
     private fun setDescriptionTextView(searchType: SearchType) {

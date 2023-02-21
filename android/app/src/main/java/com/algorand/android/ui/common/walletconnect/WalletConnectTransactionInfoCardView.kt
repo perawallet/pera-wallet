@@ -58,7 +58,7 @@ class WalletConnectTransactionInfoCardView(
         with(transactionInfo) {
             binding.assetDeletionRequestWarningTextView.isVisible = showDeletionWarning
             initFromAddress(fromDisplayedAddress, fromAccountIcon)
-            initToAddress(toDisplayedAddress)
+            initToAddress(toDisplayedAddress, toAccountIcon)
             initAssetInformation(assetInformation, fromDisplayedAddress?.fullAddress)
             initAccountBalance(accountBalance, assetInformation)
             initRekeyToAddress(rekeyToAccountAddress, isLocalAccountSigner)
@@ -137,7 +137,10 @@ class WalletConnectTransactionInfoCardView(
         }
     }
 
-    private fun initToAddress(displayedAddress: BaseWalletConnectDisplayedAddress?) {
+    private fun initToAddress(
+        displayedAddress: BaseWalletConnectDisplayedAddress?,
+        accountIconResource: AccountIconResource?
+    ) {
         if (displayedAddress != null) {
             with(binding) {
                 toAccountNameTextView.apply {
@@ -146,6 +149,13 @@ class WalletConnectTransactionInfoCardView(
                         listener?.onAccountAddressLongPressed(displayedAddress.fullAddress)
                         return@setOnLongClickListener true
                     }
+                }
+                if (accountIconResource != null) {
+                    toAccountTypeImageView.setAccountIconDrawable(
+                        accountIconResource,
+                        R.dimen.account_icon_size_normal
+                    )
+                    toAccountTypeImageView.show()
                 }
                 toGroup.show()
             }

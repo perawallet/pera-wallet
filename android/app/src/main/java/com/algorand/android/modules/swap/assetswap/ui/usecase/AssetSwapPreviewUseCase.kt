@@ -15,6 +15,7 @@ package com.algorand.android.modules.swap.assetswap.ui.usecase
 import com.algorand.android.R
 import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapType
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
+import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.ErrorResource
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.exceptions.InsufficientAlgoBalance
@@ -28,18 +29,19 @@ class AssetSwapPreviewUseCase @Inject constructor(
     private val toAssetUpdatedUseCase: AssetSwapToAssetUpdatedUseCase,
     private val assetSwapAssetsSwitchUpdatePreviewUseCase: AssetSwapAssetsSwitchUpdatePreviewUseCase,
     private val assetSwapAmountUpdatedPreviewUseCase: AssetSwapAmountUpdatedPreviewUseCase,
-    private val assetSwapInitialPreviewUseCase: AssetSwapInitialPreviewUseCase
+    private val assetSwapInitialPreviewUseCase: AssetSwapInitialPreviewUseCase,
+    private val accountDetailUseCase: AccountDetailUseCase
 ) {
 
     fun getAssetSwapPreviewInitializationState(
         accountAddress: String,
         fromAssetId: Long,
         toAssetId: Long?
-    ): AssetSwapPreview {
+    ): AssetSwapPreview? {
         return assetSwapInitialPreviewUseCase.getAssetSwapPreviewInitializationState(
-            accountAddress,
-            fromAssetId,
-            toAssetId
+            accountAddress = accountAddress,
+            fromAssetId = fromAssetId,
+            toAssetId = toAssetId
         )
     }
 
@@ -50,7 +52,7 @@ class AssetSwapPreviewUseCase @Inject constructor(
         accountAddress: String,
         swapType: SwapType,
         percentage: Float?,
-        previousState: AssetSwapPreview
+        previousState: AssetSwapPreview?
     ) = assetSwapAmountUpdatedPreviewUseCase.getUpdatedPreview(
         fromAssetId = fromAssetId,
         toAssetId = toAssetId,
@@ -166,6 +168,10 @@ class AssetSwapPreviewUseCase @Inject constructor(
             errorEvent = errorEvent,
             isLoadingVisible = false
         )
+    }
+
+    fun isAccountCachedSuccessfully(accountAddress: String): Boolean {
+        return accountDetailUseCase.isAccountCachedSuccessfully(accountAddress)
     }
 
     companion object {

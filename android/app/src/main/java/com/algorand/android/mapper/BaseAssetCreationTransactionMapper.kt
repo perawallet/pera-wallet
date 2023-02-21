@@ -22,7 +22,8 @@ import com.algorand.android.models.WalletConnectAccount
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.utils.extensions.mapNotBlank
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import com.algorand.android.utils.walletconnect.encodeBase64EncodedHexString
 import java.math.BigInteger
@@ -30,8 +31,8 @@ import javax.inject.Inject
 
 @SuppressWarnings("ReturnCount")
 class BaseAssetCreationTransactionMapper @Inject constructor(
-    private val accountCacheManager: AccountCacheManager,
-    private val errorProvider: WalletConnectTransactionErrorProvider
+    private val errorProvider: WalletConnectTransactionErrorProvider,
+    private val accountDetailUseCase: AccountDetailUseCase
 ) : BaseWalletConnectTransactionMapper() {
 
     override fun createTransaction(
@@ -62,7 +63,9 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
     ): BaseAssetCreationTransaction.AssetCreationTransaction? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val accountData = senderWalletConnectAddress?.decodedAddress?.mapNotBlank { safeAddress ->
+                accountDetailUseCase.getCachedAccountDetail(safeAddress)?.data
+            }
             BaseAssetCreationTransaction.AssetCreationTransaction(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -70,8 +73,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                authAddress = accountCacheData?.authAddress,
-                fromAccount = WalletConnectAccount.create(accountCacheData?.account),
+                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(accountData?.account),
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
                 decimals = assetConfigParams?.decimal ?: 0,
                 isFrozen = assetConfigParams?.isFrozen ?: false,
@@ -94,17 +97,23 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
         rawTxn: WCAlgoTransactionRequest
     ): BaseAssetCreationTransaction.AssetCreationTransactionWithCloseTo? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress) ?: return null
+            val accountData = senderWalletConnectAddress.decodedAddress?.mapNotBlank { safeAddress ->
+                accountDetailUseCase.getCachedAccountDetail(safeAddress)?.data
+            }
+            val signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider)
+            val isLocalAccountSigner = signer.address?.decodedAddress?.mapNotBlank { safeAddress ->
+                accountDetailUseCase.isThereAnyAccountWithPublicKey(safeAddress)
+            } ?: false
             BaseAssetCreationTransaction.AssetCreationTransactionWithCloseTo(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWalletConnectAddress,
                 note = decodedNote,
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
-                signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                authAddress = accountCacheData?.authAddress,
-                fromAccount = WalletConnectAccount.create(accountCacheData?.account),
+                signer = signer,
+                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(accountData?.account),
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
                 decimals = assetConfigParams?.decimal ?: 0,
@@ -117,7 +126,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 reserveAddress = createWalletConnectAddress(assetConfigParams?.reserveAddress),
                 frozenAddress = createWalletConnectAddress(assetConfigParams?.frozenAddress),
                 clawbackAddress = createWalletConnectAddress(assetConfigParams?.clawbackAddress),
-                groupId = groupId
+                groupId = groupId,
+                warningCount = 1.takeIf { isLocalAccountSigner }
             )
         }
     }
@@ -128,17 +138,23 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
         rawTxn: WCAlgoTransactionRequest
     ): BaseAssetCreationTransaction.AssetCreationTransactionWithCloseToAndRekey? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress) ?: return null
+            val accountData = senderWalletConnectAddress.decodedAddress?.mapNotBlank { safeAddress ->
+                accountDetailUseCase.getCachedAccountDetail(safeAddress)?.data
+            }
+            val signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider)
+            val isLocalAccountSigner = signer.address?.decodedAddress?.mapNotBlank { safeAddress ->
+                accountDetailUseCase.isThereAnyAccountWithPublicKey(safeAddress)
+            } ?: false
             BaseAssetCreationTransaction.AssetCreationTransactionWithCloseToAndRekey(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWalletConnectAddress,
                 note = decodedNote,
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
-                signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                authAddress = accountCacheData?.authAddress,
-                fromAccount = WalletConnectAccount.create(accountCacheData?.account),
+                signer = signer,
+                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(accountData?.account),
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
@@ -152,7 +168,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 reserveAddress = createWalletConnectAddress(assetConfigParams?.reserveAddress),
                 frozenAddress = createWalletConnectAddress(assetConfigParams?.frozenAddress),
                 clawbackAddress = createWalletConnectAddress(assetConfigParams?.clawbackAddress),
-                groupId = groupId
+                groupId = groupId,
+                warningCount = 2.takeIf { isLocalAccountSigner }
             )
         }
     }
@@ -163,17 +180,23 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
         rawTxn: WCAlgoTransactionRequest
     ): BaseAssetCreationTransaction.AssetCreationTransactionWithRekey? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress) ?: return null
+            val accountData = senderWalletConnectAddress.decodedAddress?.mapNotBlank { safeAddress ->
+                accountDetailUseCase.getCachedAccountDetail(safeAddress)?.data
+            }
+            val signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider)
+            val isLocalAccountSigner = signer.address?.decodedAddress?.mapNotBlank { safeAddress ->
+                accountDetailUseCase.isThereAnyAccountWithPublicKey(safeAddress)
+            } ?: false
             BaseAssetCreationTransaction.AssetCreationTransactionWithRekey(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWalletConnectAddress,
                 note = decodedNote,
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
-                signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                authAddress = accountCacheData?.authAddress,
-                fromAccount = WalletConnectAccount.create(accountCacheData?.account),
+                signer = signer,
+                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(accountData?.account),
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
                 decimals = assetConfigParams?.decimal ?: 0,
@@ -186,7 +209,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 reserveAddress = createWalletConnectAddress(assetConfigParams?.reserveAddress),
                 frozenAddress = createWalletConnectAddress(assetConfigParams?.frozenAddress),
                 clawbackAddress = createWalletConnectAddress(assetConfigParams?.clawbackAddress),
-                groupId = groupId
+                groupId = groupId,
+                warningCount = 1.takeIf { isLocalAccountSigner }
             )
         }
     }

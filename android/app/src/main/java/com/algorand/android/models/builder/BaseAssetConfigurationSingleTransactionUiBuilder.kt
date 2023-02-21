@@ -18,6 +18,7 @@ import com.algorand.android.models.BaseAssetConfigurationTransaction
 import com.algorand.android.models.WalletConnectTransactionAmount
 import com.algorand.android.models.WalletConnectTransactionShortDetail
 import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
+import com.algorand.android.utils.AssetName
 import javax.inject.Inject
 
 class BaseAssetConfigurationSingleTransactionUiBuilder @Inject constructor(
@@ -43,7 +44,7 @@ class BaseAssetConfigurationSingleTransactionUiBuilder @Inject constructor(
     ): WalletConnectTransactionShortDetail {
         return with(txn) {
             WalletConnectTransactionShortDetail(
-                accountIconResource = createAccountIconResource(),
+                accountIconResource = getFromAccountIconResource(),
                 accountName = fromAccount?.name,
                 warningCount = warningCount,
                 decimal = assetDecimal,
@@ -68,7 +69,7 @@ class BaseAssetConfigurationSingleTransactionUiBuilder @Inject constructor(
             val assetName = assetName.takeIf { assetName != null }
             WalletConnectTransactionAmount(
                 assetId = assetId,
-                assetName = assetName,
+                assetName = AssetName.create(assetName),
                 isAssetUnnamed = assetName == null,
                 verificationTierConfiguration =
                 verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier)
@@ -80,7 +81,7 @@ class BaseAssetConfigurationSingleTransactionUiBuilder @Inject constructor(
         return with(txn) {
             WalletConnectTransactionAmount(
                 assetId = assetId,
-                assetName = assetName,
+                assetName = AssetName.create(assetName),
                 verificationTierConfiguration =
                 verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier)
             )

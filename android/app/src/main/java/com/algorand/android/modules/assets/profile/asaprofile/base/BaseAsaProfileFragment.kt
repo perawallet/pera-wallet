@@ -81,7 +81,6 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
             )
             setMarketInformation(
                 isMarketInformationVisible = isMarketInformationVisible,
-                formattedAssetPrice = formattedAssetPrice.orEmpty(),
                 isChangePercentageVisible = isChangePercentageVisible,
                 changePercentage = changePercentage,
                 changePercentageIcon = changePercentageIcon,
@@ -169,7 +168,6 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
 
     private fun setMarketInformation(
         isMarketInformationVisible: Boolean,
-        formattedAssetPrice: String,
         isChangePercentageVisible: Boolean,
         changePercentage: BigDecimal?,
         changePercentageIcon: Int?,
@@ -178,7 +176,6 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
         with(binding.marketInformationLayout) {
             root.isVisible = isMarketInformationVisible
             root.setOnClickListener { navToDiscoverTokenDetailPage() }
-            assetPriceTextView.text = formattedAssetPrice
             assetChangePercentageTextView.apply {
                 changePercentageIcon?.let { setDrawable(start = AppCompatResources.getDrawable(context, it)) }
                 changePercentageTextColor?.let { setTextColor(ContextCompat.getColor(context, it)) }

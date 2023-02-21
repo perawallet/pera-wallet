@@ -70,9 +70,10 @@ class BaseAssetTransferTransactionDetailUiBuilder @Inject constructor(
     ): TransactionRequestSenderInfo {
         return with(txn) {
             TransactionRequestSenderInfo(
-                senderDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
-                toAccountTypeImageResId = getAccountImageResource(),
+                fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
                 toDisplayedAddress = getToAddressAsDisplayAddress(assetReceiverAddress.decodedAddress.orEmpty()),
+                fromAccountIcon = getFromAccountIconResource(),
+                toAccountIcon = getToAccountIconResource(),
                 rekeyToAccountAddress = getRekeyToAccountAddress()?.decodedAddress,
                 assetInformation = TransactionRequestAssetInformation(
                     assetId = assetId,
@@ -89,7 +90,8 @@ class BaseAssetTransferTransactionDetailUiBuilder @Inject constructor(
         return with(txn) {
             TransactionRequestTransactionInfo(
                 fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
-                fromAccountIcon = createAccountIconResource(),
+                fromAccountIcon = getFromAccountIconResource(),
+                toAccountIcon = getToAccountIconResource(),
                 toDisplayedAddress = getToAddressAsDisplayAddress(assetReceiverAddress.decodedAddress.orEmpty()),
                 accountBalance = assetInformation?.amount,
                 assetInformation = TransactionRequestAssetInformation(

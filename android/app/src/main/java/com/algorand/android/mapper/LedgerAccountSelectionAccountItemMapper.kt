@@ -13,6 +13,7 @@
 
 package com.algorand.android.mapper
 
+import androidx.annotation.DrawableRes
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AccountSelectionListItem
@@ -25,7 +26,8 @@ class LedgerAccountSelectionAccountItemMapper @Inject constructor() {
     fun mapTo(
         accountInformation: AccountInformation,
         accountDetail: Account.Detail,
-        accountCacheManager: AccountCacheManager
+        accountCacheManager: AccountCacheManager,
+        @DrawableRes selectorDrawableRes: Int
     ): AccountSelectionListItem.AccountItem {
         with(accountInformation) {
             return AccountSelectionListItem.AccountItem(
@@ -35,7 +37,8 @@ class LedgerAccountSelectionAccountItemMapper @Inject constructor() {
                     detail = accountDetail,
                     accountName = address.toShortenedAddress()
                 ),
-                accountInformation = this
+                accountInformation = this,
+                selectorDrawableRes = selectorDrawableRes
             )
         }
     }

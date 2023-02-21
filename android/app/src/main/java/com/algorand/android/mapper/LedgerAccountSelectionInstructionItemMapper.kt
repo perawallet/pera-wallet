@@ -14,11 +14,12 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.AccountSelectionListItem
+import com.algorand.android.ui.ledgeraccountselection.SearchType
 import javax.inject.Inject
 
 class LedgerAccountSelectionInstructionItemMapper @Inject constructor() {
 
-    fun mapTo(accountSize: Int): AccountSelectionListItem.InstructionItem {
-        return AccountSelectionListItem.InstructionItem(accountSize)
+    fun mapTo(accountSize: Int, searchType: SearchType): AccountSelectionListItem.InstructionItem {
+        return AccountSelectionListItem.InstructionItem(accountSize, searchType)
     }
 }

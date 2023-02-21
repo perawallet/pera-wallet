@@ -41,47 +41,49 @@ class AssetSwapAmountUpdatedPreviewUseCase @Inject constructor(
         accountAddress: String,
         swapType: SwapType,
         percentage: Float?,
-        previousState: AssetSwapPreview
+        previousState: AssetSwapPreview?
     ) = flow<AssetSwapPreview> {
-        if (amount == null || amount.toBigDecimalOrZero() isEqualTo BigDecimal.ZERO) {
-            val newState = previousState.copy(
-                toSelectedAssetAmountDetail = selectedAssetAmountDetailMapper.mapToDefaultSelectedAssetAmountDetail(
-                    primaryCurrencySymbol = displayedCurrencyUseCase.getDisplayedCurrencySymbol()
-                ),
-                fromSelectedAssetAmountDetail = previousState.fromSelectedAssetAmountDetail?.copy(
-                    amount = amount,
-                    formattedApproximateValue = BigDecimal.ZERO
-                        .formatAsCurrency(displayedCurrencyUseCase.getDisplayedCurrencySymbol())
-                ),
-                isSwapButtonEnabled = false
-            )
-            emit(newState)
-            return@flow
-        }
-        if (toAssetId == null || !SwapAmountUtils.isAmountValidForApiRequest(amount)) {
-            emit(previousState.copy(isLoadingVisible = false))
-            return@flow
-        }
-        emit(previousState.copy(isLoadingVisible = true))
-        val assetDecimal = with(previousState) {
-            if (swapType == SwapType.FIXED_INPUT) {
-                fromSelectedAssetDetail.assetDecimal
-            } else {
-                toSelectedAssetDetail?.assetDecimal ?: DEFAULT_ASSET_DECIMAL
+        if (previousState != null) {
+            if (amount == null || amount.toBigDecimalOrZero() isEqualTo BigDecimal.ZERO) {
+                val newState = previousState.copy(
+                    toSelectedAssetAmountDetail = selectedAssetAmountDetailMapper.mapToDefaultSelectedAssetAmountDetail(
+                        primaryCurrencySymbol = displayedCurrencyUseCase.getDisplayedCurrencySymbol()
+                    ),
+                    fromSelectedAssetAmountDetail = previousState.fromSelectedAssetAmountDetail?.copy(
+                        amount = amount,
+                        formattedApproximateValue = BigDecimal.ZERO
+                            .formatAsCurrency(displayedCurrencyUseCase.getDisplayedCurrencySymbol())
+                    ),
+                    isSwapButtonEnabled = false
+                )
+                emit(newState)
+                return@flow
             }
+            if (toAssetId == null || !SwapAmountUtils.isAmountValidForApiRequest(amount)) {
+                emit(previousState.copy(isLoadingVisible = false))
+                return@flow
+            }
+            emit(previousState.copy(isLoadingVisible = true))
+            val assetDecimal = with(previousState) {
+                if (swapType == SwapType.FIXED_INPUT) {
+                    fromSelectedAssetDetail.assetDecimal
+                } else {
+                    toSelectedAssetDetail?.assetDecimal ?: DEFAULT_ASSET_DECIMAL
+                }
+            }
+            val swapQuoteUpdatedPreview = assetSwapCreateQuotePreviewUseCase.getSwapQuoteUpdatedPreview(
+                accountAddress = accountAddress,
+                fromAssetId = fromAssetId,
+                toAssetId = toAssetId,
+                amount = amount,
+                swapType = swapType,
+                slippage = getSwapSlippageToleranceUseCase(),
+                previousState = previousState,
+                swapTypeAssetDecimal = assetDecimal,
+                isMaxAndPercentageButtonEnabled = true,
+                formattedPercentageText = percentage?.formatAsPercentage().orEmpty()
+            ) ?: return@flow
+            emit(swapQuoteUpdatedPreview)
         }
-        val swapQuoteUpdatedPreview = assetSwapCreateQuotePreviewUseCase.getSwapQuoteUpdatedPreview(
-            accountAddress = accountAddress,
-            fromAssetId = fromAssetId,
-            toAssetId = toAssetId,
-            amount = amount,
-            swapType = swapType,
-            slippage = getSwapSlippageToleranceUseCase(),
-            previousState = previousState,
-            swapTypeAssetDecimal = assetDecimal,
-            isMaxAndPercentageButtonEnabled = true,
-            formattedPercentageText = percentage?.formatAsPercentage().orEmpty()
-        ) ?: return@flow
-        emit(swapQuoteUpdatedPreview)
     }
 }

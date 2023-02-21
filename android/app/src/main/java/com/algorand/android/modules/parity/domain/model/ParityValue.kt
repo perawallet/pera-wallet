@@ -14,14 +14,20 @@ package com.algorand.android.modules.parity.domain.model
 
 import android.os.Parcelable
 import com.algorand.android.utils.formatAsCurrency
+import com.algorand.android.utils.formatAsLowerThanMinCurrency
+import com.algorand.android.utils.isGreaterThan
 import java.math.BigDecimal
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ParityValue(val amountAsCurrency: BigDecimal, val selectedCurrencySymbol: String) : Parcelable {
 
-    fun getFormattedValue(isCompact: Boolean = false): String {
-        return amountAsCurrency.formatAsCurrency(selectedCurrencySymbol, isCompact = isCompact)
+    fun getFormattedValue(isCompact: Boolean = false, minValueToDisplayExactAmount: BigDecimal? = null): String {
+        return if (minValueToDisplayExactAmount?.isGreaterThan(amountAsCurrency) == true) {
+            minValueToDisplayExactAmount.formatAsLowerThanMinCurrency(selectedCurrencySymbol)
+        } else {
+            amountAsCurrency.formatAsCurrency(selectedCurrencySymbol, isCompact = isCompact)
+        }
     }
 
     fun getFormattedCompactValue(): String {

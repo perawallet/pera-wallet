@@ -84,6 +84,8 @@
 
     <include app:graph="@navigation/nft_opt_out_confirmation_navigation" />
 
+    <include app:graph="@navigation/nft_card_viewer_navigation" />
+
     <action
         android:id="@+id/action_global_showQrNavigation"
         app:destination="@id/showQrNavigation">
@@ -146,8 +148,12 @@
     </action>
 
     <action
-        android:id="@+id/action_global_unsupportedAssetNotificationRequestActionBottomSheet"
-        app:destination="@id/unsupportedAssetNotificationRequestActionBottomSheet" />
+        android:id="@+id/action_global_assetAdditionActionNavigation"
+        app:destination="@id/assetAdditionActionNavigation">
+        <argument
+            android:name="assetAction"
+            app:argType="com.algorand.android.models.AssetAction" />
+    </action>
 
     <action
         android:id="@+id/action_global_ledgerConnectionIssueBottomSheet"
@@ -326,6 +332,13 @@
             <argument
                 android:name="assetAction"
                 app:argType="com.algorand.android.models.AssetAction" />
+        </action>
+        <action
+            android:id="@+id/action_collectibleDetailFragment_to_nftCardViewerNavigation"
+            app:destination="@id/nftCardViewerNavigation">
+            <argument
+                android:name="nftCardViewUrl"
+                app:argType="string" />
         </action>
         <action
             android:id="@+id/action_collectibleDetailFragment_to_assetProfileNavigation"
@@ -1074,15 +1087,6 @@
         android:id="@+id/unsupportedAssetInfoActionBottomSheet"
         android:name="com.algorand.android.modules.assets.action.unsupportedasset.UnsupportedAssetInfoActionBottomSheet"
         android:label="UnsupportedAssetInfoActionBottomSheet">
-        <argument
-            android:name="assetAction"
-            app:argType="com.algorand.android.models.AssetAction" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/unsupportedAssetNotificationRequestActionBottomSheet"
-        android:name="com.algorand.android.modules.assets.action.optin.UnsupportedAssetNotificationRequestActionBottomSheet"
-        android:label="UnsupportedAssetNotificationRequestActionBottomSheet">
         <argument
             android:name="assetAction"
             app:argType="com.algorand.android.models.AssetAction" />

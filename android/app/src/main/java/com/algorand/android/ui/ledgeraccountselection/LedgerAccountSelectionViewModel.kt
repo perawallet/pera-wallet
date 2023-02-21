@@ -12,63 +12,27 @@
 
 package com.algorand.android.ui.ledgeraccountselection
 
-import javax.inject.Inject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.usecase.LedgerAccountSelectionUseCase
-import com.algorand.android.utils.Resource
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
-@HiltViewModel
-class LedgerAccountSelectionViewModel @Inject constructor(
+abstract class LedgerAccountSelectionViewModel constructor(
     private val ledgerAccountSelectionUseCase: LedgerAccountSelectionUseCase
 ) : BaseViewModel() {
 
-    private val _accountSelectionListLiveData = MutableLiveData<Resource<List<AccountSelectionListItem>>>()
-    val accountSelectionListLiveData: LiveData<Resource<List<AccountSelectionListItem>>> = _accountSelectionListLiveData
+    abstract fun onNewAccountSelected(accountItem: AccountSelectionListItem.AccountItem)
 
-    private val accountSelectionList: List<AccountSelectionListItem>?
-        get() = (accountSelectionListLiveData.value as? Resource.Success)?.data
+    abstract val accountSelectionList: List<AccountSelectionListItem>
 
-    private val accountSelectionAccountList: List<AccountSelectionListItem.AccountItem>?
-        get() = accountSelectionList?.filterIsInstance<AccountSelectionListItem.AccountItem>()
+    private val accountSelectionAccountList: List<AccountSelectionListItem.AccountItem>
+        get() = accountSelectionList.filterIsInstance<AccountSelectionListItem.AccountItem>()
 
-    val isAccountSelectionListEmpty: Boolean
-        get() = accountSelectionList.isNullOrEmpty()
+    val selectedAccounts: List<Account>
+        get() = accountSelectionAccountList.filter { it.isSelected }.map { it.account }
 
-    val selectedCount: Int
-        get() = accountSelectionAccountList?.count { it.isSelected } ?: 0
-
-    val selectedAccounts: List<Account>?
-        get() = accountSelectionAccountList?.filter { it.isSelected }?.map { it.account }
-
-    val allAuthAccounts: List<Account>?
-        get() = accountSelectionAccountList?.map { it.account }?.filter { it.type == Account.Type.LEDGER }
-
-    fun getAccountSelectionListItems(
-        ledgerAccountsInformation: Array<AccountInformation>,
-        bluetoothAddress: String,
-        bluetoothName: String?
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            ledgerAccountSelectionUseCase.getAccountSelectionListItems(
-                ledgerAccountsInformation,
-                bluetoothAddress,
-                bluetoothName,
-                this
-            ).collectLatest {
-                _accountSelectionListLiveData.postValue(it)
-            }
-        }
-    }
+    val allAuthAccounts: List<Account>
+        get() = accountSelectionAccountList.map { it.account }.filter { it.type == Account.Type.LEDGER }
 
     fun getAuthAccountOf(
         accountSelectionListItem: AccountSelectionListItem.AccountItem
@@ -80,19 +44,5 @@ class LedgerAccountSelectionViewModel @Inject constructor(
         accountSelectionListItem: AccountSelectionListItem.AccountItem
     ): Array<AccountSelectionListItem.AccountItem>? {
         return ledgerAccountSelectionUseCase.getRekeyedAccountOf(accountSelectionListItem, accountSelectionAccountList)
-    }
-
-    fun onNewAccountSelected(accountItem: AccountSelectionListItem.AccountItem, searchType: SearchType) {
-        accountSelectionList?.apply {
-            filterIsInstance<AccountSelectionListItem.AccountItem>().run {
-                if (searchType == SearchType.REKEY) {
-                    forEach { it.isSelected = false }
-                }
-                find {
-                    it.account.address == accountItem.account.address
-                }?.isSelected = accountItem.isSelected.not()
-                _accountSelectionListLiveData.postValue(Resource.Success(this@apply))
-            }
-        }
     }
 }

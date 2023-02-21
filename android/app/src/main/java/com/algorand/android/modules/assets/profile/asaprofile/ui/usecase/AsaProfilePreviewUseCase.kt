@@ -34,6 +34,7 @@ import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.isGreaterThan
+import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -142,9 +143,10 @@ class AsaProfilePreviewUseCase @Inject constructor(
         asaStatusPreview: AsaStatusPreview?
     ): AsaProfilePreview {
         return with(assetDetail) {
+            val minValueToDisplayExactAmount = BigDecimal.valueOf(MINIMUM_CURRENCY_VALUE_TO_DISPLAY_EXACT_AMOUNT)
             val formattedAssetPrice = getSelectedAssetExchangeValueUseCase
                 .getSelectedAssetExchangeValue(assetDetail = this)
-                ?.getFormattedValue(isCompact = true)
+                ?.getFormattedValue(isCompact = true, minValueToDisplayExactAmount = minValueToDisplayExactAmount)
             val verificationTierConfiguration = verificationTierConfigurationDecider
                 .decideVerificationTierConfiguration(verificationTier)
             val assetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(assetDetail)
@@ -213,5 +215,9 @@ class AsaProfilePreviewUseCase @Inject constructor(
             }
             else -> null
         }
+    }
+
+    companion object {
+        const val MINIMUM_CURRENCY_VALUE_TO_DISPLAY_EXACT_AMOUNT = 0.000001
     }
 }

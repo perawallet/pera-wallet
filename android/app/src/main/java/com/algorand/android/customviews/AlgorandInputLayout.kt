@@ -143,10 +143,6 @@ class AlgorandInputLayout @JvmOverloads constructor(
         }
     }
 
-    fun setInputTypeText() {
-        editText.inputType = InputType.TYPE_CLASS_TEXT
-    }
-
     fun addByteLimiter(maximumByteLimit: Int) {
         binding.textInputEditText.addByteLimiter(maximumByteLimit)
     }

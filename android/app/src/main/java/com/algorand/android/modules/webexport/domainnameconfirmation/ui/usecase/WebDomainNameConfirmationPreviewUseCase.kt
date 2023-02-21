@@ -63,6 +63,12 @@ class WebDomainNameConfirmationPreviewUseCase @Inject constructor(
         )
     }
 
+    fun getUpdatedPreviewWithImeOptionDoneClicked(
+        previousPreview: WebExportDomainNameConfirmationPreview
+    ): WebExportDomainNameConfirmationPreview {
+        val isContinueButtonEnabled = previousPreview.isContinueButtonEnabled
+        return if (isContinueButtonEnabled) getUpdatedPreviewWithClickDestination(previousPreview) else previousPreview
+    }
     fun getUpdatedPreviewAfterPasscodeVerified(
         previousPreview: WebExportDomainNameConfirmationPreview
     ): WebExportDomainNameConfirmationPreview {

@@ -37,6 +37,7 @@ import com.algorand.android.models.TransactionRequestAction
 import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.ui.common.walletconnect.WalletConnectAppPreviewCardView
+import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequestFragmentDirections.Companion.actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionFallbackBrowserSelectionNavigation
 import com.algorand.android.utils.BaseDoubleButtonBottomSheet.Companion.RESULT_KEY
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
@@ -129,7 +130,7 @@ class WalletConnectTransactionRequestFragment :
         with(walletConnectNavController) {
             setGraph(
                 navInflater.inflate(R.navigation.transaction_request_navigation).apply {
-                    startDestination = startDestinationId
+                    setStartDestination(startDestinationId)
                 },
                 startDestinationArgs
             )
@@ -348,11 +349,10 @@ class WalletConnectTransactionRequestFragment :
 
     private fun handleSuccessfulTransaction() {
         nav(
-            WalletConnectTransactionRequestFragmentDirections
-                .actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionFallbackBrowserSelectionNavigation(
-                    browserGroup = transactionRequestViewModel.fallbackBrowserGroupResponse,
-                    peerMetaName = transactionRequestViewModel.peerMetaName
-                )
+            actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionFallbackBrowserSelectionNavigation(
+                browserGroup = transactionRequestViewModel.fallbackBrowserGroupResponse,
+                peerMetaName = transactionRequestViewModel.peerMetaName
+            )
         )
     }
 }

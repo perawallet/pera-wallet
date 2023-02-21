@@ -12,15 +12,19 @@
 
 package com.algorand.android.ui.register.ledger
 
-import androidx.navigation.fragment.navArgs
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.navigation.navGraphViewModels
 import com.algorand.android.R
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.ui.ledgeraccountselection.BaseLedgerAccountSelectionFragment
-import com.algorand.android.ui.ledgeraccountselection.SearchType
+import com.algorand.android.ui.ledgeraccountselection.LedgerAccountSelectionAdapter
+import com.algorand.android.ui.ledgeraccountselection.LedgerAccountSelectionViewModel
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class RegisterLedgerAccountSelectionFragment : BaseLedgerAccountSelectionFragment() {
@@ -31,32 +35,59 @@ class RegisterLedgerAccountSelectionFragment : BaseLedgerAccountSelectionFragmen
         defaultViewModelProviderFactory
     }
 
-    private val args: RegisterLedgerAccountSelectionFragmentArgs by navArgs()
+    override val ledgerAccountListAdapter = LedgerAccountSelectionAdapter(ledgerAccountListAdapterListener)
 
-    override val searchType = SearchType.REGISTER
+    override val ledgerAccountSelectionViewModel: LedgerAccountSelectionViewModel
+        get() = registerLedgerAccountSelectionViewModel
 
-    override fun getLedgerAccountsInformation(): Array<AccountInformation> {
-        return args.ledgerAccountsInformation
+    private val registerLedgerAccountSelectionViewModel by viewModels<RegisterLedgerAccountSelectionViewModel>()
+
+    private val accountsIsLoadingCollector: suspend (Boolean?) -> Unit = {
+        binding.loadingProgressBar.isVisible = it == true
+    }
+
+    private val accountListItemCollector: suspend (List<AccountSelectionListItem>?) -> Unit = {
+        ledgerAccountListAdapter.submitList(it)
+    }
+
+    private val actionButtonStateCollector: suspend (Boolean?) -> Unit = {
+        binding.confirmationButton.isEnabled = it == true
+    }
+
+    override fun initObservers() {
+        with(registerLedgerAccountSelectionViewModel.registerLedgerAccountSelectionPreviewFlow) {
+            collectLatestOnLifecycle(
+                flow = map { it?.isLoading },
+                collection = accountsIsLoadingCollector
+            )
+            collectLatestOnLifecycle(
+                flow = map { it?.accountSelectionListItems },
+                collection = accountListItemCollector
+            )
+            collectLatestOnLifecycle(
+                flow = map { it?.isActionButtonEnabled },
+                collection = actionButtonStateCollector
+            )
+        }
     }
 
     override fun onConfirmationClick(selectedAccounts: List<Account>, allAuthAccounts: List<Account>) {
-        pairLedgerNavigationViewModel.selectedAccounts = selectedAccounts
-        pairLedgerNavigationViewModel.allAuthAccounts = allAuthAccounts
+        with(pairLedgerNavigationViewModel) {
+            this.selectedAccounts = selectedAccounts
+            this.allAuthAccounts = allAuthAccounts
+        }
         nav(
             RegisterLedgerAccountSelectionFragmentDirections
                 .actionRegisterLedgerAccountSelectionFragmentToVerifyLedgerAddressFragment()
         )
     }
 
-    override fun getBluetoothName(): String? {
-        return args.bluetoothName
+    override fun changeToolbarTitle() {
+        getAppToolbar()?.changeTitle(registerLedgerAccountSelectionViewModel.ledgerBluetoothName.orEmpty())
     }
 
-    override fun onSelectionListFetched(selectionList: List<AccountSelectionListItem>): List<AccountSelectionListItem> {
-        return selectionList
-    }
-
-    override fun getBluetoothAddress(): String {
-        return args.bluetoothAddress
+    override fun setupConfirmButton(confirmationButton: MaterialButton) {
+        super.setupConfirmButton(confirmationButton)
+        confirmationButton.setText(R.string.verify_selected_account)
     }
 }

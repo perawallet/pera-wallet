@@ -74,7 +74,8 @@ class WalletConnectSessionsPreviewUseCase @Inject constructor(
                     dAppDescription = peerMeta.description,
                     connectionDate = getZonedDateTimeFromSec(dateTimeStamp)?.formatAsDateAndTime(),
                     connectedAccountItems = createConnectedAccountItems(connectedAccountsAddresses, isConnected),
-                    isConnected = isConnected
+                    isConnected = isConnected,
+                    isShowingDetails = true
                 )
             }
         }

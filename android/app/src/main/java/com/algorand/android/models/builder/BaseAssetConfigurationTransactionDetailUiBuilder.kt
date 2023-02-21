@@ -78,7 +78,8 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor(
         return with(txn) {
             TransactionRequestTransactionInfo(
                 fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
-                fromAccountIcon = createAccountIconResource(),
+                fromAccountIcon = getFromAccountIconResource(),
+                toAccountIcon = getToAccountIconResource(),
                 reconfigurationAsset = TransactionRequestAssetInformation(
                     assetId = assetId,
                     fullName = assetName,
@@ -102,7 +103,8 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor(
         return with(txn) {
             TransactionRequestTransactionInfo(
                 fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
-                fromAccountIcon = createAccountIconResource(),
+                fromAccountIcon = getFromAccountIconResource(),
+                toAccountIcon = getToAccountIconResource(),
                 assetName = assetName,
                 assetUnitName = unitName,
                 isAssetUnnamed = assetName == null,
@@ -122,7 +124,8 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor(
         return with(txn) {
             TransactionRequestTransactionInfo(
                 fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
-                fromAccountIcon = createAccountIconResource(),
+                fromAccountIcon = getFromAccountIconResource(),
+                toAccountIcon = getToAccountIconResource(),
                 assetInformation = TransactionRequestAssetInformation(
                     assetId = assetId,
                     fullName = assetName,

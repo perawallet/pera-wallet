@@ -28,6 +28,8 @@
 
     <include app:graph="@navigation/nft_opt_out_confirmation_navigation" />
 
+    <include app:graph="@navigation/nft_card_viewer_navigation" />
+
     <fragment
         android:id="@+id/collectibleProfileFragment"
         android:name="com.algorand.android.modules.collectibles.profile.ui.CollectibleProfileFragment"
@@ -88,6 +90,13 @@
                 app:argType="long" />
             <argument
                 android:name="accountAddress"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_collectibleProfileFragment_to_nftCardViewerNavigation"
+            app:destination="@id/nftCardViewerNavigation">
+            <argument
+                android:name="nftCardViewUrl"
                 app:argType="string" />
         </action>
     </fragment>

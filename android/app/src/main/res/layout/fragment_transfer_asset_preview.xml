@@ -215,7 +215,7 @@
             android:layout_marginStart="@dimen/spacing_xlarge"
             android:layout_marginTop="28dp"
             android:layout_marginBottom="@dimen/spacing_normal"
-            app:layout_constraintBottom_toTopOf="@id/nextButton"
+            app:layout_constraintBottom_toTopOf="@id/confirmTransferButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/labelBarrier"
             app:layout_constraintTop_toBottomOf="@id/balanceDivider"
@@ -240,12 +240,12 @@
             app:layout_constraintHorizontal_bias="0"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/nextButton"
+            android:id="@+id/confirmTransferButton"
             style="@style/Button.Primary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="@string/next"
+            android:text="@string/confirm_transfer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

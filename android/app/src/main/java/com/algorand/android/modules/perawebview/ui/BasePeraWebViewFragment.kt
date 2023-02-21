@@ -18,16 +18,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.viewbinding.ViewBinding
-import com.algorand.android.core.BaseFragment
 import com.algorand.android.customviews.PeraWebView
 import com.algorand.android.discover.common.ui.model.PeraWebViewClient
+import com.algorand.android.modules.basewebview.ui.BaseWebViewFragment
 import com.algorand.android.utils.sendMailRequestUrl
 
 abstract class BasePeraWebViewFragment(
     @LayoutRes private val layoutResId: Int,
-) : BaseFragment(layoutResId) {
+) : BaseWebViewFragment(layoutResId) {
 
     abstract val binding: ViewBinding
+
+    abstract fun bindWebView(view: View?)
 
     abstract val basePeraWebViewViewModel: BasePeraWebViewViewModel
 
@@ -62,7 +64,6 @@ abstract class BasePeraWebViewFragment(
     }
 
     open fun onSendMailRequestFailed() {}
-    abstract fun bindWebView(view: View?)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
@@ -72,27 +73,6 @@ abstract class BasePeraWebViewFragment(
             bindWebView(view)
         } ?: bindWebView(view)
         return view
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        getWebView(binding.root)?.let { basePeraWebViewViewModel.saveWebView(it) }
-    }
-
-    protected fun handleMailRequestUrl(url: String) {
-        context?.sendMailRequestUrl(url, ::onSendMailRequestFailed)
-    }
-
-    protected fun getWebView(parent: View): PeraWebView? {
-        if (parent is ViewGroup) {
-            for (cx in 0 until parent.childCount) {
-                val child = parent.getChildAt(cx)
-                if (child is PeraWebView) {
-                    return child
-                }
-            }
-        }
-        return null
     }
 
     private fun reloadWebView(parent: View?, webView: PeraWebView) {
@@ -107,5 +87,26 @@ abstract class BasePeraWebViewFragment(
                 }
             }
         }
+    }
+
+    protected fun handleMailRequestUrl(url: String) {
+        context?.sendMailRequestUrl(url, ::onSendMailRequestFailed)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        getWebView(binding.root)?.let { basePeraWebViewViewModel.saveWebView(it) }
+    }
+
+    protected fun getWebView(parent: View): PeraWebView? {
+        if (parent is ViewGroup) {
+            for (cx in 0 until parent.childCount) {
+                val child = parent.getChildAt(cx)
+                if (child is PeraWebView) {
+                    return child
+                }
+            }
+        }
+        return null
     }
 }

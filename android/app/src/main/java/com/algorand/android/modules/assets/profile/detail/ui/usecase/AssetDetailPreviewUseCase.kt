@@ -19,13 +19,13 @@ import com.algorand.android.discover.home.domain.model.TokenDetailInfo
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.modules.assets.profile.about.domain.usecase.GetAssetDetailUseCase
 import com.algorand.android.modules.assets.profile.about.domain.usecase.GetSelectedAssetExchangeValueUseCase
-import com.algorand.android.modules.assets.profile.detail.domain.usecase.GetAccountAssetDetailUseCase
 import com.algorand.android.modules.assets.profile.detail.ui.AssetDetailFragmentDirections
 import com.algorand.android.modules.assets.profile.detail.ui.mapper.AssetDetailPreviewMapper
 import com.algorand.android.modules.assets.profile.detail.ui.model.AssetDetailPreview
 import com.algorand.android.modules.swap.reddot.domain.usecase.GetSwapFeatureRedDotVisibilityUseCase
 import com.algorand.android.modules.swap.utils.SwapNavigationDestinationHelper
 import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.usecase.GetBaseOwnedAssetDataUseCase
 import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.AlgoAssetInformationProvider
 import com.algorand.android.utils.DataResource
@@ -38,7 +38,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 
 class AssetDetailPreviewUseCase @Inject constructor(
-    private val getAccountAssetDetailUseCase: GetAccountAssetDetailUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val assetDetailPreviewMapper: AssetDetailPreviewMapper,
     private val getSwapFeatureRedDotVisibilityUseCase: GetSwapFeatureRedDotVisibilityUseCase,
@@ -46,6 +45,7 @@ class AssetDetailPreviewUseCase @Inject constructor(
     private val getAssetDetailUseCase: GetAssetDetailUseCase,
     private val getSelectedAssetExchangeValueUseCase: GetSelectedAssetExchangeValueUseCase,
     private val algoAssetInformationProvider: AlgoAssetInformationProvider,
+    private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase,
     private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
 ) {
 
@@ -83,12 +83,13 @@ class AssetDetailPreviewUseCase @Inject constructor(
         accountAddress: String,
         assetId: Long,
         isQuickActionButtonsVisible: Boolean
-    ): Flow<AssetDetailPreview> {
+    ): Flow<AssetDetailPreview?> {
         return combine(
-            getAccountAssetDetailUseCase.getAssetDetail(accountAddress, assetId).filterNotNull(),
             accountDetailUseCase.getAccountDetailCacheFlow(accountAddress).filterNotNull(),
             getAssetDetailUseCase.getAssetDetail(assetId)
-        ) { baseOwnedAssetDetail, cachedAccountDetail, assetDetailResult ->
+        ) { cachedAccountDetail, assetDetailResult ->
+            val baseOwnedAssetDetail = getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, accountAddress)
+                ?: return@combine null
             val account = cachedAccountDetail.data?.account
             val isSwapButtonSelected = getRedDotVisibility(baseOwnedAssetDetail.isAlgo)
             // TODO Check Error and Loading cases later

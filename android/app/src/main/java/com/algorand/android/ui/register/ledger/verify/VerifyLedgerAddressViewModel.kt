@@ -112,23 +112,20 @@ class VerifyLedgerAddressViewModel @Inject constructor(
         if (approvedLedgerAuths.isEmpty()) {
             return emptyList()
         }
-
-        return mutableListOf<Account>().apply {
-            outerloop@ for (selectedAccount in allSelectedAccounts) {
-                if (approvedLedgerAuths.any { it.address == selectedAccount.address }) {
-                    add(selectedAccount)
-                    continue
+        val accountList = mutableListOf<Account>()
+        for (selectedAccount in allSelectedAccounts) {
+            when (selectedAccount.detail) {
+                is Account.Detail.RekeyedAuth -> {
+                    if (approvedLedgerAuths.any { selectedAccount.detail.rekeyedAuthDetail.containsKey(it.address) })
+                        accountList.add(selectedAccount)
                 }
-                if (selectedAccount.detail is Account.Detail.RekeyedAuth) {
-                    for (auth in approvedLedgerAuths) {
-                        if (selectedAccount.detail.rekeyedAuthDetail.containsKey(auth.address)) {
-                            add(selectedAccount)
-                            continue@outerloop
-                        }
-                    }
+                else -> {
+                    if (approvedLedgerAuths.any { selectedAccount.address == it.address })
+                        accountList.add(selectedAccount)
                 }
             }
         }
+        return accountList
     }
 
     fun addNewAccount(account: Account, creationType: CreationType?) {

@@ -54,10 +54,9 @@
     <string name="you_should_enter_your_correct_password">パスフレーズを表示するには、正しいパスワードを入力する必要があります</string>
     <string name="there_s_no_biometric_registration">デバイスに生体認証が登録されていないか、生体認証ハードウェアが見つかりません</string>
     <string name="you_re_trying_to_send">残高が最低残高より少ないアカウントにトランザクションを送信しようとしています。金額は少なくとも<annotation replacement="amount">amountPlaceholder</annotation> algoでなければなりません。</string>
-    <string name="transaction_amount">トランザクション金額は、最低アカウント残高の<annotation replacement="min_balance"> </annotation> algosを下回る結果になります。</string>
+    <string name="transaction_amount">トランザクション金額は、最小アカウント残高の<annotation replacement="min_balance">minBalancePlaceHolder</annotation> algoを下回る結果になります。</string>
     <string name="transaction_amount_cannot">取引額が利用可能額を超えることはできません。</string>
     <string name="transaction_amount_results">トランザクションの結果、残高がマイナスになります。</string>
-    <string name="send_feedback">フィードバックの送信</string>
     <string name="note">メモ</string>
     <string name="rewards">リワード</string>
     <string name="show_rewards">リワードを表示する</string>
@@ -81,11 +80,12 @@
     <string name="you_already_have">すでにこの資産を所有しています。</string>
     <string name="adding_asset">資産の追加</string>
     <string name="removing_asset">資産の削除</string>
+    <string name="unfortunately_this_account">残念ながら、このアカウントは%1$sの資産を追加していません。%1$sアカウントに資産の追加を指示してから、再度お試しください。</string>
     <string name="transfer_balance">転送残高</string>
     <string name="approve">承認する</string>
     <string name="account_does_not_accept">アカウントはこの資産を受け入れません</string>
-    <string name="you_are_about_to_receive">まもなく資産を受け取れます！</string>
     <string name="min_transaction_error">最小トランザクションエラー！</string>
+    <string name="you_need_at_least">この資産をオプトインするには、最低でも%1$sAlgoが必要です</string>
     <string name="please_add_this">この資産を追加して再度お試しください。</string>
     <string name="key_not_valid">キーが無効です。正しいキーをお持ちかどうかご確認ください。</string>
     <string name="scanned_qr_is_not_valid">スキャンしたQRが無効です。</string>
@@ -134,6 +134,7 @@
     <string name="go_to_home">ホームに移動</string>
     <string name="accept">承認</string>
     <string name="add_new_asset">新規資産の追加</string>
+    <string name="try_different">別の資産名または資産IDをお試しください</string>
     <string name="copy_address">アドレスをコピー</string>
     <string name="account_address">アカウントアドレス</string>
     <string name="keep_it">維持する</string>
@@ -376,7 +377,7 @@
     <string name="enter_your_new_six_digit_pin">新しい6桁のPINを\n入力してください</string>
     <string name="re_enter_your_new_six_digit_pin">6桁のPINを\n再入力してください</string>
     <string name="wrong_passphrase">誤ったパスフレーズ</string>
-    <string name="account_not_found_please_try">アカウントが見つかりません。正しいパスフレーズを入力して再度お試しください。</string>
+    <string name="account_not_found">アカウントが見つかりません</string>
     <string name="account_is_verified">アカウント認証済</string>
     <string name="verified">確認済み</string>
     <string name="copy_id">IDをコピー</string>
@@ -434,6 +435,7 @@
     <string name="show_transaction_details">トランザクションの詳細を表示</string>
     <string name="network_fee">ネットワーク手数料</string>
     <string name="application_call">アプリケーションコール</string>
+    <string name="application_opt_in">アプリケーションオプトイン</string>
     <string name="application_close_to">アプリケーションクローズ</string>
     <string name="application_update">アプリケーションの更新</string>
     <string name="application_delete">アプリケーション削除</string>
@@ -443,6 +445,7 @@
     <string name="asset_reconfiguration_request_with_asset_name">資産再構成リクエスト<annotation replacement="asset_name">assetNamePlaceholder</annotation></string>
     <string name="asset_deletion_request_with_asset_name">資産削除リクエスト <annotation replacement="asset_name">assetNamePlaceholder</annotation></string>
     <string name="application_call_with_id">アプリケーションコール <annotation replacement="app_id">appIdPlaceholder</annotation></string>
+    <string name="application_opt_in_with_id">アプリケーションオプトイン <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_close_to_with_id">アプリケーションクローズ  <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_update_with_id">アプリケーションの更新 <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_delete_with_id">アプリケーション削除 <annotation replacement="app_id">appIdPlaceholder</annotation></string>
@@ -549,13 +552,14 @@
     <string name="view_transaction">トランザクションを見る</string>
     <string name="show_on_algoexplorer">Algoexplorerで表示する</string>
     <string name="show_on_nftexplorer">NFTExplorerで表示する</string>
+    <string name="you_are_not_the_owner">まだこのNFTの所有者ではありませんが、オプトインしています。これでアカウントに転送可能です。</string>
     <string name="we_don_t_support">このNFTメディアタイプはまだサポートされていません。</string>
     <string name="we_can_t_display">一時的にビジュアルを表示できません。</string>
     <string name="transfer">転送</string>
     <string name="send_your_nft">NFTを送信する</string>
     <string name="paste_an_algorand_wallet_address">Algorandウォレットアドレスを貼り付ける</string>
     <string name="ask_recipient_to">受信者にオプトインをリクエストする</string>
-    <string name="you_cant_send"><annotation replacement="nft_name">NFTNamePlaceHolder</annotation>を<annotation replacement="wallet_address">walletAddressPlaceholder</annotation>にできません。このウォレットはまだこの資産をオプトインしていません。<annotation font="dmsans_medium"><annotation custom="learn_more">オプトインについてもっと知る</annotation></annotation></string>
+    <string name="you_cant_send">このウォレットはまだこの資産をオプトインしていないため、<annotation replacement="nft_name">NFTNamePlaceHolder</annotation>を<annotation replacement="wallet_address">walletAddressPlaceholder</annotation>に送信できません。<annotation font="dmsans_medium"><annotation custom="learn_more">オプトインについて詳しく知る</annotation></annotation></string>
     <string name="request_opt_in">オプトインをリクエスト</string>
     <string name="information_about_opt">オプトインに関する情報</string>
     <string name="to_avoid_spammy">スパム的なトランザクションを避けるため、Algorand Blockchainでは事前にオプトインされた資産のみ、トランザクションの送受信が可能です。</string>
@@ -569,20 +573,26 @@
     <string name="transacting_fee">トランザクション手数料</string>
     <string name="confirm_transfer">転送の確認</string>
     <string name="search_asset_id_or_nft">資産IDまたはNFT名の検索</string>
-    <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>のアカウントは正常に再キー化されました。</string>
+    <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name">accountNamePlaceHolder</annotation>\"</annotation>のアカウントは正常に再キー化されました。</string>
+    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>は<annotation replacement="asset">assetPlaceholder</annotation>をアカウントにオプトインしました。<annotation replacement="asset">assetPlaceholder</annotation>を送信可能です。</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>は<annotation replacement="asset">assetPlaceholder</annotation>を送信しようとしていますが、あなたはこれを所有していません。アカウントに資産をオプトインすることは可能です。</string>
     <string name="transaction_send_successful"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが完了しました。</string>
-    <string name="transaction_send_failed"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが失敗しました。</string>
+    <string name="transaction_send_failed"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが失敗しました。</string>
     <string name="the_only_way_to">Algorandアカウントを回復させる唯一の方法は、このリカバリーパスフレーズです。</string>
     <string name="monitor_activity_of">リカバリーパスフレーズを必要とすることなく、アカウントのアクティビティを監視できます。コールドストレージに保管されている資産の監視に役立ちます。</string>
     <string name="this_transaction_fee_is_higher">このトランザクション手数料は、通常の手数料である0.001 Algoよりも高くなっています。</string>
+    <string name="you_are_about_to"><annotation replacement="asset_name">AassetNamePlaceholder</annotation>を<annotation replacement="account_name">accountNamePlaceholder</annotation>から削除してオプトアウトしようとしています。再度オプトインしない限り、このアカウントでこの資産を取引することはできません。</string>
     <string name="invalid_input_transaction_request">無効な入力：トランザクションリクエストに%1$d以上のトランザクションが含まれています</string>
     <string name="selected_account">選択したアカウント</string>
     <string name="your_nft_transfer_has_failed">NFT転送に失敗しました！</string>
     <string name="please_try_again">もう一度お試しください。</string>
+    <string name="opt_out">オプトアウト</string>
     <string name="nft_successfully_opted_out">%1$sNFTをオプトアウトしました</string>
+    <string name="opted_in_to">オプトイン先</string>
     <string name="show_on">表示する</string>
     <string name="you_are_about_to_remove_watch_account">ウォッチアカウントを削除しようとしています。この選択を続行してよろしいですか？</string>
     <string name="you_are_about_to_remove_main_account">メインアカウントを削除しようとしています。この選択を続行してよろしいですか？</string>
+    <string name="this_watch_account_has_opted">このウォッチアカウントはこのNFTをオプトインしていますが、所有していません。</string>
     <string name="display_opted_in_nfts">オプトイン済NFTの表示</string>
     <string name="filter">フィルタリング</string>
     <string name="show_filtered_nfts_formatted">フィルタリングされたNFTの表示（%1$d）</string>
@@ -630,15 +640,17 @@
     <string name="algo_or_any_asa">Algoまたは任意のASAを別のアカウントに</string>
     <string name="view_or_copy">アカウントアドレスの表示またはコピー</string>
     <string name="use_wallet_connect">WalletConnetを使うか、アカウントアドレスをスキャンする</string>
+    <string name="opt_out_from_the">NFTをオプトアウトする</string>
     <string name="asset_configuration">資産の構成</string>
     <string name="scan_qr">QRコードのスキャン</string>
+    <string name="algorand_blockchain">Algorandブロックチェーンでは、ASAを受け取る前にアカウントでオプトインする必要があります。このNFTを別のアカウントに転送したので、オプトアウトが可能です。</string>
     <string name="scanned_account_address">アカウントアドレスをスキャンしました</string>
     <string name="send_transaction">トランザクションの送信</string>
     <string name="add_new_contact">新しい連絡先の追加</string>
     <string name="address_scanned">アドレスをスキャンしました</string>
     <string name="rekeyed_auth_account">再キー済認証アカウント</string>
     <string name="rekeyed_account">再キー済アカウント</string>
-    <string name="press_and_hold_to">長押しして\n“アドレスをコピー”</string>
+    <string name="press_and_hold_to">長押しして\n\"アドレスをコピー\"</string>
     <string name="you_can_quickly_copy">アカウントボックスを長押しすることで、アカウントアドレスを素早くコピーできます</string>
     <string name="matched_accounts">一致したアカウント</string>
     <string name="manually">手動で</string>
@@ -656,6 +668,7 @@
     </plurals>
     <string name="inner_n_transactions">内部\nトランザクション</string>
     <string name="inner_transactions">内部トランザクション</string>
+    <string name="your_accounts_don_t_contain_this">お使いのアカウントにはこの資産が含まれていません。資産をオプトインしてもう一度やり直してください。</string>
     <plurals name="show_count_more_assets">
         <item quantity="other">さらに +%1$d の資産を表示する</item>
     </plurals>
@@ -687,6 +700,7 @@
     <string name="disconnect_all_sessions">すべてのセッションを切断する</string>
     <string name="would_disconnect_all_sessions">すべてのセッションを切断しますか？</string>
     <string name="missing_asset">不足している資産</string>
+    <string name="you_are_already">このアカウントからは、すでに<annotation replacement="asset_name">assetNamePlaceholder</annotation>にオプトインしています。</string>
     <string name="too_many_accounts">アカウントが多すぎます</string>
     <string name="looks_like_already_have_accounts">ウォレットにはすでに%1$d以上のアカウントがあるようです。アプリのパフォーマンスをスムーズに保つため、現在%1$d以上のアカウントはサポートしていません。別のアカウントを追加するには、まず既存のアカウントを削除してください。</string>
     <string name="error_bluetooth_permission_message">近くのLedgerを検索するには、Bluetoothスキャンの許可が必要です。</string>
@@ -738,7 +752,10 @@
     <string name="sorry_there_was">一部のアカウントの取得に失敗しました。ポートフォリオ値は、正常に取得されたもののみに基づいて計算されます。</string>
     <string name="we_couldn_t_find_any_assets">削除する資産が見つかりませんでした。</string>
     <string name="the_algo_is_the_official_cryptocurrency">Algoは、Algorandブロックチェーンの公式暗号通貨です。Algorandブロックチェーンは、誰もが参加でき、オープンで、ボーダーレスな経済の構築を支援するために作成されました。この新しいタイプのデジタル経済は、誰にとってもすぐに使える、真のデジタル通貨でなければ機能しません。それがAlgoなのです。</string>
+    <string name="opt_out_nft">NFTのオプトアウト</string>
+    <string name="you_are_about_to_opt">%1$sをオプトアウトしようとしています。再度追加しない限り、このアカウントからこのNFTの取引ができなくなります。</string>
     <string name="opt_in_to_nft">NFTをオプトインする</string>
+    <string name="opting_in_to_an_nft">NFTをオプトインするには、最低トランザクション手数料の発生するトランザクションを送信する必要があります。これはお客様の取引履歴に表示されます。</string>
     <string name="this_account_doesn_t">このアカウントには、この取引に必要な残高がありません。</string>
     <string name="we_couldn_t">WalletConnectセッションを開始したブラウザを自動的に検出できませんでした。選択して%1$sに戻ってください。</string>
     <string name="select_a_browser">ブラウザを選択</string>
@@ -843,11 +860,62 @@
     </plurals>
     <string name="you_cannot_optin">このアカウントはオプトインできません。このアカウントは読み取り専用のウォッチアカウントです。</string>
     <string name="you_cannot_take">このアカウントに対してアクションを起こすことはできません。このアカウントはこのデバイスから削除されました。</string>
-    <string name="caution_price_impact">注意！価格への影響が5％％以上あるため、このプールでは流動性が低くなる可能性があります。スワップを確定する前に、その影響をご確認ください。</string>
+    <string name="caution_price_impact">注意！価格への影響が5%％以上あるため、このプールでは流動性が低くなる可能性があります。スワップを確定する前に、その影響をご確認ください。</string>
     <string name="discover">見つける</string>
     <string name="search_for_any_asa_by">名前またはIDでASAを検索する</string>
     <string name="we_are_not_able_to_find">この資産を見つけることができません。後でもう一度お試しください。</string>
     <string name="no_internet_connection">インターネット接続なし</string>
     <string name="you_dont_seem_to_be_connected">インターネットに接続されていないようです。接続を確認し、再度お試しください。</string>
     <string name="we_cant_get_that_information">現在、その情報を取得できません。後でもう一度やり直してください。</string>
+    <string name="enter_your_pin">PINを入力してください</string>
+    <string name="to_opt_out_from_an_asset">資産をオプトアウトするには、まずその資産の残高を他の口座に移す必要があります。</string>
+    <plurals name="account_nft_count">
+        <item quantity="other">%1$d NFT</item>
+    </plurals>
+    <string name="this_transaction_is_sending_your">このトランザクションは、お客様のすべての%1$s残高を送信します。%1$s資産をアカウント\"%2$s\"からオプトアウトし、削除します。</string>
+    <string name="account_not_found_please_try">アカウントが見つかりません。正しいパスフレーズを入力して再度お試しください。</string>
+    <string name="to_opt_out_and_remove"><annotation replacement="asset_name">assetNamePlaceholder</annotation>をオプトアウトし、削除するには、残高が0でなければなりません。残高を別のアカウントに移し、もう一度お試しください。</string>
+    <string name="nfts">NFT</string>
+    <plurals name="nft_count">
+        <item quantity="other">%1$d NFT</item>
+    </plurals>
+    <string name="manage_nfts">NFTの管理</string>
+    <string name="asset_successfully_opted_in">%1$sが正常にオプトインされ、アカウントに追加されました。</string>
+    <string name="asset_successfully_opted_out_from_your">%1$sがアカウントから正常にオプトアウトされました。</string>
+    <string name="you_can_opt_in_to_this_nft">このNFTにオプトイン可能</string>
+    <string name="transaction_confirmation_timed_out">トランザクションの確認がタイムアウトしました - トランザクションの状態を確認してください。</string>
+    <string name="you_are_not_opted_in">ソーストークンにオプトインしていません。他のプール、またはスワップ可能な他のアカウントを選択してください。</string>
+    <string name="min_balance">最小残高 %1$s</string>
+    <string name="minimum_balance_is_the_minimum">最小残高とは、アカウントに保管しなければならないAlgoの最低額です。アカウントでスマートコントラクト、ASA、NFTをオプトインするたびに増加します。</string>
+    <string name="asset_id_copied_to_clipboard">資産IDがクリップボードにコピーされました</string>
+    <string name="pick_a_photo">この連絡先に使用する画像の選択</string>
+    <string name="filter_assets">資産のフィルタリング</string>
+    <string name="hide_assets_with_no_balance">残高のない資産を非表示にする</string>
+    <string name="you_can_show_hide_assets">残高のない資産を表示 / 非表示にできます。</string>
+    <string name="your_accounts_don_t">この資産はアカウントに含まれていません。</string>
+    <string name="remove_asset">資産の削除</string>
+    <string name="opt_in_to_an">資産のオプトイン</string>
+    <string name="asset_opt_out">資産のオプトアウト</string>
+    <string name="account_address_or_short_name">アカウントアドレスまたは略称</string>
+    <string name="error_while_opting_to_the">ASAへのオプトイン中にエラーが発生しました。再試行してください</string>
+    <string name="retry">再試行</string>
+    <string name="before_interacting_with">資産の取引をする前に、アカウントからオプトインする必要があります。 これにより、不正な資産のトランザクションが送信されるのを防ぐことができます。</string>
+    <string name="you_already_own">すでにこの資産を所有しています</string>
+    <string name="markets">市場</string>
+    <string name="formatted_changed_percentage">%1$.2f%%</string>
+    <string name="display_nfts_in_asset_list">資産リストのNFTを表示する</string>
+    <string name="nfts_assets_will_be_shown">NFT資産は、アカウントの資産リストに表示されます</string>
+    <string name="display_nfts_from_watch_accounts">ウォッチアカウントのNFTを表示する</string>
+    <string name="this_will_show_nfts">自分のアカウントだけでなく、ウォッチアカウントのNFTも表示されます</string>
+    <string name="you_can_show_hide_nfts">オプトインしているが所有していないNFTの表示 / 非表示が可能です</string>
+    <string name="three_d_mode">3Dモード</string>
+    <string name="creator_account">クリエイターアカウント</string>
+    <string name="search_nfts">NFTの検索</string>
+    <string name="you_need_to_opt_in">NFT ASA IDをウォレットに転送するには、オプトインする必要があります。検索バーにASA IDを貼り付けてください。</string>
+    <string name="you_need_to_opt_in_to">NFT ASA IDをウォレットに転送するには、オプトインする必要があります。</string>
+    <string name="round">ラウンド</string>
+    <string name="do_not_proceed_if_you">このリクエストを開始されていない場合は、先に進まないでください。</string>
+    <string name="this_asset_is">この資産はすでに削除待ちです。</string>
+    <string name="get_help">ヘルプ</string>
+    <string name="couldn_t_retrieve">アカウント情報を取得できませんでした。もう一度やり直してください。</string>
 </resources>

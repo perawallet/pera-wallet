@@ -41,7 +41,7 @@ class BaseAssetConfigurationTransactionSummaryUiBuilder @Inject constructor() :
             )
             WalletConnectTransactionSummary(
                 accountName = fromAccount?.name,
-                accountIconResource = createAccountIconResource(),
+                accountIconResource = getFromAccountIconResource(),
                 summaryTitle = titleText,
                 showWarning = warningCount != null,
                 showMoreButtonText = R.string.show_all_details
@@ -59,7 +59,7 @@ class BaseAssetConfigurationTransactionSummaryUiBuilder @Inject constructor() :
             )
             WalletConnectTransactionSummary(
                 accountName = fromAccount?.name,
-                accountIconResource = createAccountIconResource(),
+                accountIconResource = getFromAccountIconResource(),
                 summaryTitle = titleText,
                 showWarning = warningCount != null,
                 showMoreButtonText = R.string.show_all_details
@@ -75,7 +75,7 @@ class BaseAssetConfigurationTransactionSummaryUiBuilder @Inject constructor() :
             )
             WalletConnectTransactionSummary(
                 accountName = fromAccount?.name,
-                accountIconResource = createAccountIconResource(),
+                accountIconResource = getFromAccountIconResource(),
                 summaryTitle = titleText,
                 showWarning = warningCount != null,
                 showMoreButtonText = R.string.show_all_details

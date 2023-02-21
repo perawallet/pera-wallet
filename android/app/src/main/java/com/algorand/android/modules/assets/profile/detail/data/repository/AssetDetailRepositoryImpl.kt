@@ -12,19 +12,18 @@
 
 package com.algorand.android.modules.assets.profile.detail.data.repository
 
+import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.modules.assets.profile.detail.domain.repository.AssetDetailRepository
 import com.algorand.android.usecase.GetBaseOwnedAssetDataUseCase
-import kotlinx.coroutines.flow.flow
 
 class AssetDetailRepositoryImpl(
     private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase
 ) : AssetDetailRepository {
-
-    override suspend fun getAccountAssetDetail(accountAddress: String, assetId: Long) = flow {
-        val baseOwnedAssetData = getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(
-            assetId = assetId,
-            publicKey = accountAddress
-        )
-        emit(baseOwnedAssetData)
-    }
+    override suspend fun getAccountAssetDetail(
+        accountAddress: String,
+        assetId: Long
+    ): BaseAccountAssetData.BaseOwnedAssetData? = getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(
+        assetId = assetId,
+        publicKey = accountAddress
+    )
 }

@@ -234,6 +234,10 @@ class AccountDetailUseCase @Inject constructor(
         }
     }
 
+    fun isAccountCachedSuccessfully(accountAddress: String): Boolean {
+        return accountRepository.getCachedAccountDetail(accountAddress) is CacheResult.Success
+    }
+
     fun setAccountNameService(accountAddress: String, nameServiceName: String?) {
         accountRepository.getCachedAccountDetail(accountAddress)?.data?.nameServiceName = nameServiceName
     }

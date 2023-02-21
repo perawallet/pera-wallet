@@ -12,4 +12,4 @@
 
 package com.algorand.android.core
 
-abstract class BaseUseCase
+open class BaseUseCase protected constructor()

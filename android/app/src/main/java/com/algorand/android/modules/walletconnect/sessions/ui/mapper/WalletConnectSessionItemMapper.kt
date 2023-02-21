@@ -27,7 +27,8 @@ class WalletConnectSessionItemMapper @Inject constructor() {
         dAppDescription: String?,
         connectionDate: String?,
         connectedAccountItems: List<WalletConnectSessionItem.ConnectedSessionAccountItem>?,
-        isConnected: Boolean
+        isConnected: Boolean,
+        isShowingDetails: Boolean
     ): WalletConnectSessionItem {
         return WalletConnectSessionItem(
             sessionId = sessionId,
@@ -36,7 +37,8 @@ class WalletConnectSessionItemMapper @Inject constructor() {
             dAppDescription = dAppDescription,
             connectionDate = connectionDate,
             connectedAccountItems = connectedAccountItems,
-            isConnected = isConnected
+            isConnected = isConnected,
+            isShowingDetails = isShowingDetails
         )
     }
 

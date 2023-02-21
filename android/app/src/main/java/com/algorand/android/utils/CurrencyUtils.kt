@@ -26,6 +26,7 @@ const val DEFAULT_ASSET_DECIMAL = 0
 const val POSITIVE_SIGN = "+"
 const val NEGATIVE_SIGN = "-"
 const val NO_PRICE_SIGN = "-"
+const val SMALLER_SIGN = "<"
 private const val FIAT_MAX_DECIMAL = 6
 private const val FIAT_MIN_DECIMAL = 2
 
@@ -40,6 +41,10 @@ fun BigDecimal.formatAsCurrency(symbol: String, isCompact: Boolean = false, isFi
         formatAsCurrencyDecimals(symbol)
     }
     return StringBuilder(symbol).append(formattedString).toString()
+}
+
+fun BigDecimal.formatAsLowerThanMinCurrency(symbol: String): String {
+    return StringBuilder(symbol).append(SMALLER_SIGN).append(this.stripTrailingZeros().toPlainString()).toString()
 }
 
 private fun BigDecimal.formatAsCurrencyDecimals(symbol: String): String {

@@ -143,7 +143,7 @@ class CustomAlertDialog constructor(context: Context) : Dialog(context) {
 
     private fun moveDescriptionDown() {
         with(binding) {
-            horizontalGuideline.setGuidelinePercent(0.5F)
+            horizontalGuideline.setGuidelinePercent(FIFTY_PERCENT_HORIZONTAL_GUIDELINE)
             descriptionTextView.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topToTop = ConstraintLayout.LayoutParams.UNSET
                 bottomToTop = ConstraintLayout.LayoutParams.UNSET
@@ -244,5 +244,6 @@ class CustomAlertDialog constructor(context: Context) : Dialog(context) {
     companion object {
         private const val ALERT_OUT_ANIMATION_DURATION = 600L
         private const val ALERT_IN_ANIMATION_DURATION = 800L
+        private const val FIFTY_PERCENT_HORIZONTAL_GUIDELINE = 0.5F
     }
 }

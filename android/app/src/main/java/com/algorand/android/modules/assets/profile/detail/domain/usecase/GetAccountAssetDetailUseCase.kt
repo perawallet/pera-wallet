@@ -16,15 +16,11 @@ import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.modules.assets.profile.detail.domain.repository.AssetDetailRepository
 import javax.inject.Inject
 import javax.inject.Named
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 
 class GetAccountAssetDetailUseCase @Inject constructor(
     @Named(AssetDetailRepository.INJECTION_NAME)
     private val assetDetailRepository: AssetDetailRepository
 ) {
-
-    suspend fun getAssetDetail(accountAddress: String, assetId: Long): Flow<BaseAccountAssetData.BaseOwnedAssetData?> {
-        return assetDetailRepository.getAccountAssetDetail(accountAddress, assetId).distinctUntilChanged()
-    }
+    suspend fun getAssetDetail(accountAddress: String, assetId: Long): BaseAccountAssetData.BaseOwnedAssetData? =
+        assetDetailRepository.getAccountAssetDetail(accountAddress, assetId)
 }

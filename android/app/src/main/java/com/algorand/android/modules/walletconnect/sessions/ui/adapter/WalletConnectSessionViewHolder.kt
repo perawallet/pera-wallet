@@ -55,21 +55,21 @@ class WalletConnectSessionViewHolder(
 
                 appDescriptionTextView.apply {
                     text = dAppDescription
-                    isVisible = !dAppDescription.isNullOrBlank()
+                    isVisible = !dAppDescription.isNullOrBlank() && isShowingDetails
                 }
 
                 dateTextView.apply {
                     text = connectionDate
-                    isVisible = !connectionDate.isNullOrBlank()
+                    isVisible = !connectionDate.isNullOrBlank() && isShowingDetails
                 }
 
                 connectedTextView.apply {
-                    isVisible = dAppDescription.isNullOrBlank()
+                    isVisible = dAppDescription.isNullOrBlank() && !isShowingDetails
                     text = context.getString(R.string.connected)
                 }
 
                 connectionsIndicatorLinearLayout.apply {
-                    isVisible = !connectedAccountItems.isNullOrEmpty()
+                    isVisible = !connectedAccountItems.isNullOrEmpty() && isShowingDetails
                     removeAllViews()
                 }
 

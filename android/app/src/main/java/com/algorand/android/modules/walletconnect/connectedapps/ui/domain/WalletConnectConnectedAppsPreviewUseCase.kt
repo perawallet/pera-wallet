@@ -63,7 +63,8 @@ class WalletConnectConnectedAppsPreviewUseCase @Inject constructor(
                     dAppDescription = null,
                     connectionDate = null,
                     connectedAccountItems = null,
-                    isConnected = isConnected
+                    isConnected = isConnected,
+                    isShowingDetails = false
                 )
             }
         }

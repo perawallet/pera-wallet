@@ -51,7 +51,8 @@ class BaseAppCallTransactionDetailUiBuilder @Inject constructor() :
     ): TransactionRequestSenderInfo {
         return with(txn) {
             TransactionRequestSenderInfo(
-                senderDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
+                fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
+                fromAccountIcon = getFromAccountIconResource(),
                 rekeyToAccountAddress = getRekeyToAccountAddress()?.decodedAddress,
                 appId = appId,
                 onCompletion = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete.appOnCompleteNo),
@@ -67,7 +68,8 @@ class BaseAppCallTransactionDetailUiBuilder @Inject constructor() :
     private fun buildGeneralSenderInfo(txn: BaseAppCallTransaction): TransactionRequestSenderInfo {
         return with(txn) {
             TransactionRequestSenderInfo(
-                senderDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
+                fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
+                fromAccountIcon = getFromAccountIconResource(),
                 rekeyToAccountAddress = getRekeyToAccountAddress()?.decodedAddress,
                 appId = appId,
                 onCompletion = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete.appOnCompleteNo),

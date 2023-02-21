@@ -13,12 +13,28 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import androidx.annotation.DrawableRes
+import com.algorand.android.ui.ledgeraccountselection.SearchType
 import kotlinx.parcelize.Parcelize
 
 sealed class AccountSelectionListItem : RecyclerListItem, Parcelable {
 
+    enum class ItemType {
+        INSTRUCTION_ITEM,
+        ACCOUNT_ITEM
+    }
+
+    abstract val itemType: ItemType
+
     @Parcelize
-    data class InstructionItem(val accountCount: Int) : AccountSelectionListItem() {
+    data class InstructionItem(
+        val accountCount: Int,
+        val searchType: SearchType
+    ) : AccountSelectionListItem() {
+
+        override val itemType: ItemType
+            get() = ItemType.INSTRUCTION_ITEM
+
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is InstructionItem && accountCount == other.accountCount
         }
@@ -33,8 +49,13 @@ sealed class AccountSelectionListItem : RecyclerListItem, Parcelable {
         val account: Account,
         val accountInformation: AccountInformation,
         val assetInformationList: List<AssetInformation>,
-        var isSelected: Boolean = false
+        var isSelected: Boolean = false,
+        @DrawableRes val selectorDrawableRes: Int
     ) : AccountSelectionListItem() {
+
+        override val itemType: ItemType
+            get() = ItemType.ACCOUNT_ITEM
+
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is AccountItem && account.address == other.account.address && isSelected == other.isSelected
         }

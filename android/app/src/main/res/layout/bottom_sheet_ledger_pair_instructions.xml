@@ -156,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
             android:layout_marginTop="@dimen/spacing_xxlarge"
-            android:text="@string/close"
+            android:text="@string/continue_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/forthInstructionTextView" />

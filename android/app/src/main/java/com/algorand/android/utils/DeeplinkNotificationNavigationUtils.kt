@@ -170,9 +170,7 @@ fun NavController.handleIntentWithBundle(
                 !canSignTransaction(accountType) -> onIntentHandlingFailed.invoke(R.string.you_cannot_optin)
                 else -> {
                     navigateSafe(
-                        HomeNavigationDirections.actionGlobalUnsupportedAssetNotificationRequestActionBottomSheet(
-                            assetAction
-                        )
+                        HomeNavigationDirections.actionGlobalAssetAdditionActionNavigation(assetAction)
                     )
                 }
             }

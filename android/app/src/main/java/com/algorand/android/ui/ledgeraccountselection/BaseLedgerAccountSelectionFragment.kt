@@ -14,67 +14,41 @@ package com.algorand.android.ui.ledgeraccountselection
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentLedgerAccountSelectionBinding
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.Resource
 import com.algorand.android.utils.viewbinding.viewBinding
+import com.google.android.material.button.MaterialButton
 
 abstract class BaseLedgerAccountSelectionFragment : DaggerBaseFragment(R.layout.fragment_ledger_account_selection) {
 
-    abstract val searchType: SearchType
+    abstract val ledgerAccountSelectionViewModel: LedgerAccountSelectionViewModel
 
-    abstract fun getLedgerAccountsInformation(): Array<AccountInformation>
+    abstract val ledgerAccountListAdapter: LedgerAccountSelectionAdapter
 
     abstract fun onConfirmationClick(selectedAccounts: List<Account>, allAuthAccounts: List<Account>)
 
-    abstract fun getBluetoothAddress(): String
+    abstract fun changeToolbarTitle()
 
-    abstract fun getBluetoothName(): String?
-
-    abstract fun onSelectionListFetched(selectionList: List<AccountSelectionListItem>): List<AccountSelectionListItem>
+    abstract fun initObservers()
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )
 
-    private val binding by viewBinding(FragmentLedgerAccountSelectionBinding::bind)
-
-    private val ledgerAccountSelectionViewModel: LedgerAccountSelectionViewModel by viewModels()
-
-    private val selectionListObserver = Observer<Resource<List<AccountSelectionListItem>>> { resource ->
-        resource.use(
-            onSuccess = { accountSelectionListItems ->
-                val accountSelectionList = onSelectionListFetched(accountSelectionListItems)
-                ledgerAccountListAdapter.submitList(accountSelectionList)
-                val selectedAccounts = accountSelectionList.count {
-                    it is AccountSelectionListItem.AccountItem && it.isSelected
-                }
-                accountSelectionChanged(selectedAccounts)
-            },
-            onFailed = { error ->
-                showGlobalError(error.parse(requireContext()))
-            },
-            onLoadingFinished = {
-                binding.loadingProgressBar.visibility = View.INVISIBLE
-            }
-        )
-    }
+    protected val binding by viewBinding(FragmentLedgerAccountSelectionBinding::bind)
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
-    private val ledgerAccountListAdapterListener = object : LedgerAccountSelectionAdapter.Listener {
+    protected val ledgerAccountListAdapterListener = object : LedgerAccountSelectionAdapter.Listener {
         override fun onAccountClick(accountItem: AccountSelectionListItem.AccountItem) {
-            ledgerAccountSelectionViewModel.onNewAccountSelected(accountItem, searchType)
+            ledgerAccountSelectionViewModel.onNewAccountSelected(accountItem)
         }
 
         override fun onAccountInfoClick(accountItem: AccountSelectionListItem.AccountItem) {
@@ -88,60 +62,26 @@ abstract class BaseLedgerAccountSelectionFragment : DaggerBaseFragment(R.layout.
         }
     }
 
-    private val ledgerAccountListAdapter by lazy {
-        LedgerAccountSelectionAdapter(searchType, ledgerAccountListAdapterListener)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         changeToolbarTitle()
-        setupConfirmButton()
+        setupConfirmButton(binding.confirmationButton)
         setupRecyclerView()
         initObservers()
     }
 
-    private fun setupConfirmButton() {
-        binding.confirmationButton.apply {
-            setText(
-                if (searchType == SearchType.REGISTER) R.string.verify_selected_account else R.string.select_account
-            )
-            setOnClickListener { onConfirmationButtonClick() }
-        }
+    open fun setupConfirmButton(confirmationButton: MaterialButton) {
+        confirmationButton.setOnClickListener { onConfirmationButtonClick() }
     }
 
     private fun setupRecyclerView() {
-        binding.ledgersRecyclerView.adapter = ledgerAccountListAdapter.also {
-            if (ledgerAccountSelectionViewModel.isAccountSelectionListEmpty) {
-                ledgerAccountSelectionViewModel.getAccountSelectionListItems(
-                    getLedgerAccountsInformation(),
-                    getBluetoothAddress(),
-                    getBluetoothName()
-                )
-            } else {
-                accountSelectionChanged(ledgerAccountSelectionViewModel.selectedCount)
-            }
-        }
-    }
-
-    private fun accountSelectionChanged(count: Int) {
-        binding.confirmationButton.isEnabled = count != 0
-        if (searchType == SearchType.REGISTER) {
-            binding.confirmationButton.text = resources.getQuantityString(R.plurals.verify_selected_count, count, count)
-        }
-    }
-
-    private fun initObservers() {
-        ledgerAccountSelectionViewModel.accountSelectionListLiveData.observe(viewLifecycleOwner, selectionListObserver)
-    }
-
-    private fun changeToolbarTitle() {
-        getAppToolbar()?.changeTitle(getBluetoothName().orEmpty())
+        binding.ledgersRecyclerView.adapter = ledgerAccountListAdapter
     }
 
     private fun onConfirmationButtonClick() {
         val selectedAccounts = ledgerAccountSelectionViewModel.selectedAccounts
         val allAuthAccounts = ledgerAccountSelectionViewModel.allAuthAccounts
-        if (!selectedAccounts.isNullOrEmpty() && !allAuthAccounts.isNullOrEmpty()) {
+        if (selectedAccounts.isNotEmpty() && allAuthAccounts.isNotEmpty()) {
             onConfirmationClick(selectedAccounts, allAuthAccounts)
         }
     }

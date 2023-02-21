@@ -82,6 +82,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/toAccountNameTextView" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/toAccountTypeImageView"
+        android:layout_width="@dimen/account_icon_size_normal"
+        android:layout_height="@dimen/account_icon_size_normal"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/toAccountNameTextView"
+        app:layout_constraintEnd_toStartOf="@id/toAccountNameTextView"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toTopOf="@id/toAccountNameTextView"
+        tools:srcCompat="@drawable/ic_wallet" />
+
     <TextView
         android:id="@+id/toAccountNameTextView"
         style="@style/TextAppearance.Body.Sans"
@@ -93,7 +107,7 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/assetTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toEndOf="@id/toAccountTypeImageView"
         app:layout_constraintTop_toBottomOf="@id/fromAccountNameTextView"
         tools:text="@tools:sample/lorem[6]" />
 

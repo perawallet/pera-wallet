@@ -55,7 +55,7 @@ class AssetSwapViewModel @Inject constructor(
     // To enable it, simply remove comments at; Line:67, Line:72, Line:81 and make it `var`
     private val swapType = SwapType.FIXED_INPUT
 
-    private val _assetSwapPreviewFlow = MutableStateFlow<AssetSwapPreview>(
+    private val _assetSwapPreviewFlow = MutableStateFlow<AssetSwapPreview?>(
         assetSwapPreviewUseCase.getAssetSwapPreviewInitializationState(
             accountAddress = accountAddress,
             fromAssetId = fromAssetId,
@@ -63,7 +63,13 @@ class AssetSwapViewModel @Inject constructor(
         )
     )
 
-    val assetSwapPreviewFlow: StateFlow<AssetSwapPreview>
+    private val _isAccountCachedResultFlow = MutableStateFlow<Boolean>(
+        assetSwapPreviewUseCase.isAccountCachedSuccessfully(accountAddress)
+    )
+    val isAccountCachedResultFlow: StateFlow<Boolean>
+        get() = _isAccountCachedResultFlow
+
+    val assetSwapPreviewFlow: StateFlow<AssetSwapPreview?>
         get() = _assetSwapPreviewFlow
 
     init {
@@ -94,12 +100,12 @@ class AssetSwapViewModel @Inject constructor(
                         amount = currentAmountInput,
                         accountAddress = accountAddress,
                         swapType = swapType,
-                        previousState = _assetSwapPreviewFlow.value
+                        previousState = _assetSwapPreviewFlow.value ?: return@launch
                     ).collectLatest { newPreview ->
                         _assetSwapPreviewFlow.value = newPreview
                     }
                 } else {
-                    amountInputFlow.value = _assetSwapPreviewFlow.value.toSelectedAssetAmountDetail?.amount
+                    amountInputFlow.value = _assetSwapPreviewFlow.value?.toSelectedAssetAmountDetail?.amount
                 }
             }
         }
@@ -119,19 +125,21 @@ class AssetSwapViewModel @Inject constructor(
                     percentage = percentage,
                     accountAddress = accountAddress,
                     onLoadingChange = {
-                        _assetSwapPreviewFlow.value = _assetSwapPreviewFlow.value.copy(isLoadingVisible = it)
+                        _assetSwapPreviewFlow.value = _assetSwapPreviewFlow.value?.copy(isLoadingVisible = it)
                     },
                     onSuccess = {
-                        with(_assetSwapPreviewFlow) {
-                            value = getPercentageCalculationSuccessPreview(percentage, value)
-                        }
+                        _assetSwapPreviewFlow.value = getPercentageCalculationSuccessPreview(
+                            percentage = percentage,
+                            previousState = _assetSwapPreviewFlow.value ?: return@getBalanceForSelectedPercentage
+                        )
                         percentageCacheEvent = Event(percentage)
                         onFromAmountChanged(it)
                     },
                     onFailure = {
-                        with(_assetSwapPreviewFlow) {
-                            value = getPercentageCalculationFailedPreview(it, value)
-                        }
+                        _assetSwapPreviewFlow.value = getPercentageCalculationFailedPreview(
+                            errorEvent = it,
+                            previousState = _assetSwapPreviewFlow.value ?: return@getBalanceForSelectedPercentage
+                        )
                     }
                 )
             }
@@ -143,7 +151,7 @@ class AssetSwapViewModel @Inject constructor(
             assetSwapButtonClickEventTracker.logSwapButtonClickEvent()
         }
         with(_assetSwapPreviewFlow) {
-            value = assetSwapPreviewUseCase.getSwapButtonClickUpdatedPreview(value)
+            value = assetSwapPreviewUseCase.getSwapButtonClickUpdatedPreview(value ?: return@with)
         }
     }
 
@@ -163,7 +171,7 @@ class AssetSwapViewModel @Inject constructor(
                 amount = amountInputFlow.value,
                 accountAddress = accountAddress,
                 swapType = swapType,
-                previousState = _assetSwapPreviewFlow.value
+                previousState = _assetSwapPreviewFlow.value ?: return@launch
             ).collectLatest { newPreview ->
                 _assetSwapPreviewFlow.value = newPreview
             }
@@ -177,10 +185,10 @@ class AssetSwapViewModel @Inject constructor(
                 fromAssetId = fromAssetId,
                 toAssetId = assetId,
                 amount = amountInputFlow.value,
-                fromAssetDecimal = _assetSwapPreviewFlow.value.fromSelectedAssetDetail.assetDecimal,
+                fromAssetDecimal = _assetSwapPreviewFlow.value?.fromSelectedAssetDetail?.assetDecimal ?: return@launch,
                 accountAddress = accountAddress,
                 swapType = swapType,
-                previousState = _assetSwapPreviewFlow.value
+                previousState = _assetSwapPreviewFlow.value ?: return@launch
             ).collectLatest { newPreview ->
                 _assetSwapPreviewFlow.value = newPreview
             }

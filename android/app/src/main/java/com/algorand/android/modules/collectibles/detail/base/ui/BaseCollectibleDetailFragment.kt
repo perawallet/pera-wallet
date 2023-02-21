@@ -78,7 +78,7 @@ abstract class BaseCollectibleDetailFragment : BaseFragment(R.layout.fragment_co
 
         override fun on3dModeClick(imageUrl: String?) {
             if (imageUrl.isNullOrBlank()) return
-            context?.openUrl(getImage3DViewUrl(imageUrl))
+            navToCardViewerFragment(getImage3DViewUrl(imageUrl))
         }
     }
 
@@ -101,6 +101,8 @@ abstract class BaseCollectibleDetailFragment : BaseFragment(R.layout.fragment_co
     abstract fun navToAudioPlayerFragment(audioUrl: String)
 
     abstract fun copyOptedInAccountAddress()
+
+    abstract fun navToCardViewerFragment(url: String)
 
     abstract fun onShareButtonClick()
 

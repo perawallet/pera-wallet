@@ -15,7 +15,7 @@ package com.algorand.android.modules.swap.utils
 import com.algorand.android.modules.swap.introduction.domain.usecase.IsSwapFeatureIntroductionPageShownUseCase
 import com.algorand.android.modules.swap.reddot.domain.usecase.SetSwapFeatureRedDotVisibilityUseCase
 
-abstract class BaseSwapNavigationDestinationHelper(
+open class BaseSwapNavigationDestinationHelper protected constructor(
     private val isSwapFeatureIntroductionPageShownUseCase: IsSwapFeatureIntroductionPageShownUseCase,
     private val setSwapFeatureRedDotVisibilityUseCase: SetSwapFeatureRedDotVisibilityUseCase
 ) {

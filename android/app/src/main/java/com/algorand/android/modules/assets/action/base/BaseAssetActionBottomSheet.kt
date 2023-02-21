@@ -20,6 +20,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.text.buildSpannedString
 import androidx.lifecycle.Observer
 import com.algorand.android.R
+import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.customviews.CustomToolbar
 import com.algorand.android.databinding.BottomSheetAssetActionBinding
@@ -96,21 +97,25 @@ abstract class BaseAssetActionBottomSheet : BaseBottomSheet(R.layout.bottom_shee
         with(binding) {
             with(asset) {
                 assetFullNameTextView.text = fullName
-                assetShortNameTextView.apply {
-                    text = if (shortName.isNullOrBlank()) {
-                        buildSpannedString { context?.let { addUnnamedAssetName(it) } }
-                    } else {
-                        shortName
-                    }
-                    assetActionViewModel.getVerificationTierConfiguration(verificationTier).run {
-                        setAssetNameTextColorByVerificationTier(this@run)
-                        if (drawableResId != null) {
-                            setDrawable(end = AppCompatResources.getDrawable(context, drawableResId))
-                        }
-                    }
-                }
+                updateAssetShortNameTextView(shortName, verificationTier)
                 assetIdTextView.text = assetId.toString()
                 copyIDButton.setOnClickListener { onCopyClick() }
+            }
+        }
+    }
+
+    private fun updateAssetShortNameTextView(shortName: String?, verificationTier: VerificationTier?) {
+        binding.assetShortNameTextView.apply {
+            text = if (shortName.isNullOrBlank()) {
+                buildSpannedString { context?.let { addUnnamedAssetName(it) } }
+            } else {
+                shortName
+            }
+            assetActionViewModel.getVerificationTierConfiguration(verificationTier).run {
+                setAssetNameTextColorByVerificationTier(this@run)
+                if (drawableResId != null) {
+                    setDrawable(end = AppCompatResources.getDrawable(context, drawableResId))
+                }
             }
         }
     }

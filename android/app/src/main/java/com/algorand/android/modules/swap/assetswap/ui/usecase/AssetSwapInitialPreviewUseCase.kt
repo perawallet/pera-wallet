@@ -38,8 +38,8 @@ class AssetSwapInitialPreviewUseCase @Inject constructor(
         accountAddress: String,
         fromAssetId: Long,
         toAssetId: Long?
-    ): AssetSwapPreview {
-        val fromAssetDetail = getFromAssetDetail(accountAddress, fromAssetId)
+    ): AssetSwapPreview? {
+        val fromAssetDetail = getFromAssetDetail(accountAddress, fromAssetId) ?: return null
         val toAssetDetail = getToAssetDetail(accountAddress, toAssetId)
 
         val fromSelectedAssetAmountDetail = selectedAssetAmountDetailMapper.mapToDefaultSelectedAssetAmountDetail(
@@ -73,9 +73,9 @@ class AssetSwapInitialPreviewUseCase @Inject constructor(
         )
     }
 
-    private fun getFromAssetDetail(accountAddress: String, assetId: Long): AssetSwapPreview.SelectedAssetDetail {
+    private fun getFromAssetDetail(accountAddress: String, assetId: Long): AssetSwapPreview.SelectedAssetDetail? {
         val ownedFromAssetDetail = accountAssetDataUseCase.getAccountOwnedAssetData(accountAddress, true).run {
-            firstOrNull { assetId == it.id } ?: first { it.isAlgo }
+            firstOrNull { assetId == it.id } ?: firstOrNull { it.isAlgo } ?: return null
         }
         return getAssetDetail(ownedFromAssetDetail)
     }

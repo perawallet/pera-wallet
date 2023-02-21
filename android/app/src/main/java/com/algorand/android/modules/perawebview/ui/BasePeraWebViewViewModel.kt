@@ -13,15 +13,13 @@
 package com.algorand.android.modules.perawebview.ui
 
 import androidx.lifecycle.viewModelScope
-import com.algorand.android.core.BaseViewModel
-import com.algorand.android.customviews.PeraWebView
 import com.algorand.android.discover.common.ui.model.WebViewError
+import com.algorand.android.modules.basewebview.ui.BaseWebViewViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-abstract class BasePeraWebViewViewModel : BaseViewModel() {
+abstract class BasePeraWebViewViewModel : BaseWebViewViewModel() {
 
-    private val _peraWebViewFlow: MutableStateFlow<PeraWebView?> = MutableStateFlow(null)
     private val _lastErrorFlow: MutableStateFlow<WebViewError?> = MutableStateFlow(null)
 
     abstract fun onPageRequested()
@@ -29,17 +27,6 @@ abstract class BasePeraWebViewViewModel : BaseViewModel() {
     abstract fun onError()
     abstract fun onHttpError()
     open fun onPageUrlChanged() {}
-
-    fun saveWebView(webView: PeraWebView?) {
-        viewModelScope.launch {
-            _peraWebViewFlow
-                .emit(webView)
-        }
-    }
-
-    fun getWebView(): PeraWebView? {
-        return _peraWebViewFlow.value
-    }
 
     fun saveLastError(error: WebViewError?) {
         viewModelScope.launch {

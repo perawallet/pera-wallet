@@ -52,7 +52,7 @@ class LanguageSelectionFragment : DaggerBaseFragment(R.layout.fragment_selection
     }
 
     private fun loadLanguages() {
-        val currentLocale = (activity as BaseActivity).getCurrentLanguage().language
+        val currentLocale = (activity as? BaseActivity)?.getCurrentLanguage()?.language
         languageSelectionAdapter.setItems(
             supportedLanguages.map {
                 Locale(it).run {
@@ -68,7 +68,7 @@ class LanguageSelectionFragment : DaggerBaseFragment(R.layout.fragment_selection
 
     private fun onDifferentLanguageListItemClick(languageListItem: LanguageListItem) {
         val langId = languageListItem.languageId
-        (activity as BaseActivity).setLanguage(langId)
+        (activity as? BaseActivity)?.setLanguage(langId)
         languageSelectionViewModel.refreshFirebasePushToken(null)
         languageSelectionViewModel.logLanguageChange(langId)
     }

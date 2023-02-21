@@ -56,7 +56,7 @@
     <string name="you_should_enter_your_correct_password">You should enter your correct password to display your passphrase</string>
     <string name="there_s_no_biometric_registration">There\'s no biometric registration or biometric hardware found on the device</string>
     <string name="you_re_trying_to_send">You\'re trying to send transaction to account whose balance is lesser than minimum balance. The amount must be at least <annotation replacement="amount">amountPlaceholder</annotation> algo.</string>
-    <string name="transaction_amount">Transaction amount results in a balance below the minimum account balance of <annotation replacement="min_balance"> </annotation> algo.</string>
+    <string name="transaction_amount">Transaction amount results in a balance below the minimum account balance of <annotation replacement="min_balance">minBalancePlaceHolder</annotation> algo.</string>
     <string name="transaction_amount_cannot">Transaction amount cannot be more than your available amount.</string>
     <string name="transaction_amount_results">Transaction amount results in a negative balance.</string>
     <string name="note">Note</string>
@@ -87,7 +87,6 @@
     <string name="transfer_balance">Transfer balance</string>
     <string name="approve">Approve</string>
     <string name="account_does_not_accept">Account does not accept this asset</string>
-    <string name="you_are_about_to_receive">You are about to receive an asset!</string>
     <string name="min_transaction_error">Min Transaction Error!</string>
     <string name="you_need_at_least">You need at least %1$s Algo to opt-in to this asset</string>
     <string name="please_add_this">Please add this asset and try again.</string>
@@ -194,7 +193,7 @@
     <string name="finalize_rekeying">Finalize Rekeying</string>
     <string name="new_ledger">New Ledger</string>
     <string name="old_ledger">Old Ledger</string>
-    <string name="the_account_name">The account <annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> has been successfully rekeyed.</string>
+    <string name="the_account_name">The account <annotation font="dmsans_bold">\"<annotation replacement="account_name">accountNamePlaceHolder</annotation>\"</annotation> has been successfully rekeyed.</string>
     <string name="just_now">Just Now</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> has opted-in <annotation replacement="asset">assetPlaceholder</annotation> to their account. You can send them <annotation replacement="asset">assetPlaceholder</annotation>.</string>
     <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> is trying to send you <annotation replacement="asset">assetPlaceholder</annotation> however, you do not own this. We can opt-in the asset to your account.</string>
@@ -254,7 +253,6 @@
         <item quantity="other">+%1$d Assets</item>
     </plurals>
     <string name="continue_text">Continue</string>
-    <string name="send_feedback">Send Feedback</string>
     <string name="when_sending_to_an_address">When sending to an address for the first time, it’s useful to send a small test transaction before sending a large amount.</string>
     <string name="exchanges_change_their">Exchanges change their deposit addresses frequently, and saved exchange addresses may no longer be in use. <annotation custom="highlight_color">Ensure you\'re sending to the correct address.</annotation></string>
     <string name="for_more_information_on">For more information on transacting, <annotation font="dmsans_medium"><annotation custom="tap_here_color">tap here</annotation></annotation></string>
@@ -405,7 +403,6 @@
     <string name="qr_code">QR Code</string>
     <string name="you_are_about_to">You\'re about to remove and opt-out from the <annotation replacement="asset_name">assetNamePlaceholder</annotation> with "<annotation replacement="account_name">accountNamePlaceholder</annotation>". You\'ll be unable to transact with this asset from this account unless you opt-in to it again.</string>
     <string name="to_opt_out_and_remove">To opt-out and remove <annotation replacement="asset_name">assetNamePlaceholder</annotation> the balance must be 0. Please transfer the balance to another account and try again.</string>
-    <string name="you_are_about_to_receive_description">You are about to receive an asset on the account <annotation replacement="account_name">accountNamePlaceholder</annotation>. Would you like to opt-in to this asset with this account?</string>
     <string name="rename_account">Rename Account</string>
     <string name="completed">Completed</string>
     <string name="search_contacts_or_name">Search contacts or name</string>
@@ -814,7 +811,7 @@
     <string name="total_supply_info">The total supply of an asset is set at creation time and it corresponds to the asset\'s total created units.</string>
     <string name="asa_report_asset_id">ASA Report: %1$d</string>
     <string name="report_an_asa">Report an ASA</string>
-    <string name="you_can_send_us_an">You can send us an e-mail to report this ASA at <annotation custom="verification_mail_click"><annotation replacement="verification_mail"><annotation font="dmsans_medium">verificationMailPlaceholder</annotation></annotation></annotation></string>
+    <string name="you_can_send_us_an">You can send us an e-mail to report this ASA at <annotation custom="verification_mail_click"><annotation font="dmsans_medium"><annotation replacement="verification_mail">verificationMailPlaceholder</annotation></annotation></annotation></string>
     <string name="you_can_add_this_asset">You can add this asset to</string>
     <string name="add_asset">Add Asset</string>
     <string name="disconnect_all_sessions">Disconnect All Sessions</string>
@@ -910,7 +907,7 @@
     <string name="you_will_receive_at_least">You will receive at least <annotation replacement="amount_and_asset_name">amountAndAssetNamePlaceholder</annotation> or the transaction will revert.</string>
 
     <string name="asset_pair_swap_completed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> swap completed</string>
-    <string name="you_received_amount_asset_name_in">You received <annotation replacement="to_amount_and_asset_name"><annotation custom="received_asset_color">toAmountAndAssetNamePlaceholder</annotation></annotation> in exchange for <annotation replacement="from_amount_and_asset_name"><annotation custom="paid_asset_color">fromAmountAndAssetNamePlaceholder</annotation></annotation></string>
+    <string name="you_received_amount_asset_name_in">You received <annotation custom="received_asset_color"><annotation replacement="to_amount_and_asset_name">toAmountAndAssetNamePlaceholder</annotation></annotation> in exchange for <annotation custom="paid_asset_color"><annotation replacement="from_amount_and_asset_name">fromAmountAndAssetNamePlaceholder</annotation></annotation></string>
 
     <string name="asset_pair_swap_has_failed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> swap has failed</string>
     <string name="because_of_error_message">Because of <annotation replacement="error_message">errorMessagePlaceholder</annotation>.\nPlease try again.</string>
@@ -1033,4 +1030,9 @@
     <string name="do_not_proceed_if_you">Do not proceed if you did not initiate this request.</string>
 
     <string name="this_asset_is">This asset is already pending removal.</string>
+
+    <string name="get_help">Get Help</string>
+
+    <string name="couldn_t_retrieve">Couldn\'t retrieve account details, please try again</string>
+
 </resources>

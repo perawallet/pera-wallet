@@ -18,6 +18,7 @@ import android.content.Intent
 import android.location.LocationManager
 import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
+import androidx.annotation.RequiresApi
 import androidx.core.location.LocationManagerCompat
 import androidx.fragment.app.Fragment
 import com.algorand.android.R
@@ -76,5 +77,34 @@ fun showEnableBluetoothPopup(resultLauncher: ActivityResultLauncher<Intent>) {
 }
 
 fun requestLocationRequestFromUser(resultLauncher: ActivityResultLauncher<String>) {
+    resultLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+}
+
+fun Context.checkIfBluetoothPermissionAreTaken(
+    bluetoothResultLauncher: ActivityResultLauncher<Array<String>>,
+    locationResultLauncher: ActivityResultLauncher<String>
+): Boolean {
+    if (!areBluetoothPermissionsGranted()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            requestBluetoothScanConnectPermission(bluetoothResultLauncher)
+        } else {
+            requestLocationPermission(locationResultLauncher)
+        }
+        return false
+    }
+    return true
+}
+
+@RequiresApi(Build.VERSION_CODES.S)
+private fun requestBluetoothScanConnectPermission(resultLauncher: ActivityResultLauncher<Array<String>>) {
+    resultLauncher.launch(
+        arrayOf(
+            android.Manifest.permission.BLUETOOTH_SCAN,
+            android.Manifest.permission.BLUETOOTH_CONNECT
+        )
+    )
+}
+
+private fun requestLocationPermission(resultLauncher: ActivityResultLauncher<String>) {
     resultLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
 }

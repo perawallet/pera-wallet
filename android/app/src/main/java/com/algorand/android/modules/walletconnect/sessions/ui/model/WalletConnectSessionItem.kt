@@ -24,7 +24,8 @@ data class WalletConnectSessionItem(
     val dAppDescription: String?,
     val connectionDate: String?,
     val connectedAccountItems: List<ConnectedSessionAccountItem>?,
-    val isConnected: Boolean
+    val isConnected: Boolean,
+    val isShowingDetails: Boolean
 ) : RecyclerListItem {
 
     override fun areItemsTheSame(other: RecyclerListItem): Boolean {

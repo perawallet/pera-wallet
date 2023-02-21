@@ -36,7 +36,8 @@ class BasePaymentTransactionDetailUiBuilder @Inject constructor(
         return with(txn) {
             TransactionRequestTransactionInfo(
                 fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
-                fromAccountIcon = createAccountIconResource(),
+                fromAccountIcon = getFromAccountIconResource(),
+                toAccountIcon = getToAccountIconResource(),
                 toDisplayedAddress = getToAddressAsDisplayAddress(receiverAddress.decodedAddress.orEmpty()),
                 accountBalance = assetInformation?.amount,
                 assetInformation = TransactionRequestAssetInformation(

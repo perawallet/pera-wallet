@@ -13,14 +13,13 @@
 package com.algorand.android.modules.assets.profile.detail.domain.repository
 
 import com.algorand.android.models.BaseAccountAssetData
-import kotlinx.coroutines.flow.Flow
 
 interface AssetDetailRepository {
 
     suspend fun getAccountAssetDetail(
         accountAddress: String,
         assetId: Long
-    ): Flow<BaseAccountAssetData.BaseOwnedAssetData?>
+    ): BaseAccountAssetData.BaseOwnedAssetData?
 
     companion object {
         const val INJECTION_NAME = "assetDetailRepository"

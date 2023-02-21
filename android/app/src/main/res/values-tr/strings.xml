@@ -53,10 +53,9 @@
     <string name="you_should_enter_your_correct_password">Parolanızı görüntülemek için, şifrenizi doğru girmeniz gerekir</string>
     <string name="there_s_no_biometric_registration">Bu cihazda biyometik kaydı yok veya biyometrik donanımı bulunamadı</string>
     <string name="you_re_trying_to_send">Bakiyesi, minimum bakiyeden az olan bir hesaba işlem yapmaya çalışıyorsunuz. Miktarın en az <annotation replacement="amount">amountPlaceholder</annotation> Algo olması gerekir.</string>
-    <string name="transaction_amount">İşlem miktarı, <annotation replacement="min_balance"> </annotation> Algo tutarındaki minimum hesap bakiyesinden düşük bir bakiye ile sonuçlanıyor.</string>
+    <string name="transaction_amount">İşlem miktarı, <annotation replacement="min_balance">minBalancePlaceHolder</annotation> Algo tutarındaki minimum hesap bakiyesinden düşük bir bakiye ile sonuçlanıyor.</string>
     <string name="transaction_amount_cannot">İşlem miktarı, kullanılabilir bakiyenizden fazla olamaz.</string>
     <string name="transaction_amount_results">İşlem miktarı, eksi bakiye ile sonuçlanıyor.</string>
-    <string name="send_feedback">Geri Bildirim Gönder</string>
     <string name="note">Not</string>
     <string name="rewards">Ödüller</string>
     <string name="show_rewards">Ödülleri Göster</string>
@@ -80,11 +79,12 @@
     <string name="you_already_have">Zaten bu varlığa sahipsiniz.</string>
     <string name="adding_asset">Varlık Ekleme</string>
     <string name="removing_asset">Varlık Kaldırma</string>
+    <string name="unfortunately_this_account">Ne yazık ki, bu hesap %1$s varlığına katılım sağlamadı. Lütfen %1$s hesabına varlığa katılması için talimat verin ve ardından tekrar deneyin.</string>
     <string name="transfer_balance">Transfer Bakiyesi</string>
     <string name="approve">Onayla</string>
     <string name="account_does_not_accept">Hesap, bu varlığı kabul etmiyor</string>
-    <string name="you_are_about_to_receive">Varlık almak üzeresiniz!</string>
     <string name="min_transaction_error">Min İşlem Hatası!</string>
+    <string name="you_need_at_least">Bu varlığa katılım sağlamak için en az %1$s Algo\'ya ihtiyacınız var</string>
     <string name="please_add_this">Lütfen bu varlığı ekleyin ve tekrar deneyin.</string>
     <string name="key_not_valid">Anahtar geçersiz. Lütfen doğru anahtara sahip olduğunuzdan emin olun.</string>
     <string name="scanned_qr_is_not_valid">Taranan QR Kodu geçersiz.</string>
@@ -105,9 +105,9 @@
     <string name="connecting_to_ledger">Ledger\'a bağlanıyor…</string>
     <string name="ledger_approval">Ledger Onayı</string>
     <string name="please_make_sure">İşlemi  <annotation replacement="ledger_name">ledgerNamePlaceholder</annotation> adlı Ledger cihazınızda onayladığınızdan lütfen emin olun</string>
-    <string name="ledger_info_ledger_second_paragraph">Öğretici sizi “Cihazınıza yüklemek istediğiniz uygulamaları seçin” adımına getirdiğinde, arama çubuğuna Algorand yazın ve yükleyin.</string>
+    <string name="ledger_info_ledger_second_paragraph">Öğretici sizi \"Cihazınıza yüklemek istediğiniz uygulamaları seçin\" adımına getirdiğinde, arama çubuğuna Algorand yazın ve yükleyin.</string>
     <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Uygulamaları Ledger cihazınıza nasıl yükleyeceğinizi ve nasıl açacağınızı gösteren Ledger\'ın kapsamlı <annotation type="bold"><annotation type="color">Kullanmaya Başlama</annotation></annotation> öğreticisini izleyerek başlayın.</annotation></string>
-    <string name="ledger_info_algorand_second_paragraph">Ledger cihazınıza <annotation type="bold">Algorand</annotation> uygulamasını henüz yüklemediyseniz, öğretici sizi “Cihazınıza yüklemek istediğiniz uygulamaları seçin” adımına getirdiğinde, arama çubuğuna Algorand yazın ve yükleyin.</string>
+    <string name="ledger_info_algorand_second_paragraph">Ledger cihazınıza <annotation type="bold">Algorand</annotation> uygulamasını henüz yüklemediyseniz, öğretici sizi \"Cihazınıza yüklemek istediğiniz uygulamaları seçin\" adımına getirdiğinde, arama çubuğuna Algorand yazın ve yükleyin.</string>
     <string name="error_connection_title">Bağlantı Hatası</string>
     <string name="error_connection_message">Ledger cihazına bağlanamadı. Cihazın kilidinin açık, yakında ve Bluetooth özelliğinin etkin olduğundan emin olun.</string>
     <string name="error_app_closed_title">Ledger Bağlantı Hatası</string>
@@ -132,6 +132,7 @@
     <string name="go_to_home">Ana Sayfaya Git</string>
     <string name="accept">Kabul et</string>
     <string name="add_new_asset">Yeni Varlık Ekle</string>
+    <string name="try_different">Farklı varlık adı veya varlık kimliği deneyin</string>
     <string name="copy_address">Adresi kopyala</string>
     <string name="account_address">Hesap adresi</string>
     <string name="keep_it">Koru</string>
@@ -385,7 +386,7 @@
     <string name="enter_your_new_six_digit_pin">6 haneli yeni PIN\'inizi\n girin</string>
     <string name="re_enter_your_new_six_digit_pin">6 haneli yeni PIN\'inizi\nyeniden girin</string>
     <string name="wrong_passphrase">Parola Yanlış</string>
-    <string name="account_not_found_please_try">Hesap bulunamadı. Lütfen doğru parolayı girerek tekrar deneyin.</string>
+    <string name="account_not_found">Hesap bulunamadı</string>
     <string name="account_is_verified">Hesap Doğrulandı</string>
     <string name="verified">Doğrulandı</string>
     <string name="copy_id">Kimliği Kopyala</string>
@@ -451,6 +452,7 @@
         <item quantity="other">Uyarı</item>
     </plurals>
     <string name="application_call">Uygulama Çağrısı</string>
+    <string name="application_opt_in">Uygulama Katılımı</string>
     <string name="application_close_to">Kapatma Uygulaması:</string>
     <string name="application_update">Uygulama Güncellemesi</string>
     <string name="application_delete">Uygulama Silme</string>
@@ -460,6 +462,7 @@
     <string name="asset_reconfiguration_request_with_asset_name">Varlık Yeniden Yapılandırma İsteği <annotation replacement="asset_name">assetNamePlaceholder</annotation></string>
     <string name="asset_deletion_request_with_asset_name">Varlık Silme İsteği <annotation replacement="asset_name">assetNamePlaceholder</annotation></string>
     <string name="application_call_with_id">Uygulama Çağrısı <annotation replacement="app_id">appIdPlaceholder</annotation></string>
+    <string name="application_opt_in_with_id">Uygulama Katlımı <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_close_to_with_id"><annotation replacement="app_id">appIdPlaceholder</annotation> için Kapatma Uygulaması</string>
     <string name="application_update_with_id">Uygulama Güncellemesi <annotation replacement="app_id">appIdPlaceholder</annotation></string>
     <string name="application_delete_with_id">Uygulama Silinmesi <annotation replacement="app_id">appIdPlaceholder</annotation></string>
@@ -566,13 +569,14 @@
     <string name="view_transaction">İşlemi Görüntüle</string>
     <string name="show_on_algoexplorer">Algoexplorer\'da Göster</string>
     <string name="show_on_nftexplorer">NFTExplorer\'da Göster</string>
+    <string name="you_are_not_the_owner">Henüz bu NFT\'nin sahibi değilsiniz ancak katılmayı seçtiniz. Artık cüzdanınıza hesabınıza edebilirsiniz.</string>
     <string name="we_don_t_support">Bu NFT medya türünü henüz desteklemiyoruz.</string>
     <string name="we_can_t_display">Görseli geçici olarak görüntüleyemiyoruz.</string>
     <string name="transfer">Transfer</string>
     <string name="send_your_nft">NFT\'nizi gönderin</string>
     <string name="paste_an_algorand_wallet_address">Bir Algorand cüzdan adresini yapıştırın</string>
     <string name="ask_recipient_to">Alıcıdan katılmasını isteyin</string>
-    <string name="you_cant_send">Bu cüzdan bu varlığa henüz katılım sağlamadığından <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> adresine <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> gönderemezsiniz. <annotation font="dmsans_medium"><annotation custom="learn_more">Katılım hakkında daha fazla bilgi alın</annotation></annotation></string>
+    <string name="you_cant_send"><annotation replacement="nft_name">NFTNamePlaceHolder</annotation> varlığını <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> adresine gönderemezsiniz çünkü bu cüzdan henüz bu varlığa katılım sağlamamış. <annotation font="dmsans_medium"><annotation custom="learn_more">Katılım sağlama hakkında daha fazla bilgi edinin</annotation></annotation></string>
     <string name="request_opt_in">Katılım İsteği</string>
     <string name="information_about_opt">Katılım Hakkında Bilgiler</string>
     <string name="to_avoid_spammy">Algorand Blockchain, istenmeyen türde işlemlerin yapılmasını önlemek için yalnızca önceden katılım sağlanan varlıklarda gönderim ve alım yapmanızı sağlar.</string>
@@ -586,20 +590,26 @@
     <string name="transacting_fee">İşlem Ücreti</string>
     <string name="confirm_transfer">Transferi onaylayın</string>
     <string name="search_asset_id_or_nft">Varlık Kimliğini veya NFT Adını Ara</string>
-    <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> hesabı, başarıyla yeniden anahtarlandı.</string>
+    <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name">accountNamePlaceHolder</annotation>\"</annotation> hesabı başarıyla yeniden anahtarlandı.</string>
+    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, hesabından <annotation replacement="asset">assetPlaceholder</annotation> varlığına katılım sağladı. Hesabına <annotation replacement="asset">assetPlaceholder</annotation> gönderebilirsiniz.</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> size <annotation replacement="asset">assetPlaceholder</annotation> göndermeye çalışıyor ama bu varlıktan sizde hiç yok. Hesabınızdan katılım sağlayabilirsiniz.</string>
     <string name="transaction_send_successful"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilerek tamamlandı.</string>
     <string name="transaction_send_failed"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilemeyerek başarısız oldu.</string>
     <string name="the_only_way_to">Bir Algorand hesabını kurtarmanın tek yolu bu kurtarma parolasıdır.</string>
     <string name="monitor_activity_of">Bir kurtarma parolasına gerek kalmadan bir hesabın etkinliğini izleyin. Soğuk depolamada tutulan varlıkların izlenmesi için yararlıdır.</string>
     <string name="this_transaction_fee_is_higher">Bu işlem ücreti, normalde 0,001 Algo olan ücretten daha yüksek.</string>
+    <string name="you_are_about_to">\"<annotation replacement="account_name">accountNamePlaceholder</annotation>\" hesabınızda <annotation replacement="asset_name">assetNamePlaceholder</annotation> katılımından çıkmak ve varlığı kaldırmak üzeresiniz. Tekrar katılım sağlamazsanız bu hesaptan bu varlık ile ilgili işlem yapamazsınız.</string>
     <string name="invalid_input_transaction_request">Geçersiz Giriş: İşlem isteği 16\'dan fazla işlemi içeriyor</string>
     <string name="selected_account">Seçili hesap</string>
     <string name="your_nft_transfer_has_failed">NFT transferiniz başarısız oldu!</string>
     <string name="please_try_again">Lütfen tekrar deneyin.</string>
+    <string name="opt_out">Şuna katılımdan çıkıldı:</string>
     <string name="nft_successfully_opted_out">%1$s NFT katılımından başarıyla çıkıldı</string>
+    <string name="opted_in_to">Şuna katılım sağladı:</string>
     <string name="show_on">Göster</string>
     <string name="you_are_about_to_remove_watch_account">İzleme hesabını kaldırmak üzeresiniz. Devam etmek istediğinizden emin misiniz?</string>
     <string name="you_are_about_to_remove_main_account">Ana hesabınızı kaldırmak üzeresiniz. Devam etmek istediğinizden emin misiniz?</string>
+    <string name="this_watch_account_has_opted">Bu izleme hesabı, bu NFT\'ye katılım sağlamış ancak söz konusu NFT\'ye sahip değil.</string>
     <string name="display_opted_in_nfts">Katılım sağlanan NFT\'leri göster</string>
     <string name="filter">Filtrele</string>
     <string name="show_filtered_nfts_formatted">Filtrelenmiş NFT\'leri Göster (%1$d)</string>
@@ -647,8 +657,10 @@
     <string name="algo_or_any_asa">Başka bir hesaba Algo veya diğer ASA</string>
     <string name="view_or_copy">Hesap adresinizi görüntüleyin veya kopyalayın</string>
     <string name="use_wallet_connect">WalletConnect\'i kullanın veya hesap adresini tarayın</string>
+    <string name="opt_out_from_the">NFT katılımından çık</string>
     <string name="asset_configuration">Varlık Yapılandırması</string>
     <string name="scan_qr">QR Kodunu Tara</string>
+    <string name="algorand_blockchain">Algorand blok zinciri, bir hesabın ASA almadan önce söz konusu ASA\'ya katılmasını gerekli kılar. Bu NFT\'yi başka bir hesaba transfer ettiğinizden, katılımından çıkabilirsiniz.</string>
     <string name="scanned_account_address">Taranan hesap adresi</string>
     <string name="send_transaction">İşlemi gönder</string>
     <string name="add_new_contact">Yeni kişi ekle</string>
@@ -676,6 +688,7 @@
     </plurals>
     <string name="inner_n_transactions">Dahili\nİşlemler</string>
     <string name="inner_transactions">Dahili İşlemler</string>
+    <string name="your_accounts_don_t_contain_this">Hesaplarınız bu varlığı içermiyor, lütfen bu varlığa katılım sağlayın ve tekrar deneyin.</string>
     <plurals name="show_count_more_assets">
         <item quantity="one">Diğer %1$d varlığı göster</item>
         <item quantity="other">Diğer %1$d varlığı göster</item>
@@ -708,6 +721,7 @@
     <string name="disconnect_all_sessions">Tüm Oturumların Bağlantısını Kes</string>
     <string name="would_disconnect_all_sessions">Tüm oturumların bağlantısını kesmek ister misiniz?</string>
     <string name="missing_asset">Varlık Eksik</string>
+    <string name="you_are_already">Bu hesaptan zaten <annotation replacement="asset_name">assetNamePlaceholder</annotation> için katılımda bulundunuz.</string>
     <string name="too_many_accounts">Çok Fazla Hesap</string>
     <string name="looks_like_already_have_accounts">Görünüşe göre cüzdanınızda zaten %1$d veya daha fazla hesap var. Uygulamanın iyi bir performans göstermeye devam etmesini sağlamak için %1$d hesaptan fazlasını şu anda desteklemiyoruz. Başka bir hesap eklemek için lütfen önce mevcut hesaplardan birini kaldırın.</string>
     <string name="error_bluetooth_permission_message">Yakındaki Ledger\'ları aramak için Bluetooth tarama izninin verilmesi gerekir.</string>
@@ -745,7 +759,7 @@
     <string name="total_supply_info">Varlığın toplam arzı, varlık oluşturulduğunda belirlenir ve varlığın çıkarılan toplam birimlerine karşılık gelir.</string>
     <string name="asa_report_asset_id">ASA Raporu: %1$d</string>
     <string name="report_an_asa">Bir ASA\'yı Bildirin</string>
-    <string name="you_can_send_us_an">Bu ASA\'yı bildirmek için <annotation custom="verification_mail_click"><annotation replacement="verification_mail"><annotation font="dmsans_medium">verificationMailPlaceholder</annotation></annotation></annotation> adresinden bize e-posta gönderebilirsiniz.</string>
+    <string name="you_can_send_us_an">Bu ASA\'yı bize bildirmek için e-posta gönderebilirsiniz: <annotation custom="verification_mail_click"><annotation font="dmsans_medium"><annotation replacement="verification_mail">verificationMailPlaceholder</annotation></annotation></annotation></string>
     <string name="you_can_add_this_asset">Bu varlığı şuraya ekleyebilirsiniz:</string>
     <string name="add_asset">Varlık Ekle</string>
     <string name="this_account_doesn_t_have_the">Hesapta bu işlemi desteklemek için gereken minimum Algo bakiyesi bulunmuyor. Devam etmeden önce lütfen hesaba Algo ekleyin.\n\nKatılım sağladığınız varlık, NFT ve akıllı sözleşme başına gereken minimum Algo bakiyesi %1$s Algo artar. Gereken minimum Algo bakiyesini azaltmak için varlıkların ve akıllı sözleşmelerin katılımından çıkabilirsiniz.</string>
@@ -759,7 +773,10 @@
     <string name="sorry_there_was">Üzgünüz, hesaplarınızdan bazılarını getirirken bir hata meydana geldi. Portföyünüzün değeri yalnızca başarıyla getirilen hesaplara göre hesaplandı.</string>
     <string name="we_couldn_t_find_any_assets">Kaldırılacak varlık bulamadık.</string>
     <string name="the_algo_is_the_official_cryptocurrency">Algo, Algorand blok zincirinin resmi kripto para birimidir. Algorand blok zinciri, herkesin katılım sağlayabileceği, açık ve sınırların olmadığı bir ekonomi modeli oluşturmaya yardımcı olmak için tasarlanmıştır. Bu yeni dijital ekonomi türü, herkes için anında çalışan ve gerçek anlamda dijital olan bir para birimiyle mümkündür. Algo, tam olarak böyle bir para birimidir.</string>
-    <string name="opt_in_to_nft">NFT/\'ye Katılım</string>
+    <string name="opt_out_nft">NFT\'ye Katılımdan Çık</string>
+    <string name="you_are_about_to_opt">%1$s NTF\'sinin katılımdan çıkmak üzeresiniz. Tekrar eklemediğiniz sürece, bu NFT ile bu hesapta işlem yapamayacaksınız.</string>
+    <string name="opt_in_to_nft">NFT\'ye Katılım</string>
+    <string name="opting_in_to_an_nft">Bir NFT\'ye katılmak, işlemin minimum işlem ücretiyle gönderilmesini gerektirir. Bu, işlem geçmişinizde görünür.</string>
     <string name="this_account_doesn_t">Hesapta bu işlem için yeterli bakiye bulunmuyor.</string>
     <string name="we_couldn_t">WalletConnect oturumunu başlattığınız tarayıcıyı otomatik olarak algılayamadık. Lütfen %1$s konumuna geri dönün:</string>
     <string name="select_a_browser">Bir Tarayıcı Seçin</string>
@@ -819,7 +836,7 @@
     <string name="sending_the_transaction">İşlem gönderiliyor</string>
     <string name="you_will_receive_at_least">En az <annotation replacement="amount_and_asset_name">amountAndAssetNamePlaceholder</annotation> alacaksınız veya işlem geri alınacak.</string>
     <string name="asset_pair_swap_completed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> takas tamamlandı</string>
-    <string name="you_received_amount_asset_name_in"><annotation replacement="from_amount_and_asset_name"><annotation custom="paid_asset_color">fromAmountAndAssetNamePlaceholder</annotation></annotation> karşılığında <annotation replacement="to_amount_and_asset_name"><annotation custom="received_asset_color">toAmountAndAssetNamePlaceholder</annotation></annotation> aldınız.</string>
+    <string name="you_received_amount_asset_name_in"><annotation custom="paid_asset_color"><annotation replacement="from_amount_and_asset_name">fromAmountAndAssetNamePlaceholder</annotation></annotation> karşılığında <annotation custom="received_asset_color"><annotation replacement="to_amount_and_asset_name">toAmountAndAssetNamePlaceholder</annotation></annotation> aldınız</string>
     <string name="asset_pair_swap_has_failed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> takas başarısız</string>
     <string name="because_of_error_message"><annotation replacement="error_message">errorMessagePlaceholder</annotation> nedeniyle.\nLütfen tekrar deneyin.</string>
     <string name="exchange_fee">Dönüştürme Ücreti</string>
@@ -874,4 +891,57 @@
     <string name="no_internet_connection">İnternet Bağlantısı Yok</string>
     <string name="you_dont_seem_to_be_connected">İnternete bağlı görünmüyorsunuz. Lütfen bağlantınızı kontrol ederek tekrar deneyin.</string>
     <string name="we_cant_get_that_information">Bu bilgileri şu anda alamıyoruz. Lütfen daha sonra tekrar deneyin.</string>
+    <string name="enter_your_pin">PIN\'inizi girin</string>
+    <string name="to_opt_out_from_an_asset">Bir varlığa katılımı bitirmek için önce kalan bakiyeyi başka bir hesaba aktarmanız gerekir.</string>
+    <plurals name="account_nft_count">
+        <item quantity="one">%1$d NFT</item>
+        <item quantity="other">%1$d NFT</item>
+    </plurals>
+    <string name="this_transaction_is_sending_your">Bu işlem %1$s bakiyenizin tamamını gönderiyor. %1$s varlığına katılımınız sonlandırılacak ve bu varlık \"%2$s\" hesabınızdan kaldıracaktır.</string>
+    <string name="account_not_found_please_try">Hesap bulunamadı. Lütfen doğru parolayı girerek tekrar deneyin.</string>
+    <string name="to_opt_out_and_remove"><annotation replacement="asset_name">assetNamePlaceholder</annotation> varlığına katılımı sonlandırmak ve onu kaldırmak için bakiyenin 0 olması gerekir. Lütfen bakiyeyi başka bir hesaba transfer edin ve tekrar deneyin.</string>
+    <string name="nfts">NFT\'ler</string>
+    <plurals name="nft_count">
+        <item quantity="one">%1$d NFT</item>
+        <item quantity="other">%1$d NFT</item>
+    </plurals>
+    <string name="manage_nfts">NFT\'leri yönet</string>
+    <string name="asset_successfully_opted_in">%1$s katılımı sağlandı ve hesabınıza başarıyla eklendi.</string>
+    <string name="asset_successfully_opted_out_from_your">%1$s hesabınızdan başarıyla çıktı.</string>
+    <string name="you_can_opt_in_to_this_nft">Bu NFT\'ye şununla katılım sağlayabilirsiniz:</string>
+    <string name="transaction_confirmation_timed_out">İşlem onayı zaman aşımına uğradı - Lütfen işlem durumunuzu kontrol edin.</string>
+    <string name="you_are_not_opted_in">Kaynak tokeni için katılım sağlamadınız. Takas yapabilmek için başka bir havuz veya uygun durumda başka bir hesap seçin.</string>
+    <string name="min_balance">Minimum Bakiye %1$s</string>
+    <string name="minimum_balance_is_the_minimum">Minimum bakiye, bir hesapta tutmanız gereken minimum Algo miktarıdır. Hesap bir akıllı sözleşmeye, ASA\'ya veya NFT\'ye her dahil edildiğinde artar.</string>
+    <string name="asset_id_copied_to_clipboard">Varlık kimliği panoya kopyalandı</string>
+    <string name="pick_a_photo">Bu kişi için bir fotoğraf seçin</string>
+    <string name="filter_assets">Varlıkları Filtrele</string>
+    <string name="hide_assets_with_no_balance">Bakiyesi olmayan varlıkları gizle</string>
+    <string name="you_can_show_hide_assets">Sıfır bakiyeli varlıkları gösterebilir/gizleyebilirsiniz</string>
+    <string name="your_accounts_don_t">Hesaplarınız bu varlığı içermiyor.</string>
+    <string name="remove_asset">Varlığı Kaldır</string>
+    <string name="opt_in_to_an">Bir Varlığa Kaydol</string>
+    <string name="asset_opt_out">Varlığa Katılımdan Çık</string>
+    <string name="account_address_or_short_name">Hesap adresi veya kısa ad</string>
+    <string name="error_while_opting_to_the">ASA\'yı katılım sağlanırken hata oluştu. Lütfen tekrar deneyin</string>
+    <string name="retry">Yeniden Dene</string>
+    <string name="before_interacting_with">Bir varlıkla etkileşimde bulunmadan önce, ona hesabınızdan katılmanız gerekir. Bu, yetkisiz varlık işlemlerinin size gönderilmesini önler.</string>
+    <string name="you_already_own">Zaten bu varlığa sahipsiniz</string>
+    <string name="markets">Piyasalar</string>
+    <string name="formatted_changed_percentage">%%%1$.2f</string>
+    <string name="display_nfts_in_asset_list">NFT\'leri varlık listesinde göster</string>
+    <string name="nfts_assets_will_be_shown">NFT varlıkları, hesabınızın varlık listesinde gösterilir</string>
+    <string name="display_nfts_from_watch_accounts">Hesapları İzle Bölümünden NFT\'leri Görüntüle</string>
+    <string name="this_will_show_nfts">Bu alan kendi hesapları izle bölümünüzünden kendi hesaplarınızdan NFT\'leri gösterecektir.</string>
+    <string name="you_can_show_hide_nfts">Katılım sağlanan ancak sahip olunmayan NFT\'leri gösterebilir/gizleyebilirsiniz</string>
+    <string name="three_d_mode">3D Modu</string>
+    <string name="creator_account">İçerik oluşturucu hesabı</string>
+    <string name="search_nfts">NFT Arama</string>
+    <string name="you_need_to_opt_in">NFT\'yi cüzdanınıza transfer edebilmek için NFT ASA Kimliğine katılmanız gerekmektedir. ASA Kimliğini arama çubuğuna yapıştırın.</string>
+    <string name="you_need_to_opt_in_to">NFT\'yi cüzdanınıza transfer edebilmek için NFT ASA Kimliğine katılmanız gerekmektedir.</string>
+    <string name="round">Tur</string>
+    <string name="do_not_proceed_if_you">Bu talebi siz başlatmadıysanız devam etmeyin.</string>
+    <string name="this_asset_is">Bu varlık zaten kaldırılmayı bekliyor.</string>
+    <string name="get_help">Yardım Alın</string>
+    <string name="couldn_t_retrieve">Hesap ayrıntıları alınamadı, lütfen tekrar deneyin</string>
 </resources>

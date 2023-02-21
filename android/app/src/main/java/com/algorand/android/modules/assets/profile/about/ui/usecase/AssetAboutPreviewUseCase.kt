@@ -30,12 +30,14 @@ import com.algorand.android.modules.assets.profile.about.ui.mapper.AssetAboutPre
 import com.algorand.android.modules.assets.profile.about.ui.mapper.BaseAssetAboutListItemMapper
 import com.algorand.android.modules.assets.profile.about.ui.model.AssetAboutPreview
 import com.algorand.android.modules.assets.profile.about.ui.model.BaseAssetAboutListItem
+import com.algorand.android.modules.assets.profile.asaprofile.ui.usecase.AsaProfilePreviewUseCase.Companion.MINIMUM_CURRENCY_VALUE_TO_DISPLAY_EXACT_AMOUNT
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.browser.addProtocolIfNeed
 import com.algorand.android.utils.browser.removeProtocolIfNeed
 import com.algorand.android.utils.formatAmount
+import java.math.BigDecimal
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
 
@@ -167,9 +169,10 @@ class AssetAboutPreviewUseCase @Inject constructor(
 
     private fun createStatisticsItem(assetDetail: BaseAssetDetail): BaseAssetAboutListItem.StatisticsItem {
         with(assetDetail) {
+            val minAmountToDisplay = BigDecimal.valueOf(MINIMUM_CURRENCY_VALUE_TO_DISPLAY_EXACT_AMOUNT)
             val formattedAssetPrice = getSelectedAssetExchangeValueUseCase
                 .getSelectedAssetExchangeValue(assetDetail = this)
-                ?.getFormattedValue()
+                ?.getFormattedValue(minValueToDisplayExactAmount = minAmountToDisplay)
             return baseAssetAboutListItemMapper.mapToStatisticsItem(
                 formattedPriceText = formattedAssetPrice,
                 formattedCompactTotalSupplyText = totalSupply?.formatAmount(

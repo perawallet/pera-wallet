@@ -20,6 +20,7 @@ import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.LayoutLedgerInstructionsBinding
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.checkIfBluetoothPermissionAreTaken
 import com.algorand.android.utils.extensions.setClickActionAndVisibility
 import com.algorand.android.utils.showEnableBluetoothPopup
 import com.algorand.android.utils.showSnackbar
@@ -39,6 +40,29 @@ abstract class BaseLedgerInstructionFragment : BaseFragment(R.layout.layout_ledg
         }
     }
 
+    private val locationRequestLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (!isGranted) {
+            showGlobalError(
+                errorMessage = getString(R.string.error_location_message),
+                title = getString(R.string.error_permission_title)
+            )
+        }
+    }
+
+    private val bluetoothScanConnectRequestLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val isAllGranted = permissions.all { permission -> permission.value }
+        if (!isAllGranted) {
+            showGlobalError(
+                errorMessage = getString(R.string.error_bluetooth_permission_message),
+                title = getString(R.string.error_permission_title)
+            )
+        }
+    }
+
     protected fun setFirstInstructionClickAction(navDirections: NavDirections) {
         binding.firstInstruction.setClickActionAndVisibility { nav(navDirections) }
     }
@@ -52,6 +76,12 @@ abstract class BaseLedgerInstructionFragment : BaseFragment(R.layout.layout_ledg
     }
 
     protected fun setFourthInstructionClickAction() {
-        binding.fourthInstruction.setClickActionAndVisibility { showEnableBluetoothPopup(bleRequestLauncher) }
+        binding.fourthInstruction.setClickActionAndVisibility {
+            val areBluetoothAndLocationPermissionsTaken = context?.checkIfBluetoothPermissionAreTaken(
+                locationResultLauncher = locationRequestLauncher,
+                bluetoothResultLauncher = bluetoothScanConnectRequestLauncher
+            ) == true
+            if (areBluetoothAndLocationPermissionsTaken) showEnableBluetoothPopup(bleRequestLauncher)
+        }
     }
 }

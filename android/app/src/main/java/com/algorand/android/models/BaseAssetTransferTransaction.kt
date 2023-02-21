@@ -78,12 +78,10 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         override val assetInformation: WalletConnectAssetInformation?,
         override val fromAccount: WalletConnectAccount?,
         override val groupId: String?,
+        override val warningCount: Int?,
         val assetCloseToAddress: WalletConnectAddress,
         val assetAmount: BigInteger
     ) : BaseAssetTransferTransaction() {
-
-        override val warningCount: Int
-            get() = 1
 
         override val fee: Long
             get() = walletConnectTransactionParams.fee
@@ -115,12 +113,10 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         override val assetInformation: WalletConnectAssetInformation?,
         override val fromAccount: WalletConnectAccount?,
         override val groupId: String?,
+        override val warningCount: Int?,
         val rekeyAddress: WalletConnectAddress,
         val assetAmount: BigInteger
     ) : BaseAssetTransferTransaction() {
-
-        override val warningCount: Int
-            get() = 1
 
         override val fee: Long
             get() = walletConnectTransactionParams.fee
@@ -152,13 +148,11 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         override val assetInformation: WalletConnectAssetInformation?,
         override val fromAccount: WalletConnectAccount?,
         override val groupId: String?,
+        override val warningCount: Int?,
         val rekeyAddress: WalletConnectAddress,
         val assetAmount: BigInteger,
         val closeAddress: WalletConnectAddress
     ) : BaseAssetTransferTransaction() {
-
-        override val warningCount: Int
-            get() = 2
 
         override val fee: Long
             get() = walletConnectTransactionParams.fee

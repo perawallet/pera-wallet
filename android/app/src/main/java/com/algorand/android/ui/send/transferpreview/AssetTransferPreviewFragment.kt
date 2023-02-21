@@ -33,10 +33,8 @@ import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.send.shared.AddNoteBottomSheet
-import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
-import com.algorand.android.utils.extensions.capitalize
 import com.algorand.android.utils.extensions.changeTextAppearance
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
@@ -159,13 +157,13 @@ class AssetTransferPreviewFragment : TransactionBaseFragment(R.layout.fragment_t
         )
     }
 
-    private fun onNextButtonClick() {
+    private fun onConfirmTransferClick() {
         sendTransaction(assetTransferPreviewViewModel.getTransactionData())
     }
 
     private fun updateUi(assetTransferPreview: AssetTransferPreview) {
         with(assetTransferPreview) {
-            setNextButton(assetInformation.isAlgo())
+            setConfirmTransferButton()
             setCurrencyViews(assetInformation, exchangePrice, currencySymbol, amount)
             setAssetViews(assetInformation, amount)
             setAccountViews(targetUser, senderAccountAddress, senderAccountName, senderAccountType)
@@ -174,16 +172,8 @@ class AssetTransferPreviewFragment : TransactionBaseFragment(R.layout.fragment_t
         }
     }
 
-    private fun setNextButton(isAlgorand: Boolean) {
-        with(binding.nextButton) {
-            text = if (isAlgorand) {
-                // TODO get formatted shortname from AlgoInfoProvider
-                getString(R.string.send_format, ALGO_SHORT_NAME.capitalize())
-            } else {
-                getString(R.string.next)
-            }
-            setOnClickListener { onNextButtonClick() }
-        }
+    private fun setConfirmTransferButton() {
+        binding.confirmTransferButton.setOnClickListener { onConfirmTransferClick() }
     }
 
     private fun setCurrencyViews(
@@ -253,7 +243,7 @@ class AssetTransferPreviewFragment : TransactionBaseFragment(R.layout.fragment_t
                     bottomToTop = ConstraintLayout.LayoutParams.UNSET
                     topToTop = binding.noteLabelTextView.id
                     bottomToBottom = binding.noteLabelTextView.id
-                    verticalBias = 0.5f
+                    verticalBias = ADD_EDIT_NOTE_BUTTON_VERTICAL_BIAS
                 }
             }
 
@@ -275,7 +265,7 @@ class AssetTransferPreviewFragment : TransactionBaseFragment(R.layout.fragment_t
                     topToTop = ConstraintLayout.LayoutParams.UNSET
                     bottomToBottom = ConstraintLayout.LayoutParams.UNSET
                     topToBottom = binding.noteTextView.id
-                    bottomToTop = binding.nextButton.id
+                    bottomToTop = binding.confirmTransferButton.id
                     verticalBias = 0f
                 }
             }
@@ -323,5 +313,9 @@ class AssetTransferPreviewFragment : TransactionBaseFragment(R.layout.fragment_t
 
     private fun hideProgress() {
         binding.progressBar.root.hide()
+    }
+
+    companion object {
+        const val ADD_EDIT_NOTE_BUTTON_VERTICAL_BIAS = 0.5f
     }
 }

@@ -96,7 +96,6 @@ class WebExportDomainNameConfirmationFragment : BaseFragment(R.layout.fragment_w
 
     private fun initUi() {
         with(binding) {
-            enterUrlInputLayout.setInputTypeText()
             enterUrlInputLayout.setImeOptionsDone {
                 webExportDomainNameConfirmationViewModel.onUrlInputActionButtonClicked()
             }

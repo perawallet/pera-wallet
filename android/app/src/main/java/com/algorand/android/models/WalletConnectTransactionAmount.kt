@@ -13,13 +13,14 @@
 package com.algorand.android.models
 
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
+import com.algorand.android.utils.AssetName
 import java.math.BigInteger
 
 data class WalletConnectTransactionAmount(
     val transactionAmount: BigInteger? = null,
     val assetDecimal: Int? = null,
-    var assetShortName: String? = null,
-    val assetName: String? = null,
+    val assetName: AssetName? = null,
+    val assetShortName: AssetName? = null,
     val assetId: Long? = null,
     val applicationId: Long? = null,
     val isNeedCurrencyValue: Boolean = false,

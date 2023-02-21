@@ -195,7 +195,7 @@ class TransactionHistoryUseCase @Inject constructor(
         return when {
             secondTxnItem == null -> false
             firstTxnItem == null -> true
-            firstTxnItem.zonedDateTime?.dayOfMonth == secondTxnItem.zonedDateTime?.dayOfMonth -> false
+            firstTxnItem.zonedDateTime?.toLocalDate() == secondTxnItem.zonedDateTime?.toLocalDate() -> false
             else -> true
         }
     }

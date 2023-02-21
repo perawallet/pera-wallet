@@ -13,60 +13,28 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.AssetDetail
-import com.algorand.android.models.AssetHolding
+import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.WalletConnectAssetInformation
-import com.algorand.android.utils.ALGO_DECIMALS
-import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.formatAsCurrency
 import java.math.BigDecimal
-import java.math.BigInteger
 import javax.inject.Inject
 
 class WalletConnectAssetInformationMapper @Inject constructor() {
 
-    fun algorandMapToWalletConnectAssetInformation(
-        assetDetail: AssetDetail?,
-        amount: BigDecimal,
-        currencySymbol: String
-    ): WalletConnectAssetInformation? {
-        if (assetDetail == null) return null
+    fun mapToWalletConnectAssetInformation(
+        ownedAsset: BaseAccountAssetData.BaseOwnedAssetData,
+        safeAmount: BigDecimal
+    ): WalletConnectAssetInformation {
         return WalletConnectAssetInformation(
-            assetId = assetDetail.assetId,
-            shortName = assetDetail.shortName,
-            fullName = assetDetail.fullName,
-            decimal = assetDetail.fractionDecimals ?: ALGO_DECIMALS,
-            amount = amount.toBigInteger(),
-            formattedSelectedCurrencyValue = amount.formatAsCurrency(currencySymbol),
-            verificationTier = assetDetail.verificationTier
-        )
-    }
-
-    fun otherAssetMapToWalletConnectAssetInformation(
-        assetDetail: AssetDetail?,
-        assetHolding: AssetHolding?,
-        amount: BigInteger,
-        selectedCurrencyUsdConversionRate: BigDecimal,
-        currencySymbol: String
-    ): WalletConnectAssetInformation? {
-        val formattedSelectedCurrencyValue = if (assetDetail?.usdValue != null) {
-            amount.toBigDecimal()
-                .movePointLeft(assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL)
-                .multiply(selectedCurrencyUsdConversionRate)
-                .multiply(assetDetail.usdValue)
-        } else {
-            null
-        }
-
-        if (assetDetail == null) return null
-        return WalletConnectAssetInformation(
-            assetId = assetDetail.assetId,
-            shortName = assetDetail.shortName,
-            fullName = assetDetail.fullName,
-            decimal = assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
-            amount = assetHolding?.amount,
-            formattedSelectedCurrencyValue = formattedSelectedCurrencyValue?.formatAsCurrency(currencySymbol),
-            verificationTier = assetDetail.verificationTier
+            assetId = ownedAsset.id,
+            shortName = ownedAsset.shortName,
+            fullName = ownedAsset.name,
+            decimal = ownedAsset.decimals,
+            amount = ownedAsset.amount,
+            formattedSelectedCurrencyValue = safeAmount.formatAsCurrency(
+                symbol = ownedAsset.getSelectedCurrencyParityValue().selectedCurrencySymbol
+            ),
+            verificationTier = ownedAsset.verificationTier
         )
     }
 }

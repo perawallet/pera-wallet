@@ -45,6 +45,7 @@ import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class DiscoverHomeFragment :
@@ -246,7 +247,8 @@ class DiscoverHomeFragment :
                     getDiscoverHomeUrl(
                         themePreference = getWebViewThemeFromThemePreference(preview.themePreference),
                         currency = discoverViewModel.getPrimaryCurrencyId(),
-                        locale = (activity as BaseActivity).getCurrentLanguage().language
+                        locale = (activity as? BaseActivity)?.getCurrentLanguage()?.language
+                            ?: Locale.getDefault().language
                     ),
                     getDiscoverAuthHeader()
                 )

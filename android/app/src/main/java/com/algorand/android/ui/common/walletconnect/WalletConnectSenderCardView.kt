@@ -21,11 +21,13 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectSenderViewBinding
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ApplicationCallStateSchema
 import com.algorand.android.models.BaseAppCallTransaction
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.TransactionRequestAssetInformation
 import com.algorand.android.models.TransactionRequestSenderInfo
+import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.setAssetNameTextColorByVerificationTier
 import com.algorand.android.utils.setDrawable
@@ -51,7 +53,7 @@ class WalletConnectSenderCardView(
     fun initSender(senderInfo: TransactionRequestSenderInfo?) {
         if (senderInfo == null) return
         with(senderInfo) {
-            initSenderAddress(senderDisplayedAddress)
+            initSenderAddress(fromDisplayedAddress, fromAccountIcon)
             initOnComplete(onCompletion)
             initRekeyToAddress(rekeyToAccountAddress, warningCount)
             initApplicationId(appId)
@@ -61,24 +63,27 @@ class WalletConnectSenderCardView(
             initApprovalHash(approvalHash)
             initClearStateHash(clearStateHash)
             initAssetInformation(assetInformation, toDisplayedAddress?.fullAddress)
-            initToAccount(toDisplayedAddress)
+            initToAccount(toDisplayedAddress, toAccountIcon)
         }
     }
 
-    private fun initSenderAddress(address: BaseWalletConnectDisplayedAddress?) {
-        if (address != null) {
-            binding.senderNameTextView.text = address.displayValue
+    private fun initSenderAddress(
+        address: BaseWalletConnectDisplayedAddress?,
+        accountIconResource: AccountIconResource?
+    ) {
+        address?.let { address ->
+            binding.senderNameTextView.apply {
+                text = address.displayValue
+                setOnLongClickListener { listener?.onAccountAddressLongPressed(address.fullAddress); true }
+            }
         }
-    }
-
-    private fun initSenderAddress(address: String?) {
-        if (address != null) {
-            with(binding) {
-                senderNameTextView.setOnLongClickListener {
-                    listener?.onAccountAddressLongPressed(address)
-                    return@setOnLongClickListener true
-                }
-                senderNameTextView.text = address
+        accountIconResource?.let {
+            binding.fromAccountTypeImageView.apply {
+                setAccountIconDrawable(
+                    accountIconResource = accountIconResource,
+                    iconSize = R.dimen.account_icon_size_normal
+                )
+                show()
             }
         }
     }
@@ -199,7 +204,10 @@ class WalletConnectSenderCardView(
         }
     }
 
-    private fun initToAccount(toDisplayedAddress: BaseWalletConnectDisplayedAddress?) {
+    private fun initToAccount(
+        toDisplayedAddress: BaseWalletConnectDisplayedAddress?,
+        accountIconResource: AccountIconResource?
+    ) {
         toDisplayedAddress?.let {
             with(binding) {
                 toNameTextView.text = toDisplayedAddress.displayValue
@@ -209,6 +217,16 @@ class WalletConnectSenderCardView(
                     return@setOnLongClickListener true
                 }
                 toGroup.show()
+            }
+        }
+
+        accountIconResource?.let {
+            binding.toAccountTypeImageView.apply {
+                setAccountIconDrawable(
+                    accountIconResource = accountIconResource,
+                    iconSize = R.dimen.account_icon_size_normal
+                )
+                show()
             }
         }
     }

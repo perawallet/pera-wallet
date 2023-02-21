@@ -13,16 +13,12 @@
 package com.algorand.android.ui.common
 
 import android.app.Activity.RESULT_OK
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -45,9 +41,10 @@ import com.algorand.android.ui.ledgersearch.LedgerPairInstructionsBottomSheet.Co
 import com.algorand.android.ui.ledgersearch.LedgerSearchAdapter
 import com.algorand.android.ui.ledgersearch.LedgerSearchViewModel
 import com.algorand.android.utils.Event
-import com.algorand.android.utils.areBluetoothPermissionsGranted
+import com.algorand.android.utils.checkIfBluetoothPermissionAreTaken
 import com.algorand.android.utils.isLocationEnabled
 import com.algorand.android.utils.sendErrorLog
+import com.algorand.android.utils.showEnableBluetoothPopup
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -267,16 +264,15 @@ abstract class BaseLedgerSearchFragment :
     private fun arePermissionsTaken(): Boolean {
         val bluetoothManager = context?.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         val bluetoothAdapter = bluetoothManager.adapter
-        if (context?.areBluetoothPermissionsGranted() != true) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                requestBluetoothScanConnectPermission()
-            } else {
-                requestLocationPermission()
-            }
+        val areBluetoothAndLocationPermissionsTaken = context?.checkIfBluetoothPermissionAreTaken(
+            bluetoothResultLauncher = bluetoothScanConnectRequestLauncher,
+            locationResultLauncher = locationRequestLauncher
+        )
+        if (areBluetoothAndLocationPermissionsTaken != true) {
             return false
         }
         if (bluetoothAdapter.isEnabled.not()) {
-            requestBluetoothPermission()
+            showEnableBluetoothPopup(bleRequestLauncher)
             return false
         }
         if (context?.isLocationEnabled() != true) {
@@ -288,24 +284,6 @@ abstract class BaseLedgerSearchFragment :
             return false
         }
         return true
-    }
-
-    private fun requestBluetoothPermission() {
-        Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE).apply { bleRequestLauncher.launch(this) }
-    }
-
-    private fun requestLocationPermission() {
-        locationRequestLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.S)
-    private fun requestBluetoothScanConnectPermission() {
-        bluetoothScanConnectRequestLauncher.launch(
-            arrayOf(
-                android.Manifest.permission.BLUETOOTH_SCAN,
-                android.Manifest.permission.BLUETOOTH_CONNECT
-            )
-        )
     }
 
     companion object {
