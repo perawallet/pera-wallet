@@ -12,10 +12,12 @@
 
 package com.algorand.android.modules.walletconnect.subscription.data.usecase
 
-import com.algorand.android.repository.WalletConnectRepository
+import com.algorand.android.modules.walletconnect.client.v1.domain.repository.WalletConnectRepository
 import javax.inject.Inject
+import javax.inject.Named
 
 class SetGivenSessionAsSubscribedUseCase @Inject constructor(
+    @Named(WalletConnectRepository.INJECTION_NAME)
     private val walletConnectRepository: WalletConnectRepository
 ) {
 

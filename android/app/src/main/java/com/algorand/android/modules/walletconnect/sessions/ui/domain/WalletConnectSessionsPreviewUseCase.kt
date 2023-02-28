@@ -12,16 +12,18 @@
 
 package com.algorand.android.modules.walletconnect.sessions.ui.domain
 
+import androidx.core.net.toUri
 import com.algorand.android.R
-import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.modules.walletconnect.domain.ConnectToExistingSessionUseCase
-import com.algorand.android.modules.walletconnect.domain.GetWalletConnectLocalSessionsUseCase
 import com.algorand.android.modules.walletconnect.domain.KillAllWalletConnectSessionsUseCase
 import com.algorand.android.modules.walletconnect.domain.KillWalletConnectSessionUseCase
+import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.sessions.ui.mapper.WalletConnectSessionItemMapper
 import com.algorand.android.modules.walletconnect.sessions.ui.mapper.WalletConnectSessionsPreviewMapper
 import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
 import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionsPreview
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.formatAsDateAndTime
 import com.algorand.android.utils.getZonedDateTimeFromSec
@@ -33,18 +35,18 @@ class WalletConnectSessionsPreviewUseCase @Inject constructor(
     private val killWalletConnectSessionUseCase: KillWalletConnectSessionUseCase,
     private val connectToExistingSessionUseCase: ConnectToExistingSessionUseCase,
     private val killAllWalletConnectSessionsUseCase: KillAllWalletConnectSessionsUseCase,
-    private val getWalletConnectLocalSessionsUseCase: GetWalletConnectLocalSessionsUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val walletConnectSessionsPreviewMapper: WalletConnectSessionsPreviewMapper,
-    private val walletConnectSessionItemMapper: WalletConnectSessionItemMapper
+    private val walletConnectSessionItemMapper: WalletConnectSessionItemMapper,
+    private val walletConnectManager: WalletConnectManager
 ) {
 
-    fun killWalletConnectSession(sessionId: Long) {
-        killWalletConnectSessionUseCase(sessionId)
+    suspend fun killWalletConnectSession(sessionIdentifier: WalletConnectSessionIdentifier) {
+        killWalletConnectSessionUseCase(sessionIdentifier)
     }
 
-    fun connectToExistingSession(sessionId: Long) {
-        connectToExistingSessionUseCase(sessionId)
+    suspend fun connectToExistingSession(sessionIdentifier: WalletConnectSessionIdentifier) {
+        connectToExistingSessionUseCase(sessionIdentifier)
     }
 
     fun killAllWalletConnectSessions() {
@@ -52,7 +54,7 @@ class WalletConnectSessionsPreviewUseCase @Inject constructor(
     }
 
     fun getWalletConnectSessionsPreviewFlow(): Flow<WalletConnectSessionsPreview> {
-        return getWalletConnectLocalSessionsUseCase().map {
+        return walletConnectManager.localSessionsFlow.map {
             val walletConnectSessionList = createWalletConnectSessionList(it)
             walletConnectSessionsPreviewMapper.mapToWalletConnectSessionsPreview(
                 walletConnectSessionList = walletConnectSessionList,
@@ -63,17 +65,17 @@ class WalletConnectSessionsPreviewUseCase @Inject constructor(
     }
 
     private fun createWalletConnectSessionList(
-        walletConnectSessions: List<WalletConnectSession>,
+        walletConnectSessions: List<WalletConnect.SessionDetail>,
     ): List<WalletConnectSessionItem> {
         return walletConnectSessions.map { walletConnectSession ->
             with(walletConnectSession) {
                 walletConnectSessionItemMapper.mapToWalletConnectSessionItem(
-                    sessionId = id,
-                    dAppLogoUrl = peerMeta.peerIconUri,
+                    sessionIdentifier = sessionIdentifier,
+                    dAppLogoUrl = peerMeta.icons?.firstOrNull()?.toUri(),
                     dAppName = peerMeta.name,
                     dAppDescription = peerMeta.description,
-                    connectionDate = getZonedDateTimeFromSec(dateTimeStamp)?.formatAsDateAndTime(),
-                    connectedAccountItems = createConnectedAccountItems(connectedAccountsAddresses, isConnected),
+                    connectionDate = getZonedDateTimeFromSec(creationDateTimestamp)?.formatAsDateAndTime(),
+                    connectedAccountItems = createConnectedAccountItems(connectedAddresses, isConnected),
                     isConnected = isConnected,
                     isShowingDetails = true
                 )

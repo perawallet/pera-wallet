@@ -13,8 +13,9 @@
 package com.algorand.android.utils.walletconnect
 
 import androidx.core.os.bundleOf
-import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.utils.MAINNET_NETWORK_SLUG
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -55,13 +56,16 @@ class WalletConnectFirebaseEventLogger(
         firebaseAnalytics.logEvent(REQUEST_REJECTION_EVENT_KEY, bundle)
     }
 
-    override fun logSessionConfirmation(session: WalletConnectSession, connectedAccountAddresses: List<String>) {
+    override fun logSessionConfirmation(
+        sessionProposal: WalletConnectSessionProposal,
+        connectedAccountAddresses: List<String>
+    ) {
         if (!isCurrentNetworkMainNet) return
-        val bundle = with(session) {
+        val bundle = with(sessionProposal) {
             bundleOf(
                 DAPP_NAME_PARAM to peerMeta.name,
                 DAPP_URL_PARAM to peerMeta.url,
-                SESSION_TOPIC_PARAM to sessionMeta.topic,
+                SESSION_TOPIC_PARAM to sessionProposal.proposalIdentifier.proposalIdentifier,
                 CONNECTED_ACCOUNT_ADDRESS_PARAM to connectedAccountAddresses.toAccountAddressesString(),
                 TOTAL_ACCOUNT_ACCOUNT_PARAM to connectedAccountAddresses.count()
             )
@@ -69,29 +73,26 @@ class WalletConnectFirebaseEventLogger(
         firebaseAnalytics.logEvent(SESSION_CONFIRMATION_EVENT_KEY, bundle)
     }
 
-    override fun logSessionRejection(session: WalletConnectSession) {
+    override fun logSessionDisconnection(session: WalletConnect.SessionDetail) {
         if (!isCurrentNetworkMainNet) return
         val bundle = with(session) {
             bundleOf(
                 DAPP_NAME_PARAM to peerMeta.name,
                 DAPP_URL_PARAM to peerMeta.url,
-                SESSION_TOPIC_PARAM to sessionMeta.topic
-            )
-        }
-
-        firebaseAnalytics.logEvent(SESSION_REJECTION_EVENT_KEY, bundle)
-    }
-
-    override fun logSessionDisconnection(session: WalletConnectSession) {
-        if (!isCurrentNetworkMainNet) return
-        val bundle = with(session) {
-            bundleOf(
-                DAPP_NAME_PARAM to peerMeta.name,
-                DAPP_URL_PARAM to peerMeta.url,
-                CONNECTED_ACCOUNT_ADDRESS_PARAM to connectedAccountsAddresses.toAccountAddressesString()
+                CONNECTED_ACCOUNT_ADDRESS_PARAM to connectedAddresses.toAccountAddressesString()
             )
         }
         firebaseAnalytics.logEvent(SESSION_DISCONNECTION_EVENT_KEY, bundle)
+    }
+
+    override fun logSessionRejection(sessionProposal: WalletConnectSessionProposal) {
+        if (!isCurrentNetworkMainNet) return
+        val bundle = bundleOf(
+            DAPP_NAME_PARAM to sessionProposal.peerMeta.name,
+            DAPP_URL_PARAM to sessionProposal.peerMeta.url,
+            SESSION_TOPIC_PARAM to sessionProposal.proposalIdentifier.proposalIdentifier
+        )
+        firebaseAnalytics.logEvent(SESSION_REJECTION_EVENT_KEY, bundle)
     }
 
     /**

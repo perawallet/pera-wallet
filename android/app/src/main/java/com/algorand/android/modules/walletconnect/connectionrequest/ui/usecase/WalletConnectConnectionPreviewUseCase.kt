@@ -17,7 +17,6 @@ import com.algorand.android.models.Account
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseAccountAndAssetListItem
 import com.algorand.android.models.WalletConnectPeerMeta
-import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.ui.AccountAssetItemButtonState.CHECKED
 import com.algorand.android.models.ui.AccountAssetItemButtonState.UNCHECKED
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
@@ -29,6 +28,7 @@ import com.algorand.android.modules.walletconnect.connectionrequest.ui.mapper.Wa
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WalletConnectConnectionPreview
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import javax.inject.Inject
 
 class WalletConnectConnectionPreviewUseCase @Inject constructor(
@@ -140,17 +140,17 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
 
     fun getApprovedWalletConnectSessionResult(
         accountAddresses: List<String>,
-        wcSessionRequest: WalletConnectSession
+        sessionProposal: WalletConnectSessionProposal
     ): WCSessionRequestResult.ApproveRequest {
         return wCSessionRequestResultMapper.mapToApproveRequest(
             accountAddresses = accountAddresses,
-            wcSessionRequest = wcSessionRequest
+            sessionProposal = sessionProposal
         )
     }
 
     fun getRejectedWalletConnectSessionResult(
-        wcSessionRequest: WalletConnectSession
+        sessionProposal: WalletConnectSessionProposal
     ): WCSessionRequestResult.RejectRequest {
-        return wCSessionRequestResultMapper.mapToRejectRequest(wcSessionRequest = wcSessionRequest)
+        return wCSessionRequestResultMapper.mapToRejectRequest(sessionProposal = sessionProposal)
     }
 }

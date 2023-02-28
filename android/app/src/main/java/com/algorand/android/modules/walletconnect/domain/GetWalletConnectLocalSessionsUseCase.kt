@@ -12,7 +12,8 @@
 
 package com.algorand.android.modules.walletconnect.domain
 
-import com.algorand.android.models.WalletConnectSession
+import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.GetWalletConnectSessionsWithAccountsUseCase
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
@@ -20,7 +21,7 @@ class GetWalletConnectLocalSessionsUseCase @Inject constructor(
     private val getAllWalletConnectSessionWithAccountAddressesUseCase: GetWalletConnectSessionsWithAccountsUseCase
 ) {
 
-    operator fun invoke(): Flow<List<WalletConnectSession>> {
+    operator fun invoke(): Flow<List<WalletConnect.SessionDetail>> {
         return getAllWalletConnectSessionWithAccountAddressesUseCase.invoke()
     }
 }

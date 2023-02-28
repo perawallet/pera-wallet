@@ -12,15 +12,15 @@
 
 package com.algorand.android.modules.walletconnect.domain
 
-import com.algorand.android.utils.walletconnect.WalletConnectManager
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import javax.inject.Inject
 
 class KillWalletConnectSessionUseCase @Inject constructor(
     private val walletConnectManager: WalletConnectManager
 ) {
 
-    operator fun invoke(sessionId: Long) {
-        val walletConnectSession = walletConnectManager.getWalletConnectSession(sessionId) ?: return
+    suspend operator fun invoke(sessionIdentifier: WalletConnectSessionIdentifier) {
+        val walletConnectSession = walletConnectManager.getWalletConnectSession(sessionIdentifier) ?: return
         walletConnectManager.killSession(walletConnectSession)
     }
 }

@@ -12,14 +12,15 @@
 
 package com.algorand.android.modules.walletconnect.connectedapps.ui.domain
 
-import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.modules.walletconnect.connectedapps.ui.mapper.WalletConnectConnectedAppsPreviewMapper
 import com.algorand.android.modules.walletconnect.connectedapps.ui.model.WalletConnectConnectedAppsPreview
 import com.algorand.android.modules.walletconnect.domain.ConnectToExistingSessionUseCase
 import com.algorand.android.modules.walletconnect.domain.GetWalletConnectLocalSessionsUseCase
 import com.algorand.android.modules.walletconnect.domain.KillWalletConnectSessionUseCase
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.sessions.ui.mapper.WalletConnectSessionItemMapper
 import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.utils.Event
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -33,12 +34,12 @@ class WalletConnectConnectedAppsPreviewUseCase @Inject constructor(
     private val walletConnectConnectedAppsPreviewMapper: WalletConnectConnectedAppsPreviewMapper
 ) {
 
-    fun killWalletConnectSession(sessionId: Long) {
-        killWalletConnectSessionUseCase(sessionId)
+    suspend fun killWalletConnectSession(sessionIdentifier: WalletConnectSessionIdentifier) {
+        killWalletConnectSessionUseCase(sessionIdentifier)
     }
 
-    fun connectToExistingSession(sessionId: Long) {
-        connectToExistingSessionUseCase(sessionId)
+    suspend fun connectToExistingSession(sessionIdentifier: WalletConnectSessionIdentifier) {
+        connectToExistingSessionUseCase(sessionIdentifier)
     }
 
     fun getWalletConnectConnectedAppsPreviewFlow(): Flow<WalletConnectConnectedAppsPreview> {
@@ -52,13 +53,13 @@ class WalletConnectConnectedAppsPreviewUseCase @Inject constructor(
     }
 
     private fun createWalletConnectSessionList(
-        walletConnectSessions: List<WalletConnectSession>
+        walletConnectSessions: List<WalletConnect.SessionDetail>
     ): List<WalletConnectSessionItem> {
         return walletConnectSessions.map { walletConnectSession ->
             with(walletConnectSession) {
                 walletConnectSessionItemMapper.mapToWalletConnectSessionItem(
-                    sessionId = id,
-                    dAppLogoUrl = peerMeta.peerIconUri,
+                    sessionIdentifier = sessionIdentifier,
+                    dAppLogoUrl = peerIconUri,
                     dAppName = peerMeta.name,
                     dAppDescription = null,
                     connectionDate = null,

@@ -12,6 +12,8 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectTransactionErrorResponse
+
 sealed class BaseWalletConnectErrorProvider {
 
     protected abstract fun getError(errorMessage: String): WalletConnectTransactionErrorResponse

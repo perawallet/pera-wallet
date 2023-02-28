@@ -26,6 +26,7 @@ import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetBaseOwnedAssetDataUseCase
 import com.algorand.android.utils.extensions.mapNotBlank
 import com.algorand.android.utils.extensions.mapNotNull
+import com.algorand.android.utils.multiplyOrZero
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import java.math.BigInteger
 import javax.inject.Inject
@@ -217,7 +218,7 @@ class PaymentTransactionMapper @Inject constructor(
         amount: BigInteger
     ): WalletConnectAssetInformation? {
         if (ownedAsset == null) return null
-        val safeAmount = amount.toBigDecimal().movePointLeft(ownedAsset.decimals).multiply(ownedAsset.usdValue)
+        val safeAmount = amount.toBigDecimal().movePointLeft(ownedAsset.decimals).multiplyOrZero(ownedAsset.usdValue)
         return walletConnectAssetInformationMapper.mapToWalletConnectAssetInformation(ownedAsset, safeAmount)
     }
 }

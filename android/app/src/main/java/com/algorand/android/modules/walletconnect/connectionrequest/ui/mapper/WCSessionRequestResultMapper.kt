@@ -12,23 +12,23 @@
 
 package com.algorand.android.modules.walletconnect.connectionrequest.ui.mapper
 
-import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import javax.inject.Inject
 
 class WCSessionRequestResultMapper @Inject constructor() {
 
     fun mapToApproveRequest(
         accountAddresses: List<String>,
-        wcSessionRequest: WalletConnectSession
+        sessionProposal: WalletConnectSessionProposal
     ): WCSessionRequestResult.ApproveRequest {
         return WCSessionRequestResult.ApproveRequest(
-            wcSessionRequest = wcSessionRequest,
+            sessionProposal = sessionProposal,
             accountAddresses = accountAddresses
         )
     }
 
-    fun mapToRejectRequest(wcSessionRequest: WalletConnectSession): WCSessionRequestResult.RejectRequest {
-        return WCSessionRequestResult.RejectRequest(wcSessionRequest = wcSessionRequest)
+    fun mapToRejectRequest(sessionProposal: WalletConnectSessionProposal): WCSessionRequestResult.RejectRequest {
+        return WCSessionRequestResult.RejectRequest(sessionProposal = sessionProposal)
     }
 }

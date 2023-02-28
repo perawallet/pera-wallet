@@ -17,10 +17,6 @@ import com.algorand.android.models.Node
 
 const val CURRENT_DEFAULT_NODE_LIST_VERSION = 27
 
-const val MAINNET_CHAIN_ID = 416001L
-const val TESTNET_CHAIN_ID = 416002L
-const val BETANET_CHAIN_ID = 416003L
-
 const val MAINNET_NODE_NAME = "Algorand MainNet Node"
 const val TESTNET_NODE_NAME = "TestNet"
 const val BETANET_NODE_NAME = "BetaNet"

@@ -13,17 +13,16 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class WalletConnectSession(
-    val id: Long,
+    val sessionIdentifier: WalletConnectSessionIdentifier,
     val peerMeta: WalletConnectPeerMeta,
-    val sessionMeta: WalletConnectSessionMeta,
     val dateTimeStamp: Long,
     val isConnected: Boolean = false,
     val isSubscribed: Boolean,
     val connectedAccountsAddresses: List<String>,
-    val accountsNames: List<String?>,
     val fallbackBrowserGroupResponse: String? = null
 ) : Parcelable

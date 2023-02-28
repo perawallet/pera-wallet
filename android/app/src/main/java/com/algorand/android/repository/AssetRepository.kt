@@ -15,11 +15,15 @@ package com.algorand.android.repository
 import com.algorand.android.cache.SimpleAssetLocalCache
 import com.algorand.android.models.Asset
 import com.algorand.android.models.AssetDetail
+import com.algorand.android.models.AssetDetailResponse
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.AssetSupportRequest
+import com.algorand.android.models.NodeAssetDetailResponse
 import com.algorand.android.models.Result
+import com.algorand.android.network.AlgodApi
 import com.algorand.android.network.IndexerApi
 import com.algorand.android.network.MobileAlgorandApi
+import com.algorand.android.network.request
 import com.algorand.android.network.requestWithHipoErrorHandler
 import com.algorand.android.network.safeApiCall
 import com.algorand.android.utils.AlgoAssetInformationProvider
@@ -30,6 +34,7 @@ import javax.inject.Inject
 
 class AssetRepository @Inject constructor(
     private val indexerApi: IndexerApi,
+    private val algodApi: AlgodApi,
     private val mobileAlgorandApi: MobileAlgorandApi,
     private val hipoApiErrorHandler: RetrofitErrorHandler,
     private val simpleAssetLocalCache: SimpleAssetLocalCache,
@@ -103,5 +108,15 @@ class AssetRepository @Inject constructor(
 
     suspend fun clearAssetCache(assetId: Long) {
         simpleAssetLocalCache.remove(assetId)
+    }
+
+    suspend fun getAssetDetailFromNode(assetId: Long): Result<NodeAssetDetailResponse> {
+        return request { algodApi.getAssetDetail(assetId) }
+    }
+
+    suspend fun getAssetDetailFromIndexer(assetId: Long): Result<AssetDetailResponse> {
+        return requestWithHipoErrorHandler(hipoApiErrorHandler) {
+            mobileAlgorandApi.getAssetDetail(assetId)
+        }
     }
 }

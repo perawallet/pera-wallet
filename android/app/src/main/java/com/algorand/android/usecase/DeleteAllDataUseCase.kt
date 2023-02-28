@@ -16,7 +16,7 @@ import android.app.NotificationManager
 import com.algorand.android.banner.domain.usecase.BannersUseCase
 import com.algorand.android.core.AccountManager
 import com.algorand.android.repository.ContactRepository
-import com.algorand.android.utils.walletconnect.WalletConnectManager
+import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
 import javax.inject.Inject
 
 class DeleteAllDataUseCase @Inject constructor(

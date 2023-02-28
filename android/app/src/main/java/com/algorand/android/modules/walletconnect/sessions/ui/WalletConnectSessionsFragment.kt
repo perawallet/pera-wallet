@@ -25,6 +25,7 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.modules.walletconnect.sessions.ui.adapter.WalletConnectSessionAdapter
 import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
@@ -72,12 +73,12 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
 
     private val walletConnectSessionAdapterListener =
         object : WalletConnectSessionAdapter.WalletConnectSessionAdapterListener {
-            override fun onDisconnectClick(sessionId: Long) {
-                walletConnectSessionsViewModel.killWalletConnectSession(sessionId)
+            override fun onDisconnectClick(sessionIdentifier: WalletConnectSessionIdentifier) {
+                walletConnectSessionsViewModel.killWalletConnectSession(sessionIdentifier)
             }
 
-            override fun onSessionClick(sessionId: Long) {
-                walletConnectSessionsViewModel.connectToExistingSession(sessionId)
+            override fun onSessionClick(sessionIdentifier: WalletConnectSessionIdentifier) {
+                walletConnectSessionsViewModel.connectToExistingSession(sessionIdentifier)
             }
         }
 

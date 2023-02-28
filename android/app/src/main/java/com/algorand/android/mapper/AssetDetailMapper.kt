@@ -14,8 +14,10 @@ package com.algorand.android.mapper
 
 import com.algorand.android.assetsearch.data.mapper.VerificationTierDTODecider
 import com.algorand.android.assetsearch.domain.mapper.VerificationTierDecider
+import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.models.AssetDetail
 import com.algorand.android.models.AssetDetailResponse
+import java.math.BigDecimal
 import javax.inject.Inject
 
 class AssetDetailMapper @Inject constructor(
@@ -51,6 +53,38 @@ class AssetDetailMapper @Inject constructor(
             maxSupply = assetDetailResponse.maxSupply,
             last24HoursAlgoPriceChangePercentage = assetDetailResponse.last24HoursAlgoPriceChangePercentage,
             isAvailableOnDiscoverMobile = assetDetailResponse.isAvailableOnDiscoverMobile
+        )
+    }
+
+    fun mapToAssetDetail(
+        assetId: Long,
+        fullName: String?,
+        shortName: String?,
+        fractionalDecimal: Int?,
+        totalSupply: BigDecimal?
+    ): AssetDetail {
+        return AssetDetail(
+            assetId = assetId,
+            fullName = fullName,
+            shortName = shortName,
+            fractionDecimals = fractionalDecimal,
+            totalSupply = totalSupply,
+            usdValue = null,
+            assetCreator = null,
+            verificationTier = VerificationTier.UNVERIFIED,
+            logoSvgUri = null,
+            logoUri = null,
+            explorerUrl = null,
+            discordUrl = null,
+            twitterUsername = null,
+            isAvailableOnDiscoverMobile = null,
+            projectName = null,
+            url = null,
+            telegramUrl = null,
+            projectUrl = null,
+            assetDescription = null,
+            maxSupply = null,
+            last24HoursAlgoPriceChangePercentage = null
         )
     }
 }

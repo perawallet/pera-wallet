@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectVersionIdentifier
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -20,5 +21,6 @@ data class WalletConnectTransaction(
     val requestId: Long,
     val transactionList: List<List<BaseWalletConnectTransaction>>,
     val session: WalletConnectSession,
-    val message: String?
+    val message: String?,
+    val versionIdentifier: WalletConnectVersionIdentifier
 ) : Parcelable

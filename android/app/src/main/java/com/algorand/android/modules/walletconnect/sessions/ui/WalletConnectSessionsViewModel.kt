@@ -16,9 +16,11 @@ import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.walletconnect.sessions.ui.domain.WalletConnectSessionsPreviewUseCase
 import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionsPreview
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -53,12 +55,16 @@ class WalletConnectSessionsViewModel @Inject constructor(
         }
     }
 
-    fun killWalletConnectSession(sessionId: Long) {
-        walletConnectSessionsPreviewUseCase.killWalletConnectSession(sessionId)
+    fun killWalletConnectSession(sessionIdentifier: WalletConnectSessionIdentifier) {
+        viewModelScope.launch(Dispatchers.IO) {
+            walletConnectSessionsPreviewUseCase.killWalletConnectSession(sessionIdentifier)
+        }
     }
 
-    fun connectToExistingSession(sessionId: Long) {
-        walletConnectSessionsPreviewUseCase.connectToExistingSession(sessionId)
+    fun connectToExistingSession(sessionIdentifier: WalletConnectSessionIdentifier) {
+        viewModelScope.launch(Dispatchers.IO) {
+            walletConnectSessionsPreviewUseCase.connectToExistingSession(sessionIdentifier)
+        }
     }
 
     fun killAllWalletConnectSessions() {

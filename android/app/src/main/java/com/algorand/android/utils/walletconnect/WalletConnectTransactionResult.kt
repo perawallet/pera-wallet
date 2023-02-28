@@ -13,7 +13,8 @@
 package com.algorand.android.utils.walletconnect
 
 import com.algorand.android.models.WalletConnectTransaction
-import com.algorand.android.models.WalletConnectTransactionErrorResponse
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectTransactionErrorResponse
 
 sealed class WalletConnectTransactionResult {
 
@@ -22,8 +23,8 @@ sealed class WalletConnectTransactionResult {
     ) : WalletConnectTransactionResult()
 
     data class Error(
-        val sessionId: Long,
-        val requestId: Long,
+        val sessionIdentifier: WalletConnect.SessionIdentifier,
+        val requestIdentifier: WalletConnect.RequestIdentifier,
         val errorResponse: WalletConnectTransactionErrorResponse
     ) : WalletConnectTransactionResult()
 }

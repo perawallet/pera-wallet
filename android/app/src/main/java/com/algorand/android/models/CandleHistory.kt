@@ -16,9 +16,9 @@ import com.algorand.android.utils.TWO_DECIMALS
 import com.algorand.android.utils.formatAsDateAndTime
 import com.algorand.android.utils.formatAsTwoDecimals
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
+import com.algorand.android.utils.multiplyOrZero
 import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
-import java.math.BigDecimal.ZERO
 import java.math.RoundingMode
 
 data class CandleHistory(
@@ -42,10 +42,10 @@ data class CandleHistory(
     fun getCurrencyConvertedInstance(currencyToUsdRatio: BigDecimal): CandleHistory {
         return with(currencyToUsdRatio) {
             copy(
-                low = multiply(low ?: ZERO),
-                high = multiply(high ?: ZERO),
-                open = multiply(open ?: ZERO),
-                close = multiply(open ?: ZERO)
+                low = multiplyOrZero(low),
+                high = multiplyOrZero(high),
+                open = multiplyOrZero(open),
+                close = multiplyOrZero(open)
             )
         }
     }

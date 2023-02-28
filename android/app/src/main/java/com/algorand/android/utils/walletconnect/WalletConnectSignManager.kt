@@ -66,7 +66,7 @@ class WalletConnectSignManager @Inject constructor(
     private val signHelperListener = object : ListQueuingHelper.Listener<BaseWalletConnectTransaction, ByteArray> {
         override fun onAllItemsDequeued(signedTransactions: List<ByteArray?>) {
             transaction?.run {
-                _signResultLiveData.postValue(Success(session.id, requestId, signedTransactions))
+                _signResultLiveData.postValue(Success(session.sessionIdentifier, requestId, signedTransactions))
             }
         }
 

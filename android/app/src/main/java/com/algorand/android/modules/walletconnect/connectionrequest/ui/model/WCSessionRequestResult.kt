@@ -13,21 +13,21 @@
 package com.algorand.android.modules.walletconnect.connectionrequest.ui.model
 
 import android.os.Parcelable
-import com.algorand.android.models.WalletConnectSession
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import kotlinx.parcelize.Parcelize
 
 sealed class WCSessionRequestResult {
 
-    abstract val wcSessionRequest: WalletConnectSession
+    abstract val sessionProposal: WalletConnectSessionProposal
 
     @Parcelize
     data class ApproveRequest(
-        override val wcSessionRequest: WalletConnectSession,
+        override val sessionProposal: WalletConnectSessionProposal,
         val accountAddresses: List<String>
     ) : WCSessionRequestResult(), Parcelable
 
     @Parcelize
     data class RejectRequest(
-        override val wcSessionRequest: WalletConnectSession
+        override val sessionProposal: WalletConnectSessionProposal
     ) : WCSessionRequestResult(), Parcelable
 }

@@ -14,8 +14,8 @@ package com.algorand.android.database
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.algorand.android.models.WalletConnectPeerMeta
-import com.algorand.android.models.WalletConnectSessionMeta
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectPeerMetaEntity
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionMetaEntity
 import com.google.gson.Gson
 import javax.inject.Inject
 
@@ -25,22 +25,22 @@ class WalletConnectTypeConverters @Inject constructor(
 ) {
 
     @TypeConverter
-    fun wcSessionToJson(wcSession: WalletConnectSessionMeta): String {
+    fun wcSessionToJson(wcSession: WalletConnectSessionMetaEntity): String {
         return gson.toJson(wcSession)
     }
 
     @TypeConverter
-    fun jsonToWcSession(json: String): WalletConnectSessionMeta {
-        return gson.fromJson(json, WalletConnectSessionMeta::class.java)
+    fun jsonToWcSession(json: String): WalletConnectSessionMetaEntity {
+        return gson.fromJson(json, WalletConnectSessionMetaEntity::class.java)
     }
 
     @TypeConverter
-    fun peerMetaToJson(peerMeta: WalletConnectPeerMeta): String {
+    fun peerMetaToJson(peerMeta: WalletConnectPeerMetaEntity): String {
         return gson.toJson(peerMeta)
     }
 
     @TypeConverter
-    fun jsonToPeerMeta(json: String): WalletConnectPeerMeta {
-        return gson.fromJson(json, WalletConnectPeerMeta::class.java)
+    fun jsonToPeerMeta(json: String): WalletConnectPeerMetaEntity {
+        return gson.fromJson(json, WalletConnectPeerMetaEntity::class.java)
     }
 }

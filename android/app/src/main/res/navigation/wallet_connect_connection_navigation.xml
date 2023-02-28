@@ -24,8 +24,8 @@
         android:label="WalletConnectConnectionBottomSheet"
         tools:layout="@layout/bottom_sheet_wallet_connect_connection">
         <argument
-            android:name="sessionRequest"
-            app:argType="com.algorand.android.models.WalletConnectSession" />
+            android:name="sessionProposal"
+            app:argType="com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal" />
         <action
             android:id="@+id/action_walletConnectConnectionBottomSheet_to_singleButtonBottomSheetNavigation"
             app:destination="@id/singleButtonBottomSheetNavigation"

@@ -15,13 +15,17 @@ package com.algorand.android.utils.walletconnect
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
+import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.ui.mapper.WalletConnectPreviewMapper
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -29,10 +33,11 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class WalletConnectViewModel @Inject constructor(
     private val walletConnectManager: WalletConnectManager,
-    private val walletConnectUrlHandler: WalletConnectUrlHandler
+    private val walletConnectUrlHandler: WalletConnectUrlHandler,
+    private val walletConnectPreviewMapper: WalletConnectPreviewMapper
 ) : BaseViewModel() {
 
-    val sessionResultFlow: SharedFlow<Event<Resource<WalletConnectSession>>>
+    val sessionResultFlow: SharedFlow<Event<Resource<WalletConnectSessionProposal>>>
         get() = walletConnectManager.sessionResultFlow
 
     val requestLiveData: LiveData<Event<Resource<WalletConnectTransaction>>?>
@@ -41,31 +46,25 @@ class WalletConnectViewModel @Inject constructor(
     val invalidTransactionCauseLiveData
         get() = walletConnectManager.invalidTransactionCauseLiveData
 
-    val localSessionsFlow: Flow<List<WalletConnectSession>>
+    val localSessionsFlow: Flow<List<WalletConnect.SessionDetail>>
         get() = walletConnectManager.localSessionsFlow
 
     fun connectToSessionByUrl(url: String) {
         walletConnectManager.connectToNewSession(url)
     }
 
-    fun connectToSession(session: WalletConnectSession) {
-        walletConnectManager.connectToExistingSession(session)
-    }
-
     fun approveSession(result: WCSessionRequestResult.ApproveRequest) {
         with(result) {
             viewModelScope.launch {
-                walletConnectManager.approveSession(wcSessionRequest, accountAddresses)
+                walletConnectManager.approveSession(sessionProposal, accountAddresses)
             }
         }
     }
 
-    fun rejectSession(session: WalletConnectSession) {
-        walletConnectManager.rejectSession(session)
-    }
-
-    fun killSession(session: WalletConnectSession) {
-        walletConnectManager.killSession(session)
+    fun rejectSession(sessionProposal: WalletConnectSessionProposal) {
+        viewModelScope.launch(Dispatchers.IO) {
+            walletConnectManager.rejectSession(sessionProposal)
+        }
     }
 
     fun handleWalletConnectUrl(url: String, listener: WalletConnectUrlHandler.Listener) {
@@ -74,9 +73,5 @@ class WalletConnectViewModel @Inject constructor(
 
     fun setWalletConnectSessionTimeoutListener(onSessionTimedOut: () -> Unit) {
         walletConnectManager.onSessionTimedOut = onSessionTimedOut
-    }
-
-    fun killAllWalletConnectSessions() {
-        walletConnectManager.killAllSessions()
     }
 }

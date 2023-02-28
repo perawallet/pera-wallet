@@ -23,10 +23,11 @@ import androidx.multidex.MultiDex
 import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate
 import com.algorand.android.migration.MigrationManager
 import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
-import com.algorand.android.utils.coremanager.ApplicationStatusObserver
 import com.algorand.android.modules.firebase.token.FirebaseTokenManager
+import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
+import com.algorand.android.modules.walletconnect.domain.WalletConnectSessionsStatusManager
+import com.algorand.android.utils.coremanager.ApplicationStatusObserver
 import com.algorand.android.utils.preference.getSavedThemePreference
-import com.algorand.android.utils.walletconnect.WalletConnectManager
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
 import javax.inject.Inject
@@ -54,6 +55,9 @@ open class PeraApp : Application() {
 
     @Inject
     lateinit var applicationStatusObserver: ApplicationStatusObserver
+
+    @Inject
+    lateinit var walletConnectSessionsStatusManager: WalletConnectSessionsStatusManager
 
     private val localizationDelegate = LocalizationApplicationDelegate()
 
@@ -85,6 +89,7 @@ open class PeraApp : Application() {
 
     private fun bindActivityLifecycleAwareComponents() {
         registerActivityLifecycleCallbacks(autoLockManager)
+        registerActivityLifecycleCallbacks(walletConnectSessionsStatusManager)
     }
 
     // https://issuetracker.google.com/issues/141726323

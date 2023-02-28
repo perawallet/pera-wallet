@@ -20,6 +20,7 @@ import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetWalletConnectConnectedAppsBinding
 import com.algorand.android.modules.walletconnect.sessions.ui.adapter.WalletConnectSessionAdapter
 import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -45,12 +46,12 @@ class WalletConnectConnectedAppsBottomSheet : BaseBottomSheet(
 
     private val walletConnectSessionAdapterListener =
         object : WalletConnectSessionAdapter.WalletConnectSessionAdapterListener {
-            override fun onDisconnectClick(sessionId: Long) {
-                walletConnectConnectedAppsViewModel.killWalletConnectSession(sessionId)
+            override fun onDisconnectClick(sessionIdentifier: WalletConnectSessionIdentifier) {
+                walletConnectConnectedAppsViewModel.killWalletConnectSession(sessionIdentifier)
             }
 
-            override fun onSessionClick(sessionId: Long) {
-                walletConnectConnectedAppsViewModel.connectToExistingSession(sessionId)
+            override fun onSessionClick(sessionIdentifier: WalletConnectSessionIdentifier) {
+                walletConnectConnectedAppsViewModel.connectToExistingSession(sessionIdentifier)
             }
         }
 

@@ -12,21 +12,16 @@
 
 package com.algorand.android.utils.walletconnect.peermeta
 
-object WalletConnectPeraPeerMeta : WalletConnectPeerMetaBuilder {
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 
-    override val appName: String
-        get() = "Pera Wallet"
-
-    override val appDescription: String
-        get() = "Pera Wallet: Simply the best Algorand wallet."
-
-    override val appUrl: String
-        get() = "https://perawallet.app/"
-
-    override val appIcons: List<String>
-        get() = listOf(
-            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-128.png",
-            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-192.png",
-            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-512.png"
-        )
-}
+object WalletConnectPeraPeerMeta : WalletConnect.PeerMeta(
+    name = "Pera Wallet",
+    description = "Pera Wallet: Simply the best Algorand wallet.",
+    url = "https://perawallet.app/",
+    icons = listOf(
+        "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-128.png",
+        "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-192.png",
+        "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-512.png"
+    ),
+    redirectUrl = null
+)

@@ -218,17 +218,25 @@ dependencies {
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:${libVersions.desugar}"
 
-    // Wallet Connect
+    // Wallet Connect v1
     implementation "org.java-websocket:Java-WebSocket:${libVersions.javaWebSocket}"
     implementation "com.github.komputing:khex:${libVersions.khex}"
     implementation "com.squareup.moshi:moshi:${libVersions.moshi}"
     implementation "com.squareup.moshi:moshi-kotlin:${libVersions.moshi}"
-    implementation "org.bouncycastle:bcprov-jdk15to18:${libVersions.bcprov}"
+
+    // Wallet Connect v2
+    implementation(platform("com.walletconnect:android-bom:${libVersions.walletConnectBom}"))
+    implementation("com.walletconnect:android-core") {
+        exclude group: 'com.jakewharton.timber', module: 'timber'
+    }
+    implementation "com.walletconnect:sign"
 
     // ExoPlayer
     implementation "com.google.android.exoplayer:exoplayer:${libVersions.exoPlayer}"
 
-    implementation "com.algorand:algosdk:${libVersions.algoSdk}"
+    implementation("com.algorand:algosdk:${libVersions.algoSdk}") {
+        exclude group: 'org.bouncycastle'
+    }
 
     // Test
     testImplementation "junit:junit:${testLibVersions.junit}"

@@ -15,10 +15,10 @@ package com.algorand.android.modules.walletconnect.connectionrequest.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WalletConnectConnectionPreview
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.usecase.WalletConnectConnectionPreviewUseCase
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,10 +33,10 @@ class WalletConnectConnectionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    val sessionRequest = savedStateHandle.getOrThrow<WalletConnectSession>(SESSION_REQUEST_KEY)
+    private val sessionProposal = savedStateHandle.getOrThrow<WalletConnectSessionProposal>(SESSION_PROPOSAL_KEY)
 
     val peerMetaName: String
-        get() = sessionRequest.peerMeta.name
+        get() = sessionProposal.peerMeta.name
 
     val walletConnectConnectionPreviewFlow: StateFlow<WalletConnectConnectionPreview?>
         get() = _walletConnectConnectionPreviewFlow
@@ -70,7 +70,7 @@ class WalletConnectConnectionViewModel @Inject constructor(
             val currentPreview = _walletConnectConnectionPreviewFlow.value ?: return@launch
             val sessionResult = walletConnectConnectionPreviewUseCase.getApprovedWalletConnectSessionResult(
                 accountAddresses = selectedAccountAddresses,
-                wcSessionRequest = sessionRequest
+                sessionProposal = sessionProposal
             )
             _walletConnectConnectionPreviewFlow.emit(
                 currentPreview.copy(approveWalletConnectSessionRequest = Event(sessionResult))
@@ -82,7 +82,7 @@ class WalletConnectConnectionViewModel @Inject constructor(
         viewModelScope.launch {
             val currentPreview = _walletConnectConnectionPreviewFlow.value ?: return@launch
             val sessionResult = walletConnectConnectionPreviewUseCase.getRejectedWalletConnectSessionResult(
-                wcSessionRequest = sessionRequest
+                sessionProposal = sessionProposal
             )
             _walletConnectConnectionPreviewFlow.emit(
                 currentPreview.copy(rejectWalletConnectSessionRequest = Event(sessionResult))
@@ -93,13 +93,13 @@ class WalletConnectConnectionViewModel @Inject constructor(
     private fun initWalletConnectConnectionPreview() {
         viewModelScope.launch {
             val preview = walletConnectConnectionPreviewUseCase.getWalletConnectConnectionPreview(
-                walletConnectPeerMeta = sessionRequest.peerMeta
+                walletConnectPeerMeta = sessionProposal.peerMeta
             )
             _walletConnectConnectionPreviewFlow.emit(preview)
         }
     }
 
     companion object {
-        private const val SESSION_REQUEST_KEY = "sessionRequest"
+        private const val SESSION_PROPOSAL_KEY = "sessionProposal"
     }
 }

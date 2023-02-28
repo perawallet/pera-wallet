@@ -1,5 +1,4 @@
 @file:Suppress("MaxLineLength")
-
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,10 +18,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.algorand.android.models.WalletConnectSessionAccountEntity
-import com.algorand.android.models.WalletConnectSessionByAccountsAddress
-import com.algorand.android.models.WalletConnectSessionEntity
-import com.algorand.android.models.WalletConnectSessionWithAccountsAddresses
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionAccountEntity
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionByAccountsAddress
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionEntity
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionWithAccountsAddresses
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -82,4 +81,10 @@ interface WalletConnectDao {
 
     @Query("UPDATE WalletConnectSessionEntity SET is_subscribed = 1 WHERE id = :sessionId")
     suspend fun setGivenSessionAsSubscribed(sessionId: Long)
+
+    @Query("SELECT * FROM WalletConnectSessionEntity ORDER BY date_time_stamp ASC LIMIT :count")
+    suspend fun getWalletConnectSessionListOrderedByCreationTime(count: Int): List<WalletConnectSessionEntity>?
+
+    @Query("SELECT COUNT(*) FROM WalletConnectSessionEntity")
+    suspend fun getWalletConnectSessionCount(): Int
 }

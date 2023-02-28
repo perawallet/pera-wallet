@@ -29,6 +29,7 @@ import com.algorand.android.R
 import com.algorand.android.databinding.ItemWalletConnectSessionBinding
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.utils.extensions.changeTextAppearance
 import com.algorand.android.utils.loadPeerMetaIcon
 
@@ -50,7 +51,7 @@ class WalletConnectSessionViewHolder(
                 appNameTextView.text = dAppName
 
                 moreButton.apply {
-                    setOnClickListener { showPopUpMenu(this, sessionId) }
+                    setOnClickListener { showPopUpMenu(this, sessionIdentifier) }
                 }
 
                 appDescriptionTextView.apply {
@@ -74,7 +75,7 @@ class WalletConnectSessionViewHolder(
                 }
 
                 setConnectionIndicatorTextView(connectedAccountItems, isConnected)
-                root.setOnClickListener { listener.onSessionClick(sessionId) }
+                root.setOnClickListener { listener.onSessionClick(sessionIdentifier) }
             }
         }
     }
@@ -104,10 +105,10 @@ class WalletConnectSessionViewHolder(
         }
     }
 
-    private fun showPopUpMenu(view: View, sessionId: Long) {
+    private fun showPopUpMenu(view: View, sessionIdentifier: WalletConnectSessionIdentifier) {
         PopupMenu(view.context, view).apply {
             menuInflater.inflate(R.menu.wallet_connect_session_menu, menu)
-            setOnMenuItemClickListener { listener.onSessionDisconnectClick(sessionId); true }
+            setOnMenuItemClickListener { listener.onSessionDisconnectClick(sessionIdentifier); true }
             show()
         }
     }
@@ -121,8 +122,8 @@ class WalletConnectSessionViewHolder(
     }
 
     interface Listener {
-        fun onSessionDisconnectClick(sessionId: Long)
-        fun onSessionClick(sessionId: Long)
+        fun onSessionDisconnectClick(sessionIdentifier: WalletConnectSessionIdentifier)
+        fun onSessionClick(sessionIdentifier: WalletConnectSessionIdentifier)
     }
 
     companion object {

@@ -17,18 +17,20 @@ import androidx.recyclerview.widget.ListAdapter
 import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 
 class WalletConnectSessionAdapter(
     private val listener: WalletConnectSessionAdapterListener
 ) : ListAdapter<WalletConnectSessionItem, BaseViewHolder<WalletConnectSessionItem>>(BaseDiffUtil()) {
 
     private val walletConnectSessionViewHolderListener = object : WalletConnectSessionViewHolder.Listener {
-        override fun onSessionDisconnectClick(sessionId: Long) {
-            listener.onDisconnectClick(sessionId)
+
+        override fun onSessionDisconnectClick(sessionIdentifier: WalletConnectSessionIdentifier) {
+            listener.onDisconnectClick(sessionIdentifier)
         }
 
-        override fun onSessionClick(sessionId: Long) {
-            listener.onSessionClick(sessionId)
+        override fun onSessionClick(sessionIdentifier: WalletConnectSessionIdentifier) {
+            listener.onSessionClick(sessionIdentifier)
         }
     }
 
@@ -41,7 +43,7 @@ class WalletConnectSessionAdapter(
     }
 
     interface WalletConnectSessionAdapterListener {
-        fun onDisconnectClick(sessionId: Long)
-        fun onSessionClick(sessionId: Long)
+        fun onDisconnectClick(sessionIdentifier: WalletConnectSessionIdentifier)
+        fun onSessionClick(sessionIdentifier: WalletConnectSessionIdentifier)
     }
 }

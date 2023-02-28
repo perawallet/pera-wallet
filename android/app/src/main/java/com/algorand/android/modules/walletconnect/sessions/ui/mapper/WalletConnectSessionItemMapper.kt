@@ -15,13 +15,17 @@ package com.algorand.android.modules.walletconnect.sessions.ui.mapper
 import android.net.Uri
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.ui.mapper.WalletConnectSessionIdentifierMapper
 import javax.inject.Inject
 
-class WalletConnectSessionItemMapper @Inject constructor() {
+class WalletConnectSessionItemMapper @Inject constructor(
+    private val sessionIdentifierMapper: WalletConnectSessionIdentifierMapper
+) {
 
     fun mapToWalletConnectSessionItem(
-        sessionId: Long,
+        sessionIdentifier: WalletConnect.SessionIdentifier,
         dAppLogoUrl: Uri?,
         dAppName: String,
         dAppDescription: String?,
@@ -31,7 +35,10 @@ class WalletConnectSessionItemMapper @Inject constructor() {
         isShowingDetails: Boolean
     ): WalletConnectSessionItem {
         return WalletConnectSessionItem(
-            sessionId = sessionId,
+            sessionIdentifier = sessionIdentifierMapper.mapToSessionIdentifier(
+                sessionIdentifier = sessionIdentifier.getIdentifier(),
+                versionIdentifier = sessionIdentifier.versionIdentifier
+            ),
             dAppLogoUrl = dAppLogoUrl,
             dAppName = dAppName,
             dAppDescription = dAppDescription,

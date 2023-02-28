@@ -13,13 +13,14 @@
 package com.algorand.android.utils
 
 import java.math.BigDecimal
+import java.math.BigDecimal.ZERO
 
 private const val MAX_PERCENTAGE = 100.0
 private const val PERCENTAGE_PRECISION = 2
 
 infix fun BigDecimal.percentageChangeOf(secondValue: BigDecimal): BigDecimal {
     val firstValue = this
-    if (firstValue <= BigDecimal.ZERO) return BigDecimal.ZERO
+    if (firstValue <= ZERO) return ZERO
     val percentageChange = (secondValue.minus(firstValue).div(firstValue).toFloat() * MAX_PERCENTAGE)
     return BigDecimal(percentageChange).setScale(PERCENTAGE_PRECISION, BigDecimal.ROUND_HALF_UP)
 }
@@ -37,7 +38,7 @@ infix fun BigDecimal.isEqualTo(other: BigDecimal): Boolean {
 }
 
 fun String?.toBigDecimalOrZero(): BigDecimal {
-    return this?.toBigDecimalOrNull() ?: BigDecimal.ZERO
+    return this?.toBigDecimalOrNull() ?: ZERO
 }
 
 fun BigDecimal.isPositive(): Boolean {
@@ -50,4 +51,12 @@ fun BigDecimal.isNegative(): Boolean {
 
 fun BigDecimal.isZero(): Boolean {
     return signum() == 0
+}
+
+fun BigDecimal.multiplyOrZero(multiplier: BigDecimal?): BigDecimal {
+    return this.multiply(multiplier ?: ZERO)
+}
+
+fun BigDecimal.multiplyOrNull(multiplier: BigDecimal?): BigDecimal? {
+    return this.multiply(multiplier ?: return null)
 }

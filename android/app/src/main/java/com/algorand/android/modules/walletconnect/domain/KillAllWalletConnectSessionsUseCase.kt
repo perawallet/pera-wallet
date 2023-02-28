@@ -12,7 +12,6 @@
 
 package com.algorand.android.modules.walletconnect.domain
 
-import com.algorand.android.utils.walletconnect.WalletConnectManager
 import javax.inject.Inject
 
 class KillAllWalletConnectSessionsUseCase @Inject constructor(

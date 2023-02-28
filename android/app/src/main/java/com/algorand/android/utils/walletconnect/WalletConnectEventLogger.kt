@@ -12,8 +12,9 @@
 
 package com.algorand.android.utils.walletconnect
 
-import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 
 interface WalletConnectEventLogger {
 
@@ -42,7 +43,7 @@ interface WalletConnectEventLogger {
      *
      * PARAMS dapp_name, dapp_url, topic, address
      */
-    fun logSessionConfirmation(session: WalletConnectSession, connectedAccountAddresses: List<String>)
+    fun logSessionConfirmation(sessionProposal: WalletConnectSessionProposal, connectedAccountAddresses: List<String>)
 
     /**
      * After the user rejects the session
@@ -51,7 +52,7 @@ interface WalletConnectEventLogger {
      *
      * PARAMS dapp_name, dapp_url, topic
      */
-    fun logSessionRejection(session: WalletConnectSession)
+    fun logSessionRejection(sessionProposal: WalletConnectSessionProposal)
 
     /**
      * After the user taps to disconnect
@@ -60,5 +61,5 @@ interface WalletConnectEventLogger {
      *
      * PARAMS dapp_name, dapp_url, address
      */
-    fun logSessionDisconnection(session: WalletConnectSession)
+    fun logSessionDisconnection(session: WalletConnect.SessionDetail)
 }

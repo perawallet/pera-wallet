@@ -15,14 +15,13 @@
     android:height="40dp"
     android:viewportWidth="40"
     android:viewportHeight="40">
-  <path
-      android:pathData="M20,0L20,0A20,20 0,0 1,40 20L40,20A20,20 0,0 1,20 40L20,40A20,20 0,0 1,0 20L0,20A20,20 0,0 1,20 0z"
-      android:fillColor="@color/algo_icon_bg" />
-  <group>
-    <clip-path
-        android:pathData="M8,8h24v24h-24z"/>
     <path
-        android:pathData="M28,27.998H25.491L23.861,21.946L20.36,27.998H17.559L22.972,18.631L22.102,15.379L14.802,28H12L21.251,12H23.703L24.778,15.976H27.309L25.58,18.976L28,27.998Z"
-        android:fillColor="@color/algo_icon" />
-  </group>
+        android:fillColor="@color/algo_icon_bg"
+        android:pathData="M20,0L20,0A20,20 0,0 1,40 20L40,20A20,20 0,0 1,20 40L20,40A20,20 0,0 1,0 20L0,20A20,20 0,0 1,20 0z" />
+    <group>
+        <clip-path android:pathData="M8,8h24v24h-24z" />
+        <path
+            android:fillColor="@color/algo_icon"
+            android:pathData="M28,27.998H25.491L23.861,21.946L20.36,27.998H17.559L22.972,18.631L22.102,15.379L14.802,28H12L21.251,12H23.703L24.778,15.976H27.309L25.58,18.976L28,27.998Z" />
+    </group>
 </vector>

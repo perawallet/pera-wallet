@@ -23,6 +23,7 @@ import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.getDecimalSeparator
+import com.algorand.android.utils.multiplyOrNull
 import com.algorand.android.utils.validator.AmountTransactionValidationUseCase
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -120,9 +121,9 @@ class AssetTransferAmountPreviewUseCase @Inject constructor(
         usdToDisplayedCurrencyConversionRate: BigDecimal?,
         displayCurrencySymbol: String
     ): String? {
-        return amount.multiply(usdValue ?: return null)
-            .multiply(usdToDisplayedCurrencyConversionRate ?: return null)
-            .formatAsCurrency(displayCurrencySymbol)
+        return amount.multiplyOrNull(usdValue)
+            ?.multiplyOrNull(usdToDisplayedCurrencyConversionRate)
+            ?.formatAsCurrency(displayCurrencySymbol)
     }
 
     private fun getAssetTransferAmountValidationResult(

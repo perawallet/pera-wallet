@@ -127,8 +127,8 @@
         android:id="@+id/action_global_walletConnectConnectionNavigation"
         app:destination="@id/walletConnectConnectionNavigation">
         <argument
-            android:name="sessionRequest"
-            app:argType="com.algorand.android.models.WalletConnectSession" />
+            android:name="sessionProposal"
+            app:argType="com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal" />
     </action>
 
     <action

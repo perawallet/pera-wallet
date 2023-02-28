@@ -12,56 +12,45 @@
 
 package com.algorand.android.utils.walletconnect
 
-import com.algorand.android.mapper.WalletConnectTransactionAssetDetailMapper
-import com.algorand.android.mapper.WalletConnectTransactionMapper
 import com.algorand.android.models.BaseAssetTransferTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
-import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransaction
-import com.algorand.android.models.WalletConnectTransactionAssetDetail
-import com.algorand.android.modules.assets.profile.about.domain.usecase.GetAssetDetailUseCase
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.ui.mapper.WalletConnectTransactionMapper
 import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.groupWalletConnectTransactions
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Error
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Success
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
 
 class WalletConnectCustomTransactionHandler @Inject constructor(
     private val transactionsRepository: TransactionsRepository,
     private val walletConnectTransactionMapper: WalletConnectTransactionMapper,
     private val errorProvider: WalletConnectTransactionErrorProvider,
     private val accountCacheManager: AccountCacheManager,
-    private val getAssetDetailUseCase: GetAssetDetailUseCase,
-    private val walletConnectTransactionAssetDetailMapper: WalletConnectTransactionAssetDetailMapper
+    private val walletConnectCustomTransactionAssetDetailHandler: WalletConnectCustomTransactionAssetDetailHandler
 ) {
 
-    /**
-     * Stores asset detail that wallet connect request contains
-     * to fasten the process for requests that contains same asset
-     */
-    private val assetCacheMap = mutableMapOf<Long, WalletConnectTransactionAssetDetail>()
-
-    @SuppressWarnings("ReturnCount")
+    @SuppressWarnings("ReturnCount", "LongMethod")
     suspend fun handleCustomTransaction(
-        sessionId: Long,
-        requestId: Long,
-        session: WalletConnectSession,
+        sessionIdentifier: WalletConnect.SessionIdentifier,
+        requestIdentifier: WalletConnect.RequestIdentifier,
+        session: WalletConnect.SessionDetail,
         payloadList: List<*>,
-        onResult: (WalletConnectTransactionResult) -> Unit
+        onResult: suspend (WalletConnectTransactionResult) -> Unit
     ) {
         try {
             val wcAlgoTxnRequestList = walletConnectTransactionMapper.parseTransactionPayload(payloadList)
 
             if (wcAlgoTxnRequestList == null) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput.unableToParse))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.unableToParse))
                 return
             }
 
             if (wcAlgoTxnRequestList.size > MAX_TRANSACTION_COUNT) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput.maxTransactionLimit))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.maxTransactionLimit))
                 return
             }
 
@@ -70,56 +59,71 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             }
 
             if (walletConnectTxnList.size != wcAlgoTxnRequestList.size) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput.unableToParse))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.unableToParse))
                 return
             }
 
             if (!checkIfNodesMatchesAndSetTransactionLastRound(walletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.unauthorized.mismatchingNodes))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.unauthorized.mismatchingNodes))
                 return
             }
 
             setAssetParamsIfNeed(walletConnectTxnList)
 
             if (hasInvalidAssetTransfer(walletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput.invalidAsset))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.invalidAsset))
                 return
             }
 
             val groupedWalletConnectTxnList = groupWalletConnectTransactions(walletConnectTxnList)
 
             if (groupedWalletConnectTxnList == null) {
-                onResult(Error(sessionId, requestId, errorProvider.rejected.failedGroupTransaction))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.rejected.failedGroupTransaction))
                 return
             }
 
             if (!areAllAddressPublicKeysValid(groupedWalletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput.invalidPublicKey))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.invalidPublicKey))
                 return
             }
 
             if (hasValidSigner(walletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput.invalidSigner))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.invalidSigner))
                 return
             }
 
             if (!hasAllAtomicAtLeastOneTxnNeedsToBeSigned(groupedWalletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput.atomicTxnNoNeedToBeSigned))
+                onResult(
+                    Error(
+                        sessionIdentifier,
+                        requestIdentifier,
+                        errorProvider.invalidInput.atomicTxnNoNeedToBeSigned
+                    )
+                )
                 return
             }
 
             if (!doAppHaveAtLeastOneSignerAccountInTxn(groupedWalletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.unauthorized.missingSigner))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.unauthorized.missingSigner))
                 return
             }
 
             val transactionMessage = walletConnectTransactionMapper.parseSignTxnOptions(payloadList)?.message
-            val result = WalletConnectTransaction(requestId, groupedWalletConnectTxnList, session, transactionMessage)
+            val requestId = requestIdentifier.getIdentifier()
+            val version = sessionIdentifier.versionIdentifier
+            val walletConnectSession = walletConnectTransactionMapper.mapToWalletConnectSession(session)
+            val result = WalletConnectTransaction(
+                requestId = requestId,
+                transactionList = groupedWalletConnectTxnList,
+                session = walletConnectSession,
+                message = transactionMessage,
+                versionIdentifier = version
+            )
             onResult(Success(result))
-            assetCacheMap.clear()
         } catch (exception: Exception) {
-            onResult(Error(sessionId, requestId, errorProvider.invalidInput.unableToParse))
-            assetCacheMap.clear()
+            onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.unableToParse))
+        } finally {
+            walletConnectCustomTransactionAssetDetailHandler.clearAssetCacheMap()
         }
     }
 
@@ -164,35 +168,8 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
         val assetListToBeFetched = walletConnectTxnList.filterIsInstance<WalletConnectAssetDetail>()
         if (assetListToBeFetched.isEmpty()) return
         assetListToBeFetched.forEach {
-            getAssetParams(it)
-        }
-    }
-
-    private suspend fun getAssetParams(assetTransaction: WalletConnectAssetDetail) {
-        val cachedAsset = assetCacheMap.getOrDefault(assetTransaction.assetId, null)
-        if (cachedAsset != null) {
-            assetTransaction.walletConnectTransactionAssetDetail = cachedAsset
-        } else {
-            getAssetDetailUseCase.getAssetDetail(assetTransaction.assetId).collect { result ->
-                result.useSuspended(
-                    onSuccess = { assetDetail ->
-                        val walletConnectTransactionAssetDetail = with(assetDetail) {
-                            walletConnectTransactionAssetDetailMapper.mapToWalletConnectTransactionAssetDetail(
-                                assetId = assetId,
-                                fullName = fullName,
-                                shortName = shortName,
-                                fractionDecimals = fractionDecimals,
-                                verificationTier = verificationTier
-                            )
-                        }
-                        assetCacheMap[assetTransaction.assetId] = walletConnectTransactionAssetDetail
-                        assetTransaction.walletConnectTransactionAssetDetail = walletConnectTransactionAssetDetail
-                    },
-                    onFailed = {
-                        // TODO Handle fail case
-                    }
-                )
-            }
+            val walletConnectAssetDetail = walletConnectCustomTransactionAssetDetailHandler.getAssetParams(it.assetId)
+            it.walletConnectTransactionAssetDetail = walletConnectAssetDetail
         }
     }
 

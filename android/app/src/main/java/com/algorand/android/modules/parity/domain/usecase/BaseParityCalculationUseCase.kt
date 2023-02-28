@@ -18,6 +18,7 @@ import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.modules.parity.domain.mapper.ParityValueMapper
 import com.algorand.android.modules.parity.domain.model.ParityValue
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
+import com.algorand.android.utils.multiplyOrZero
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -36,11 +37,10 @@ abstract class BaseParityCalculationUseCase(
         conversionRate: BigDecimal?,
         currencySymbol: String
     ): ParityValue {
-        val safeAssetUsdValue = assetUsdValue ?: BigDecimal.ZERO
         val safeDecimal = assetDecimals ?: DEFAULT_ASSET_DECIMAL
         val amountInSelectedCurrency = amount.toBigDecimal().movePointLeft(safeDecimal)
-            .multiply(conversionRate ?: BigDecimal.ZERO)
-            .multiply(safeAssetUsdValue)
+            .multiplyOrZero(conversionRate)
+            .multiplyOrZero(assetUsdValue)
         return parityValueMapper.mapToParityValue(amountInSelectedCurrency, currencySymbol)
     }
 }

@@ -14,10 +14,11 @@ package com.algorand.android.network
 
 import com.algorand.android.models.BlockResponse
 import com.algorand.android.models.NextBlockResponse
-import com.algorand.android.modules.transactionhistory.data.model.PendingTransactionsResponse
+import com.algorand.android.models.NodeAssetDetailResponse
 import com.algorand.android.models.SendTransactionResponse
 import com.algorand.android.models.TotalAlgoSupply
 import com.algorand.android.models.TransactionParams
+import com.algorand.android.modules.transactionhistory.data.model.PendingTransactionsResponse
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -46,4 +47,9 @@ interface AlgodApi {
 
     @GET("/v2/blocks/{block_id}")
     suspend fun getBlockById(@Path("block_id") blockId: Long): Response<BlockResponse>
+
+    @GET("/v2/assets/{asset_id}")
+    suspend fun getAssetDetail(
+        @Path("asset_id") assetId: Long
+    ): Response<NodeAssetDetailResponse>
 }

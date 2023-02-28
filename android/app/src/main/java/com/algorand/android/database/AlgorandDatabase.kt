@@ -21,8 +21,8 @@ import com.algorand.android.database.AlgorandDatabase.Companion.LATEST_DB_VERSIO
 import com.algorand.android.models.Node
 import com.algorand.android.models.NotificationFilter
 import com.algorand.android.models.User
-import com.algorand.android.models.WalletConnectSessionAccountEntity
-import com.algorand.android.models.WalletConnectSessionEntity
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionAccountEntity
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionEntity
 
 @Suppress("MagicNumber", "MaxLineLength")
 @Database(

@@ -16,8 +16,10 @@ import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.walletconnect.connectedapps.ui.domain.WalletConnectConnectedAppsPreviewUseCase
 import com.algorand.android.modules.walletconnect.connectedapps.ui.model.WalletConnectConnectedAppsPreview
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -36,12 +38,16 @@ class WalletConnectConnectedAppsViewModel @Inject constructor(
         initWalletConnectConnectedAppsPreviewFlow()
     }
 
-    fun killWalletConnectSession(sessionId: Long) {
-        walletConnectConnectedAppsPreviewUseCase.killWalletConnectSession(sessionId)
+    fun killWalletConnectSession(sessionIdentifier: WalletConnectSessionIdentifier) {
+        viewModelScope.launch(Dispatchers.IO) {
+            walletConnectConnectedAppsPreviewUseCase.killWalletConnectSession(sessionIdentifier)
+        }
     }
 
-    fun connectToExistingSession(sessionId: Long) {
-        walletConnectConnectedAppsPreviewUseCase.connectToExistingSession(sessionId)
+    fun connectToExistingSession(sessionIdentifier: WalletConnectSessionIdentifier) {
+        viewModelScope.launch(Dispatchers.IO) {
+            walletConnectConnectedAppsPreviewUseCase.connectToExistingSession(sessionIdentifier)
+        }
     }
 
     private fun initWalletConnectConnectedAppsPreviewFlow() {

@@ -16,12 +16,13 @@ import android.content.Context
 import androidx.annotation.StringRes
 import com.algorand.android.R
 import com.algorand.android.models.WalletConnectSignResult.Error.Defined
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.utils.getXmlStyledString
 
 sealed class WalletConnectSignResult {
 
     data class Success(
-        val sessionId: Long,
+        val sessionIdentifier: WalletConnectSessionIdentifier,
         val requestId: Long,
         val signedTransaction: List<ByteArray?>
     ) : WalletConnectSignResult()

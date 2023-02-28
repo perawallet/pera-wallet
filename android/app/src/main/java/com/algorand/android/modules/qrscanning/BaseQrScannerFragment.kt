@@ -26,9 +26,9 @@ import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.StatusBarConfiguration
-import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
 import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.utils.CAMERA_PERMISSION
 import com.algorand.android.utils.CAMERA_PERMISSION_REQUEST_CODE
 import com.algorand.android.utils.SingleButtonBottomSheet
@@ -175,7 +175,7 @@ abstract class BaseQrScannerFragment(
         view?.viewTreeObserver?.removeOnWindowFocusChangeListener(onWindowFocusChangeListener)
     }
 
-    private fun onGetLocalSessionsSuccess(wcSessions: List<WalletConnectSession>) {
+    private fun onGetLocalSessionsSuccess(wcSessions: List<WalletConnect.SessionDetail>) {
         val numberOfSessions = wcSessions.count()
         binding.appConnectedButton.apply {
             isVisible = numberOfSessions > 0

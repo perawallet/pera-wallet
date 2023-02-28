@@ -16,9 +16,10 @@ import android.net.Uri
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import com.algorand.android.models.RecyclerListItem
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 
 data class WalletConnectSessionItem(
-    val sessionId: Long,
+    val sessionIdentifier: WalletConnectSessionIdentifier,
     val dAppLogoUrl: Uri?,
     val dAppName: String,
     val dAppDescription: String?,
@@ -29,7 +30,7 @@ data class WalletConnectSessionItem(
 ) : RecyclerListItem {
 
     override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-        return other is WalletConnectSessionItem && sessionId == other.sessionId
+        return other is WalletConnectSessionItem && sessionIdentifier == other.sessionIdentifier
     }
 
     override fun areContentsTheSame(other: RecyclerListItem): Boolean {

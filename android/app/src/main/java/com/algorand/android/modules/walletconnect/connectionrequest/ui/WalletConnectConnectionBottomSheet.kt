@@ -67,7 +67,7 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(R.layout.bottom_sheet
     private val sessionApprovalCollector: suspend (Event<WCSessionRequestResult.ApproveRequest>?) -> Unit = {
         it?.consume()?.run {
             listener?.onSessionRequestResult(this)
-            handleFallbackBrowserNavigation(wcSessionRequest.fallbackBrowserGroupResponse)
+            handleFallbackBrowserNavigation(sessionProposal.fallbackBrowserGroupResponse)
         }
     }
 

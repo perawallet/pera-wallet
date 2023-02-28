@@ -14,7 +14,8 @@ package com.algorand.android.utils.walletconnect
 
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSessionMeta
-import com.algorand.android.models.WalletConnectTransactionErrorResponse
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectClientListener
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectTransactionErrorResponse
 
 const val LEGACY_ALGO_CHAIN_ID = 4160L
 const val DEFAULT_CHAIN_ID = LEGACY_ALGO_CHAIN_ID

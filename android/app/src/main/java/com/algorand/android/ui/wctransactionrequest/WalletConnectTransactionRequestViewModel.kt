@@ -28,12 +28,12 @@ import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.models.builder.WalletConnectTransactionListBuilder
+import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.getOrElse
 import com.algorand.android.utils.preference.getFirstWalletConnectRequestBottomSheetShown
 import com.algorand.android.utils.preference.setFirstWalletConnectRequestBottomSheetShown
-import com.algorand.android.utils.walletconnect.WalletConnectManager
 import com.algorand.android.utils.walletconnect.WalletConnectSignManager
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -72,8 +72,14 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     }
 
     fun rejectRequest() {
-        transaction?.let {
-            walletConnectManager.rejectRequest(it.session.id, it.requestId, errorProvider.rejected.userRejection)
+        viewModelScope.launch {
+            transaction?.let {
+                walletConnectManager.rejectRequest(
+                    sessionIdentifier = it.session.sessionIdentifier,
+                    requestId = it.requestId,
+                    errorResponse = errorProvider.rejected.userRejection
+                )
+            }
         }
     }
 
@@ -90,7 +96,9 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     }
 
     fun processWalletConnectSignResult(result: WalletConnectSignResult) {
-        walletConnectManager.processWalletConnectSignResult(result)
+        viewModelScope.launch {
+            walletConnectManager.processWalletConnectSignResult(result)
+        }
     }
 
     fun stopAllResources() {

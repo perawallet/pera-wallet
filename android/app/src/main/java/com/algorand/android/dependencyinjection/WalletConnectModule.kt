@@ -16,75 +16,21 @@ import android.content.Context
 import com.algorand.android.R
 import com.algorand.android.models.BaseWalletConnectErrorProvider
 import com.algorand.android.network.AlgodInterceptor
-import com.algorand.android.utils.walletconnect.WCWalletConnectClient
-import com.algorand.android.utils.walletconnect.WCWalletConnectMapper
-import com.algorand.android.utils.walletconnect.WalletConnectClient
 import com.algorand.android.utils.walletconnect.WalletConnectCustomTransactionHandler.Companion.MAX_TRANSACTION_COUNT
 import com.algorand.android.utils.walletconnect.WalletConnectEventLogger
 import com.algorand.android.utils.walletconnect.WalletConnectFirebaseEventLogger
-import com.algorand.android.utils.walletconnect.WalletConnectSessionBuilder
-import com.algorand.android.utils.walletconnect.WalletConnectSessionCachedDataHandler
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.gson.Gson
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
-import org.walletconnect.impls.FileWCSessionStore
-import java.io.File
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object WalletConnectModule {
-
-    @Singleton
-    @Provides
-    fun provideMoshi(): Moshi {
-        return Moshi.Builder()
-            .addLast(KotlinJsonAdapterFactory())
-            .build()
-    }
-
-    @Singleton
-    @Provides
-    @Named("wcWalletClient")
-    fun provideWalletConnectClient(
-        walletConnectSessionBuilder: WalletConnectSessionBuilder,
-        walletConnectMapper: WCWalletConnectMapper,
-        cachedDataHandler: WalletConnectSessionCachedDataHandler
-    ): WalletConnectClient {
-        return WCWalletConnectClient(
-            sessionBuilder = walletConnectSessionBuilder,
-            walletConnectMapper = walletConnectMapper,
-            sessionCachedDataHandler = cachedDataHandler
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideWalletConnectSessionBuilder(
-        @Named("walletConnectHttpClient") okHttpClient: OkHttpClient,
-        @ApplicationContext appContext: Context,
-        gson: Gson,
-        moshi: Moshi,
-        walletConnectMapper: WCWalletConnectMapper
-    ): WalletConnectSessionBuilder {
-        val storageFile = File(appContext.cacheDir, WCWalletConnectClient.CACHE_STORAGE_NAME).apply { createNewFile() }
-        return WalletConnectSessionBuilder(
-            gson,
-            moshi,
-            okHttpClient,
-            FileWCSessionStore(storageFile, moshi),
-            walletConnectMapper
-        )
-    }
 
     @Provides
     fun provideWalletConnectEventLogger(

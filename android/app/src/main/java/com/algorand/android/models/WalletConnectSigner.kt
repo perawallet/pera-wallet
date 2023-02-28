@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectTransactionErrorResponse
 import com.algorand.android.utils.isValidAddress
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import kotlinx.parcelize.Parcelize

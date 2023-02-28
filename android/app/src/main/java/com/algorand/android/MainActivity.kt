@@ -35,7 +35,6 @@ import androidx.annotation.StringRes
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.coroutineScope
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import com.algorand.android.core.TransactionManager
@@ -57,7 +56,6 @@ import com.algorand.android.models.NotificationType
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
 import com.algorand.android.models.TransactionManagerResult
-import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
 import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
@@ -68,6 +66,7 @@ import com.algorand.android.modules.perawebview.ui.BasePeraWebViewFragment
 import com.algorand.android.modules.qrscanning.QrScannerViewModel
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.WalletConnectConnectionBottomSheet
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import com.algorand.android.modules.webexport.model.WebExportQrCode
 import com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment
 import com.algorand.android.ui.lockpreference.AutoLockSuggestionManager
@@ -79,6 +78,7 @@ import com.algorand.android.utils.WC_TRANSACTION_ID_INTENT_KEY
 import com.algorand.android.utils.analytics.logTapReceive
 import com.algorand.android.utils.analytics.logTapSend
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.handleIntentWithBundle
 import com.algorand.android.utils.inappreview.InAppReviewManager
 import com.algorand.android.utils.isNotificationCanBeShown
@@ -92,8 +92,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.properties.Delegates
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity :
@@ -367,8 +365,8 @@ class MainActivity :
         }
     }
 
-    private fun onNewSessionEvent(sessionEvent: Event<Resource<WalletConnectSession>>) {
-        sessionEvent.consume()?.use(
+    private val sessionResultFlowCollector: suspend (Event<Resource<WalletConnectSessionProposal>>) -> Unit = { event ->
+        event.consume()?.use(
             onSuccess = ::onSessionConnected,
             onFailed = ::onSessionFailed,
             onLoading = ::showProgress,
@@ -376,7 +374,7 @@ class MainActivity :
         )
     }
 
-    private fun onSessionConnected(wcSessionRequest: WalletConnectSession) {
+    private fun onSessionConnected(wcSessionRequest: WalletConnectSessionProposal) {
         nav(HomeNavigationDirections.actionGlobalWalletConnectConnectionNavigation(wcSessionRequest))
     }
 
@@ -462,9 +460,10 @@ class MainActivity :
             swapNavigationDirectionCollector
         )
 
-        lifecycleScope.launch {
-            walletConnectViewModel.sessionResultFlow.collectLatest(::onNewSessionEvent)
-        }
+        collectOnLifecycle(
+            flow = walletConnectViewModel.sessionResultFlow,
+            collection = sessionResultFlowCollector
+        )
 
         walletConnectViewModel.setWalletConnectSessionTimeoutListener(::onWalletConnectSessionTimedOut)
 
@@ -625,7 +624,7 @@ class MainActivity :
         with(walletConnectViewModel) {
             when (result) {
                 is WCSessionRequestResult.ApproveRequest -> approveSession(result)
-                is WCSessionRequestResult.RejectRequest -> rejectSession(result.wcSessionRequest)
+                is WCSessionRequestResult.RejectRequest -> rejectSession(result.sessionProposal)
             }
         }
     }
