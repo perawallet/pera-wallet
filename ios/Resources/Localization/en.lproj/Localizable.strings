@@ -341,7 +341,8 @@
 // MARK: Options
 "options-title" = "ACCOUNT SETTINGS";
 "options-show-qr" = "Show Address";
-"options-rekey" = "Rekey Account";
+"options-rekey-ledger" = "Rekey to Ledger Account";
+"options-rekey-standard" = "Rekey to Standard Account";
 "options-view-passphrase" = "View Passphrase";
 "options-passphrase" = "Passphrase";
 "options-edit-account-name" = "Rename Account";
@@ -356,6 +357,7 @@
 "options-manage-assets" = "Manage Assets";
 "options-manage-collectibles" = "Manage NFTs";
 "options-sort-title" = "Sort";
+"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";

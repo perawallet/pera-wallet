@@ -39,7 +39,7 @@ final class WCConnectionViewModel: ViewModel {
 
 extension WCConnectionViewModel {
     private func bindImage(_ session: WalletConnectSession) {
-        self.image = PNGImageSource(
+        self.image = DefaultURLImageSource(
             url: session.dAppInfo.peerMeta.icons.first,
             color: nil,
             size: .resize(

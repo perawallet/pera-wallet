@@ -21,6 +21,7 @@ import MacaroonUIKit
 struct SettingsToggleViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
     let name: TextStyle
+    let toggle: ToggleTheme
     
     let imageSize: LayoutSize
     let nameOffset: LayoutMetric
@@ -37,5 +38,6 @@ struct SettingsToggleViewTheme: LayoutSheet, StyleSheet {
         self.imageSize = (24, 24)
         self.nameOffset = 16
         self.horizontalInset = 24
+        self.toggle = ToggleTheme(family)
     }
 }

@@ -22,6 +22,7 @@ import UIKit
 struct TitledToggleViewTheme: StyleSheet, LayoutSheet {
     let titleLabel: TextStyle
     let horizontalPadding: LayoutMetric
+    let toggle: ToggleTheme
 
     init(_ family: LayoutFamily) {
         self.titleLabel = [
@@ -32,5 +33,6 @@ struct TitledToggleViewTheme: StyleSheet, LayoutSheet {
             .text("notification-filter-show-title".localized)
         ]
         self.horizontalPadding = 24
+        self.toggle = ToggleTheme(family)
     }
 }

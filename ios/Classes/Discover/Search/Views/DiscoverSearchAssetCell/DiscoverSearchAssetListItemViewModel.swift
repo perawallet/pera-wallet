@@ -70,7 +70,7 @@ extension DiscoverSearchAssetListItemViewModel {
             image: .init(asset: "asset-image-placeholder-border".uiImage),
             text: .string(placeholderText)
         )
-        imageSource = PNGImageSource(url: url, shape: iconShape, placeholder: placeholder)
+        imageSource = DefaultURLImageSource(url: url, shape: iconShape, placeholder: placeholder)
     }
 
     mutating func bindTitle(asset: AssetDecoration) {

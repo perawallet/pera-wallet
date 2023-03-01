@@ -61,7 +61,7 @@ extension OptInAssetListItemViewModel {
             image: .init(asset: placeholderImage),
             text: .string(placeholderText)
         )
-        icon = PNGImageSource(url: url, shape: iconShape, placeholder: placeholder)
+        icon = DefaultURLImageSource(url: url, shape: iconShape, placeholder: placeholder)
     }
 
     mutating func bindTitle(asset: AssetDecoration) {

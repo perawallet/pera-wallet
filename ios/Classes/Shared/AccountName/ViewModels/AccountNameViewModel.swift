@@ -92,6 +92,6 @@ extension AccountNameViewModel {
     }
 
     private func bindImage(from nameService: NameService) {
-        image = PNGImageSource(url: URL(string: nameService.service.logo))
+        image = DefaultURLImageSource(url: URL(string: nameService.service.logo))
     }
 }

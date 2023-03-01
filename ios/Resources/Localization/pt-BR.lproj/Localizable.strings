@@ -1307,7 +1307,10 @@
 "options-passphrase" = "Frase Senha";
 
 /* (No Comment) */
-"options-rekey" = "Rechavear Conta";
+"options-rekey-ledger" = "Rekey to Ledger Account";
+
+/* (No Comment) */
+"options-rekey-standard" = "Rekey to Standard Account";
 
 /* (No Comment) */
 "options-remove-account" = "Remover Conta";
@@ -1323,6 +1326,9 @@
 
 /* (No Comment) */
 "options-sort-title" = "Ordenar";
+
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 
 /* MARK: Options */
 "options-title" = "CONFIGURAÇÕES DE CONTA";

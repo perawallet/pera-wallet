@@ -171,7 +171,14 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
             return
         }
 
-        open(.rekeyConfirmation(account: rekeyedAccount, ledgerDetail: account.ledgerDetail, ledgerAddress: account.address), by: .push)
+        open(
+            .rekeyConfirmation(
+                account: rekeyedAccount,
+                ledgerDetail: account.ledgerDetail,
+                newAuthAddress: account.address
+            ),
+            by: .push
+        )
     }
 
     private func openAccountVerification() {

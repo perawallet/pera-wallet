@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountNameSwitchViewTheme.swift
+//   ToggleTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AccountNameSwitchViewTheme: StyleSheet, LayoutSheet {
-    let horizontalPadding: LayoutMetric
-    let toggle: ToggleTheme
+struct ToggleTheme:
+    LayoutSheet,
+    StyleSheet {
+    var offTintColor: Color
+    var onTintColor: Color
 
     init(_ family: LayoutFamily) {
-        self.horizontalPadding = 24
-        self.toggle = ToggleTheme(family)
+        self.offTintColor = Colors.Switches.offBackground
+        self.onTintColor = Colors.Switches.background
     }
 }

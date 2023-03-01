@@ -32,14 +32,18 @@ final class AssetFilterItemView:
 
     var isEnabled: Bool {
         get { toggleView.isUserInteractionEnabled }
-        set { toggleView.isUserInteractionEnabled = newValue }
+        set { updateUIForState(enabled: newValue) }
     }
 
     private lazy var titleView = Label()
     private lazy var descriptionView = Label()
     private lazy var toggleView = Toggle()
 
+    private var theme: AssetFilterItemViewTheme?
+
     func customize(_ theme: AssetFilterItemViewTheme) {
+        self.theme = theme
+
         addBackground(theme)
         addTitle(theme)
         addToggle(theme)
@@ -68,6 +72,13 @@ final class AssetFilterItemView:
 }
 
 extension AssetFilterItemView {
+    private func updateUIForState(enabled: Bool) {
+        toggleView.isUserInteractionEnabled = enabled
+        alpha = enabled ? 1 : 0.5
+    }
+}
+
+extension AssetFilterItemView {
     private func addBackground(_ theme: AssetFilterItemViewTheme) {
         customizeAppearance(theme.background)
     }
@@ -84,6 +95,8 @@ extension AssetFilterItemView {
     }
 
     private func addToggle(_ theme: AssetFilterItemViewTheme) {
+        toggleView.customize(theme.toggle)
+
         addSubview(toggleView)
         toggleView.fitToHorizontalIntrinsicSize()
         toggleView.snp.makeConstraints {

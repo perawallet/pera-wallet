@@ -57,7 +57,7 @@ extension CollectibleMediaWebPImagePreviewViewModel {
                 .setExpectedImageSize(imageSize)
                 .build()
 
-            image = PNGImageSource(
+            image = DefaultURLImageSource(
                 url: prismURL,
                 shape: .rounded(12),
                 placeholder: getPlaceholder(placeholder)
@@ -65,7 +65,7 @@ extension CollectibleMediaWebPImagePreviewViewModel {
             return
         }
 
-        image = PNGImageSource(
+        image = DefaultURLImageSource(
             url: nil,
             placeholder: getPlaceholder(placeholder)
         )

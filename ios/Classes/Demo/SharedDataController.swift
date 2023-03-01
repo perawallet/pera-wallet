@@ -80,6 +80,10 @@ protocol SharedDataController: AnyObject {
     func getTransactionParams(
         _ handler: @escaping (Result<TransactionParams, HIPNetworkError<NoAPIModel>>) -> Void
     )
+    
+    func rekeyedAccounts(
+        of account: Account
+    ) -> [AccountHandle]
 }
 
 extension SharedDataController {

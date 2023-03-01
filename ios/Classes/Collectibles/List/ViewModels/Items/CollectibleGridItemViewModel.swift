@@ -192,7 +192,7 @@ extension CollectibleGridItemViewModel {
                 .setExpectedImageSize(imageSize)
                 .build()
 
-            return PNGImageSource(
+            return DefaultURLImageSource(
                 url: prismURL,
                 shape: .rounded(4),
                 placeholder: getPlaceholder(placeholder)
@@ -200,7 +200,7 @@ extension CollectibleGridItemViewModel {
         }
 
         let imageSource =
-        PNGImageSource(
+        DefaultURLImageSource(
             url: nil,
             placeholder: getPlaceholder(placeholder)
         )
@@ -274,7 +274,7 @@ extension CollectibleGridItemViewModel {
                 .setExpectedImageSize(imageSize)
                 .build()
          }
-        image = PNGImageSource(
+        image = DefaultURLImageSource(
             url: url,
             shape: url == nil ? .original : .rounded(4),
             placeholder: getPlaceholder(placeholder)
@@ -310,7 +310,7 @@ extension CollectibleGridItemViewModel {
                 .setExpectedImageSize(imageSize)
                 .build()
          }
-        image = PNGImageSource(
+        image = DefaultURLImageSource(
             url: url,
             shape: url == nil ? .original : .rounded(4),
             placeholder: getPlaceholder(placeholder)
@@ -346,7 +346,7 @@ extension CollectibleGridItemViewModel {
                 .setExpectedImageSize(imageSize)
                 .build()
          }
-        image = PNGImageSource(
+        image = DefaultURLImageSource(
             url: url,
             shape: url == nil ? .original : .rounded(4),
             placeholder: getPlaceholder(placeholder)

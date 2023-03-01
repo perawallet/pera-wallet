@@ -57,14 +57,14 @@ extension CollectibleMediaGIFPreviewViewModel {
                 .setImageQuality(.normal)
                 .build()
 
-            image = PNGImageSource(
+            image = DefaultURLImageSource(
                 url: prismURL,
                 placeholder: getPlaceholder(placeholder)
             )
             return
         }
 
-        image = PNGImageSource(
+        image = DefaultURLImageSource(
             url: nil,
             placeholder: getPlaceholder(placeholder)
         )

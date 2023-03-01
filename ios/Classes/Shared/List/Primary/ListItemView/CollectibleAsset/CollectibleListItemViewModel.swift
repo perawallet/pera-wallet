@@ -81,7 +81,7 @@ extension CollectibleListItemViewModel {
             image: placeholderImage,
             text: .string(placeholderText)
         )
-        icon = PNGImageSource(url: url, shape: iconShape, placeholder: placeholder)
+        icon = DefaultURLImageSource(url: url, shape: iconShape, placeholder: placeholder)
     }
 
     private mutating func bindBottomRightBadge(

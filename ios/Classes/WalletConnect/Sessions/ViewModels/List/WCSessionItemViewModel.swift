@@ -54,7 +54,7 @@ extension WCSessionItemViewModel {
             image: AssetImageSource(asset: placeholderImages.randomElement()!.uiImage)
         )
 
-        image = PNGImageSource(
+        image = DefaultURLImageSource(
             url: peerMeta.icons.first,
             size: .resize(CGSize(width: 40, height: 40), .aspectFit),
             shape: .circle,

@@ -112,7 +112,7 @@ extension SwapTransactionSigner {
         self.unsignedTransaction = unsignedTransaction
         self.account = account
 
-        guard let signature = api.session.privateData(for: account.address) else {
+        guard let signature = api.session.privateData(for: account.signerAddress) else {
             return
         }
 

@@ -41,7 +41,7 @@ extension WCSessionShortListItemViewModel {
             "icon-session-placeholder-4"
         ]
 
-        image = PNGImageSource(
+        image = DefaultURLImageSource(
             url: session.peerMeta.icons.first,
             color: nil,
             size: .resize(CGSize(width: 40, height: 40), .aspectFit),

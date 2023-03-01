@@ -50,7 +50,7 @@ extension AssetAmountInputViewModel {
             text: .string(placeholderText)
         )
 
-        return PNGImageSource(
+        return DefaultURLImageSource(
             url: prismURL,
             shape: .circle,
             placeholder: placeholder

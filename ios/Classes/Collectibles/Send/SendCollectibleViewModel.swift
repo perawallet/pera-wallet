@@ -79,7 +79,7 @@ extension SendCollectibleViewModel {
                 .setImageQuality(.normal)
                 .build()
 
-            image = PNGImageSource(
+            image = DefaultURLImageSource(
                 url: prismURL,
                 shape: .rounded(4),
                 placeholder: getPlaceholder(placeholder)
@@ -87,7 +87,7 @@ extension SendCollectibleViewModel {
             return
         }
 
-        image = PNGImageSource(
+        image = DefaultURLImageSource(
             url: nil,
             placeholder: getPlaceholder(placeholder)
         )

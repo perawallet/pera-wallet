@@ -22,7 +22,7 @@ import MacaroonURLImage
 import Prism
 
 protocol PrimaryImageViewModel {
-    var imageSource: PNGImageSource? { get }
+    var imageSource: DefaultURLImageSource? { get }
     var image: UIImage? { get }
 }
 
@@ -83,13 +83,13 @@ extension PrimaryImageViewModel {
         shape: ImageShape,
         placeholder: String?,
         placeholderAttributes: TextAttributes
-    ) -> PNGImageSource {
+    ) -> DefaultURLImageSource {
         let prismURL = PrismURL(baseURL: url)?
             .setExpectedImageSize(size)
             .setImageQuality(.normal)
             .build()
 
-        return PNGImageSource(
+        return DefaultURLImageSource(
             url: prismURL,
             shape: shape,
             placeholder: getPlaceholder(
@@ -109,7 +109,7 @@ enum AssetImage {
 struct StandardAssetImageViewModel:
     PrimaryImageViewModel,
     Hashable {
-    private(set) var imageSource: PNGImageSource?
+    private(set) var imageSource: DefaultURLImageSource?
     private(set) var image: UIImage?
 
     init(
@@ -151,7 +151,7 @@ struct StandardAssetImageViewModel:
 struct AssetImageLargeViewModel:
     PrimaryImageViewModel,
     Hashable {
-    private(set) var imageSource: PNGImageSource?
+    private(set) var imageSource: DefaultURLImageSource?
     private(set) var image: UIImage?
 
     init(
@@ -193,7 +193,7 @@ struct AssetImageLargeViewModel:
 struct AssetImageSmallViewModel:
     PrimaryImageViewModel,
     Hashable {
-    private(set) var imageSource: PNGImageSource?
+    private(set) var imageSource: DefaultURLImageSource?
     private(set) var image: UIImage?
 
     init(

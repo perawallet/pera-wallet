@@ -70,7 +70,7 @@ extension ASADiscoveryProfileViewModel {
         let placeholderImage = placeholderText?.toPlaceholderImage(size: size)
         let placeholderAsset = AssetImageSource(asset: placeholderImage)
         let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
-        icon = PNGImageSource(url: url, shape: .circle, placeholder: placeholder)
+        icon = DefaultURLImageSource(url: url, shape: .circle, placeholder: placeholder)
     }
 
     mutating func bindName(asset: Asset) {

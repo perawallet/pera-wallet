@@ -27,12 +27,19 @@ final class RekeyConfirmationViewModel {
     private(set) var newLedgerImage: UIImage?
     private(set) var feeValue: String?
     
-    init(account: Account, ledgerName: String?) {
+    init(
+        account: Account,
+        ledgerName: String?,
+        newAuthAddress: String
+    ) {
         bindOldImage(account)
         bindOldTransitionTitle(account)
         bindOldTransitionValue(account)
-        bindNewTransitionTitle()
-        bindNewTransitionValue(ledgerName)
+        bindNewTransitionTitle(ledgerName)
+        bindNewTransitionValue(
+            ledgerName: ledgerName,
+            newAuthAddress: newAuthAddress
+        )
         bindNewLedgerImage(account)
         bindFeeValue()
     }
@@ -67,12 +74,20 @@ extension RekeyConfirmationViewModel {
         }
     }
 
-    private func bindNewTransitionTitle() {
-        newTransitionTitle = "ledger-rekey-ledger-new".localized
+    private func bindNewTransitionTitle(_ ledgerName: String?) {
+        if ledgerName != nil {
+            newTransitionTitle = "ledger-rekey-ledger-new".localized
+            return
+        }
+
+        newTransitionTitle = "wallet-connect-transaction-title-auth-address".localized
     }
 
-    private func bindNewTransitionValue(_ ledgerName: String?) {
-        newTransitionValue = ledgerName
+    private func bindNewTransitionValue(
+        ledgerName: String?,
+        newAuthAddress: String
+    ) {
+        newTransitionValue = ledgerName.unwrap(or: newAuthAddress.shortAddressDisplay)
     }
 
     private func bindNewLedgerImage(_ account: Account) {

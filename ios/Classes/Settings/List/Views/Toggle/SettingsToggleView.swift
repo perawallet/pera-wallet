@@ -60,7 +60,6 @@ extension SettingsToggleView {
 extension SettingsToggleView {
     private func addImageView() {
         addSubview(imageView)
-        
         imageView.snp.makeConstraints {
             $0.fitToSize(theme.imageSize)
             $0.centerY.equalToSuperview()
@@ -70,8 +69,8 @@ extension SettingsToggleView {
     
     private func addNameLabel() {
         nameLabel.customizeAppearance(theme.name)
+
         addSubview(nameLabel)
-        
         nameLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.nameOffset)
@@ -79,8 +78,9 @@ extension SettingsToggleView {
     }
     
     private func addToggle() {
+        toggle.customize(theme.toggle)
+
         addSubview(toggle)
-        
         toggle.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(theme.horizontalInset)

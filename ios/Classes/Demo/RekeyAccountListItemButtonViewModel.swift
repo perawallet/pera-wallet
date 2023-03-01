@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   RekeyAccountListItemButtonViewModel.swift
+//   RekeyToLedgerAccountListItemButtonViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct RekeyAccountListItemButtonViewModel: ListItemButtonViewModel {
+struct RekeyToLedgerAccountListItemButtonViewModel: ListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?
     
     init() {
         icon = "icon-options-rekey"
-        title = Self.getTitle("options-rekey".localized)
+        title = Self.getTitle("options-rekey-ledger".localized)
         subtitle = nil
     }
 }

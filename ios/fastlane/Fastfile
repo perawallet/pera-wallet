@@ -1,5 +1,5 @@
 import_from_git(
   url: "https://github.com/Hipo/ci-integration-ios",
   path: "Fastfile",
-  branch: "xcode-project-improvement"
+  branch: "main"
 )

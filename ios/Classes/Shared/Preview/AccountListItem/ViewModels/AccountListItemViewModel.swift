@@ -425,13 +425,13 @@ struct NameServiceAccountListItem {
     /// For uniqueness purposes, we need to store the address of the account.
     let address: String?
 
-    let icon: PNGImageSource?
+    let icon: DefaultURLImageSource?
     let title: String?
     let subtitle: String?
 
     init(
         address: String?,
-        icon: PNGImageSource?,
+        icon: DefaultURLImageSource?,
         title: String?,
         subtitle: String?
     ) {

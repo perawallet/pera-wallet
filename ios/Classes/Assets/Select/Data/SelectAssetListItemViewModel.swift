@@ -99,7 +99,7 @@ extension SelectAssetListItemViewModel {
 
         let placeholder = getPlaceholder(asset)
 
-        imageSource = PNGImageSource(
+        imageSource = DefaultURLImageSource(
             url: url,
             shape: iconShape,
             placeholder: placeholder

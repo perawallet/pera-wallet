@@ -412,7 +412,7 @@ extension WatchAccountAdditionViewController {
 
     private func makeNameServiceViewModel(_ nameService: NameService) -> AccountListItemViewModel {
         let nameServiceAccount = nameService.account.value
-        let imageSource = PNGImageSource(url: URL(string: nameService.service.logo))
+        let imageSource = DefaultURLImageSource(url: URL(string: nameService.service.logo))
         let preview = NameServiceAccountListItem(
             address: nameServiceAccount.address,
             icon: imageSource,

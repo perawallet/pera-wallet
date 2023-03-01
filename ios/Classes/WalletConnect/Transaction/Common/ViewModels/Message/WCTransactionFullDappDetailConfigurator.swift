@@ -75,7 +75,7 @@ final class WCTransactionFullDappDetailConfigurator {
     private func setupImage(from session: WCSession) {
         let randomIndex = Int.random(in: 0..<placeholderImages.count)
         let placeholderImage = placeholderImages[randomIndex]
-        image = PNGImageSource(
+        image = DefaultURLImageSource(
             url: session.peerMeta.icons.first,
             color: nil,
             size: .resize(CGSize(width: 48.0, height: 48.0), .aspectFit),

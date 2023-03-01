@@ -81,6 +81,12 @@ extension AccountCollection {
     ) -> Account? {
         return self[key]?.value
     }
+    
+    func rekeyedAccounts(
+        of key: Key
+    ) -> [AccountHandle] {
+        return filter { $0.value.authAddress == key }
+    }
 }
 
 extension AccountCollection {

@@ -66,7 +66,7 @@ extension CollectibleFullScreenImageViewModel {
         let asset = AssetImageSource(asset: draft.image)
         let placeholder = ImagePlaceholder(image: asset, text: nil)
 
-        imageSource = PNGImageSource(
+        imageSource = DefaultURLImageSource(
             url: url,
             shape: shape,
             placeholder: placeholder

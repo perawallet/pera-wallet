@@ -142,10 +142,16 @@ extension OptionsViewController {
                     #selector(showQRCode),
                     to: stackView
                 )
-            case .rekey:
+            case .rekeyToLedger:
                 addButton(
-                    RekeyAccountListItemButtonViewModel(),
-                    #selector(rekeyAccount),
+                    RekeyToLedgerAccountListItemButtonViewModel(),
+                    #selector(rekeyToLedgerAccount),
+                    to: stackView
+                )
+            case .rekeyToStandardAccount:
+                addButton(
+                    RekeyToStandardAccountListItemButtonViewModel(),
+                    #selector(rekeyToStandardAccount),
                     to: stackView
                 )
             case .rekeyInformation:
@@ -212,12 +218,22 @@ extension OptionsViewController {
     }
     
     @objc
-    private func rekeyAccount() {
+    private func rekeyToLedgerAccount() {
         closeScreen(by: .dismiss) {
             [weak self] in
             guard let self = self else { return }
             
-            self.delegate?.optionsViewControllerDidOpenRekeying(self)
+            self.delegate?.optionsViewControllerDidOpenRekeyingToLedger(self)
+        }
+    }
+    
+    @objc
+    private func rekeyToStandardAccount() {
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.delegate?.optionsViewControllerDidOpenRekeyingToStandardAccount(self)
         }
     }
     
@@ -380,7 +396,11 @@ extension OptionsViewController {
                 primaryOptions.append(.viewPassphrase)
             }
 
-            primaryOptions.append(.rekey)
+            primaryOptions.append(.rekeyToLedger)
+            
+            if !account.isRekeyed() && !account.requiresLedgerConnection() {
+                primaryOptions.append(.rekeyToStandardAccount)
+            }
 
             let secondaryOptions: [Option] = [
                 .renameAccount,
@@ -398,7 +418,8 @@ extension OptionsViewController {
     enum Option {
         case copyAddress
         case showAddress
-        case rekey
+        case rekeyToLedger
+        case rekeyToStandardAccount
         case rekeyInformation
         case viewPassphrase
         case muteNotifications
@@ -414,7 +435,10 @@ protocol OptionsViewControllerDelegate: AnyObject {
     func optionsViewControllerDidShowQR(
         _ optionsViewController: OptionsViewController
     )
-    func optionsViewControllerDidOpenRekeying(
+    func optionsViewControllerDidOpenRekeyingToLedger(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidOpenRekeyingToStandardAccount(
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidViewPassphrase(

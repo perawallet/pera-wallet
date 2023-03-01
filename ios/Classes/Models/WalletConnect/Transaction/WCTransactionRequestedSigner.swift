@@ -96,13 +96,15 @@ final class WCTransactionRequestedSigner {
         if account.rekeyDetail?[authAddress] != nil {
             return account
         } else {
-            if let authAccount = accountCollection[authAddress]?.value,
-                let ledgerDetail = authAccount.ledgerDetail {
-                account.addRekeyDetail(ledgerDetail, for: authAddress)
-                return account
+            guard let authAccount = accountCollection[authAddress]?.value else {
+                return nil
             }
-
-            return nil
+            
+            if let ledgerDetail = authAccount.ledgerDetail {
+                account.addRekeyDetail(ledgerDetail, for: authAddress)
+            }
+            
+            return account
         }
     }
 }

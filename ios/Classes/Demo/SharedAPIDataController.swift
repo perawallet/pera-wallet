@@ -276,6 +276,14 @@ extension SharedAPIDataController {
 }
 
 extension SharedAPIDataController {
+    func rekeyedAccounts(
+        of account: Account
+    ) -> [AccountHandle] {
+        return accountCollection.rekeyedAccounts(of: account.address)
+    }
+}
+
+extension SharedAPIDataController {
     func add(
         _ observer: SharedDataControllerObserver
     ) {

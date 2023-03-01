@@ -93,6 +93,10 @@ extension Account {
     var isCreated: Bool {
         return createdRound != nil
     }
+    
+    var signerAddress: PublicKey {
+        return authAddress ?? address
+    }
 
     func hasAuthAccount() -> Bool {
         return authAddress != nil
@@ -127,7 +131,31 @@ extension Account {
     }
     
     func requiresLedgerConnection() -> Bool {
-        return isLedger() || isRekeyed()
+        return isLedger() || isRekeyedToLedger()
+    }
+    
+    func isRekeyedToLedger() -> Bool {
+        if !isRekeyed() {
+            return false
+        }
+        
+        guard let authAddress else {
+            return false
+        }
+        
+        return rekeyDetail?[authAddress] != nil
+    }
+    
+    /// <note>
+    /// We cannot be sure whether an account is rekeyed to a Ledger device. It can be rekeyed to a standard account as well.
+    /// If an account is rekeyed and we don't know the related rekey details, we can suspect that it might be rekeyed to a standard account
+    /// or not recovered from the ledger device.
+    func isRekeyedToAnyAccount() -> Bool {
+        if !isRekeyed() {
+            return false
+        }
+        
+        return !isRekeyedToLedger()
     }
     
     func addRekeyDetail(_ ledgerDetail: LedgerDetail, for address: String) {

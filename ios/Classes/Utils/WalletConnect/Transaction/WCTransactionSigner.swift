@@ -97,7 +97,7 @@ extension WCTransactionSigner {
     }
 
     private func signStandardTransaction(_ transaction: WCTransaction, with request: WalletConnectRequest, for account: Account) {
-        if let signature = api.session.privateData(for: account.address) {
+        if let signature = api.session.privateData(for: account.signerAddress) {
             sign(signature, signer: SDKTransactionSigner(), for: transaction, with: request)
         }
     }

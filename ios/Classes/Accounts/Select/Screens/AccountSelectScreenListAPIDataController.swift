@@ -206,7 +206,7 @@ extension AccountSelectScreenListAPIDataController {
 
         if !self.matchedAccounts.isEmpty {
             var accountItems = self.matchedAccounts.map { nameService -> AccountSelectItem in
-                let imageSource = PNGImageSource(url: URL(string: nameService.service.logo))
+                let imageSource = DefaultURLImageSource(url: URL(string: nameService.service.logo))
                 let nameServiceAccount = nameService.account.value
                 let preview = NameServiceAccountListItem(
                     address: nameServiceAccount.address,

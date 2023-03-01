@@ -61,6 +61,8 @@ extension TitledToggleView {
 
 extension TitledToggleView {
     private func addToggleView(_ theme: TitledToggleViewTheme) {
+        toggleView.customize(theme.toggle)
+
         addSubview(toggleView)
         toggleView.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)

@@ -257,7 +257,7 @@ extension TransactionController {
     }
 
     private func signTransactionForStandardAccount() {
-        guard let accountAddress = fromAccount?.address,
+        guard let accountAddress = fromAccount?.signerAddress,
               let privateData = api.session.privateData(for: accountAddress) else {
             return
         }

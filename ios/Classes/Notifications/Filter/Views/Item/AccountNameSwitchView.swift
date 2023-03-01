@@ -52,6 +52,8 @@ extension AccountNameSwitchView {
 
 extension AccountNameSwitchView {
     private func addToggleView(_ theme: AccountNameSwitchViewTheme) {
+        toggleView.customize(theme.toggle)
+
         addSubview(toggleView)
         toggleView.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
