@@ -35,6 +35,8 @@ class WalletConnectConnectionViewModel @Inject constructor(
 
     private val sessionProposal = savedStateHandle.getOrThrow<WalletConnectSessionProposal>(SESSION_PROPOSAL_KEY)
 
+    val shouldSkipConfirmation = savedStateHandle.getOrThrow<Boolean>(SHOULD_SKIP_CONFIRMATION_KEY)
+
     val peerMetaName: String
         get() = sessionProposal.peerMeta.name
 
@@ -101,5 +103,6 @@ class WalletConnectConnectionViewModel @Inject constructor(
 
     companion object {
         private const val SESSION_PROPOSAL_KEY = "sessionProposal"
+        private const val SHOULD_SKIP_CONFIRMATION_KEY = "shouldSkipConfirmation"
     }
 }

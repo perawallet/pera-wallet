@@ -10,16 +10,14 @@
  * limitations under the License
  */
 
-package com.algorand.android.utils
+package com.algorand.android.discover.home.domain.model
 
-import java.net.URL
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-fun emptyString(): String = ""
-
-fun getUrlHost(url: String): String {
-    return try {
-        URL(url).host
-    } catch (exception: Exception) {
-        ""
-    }
-}
+@Parcelize
+data class UrlElement(
+    @SerializedName("url")
+    val url: String?
+) : Parcelable

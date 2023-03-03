@@ -16,9 +16,10 @@ import com.algorand.android.BuildConfig
 import com.algorand.android.discover.common.ui.model.WebViewTheme
 import com.algorand.android.utils.UrlBuilder
 
-class DiscoverUrlBuilder private constructor() : UrlBuilder() {
+class DiscoverUrlBuilder private constructor(customBaseUrl: String? = null) : UrlBuilder() {
 
-    override val baseUrl: StringBuilder = StringBuilder(BuildConfig.DISCOVER_URL).append(QUERY_SYMBOL)
+    override val baseUrl: StringBuilder =
+        StringBuilder(customBaseUrl ?: BuildConfig.DISCOVER_URL).append(QUERY_SYMBOL)
 
     fun addTheme(themePreference: WebViewTheme): DiscoverUrlBuilder {
         addQuery(Query.THEME, themePreference.key)
@@ -55,8 +56,8 @@ class DiscoverUrlBuilder private constructor() : UrlBuilder() {
 
     companion object {
         const val PLATFORM_NAME = "android"
-        fun create(): DiscoverUrlBuilder {
-            return DiscoverUrlBuilder()
+        fun create(customBaseUrl: String? = null): DiscoverUrlBuilder {
+            return DiscoverUrlBuilder(customBaseUrl)
         }
     }
 }

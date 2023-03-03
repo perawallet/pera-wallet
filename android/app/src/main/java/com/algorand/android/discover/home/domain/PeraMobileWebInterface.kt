@@ -27,6 +27,11 @@ class PeraMobileWebInterface private constructor(val listener: WebInterfaceListe
     }
 
     @JavascriptInterface
+    fun pushNewScreen(jsonData: String) {
+        listener.pushNewScreen(jsonData)
+    }
+
+    @JavascriptInterface
     fun handleTokenDetailActionButtonClick(jsonData: String) {
         listener.handleTokenDetailActionButtonClick(jsonData)
     }
@@ -34,6 +39,7 @@ class PeraMobileWebInterface private constructor(val listener: WebInterfaceListe
     interface WebInterfaceListener {
         fun pushTokenDetailScreen(data: String) {}
         fun pushDappViewerScreen(data: String) {}
+        fun pushNewScreen(data: String) {}
         fun handleTokenDetailActionButtonClick(data: String) {}
     }
 

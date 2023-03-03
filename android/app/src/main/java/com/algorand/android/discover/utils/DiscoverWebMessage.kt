@@ -10,16 +10,13 @@
  * limitations under the License
  */
 
-package com.algorand.android.utils
+package com.algorand.android.discover.utils
 
-import java.net.URL
+import com.google.gson.annotations.SerializedName
 
-fun emptyString(): String = ""
-
-fun getUrlHost(url: String): String {
-    return try {
-        URL(url).host
-    } catch (exception: Exception) {
-        ""
-    }
-}
+data class DiscoverWebMessage(
+    @SerializedName("action")
+    val action: String,
+    @SerializedName("payload")
+    val payload: Any
+)

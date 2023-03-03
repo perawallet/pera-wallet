@@ -98,6 +98,17 @@ fun <T> Fragment.setNavigationResult(key: String, value: T) {
     (activity as? MainActivity)?.navController?.previousBackStackEntry?.savedStateHandle?.set(key, value)
 }
 
+fun <T> Fragment.listenToNavigationResult(
+    key: String,
+    callback: (T) -> Unit
+) {
+    (activity as? MainActivity)?.navController?.currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)?.observe(
+        viewLifecycleOwner
+    ) { result ->
+        callback.invoke(result)
+    }
+}
+
 fun FragmentActivity?.getNavigationBackStackCount(): Int {
     return this?.supportFragmentManager?.primaryNavigationFragment?.childFragmentManager?.backStackEntryCount ?: 0
 }

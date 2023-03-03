@@ -52,8 +52,8 @@ ext {
     ]
 
     discoverVersions = [
-            staging: 1,
-            prod   : 1
+            staging: 2,
+            prod   : 2
     ]
 
     debugLibVersions = [

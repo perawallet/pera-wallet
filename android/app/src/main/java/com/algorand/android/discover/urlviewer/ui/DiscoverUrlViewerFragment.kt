@@ -10,7 +10,7 @@
  * limitations under the License
  */
 
-package com.algorand.android.discover.detail.ui
+package com.algorand.android.discover.urlviewer.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -19,44 +19,38 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.BaseActivity
-import com.algorand.android.databinding.FragmentDiscoverDetailBinding
+import com.algorand.android.databinding.FragmentDiscoverUrlViewerBinding
 import com.algorand.android.discover.common.ui.BaseDiscoverFragment
 import com.algorand.android.discover.common.ui.model.PeraWebViewClient
 import com.algorand.android.discover.common.ui.model.WebViewError
-import com.algorand.android.discover.detail.ui.model.DiscoverDetailPreview
-import com.algorand.android.discover.home.domain.PeraMobileWebInterface
-import com.algorand.android.discover.home.domain.PeraMobileWebInterface.Companion.WEB_INTERFACE_NAME
-import com.algorand.android.discover.utils.getDiscoverAuthHeader
-import com.algorand.android.discover.utils.getDiscoverTokenDetailUrl
+import com.algorand.android.discover.urlviewer.ui.model.DiscoverUrlViewerPreview
+import com.algorand.android.discover.utils.getDiscoverNewScreenUrl
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.browser.openUrl
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 
 @AndroidEntryPoint
-class DiscoverDetailFragment :
-    BaseDiscoverFragment(R.layout.fragment_discover_detail),
-    PeraMobileWebInterface.WebInterfaceListener {
+class DiscoverUrlViewerFragment :
+    BaseDiscoverFragment(R.layout.fragment_discover_url_viewer) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )
 
-    override lateinit var binding: FragmentDiscoverDetailBinding
+    override lateinit var binding: FragmentDiscoverUrlViewerBinding
 
-    override val discoverViewModel: DiscoverDetailViewModel by viewModels()
+    override val discoverViewModel: DiscoverUrlViewerViewModel by viewModels()
 
     override val fragmentConfiguration = FragmentConfiguration(
         toolbarConfiguration = toolbarConfiguration,
         isBottomBarNeeded = false
     )
 
-    private val discoverDetailPreviewCollector: suspend (DiscoverDetailPreview) -> Unit = { preview ->
+    private val discoverUrlViewerPreviewCollector: suspend (DiscoverUrlViewerPreview) -> Unit = { preview ->
         with(preview) {
             updateUi(this)
             loadingErrorEvent?.consume()?.run {
@@ -64,12 +58,6 @@ class DiscoverDetailFragment :
             }
             reloadPageEvent?.consume()?.run {
                 loadUrl(preview)
-            }
-            buySellActionEvent?.consume()?.run {
-                nav(this)
-            }
-            externalPageRequestedEvent?.consume()?.run {
-                context?.openUrl(this)
             }
         }
     }
@@ -82,7 +70,7 @@ class DiscoverDetailFragment :
 
     override fun onReportActionFailed() {
         nav(
-            DiscoverDetailFragmentDirections.actionDiscoverDetailFragmentToSingleButtonBottomSheetNavigation(
+            DiscoverUrlViewerFragmentDirections.actionDiscoverUrlViewerFragmentToSingleButtonBottomSheetNavigation(
                 titleAnnotatedString = getTitleForFailedReport(),
                 descriptionAnnotatedString = getDescriptionForFailedReport(),
                 buttonStringResId = R.string.got_it,
@@ -94,31 +82,7 @@ class DiscoverDetailFragment :
     }
 
     override fun bindWebView(view: View?) {
-        view?.let { binding = FragmentDiscoverDetailBinding.bind(it) }
-    }
-
-    override fun handleTokenDetailActionButtonClick(data: String) {
-        discoverViewModel.handleTokenDetailActionButtonClick(data)
-    }
-
-    private fun loadUrl(preview: DiscoverDetailPreview) {
-        with(binding) {
-            webView.post {
-                preview.tokenDetail.tokenId?.let { tokenId ->
-                    webView.loadUrl(
-                        getDiscoverTokenDetailUrl(
-                            themePreference = getWebViewThemeFromThemePreference(preview.themePreference),
-                            tokenId = tokenId,
-                            poolId = preview.tokenDetail.poolId,
-                            currency = discoverViewModel.getPrimaryCurrencyId(),
-                            locale = (activity as? BaseActivity)?.getCurrentLanguage()?.language
-                                ?: Locale.getDefault().language
-                        ),
-                        getDiscoverAuthHeader()
-                    )
-                }
-            }
-        }
+        view?.let { binding = FragmentDiscoverUrlViewerBinding.bind(it) }
     }
 
     private fun handleLoadingError(error: WebViewError) {
@@ -141,22 +105,10 @@ class DiscoverDetailFragment :
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initUi() {
-        with(binding) {
-            tryAgainButton.setOnClickListener { discoverViewModel.reloadPage() }
-            initWebview()
-        }
+        binding.webView.webViewClient = PeraWebViewClient(peraWebViewClientListener)
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    private fun initWebview() {
-        with(binding) {
-            val peraWebInterface = PeraMobileWebInterface.create(this@DiscoverDetailFragment)
-            webView.addJavascriptInterface(peraWebInterface, WEB_INTERFACE_NAME)
-            webView.webViewClient = PeraWebViewClient(peraWebViewClientListener)
-        }
-    }
-
-    private fun updateUi(preview: DiscoverDetailPreview) {
+    private fun updateUi(preview: DiscoverUrlViewerPreview) {
         binding.loadingProgressBar.isVisible = preview.isLoading
         discoverViewModel.getLastError()?.let {
             handleLoadingError(it)
@@ -166,10 +118,22 @@ class DiscoverDetailFragment :
         }
     }
 
+    private fun loadUrl(preview: DiscoverUrlViewerPreview) {
+        binding.webView.loadUrl(
+            // TODO Get locale from PeraLocaleProvider after merging TinymanSwapSprint2 branch
+            getDiscoverNewScreenUrl(
+                url = preview.url,
+                themePreference = getWebViewThemeFromThemePreference(preview.themePreference),
+                currency = discoverViewModel.getPrimaryCurrencyId(),
+                locale = (activity as BaseActivity).getCurrentLanguage().language
+            )
+        )
+    }
+
     private fun initObservers() {
         viewLifecycleOwner.collectLatestOnLifecycle(
-            discoverViewModel.discoverDetailPreviewFlow,
-            discoverDetailPreviewCollector
+            discoverViewModel.discoverUrlViewerPreviewFlow,
+            discoverUrlViewerPreviewCollector
         )
     }
 }

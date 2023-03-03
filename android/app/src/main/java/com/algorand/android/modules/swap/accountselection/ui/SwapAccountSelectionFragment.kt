@@ -24,12 +24,14 @@ import com.algorand.android.models.AssetAction
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ScreenState
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.modules.assets.action.addition.AddAssetActionBottomSheet
 import com.algorand.android.modules.swap.accountselection.ui.model.SwapAccountSelectionPreview
 import com.algorand.android.ui.accountselection.BaseAccountSelectionFragment
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.getXmlStyledString
+import com.algorand.android.utils.useFragmentResultListenerValue
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -72,6 +74,11 @@ class SwapAccountSelectionFragment : BaseAccountSelectionFragment() {
         setScreenStateView(ScreenState.CustomState(title = R.string.no_account_found))
     }
 
+    override fun onResume() {
+        super.onResume()
+        initSavedStateListener()
+    }
+
     override fun setTitleTextView(textView: TextView) {
         textView.apply {
             setText(R.string.select_account)
@@ -109,6 +116,13 @@ class SwapAccountSelectionFragment : BaseAccountSelectionFragment() {
                 optIntoAssetEventCollector
             )
         }
+    }
+
+    private fun initSavedStateListener() {
+        useFragmentResultListenerValue<Boolean>(
+            key = AddAssetActionBottomSheet.ADD_ASSET_ACTION_RESULT_KEY,
+            result = { isConfirmed -> if (!isConfirmed) hideProgress() }
+        )
     }
 
     private fun updateSwapAccountSelectionPreview(preview: SwapAccountSelectionPreview) {

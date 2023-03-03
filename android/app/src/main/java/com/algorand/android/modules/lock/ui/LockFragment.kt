@@ -224,12 +224,8 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
     private fun onEnteredCorrectPassword() {
         lockAttemptCount = 0
         penaltyRemainingTime = 0
-        nav(LockFragmentDirections.actionLockFragmentPop())
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
         lockViewModel.onAuthSucceed()
+        nav(LockFragmentDirections.actionLockFragmentPop())
     }
 
     companion object {

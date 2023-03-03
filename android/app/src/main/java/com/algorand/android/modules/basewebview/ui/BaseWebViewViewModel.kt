@@ -32,4 +32,11 @@ abstract class BaseWebViewViewModel : BaseViewModel() {
     fun getWebView(): PeraWebView? {
         return _peraWebViewFlow.value
     }
+
+    fun destroyWebView() {
+        viewModelScope.launch {
+            _peraWebViewFlow
+                .emit(null)
+        }
+    }
 }

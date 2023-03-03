@@ -53,6 +53,21 @@ fun getDiscoverTokenDetailUrl(
         .build()
 }
 
+fun getDiscoverNewScreenUrl(
+    url: String,
+    themePreference: WebViewTheme,
+    currency: String,
+    locale: String
+): String {
+    return DiscoverUrlBuilder.create(url)
+        .addTheme(themePreference)
+        .addVersion(BuildConfig.DISCOVER_VERSION)
+        .addPlatform()
+        .addCurrency(currency)
+        .addLocale(locale)
+        .build()
+}
+
 fun getDiscoverAuthHeader(): HashMap<String, String> {
     val headers: HashMap<String, String> = HashMap()
     val basicAuthHeader = Base64.encodeToString(

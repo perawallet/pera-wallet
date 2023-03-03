@@ -54,14 +54,20 @@ class DiscoverDetailViewModel @Inject constructor(
         return currencyUseCase.getPrimaryCurrencyId()
     }
 
-    override fun onPageRequested() {
+    override fun onPageRequestedShouldOverrideUrlLoading(url: String): Boolean {
         viewModelScope.launch {
             _discoverDetailPreviewFlow
-                .emit(discoverDetailPreviewUseCase.onPageRequested(_discoverDetailPreviewFlow.value))
+                .emit(
+                    discoverDetailPreviewUseCase.onPageRequestedShouldOverrideUrlLoading(
+                        previousState = _discoverDetailPreviewFlow.value,
+                        url = url
+                    )
+                )
         }
+        return true
     }
 
-    override fun onPageFinished() {
+    override fun onPageFinished(title: String?, url: String?) {
         viewModelScope.launch {
             _discoverDetailPreviewFlow
                 .emit(discoverDetailPreviewUseCase.onPageFinished(_discoverDetailPreviewFlow.value))

@@ -15,6 +15,7 @@ package com.algorand.android.discover.dapp.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.discover.common.ui.BaseDiscoverViewModel
+import com.algorand.android.discover.common.ui.model.DappFavoriteElement
 import com.algorand.android.discover.dapp.ui.model.DiscoverDappPreview
 import com.algorand.android.discover.dapp.ui.usecase.DiscoverDappPreviewUseCase
 import com.algorand.android.modules.tracking.discover.dapp.DiscoverDappEventTracker
@@ -36,9 +37,10 @@ class DiscoverDappViewModel @Inject constructor(
 
     private val dappUrl = savedStateHandle.getOrThrow<String>(DAPP_URL_KEY)
     private val dappTitle = savedStateHandle.getOrThrow<String>(DAPP_TITLE_KEY)
+    private val favorites = savedStateHandle.getOrThrow<Array<DappFavoriteElement>>(FAVORITES_KEY)
 
     private val _discoverDappPreviewFlow = MutableStateFlow(
-        discoverDappPreviewUseCase.getInitialStatePreview(dappUrl, dappTitle)
+        discoverDappPreviewUseCase.getInitialStatePreview(dappUrl, dappTitle, favorites.toList())
     )
     val discoverDappPreviewFlow: StateFlow<DiscoverDappPreview>
         get() = _discoverDappPreviewFlow
@@ -60,7 +62,13 @@ class DiscoverDappViewModel @Inject constructor(
         clearLastError()
         viewModelScope.launch {
             _discoverDappPreviewFlow
-                .emit(discoverDappPreviewUseCase.getInitialStatePreview(dappUrl, dappTitle))
+                .emit(
+                    discoverDappPreviewUseCase.getInitialStatePreview(
+                        _discoverDappPreviewFlow.value.dappUrl,
+                        _discoverDappPreviewFlow.value.dappTitle,
+                        _discoverDappPreviewFlow.value.favorites
+                    )
+                )
         }
     }
 
@@ -85,17 +93,34 @@ class DiscoverDappViewModel @Inject constructor(
         }
     }
 
-    override fun onPageRequested() {
+    fun onFavoritesNavButtonClicked() {
         viewModelScope.launch {
             _discoverDappPreviewFlow
-                .emit(discoverDappPreviewUseCase.onPageRequested(_discoverDappPreviewFlow.value))
+                .emit(discoverDappPreviewUseCase.onFavoritesNavButtonClicked(_discoverDappPreviewFlow.value))
         }
     }
 
-    override fun onPageFinished() {
+    override fun onPageRequestedShouldOverrideUrlLoading(url: String): Boolean {
         viewModelScope.launch {
             _discoverDappPreviewFlow
-                .emit(discoverDappPreviewUseCase.onPageFinished(_discoverDappPreviewFlow.value))
+                .emit(
+                    discoverDappPreviewUseCase
+                    .onPageRequestedShouldOverrideUrlLoading(_discoverDappPreviewFlow.value)
+                )
+        }
+        return false
+    }
+
+    override fun onPageFinished(title: String?, url: String?) {
+        viewModelScope.launch {
+            _discoverDappPreviewFlow
+                .emit(
+                    discoverDappPreviewUseCase.onPageFinished(
+                        _discoverDappPreviewFlow.value,
+                        title,
+                        url
+                    )
+                )
         }
     }
 
@@ -127,5 +152,6 @@ class DiscoverDappViewModel @Inject constructor(
     companion object {
         private const val DAPP_URL_KEY = "dappUrl"
         private const val DAPP_TITLE_KEY = "dappTitle"
+        private const val FAVORITES_KEY = "favorites"
     }
 }

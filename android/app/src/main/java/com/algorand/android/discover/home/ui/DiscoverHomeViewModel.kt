@@ -16,9 +16,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.algorand.android.assetsearch.domain.pagination.AssetSearchPagerBuilder
 import com.algorand.android.discover.common.ui.BaseDiscoverViewModel
+import com.algorand.android.discover.common.ui.model.DappFavoriteElement
 import com.algorand.android.discover.home.domain.model.TokenDetailInfo
+import com.algorand.android.discover.home.ui.mapper.DiscoverDappFavoritesMapper
 import com.algorand.android.discover.home.ui.model.DiscoverHomePreview
 import com.algorand.android.discover.home.ui.usecase.DiscoverHomePreviewUseCase
+import com.algorand.android.discover.utils.getAddToFavoriteFunction
 import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.modules.tracking.discover.home.DiscoverHomeEventTracker
 import com.algorand.android.utils.preference.ThemePreference
@@ -38,6 +41,7 @@ import kotlinx.coroutines.launch
 class DiscoverHomeViewModel @Inject constructor(
     private val discoverHomePreviewUseCase: DiscoverHomePreviewUseCase,
     private val discoverHomeEventTracker: DiscoverHomeEventTracker,
+    private val discoverDappFavoritesMapper: DiscoverDappFavoritesMapper,
     private val currencyUseCase: CurrencyUseCase,
     private val gson: Gson
 ) : BaseDiscoverViewModel() {
@@ -101,6 +105,13 @@ class DiscoverHomeViewModel @Inject constructor(
         }
     }
 
+    fun pushNewScreen(data: String) {
+        viewModelScope.launch {
+            _discoverHomePreviewFlow
+                .emit(discoverHomePreviewUseCase.pushNewScreen(data, _discoverHomePreviewFlow.value))
+        }
+    }
+
     fun onQueryTextChange(query: String) {
         viewModelScope.launch {
             queryTextFlow.emit(query)
@@ -143,14 +154,28 @@ class DiscoverHomeViewModel @Inject constructor(
         return currencyUseCase.getPrimaryCurrencyId()
     }
 
-    override fun onPageRequested() {
-        viewModelScope.launch {
-            _discoverHomePreviewFlow
-                .emit(discoverHomePreviewUseCase.onPageRequested(_discoverHomePreviewFlow.value))
+    fun onFavoritesUpdate(favorite: DappFavoriteElement) {
+        getWebView()?.let { webView ->
+            webView.evaluateJavascript(
+                getAddToFavoriteFunction(discoverDappFavoritesMapper.mapFromDappFavoriteElement(favorite), gson),
+                null
+            )
+            saveWebView(webView)
         }
     }
 
-    override fun onPageFinished() {
+    override fun onPageRequestedShouldOverrideUrlLoading(url: String): Boolean {
+        viewModelScope.launch {
+            _discoverHomePreviewFlow
+                .emit(
+                    discoverHomePreviewUseCase
+                    .onPageRequestedShouldOverrideUrlLoading(_discoverHomePreviewFlow.value)
+                )
+        }
+        return false
+    }
+
+    override fun onPageFinished(title: String?, url: String?) {
         viewModelScope.launch {
             _discoverHomePreviewFlow
                 .emit(discoverHomePreviewUseCase.onPageFinished(_discoverHomePreviewFlow.value))

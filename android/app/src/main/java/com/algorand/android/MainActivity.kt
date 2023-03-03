@@ -375,7 +375,10 @@ class MainActivity :
     }
 
     private fun onSessionConnected(wcSessionRequest: WalletConnectSessionProposal) {
-        nav(HomeNavigationDirections.actionGlobalWalletConnectConnectionNavigation(wcSessionRequest))
+        nav(
+            HomeNavigationDirections
+            .actionGlobalWalletConnectConnectionNavigation(wcSessionRequest, isBasePeraWebViewFragmentActive())
+        )
     }
 
     private fun onSessionFailed(error: Resource.Error) {
@@ -557,7 +560,7 @@ class MainActivity :
 
     fun isBasePeraWebViewFragmentActive(): Boolean {
         return (supportFragmentManager.findFragmentById(binding.navigationHostFragment.id) as NavHostFragment)
-            .childFragmentManager.fragments[0] is BasePeraWebViewFragment
+            .childFragmentManager.fragments.first() is BasePeraWebViewFragment
     }
 
     private fun onIntentHandlingFailed(@StringRes errorMessageResId: Int) {

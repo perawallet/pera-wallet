@@ -22,5 +22,8 @@ data class DappInfo(
     val name: String?,
 
     @SerializedName("url")
-    val url: String?
+    val url: String?,
+
+    @SerializedName("favorites")
+    val favorites: List<DappFavorite>?
 ) : Parcelable

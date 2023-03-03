@@ -127,6 +127,10 @@
         android:id="@+id/action_global_walletConnectConnectionNavigation"
         app:destination="@id/walletConnectConnectionNavigation">
         <argument
+            android:name="shouldSkipConfirmation"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
             android:name="sessionProposal"
             app:argType="com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal" />
     </action>

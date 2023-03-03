@@ -10,16 +10,16 @@
  * limitations under the License
  */
 
-package com.algorand.android.utils
+package com.algorand.android.discover.urlviewer.ui.model
 
-import java.net.URL
+import com.algorand.android.discover.common.ui.model.WebViewError
+import com.algorand.android.utils.Event
+import com.algorand.android.utils.preference.ThemePreference
 
-fun emptyString(): String = ""
-
-fun getUrlHost(url: String): String {
-    return try {
-        URL(url).host
-    } catch (exception: Exception) {
-        ""
-    }
-}
+data class DiscoverUrlViewerPreview(
+    val themePreference: ThemePreference,
+    val isLoading: Boolean = false,
+    val loadingErrorEvent: Event<WebViewError>? = null,
+    val reloadPageEvent: Event<Unit>? = null,
+    val url: String
+)

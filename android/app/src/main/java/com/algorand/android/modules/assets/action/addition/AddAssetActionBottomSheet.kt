@@ -71,7 +71,10 @@ class AddAssetActionBottomSheet : BaseAssetActionBottomSheet() {
     override fun setNegativeButton(materialButton: MaterialButton) {
         materialButton.apply {
             setText(R.string.close)
-            setOnClickListener { navBack() }
+            setOnClickListener {
+                setFragmentNavigationResult(ADD_ASSET_ACTION_RESULT_KEY, false)
+                navBack()
+            }
         }
     }
 

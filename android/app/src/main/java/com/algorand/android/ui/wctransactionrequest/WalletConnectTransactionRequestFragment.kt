@@ -1,4 +1,4 @@
-@file:Suppress("TooManyFunctions") // TODO: We should remove this after function count decrease under 25
+@file:Suppress("TooManyFunctions", "MaxLineLength") // TODO: We should remove this after function count decrease under 25
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -348,11 +348,15 @@ class WalletConnectTransactionRequestFragment :
     }
 
     private fun handleSuccessfulTransaction() {
-        nav(
-            actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionFallbackBrowserSelectionNavigation(
-                browserGroup = transactionRequestViewModel.fallbackBrowserGroupResponse,
-                peerMetaName = transactionRequestViewModel.peerMetaName
+        if (transactionRequestViewModel.shouldSkipConfirmation) {
+            navBack()
+        } else {
+            nav(
+                actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionFallbackBrowserSelectionNavigation(
+                        browserGroup = transactionRequestViewModel.fallbackBrowserGroupResponse,
+                        peerMetaName = transactionRequestViewModel.peerMetaName
+                    )
             )
-        )
+        }
     }
 }

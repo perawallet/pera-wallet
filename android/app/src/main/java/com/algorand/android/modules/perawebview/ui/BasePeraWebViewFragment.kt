@@ -42,12 +42,12 @@ abstract class BasePeraWebViewFragment(
             handleMailRequestUrl(url)
         }
 
-        override fun onPageRequested() {
-            basePeraWebViewViewModel.onPageRequested()
+        override fun onPageRequestedShouldOverrideUrlLoading(url: String): Boolean {
+            return basePeraWebViewViewModel.onPageRequestedShouldOverrideUrlLoading(url)
         }
 
-        override fun onPageFinished() {
-            basePeraWebViewViewModel.onPageFinished()
+        override fun onPageFinished(title: String?, url: String?) {
+            basePeraWebViewViewModel.onPageFinished(title, url)
         }
 
         override fun onError() {
@@ -60,6 +60,10 @@ abstract class BasePeraWebViewFragment(
 
         override fun onPageUrlChanged() {
             basePeraWebViewViewModel.onPageUrlChanged()
+        }
+
+        override fun onRenderProcessGone() {
+            basePeraWebViewViewModel.destroyWebView()
         }
     }
 

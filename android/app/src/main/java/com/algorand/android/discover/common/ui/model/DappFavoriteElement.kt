@@ -10,16 +10,18 @@
  * limitations under the License
  */
 
-package com.algorand.android.utils
+package com.algorand.android.discover.common.ui.model
 
-import java.net.URL
+import android.os.Parcelable
+import com.algorand.android.utils.getUrlHost
+import kotlinx.parcelize.Parcelize
 
-fun emptyString(): String = ""
-
-fun getUrlHost(url: String): String {
-    return try {
-        URL(url).host
-    } catch (exception: Exception) {
-        ""
+@Parcelize
+data class DappFavoriteElement(
+    val name: String,
+    val url: String
+) : Parcelable {
+    fun isSameUrl(otherUrl: String): Boolean {
+        return getUrlHost(url) == getUrlHost(otherUrl)
     }
 }

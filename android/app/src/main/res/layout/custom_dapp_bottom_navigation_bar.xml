@@ -23,7 +23,7 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_home"
-        android:tint="@color/secondary_button_text_color"
+        android:tint="@color/discover_helper_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/previousNavButton"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -37,7 +37,7 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_left_arrow"
-        android:tint="@color/secondary_button_text_color"
+        android:tint="@color/discover_helper_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/nextNavButton"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -51,11 +51,25 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_right_arrow"
-        android:tint="@color/secondary_button_text_color"
+        android:tint="@color/discover_helper_purple"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/favoritesNavButton"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@id/previousNavButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/favoritesNavButton"
+        style="?attr/toolbarNavigationButtonStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_star_empty"
+        android:tint="@color/discover_helper_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toEndOf="@id/previousNavButton"
+        app:layout_constraintStart_toEndOf="@id/nextNavButton"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

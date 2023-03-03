@@ -31,6 +31,7 @@ import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.setNavigationResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.map
 
@@ -57,7 +58,7 @@ class DiscoverDappFragment :
             updateUi(this)
             loadingErrorEvent?.consume()?.run {
                 handleLoadingError(this)
-            } ?: run { if (!isLoading && discoverViewModel.getLastError() == null) refreshViewFromError() }
+            }
             reloadPageEvent?.consume()?.run {
                 loadUrl(preview)
             }
@@ -75,6 +76,9 @@ class DiscoverDappFragment :
                     }
                 }
             }
+            favoritingEvent?.consume()?.run {
+                setNavigationResult(ADD_FAVORITE_RESULT_KEY, this)
+            }
         }
     }
 
@@ -86,6 +90,7 @@ class DiscoverDappFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setNavigationResult(ADD_FAVORITE_RESULT_KEY, null)
         initObservers()
         initUi()
     }
@@ -146,6 +151,9 @@ class DiscoverDappFragment :
                 previousNavButton.setOnClickListener {
                     discoverViewModel.onPreviousNavButtonClicked()
                 }
+                bottomDappNavigation.favoritesNavButton.setOnClickListener {
+                    discoverViewModel.onFavoritesNavButtonClicked()
+                }
             }
         }
     }
@@ -153,9 +161,19 @@ class DiscoverDappFragment :
     private fun updateUi(preview: DiscoverDappPreview) {
         getAppToolbar()?.changeTitle(preview.dappTitle)
         getAppToolbar()?.changeSubtitle(preview.dappUrl)
-        binding.loadingProgressBar.isVisible = preview.isLoading
+        with(binding) {
+            loadingProgressBar.isVisible = preview.isLoading
+            if (preview.isFavorite) {
+                bottomDappNavigation.favoritesNavButton.setImageResource(R.drawable.ic_star_full)
+            } else {
+                bottomDappNavigation.favoritesNavButton.setImageResource(R.drawable.ic_star_empty)
+            }
+        }
         discoverViewModel.getLastError()?.let {
             handleLoadingError(it)
+        } ?: run {
+            binding.webView.show()
+            binding.errorScreenState.hide()
         }
         checkWebViewControls()
         handlePeraConnectJavascript()
@@ -172,13 +190,6 @@ class DiscoverDappFragment :
         binding.webView.evaluateJavascript(JAVASCRIPT_PERACONNECT, null)
     }
 
-    private fun refreshViewFromError() {
-        with(binding) {
-            webView.show()
-            errorScreenState.hide()
-        }
-    }
-
     private fun initObservers() {
         viewLifecycleOwner.collectLatestOnLifecycle(
             discoverViewModel.discoverDappPreviewFlow,
@@ -188,5 +199,9 @@ class DiscoverDappFragment :
             discoverViewModel.discoverDappPreviewFlow.map { it.pageUrlChangedEvent },
             discoverDappControlsCollector
         )
+    }
+
+    companion object {
+        const val ADD_FAVORITE_RESULT_KEY = "add_favorite_result"
     }
 }

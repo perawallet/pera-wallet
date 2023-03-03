@@ -16,8 +16,8 @@ import android.app.Activity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.algorand.android.MainActivity
-import com.algorand.android.modules.autolockmanager.ui.usecase.AutoLockManagerUseCase
 import com.algorand.android.utils.ActivityLifecycleObserver
+import com.algorand.android.modules.autolockmanager.ui.usecase.AutoLockManagerUseCase
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -60,12 +60,6 @@ class AutoLockManager @Inject constructor(
         super.onActivityPaused(activity)
         if (activity !is MainActivity) return
         if (isAppUnlocked) autoLockManagerUseCase.setAppAtBackgroundTime(System.currentTimeMillis())
-    }
-
-    override fun onActivityDestroyed(activity: Activity) {
-        super.onActivityDestroyed(activity)
-        if (activity !is MainActivity) return
-        isAppUnlocked = false
     }
 
     private fun lockApplication() {

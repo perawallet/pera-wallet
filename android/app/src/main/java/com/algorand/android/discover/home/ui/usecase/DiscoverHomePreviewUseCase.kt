@@ -20,8 +20,10 @@ import com.algorand.android.assetsearch.domain.pagination.AssetSearchPagerBuilde
 import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.discover.home.domain.model.DappInfo
 import com.algorand.android.discover.home.domain.model.TokenDetailInfo
+import com.algorand.android.discover.home.domain.model.UrlElement
 import com.algorand.android.discover.home.domain.usecase.DiscoverSearchAssetUseCase
 import com.algorand.android.discover.home.ui.mapper.DiscoverAssetItemMapper
+import com.algorand.android.discover.home.ui.mapper.DiscoverDappFavoritesMapper
 import com.algorand.android.discover.home.ui.model.DiscoverAssetItem
 import com.algorand.android.discover.home.ui.model.DiscoverHomePreview
 import com.algorand.android.utils.Event
@@ -37,6 +39,7 @@ class DiscoverHomePreviewUseCase @Inject constructor(
     private val assetSearchQueryMapper: AssetSearchQueryMapper,
     private val discoverAssetItemMapper: DiscoverAssetItemMapper,
     private val sharedPreferences: SharedPreferences,
+    private val discoverDappFavoritesMapper: DiscoverDappFavoritesMapper,
     private val gson: Gson
 ) {
 
@@ -79,6 +82,7 @@ class DiscoverHomePreviewUseCase @Inject constructor(
         isLoading = true,
         tokenDetailScreenRequestEvent = null,
         dappViewerScreenRequestEvent = null,
+        urlElementRequestEvent = null,
         reloadPageEvent = Event(Unit)
     )
 
@@ -107,7 +111,7 @@ class DiscoverHomePreviewUseCase @Inject constructor(
         reloadPageEvent = Event(Unit)
     )
 
-    fun onPageRequested(previousState: DiscoverHomePreview) = previousState.copy(
+    fun onPageRequestedShouldOverrideUrlLoading(previousState: DiscoverHomePreview) = previousState.copy(
         isLoading = true
     )
 
@@ -128,9 +132,26 @@ class DiscoverHomePreviewUseCase @Inject constructor(
     fun pushDappViewerScreen(
         data: String,
         previousState: DiscoverHomePreview
+    ): DiscoverHomePreview {
+        val dappInfo = gson.fromJson(data, DappInfo::class.java)
+        return previousState.copy(
+            dappViewerScreenRequestEvent = Event(
+                Pair(
+                    dappInfo,
+                    dappInfo.favorites?.map {
+                        discoverDappFavoritesMapper.mapToDappFavoriteElement(it)
+                    }?.toTypedArray() ?: emptyArray()
+                )
+            )
+        )
+    }
+
+    fun pushNewScreen(
+        data: String,
+        previousState: DiscoverHomePreview
     ) = previousState.copy(
-        dappViewerScreenRequestEvent = Event(
-            gson.fromJson(data, DappInfo::class.java)
+        urlElementRequestEvent = Event(
+            gson.fromJson(data, UrlElement::class.java)
         )
     )
 

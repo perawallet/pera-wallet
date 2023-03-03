@@ -12,6 +12,7 @@
 
 package com.algorand.android.discover.dapp.ui.model
 
+import com.algorand.android.discover.common.ui.model.DappFavoriteElement
 import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.preference.ThemePreference
@@ -26,4 +27,7 @@ data class DiscoverDappPreview(
     val webViewGoForwardEvent: Event<Unit>? = null,
     val dappUrl: String,
     val dappTitle: String,
+    val favorites: List<DappFavoriteElement> = listOf(),
+    val favoritingEvent: Event<DappFavoriteElement>? = null,
+    val isFavorite: Boolean
 )

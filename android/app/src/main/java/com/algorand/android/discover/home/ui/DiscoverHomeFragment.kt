@@ -28,8 +28,10 @@ import com.algorand.android.core.BaseActivity
 import com.algorand.android.core.BottomNavigationBackPressedDelegate
 import com.algorand.android.databinding.FragmentDiscoverHomeBinding
 import com.algorand.android.discover.common.ui.BaseDiscoverFragment
+import com.algorand.android.discover.common.ui.model.DappFavoriteElement
 import com.algorand.android.discover.common.ui.model.PeraWebViewClient
 import com.algorand.android.discover.common.ui.model.WebViewError
+import com.algorand.android.discover.dapp.ui.DiscoverDappFragment.Companion.ADD_FAVORITE_RESULT_KEY
 import com.algorand.android.discover.home.domain.PeraMobileWebInterface
 import com.algorand.android.discover.home.domain.PeraMobileWebInterface.Companion.WEB_INTERFACE_NAME
 import com.algorand.android.discover.home.domain.model.TokenDetailInfo
@@ -44,6 +46,7 @@ import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.hideKeyboard
+import com.algorand.android.utils.listenToNavigationResult
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -74,8 +77,14 @@ class DiscoverHomeFragment :
                 navigateToTokenDetailScreen(this)
             }
             dappViewerScreenRequestEvent?.consume()?.run {
+                val (dappInfo, favoritesList) = this
+                dappInfo.url?.let { url ->
+                    navigateToDappUrl(url, dappInfo.name, favoritesList)
+                }
+            }
+            urlElementRequestEvent?.consume()?.run {
                 this.url?.let { url ->
-                    navigateToDappUrl(url, this.name)
+                    navigateToSimpleUrlViewer(url)
                 }
             }
             reloadPageEvent?.consume()?.run {
@@ -127,6 +136,7 @@ class DiscoverHomeFragment :
         (activity as? CoreMainActivity)?.let { initBackPressedControllerComponent(it, viewLifecycleOwner) }
         initObservers()
         initUi()
+        initSavedStateListener()
     }
 
     override fun onReportActionFailed() {
@@ -152,6 +162,16 @@ class DiscoverHomeFragment :
 
     override fun pushDappViewerScreen(data: String) {
         discoverViewModel.pushDappViewerScreen(data)
+    }
+
+    override fun pushNewScreen(data: String) {
+        discoverViewModel.pushNewScreen(data)
+    }
+
+    private fun initSavedStateListener() {
+        listenToNavigationResult<DappFavoriteElement?>(ADD_FAVORITE_RESULT_KEY) { favorite ->
+            favorite?.let { discoverViewModel.onFavoritesUpdate(it) }
+        }
     }
 
     private fun initUi() {
@@ -201,9 +221,10 @@ class DiscoverHomeFragment :
     }
 
     private fun updateWebViewVisibility(preview: DiscoverHomePreview) {
-        binding.webView.isVisible = !preview.isSearchActivated
         discoverViewModel.getLastError()?.let {
             handleLoadingError(it)
+        } ?: run {
+            binding.webView.isVisible = !preview.isSearchActivated
         }
     }
 
@@ -287,11 +308,24 @@ class DiscoverHomeFragment :
         )
     }
 
-    private fun navigateToDappUrl(url: String, title: String?) {
+    private fun navigateToDappUrl(
+        url: String,
+        title: String?,
+        favorites: Array<DappFavoriteElement>
+    ) {
         nav(
             DiscoverHomeFragmentDirections.actionDiscoverHomeFragmentToDiscoverDappFragment(
                 dappUrl = url,
-                dappTitle = title ?: ""
+                dappTitle = title ?: "",
+                favorites = favorites
+            )
+        )
+    }
+
+    private fun navigateToSimpleUrlViewer(url: String) {
+        nav(
+            DiscoverHomeFragmentDirections.actionDiscoverHomeFragmentToDiscoverUrlViewerFragment(
+                url = url
             )
         )
     }

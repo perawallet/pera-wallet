@@ -24,5 +24,6 @@ data class DiscoverDetailPreview(
     val loadingErrorEvent: Event<WebViewError>? = null,
     val reloadPageEvent: Event<Unit>? = null,
     val buySellActionEvent: Event<NavDirections>? = null,
+    val externalPageRequestedEvent: Event<String>? = null,
     val tokenDetail: TokenDetailInfo
 )

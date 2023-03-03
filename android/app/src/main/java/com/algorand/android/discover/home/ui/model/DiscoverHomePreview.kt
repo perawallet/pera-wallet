@@ -12,9 +12,11 @@
 
 package com.algorand.android.discover.home.ui.model
 
+import com.algorand.android.discover.common.ui.model.DappFavoriteElement
 import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.discover.home.domain.model.DappInfo
 import com.algorand.android.discover.home.domain.model.TokenDetailInfo
+import com.algorand.android.discover.home.domain.model.UrlElement
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.preference.ThemePreference
 
@@ -25,6 +27,7 @@ data class DiscoverHomePreview(
     val isLoading: Boolean = false,
     val loadingErrorEvent: Event<WebViewError>? = null,
     val tokenDetailScreenRequestEvent: Event<TokenDetailInfo>?,
-    val dappViewerScreenRequestEvent: Event<DappInfo>?,
+    val dappViewerScreenRequestEvent: Event<Pair<DappInfo, Array<DappFavoriteElement>>>?,
+    val urlElementRequestEvent: Event<UrlElement>?,
     val reloadPageEvent: Event<Unit>? = null
 )

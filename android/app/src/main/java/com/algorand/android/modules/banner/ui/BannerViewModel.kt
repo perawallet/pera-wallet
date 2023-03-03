@@ -62,15 +62,16 @@ class BannerViewModel @Inject constructor(
         }
     }
 
-    override fun onPageRequested() {
+    override fun onPageRequestedShouldOverrideUrlLoading(url: String): Boolean {
         viewModelScope.launch {
             _bannerPreviewFlow.emit(
                 bannerPreviewUseCase.onPageRequested(_bannerPreviewFlow.value)
             )
         }
+        return false
     }
 
-    override fun onPageFinished() {
+    override fun onPageFinished(title: String?, url: String?) {
         viewModelScope.launch {
             _bannerPreviewFlow.emit(
                 bannerPreviewUseCase.onPageFinished(_bannerPreviewFlow.value)

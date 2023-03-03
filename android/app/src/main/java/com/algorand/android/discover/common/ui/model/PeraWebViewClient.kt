@@ -12,6 +12,7 @@
 
 package com.algorand.android.discover.common.ui.model
 
+import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -23,9 +24,15 @@ import com.algorand.android.utils.walletconnect.isValidWalletConnectUrl
 import java.net.HttpURLConnection
 
 class PeraWebViewClient(val listener: PeraWebViewClientListener?) : WebViewClient() {
+
     override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
         listener?.onPageUrlChanged()
         super.doUpdateVisitedHistory(view, url, isReload)
+    }
+
+    override fun onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?): Boolean {
+        listener?.onRenderProcessGone()
+        return true
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
@@ -43,8 +50,11 @@ class PeraWebViewClient(val listener: PeraWebViewClientListener?) : WebViewClien
                     true
                 }
                 request.isForMainFrame -> {
-                    listener?.onPageRequested()
-                    super.shouldOverrideUrlLoading(view, request)
+                    if (listener?.onPageRequestedShouldOverrideUrlLoading(this) == true) {
+                        true
+                    } else {
+                        super.shouldOverrideUrlLoading(view, request)
+                    }
                 }
                 else -> {
                     super.shouldOverrideUrlLoading(view, request)
@@ -54,7 +64,7 @@ class PeraWebViewClient(val listener: PeraWebViewClientListener?) : WebViewClien
     }
     override fun onPageFinished(view: WebView?, url: String?) {
         super.onPageFinished(view, url)
-        listener?.onPageFinished()
+        listener?.onPageFinished(view?.title, url)
     }
     override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
         super.onReceivedError(view, request, error)
@@ -77,10 +87,11 @@ class PeraWebViewClient(val listener: PeraWebViewClientListener?) : WebViewClien
     interface PeraWebViewClientListener {
         fun onWalletConnectUrlDetected(url: String)
         fun onEmailRequested(url: String)
-        fun onPageRequested()
-        fun onPageFinished()
+        fun onPageRequestedShouldOverrideUrlLoading(url: String): Boolean
+        fun onPageFinished(title: String? = null, url: String? = null)
         fun onError()
         fun onHttpError()
         fun onPageUrlChanged()
+        fun onRenderProcessGone()
     }
 }

@@ -73,7 +73,7 @@
         app:layout_constraintEnd_toEndOf="@id/parentEndGuideline"
         app:layout_constraintStart_toStartOf="@id/parentStartGuideline"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@tools:sample/lorem[1]" />
+        tools:text="@tools:sample/lorem[25]" />
 
     <TextView
         android:id="@+id/toolbarSubtitleTextView"
@@ -90,11 +90,12 @@
         android:textAppearance="@style/TextAppearance.Footnote.Sans"
         android:textColor="@color/secondary_text_color"
         android:visibility="gone"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/parentEndGuideline"
         app:layout_constraintStart_toStartOf="@id/parentStartGuideline"
         app:layout_constraintTop_toBottomOf="@id/toolbarTitleTextView"
-        tools:text="@tools:sample/lorem[1]"
+        tools:text="@tools:sample/lorem[25]"
         tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -130,14 +131,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="1" />
+        app:layout_constraintGuide_percent="0.87" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/parentStartGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0" />
+        app:layout_constraintGuide_percent="0.13" />
 
     <com.algorand.android.customviews.ToolbarButtonContainerView
         android:id="@+id/buttonContainerView"

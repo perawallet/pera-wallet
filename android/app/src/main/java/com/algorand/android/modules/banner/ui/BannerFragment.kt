@@ -116,7 +116,6 @@ class BannerFragment : BasePeraWebViewFragment(R.layout.fragment_banner) {
             checkWebViewControls()
             handlePeraConnectJavascript()
             loadingErrorEvent?.consume()?.run { handleLoadingError(this) }
-                ?: run { if (!isLoading && basePeraWebViewViewModel.getLastError() == null) removeErrorState() }
             reloadPageEvent?.consume()?.run { reloadPage() }
             webViewGoBackEvent?.consume()?.run {
                 with(binding) {

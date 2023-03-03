@@ -46,8 +46,11 @@ class DiscoverDetailPreviewUseCase @Inject constructor(
         tokenDetail = tokenDetail
     )
 
-    fun onPageRequested(previousState: DiscoverDetailPreview) = previousState.copy(
-        isLoading = true
+    fun onPageRequestedShouldOverrideUrlLoading(
+        previousState: DiscoverDetailPreview,
+        url: String
+    ) = previousState.copy(
+        externalPageRequestedEvent = Event(url)
     )
 
     fun onPageFinished(previousState: DiscoverDetailPreview) = previousState.copy(
@@ -140,7 +143,9 @@ class DiscoverDetailPreviewUseCase @Inject constructor(
                     assetOut = assetOut
                 )
             }
-            else -> {}
+            DiscoverDetailAction.UNKNOWN, null -> {
+                // No log action defined here
+            }
         }
     }
 }
