@@ -26,7 +26,7 @@
 "account-name-setup-placeholder" = "Kontoname";
 
 /* (No Comment) */
-"account-not-found" = "Account not found";
+"account-not-found" = "Konto nicht gefunden";
 
 /* (No Comment) */
 "account-options-add-account-title" = "Konto hinzufügen";
@@ -47,7 +47,7 @@
 "account-select-header-matched-accounts-title" = "Abgestimmte Konten";
 
 /* (No Comment) */
-"account-select-header-search-title" = "Wallet-Adresse suchen oder eingeben";
+"account-select-header-search-title" = "Kontoadresse oder Kurzname";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "Anderen Kontonamen versuchen";
@@ -239,25 +239,28 @@
 "asset-copy-id" = "ID kopieren";
 
 /* (No Comment) */
+"asset-creator-opt-out-error-message" = "Ersteller-Konten können kein Opt-out für die von ihnen erstellten Assets durchführen.";
+
+/* (No Comment) */
 "asset-detail-id-title" = "ID %@";
 
 /* (No Comment) */
-"asset-detail-markets-title" = "Markets";
+"asset-detail-markets-title" = "Märkte";
 
 /* (No Comment) */
-"asset-filter-selection-display-collectible-assets-filter-description" = "NFTs assets will be shown in the asset list of your account";
+"asset-filter-selection-display-collectible-assets-filter-description" = "NFT-Assets werden in der Asset-Liste Ihres Kontos angezeigt";
 
 /* (No Comment) */
-"asset-filter-selection-display-collectible-assets-filter-title" = "Display NFTs in asset list";
+"asset-filter-selection-display-collectible-assets-filter-title" = "NFTs in Asset-Liste anzeigen";
 
 /* (No Comment) */
-"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance";
+"asset-filter-selection-toggle-description" = "Sie können Assets mit null Guthaben ein- und ausblenden";
 
 /* (No Comment) */
-"asset-filter-selection-toggle-title" = "Hide assets with no balance";
+"asset-filter-selection-toggle-title" = "Assets ohne Guthaben ausblenden";
 
 /* (No Comment) */
-"asset-filter-title" = "Filter Assets";
+"asset-filter-title" = "Assets filtern";
 
 /* (No Comment) */
 "asset-id-copied-title" = "ID in die Zwischenablage kopiert";
@@ -287,7 +290,7 @@
 "asset-opt-out-successful-message" = "%@ erfolgreich von Ihrem Konto entfernt.";
 
 /* (No Comment) */
-"asset-opt-out-title" = "Asset Opt-out";
+"asset-opt-out-title" = "Asset-Opt-out";
 
 /* (No Comment) */
 "asset-quick-action-button-add" = "Asset hinzufügen";
@@ -491,7 +494,7 @@
 "collectible-detail-algo-explorer" = "Im Algoexplorer anzeigen";
 
 /* (No Comment) */
-"collectible-detail-creator-account" = "Creator Account";
+"collectible-detail-creator-account" = "Ersteller-Konto";
 
 /* (No Comment) */
 "collectible-detail-creator-name" = "Name des Erstellers";
@@ -536,19 +539,19 @@
 "collectible-detail-show-on" = "Anzeigen auf";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "3D mode";
+"collectible-detail-tap-3D" = "3D-Modus";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "Transaktion anzeigen";
 
 /* (No Comment) */
-"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "Hier werden sowohl die NFTs von Ihren Überwachungskonten als auch von Ihren eigenen Konten angezeigt.";
 
 /* (No Comment) */
-"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "NFTs von Überwachungskonten anzeigen";
 
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "Filter NFTs";
+"collectible-filter-selection-title" = "NFTs filtern";
 
 /* (No Comment) */
 "collectible-filter-selection-toggle-description" = "Sie können NFTs anzeigen/ausblenden, für die Sie das Opt-in durchgeführt haben, die Ihnen aber nicht gehören.";
@@ -599,7 +602,7 @@
 "collectible-send-action" = "Übertragen";
 
 /* (No Comment) */
-"collectible-send-input-placeholder" = "Algorand-Wallet-Adresse einfügen";
+"collectible-send-input-placeholder" = "Kontoadresse";
 
 /* MARK: Collectible Send */
 "collectible-send-title" = "Senden Sie Ihren NFT";
@@ -731,7 +734,7 @@
 "discover-error-fallback-body" = "Wir können diese Informationen im Moment nicht abrufen.";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+"discover-error-favorites-max-limit" = "Sie können nicht mehr als 50 Favoriten haben.";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "Suchen Sie nach einem beliebigen ASA";
@@ -1106,10 +1109,10 @@
 "min-balance-title" = "Mindestguthaben erforderlich";
 
 /* (No Comment) */
-"minimum-balance-description" = "Minimum balance is the minimum amount of Algo you have to keep in an account. It increases every time the account is opted in to a smart contract, ASA or NFT.";
+"minimum-balance-description" = "Das Mindestguthaben ist der Mindestbetrag an Algo, den Sie auf einem Konto halten müssen. Er erhöht sich jedes Mal, wenn das Konto das Opt-in für einen Smart Contract, ein ASA oder einen NFT durchführt.";
 
 /* MARK: Minimum Balance */
-"minimum-balance-title" = "Minimum balance";
+"minimum-balance-title" = "Mindestguthaben";
 
 /* MARK: MoonPay */
 "moonpay-buy-button-title" = "ALGO kaufen";
@@ -1229,10 +1232,10 @@
 "notification-filter-show-title" = "Push-Benachrichtigungen";
 
 /* (No Comment) */
-"notifications-account-not-found-description" = "You cannot take actions for this account: It was removed from this device.";
+"notifications-account-not-found-description" = "Sie können keine Aktionen für dieses Konto durchführen: Es wurde von diesem Gerät entfernt.";
 
 /* (No Comment) */
-"notifications-account-not-found-title" = "Account Removed";
+"notifications-account-not-found-title" = "Konto entfernt";
 
 /* (No Comment) */
 "notifications-asset-not-found-description" = "Der Verlauf für dieses bestimmte Asset ist nicht verfügbar.";
@@ -1250,10 +1253,10 @@
 "notifications-title" = "Benachrichtigungen";
 
 /* (No Comment) */
-"notifications-trying-to-opt-in-for-watch-account-description" = "You cannot opt-in for this account: It's a read-only Watch Account.";
+"notifications-trying-to-opt-in-for-watch-account-description" = "Sie können sich nicht für dieses Konto anmelden: Es handelt sich um ein schreibgeschütztes Überwachungskonto.";
 
 /* (No Comment) */
-"notifications-trying-to-opt-in-for-watch-account-title" = "Opt-in Not Allowed";
+"notifications-trying-to-opt-in-for-watch-account-title" = "Opt-in nicht erlaubt";
 
 /* (No Comment) */
 "number-abbreviation-billion" = "B";
@@ -1274,10 +1277,10 @@
 "number-abbreviation-trillion" = "T";
 
 /* MARK: Ongoing opt-in/opt-out Alert */
-"ongoing-opt-in-request-description" = "There is an ongoing opt-in request for this asset with %@. Please wait for the ongoing opt-in request to finish before taking any action for this asset with this account.";
+"ongoing-opt-in-request-description" = "Es gibt eine laufende Opt-in-Anfrage für dieses Asset mit %@. Bitte warten Sie, bis die laufende Opt-in-Anfrage beendet ist, bevor Sie für dieses Asset mit diesem Konto eine Aktion durchführen.";
 
 /* (No Comment) */
-"ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";
+"ongoing-opt-out-request-description" = "Es gibt eine laufende Opt-out-Anfrage für dieses Asset mit %@. Bitte warten Sie, bis die laufende Opt-out-Anfrage beendet ist, bevor Sie für dieses Asset mit diesem Konto eine Aktion durchführen.";
 
 /* (No Comment) */
 "opt-in-description-adding-nft" = "Das Opt-in für ein NFT erfordert, dass Sie eine Transaktion mit der Mindesttransaktionsgebühr tätigen. Dies wird in Ihrem Transaktionsverlauf angezeigt.";
@@ -1298,7 +1301,7 @@
 "options-manage-assets" = "Assets verwalten";
 
 /* (No Comment) */
-"options-manage-collectibles" = "Manage NFTs";
+"options-manage-collectibles" = "NFTs verwalten";
 
 /* (No Comment) */
 "options-mute-notification" = "Benachrichtigungen stummschalten";
@@ -1793,7 +1796,7 @@
 "send-transaction-max-same-account-error" = "Sie können Ihr maximales Guthaben nicht an sich selbst senden. Bitte wählen Sie einen anderen Betrag oder Empfänger und versuchen Sie es erneut.";
 
 /* (No Comment) */
-"send-transaction-preview-button" = "Confirm transfer";
+"send-transaction-preview-button" = "Übertragung bestätigen";
 
 /* (No Comment) */
 "send-transaction-preview-current-balance" = "Aktuelles\nGuthaben";
@@ -1874,13 +1877,13 @@
 "settings-notification-disabled-go-settings-text" = "Sie haben die Benachrichtigungsfunktion deaktiviert. Bitte aktivieren Sie diese Funktion in den Einstellungen.";
 
 /* (No Comment) */
-"settings-notification-disabled-go-settings-title" = "Notifications Disabled";
+"settings-notification-disabled-go-settings-title" = "Benachrichtigungen deaktiviert";
 
 /* (No Comment) */
 "settings-notification-enabled-go-settings-text" = "Sie haben die Benachrichtigungsfunktion aktiviert. Bitte deaktivieren Sie diese Funktion in den Einstellungen.";
 
 /* (No Comment) */
-"settings-notification-enabled-go-settings-title" = "Notifications Enabled";
+"settings-notification-enabled-go-settings-title" = "Benachrichtigungen aktiviert";
 
 /* (No Comment) */
 "settings-rate-modal-description" = "Erzählen Sie uns, wie Ihre Erfahrung war.";
@@ -2312,7 +2315,7 @@
 "title-later" = "Später";
 
 /* (No Comment) */
-"title-launch-ios-settings" = "Launch iOS Settings";
+"title-launch-ios-settings" = "iOS-Einstellungen starten";
 
 /* (No Comment) */
 "title-learn-more" = "Mehr erfahren";
@@ -2792,10 +2795,10 @@
 "url-copied" = "URL in die Zwischenablage kopiert";
 
 /* (No Comment) */
-"user-account-limit-error-message" = "Looks like you already have 50 or more accounts in your wallet. To keep the app performance snappy, we currently don't support more than 50 accounts. To add another one, please remove an existing account first.";
+"user-account-limit-error-message" = "Es sieht aus, als hätten Sie bereits 50 oder mehr Konten in Ihrer Wallet. Um die Leistung der App schnell zu halten, unterstützen wir derzeit nicht mehr als 50 Konten. Um ein weiteres Konto hinzuzufügen, entfernen Sie bitte zuerst ein bestehendes Konto.";
 
 /* MARK: User Account Limit Error */
-"user-account-limit-error-title" = "Too Many Accounts!";
+"user-account-limit-error-title" = "Zu viele Konten!";
 
 /* (No Comment) */
 "verification-info-body" = "Das Algorand Standard Asset (ASA) Verifizierungsprogramm von Pera Wallet ermöglicht es ASA-Erstellern, sich automatisch verifizieren zu lassen, indem bestätigt wird, dass sie die Eigentümer des Assets sind.\nDer Hauptzweck der ASA-Verifizierung ist es, zu verhindern, dass ein ASA vorgibt, mit einem Projekt verbunden zu sein und als Token für ein Projekt zu fungieren, mit dem es nicht verbunden ist.\nDie ASA-Verifizierung ist keine Befürwortung des Projekts. Weder Algorand noch Pera würden den Verifizierungsprozess jemals nutzen, um ein Projekt zu unterstützen.";
@@ -2864,13 +2867,13 @@
 "wallet-connect-group-transaction-header-title" = "GroupID: %@";
 
 /* (No Comment) */
-"wallet-connect-no-account-for-transaction" = "Your WalletConnect request failed with the following error: \n\n%@\n\nPlease try again by going back to the dApp where you initiated the request.";
+"wallet-connect-no-account-for-transaction" = "Ihre WalletConnect-Anfrage ist mit folgendem Fehler fehlgeschlagen:\n\n%@\n\nBitte versuchen Sie es erneut, indem Sie zu der dApp zurückkehren, mit der Sie die Anfrage initiiert haben.";
 
 /* (No Comment) */
 "wallet-connect-raw-transaction-title" = "Rohtransaktion";
 
 /* (No Comment) */
-"wallet-connect-select-accounts" = "Select Accounts";
+"wallet-connect-select-accounts" = "Konten auswählen";
 
 /* (No Comment) */
 "wallet-connect-session-connected" = "Verbunden";
@@ -3044,10 +3047,10 @@
 "wallet-connect-transaction-request-count-singular" = "Transaktionsanfrage (1)";
 
 /* (No Comment) */
-"wallet-connect-transaction-request-signing-future-transaction-alert-description" = "This transaction will be submitted in the future. Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
+"wallet-connect-transaction-request-signing-future-transaction-alert-description" = "Diese Transaktion wird in der Zukunft übermittelt werden. Nach der Bestätigung kann die angeschlossene Anwendung diese Transaktionen nach eigenem Ermessen versenden. Bitte überprüfen Sie die Transaktionen sorgfältig, da dieser Vorgang unumkehrbar ist.";
 
 /* (No Comment) */
-"wallet-connect-transaction-request-signing-future-transaction-alert-title" = "Future Transaction Detected";
+"wallet-connect-transaction-request-signing-future-transaction-alert-title" = "Zukünftige Transaktion erkannt";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "Anwendungsaufruf";

@@ -20,7 +20,8 @@ import UIKit
 /// <note>:
 /// PeraInAppBrowserScreen should be used for websites that created by Pera
 /// It handles theme changes, some common logics on that websites.
-class PeraInAppBrowserScreen: InAppBrowserScreen {
+class PeraInAppBrowserScreen<ScriptMessage>: InAppBrowserScreen<ScriptMessage>
+where ScriptMessage: InAppBrowserScriptMessage {
     override var userAgent: String? {
         let version: String? = Bundle.main["CFBundleShortVersionString"]
         let versionUserAgent = version.unwrap { "pera_ios_" + $0 }

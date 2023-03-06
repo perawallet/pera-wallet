@@ -63,8 +63,8 @@ struct SendTransactionDraft: TransactionSendDraft {
     var hasReceiver: Bool {
         toAccount != nil || toContact != nil
     }
-    var nameService: NameService?
-}
+    var toNameService: NameService?
+ }
 
 enum TransactionMode {
     case algo

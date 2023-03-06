@@ -22,6 +22,13 @@ import MacaroonUIKit
 final class SendTransactionPreviewScreen: BaseScrollViewController {
    typealias EventHandler = (Event) -> Void
 
+   override var contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior {
+      return .automatic
+   }
+   override var contentSizeBehaviour: BaseScrollViewController.ContentSizeBehaviour {
+      return .intrinsic
+   }
+
    var eventHandler: EventHandler?
    
    private lazy var transitionToEditNote = BottomSheetTransition(presentingViewController: self)
@@ -29,7 +36,6 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    private var ledgerApprovalViewController: LedgerApprovalViewController?
 
    private lazy var transactionDetailView = SendTransactionPreviewView()
-   private lazy var nextButtonContainer = UIView()
    private lazy var nextButton = Button()
    private lazy var theme = Theme()
 
@@ -63,8 +69,6 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 
       if !isLayoutFinalized {
          isLayoutFinalized = true
-
-         addLinearGradient()
       }
    }
 
@@ -109,6 +113,19 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       fetchTransactionParams()
    }
 
+   override func addFooter() {
+      super.addFooter()
+
+      var backgroundGradient = Gradient()
+      backgroundGradient.colors = [
+          Colors.Defaults.background.uiColor.withAlphaComponent(0),
+          Colors.Defaults.background.uiColor
+      ]
+      backgroundGradient.locations = [ 0, 0.2, 1 ]
+
+      footerBackgroundEffect = LinearGradientEffect(gradient: backgroundGradient)
+   }
+
    private func fetchTransactionParams() {
       loadingController?.startLoadingWithMessage("title-loading".localized)
 
@@ -151,9 +168,15 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       }
 
       do {
-
          let transactionDetail = try JSONDecoder().decode(SDKTransaction.self, from: jsonData)
          transactionDraft.fee = transactionDetail.fee
+
+         /// <note>: When transaction detail fetched from SDK, amount will be updated as well
+         /// Otherwise, amount field wouldn't be normalized with minimum balance
+         /// This is only needed for Algo transaction
+         if transactionDraft is AlgosTransactionSendDraft {
+            transactionDraft.amount = transactionDetail.amount.toAlgos
+         }
 
          let currency = sharedDataController.currency
 
@@ -191,7 +214,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
             lockedNote: draft.lockedNote
          )
          transactionDraft.toContact = draft.toContact
-         transactionDraft.nameService = draft.nameService
+         transactionDraft.toNameService = draft.toNameService
 
       case .asset(let asset):
          var assetTransactionDraft = AssetTransactionSendDraft(
@@ -206,7 +229,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
          )
          assetTransactionDraft.toContact = draft.toContact
          assetTransactionDraft.asset = asset
-         assetTransactionDraft.nameService = draft.nameService
+         assetTransactionDraft.toNameService = draft.toNameService
 
          transactionDraft = assetTransactionDraft
       }
@@ -248,7 +271,10 @@ extension SendTransactionPreviewScreen {
    private func addTransactionDetailView() {
       contentView.addSubview(transactionDetailView)
       transactionDetailView.snp.makeConstraints {
-         $0.edges.equalToSuperview()
+         $0.top == 0
+         $0.leading == 0
+         $0.bottom == theme.contentBottomEdgeInset
+         $0.trailing == 0
       }
       
       transactionDetailView.startObserving(event: .performEditNote) {
@@ -274,38 +300,16 @@ extension SendTransactionPreviewScreen {
    }
 
    private func addNextButton() {
-      view.addSubview(nextButtonContainer)
-      nextButtonContainer.snp.makeConstraints {
-         $0.leading.trailing.bottom.equalToSuperview()
-         $0.fitToHeight(theme.linearGradientHeight + view.safeAreaBottom)
-      }
-
       nextButton.customize(theme.nextButtonStyle)
       nextButton.bindData(ButtonCommonViewModel(title: "send-transaction-preview-button".localized))
-      nextButtonContainer.addSubview(nextButton)
-      
+
+      footerView.addSubview(nextButton)
       nextButton.snp.makeConstraints {
-         $0.leading.trailing.equalToSuperview().inset(theme.nextButtonLeadingInset)
-         $0.bottom.equalToSuperview().inset(theme.nextButtonBottomInset + view.safeAreaBottom)
-         $0.height.equalTo(theme.nextButtonHeight)
+         $0.top == theme.nextButtonContentEdgeInsets.top
+         $0.leading == theme.nextButtonContentEdgeInsets.leading
+         $0.bottom == theme.nextButtonContentEdgeInsets.bottom
+         $0.trailing == theme.nextButtonContentEdgeInsets.trailing
       }
-   }
-
-   private func addLinearGradient() {
-      let layer = CAGradientLayer()
-      layer.frame = CGRect(
-         origin: .zero,
-         size: CGSize(
-            width: view.bounds.width,
-            height: theme.linearGradientHeight + view.safeAreaBottom
-         )
-      )
-
-      let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0).cgColor
-      let color1 = Colors.Defaults.background.uiColor.cgColor
-
-      layer.colors = [color0, color1]
-      nextButtonContainer.layer.insertSublayer(layer, at: 0)
    }
 }
 

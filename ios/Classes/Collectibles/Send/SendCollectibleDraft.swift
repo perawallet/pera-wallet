@@ -23,5 +23,18 @@ struct SendCollectibleDraft {
 
     var toAccount: Account?
     var toContact: Contact?
+    var toNameService: NameService?
     var fee: UInt64?
+
+    var receiverAddress: String? {
+        toAccount?.address ??
+        toContact?.address ??
+        toNameService?.address
+    }
+
+    mutating func resetReceiver() {
+        toAccount = nil
+        toContact = nil
+        toNameService = nil
+    }
 }

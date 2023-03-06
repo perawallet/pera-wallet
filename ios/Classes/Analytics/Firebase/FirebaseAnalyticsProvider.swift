@@ -17,6 +17,7 @@
 
 import Firebase
 import FirebaseAnalytics
+import MacaroonUtils
 import MacaroonVendors
 
 final class FirebaseAnalyticsProvider: ALGAnalyticsProvider {
@@ -64,11 +65,13 @@ final class FirebaseAnalyticsProvider: ALGAnalyticsProvider {
     func track<T: AnalyticsEvent>(
         _ event: T
     ) {
-        let parameters = Self.transformMetadataToFirebaseParameters(event.metadata)
-        instance.logEvent(
-            event.name.rawValue,
-            parameters: parameters
-        )
+        asyncMain {
+            let parameters = Self.transformMetadataToFirebaseParameters(event.metadata)
+            instance.logEvent(
+                event.name.rawValue,
+                parameters: parameters
+            )
+        }
     }
 
     func canRecord(

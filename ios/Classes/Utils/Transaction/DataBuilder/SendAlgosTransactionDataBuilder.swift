@@ -52,7 +52,7 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         self.calculatedTransactionAmount = transactionAmount
         updateMaximumTransactionStateIfNeeded(&isMaxTransaction)
 
-        if !isValidAddress(address.trimmed) || transactionAmount.isBelowZero {
+        if !isValidAddress(address.trimmed()) || transactionAmount.isBelowZero {
             return nil
         }
 

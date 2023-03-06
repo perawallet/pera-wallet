@@ -32,7 +32,6 @@ struct SendTransactionPreviewViewTheme: LayoutSheet, StyleSheet {
     let verticalStackViewTopPadding: LayoutMetric
     let bottomPaddingForSeparator: LayoutMetric
     let separatorTopPadding: LayoutMetric
-    let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
@@ -47,15 +46,6 @@ struct SendTransactionPreviewViewTheme: LayoutSheet, StyleSheet {
         self.verticalStackViewSpacing = 24
         self.verticalStackViewTopPadding = 72
         self.bottomPaddingForSeparator = 65
-        let verticalStackViewAdditionalBottomPadding: LayoutMetric = 2
-        let buttonHeight: LayoutMetric = 52
-        let additionalLinearGradientHeightForButtonTop: LayoutMetric = 4
-        let bottomPadding: LayoutMetric = 16
-        self.bottomInset =
-        bottomPadding +
-        buttonHeight +
-        additionalLinearGradientHeightForButtonTop +
-        verticalStackViewAdditionalBottomPadding
         self.smallMultipleAmountInformationViewTheme = TransactionMultipleAmountInformationViewTheme(family)
         self.bigMultipleAmountInformationViewTheme = TransactionMultipleAmountInformationViewTheme(
             family,

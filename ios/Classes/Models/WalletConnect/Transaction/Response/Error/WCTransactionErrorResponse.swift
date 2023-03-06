@@ -74,6 +74,8 @@ enum WCTransactionErrorResponse: Error {
                 return "wallet-connect-transaction-error-group".localized
             case .signer:
                 return "wallet-connect-transaction-error-account-not-exist".localized
+            case .session:
+                return "wallet-connect-transaction-error-session-not-found".localized
             case .none:
                 return "wallet-connect-transaction-error-invalid".localized
             }
@@ -143,6 +145,7 @@ extension WCTransactionErrorResponse {
         case unsignable
         case group
         case signer
+        case session
         case none
     }
 }

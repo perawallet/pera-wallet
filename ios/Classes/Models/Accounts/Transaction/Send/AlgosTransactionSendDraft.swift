@@ -28,7 +28,7 @@ struct AlgosTransactionSendDraft: TransactionSendDraft {
     var lockedNote: String?
 
     var toContact: Contact?
-    var nameService: NameService?
+    var toNameService: NameService?
 }
 
 extension AlgosTransactionSendDraft {

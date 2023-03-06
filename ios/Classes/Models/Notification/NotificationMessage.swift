@@ -17,6 +17,7 @@
 
 import Foundation
 import MagpieCore
+import MacaroonURLImage
 import MacaroonUtils
 
 final class NotificationMessage: ALGEntityModel {
@@ -24,6 +25,7 @@ final class NotificationMessage: ALGEntityModel {
     let url: URL?
     let date: Date?
     let message: String?
+    let icon: NotificationIcon?
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -34,6 +36,7 @@ final class NotificationMessage: ALGEntityModel {
         /// Without format string ???
         self.date = apiModel.creationDatetime?.toDate()?.date
         self.message = apiModel.message
+        self.icon = apiModel.icon.unwrap(NotificationIcon.init)
     }
 
     func encode() -> APIModel {
@@ -42,6 +45,7 @@ final class NotificationMessage: ALGEntityModel {
         apiModel.url = url
         apiModel.creationDatetime = date?.toString(.standard)
         apiModel.message = message
+        apiModel.icon = icon?.encode()
         return apiModel
     }
 }
@@ -52,19 +56,98 @@ extension NotificationMessage {
         var url: URL?
         var creationDatetime: String?
         var message: String?
+        var icon: NotificationIcon.APIModel?
 
         init() {
             self.id = nil
             self.url = nil
             self.creationDatetime = nil
             self.message = nil
+            self.icon = nil
         }
 
-        enum CodingKeys: String, CodingKey {
-            case id = "id"
-            case url = "url"
+        private enum CodingKeys: String, CodingKey {
+            case id
+            case url
             case creationDatetime = "creation_datetime"
-            case message = "message"
+            case message
+            case icon
+        }
+    }
+}
+
+final class NotificationIcon: ALGEntityModel {
+    let logo: URL?
+    let shape: NotificationIconShape?
+    
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.logo = apiModel.logo
+        self.shape = apiModel.shape
+    }
+    
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.logo = logo
+        apiModel.shape = shape
+        return apiModel
+    }
+}
+
+extension NotificationIcon {
+    struct APIModel: ALGAPIModel {
+        var logo: URL?
+        var shape: NotificationIconShape?
+        
+        init() {
+            self.logo = nil
+            self.shape = .circle
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            let logoString = try container.decodeIfPresent(
+                String.self,
+                forKey: .logo
+            )
+            self.logo = logoString
+                .unwrapNonEmptyString()
+                .unwrap(URL.init)
+            
+            if self.logo == nil {
+                self.shape = nil
+            } else {
+                self.shape = try container.decode(NotificationIconShape.self, forKey: .shape)
+            }
+        }
+        
+        private enum CodingKeys: String, CodingKey {
+            case logo
+            case shape
+        }
+    }
+}
+
+enum NotificationIconShape:
+    String,
+    APIModel {
+    case circle
+    case rectangle
+    
+    init?(rawValue: String) {
+        switch rawValue {
+        case "circle": self = .circle
+        case "rectangle": self = .rectangle
+        default: self = .circle
+        }
+    }
+    
+    func convertToImageShape() -> ImageShape {
+        switch self {
+        case .circle: return .circle
+        case .rectangle: return .rounded(4)
         }
     }
 }

@@ -378,7 +378,7 @@ extension ScanQRFlowCoordinator {
         if let assetID = transactionController.assetTransactionDraft?.assetIndex,
            let account = transactionController.assetTransactionDraft?.from {
             let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )
@@ -401,7 +401,7 @@ extension ScanQRFlowCoordinator {
         if let assetID = transactionController.assetTransactionDraft?.assetIndex,
            let account = transactionController.assetTransactionDraft?.from {
             let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )

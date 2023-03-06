@@ -18,6 +18,7 @@
 import Foundation
 
 class WalletConnectSessionSource {
+    static let sessionLimit = 30
 
     var sessions: [String: WCSession]? {
         get {
@@ -101,8 +102,8 @@ extension WalletConnectSessionSource {
         return []
     }
 
-    func getWalletConnectSession(with url: WCURLMeta) -> WCSession? {
-        return sessions?[url.topic]
+    func getWalletConnectSession(for topic: WalletConnectTopic) -> WCSession? {
+        return sessions?[topic]
     }
     
     func updateWalletConnectSession(_ session: WCSession, with url: WCURLMeta) {

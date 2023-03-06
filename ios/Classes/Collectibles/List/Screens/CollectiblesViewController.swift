@@ -41,6 +41,8 @@ final class CollectiblesViewController: BaseViewController {
         configuration: configuration
     )
 
+    private var isOptInBarButtonHidden = true
+
     private let query: CollectibleListQuery
     private let dataController: CollectibleListDataController
     private let copyToClipboardController: CopyToClipboardController
@@ -80,20 +82,25 @@ final class CollectiblesViewController: BaseViewController {
 
 extension CollectiblesViewController {
     private func setOptInBarButtonHidden(_ hidden: Bool) {
+        if isOptInBarButtonHidden == hidden { return }
+
         if hidden {
             rightBarButtonItems = []
         } else {
-            let addBarButtonItem = ALGBarButtonItem(kind: .add) {
-                [unowned self] in
-
-                self.endEditing()
-                self.openReceiveCollectible()
-            }
-
-            rightBarButtonItems = [ addBarButtonItem ]
+            rightBarButtonItems = [ makeOptInBarButtonItem() ]
         }
 
         setNeedsRightBarButtonItemsUpdate()
+
+        isOptInBarButtonHidden = hidden
+    }
+
+    private func makeOptInBarButtonItem() -> ALGBarButtonItem {
+        return ALGBarButtonItem(kind: .add) {
+            [unowned self] in
+            self.endEditing()
+            self.openReceiveCollectible()
+        }
     }
 
     private func bindNavigationItemTitle() {

@@ -26,7 +26,7 @@ struct OptOutBlockchainUpdate: BlockchainUpdate {
     let collectibleAssetTitle: String?
     let collectibleAssetThumbnailImage: URL?
     let collectibleAssetCollectionName: String?
-    let status: Status
+    var status: Status
     let notificationMessage: String
 
     init(request: OptOutBlockchainRequest) {
@@ -72,5 +72,6 @@ extension OptOutBlockchainUpdate {
     enum Status {
         case pending
         case waitingForNotification
+        case completed
     }
 }

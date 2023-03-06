@@ -24,14 +24,16 @@ final class SettingsViewController: BaseViewController {
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
     
     private lazy var theme = Theme()
     private lazy var settingsView = SettingsView()
 
-    private lazy var dataSource = SettingsDataSource(session: session)
+    private lazy var dataSource = SettingsDataSource(
+        walletConnector: walletConnector,
+        session: session
+    )
 
     override var prefersLargeTitle: Bool {
         return true

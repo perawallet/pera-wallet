@@ -54,13 +54,6 @@ enum ReceiveCollectibleAssetListEmptyItem: Hashable {
 }
 
 enum ReceiveCollectibleAssetListDataControllerEvent {
-    case didUpdate(ReceiveCollectibleAssetListDataController.Snapshot)
-    case didOptInAssets([OptInAssetListItem])
-
-    var snapshot: ReceiveCollectibleAssetListDataController.Snapshot {
-        switch self {
-        case .didUpdate(let snapshot): return snapshot
-        case .didOptInAssets: return .init()
-        }
-    }
+    case didUpdateAccount
+    case didUpdateAssets(ReceiveCollectibleAssetListDataController.Snapshot)
 }

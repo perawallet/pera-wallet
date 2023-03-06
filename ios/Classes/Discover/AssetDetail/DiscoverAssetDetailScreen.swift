@@ -18,7 +18,7 @@ import Foundation
 import WebKit
 import MacaroonUtils
 
-final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen, WKScriptMessageHandler {
+final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen<DiscoverAssetDetailScriptMessage> {
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
@@ -40,8 +40,6 @@ final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen, WKScriptMessageHa
     /// routing approach hasn't been refactored yet.
     private let swapDataStore: SwapDataStore
 
-    private var events: [Event] = [.detailAction]
-
     init(
         assetParameters: DiscoverAssetParameters,
         swapDataStore: SwapDataStore,
@@ -52,37 +50,13 @@ final class DiscoverAssetDetailScreen: PeraInAppBrowserScreen, WKScriptMessageHa
         super.init(configuration: configuration, discoverURL: .assetDetail(parameters: assetParameters))
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        events.forEach { event in
-            contentController.removeScriptMessageHandler(forName: event.rawValue)
-        }
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        listenEvents()
-    }
-
     override func customizeTabBarAppearence() {
         tabBarHidden = true
     }
-}
 
-extension DiscoverAssetDetailScreen {
-    enum Event: String {
-        case detailAction = "handleTokenDetailActionButtonClick"
-    }
-
-    private func listenEvents() {
-        events.forEach { event in
-            contentController.add(self, name: event.rawValue)
-        }
-    }
-
-    func userContentController(
+    /// <mark>
+    /// WKScriptMessageHandler
+    override func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
@@ -105,7 +79,9 @@ extension DiscoverAssetDetailScreen {
             launchSwap(with: swapParameters)
         }
     }
+}
 
+extension DiscoverAssetDetailScreen {
     private func launchBuyAlgo() {
         buyAlgoFlowCoordinator.launch()
     }
@@ -144,4 +120,10 @@ extension DiscoverAssetDetailScreen {
             self.analytics.track(.sellAssetFromDiscover(assetOutID: assetOutID, assetInID: assetInID))
         }
     }
+}
+
+enum DiscoverAssetDetailScriptMessage:
+    String,
+    InAppBrowserScriptMessage {
+    case detailAction = "handleTokenDetailActionButtonClick"
 }

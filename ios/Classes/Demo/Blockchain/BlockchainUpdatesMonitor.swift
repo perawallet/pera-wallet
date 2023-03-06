@@ -31,12 +31,6 @@ struct BlockchainUpdatesMonitor: Printable {
 }
 
 extension BlockchainUpdatesMonitor {
-    func filterOptedInAssetUpdates() -> [OptInBlockchainUpdate] {
-        return table.reduce(into: [OptInBlockchainUpdate]()) {
-            $0 += $1.value.filterOptedInAssetUpdates().values
-        }
-    }
-
     func filterPendingOptInAssetUpdates() -> [OptInBlockchainUpdate] {
         return table.reduce(into: [OptInBlockchainUpdate]()) {
             $0 += $1.value.filterPendingOptInAssetUpdates().values
@@ -47,6 +41,18 @@ extension BlockchainUpdatesMonitor {
         let address = account.address
         let monitor = table[address]
         return monitor?.filterPendingOptInAssetUpdates() ?? [:]
+    }
+
+    func filterOptedInAssetUpdates() -> [OptInBlockchainUpdate] {
+        return table.reduce(into: [OptInBlockchainUpdate]()) {
+            $0 += $1.value.filterOptedInAssetUpdates().values
+        }
+    }
+
+    func filterOptedInAssetUpdatesForNotification() -> [OptInBlockchainUpdate] {
+        return table.reduce(into: [OptInBlockchainUpdate]()) {
+            $0 += $1.value.filterOptedInAssetUpdatesForNotification().values
+        }
     }
 
     func filterOptedInAssetUpdates(for account: Account) -> [AssetID : OptInBlockchainUpdate] {
@@ -81,7 +87,7 @@ extension BlockchainUpdatesMonitor {
         $table.mutate { $0[address] = monitor }
     }
 
-    func stopMonitoringOptInUpdates(
+    func markOptInUpdatesForNotification(
         forAssetID assetID: AssetID,
         for account: Account
     ) {
@@ -89,47 +95,36 @@ extension BlockchainUpdatesMonitor {
 
         guard var monitor = table[address] else { return }
 
-        monitor.stopMonitoringOptInUpdates(forAssetID: assetID)
+        monitor.markOptInUpdatesForNotification(forAssetID: assetID)
 
         $table.mutate { $0[address] = monitor }
     }
 
-    func finishMonitoringOptInUpdates(
+    func stopMonitoringOptInUpdates(associatedWith update: OptInBlockchainUpdate) {
+        let address = update.accountAddress
+
+        guard var monitor = table[address] else { return }
+
+        monitor.stopMonitoringOptInUpdates(forAssetID: update.assetID)
+
+        $table.mutate { $0[address] = monitor }
+    }
+
+    func cancelMonitoringOptInUpdates(
         forAssetID assetID: AssetID,
         for account: Account
     ) {
-        finishMonitoringOptInUpdates(
-            forAssetID: assetID,
-            forAccountAddress: account.address
-        )
-    }
+        let address = account.address
 
-    func finishMonitoringOptInUpdates(associatedWith update: OptInBlockchainUpdate) {
-        finishMonitoringOptInUpdates(
-            forAssetID: update.assetID,
-            forAccountAddress: update.accountAddress
-        )
-    }
-
-    private func finishMonitoringOptInUpdates(
-        forAssetID assetID: AssetID,
-        forAccountAddress address: String
-    ) {
         guard var monitor = table[address] else { return }
 
-        monitor.finishMonitoringOptInUpdates(forAssetID: assetID)
+        monitor.cancelMonitoringOptInUpdates(forAssetID: assetID)
 
         $table.mutate { $0[address] = monitor }
     }
 }
 
 extension BlockchainUpdatesMonitor {
-    func filterOptedOutAssetUpdates() -> [OptOutBlockchainUpdate] {
-        return table.reduce(into: [OptOutBlockchainUpdate]()) {
-            $0 += $1.value.filterOptedOutAssetUpdates().values
-        }
-    }
-
     func filterPendingOptOutAssetUpdates() -> [OptOutBlockchainUpdate] {
         return table.reduce(into: [OptOutBlockchainUpdate]()) {
             $0 += $1.value.filterPendingOptOutAssetUpdates().values
@@ -140,6 +135,18 @@ extension BlockchainUpdatesMonitor {
         let address = account.address
         let monitor = table[address]
         return monitor?.filterPendingOptOutAssetUpdates() ?? [:]
+    }
+
+    func filterOptedOutAssetUpdates() -> [OptOutBlockchainUpdate] {
+        return table.reduce(into: [OptOutBlockchainUpdate]()) {
+            $0 += $1.value.filterOptedOutAssetUpdates().values
+        }
+    }
+
+    func filterOptedOutAssetUpdatesForNotification() -> [OptOutBlockchainUpdate] {
+        return table.reduce(into: [OptOutBlockchainUpdate]()) {
+            $0 += $1.value.filterOptedOutAssetUpdatesForNotification().values
+        }
     }
 
     func filterOptedOutAssetUpdates(for account: Account) -> [AssetID: OptOutBlockchainUpdate] {
@@ -174,7 +181,7 @@ extension BlockchainUpdatesMonitor {
         $table.mutate { $0[address] = monitor }
     }
 
-    func stopMonitoringOptOutUpdates(
+    func markOptOutUpdatesForNotification(
         forAssetID assetID: AssetID,
         for account: Account
     ) {
@@ -182,47 +189,36 @@ extension BlockchainUpdatesMonitor {
 
         guard var monitor = table[address] else { return }
 
-        monitor.stopMonitoringOptOutUpdates(forAssetID: assetID)
+        monitor.markOptOutUpdatesForNotification(forAssetID: assetID)
 
         $table.mutate { $0[address] = monitor }
     }
 
-    func finishMonitoringOptOutUpdates(
+    func stopMonitoringOptOutUpdates(associatedWith update: OptOutBlockchainUpdate) {
+        let address = update.accountAddress
+
+        guard var monitor = table[address] else { return }
+
+        monitor.stopMonitoringOptOutUpdates(forAssetID: update.assetID)
+
+        $table.mutate { $0[address] = monitor }
+    }
+
+    func cancelMonitoringOptOutUpdates(
         forAssetID assetID: AssetID,
         for account: Account
     ) {
-        finishMonitoringOptOutUpdates(
-            forAssetID: assetID,
-            forAccountAddress: account.address
-        )
-    }
+        let address = account.address
 
-    func finishMonitoringOptOutUpdates(associatedWith update: OptOutBlockchainUpdate) {
-        finishMonitoringOptOutUpdates(
-            forAssetID: update.assetID,
-            forAccountAddress: update.accountAddress
-        )
-    }
-
-    private func finishMonitoringOptOutUpdates(
-        forAssetID assetID: AssetID,
-        forAccountAddress address: String
-    ) {
         guard var monitor = table[address] else { return }
 
-        monitor.finishMonitoringOptOutUpdates(forAssetID: assetID)
+        monitor.cancelMonitoringOptOutUpdates(forAssetID: assetID)
 
         $table.mutate { $0[address] = monitor }
     }
 }
 
 extension BlockchainUpdatesMonitor {
-    func filterSentPureCollectibleAssetUpdates() -> [SendPureCollectibleAssetBlockchainUpdate] {
-        return table.reduce(into: [SendPureCollectibleAssetBlockchainUpdate]()) {
-            $0 += $1.value.filterSentPureCollectibleAssetUpdates().values
-        }
-    }
-
     /// <todo>
     /// We may change the naming to pending send to pending transfer. It fits better.
     func filterPendingSendPureCollectibleAssetUpdates() -> [SendPureCollectibleAssetBlockchainUpdate] {
@@ -235,6 +231,18 @@ extension BlockchainUpdatesMonitor {
         let address = account.address
         let monitor = table[address]
         return monitor?.filterPendingSendPureCollectibleAssetUpdates() ?? [:]
+    }
+
+    func filterSentPureCollectibleAssetUpdates() -> [SendPureCollectibleAssetBlockchainUpdate] {
+        return table.reduce(into: [SendPureCollectibleAssetBlockchainUpdate]()) {
+            $0 += $1.value.filterSentPureCollectibleAssetUpdates().values
+        }
+    }
+
+    func filterSentPureCollectibleAssetUpdatesForNotification() -> [SendPureCollectibleAssetBlockchainUpdate] {
+        return table.reduce(into: [SendPureCollectibleAssetBlockchainUpdate]()) {
+            $0 += $1.value.filterSentPureCollectibleAssetUpdatesForNotification().values
+        }
     }
 }
 
@@ -257,7 +265,7 @@ extension BlockchainUpdatesMonitor {
         $table.mutate { $0[address] = monitor }
     }
 
-    func stopMonitoringSendPureCollectibleAssetUpdates(
+    func markSendPureCollectibleAssetUpdatesForNotification(
         forAssetID assetID: AssetID,
         for account: Account
     ) {
@@ -265,37 +273,42 @@ extension BlockchainUpdatesMonitor {
 
         guard var monitor = table[address] else { return }
 
-        monitor.stopMonitoringSendPureCollectibleAssetUpdates(forAssetID: assetID)
+        monitor.markSendPureCollectibleAssetUpdatesForNotification(forAssetID: assetID)
 
         $table.mutate { $0[address] = monitor }
     }
 
-    func finishMonitoringSendPureCollectibleAssetUpdates(associatedWith update: SendPureCollectibleAssetBlockchainUpdate) {
-        finishMonitoringSendPureCollectibleAssetUpdates(
-            forAssetID: update.assetID,
-            forAccountAddress: update.accountAddress
-        )
-    }
+    func stopMonitoringSendPureCollectibleAssetUpdates(associatedWith update: SendPureCollectibleAssetBlockchainUpdate) {
+        let address = update.accountAddress
 
-    private func finishMonitoringSendPureCollectibleAssetUpdates(
-        forAssetID assetID: AssetID,
-        forAccountAddress address: String
-    ) {
         guard var monitor = table[address] else { return }
 
-        monitor.stopMonitoringSendPureCollectibleAssetUpdates(forAssetID: assetID)
+        monitor.stopMonitoringSendPureCollectibleAssetUpdates(forAssetID: update.assetID)
+
+        $table.mutate { $0[address] = monitor }
+    }
+
+    private func cancelMonitoringSendPureCollectibleAssetUpdates(
+        forAssetID assetID: AssetID,
+        for account: Account
+    ) {
+        let address = account.address
+
+        guard var monitor = table[address] else { return }
+
+        monitor.markSendPureCollectibleAssetUpdatesForNotification(forAssetID: assetID)
 
         $table.mutate { $0[address] = monitor }
     }
 }
 
 extension BlockchainUpdatesMonitor {
-    func removeUnmonitoredUpdates() {
+    func removeCompletedUpdates() {
         $table.mutate {
             var newTable: Table = [:]
             for (address, monitor) in $0 {
                 var mMonitor = monitor
-                mMonitor.removeUnmonitoredUpdates()
+                mMonitor.removeCompletedUpdates()
 
                 if mMonitor.hasMonitoringUpdates() {
                     newTable[address] = mMonitor

@@ -48,3 +48,13 @@ enum ManageAssetSearchItem: Hashable {
     case collectibleAsset(OptOutCollectibleAssetListItem)
     case empty(AssetListSearchNoContentViewModel)
 }
+
+extension ManageAssetSearchItem {
+    var asset: Asset? {
+        switch self {
+        case .asset(let item): return item.model
+        case .collectibleAsset(let item): return item.model
+        case .empty: return nil
+        }
+    }
+}

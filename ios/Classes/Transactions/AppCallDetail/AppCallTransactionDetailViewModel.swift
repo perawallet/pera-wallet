@@ -129,17 +129,18 @@ extension AppCallTransactionDetailViewModel {
     private func bindInnerTransactionsViewModel(
         _ transaction: Transaction
     ) {
-        if let innerTransactions = transaction.innerTransactions,
-           !innerTransactions.isEmpty {
-
-            let amountViewModel = TransactionAmountViewModel(
-                innerTransactionCount: innerTransactions.count,
-                showInList: false
-            )
-
-            innerTransactionsViewModel = TransactionAmountInformationViewModel(
-                transactionViewModel: amountViewModel
-            )
+        guard let innerTransactions = transaction.innerTransactions,
+              !innerTransactions.isEmpty else {
+            return
         }
+        
+        let amountViewModel = TransactionAmountViewModel(
+            innerTransactionCount: transaction.allInnerTransactionsCount,
+            showInList: false
+        )
+        
+        innerTransactionsViewModel = TransactionAmountInformationViewModel(
+            transactionViewModel: amountViewModel
+        )
     }
 }

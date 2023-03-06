@@ -36,7 +36,7 @@ class WCSingleTransactionViewController: BaseScrollViewController {
     init(transaction: WCTransaction, transactionRequest: WalletConnectRequest, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
         self.transactionRequest = transactionRequest
-        self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
+        self.wcSession = configuration.walletConnector.getWalletConnectSession(for: transactionRequest.url.topic)
         if let address = transaction.transactionDetail?.sender {
             self.account = configuration.sharedDataController.accountCollection[address]?.value
         }

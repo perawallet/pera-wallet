@@ -346,10 +346,13 @@ extension ASADetailScreen {
         _ choosePasswordViewController: ChoosePasswordViewController,
         didConfirmPassword isConfirmed: Bool
     ) {
-        choosePasswordViewController.dismissScreen()
-
-        if isConfirmed {
-            navigateToViewPassphrase()
+        choosePasswordViewController.dismissScreen {
+            [weak self] in
+            guard let self else { return }
+            
+            if isConfirmed {
+                self.navigateToViewPassphrase()
+            }
         }
     }
 }
@@ -423,6 +426,11 @@ extension ASADetailScreen {
         if dataController.configuration.shouldDisplayAccountActionsBarButtonItem {
             let accountActionsBarButtonItem = makeAccountActionsBarButtonItem()
             rightBarButtonItems.append(accountActionsBarButtonItem)
+        }
+
+        if rightBarButtonItems.isEmpty {
+            let flexibleSpaceItem = ALGBarButtonItem.flexibleSpace()
+            rightBarButtonItems.append(flexibleSpaceItem)
         }
 
         self.rightBarButtonItems = rightBarButtonItems

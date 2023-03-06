@@ -23,8 +23,7 @@ final class AccountRecoverViewController: BaseScrollViewController {
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
 
     private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)

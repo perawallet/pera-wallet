@@ -83,8 +83,6 @@ extension TransactionAmountValidator {
                 return .failure(.algo(.participationKey))
             } else if !account.hasDifferentMinBalance {
                 return .success
-            } else if account.isRekeyed() {
-                return .failure(.algo(.lowBalance))
             }
 
             return .failure(.algo(.requiredMinimumBalance))

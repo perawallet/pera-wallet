@@ -42,8 +42,7 @@ final class HomeViewController:
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
 
     private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
@@ -152,8 +151,6 @@ final class HomeViewController:
                 self.totalPortfolioValue = totalPortfolioItem?.portfolioValue
 
                 self.bindNavigation(totalPortfolioItem)
-
-                self.configureWalletConnectIfNeeded()
 
                 self.listDataSource.apply(
                     updates.snapshot,
@@ -636,35 +633,6 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
-    private func configureWalletConnectIfNeeded() {
-        onceWhenViewDidAppear.execute { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.completeWalletConnectConfiguration()
-        }
-    }
-
-    private func completeWalletConnectConfiguration() {
-        reconnectToOldWCSessions()
-        registerWCRequests()
-    }
-    
-    private func reconnectToOldWCSessions() {
-        walletConnector.reconnectToSavedSessionsIfPossible()
-    }
-
-    private func registerWCRequests() {
-        let wcRequestHandler = TransactionSignRequestHandler()
-        if let rootViewController = UIApplication.shared.rootViewController() {
-            wcRequestHandler.delegate = rootViewController
-        }
-        walletConnector.register(for: wcRequestHandler)
-    }
-}
-
-extension HomeViewController {
     private func presentOptions(for accountHandle: AccountHandle) {
         modalTransition.perform(
             .invalidAccount(
@@ -1008,14 +976,15 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
         _ choosePasswordViewController: ChoosePasswordViewController,
         didConfirmPassword isConfirmed: Bool
     ) {
-        choosePasswordViewController.dismissScreen()
-        
-        guard let selectedAccountHandle = selectedAccountHandle else {
-            return
-        }
+        guard let selectedAccountHandle else { return }
 
-        if isConfirmed {
-            presentPassphraseView(selectedAccountHandle)
+        choosePasswordViewController.dismissScreen {
+            [weak self] in
+            guard let self else { return }
+            
+            if isConfirmed {
+                self.presentPassphraseView(selectedAccountHandle)
+            }
         }
     }
 

@@ -39,12 +39,14 @@ final class ALGAppLaunchController:
     private let sharedDataController: SharedDataController
     private let authChecker: AppAuthChecker
     private let deeplinkParser: DeepLinkParser
+    private let walletConnector: WalletConnector
     
     init(
         session: Session,
         api: ALGAPI,
         sharedDataController: SharedDataController,
         authChecker: AppAuthChecker,
+        walletConnector: WalletConnector,
         uiHandler: AppLaunchUIHandler
     ) {
         self.session = session
@@ -52,6 +54,7 @@ final class ALGAppLaunchController:
         self.sharedDataController = sharedDataController
         self.deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
         self.authChecker = authChecker
+        self.walletConnector = walletConnector
         self.uiHandler = uiHandler
         
         sharedDataController.add(self)
@@ -221,7 +224,9 @@ extension ALGAppLaunchController {
         didPublish event: SharedDataControllerEvent
     ) {
         switch event {
-        case .didFinishRunning: resumePendingDeeplink()
+        case .didFinishRunning:
+            walletConnector.configureTransactionsIfNeeded()
+            resumePendingDeeplink()
         default: break
         }
     }

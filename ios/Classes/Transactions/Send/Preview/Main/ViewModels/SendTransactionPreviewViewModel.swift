@@ -180,19 +180,17 @@ final class SendTransactionPreviewViewModel: ViewModel {
                 contact: contact,
                 hasImage: true
             )
+        } else if let nameService = draft.toNameService {
+            opponentView = TitledTransactionAccountNameViewModel(
+                title: title,
+                nameService: nameService
+            )
         } else if let toAccount = draft.toAccount {
-            if let nameService = draft.nameService {
-                opponentView = TitledTransactionAccountNameViewModel(
-                    title: title,
-                    nameService: nameService
-                )
-            } else {
-                opponentView = TitledTransactionAccountNameViewModel(
-                    title: title,
-                    account: toAccount,
-                    hasImage: toAccount.isCreated
-                )
-            }
+            opponentView = TitledTransactionAccountNameViewModel(
+                title: title,
+                account: toAccount,
+                hasImage: toAccount.isCreated
+            )
         }
     }
 

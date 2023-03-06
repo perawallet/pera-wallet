@@ -141,35 +141,50 @@ extension SelectLocalAssetDataController {
             return
         }
 
-        deliverUpdates() {
-            [weak self] in
-            guard let self = self else {
-                return Snapshot()
-            }
+         deliverUpdates() {
+             [weak self] in
+             guard let self = self else {
+                 return Snapshot()
+             }
 
-            let currency = self.sharedDataController.currency
-            let currencyFormatter = self.currencyFormatter
+             let currency = self.sharedDataController.currency
+             let currencyFormatter = self.currencyFormatter
 
-            var snapshot = Snapshot()
-            snapshot.appendSections([.assets])
+             var snapshot = Snapshot()
+             snapshot.appendSections([.assets])
 
-            let selectAssetItems: [SelectAssetItem] = self.searchResults.map {
-                asset in
-                let assetItem = AssetItem(
-                    asset: asset,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter
-                )
-                let listItem = SelectAssetListItem(item: assetItem, account: self.account)
-                return SelectAssetItem.asset(listItem)
-            }
-            snapshot.appendItems(
-                selectAssetItems,
-                toSection: .assets
-            )
+             var selectAssetItems: [SelectAssetItem] = self.searchResults.map {
+                 asset in
+                 let assetItem = AssetItem(
+                     asset: asset,
+                     currency: currency,
+                     currencyFormatter: currencyFormatter
+                 )
+                 let listItem = SelectAssetListItem(item: assetItem, account: self.account)
+                 return SelectAssetItem.asset(listItem)
+             }
+             
+             if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
+                 selectAssetItems.sort {
+                     if case let .asset(firstItem) = $0,
+                        case let .asset(secondItem) = $1 {
+                         return selectedAccountSortingAlgorithm.getFormula(
+                            asset: firstItem.asset,
+                            otherAsset: secondItem.asset
+                         )
+                     }
+                     
+                     return false
+                 }
+             }
+             
+             snapshot.appendItems(
+                 selectAssetItems,
+                 toSection: .assets
+             )
 
-            return snapshot
-        }
+             return snapshot
+         }
     }
 
     private func deliverNoContentSnapshot() {

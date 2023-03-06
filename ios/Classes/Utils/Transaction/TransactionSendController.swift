@@ -20,10 +20,6 @@ import UIKit
 final class TransactionSendController {
     weak var delegate: TransactionSendControllerDelegate?
 
-    private let draft: SendTransactionDraft
-    private let api: ALGAPI
-    private let analytics: ALGAnalytics
-
     var isClosingToSameAccount: Bool {
         if let receiverAddress = draft.toAccount?.address {
             return draft.isMaxTransaction && receiverAddress == draft.from.address
@@ -35,6 +31,11 @@ final class TransactionSendController {
 
         return false
     }
+
+    let draft: SendTransactionDraft
+
+    private let api: ALGAPI
+    private let analytics: ALGAnalytics
 
     init(
         draft: SendTransactionDraft,

@@ -67,6 +67,8 @@ extension ApproveCollectibleTransactionViewModel {
         if let toContact = draft.toContact,
            let address = toContact.address {
             value = toContact.name ?? address.shortAddressDisplay
+        } else if let toNameService = draft.toNameService {
+            value = toNameService.name
         } else if let toAccount = draft.toAccount {
             value = toAccount.address.shortAddressDisplay
         }
@@ -74,6 +76,8 @@ extension ApproveCollectibleTransactionViewModel {
         var icon: CollectibleTransactionInformation.Icon?
         if let contact = draft.toContact {
             icon = .contact(contact)
+        } else if let nameService = draft.toNameService {
+            icon = .nameService(nameService)
         } else if let account = draft.toAccount {
             icon = .account(account)
         }

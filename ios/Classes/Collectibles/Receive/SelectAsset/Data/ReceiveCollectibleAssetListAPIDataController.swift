@@ -27,8 +27,6 @@ final class ReceiveCollectibleAssetListAPIDataController:
 
     private var assets: [AssetDecoration] = []
 
-    private var lastSnapshot: Snapshot?
-
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
 
     private var draft = AssetSearchQuery(query: nil, cursor: nil, type: .collectible)
@@ -178,7 +176,7 @@ extension ReceiveCollectibleAssetListAPIDataController {
     ) {
         if case .didFinishRunning = event {
             updateAccountIfNeeded()
-            deliverOptedInAssetsIfNeeded()
+            publish(.didUpdateAccount)
         }
     }
 
@@ -190,26 +188,6 @@ extension ReceiveCollectibleAssetListAPIDataController {
         if !account.isAvailable { return }
 
         self.account = account.value
-    }
-
-    private func deliverOptedInAssetsIfNeeded() {
-        snapshotQueue.async {
-            [weak self] in
-            guard let self = self else { return }
-
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let optedInAssetUpdates = monitor.filterOptedInAssetUpdates(for: self.account)
-
-            var optedInAssetItems: [OptInAssetListItem] = []
-            for update in optedInAssetUpdates {
-                if let asset = self.assets.first(matching: ((\.id, update.key))) {
-                    let item = OptInAssetListItem(asset: asset)
-                    optedInAssetItems.append(item)
-                }
-            }
-
-            self.publish(.didOptInAssets(optedInAssetItems))
-        }
     }
 }
 
@@ -295,7 +273,7 @@ extension ReceiveCollectibleAssetListAPIDataController {
         snapshotQueue.async {
             [weak self] in
             guard let self = self else { return }
-            self.publish(.didUpdate(snapshot()))
+            self.publish(.didUpdateAssets(snapshot()))
         }
     }
 }
@@ -308,7 +286,6 @@ extension ReceiveCollectibleAssetListAPIDataController {
             [weak self] in
             guard let self = self else { return }
 
-            self.lastSnapshot = event.snapshot
             self.eventHandler?(event)
         }
     }

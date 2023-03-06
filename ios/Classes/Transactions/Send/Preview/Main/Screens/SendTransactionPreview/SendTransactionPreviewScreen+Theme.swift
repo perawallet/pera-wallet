@@ -18,27 +18,20 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 extension SendTransactionPreviewScreen {
     struct Theme: LayoutSheet, StyleSheet {
         let background: Color
+        let contentBottomEdgeInset: CGFloat
         let nextButtonStyle: ButtonPrimaryTheme
-        let nextButtonTopPadding: LayoutMetric
-        let nextButtonLeadingInset: LayoutMetric
-        let nextButtonHeight: LayoutMetric
-        let nextButtonBottomInset: LayoutMetric
-        let linearGradientHeight: LayoutMetric
+        let nextButtonContentEdgeInsets: NSDirectionalEdgeInsets
 
         init(_ family: LayoutFamily) {
             self.background = Colors.Defaults.background
+            self.contentBottomEdgeInset = 16
             self.nextButtonStyle = ButtonPrimaryTheme(family)
-            self.nextButtonTopPadding = -24
-            self.nextButtonLeadingInset = 24
-            self.nextButtonHeight = 52
-            self.nextButtonBottomInset = 16
-            let buttonHeight: LayoutMetric = 52
-            let additionalLinearGradientHeightForButtonTop: LayoutMetric = 4
-            self.linearGradientHeight = nextButtonBottomInset + buttonHeight + additionalLinearGradientHeightForButtonTop
+            self.nextButtonContentEdgeInsets = .init(top: 8, leading: 24, bottom: 12, trailing: 24)
         }
     }
 }

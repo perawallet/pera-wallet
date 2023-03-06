@@ -147,7 +147,6 @@ indirect enum Screen {
         uiInteractionsHandler: InvalidAccountOptionsViewController.InvalidAccountOptionsUIInteractions
     )
     case transactionResult
-    case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft)
     case wcMainTransactionScreen(draft: WalletConnectRequestDraft, delegate: WCMainTransactionScreenDelegate)
     case wcSingleTransactionScreen(
@@ -174,8 +173,12 @@ indirect enum Screen {
         eventHandler: CollectibleDetailViewController.EventHandler? = nil
     )
     case sendCollectible(draft: SendCollectibleDraft)
-    case sendCollectibleAccountList(
-        dataController: SendCollectibleAccountListDataController
+    case sendCollectibleReceiverAccountSelectionList(
+        addressInputViewText: String?
+    )
+    case sendAssetReceiverAccountSelectionList(
+        asset: Asset?,
+        addressInputViewText: String?
     )
     case approveCollectibleTransaction(draft: SendCollectibleDraft)
     case shareActivity(items: [Any])

@@ -18,43 +18,43 @@ import Foundation
 
 final class CollectibleAsset: Asset {
     var optedInAddress: String?
+    var state: AssetState = .ready
 
     let id: AssetID
-    let amount: UInt64
-    let decimals: Int
-    let total: UInt64?
-    let totalSupply: Decimal?
-    let decimalAmount: Decimal
-    let isFrozen: Bool?
-    let isDeleted: Bool?
-    let optedInAtRound: UInt64?
-    let creator: AssetCreator?
-    let name: String?
-    let unitName: String?
-    let usdValue: Decimal?
-    let totalUSDValue: Decimal?
-    let verificationTier: AssetVerificationTier
-    let thumbnailImage: URL?
-    let media: [Media]
-    let standard: CollectibleStandard?
-    let mediaType: MediaType
-    let title: String?
-    let collection: CollectibleCollection?
-    let url: String?
-    let description: String?
-    let properties: [CollectibleTrait]?
-    let projectURL: URL?
-    let explorerURL: URL?
-    let logoURL: URL?
-    let discordURL: URL?
-    let telegramURL: URL?
-    let twitterURL: URL?
+    private(set) var amount: UInt64
+    private(set) var decimals: Int
+    private(set) var total: UInt64?
+    private(set) var totalSupply: Decimal?
+    private(set) var decimalAmount: Decimal
+    private(set) var isFrozen: Bool?
+    private(set) var isDeleted: Bool?
+    private(set) var optedInAtRound: UInt64?
+    private(set) var creator: AssetCreator?
+    private(set) var name: String?
+    private(set) var unitName: String?
+    private(set) var usdValue: Decimal?
+    private(set) var totalUSDValue: Decimal?
+    private(set) var verificationTier: AssetVerificationTier
+    private(set) var thumbnailImage: URL?
+    private(set) var media: [Media]
+    private(set) var standard: CollectibleStandard?
+    private(set) var mediaType: MediaType
+    private(set) var title: String?
+    private(set) var collection: CollectibleCollection?
+    private(set) var url: String?
+    private(set) var description: String?
+    private(set) var properties: [CollectibleTrait]?
+    private(set) var projectURL: URL?
+    private(set) var explorerURL: URL?
+    private(set) var logoURL: URL?
+    private(set) var discordURL: URL?
+    private(set) var telegramURL: URL?
+    private(set) var twitterURL: URL?
+    private(set) var algoPriceChangePercentage: Decimal
+    private(set) var isAvailableOnDiscover: Bool
+
     let isAlgo = false
     let isFault = false
-    let algoPriceChangePercentage: Decimal
-    let isAvailableOnDiscover: Bool
-
-    var state: AssetState = .ready
 
     var naming: AssetNaming {
         return AssetNaming(
@@ -165,6 +165,36 @@ final class CollectibleAsset: Asset {
         self.totalUSDValue = 0
         self.algoPriceChangePercentage = decoration.algoPriceChangePercentage
         self.isAvailableOnDiscover = decoration.isAvailableOnDiscover
+    }
+}
+
+extension CollectibleAsset {
+    func update(with asset: StandardAsset) {
+        if id != asset.id { return }
+
+        isFrozen = asset.isFrozen ?? isFrozen
+        isDeleted = asset.isDeleted ?? isDeleted
+        optedInAtRound = asset.optedInAtRound ?? optedInAtRound
+        creator = asset.creator ?? creator
+        name = asset.naming.name ?? name
+        unitName = asset.naming.unitName ?? unitName
+        total = asset.total ?? total
+        totalSupply = asset.totalSupply ?? totalSupply
+        verificationTier = asset.verificationTier
+        url = asset.url ?? url
+        projectURL = asset.projectURL ?? projectURL
+        explorerURL = asset.explorerURL ?? explorerURL
+        logoURL = asset.logoURL ?? logoURL
+        discordURL = asset.discordURL ?? discordURL
+        telegramURL = asset.telegramURL ?? telegramURL
+        twitterURL = asset.twitterURL ?? twitterURL
+        amount = asset.amount
+        decimals = asset.decimals
+        decimalAmount = asset.decimalAmount
+        usdValue = asset.usdValue ?? usdValue
+        totalUSDValue = asset.totalUSDValue ?? totalUSDValue
+        algoPriceChangePercentage = asset.algoPriceChangePercentage
+        isAvailableOnDiscover = asset.isAvailableOnDiscover
     }
 }
 

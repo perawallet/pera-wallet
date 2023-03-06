@@ -208,6 +208,7 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
                         account: account,
                         innerTransactions: transaction.innerTransactions!
                     ),
+                    sharedDataController: sharedDataController,
                     currency: sharedDataController.currency
                 ),
                 eventHandler: eventHandler

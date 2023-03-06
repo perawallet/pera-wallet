@@ -70,12 +70,20 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
         }
         
         let assets = account.assets.someArray
-        let newAssets: [ALGAsset]
+        let newAssetIDs: [AssetID]
         
         if let cacheAccount = input.cachedAccounts.account(for: account.address) {
-            newAssets = Array(Set(assets).subtracting(cacheAccount.assets.someArray))
+            newAssetIDs = assets.compactMap {
+                let assetID = $0.id
+
+                if cacheAccount.containsAsset(assetID) {
+                    return nil
+                } else {
+                    return assetID
+                }
+            }
         } else {
-            newAssets = assets
+            newAssetIDs = assets.map(\.id)
         }
         
         if self.finishIfCancelled() {
@@ -87,13 +95,13 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
         var newAssetDetails: [AssetID: AssetDecoration] = [:]
         var error: Error?
         
-        newAssets.chunked(by: apiQueryLimit).enumerated().forEach {
-            order, subNewAssets in
+        newAssetIDs.chunked(by: apiQueryLimit).enumerated().forEach {
+            order, subNewAssetIDs in
             
             dispatchGroup.enter()
             
             let endpoint =
-                fetchAssetDetails(subNewAssets) { [weak self] result in
+                fetchAssetDetails(withIDs: subNewAssetIDs) { [weak self] result in
                     guard let self = self else {return }
                 
                     self.ongoingEndpoints[order] = nil
@@ -229,10 +237,9 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
 
 extension AssetDetailGroupFetchOperation {
     private func fetchAssetDetails(
-        _ assets: [ALGAsset],
+        withIDs ids: [AssetID],
         onComplete handler: @escaping (Result<[AssetDecoration], Error>) -> Void
     ) -> EndpointOperatable {
-        let ids = assets.map(\.id)
         let draft = AssetFetchQuery(ids: ids)
         return
             api.fetchAssetDetails(

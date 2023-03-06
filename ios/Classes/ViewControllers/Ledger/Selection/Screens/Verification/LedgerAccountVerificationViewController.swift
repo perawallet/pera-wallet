@@ -25,8 +25,7 @@ final class LedgerAccountVerificationViewController: BaseScrollViewController {
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
 
     private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation()

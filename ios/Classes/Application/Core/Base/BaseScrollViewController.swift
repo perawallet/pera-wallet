@@ -43,12 +43,19 @@ class BaseScrollViewController: BaseViewController {
 
     private(set) lazy var footerView: UIView = .init()
     private(set) lazy var footerBackgroundView = EffectView()
+
+    var contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior {
+        return .never
+    }
+    var contentSizeBehaviour: ContentSizeBehaviour {
+        return .scrollableAreaAtMinumum
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
         view.backgroundColor = .clear
         contentView.backgroundColor = .clear
-        scrollView.contentInsetAdjustmentBehavior = .never
+        scrollView.contentInsetAdjustmentBehavior = contentInsetAdjustmentBehavior
     }
     
     override func prepareLayout() {
@@ -77,7 +84,13 @@ class BaseScrollViewController: BaseViewController {
             $0.leading == 0
             $0.bottom == 0
             $0.trailing == 0
-            $0.height.equalToSuperview().priority(.low)
+
+            switch contentSizeBehaviour {
+            case .intrinsic:
+                break
+            case .scrollableAreaAtMinumum:
+                $0.height.equalToSuperview().priority(.low)
+            }
         }
     }
 
@@ -123,6 +136,13 @@ class BaseScrollViewController: BaseViewController {
         if !footerView.bounds.isEmpty {
             scrollView.setContentInset(bottom: footerView.bounds.height)
         }
+    }
+}
+
+extension BaseScrollViewController {
+    enum ContentSizeBehaviour {
+        case intrinsic
+        case scrollableAreaAtMinumum
     }
 }
 

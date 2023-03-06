@@ -47,7 +47,7 @@
 "account-select-header-matched-accounts-title" = "Contas Correspondentes";
 
 /* (No Comment) */
-"account-select-header-search-title" = "Busque ou insira seu endereço de carteira";
+"account-select-header-search-title" = "Endereço da conta ou apelido";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "Tente um nome diferente de conta";
@@ -239,16 +239,19 @@
 "asset-copy-id" = "Copiar ID";
 
 /* (No Comment) */
+"asset-creator-opt-out-error-message" = "As contas criadoras não podem excluir os ativos que criaram.";
+
+/* (No Comment) */
 "asset-detail-id-title" = "ID %@";
 
 /* (No Comment) */
-"asset-detail-markets-title" = "Markets";
+"asset-detail-markets-title" = "Mercados";
 
 /* (No Comment) */
-"asset-filter-selection-display-collectible-assets-filter-description" = "NFTs assets will be shown in the asset list of your account";
+"asset-filter-selection-display-collectible-assets-filter-description" = "Ativos NFTs serão exibidos na lista de ativos da sua conta";
 
 /* (No Comment) */
-"asset-filter-selection-display-collectible-assets-filter-title" = "Display NFTs in asset list";
+"asset-filter-selection-display-collectible-assets-filter-title" = "Exibir NFTs em lista de ativos";
 
 /* (No Comment) */
 "asset-filter-selection-toggle-description" = "Você pode exibir/ocultar ativos com saldo zero.";
@@ -491,7 +494,7 @@
 "collectible-detail-algo-explorer" = "Exibir no Algoexplorer";
 
 /* (No Comment) */
-"collectible-detail-creator-account" = "Creator Account";
+"collectible-detail-creator-account" = "Conta Criadora";
 
 /* (No Comment) */
 "collectible-detail-creator-name" = "Nome do Criador";
@@ -536,19 +539,19 @@
 "collectible-detail-show-on" = "Exibir em";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "3D mode";
+"collectible-detail-tap-3D" = "Modo 3D";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "Visualizar Transação";
 
 /* (No Comment) */
-"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "Isso exibirá NFTs de suas contas de observação, bem como de suas próprias contas";
 
 /* (No Comment) */
-"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Exibir NFTs de contas de observação";
 
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "Filter NFTs";
+"collectible-filter-selection-title" = "Filtrar NFTs";
 
 /* (No Comment) */
 "collectible-filter-selection-toggle-description" = "Você pode exibir/ocultar NFTs pelos quais já optou, mas ainda não possui";
@@ -599,7 +602,7 @@
 "collectible-send-action" = "Transferir";
 
 /* (No Comment) */
-"collectible-send-input-placeholder" = "Cole um endereço de Carteira Algorand";
+"collectible-send-input-placeholder" = "Endereço de conta";
 
 /* MARK: Collectible Send */
 "collectible-send-title" = "Envie seu NFT";
@@ -731,7 +734,7 @@
 "discover-error-fallback-body" = "Não podemos obter essa informação agora.";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+"discover-error-favorites-max-limit" = "Você não pode ter mais do que 50 favoritos.";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "Buscar qualquer ASA";
@@ -800,7 +803,7 @@
 "feedback-title-note" = "Nota";
 
 /* (No Comment) */
-"filter" = "Filter";
+"filter" = "Filtro";
 
 /* (No Comment) */
 "governance-banner-action" = "Comece Agora";
@@ -1298,7 +1301,7 @@
 "options-manage-assets" = "Gerir Ativos";
 
 /* (No Comment) */
-"options-manage-collectibles" = "Manage NFTs";
+"options-manage-collectibles" = "Gerir NFTs";
 
 /* (No Comment) */
 "options-mute-notification" = "Mutar notificações";

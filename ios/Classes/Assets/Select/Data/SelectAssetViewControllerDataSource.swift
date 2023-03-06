@@ -67,8 +67,17 @@ extension SelectAssetViewControllerDataSource {
                 }
             }
 
+            if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
+                itemIdentifiers.sort {
+                    return selectedAccountSortingAlgorithm.getFormula(
+                        asset: $0.asset,
+                        otherAsset: $1.asset
+                    )
+                }
+            }
+            
             self.itemIdentifiers = itemIdentifiers
-
+            
             asyncMain(execute: completion)
         }
     }

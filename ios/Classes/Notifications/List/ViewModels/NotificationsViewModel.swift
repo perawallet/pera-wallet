@@ -15,11 +15,14 @@
 //
 //  NotificationsViewModel.swift
 
-import UIKit
+import MacaroonUIKit
+import MacaroonURLImage
+import Prism
 import SwiftDate
+import UIKit
 
 final class NotificationsViewModel: Hashable {
-    private(set) var notificationImage: UIImage?
+    private(set) var icon: ImageSource?
     private(set) var title: NSAttributedString?
     private(set) var time: String?
     private(set) var isRead: Bool = true
@@ -49,13 +52,24 @@ final class NotificationsViewModel: Hashable {
 
 extension NotificationsViewModel {
     private func bindImage(notification: NotificationMessage) {
-        let isFailedTransaction = notification.url == nil
-
-        if isFailedTransaction {
-            notificationImage = img("img-nc-failed")
-        } else {
-            notificationImage = img("icon-algo-circle")
+        guard let notificationIcon = notification.icon,
+              let notificationIconURL = notificationIcon.logo else {
+            icon = AssetImageSource(asset: "notification-icon-default".uiImage)
+            return
         }
+        
+        let size = CGSize(width: 40, height: 40)
+        let shape: ImageShape = notificationIcon.shape?.convertToImageShape() ?? .circle
+        let url = PrismURL(baseURL: notificationIconURL)?
+            .setExpectedImageSize(size)
+            .build()
+        let placeholder = ImagePlaceholder(image: .init(asset: "asset-image-placeholder-border".uiImage))
+        
+        icon = DefaultURLImageSource(
+            url: url,
+            shape: shape,
+            placeholder: placeholder
+        )
     }
 
     private func bindTitle(notification: NotificationMessage) {

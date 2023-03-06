@@ -115,14 +115,14 @@ extension LedgerAccountDetailDataSource {
                 AssetListItemCell.self,
                 at: indexPath
             )
-            cell.bindData(item)
+            cell.bindData(item.viewModel)
             return cell
         case .collectibleAsset(let item):
             let cell = collectionView.dequeue(
                 CollectibleListItemCell.self,
                 at: indexPath
             )
-            cell.bindData(item)
+            cell.bindData(item.viewModel)
             return cell
         }
     }
@@ -210,6 +210,15 @@ extension LedgerAccountDetailDataSource {
                         }
                     }
                 }
+                
+                if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
+                    self.assetListItems.sort {
+                        return selectedAccountSortingAlgorithm.getFormula(
+                            asset: $0.asset,
+                            otherAsset: $1.asset
+                        )
+                    }
+                }
 
                 self.eventHandler?(.didLoadData)
             case .failure:
@@ -225,8 +234,8 @@ extension LedgerAccountDetailDataSource {
             currency: currency,
             currencyFormatter: currencyFormatter
         )
-        let viewModel = AssetListItemViewModel(item)
-        return .asset(viewModel)
+        
+        return .asset(LedgerAccountAssetListItem(item: item))
     }
 
     private func makeCollectibleAssetListItem(_ asset: CollectibleAsset) -> LedgerAccountDetailAssetListItem {
@@ -235,8 +244,8 @@ extension LedgerAccountDetailDataSource {
             asset: asset,
             amountFormatter: collectibleAmountFormatter
         )
-        let viewModel = CollectibleListItemViewModel(item: item)
-        return .collectibleAsset(viewModel)
+        
+        return .collectibleAsset(LedgerAccountCollectibleListItem(item: item))
     }
 }
 
@@ -248,6 +257,73 @@ extension LedgerAccountDetailDataSource {
 }
 
 enum LedgerAccountDetailAssetListItem {
-    case asset(AssetListItemViewModel)
-    case collectibleAsset(CollectibleListItemViewModel)
+    case asset(LedgerAccountAssetListItem)
+    case collectibleAsset(LedgerAccountCollectibleListItem)
+}
+
+extension LedgerAccountDetailAssetListItem {
+    var asset: Asset {
+        switch self {
+        case .asset(let item): return item.asset
+        case .collectibleAsset(let item): return item.asset
+        }
+    }
+}
+
+struct LedgerAccountAssetListItem: Hashable {
+    let asset: Asset
+    let viewModel: AssetListItemViewModel
+    
+    init(item: AssetItem) {
+        self.asset = item.asset
+        self.viewModel = AssetListItemViewModel(item)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(asset.id)
+        hasher.combine(viewModel.title?.primaryTitle?.string)
+        hasher.combine(viewModel.title?.secondaryTitle?.string)
+        hasher.combine(viewModel.primaryValue?.string)
+        hasher.combine(viewModel.secondaryValue?.string)
+    }
+
+    static func == (
+        lhs: LedgerAccountAssetListItem,
+        rhs: LedgerAccountAssetListItem
+    ) -> Bool {
+        return
+            lhs.asset.id == rhs.asset.id &&
+            lhs.viewModel.title?.primaryTitle?.string == rhs.viewModel.title?.primaryTitle?.string &&
+            lhs.viewModel.title?.secondaryTitle?.string == rhs.viewModel.title?.secondaryTitle?.string &&
+            lhs.viewModel.primaryValue?.string == rhs.viewModel.primaryValue?.string &&
+            lhs.viewModel.secondaryValue?.string == rhs.viewModel.secondaryValue?.string
+    }
+}
+
+struct LedgerAccountCollectibleListItem: Hashable {
+    let asset: CollectibleAsset
+    let viewModel: CollectibleListItemViewModel
+
+    init(item: CollectibleAssetItem) {
+        self.asset = item.asset
+        self.viewModel = CollectibleListItemViewModel(item: item)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(asset.id)
+        hasher.combine(asset.amount)
+        hasher.combine(viewModel.primaryTitle?.string)
+        hasher.combine(viewModel.secondaryTitle?.string)
+    }
+
+    static func == (
+        lhs: LedgerAccountCollectibleListItem,
+        rhs: LedgerAccountCollectibleListItem
+    ) -> Bool {
+        return
+            lhs.asset.id == rhs.asset.id &&
+            lhs.asset.amount == rhs.asset.amount &&
+            lhs.viewModel.primaryTitle?.string == rhs.viewModel.primaryTitle?.string &&
+            lhs.viewModel.secondaryTitle?.string == rhs.viewModel.secondaryTitle?.string
+    }
 }

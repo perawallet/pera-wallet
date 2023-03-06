@@ -22,6 +22,7 @@ import MacaroonUIKit
 final class WCSessionListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
+    
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = WCSessionListLayout.build()
         let collectionView =
@@ -61,7 +62,6 @@ final class WCSessionListViewController:
         super.configureNavigationBarAppearance()
 
         title = "settings-wallet-connect-title".localized
-
         addBarButtons()
     }
 
@@ -307,6 +307,10 @@ extension WCSessionListViewController: QRScannerViewControllerDelegate {
         ) { _ in
             completionHandler?()
         }
+    }
+    
+    func qrScannerViewControllerDidExceededMaximumWCSessionLimit(_ controller: QRScannerViewController) {
+        dataController.load()
     }
 }
 

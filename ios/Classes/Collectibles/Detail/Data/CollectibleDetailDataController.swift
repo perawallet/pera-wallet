@@ -159,6 +159,8 @@ enum CollectibleDetailDataControllerEvent {
 
 enum AccountCollectibleStatus {
     case notOptedIn
+    case optingOut /// Waiting for syncing
+    case optingIn /// Waiting for syncing
     case optedIn
     case owned
 }

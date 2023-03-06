@@ -133,6 +133,12 @@ extension SwapQuickActionsView {
     ) {
         rightQuickActionsView.isHidden = isHidden
     }
+    
+    func setLeftQuickActionsEnabled(
+        _ isEnabled: Bool
+    ) {
+        leftQuickActionsView.setActionsEnabled(isEnabled)
+    }
 }
 
 extension SwapQuickActionsView {

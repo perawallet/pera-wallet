@@ -20,7 +20,7 @@ import MacaroonUtils
 import MacaroonUIKit
 
 final class DiscoverHomeScreen:
-    PeraInAppBrowserScreen,
+    PeraInAppBrowserScreen<DiscoverHomeScriptMessage>,
     NavigationBarLargeTitleConfigurable,
     UIScrollViewDelegate {
     var navigationBarScrollView: UIScrollView {
@@ -40,8 +40,6 @@ final class DiscoverHomeScreen:
 
     private var isNavigationTitleHidden = true
     private var isViewLayoutLoaded = false
-
-    private var events: [Event] = [.assetDetail, .dAppViewer]
 
     deinit {
         navigationBarLargeTitleController.deactivate()
@@ -78,10 +76,6 @@ final class DiscoverHomeScreen:
 
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
-
-        events.forEach { event in
-            contentController.add(self, name: event.rawValue)
-        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -94,6 +88,30 @@ final class DiscoverHomeScreen:
         updateUIWhenViewDidLayout()
 
         isViewLayoutLoaded = true
+    }
+
+    /// <mark>
+    /// WKScriptMessageHandler
+    override func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        guard let jsonString = message.body as? String,
+              let jsonData = jsonString.data(using: .utf8) else {
+            return
+        }
+
+        let jsonDecoder = JSONDecoder()
+
+        if let assetParameters = try? jsonDecoder.decode(DiscoverAssetParameters.self, from: jsonData) {
+            openAssetDetail(assetParameters)
+            return
+        }
+
+        if let dappParameters = try? jsonDecoder.decode(DiscoverDappParamaters.self, from: jsonData) {
+            openDappDetail(dappParameters)
+            return
+        }
     }
 }
 
@@ -168,29 +186,7 @@ extension DiscoverHomeScreen {
     }
 }
 
-extension DiscoverHomeScreen: WKScriptMessageHandler {
-    func userContentController(
-        _ userContentController: WKUserContentController,
-        didReceive message: WKScriptMessage
-    ) {
-        guard let jsonString = message.body as? String,
-              let jsonData = jsonString.data(using: .utf8) else {
-            return
-        }
-
-        let jsonDecoder = JSONDecoder()
-
-        if let assetParameters = try? jsonDecoder.decode(DiscoverAssetParameters.self, from: jsonData) {
-            openAssetDetail(assetParameters)
-            return
-        }
-
-        if let dappParameters = try? jsonDecoder.decode(DiscoverDappParamaters.self, from: jsonData) {
-            openDappDetail(dappParameters)
-            return
-        }
-    }
-
+extension DiscoverHomeScreen {
     private func openDappDetail(_ dappDetail: DiscoverDappParamaters) {
         let screen = Screen.discoverDappDetail(dappDetail) {
             [weak self] event in
@@ -262,9 +258,9 @@ extension DiscoverHomeScreen {
     }
 }
 
-extension DiscoverHomeScreen {
-    enum Event: String {
-        case assetDetail = "pushTokenDetailScreen"
-        case dAppViewer = "pushDappViewerScreen"
-    }
+enum DiscoverHomeScriptMessage:
+    String,
+    InAppBrowserScriptMessage {
+    case assetDetail = "pushTokenDetailScreen"
+    case dAppViewer = "pushDappViewerScreen"
 }

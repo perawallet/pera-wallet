@@ -20,8 +20,7 @@ protocol WatchAccountAdditionDataController: AnyObject {
     typealias EventHandler = (WatchAccountAdditionDataControllerEvent) -> Void
     var eventHandler: EventHandler? { get set}
 
-    func shouldSearchNameServices(for query: String?) -> Bool
-    func searchNameServices(for query: String?)
+    func searchNameServicesIfNeeded(for query: String?)
     func cancelNameServiceSearchingIfNeeded()
 
     func shouldEnableAddAction(_ input: String?) -> Bool

@@ -39,8 +39,12 @@ extension BlockchainAccountUpdatesMonitor {
         return optInUpdates.filter { $0.value.status == .pending }
     }
 
-    func filterOptedInAssetUpdates() -> [AssetID : OptInBlockchainUpdate] {
+    func filterOptedInAssetUpdatesForNotification() -> [AssetID : OptInBlockchainUpdate] {
         return optInUpdates.filter { $0.value.status == .waitingForNotification }
+    }
+
+    func filterOptedInAssetUpdates() -> [AssetID : OptInBlockchainUpdate] {
+        return optInUpdates.filter { $0.value.status != .pending }
     }
 }
 
@@ -59,7 +63,7 @@ extension BlockchainAccountUpdatesMonitor {
         optInUpdates[update.assetID] = update
     }
 
-    mutating func stopMonitoringOptInUpdates(forAssetID assetID: AssetID) {
+    mutating func markOptInUpdatesForNotification(forAssetID assetID: AssetID) {
         guard let pendingUpdate = optInUpdates[assetID] else { return }
 
         let waitingUpdate = OptInBlockchainUpdate(
@@ -69,7 +73,17 @@ extension BlockchainAccountUpdatesMonitor {
         optInUpdates[assetID] = waitingUpdate
     }
 
-    mutating func finishMonitoringOptInUpdates(forAssetID assetID: AssetID) {
+    mutating func stopMonitoringOptInUpdates(forAssetID assetID: AssetID) {
+        guard let waitingUpdate = optInUpdates[assetID] else { return }
+
+        let completedUpdate = OptInBlockchainUpdate(
+            update: waitingUpdate,
+            status: .completed
+        )
+        optInUpdates[assetID] = completedUpdate
+    }
+
+    mutating func cancelMonitoringOptInUpdates(forAssetID assetID: AssetID) {
         optInUpdates[assetID] = nil
     }
 }
@@ -79,8 +93,12 @@ extension BlockchainAccountUpdatesMonitor {
         return optOutUpdates.filter { $0.value.status == .pending }
     }
 
-    func filterOptedOutAssetUpdates() -> [AssetID: OptOutBlockchainUpdate] {
+    func filterOptedOutAssetUpdatesForNotification() -> [AssetID : OptOutBlockchainUpdate] {
         return optOutUpdates.filter { $0.value.status == .waitingForNotification }
+    }
+
+    func filterOptedOutAssetUpdates() -> [AssetID: OptOutBlockchainUpdate] {
+        return optOutUpdates.filter { $0.value.status != .pending }
     }
 }
 
@@ -99,7 +117,7 @@ extension BlockchainAccountUpdatesMonitor {
         optOutUpdates[update.assetID] = update
     }
 
-    mutating func stopMonitoringOptOutUpdates(forAssetID assetID: AssetID) {
+    mutating func markOptOutUpdatesForNotification(forAssetID assetID: AssetID) {
         guard let pendingUpdate = optOutUpdates[assetID] else { return }
 
         let waitingUpdate = OptOutBlockchainUpdate(
@@ -109,7 +127,17 @@ extension BlockchainAccountUpdatesMonitor {
         optOutUpdates[assetID] = waitingUpdate
     }
 
-    mutating func finishMonitoringOptOutUpdates(forAssetID assetID: AssetID) {
+    mutating func stopMonitoringOptOutUpdates(forAssetID assetID: AssetID) {
+        guard let waitingUpdate = optOutUpdates[assetID] else { return }
+
+        let completedUpdate = OptOutBlockchainUpdate(
+            update: waitingUpdate,
+            status: .completed
+        )
+        optOutUpdates[assetID] = completedUpdate
+    }
+
+    mutating func cancelMonitoringOptOutUpdates(forAssetID assetID: AssetID) {
         optOutUpdates[assetID] = nil
     }
 }
@@ -119,8 +147,12 @@ extension BlockchainAccountUpdatesMonitor {
         return sentPureCollectibleAssetUpdates.filter { $0.value.status == .pending }
     }
 
-    func filterSentPureCollectibleAssetUpdates() -> [AssetID: SendPureCollectibleAssetBlockchainUpdate] {
+    func filterSentPureCollectibleAssetUpdatesForNotification() -> [AssetID : SendPureCollectibleAssetBlockchainUpdate] {
         return sentPureCollectibleAssetUpdates.filter { $0.value.status == .waitingForNotification }
+    }
+
+    func filterSentPureCollectibleAssetUpdates() -> [AssetID: SendPureCollectibleAssetBlockchainUpdate] {
+        return sentPureCollectibleAssetUpdates.filter { $0.value.status != .pending }
     }
 }
 
@@ -135,7 +167,7 @@ extension BlockchainAccountUpdatesMonitor {
         sentPureCollectibleAssetUpdates[update.assetID] = update
     }
 
-    mutating func stopMonitoringSendPureCollectibleAssetUpdates(forAssetID assetID: AssetID) {
+    mutating func markSendPureCollectibleAssetUpdatesForNotification(forAssetID assetID: AssetID) {
         guard let pendingUpdate = sentPureCollectibleAssetUpdates[assetID] else { return }
 
         let waitingUpdate = SendPureCollectibleAssetBlockchainUpdate(
@@ -145,16 +177,26 @@ extension BlockchainAccountUpdatesMonitor {
         sentPureCollectibleAssetUpdates[assetID] = waitingUpdate
     }
 
-    mutating func finishMonitoringSendPureCollectibleAssetUpdates(forAssetID assetID: AssetID) {
+    mutating func stopMonitoringSendPureCollectibleAssetUpdates(forAssetID assetID: AssetID) {
+        guard let waitingUpdate = sentPureCollectibleAssetUpdates[assetID] else { return }
+
+        let completedUpdate = SendPureCollectibleAssetBlockchainUpdate(
+            update: waitingUpdate,
+            status: .completed
+        )
+        sentPureCollectibleAssetUpdates[assetID] = completedUpdate
+    }
+
+    mutating func cancelMonitoringSendPureCollectibleAssetUpdates(forAssetID assetID: AssetID) {
         sentPureCollectibleAssetUpdates[assetID] = nil
     }
 }
 
 extension BlockchainAccountUpdatesMonitor {
-    mutating func removeUnmonitoredUpdates() {
-        optInUpdates = filterPendingOptInAssetUpdates()
-        optOutUpdates = filterPendingOptOutAssetUpdates()
-        sentPureCollectibleAssetUpdates = filterPendingSendPureCollectibleAssetUpdates()
+    mutating func removeCompletedUpdates() {
+        optInUpdates = optInUpdates.filter { $0.value.status != .completed }
+        optOutUpdates = optOutUpdates.filter { $0.value.status != .completed }
+        sentPureCollectibleAssetUpdates = sentPureCollectibleAssetUpdates.filter { $0.value.status != .completed }
     }
 }
 

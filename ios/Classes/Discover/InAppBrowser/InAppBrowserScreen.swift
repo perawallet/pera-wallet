@@ -20,20 +20,23 @@ import MacaroonUIKit
 import MacaroonUtils
 import WebKit
 
-class InAppBrowserScreen:
+class InAppBrowserScreen<ScriptMessage>:
     BaseViewController,
     WKNavigationDelegate,
     NotificationObserver,
-    WKUIDelegate {
-
-    private(set) var userAgent: String? = nil
-
+    WKUIDelegate,
+    WKScriptMessageHandler
+where ScriptMessage: InAppBrowserScriptMessage {
     var notificationObservations: [NSObjectProtocol] = []
-
-    private(set) lazy var contentController = WKUserContentController()
     
     private(set) lazy var webView: WKWebView = createWebView()
     private(set) lazy var noContentView = InAppBrowserNoContentView(theme.noContent)
+
+    private(set) lazy var userContentController = createUserContentController()
+
+    private(set) var userAgent: String? = nil
+
+    private lazy var refreshControl = UIRefreshControl()
 
     private var sourceURL: URL?
 
@@ -41,11 +44,16 @@ class InAppBrowserScreen:
 
     private var lastURL: URL? { webView.url ?? sourceURL }
 
-    private lazy var refreshControl = UIRefreshControl()
-
-    private lazy var socialMediaDeeplinkParser = DiscoverSocialMediaRouter()
-
     private let theme = InAppBrowserScreenTheme()
+    private let socialMediaDeeplinkParser = DiscoverSocialMediaRouter()
+
+    deinit {
+        if #available(iOS 14, *) {
+            userContentController.removeAllScriptMessageHandlers()
+        } else {
+            userContentController.removeScriptMessageHandlers(forMessages: ScriptMessage.allCases)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,43 +71,54 @@ class InAppBrowserScreen:
         }
     }
 
-    override func setListeners() {
-        super.setListeners()
-
-        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
-    }
-
-
-    private func createWebView() -> WKWebView {
-        let configuration = WKWebViewConfiguration()
-        configuration.websiteDataStore = WKWebsiteDataStore.default()
-        configuration.userContentController = contentController
-        configuration.preferences = WKPreferences()
+    func createWebView() -> WKWebView {
+        let configuration = createWebViewConfiguration()
         let webView = WKWebView(
             frame: .zero,
             configuration: configuration
         )
-
+        webView.isOpaque = false
+        webView.backgroundColor = .clear
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.showsHorizontalScrollIndicator = false
         webView.allowsLinkPreview = false
-        webView.scrollView.refreshControl = refreshControl
+        return webView
+    }
 
+    func createWebViewConfiguration() -> WKWebViewConfiguration {
+        let configuration = WKWebViewConfiguration()
+        configuration.websiteDataStore = WKWebsiteDataStore.default()
+        configuration.userContentController = userContentController
+        configuration.preferences = WKPreferences()
+        return configuration
+    }
+
+    func createUserContentController() -> InAppBrowserUserContentController {
+        let controller = InAppBrowserUserContentController()
         let selectionString  = """
         var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}textarea,input{user-select:text;-webkit-user-select:text;}';
         var head = document.head || document.getElementsByTagName('head')[0];
         var style = document.createElement('style'); style.type = 'text/css';
         style.appendChild(document.createTextNode(css)); head.appendChild(style);
-"""
+        """
         let selectionScript = WKUserScript(
             source: selectionString,
             injectionTime: .atDocumentEnd,
             forMainFrameOnly: false
         )
-        webView.configuration.userContentController.addUserScript(selectionScript)
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        return webView
+        controller.addUserScript(selectionScript)
+        ScriptMessage.allCases.forEach {
+            controller.add(
+                secureScriptMessageHandler: self,
+                forMessage: $0
+            )
+        }
+        return controller
+    }
+
+    @objc
+    func didPullToRefresh() {
+        webView.reload()
     }
 
     /// <mark>
@@ -199,6 +218,28 @@ class InAppBrowserScreen:
         launchController.receive(deeplinkWithSource: .walletConnectSessionRequestForDiscover(walletConnectURL))
         decisionHandler(.cancel, preferences)
     }
+
+    /// <mark>
+    /// WKUIDelegate
+    func webView(
+        _ webView: WKWebView,
+        createWebViewWith configuration: WKWebViewConfiguration,
+        for navigationAction: WKNavigationAction,
+        windowFeatures: WKWindowFeatures
+    ) -> WKWebView? {
+        if navigationAction.targetFrame == nil {
+            webView.load(navigationAction.request)
+        }
+
+        return nil
+    }
+
+    /// <mark>
+    /// WKScriptMessageHandler
+    func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {}
 }
 
 extension InAppBrowserScreen {
@@ -212,11 +253,6 @@ extension InAppBrowserScreen {
         webView.load(request)
 
         sourceURL = url
-    }
-
-    @objc
-    func didPullToRefresh() {
-        webView.reload()
     }
 }
 
@@ -303,17 +339,11 @@ extension InAppBrowserScreen {
     }
 
     private func addWebView() {
-        webView.isOpaque = false
-        webView.backgroundColor = .clear
         /// <note>
         /// The transition state should be maintained manually at the beginning because both views
         /// are being added so it won't be detected that which view is actually visible. It seems
         /// like `isHidden` property is the only way to prevent unnecessary transition.
         webView.isHidden = true
-
-        if let userAgent {
-            webView.customUserAgent = userAgent
-        }
 
         view.addSubview(webView)
         webView.snp.makeConstraints {
@@ -322,6 +352,25 @@ extension InAppBrowserScreen {
             $0.bottom == 0
             $0.trailing == 0
         }
+
+        if let userAgent {
+            webView.customUserAgent = userAgent
+        }
+
+        webView.navigationDelegate = self
+        webView.uiDelegate = self
+
+        addRefreshControl()
+    }
+
+    private func addRefreshControl() {
+        webView.scrollView.refreshControl = refreshControl
+
+        refreshControl.addTarget(
+            self,
+            action: #selector(didPullToRefresh),
+            for: .valueChanged
+        )
     }
 
     private func addNoContent() {
@@ -337,19 +386,5 @@ extension InAppBrowserScreen {
             [unowned self] in
             self.load(url: self.lastURL)
         }
-    }
-}
-
-extension InAppBrowserScreen {
-    func webView(
-        _ webView: WKWebView,
-        createWebViewWith configuration: WKWebViewConfiguration,
-        for navigationAction: WKNavigationAction,
-        windowFeatures: WKWindowFeatures
-    ) -> WKWebView? {
-        if navigationAction.targetFrame == nil {
-            webView.load(navigationAction.request)
-        }
-        return nil
     }
 }

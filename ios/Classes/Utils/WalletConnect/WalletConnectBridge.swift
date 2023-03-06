@@ -85,6 +85,10 @@ extension WalletConnectBridge: ServerDelegate {
     func server(_ server: WalletConnectServer, didUpdate session: WalletConnectSession) {
         delegate?.walletConnectBridge(self, didUpdate: session)
     }
+    
+    func server(_ server: Server, didFailWith error: Error?, for url: WCURL) {
+        delegate?.walletConnectBridge(self, didFailWith: error, for: url)
+    }
 }
 
 protocol WalletConnectBridgeDelegate: AnyObject {
@@ -97,6 +101,7 @@ protocol WalletConnectBridgeDelegate: AnyObject {
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didConnectTo session: WalletConnectSession)
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didDisconnectFrom session: WalletConnectSession)
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didUpdate session: WalletConnectSession)
+    func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didFailWith error: Error?, for url: WalletConnectURL)
 }
 
 typealias WalletConnectSession = WalletConnectSwift.Session
@@ -106,3 +111,4 @@ typealias WalletConnectRequest = WalletConnectSwift.Request
 typealias WalletConnectResponse = WalletConnectSwift.Response
 typealias WalletConnectSessionWalletInfo = WalletConnectSwift.Session.WalletInfo
 typealias WalletConnectSessionConnectionCompletionHandler = (WalletConnectSessionWalletInfo) -> Void
+typealias WalletConnectTopic = String

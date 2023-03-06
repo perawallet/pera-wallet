@@ -113,6 +113,15 @@ extension SwapQuickActionsGroupView {
 }
 
 extension SwapQuickActionsGroupView {
+    func setActionsEnabled(_ isEnabled: Bool) {
+        actionViews.forEach {
+            let button = $0 as! MacaroonUIKit.Button
+            button.isEnabled = isEnabled
+        }
+    }
+}
+
+extension SwapQuickActionsGroupView {
     @objc
     private func notifySelectorForSelectedAction(_ view: UIView) {
         guard let index = actionViews.firstIndex(of: view) else { return }

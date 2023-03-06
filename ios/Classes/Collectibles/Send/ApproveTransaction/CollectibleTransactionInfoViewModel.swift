@@ -14,12 +14,13 @@
 
 //   CollectibleTransactionInfoViewModel.swift
 
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
+import MacaroonURLImage
 
 struct CollectibleTransactionInfoViewModel: ViewModel {
     private(set) var title: EditText?
-    private(set) var icon: UIImage?
+    private(set) var icon: ImageSource?
     private(set) var value: EditText?
     private(set) var valueStyle: TextStyle?
 
@@ -55,6 +56,13 @@ extension CollectibleTransactionInfoViewModel {
                 data: contact.image,
                 size: CGSize(width: 24, height: 24)
             ).process()
+        case .nameService(let nameService):
+            self.icon = DefaultURLImageSource(
+                url: URL(string: nameService.service.logo),
+                size: .resize(CGSize(width: 24, height: 24), .aspectFit),
+                shape: .circle,
+                scale: 1
+            )
         case .custom(let image):
             self.icon = image
         }
@@ -128,6 +136,7 @@ struct CollectibleTransactionInformation: Hashable {
     enum Icon: Hashable {
         case account(Account)
         case contact(Contact)
+        case nameService(NameService)
         case custom(UIImage?)
     }
 }

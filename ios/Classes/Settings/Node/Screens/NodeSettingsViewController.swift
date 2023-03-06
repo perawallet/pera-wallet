@@ -36,8 +36,7 @@ final class NodeSettingsViewController: BaseViewController {
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
         session: session!,
-        api: api!,
-        bannerController: bannerController
+        api: api!
     )
     
     override func linkInteractors() {

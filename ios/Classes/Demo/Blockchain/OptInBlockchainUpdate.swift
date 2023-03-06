@@ -72,5 +72,6 @@ extension OptInBlockchainUpdate {
     enum Status {
         case pending
         case waitingForNotification
+        case completed
     }
 }

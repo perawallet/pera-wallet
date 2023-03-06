@@ -17,6 +17,7 @@
 
 import Foundation
 import MagpieCore
+import MagpieExceptions
 
 extension ALGAPI {
     @discardableResult
@@ -106,12 +107,16 @@ extension ALGAPI {
     }
 
     @discardableResult
-    func sendAssetSupportRequest(_ draft: AssetSupportDraft) -> EndpointOperatable {
+    func sendAssetSupportRequest(
+        _ draft: AssetSupportDraft,
+        onCompleted handler: @escaping (Response.Result<NoAPIModel, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobileV1(network))
             .path(.assetRequest)
             .method(.post)
             .body(draft)
+            .completionHandler(handler)
             .execute()
     }
 

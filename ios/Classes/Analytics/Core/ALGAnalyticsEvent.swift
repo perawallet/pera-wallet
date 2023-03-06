@@ -18,7 +18,9 @@ import Foundation
 import MacaroonVendors
 import UIKit
 
-protocol ALGAnalyticsEvent: AnalyticsEvent
+protocol ALGAnalyticsEvent:
+    AnalyticsEvent,
+    ALGAnalyticsParameterRegulator
 where
     Self.Name == ALGAnalyticsEventName,
     Self.Metadata == ALGAnalyticsMetadata {}
@@ -100,6 +102,11 @@ enum ALGAnalyticsEventName:
     case wcSessionRejected
     case wcTransactionConfirmed
     case wcTransactionDeclined
+    case wcTransactionRequestDidAppear
+    case wcTransactionRequestDidLoad
+    case wcTransactionRequestReceived
+    case wcTransactionRequestSDKError
+    case wcTransactionRequestValidated
 }
 
 extension ALGAnalyticsEventName {
@@ -122,6 +129,10 @@ extension ALGAnalyticsEventName {
         case .swapBannerTry: rawName = "banner_swap_tryswap"
         case .tapBuyAlgoInBottomsheet: rawName = "bottommenu_algo_buy_tap"
         case .changeCurrency: rawName = "currency_change"
+        case .discoverDappDetail: rawName = "discover_dapps_visit_pages"
+        case .discoverSearch: rawName = "discover_markets_search"
+        case .discoverAssetBuy: rawName = "discover_token_detail_buy"
+        case .discoverAssetSell: rawName = "discover_token_detail_sell"
         case .tapGovernanceBanner: rawName = "homescr_visitgovernance"
         case .tapDownloadTransactionInHistory: rawName = "historyscr_transactions_download"
         case .tapFilterTransactionInHistory: rawName = "historyscr_transactions_filter"
@@ -173,10 +184,11 @@ extension ALGAnalyticsEventName {
         case .wcSessionRejected: rawName = "wc_session_rejected"
         case .wcTransactionConfirmed: rawName = "wc_transaction_confirmed"
         case .wcTransactionDeclined: rawName = "wc_transaction_declined"
-        case .discoverSearch: rawName = "discover_markets_search"
-        case .discoverAssetBuy: rawName = "discover_token_detail_buy"
-        case .discoverAssetSell: rawName = "discover_token_detail_sell"
-        case .discoverDappDetail: rawName = "discover_dapps_visit_pages"
+        case .wcTransactionRequestDidAppear: rawName = "wc_transaction_request_DidAppear"
+        case .wcTransactionRequestDidLoad: rawName = "wc_transaction_request_DidLoad"
+        case .wcTransactionRequestReceived: rawName = "wc_transaction_request_Received"
+        case .wcTransactionRequestSDKError: rawName = "wc_transaction_request_SDKError"
+        case .wcTransactionRequestValidated: rawName = "wc_transaction_request_Validated"
         }
 
         let isTestnet = UIApplication.shared.appConfiguration?.api.isTestNet ?? false

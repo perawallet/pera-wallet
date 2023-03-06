@@ -298,6 +298,7 @@
 "asset-opt-in-successful-message" = "%@ successfully opted-in and added to your account.";
 "asset-opt-out-successful-message" = "%@ successfully opted-out and removed from your account.";
 "asset-search-not-found" = "We are not able to find this asset.";
+"asset-creator-opt-out-error-message" = "Creator accounts cannot opt out of assets they created.";
 "asset-detail-markets-title" = "Markets";
 
 // MARK: Algos Send
@@ -816,6 +817,9 @@
 "wallet-connect-session-connection-approved-title" = "You are Connected to %@";
 "wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
 "wallet-connect-select-accounts" = "Select Accounts";
+"wallet-connect-session-limit-warning-message" = "Maximum number of WalletConnect sessions exceeded. Your oldest session was automatically disconnected.";
+"wallet-connect-session-limit-info-title" = "Sessions are limited to 50";
+"wallet-connect-session-limit-info-detail" = "At 51 sessions, your oldest session will be automatically disconnected.";
 
 // MARK: Wallet Connect Transaction Warning
 "wallet-connect-transaction-warning-rekey" = "This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.";
@@ -888,6 +892,7 @@
 "wallet-connect-transaction-error-group" = "Invalid Input: Group transaction does not need to be signed by Wallet user.";
 "wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";
 "wallet-connect-transaction-error-account-not-exist" = "Invalid Input: The requested signer is not in the User Wallet";
+"wallet-connect-transaction-error-session-not-found" = "No valid WalletConnect session found. Please try reconnecting your wallet to the dApp";
 "wallet-connect-transaction-error-unsupported-type" = "The transaction request contains an Unsupported Transaction Type";
 "wallet-connect-transaction-error-parse" = "Invalid Input: Unable to parse transaction";
 "wallet-connect-transaction-error-invalid-key" = "Invalid Input: Invalid Public Key";
@@ -984,7 +989,7 @@
 "account-select-header-matched-accounts-title" = "Matched Accounts";
 "account-select-header-accounts-title" = "My Accounts";
 "account-select-header-contacts-title" = "Contacts";
-"account-select-header-search-title" = "Search or enter wallet address";
+"account-select-header-search-title" = "Account address or short name";
 "account-select-search-empty-title" = "No Account Found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
@@ -1039,7 +1044,7 @@
 
 // MARK: Collectible Send
 "collectible-send-title" = "Send your NFT";
-"collectible-send-input-placeholder" = "Paste an Algorand wallet address";
+"collectible-send-input-placeholder" = "Account address";
 "collectible-send-action" = "Transfer";
 "collectible-send-account-list-title" = "Select the receiver account";
 

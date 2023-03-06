@@ -473,6 +473,7 @@ enum TransactionError: Error, Hashable {
     case sdkError(error: NSError?)
     case draft(draft: TransactionSendDraft?)
     case ledgerConnection
+    case optOutFromCreator
     case other
 }
 
@@ -486,7 +487,8 @@ extension TransactionError {
         case .sdkError: hasher.combine(2)
         case .draft: hasher.combine(3)
         case .ledgerConnection: hasher.combine(4)
-        case .other: hasher.combine(5)
+        case .optOutFromCreator: hasher.combine(5)
+        case .other: hasher.combine(6)
         }
     }
 

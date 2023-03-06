@@ -175,7 +175,7 @@ extension AssetListViewAPIDataController {
     ) {
         if case .didFinishRunning = event {
             updateAccountIfNeeded()
-            deliverOptedInAssetsIfNeeded()
+            publish(.didUpdateAccount)
         }
     }
 
@@ -187,26 +187,6 @@ extension AssetListViewAPIDataController {
         if !account.isAvailable { return }
 
         self.account = account.value
-    }
-
-    private func deliverOptedInAssetsIfNeeded() {
-        snapshotQueue.async {
-            [weak self] in
-            guard let self = self else { return }
-
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let optedInAssetUpdates = monitor.filterOptedInAssetUpdates(for: self.account)
-
-            var optedInAssetItems: [OptInAssetListItem] = []
-            for update in optedInAssetUpdates {
-                if let asset = self.assets.first(matching: ((\.id, update.key))) {
-                    let item = OptInAssetListItem(asset: asset)
-                    optedInAssetItems.append(item)
-                }
-            }
-
-            self.publish(.didOptInAssets(optedInAssetItems))
-        }
     }
 }
 
@@ -275,9 +255,9 @@ extension AssetListViewAPIDataController {
 
             let event: AssetListViewDataControllerEvent
             if next {
-                event = .didUpdateNext(newSnapshot)
+                event = .didUpdateNextAssets(newSnapshot)
             } else {
-                event = .didUpdate(newSnapshot)
+                event = .didUpdateAssets(newSnapshot)
             }
 
             self.publish(event)

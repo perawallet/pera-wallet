@@ -359,7 +359,7 @@ extension SelectAssetScreen {
 
         if let assetID = getAssetID(from: transactionController) {
             let monitor = sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: dataController.account
             )
@@ -384,7 +384,7 @@ extension SelectAssetScreen {
 
         if let assetID = getAssetID(from: transactionController) {
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: dataController.account
             )

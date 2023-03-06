@@ -27,18 +27,15 @@ final class TransactionActionInformationView:
     private lazy var theme = TransactionActionInformationViewTheme()
     
     private lazy var titleLabel = Label()
+    private lazy var rightContentView = UIView()
     private lazy var descriptionLabel = Label()
     private lazy var actionView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
-    
-    private var actionPrimaryTopConstraint: Constraint?
-    private var actionSecondaryTopConstraint: Constraint?
     
     func customize(_ theme: TransactionActionInformationViewTheme) {
         self.theme = theme
         
         addTitle(theme)
-        addDescription(theme)
-        addAction(theme)
+        addRightContent(theme)
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -51,20 +48,39 @@ extension TransactionActionInformationView {
         titleLabel.customizeAppearance(theme.title)
         
         addSubview(titleLabel)
+        titleLabel.fitToVerticalIntrinsicSize()
         titleLabel.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
-            $0.bottom <= 0
         }
+    }
+
+    private func addRightContent(_ theme: TransactionActionInformationViewTheme) {
+        addSubview(rightContentView)
+        rightContentView.snp.makeConstraints {
+            $0.height >= titleLabel
+            $0.top == 0
+            $0.leading == theme.descriptionLeadingPadding
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.trailing == rightContentView.snp.leading - theme.minimumSpacingBetweenTitleAndItems
+        }
+
+        addDescription(theme)
+        addAction(theme)
     }
     
     private func addDescription(_ theme: TransactionActionInformationViewTheme) {
         descriptionLabel.customizeAppearance(theme.description)
         
-        addSubview(descriptionLabel)
+        rightContentView.addSubview(descriptionLabel)
+        descriptionLabel.contentEdgeInsets = (0, 0, theme.actionTopPadding, 0)
         descriptionLabel.snp.makeConstraints {
             $0.top == 0
-            $0.leading == theme.descriptionLeadingPadding
+            $0.leading == 0
             $0.trailing == 0
         }
     }
@@ -72,21 +88,12 @@ extension TransactionActionInformationView {
     private func addAction(_ theme: TransactionActionInformationViewTheme) {
         actionView.customizeAppearance(theme.actionWithoutData)
         
-        addSubview(actionView)
+        rightContentView.addSubview(actionView)
         actionView.snp.makeConstraints {
-            $0.leading == theme.descriptionLeadingPadding
-        }
-        
-        actionPrimaryTopConstraint = actionView.snp.prepareConstraints {
             $0.top == descriptionLabel.snp.bottom
-        }.first
-        
-        actionSecondaryTopConstraint = actionView.snp.prepareConstraints {
-            $0.top == descriptionLabel.snp.bottom + theme.actionTopPadding
-        }.first
-        
-        titleLabel.snp.makeConstraints {
-            $0.trailing == actionView.snp.leading - theme.minimumSpacingBetweenTitleAndItems
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing <= 0
         }
         
         startPublishing(
@@ -104,23 +111,13 @@ extension TransactionActionInformationView: ViewModelBindable {
             title.load(in: titleLabel)
         }
         
-        if let description = viewModel.description,
-           !description.isEmptyOrBlank {
-            
+        if let description = viewModel.description.unwrapNonEmptyString() {
             description.load(in: descriptionLabel)
-            
             actionView.recustomizeAppearance(theme.actionWithData)
-            actionPrimaryTopConstraint?.deactivate()
-            actionSecondaryTopConstraint?.activate()
-            
-            return
+        } else {
+            descriptionLabel.clearText()
+            actionView.recustomizeAppearance(theme.actionWithoutData)
         }
-        
-        descriptionLabel.clearText()
-        
-        actionView.recustomizeAppearance(theme.actionWithoutData)
-        actionSecondaryTopConstraint?.deactivate()
-        actionPrimaryTopConstraint?.activate()
     }
 }
 

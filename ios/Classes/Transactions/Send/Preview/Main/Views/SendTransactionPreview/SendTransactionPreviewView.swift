@@ -80,9 +80,7 @@ extension SendTransactionPreviewView {
         verticalStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.verticalStackViewTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.bottom.lessThanOrEqualToSuperview().inset(
-                safeAreaBottom + theme.bottomInset
-            )
+            $0.bottom.equalToSuperview()
         }
     }
 

@@ -42,11 +42,11 @@ extension AccountAssetAscendingAmountAlgorithm {
         }
 
         let assetTitle =
-            asset.naming.name.unwrapNonEmptyString() ??
-            "title-unknown".localized
+        asset.naming.name.unwrapNonEmptyString() ??
+        "title-unknown".localized
         let otherAssetTitle =
-            otherAsset.naming.name.unwrapNonEmptyString() ??
-            "title-unknown".localized
+        otherAsset.naming.name.unwrapNonEmptyString() ??
+        "title-unknown".localized
         if assetTitle != otherAssetTitle {
             let result = assetTitle.localizedCaseInsensitiveCompare(otherAssetTitle)
             return result == .orderedAscending
@@ -60,7 +60,7 @@ extension AccountAssetAscendingAmountAlgorithm {
 
         return false
     }
-
+    
     private func getValueInUSD(for asset: Asset) -> Decimal {
         var valueInUSD: Decimal = 0.0
 

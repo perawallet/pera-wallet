@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUtils
 
-protocol ALGAnalyticsLog {
+protocol ALGAnalyticsLog: ALGAnalyticsParameterRegulator {
     var name: ALGAnalyticsLogName { get }
     var metadata: ALGAnalyticsMetadata { get }
 }
@@ -34,6 +34,11 @@ enum ALGAnalyticsLogName:
     case ledgerTransactionError = "LedgerTransactionError"
     case mismatchAccountError = "MismatchAccountFound"
     case wcSessionSaveError = "WCSessionNotSaved"
+    case walletConnectTransactionRequestDidAppear = "WCTransactionRequestDidAppear"
+    case walletConnectTransactionRequestDidLoad = "WCTransactionRequestDidLoad"
+    case walletConnectTransactionRequestReceived = "WCTransactionRequestReceived"
+    case walletConnectTransactionRequestSDKError = "WCTransactionRequestSDKError"
+    case walletConnectTransactionRequestValidated = "WCTransactionRequestValidated"
 }
 
 extension ALGAnalyticsLogName {
@@ -42,6 +47,11 @@ extension ALGAnalyticsLogName {
         case .ledgerTransactionError: return 0
         case .mismatchAccountError: return 1
         case .wcSessionSaveError: return 2
+        case .walletConnectTransactionRequestDidAppear: return 3
+        case .walletConnectTransactionRequestDidLoad: return 4
+        case .walletConnectTransactionRequestReceived: return 5
+        case .walletConnectTransactionRequestValidated: return 6
+        case .walletConnectTransactionRequestSDKError: return 7
         }
     }
 }

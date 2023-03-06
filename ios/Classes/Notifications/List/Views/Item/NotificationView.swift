@@ -17,12 +17,13 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonURLImage
 
 final class NotificationView: View {
     private lazy var theme = NotificationViewTheme()
     
     private lazy var badgeImageView = UIImageView()
-    private lazy var notificationImageView = UIImageView()
+    private lazy var notificationImageView = URLImageView()
     private lazy var titleLabel = UILabel()
     private lazy var timeLabel = UILabel()
 
@@ -59,9 +60,7 @@ extension NotificationView {
     }
     
     private func addNotificationImageView(_ theme: NotificationViewTheme) {
-        notificationImageView.layer.cornerRadius = theme.notificationImageSize.h / 2
-        notificationImageView.clipsToBounds = true
-        notificationImageView.contentMode = .center
+        notificationImageView.build(theme.notificationImage)
 
         addSubview(notificationImageView)
         notificationImageView.snp.makeConstraints {
@@ -97,7 +96,7 @@ extension NotificationView {
 extension NotificationView {
     func reset() {
         badgeImageView.isHidden = true
-        notificationImageView.image = nil
+        notificationImageView.prepareForReuse()
         titleLabel.attributedText = nil
         timeLabel.text = nil
         timeLabel.isHidden = false
@@ -107,7 +106,7 @@ extension NotificationView {
 extension NotificationView: ViewModelBindable {
     func bindData(_ viewModel: NotificationsViewModel?) {
         badgeImageView.isHidden = viewModel?.isRead ?? true
-        notificationImageView.image = viewModel?.notificationImage
+        notificationImageView.load(from: viewModel?.icon)
         titleLabel.attributedText = viewModel?.title
 
         if let time = viewModel?.time {

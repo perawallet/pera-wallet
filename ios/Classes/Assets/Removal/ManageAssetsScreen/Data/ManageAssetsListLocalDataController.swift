@@ -158,25 +158,38 @@ extension ManageAssetsListLocalDataController {
             
             var snapshot = Snapshot()
             
-            var assetItems: [ManageAssetSearchItem] = []
+            var optOutListItems: [ManageAssetSearchItem] = []
 
             self.searchResults.forEach { asset in
                 if let collectibleAsset = asset as? CollectibleAsset {
                     let collectibleAssetItem = self.makeCollectibleAssetItem(collectibleAsset)
-                    assetItems.append(collectibleAssetItem)
+                    optOutListItems.append(collectibleAssetItem)
                     return
                 }
 
                 if let standardAsset = asset as? StandardAsset {
                     let assetItem = self.makeStandardAssetItem(standardAsset)
-                    assetItems.append(assetItem)
+                    optOutListItems.append(assetItem)
                     return
+                }
+            }
+            
+            if let selectedAccountSortingAlgorithm = self.sharedDataController.selectedAccountAssetSortingAlgorithm {
+                optOutListItems.sort {
+                    guard let firstItem = $0.asset, let secondItem = $1.asset else {
+                        return false
+                    }
+                    
+                    return selectedAccountSortingAlgorithm.getFormula(
+                        asset: firstItem,
+                        otherAsset: secondItem
+                    )
                 }
             }
 
             snapshot.appendSections([.assets])
             snapshot.appendItems(
-                assetItems,
+                optOutListItems,
                 toSection: .assets
             )
 

@@ -36,9 +36,9 @@ class SendAssetTransactionDataBuilder: TransactionDataBuilder {
         let address: String
 
         if let account = assetTransactionDraft.toAccount {
-            address = account.address.trimmed
+            address = account.address.trimmed()
         } else if let contact = assetTransactionDraft.toContact, let contactAddress = contact.address {
-            address = contactAddress.trimmed
+            address = contactAddress.trimmed()
         } else {
             delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
             return nil

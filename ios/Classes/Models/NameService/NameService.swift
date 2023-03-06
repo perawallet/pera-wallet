@@ -56,7 +56,9 @@ extension NameServiceList {
     }
 }
 
-final class NameService: ALGAPIModel {
+final class NameService:
+    ALGAPIModel,
+    Hashable {
     let name: String
     let address: String
     let service: Service
@@ -78,6 +80,17 @@ final class NameService: ALGAPIModel {
         case name
         case address
         case service
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(address)
+    }
+
+    static func == (
+        lhs: NameService,
+        rhs: NameService
+    ) -> Bool {
+        return lhs.address == rhs.address
     }
 }
 

@@ -313,11 +313,11 @@ extension AccountListItemViewModel {
     }
 
     mutating func bindTitle(
-        _ nameServiceAccountPreview: NameServiceAccountListItem
+        _ nameServiceAccountListItem: NameServiceAccountListItem
     ) {
         title = AccountPreviewTitleViewModel(
-            primaryTitle: nameServiceAccountPreview.title,
-            secondaryTitle: nameServiceAccountPreview.subtitle
+            primaryTitle: nameServiceAccountListItem.title,
+            secondaryTitle: nameServiceAccountListItem.subtitle
         )
     }
 }

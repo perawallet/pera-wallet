@@ -36,18 +36,15 @@ class PushNotificationController: NSObject {
     private let target: ALGAppTarget
     private let session: Session
     private let api: ALGAPI
-    private let bannerController: BannerController?
-    
+
     init(
         target: ALGAppTarget,
         session: Session,
-        api: ALGAPI,
-        bannerController: BannerController?
+        api: ALGAPI
     ) {
         self.target = target
         self.session = session
         self.api = api
-        self.bannerController = bannerController
     }
 }
 
@@ -100,23 +97,5 @@ extension PushNotificationController {
         completion handler: @escaping BoolHandler
     ) {
         deviceRegistrationController.revokeDevice(completion: handler)
-    }
-}
-
-// MARK: Foreground
-
-extension PushNotificationController {
-    func present(
-        notification: AlgorandNotification,
-        action handler: EmptyHandler? = nil
-    ) {
-        guard let alert = notification.alert else {
-            return
-        }
-
-        bannerController?.presentNotification(
-            alert,
-            handler
-        )
     }
 }

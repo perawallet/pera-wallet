@@ -46,7 +46,7 @@ enum AssetListViewItem: Hashable {
 }
 
 enum AssetListViewDataControllerEvent {
-    case didUpdate(AssetListViewDataController.Snapshot)
-    case didUpdateNext(AssetListViewDataController.Snapshot)
-    case didOptInAssets([OptInAssetListItem])
+    case didUpdateAccount
+    case didUpdateAssets(AssetListViewDataController.Snapshot)
+    case didUpdateNextAssets(AssetListViewDataController.Snapshot)
 }

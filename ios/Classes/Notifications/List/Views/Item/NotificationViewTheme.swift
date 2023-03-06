@@ -17,11 +17,13 @@
 
 import Foundation
 import MacaroonUIKit
+import MacaroonURLImage
 import UIKit
 
 struct NotificationViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let badgeImage: ImageStyle
+    let notificationImage: URLImageViewStyleSheet & URLImageViewLayoutSheet
     let titleLabel: TextStyle
     let timeLabel: TextStyle
     let cellSpacing: LayoutMetric
@@ -43,6 +45,7 @@ struct NotificationViewTheme: StyleSheet, LayoutSheet {
         self.badgeImage = [
             .image("img-nc-item-badge")
         ]
+        self.notificationImage = URLImageViewAssetTheme()
         self.titleLabel = [
             .textOverflow(FittingText()),
             .textAlignment(.left),

@@ -38,3 +38,23 @@ extension UICollectionViewDiffableDataSource {
         }
     }
 }
+
+extension NSDiffableDataSourceSnapshot {
+    mutating func insertItem(
+        _ item: ItemIdentifierType,
+        to section: SectionIdentifierType,
+        at index: Int
+    ) {
+        if let itemAtIndex = itemIdentifiers(inSection: section)[safe: index] {
+            insertItems(
+                [item],
+                beforeItem: itemAtIndex
+            )
+        } else {
+            appendItems(
+                [item],
+                toSection: section
+            )
+        }
+    }
+}

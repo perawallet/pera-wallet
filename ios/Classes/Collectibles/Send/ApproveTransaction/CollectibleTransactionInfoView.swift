@@ -56,7 +56,7 @@ final class CollectibleTransactionInfoView:
     ) {
         titleView.editText = viewModel?.title
 
-        iconView.image = viewModel?.icon
+        iconView.load(from: viewModel?.icon)
 
         if let valueStyle = viewModel?.valueStyle {
             valueView.customizeAppearance(valueStyle)

@@ -26,7 +26,7 @@
 "account-name-setup-placeholder" = "계정명";
 
 /* (No Comment) */
-"account-not-found" = "Account not found";
+"account-not-found" = "계정 찾을 수 없음";
 
 /* (No Comment) */
 "account-options-add-account-title" = "계정 추가";
@@ -47,7 +47,7 @@
 "account-select-header-matched-accounts-title" = "일치하는 계정";
 
 /* (No Comment) */
-"account-select-header-search-title" = "지갑 주소를 검색하거나 입력하세요";
+"account-select-header-search-title" = "계정 주소 또는 약식 이름";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "다른 계정 이름을 사용해보세요";
@@ -113,7 +113,7 @@
 "accounts-title" = "계정";
 
 /* (No Comment) */
-"accounts-title-collectibles" = "NFTs";
+"accounts-title-collectibles" = "NFT";
 
 /* (No Comment) */
 "accounts-title-history" = "내역";
@@ -239,25 +239,28 @@
 "asset-copy-id" = "ID 복사";
 
 /* (No Comment) */
+"asset-creator-opt-out-error-message" = "크리에이터 계정은 자신이 만든 자산을 옵트아웃할 수 없습니다.";
+
+/* (No Comment) */
 "asset-detail-id-title" = "ID %@";
 
 /* (No Comment) */
-"asset-detail-markets-title" = "Markets";
+"asset-detail-markets-title" = "시장";
 
 /* (No Comment) */
-"asset-filter-selection-display-collectible-assets-filter-description" = "NFTs assets will be shown in the asset list of your account";
+"asset-filter-selection-display-collectible-assets-filter-description" = "NFT 자산이 계정의 자산 목록에 표시됩니다.";
 
 /* (No Comment) */
-"asset-filter-selection-display-collectible-assets-filter-title" = "Display NFTs in asset list";
+"asset-filter-selection-display-collectible-assets-filter-title" = "자산 목록에 NFT 표시";
 
 /* (No Comment) */
-"asset-filter-selection-toggle-description" = "You can show/hide assets with zero balance";
+"asset-filter-selection-toggle-description" = "잔액이 없는 자산을 표시하거나 숨길 수 있습니다.";
 
 /* (No Comment) */
-"asset-filter-selection-toggle-title" = "Hide assets with no balance";
+"asset-filter-selection-toggle-title" = "잔액이 없는 자산 숨기기";
 
 /* (No Comment) */
-"asset-filter-title" = "Filter Assets";
+"asset-filter-title" = "자산 필터";
 
 /* (No Comment) */
 "asset-id-copied-title" = "ID를 클립보드로 복사 완료";
@@ -287,7 +290,7 @@
 "asset-opt-out-successful-message" = "%@이(가) 계정에서 제거되었습니다.";
 
 /* (No Comment) */
-"asset-opt-out-title" = "Asset Opt-out";
+"asset-opt-out-title" = "자산 옵트아웃";
 
 /* (No Comment) */
 "asset-quick-action-button-add" = "자산 추가";
@@ -491,7 +494,7 @@
 "collectible-detail-algo-explorer" = "Algoexplorer에서 보기";
 
 /* (No Comment) */
-"collectible-detail-creator-account" = "Creator Account";
+"collectible-detail-creator-account" = "크리에이터 계정";
 
 /* (No Comment) */
 "collectible-detail-creator-name" = "크리에이터 이름";
@@ -536,19 +539,19 @@
 "collectible-detail-show-on" = "보기:";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "3D mode";
+"collectible-detail-tap-3D" = "3D 모드";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "트랜잭션 보기";
 
 /* (No Comment) */
-"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "This will show nfts from your watch accounts as well as your own accounts";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-description" = "보기 전용 계정과 내 계정에서 NFT가 표시됩니다.";
 
 /* (No Comment) */
-"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "Display NFTs from Watch Accounts";
+"collectible-filter-selection-display-watch-account-collectible-assets-filter-title" = "보기 전용 계정에서 NFT 표시";
 
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "Filter NFTs";
+"collectible-filter-selection-title" = "NFT 필터";
 
 /* (No Comment) */
 "collectible-filter-selection-toggle-description" = "옵트인되었지만 소유하지 않은 NFT를 표시하거나 숨길 수 있습니다.";
@@ -599,7 +602,7 @@
 "collectible-send-action" = "전송";
 
 /* (No Comment) */
-"collectible-send-input-placeholder" = "알고랜드 지갑 주소 붙여넣기";
+"collectible-send-input-placeholder" = "계정 주소";
 
 /* MARK: Collectible Send */
 "collectible-send-title" = "NFT 보내기";
@@ -629,7 +632,7 @@
 "collectibles-empty-secondary-action-title" = "숨겨진 NFT 표시(%@)";
 
 /* MARK: Collectible Common */
-"collectibles-empty-title" = "NFTs";
+"collectibles-empty-title" = "NFT";
 
 /* (No Comment) */
 "collectibles-list-input-placeholder" = "NFT 검색";
@@ -731,7 +734,7 @@
 "discover-error-fallback-body" = "현재 정보를 가져올 수 없습니다.";
 
 /* (No Comment) */
-"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+"discover-error-favorites-max-limit" = "즐겨찾기를 50개 이상 설정할 수 없습니다.";
 
 /* MARK: Discover */
 "discover-search-input-placeholder" = "전체 ASA에서 검색";
@@ -800,7 +803,7 @@
 "feedback-title-note" = "참조";
 
 /* (No Comment) */
-"filter" = "Filter";
+"filter" = "필터";
 
 /* (No Comment) */
 "governance-banner-action" = "시작";
@@ -1106,10 +1109,10 @@
 "min-balance-title" = "최소 잔액 필요";
 
 /* (No Comment) */
-"minimum-balance-description" = "Minimum balance is the minimum amount of Algo you have to keep in an account. It increases every time the account is opted in to a smart contract, ASA or NFT.";
+"minimum-balance-description" = "최소 잔액은 계정에 유지해야 하는 알고의 최소 금액입니다. 계정이 스마트 컨트랙트, ASA 또는 NFT에 옵트인될 때마다 기준액이 증가합니다.";
 
 /* MARK: Minimum Balance */
-"minimum-balance-title" = "Minimum balance";
+"minimum-balance-title" = "최소 잔액";
 
 /* MARK: MoonPay */
 "moonpay-buy-button-title" = "알고 구매";
@@ -1229,10 +1232,10 @@
 "notification-filter-show-title" = "푸시 알림";
 
 /* (No Comment) */
-"notifications-account-not-found-description" = "You cannot take actions for this account: It was removed from this device.";
+"notifications-account-not-found-description" = "이 계정에 대해 조치를 취할 수 없습니다. 계정이 기기에서 삭제되었습니다.";
 
 /* (No Comment) */
-"notifications-account-not-found-title" = "Account Removed";
+"notifications-account-not-found-title" = "삭제된 계정";
 
 /* (No Comment) */
 "notifications-asset-not-found-description" = "지정하신 특정 자산의 내역을 사용할 수 없습니다.";
@@ -1250,10 +1253,10 @@
 "notifications-title" = "알림";
 
 /* (No Comment) */
-"notifications-trying-to-opt-in-for-watch-account-description" = "You cannot opt-in for this account: It's a read-only Watch Account.";
+"notifications-trying-to-opt-in-for-watch-account-description" = "이 계정에 옵트인할 수 없습니다. 읽기 전용 계정입니다.";
 
 /* (No Comment) */
-"notifications-trying-to-opt-in-for-watch-account-title" = "Opt-in Not Allowed";
+"notifications-trying-to-opt-in-for-watch-account-title" = "옵트인 불가";
 
 /* (No Comment) */
 "number-abbreviation-billion" = "십억";
@@ -1268,16 +1271,16 @@
 "number-abbreviation-quintillion" = "100경";
 
 /* MARK: Number Abbreviation */
-"number-abbreviation-thousand" = "K";
+"number-abbreviation-thousand" = "천";
 
 /* (No Comment) */
 "number-abbreviation-trillion" = "조";
 
 /* MARK: Ongoing opt-in/opt-out Alert */
-"ongoing-opt-in-request-description" = "There is an ongoing opt-in request for this asset with %@. Please wait for the ongoing opt-in request to finish before taking any action for this asset with this account.";
+"ongoing-opt-in-request-description" = "이 자산에 대한 %@의 옵트인이 진행 중입니다. 진행 중인 옵트인 요청이 완료될 때까지 기다린 후, 이 계정으로 자산에 대한 조치를 취해 주십시오.";
 
 /* (No Comment) */
-"ongoing-opt-out-request-description" = "There is an ongoing opt-out request for this asset with %@. Please wait for the ongoing opt-out request to finish before taking any action for this asset with this account.";
+"ongoing-opt-out-request-description" = "이 자산에 대한 %@의 옵트아웃이 진행 중입니다. 진행 중인 옵트아웃 요청이 완료될 때까지 기다린 후, 이 계정으로 자산에 대한 조치를 취해 주십시오.";
 
 /* (No Comment) */
 "opt-in-description-adding-nft" = "NFT 옵트인 시 최소 트랜잭션 수수료의 트랜잭션을 전송해야 합니다. 해당 정보는 트랜잭션 내역에 표시됩니다.";
@@ -1298,7 +1301,7 @@
 "options-manage-assets" = "자산 관리";
 
 /* (No Comment) */
-"options-manage-collectibles" = "Manage NFTs";
+"options-manage-collectibles" = "NFT 관리";
 
 /* (No Comment) */
 "options-mute-notification" = "알림 음소거";
@@ -1793,7 +1796,7 @@
 "send-transaction-max-same-account-error" = "나 자신에게 최대 잔액을 전송할 수 없습니다. 다른 금액을 선택하거나 받으시는 분을 변경한 다음 다시 시도해 주세요.";
 
 /* (No Comment) */
-"send-transaction-preview-button" = "Confirm transfer";
+"send-transaction-preview-button" = "전송 확인";
 
 /* (No Comment) */
 "send-transaction-preview-current-balance" = "현재\n잔액";
@@ -1874,13 +1877,13 @@
 "settings-notification-disabled-go-settings-text" = "알림을 비활성화하셨습니다. 설정으로 이동해 옵션을 켜실 수 있습니다.";
 
 /* (No Comment) */
-"settings-notification-disabled-go-settings-title" = "Notifications Disabled";
+"settings-notification-disabled-go-settings-title" = "알림 비활성화";
 
 /* (No Comment) */
 "settings-notification-enabled-go-settings-text" = "알림을 활성화하셨습니다. 설정으로 이동해 옵션을 끄실 수 있습니다.";
 
 /* (No Comment) */
-"settings-notification-enabled-go-settings-title" = "Notifications Enabled";
+"settings-notification-enabled-go-settings-title" = "알림 활성화";
 
 /* (No Comment) */
 "settings-rate-modal-description" = "사용 경험이 어땠는지 알려주세요";
@@ -2213,7 +2216,7 @@
 "title-close" = "닫기";
 
 /* (No Comment) */
-"title-collectibles" = "NFTs";
+"title-collectibles" = "NFT";
 
 /* (No Comment) */
 "title-confirm" = "확정";
@@ -2312,7 +2315,7 @@
 "title-later" = "나중에 하기";
 
 /* (No Comment) */
-"title-launch-ios-settings" = "Launch iOS Settings";
+"title-launch-ios-settings" = "iOS 설정 실행";
 
 /* (No Comment) */
 "title-learn-more" = "더 알아보기";
@@ -2792,10 +2795,10 @@
 "url-copied" = "URL을 클립보드로 복사 완료";
 
 /* (No Comment) */
-"user-account-limit-error-message" = "Looks like you already have 50 or more accounts in your wallet. To keep the app performance snappy, we currently don't support more than 50 accounts. To add another one, please remove an existing account first.";
+"user-account-limit-error-message" = "지갑에 이미 50개 이상의 계정이 있는 것 같습니다. 앱 작동 속도를 빠르게 유지하기 위해, 현재 50개 이상의 계정을 지원하지 않습니다. 다른 계정을 추가하려면 먼저 기존 계정을 삭제하세요.";
 
 /* MARK: User Account Limit Error */
-"user-account-limit-error-title" = "Too Many Accounts!";
+"user-account-limit-error-title" = "계정이 너무 많습니다!";
 
 /* (No Comment) */
 "verification-info-body" = "Pera Wallet의 ASA(Algorand Standard Asset, 알고랜드 표준 자산) 인증 프로그램을 통해 ASA 작성자가 자산 소유자임을 확인하여 자동으로 검증할 수 있습니다.\nASA 인증의 주요 목적은 ASA가 연결되지 않은 프로젝트에서 토큰 역할을 하는 것처럼 위장할 수 없도록 방지하는 것입니다.\nASA 인증은 프로젝트에 대한 보증이 아닙니다. 알고랜드와 Pera는 프로젝트를 승인하기 위해 검증 프로세스를 사용하지 않을 것입니다.";
@@ -2864,13 +2867,13 @@
 "wallet-connect-group-transaction-header-title" = "그룹 ID: %@";
 
 /* (No Comment) */
-"wallet-connect-no-account-for-transaction" = "Your WalletConnect request failed with the following error: \n\n%@\n\nPlease try again by going back to the dApp where you initiated the request.";
+"wallet-connect-no-account-for-transaction" = "다음 오류로 인해 WalletConnect 요청이 실패했습니다. \n\n%@\n\n요청을 시작한 디앱으로 돌아가서 다시 시도해 주십시오.";
 
 /* (No Comment) */
 "wallet-connect-raw-transaction-title" = "원시 트랜잭션";
 
 /* (No Comment) */
-"wallet-connect-select-accounts" = "Select Accounts";
+"wallet-connect-select-accounts" = "계정 선택";
 
 /* (No Comment) */
 "wallet-connect-session-connected" = "연결 완료";
@@ -3044,10 +3047,10 @@
 "wallet-connect-transaction-request-count-singular" = "트랜잭션 요청(1건)";
 
 /* (No Comment) */
-"wallet-connect-transaction-request-signing-future-transaction-alert-description" = "This transaction will be submitted in the future. Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
+"wallet-connect-transaction-request-signing-future-transaction-alert-description" = "곧 트랜잭션이 제출될 예정입니다. 확정하신 후에는 연동된 애플리케이션에서 재량에 따라 트랜잭션을 전송할 수 있게 됩니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.";
 
 /* (No Comment) */
-"wallet-connect-transaction-request-signing-future-transaction-alert-title" = "Future Transaction Detected";
+"wallet-connect-transaction-request-signing-future-transaction-alert-title" = "예정 트랜잭션 감지";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "애플리케이션 호출";

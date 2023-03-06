@@ -45,7 +45,6 @@ final class Transaction:
     let sender: String?
     let senderRewards: UInt64?
     let type: TransactionType
-    let createdAssetId: Int64?
     let assetFreeze: AssetFreezeTransaction?
     let assetConfig: AssetConfigTransaction?
     let assetTransfer: AssetTransferTransaction?
@@ -78,7 +77,6 @@ final class Transaction:
         self.sender = apiModel.sender
         self.senderRewards = apiModel.senderRewards
         self.type = apiModel.txType.unwrap(TransactionType.init(rawValue:)) ?? .random()
-        self.createdAssetId = apiModel.createdAssetIndex
         self.assetFreeze = apiModel.assetFreezeTransaction
         self.assetConfig = apiModel.assetConfigTransaction
         self.applicationCall = apiModel.applicationCall
@@ -103,7 +101,6 @@ final class Transaction:
         apiModel.sender = sender
         apiModel.senderRewards = senderRewards
         apiModel.txType = type.rawValue
-        apiModel.createdAssetIndex = createdAssetId
         apiModel.assetFreezeTransaction = assetFreeze
         apiModel.assetConfigTransaction = assetConfig
         apiModel.applicationCall = applicationCall
@@ -165,7 +162,9 @@ extension Transaction {
             return nil
         }
         
-        return String(data: noteData, encoding: .utf8) ?? noteData.base64EncodedString()
+        let note = String(data: noteData, encoding: .utf8) ?? noteData.base64EncodedString()
+        let validNote = note.without("\0")
+        return validNote
     }
 
     func isAssetCreationTransaction(for account: String) -> Bool {
@@ -251,7 +250,6 @@ extension Transaction {
         var sender: String?
         var senderRewards: UInt64?
         var txType: String?
-        var createdAssetIndex: Int64?
         var assetFreezeTransaction: AssetFreezeTransaction?
         var assetConfigTransaction: AssetConfigTransaction?
         var assetTransferTransaction: AssetTransferTransaction.APIModel?
@@ -275,7 +273,6 @@ extension Transaction {
             self.sender = nil
             self.senderRewards = nil
             self.txType = nil
-            self.createdAssetIndex = nil
             self.assetFreezeTransaction = nil
             self.assetConfigTransaction = nil
             self.assetTransferTransaction = nil
@@ -300,7 +297,6 @@ extension Transaction {
             case sender
             case senderRewards = "sender-rewards"
             case txType = "tx-type"
-            case createdAssetIndex = "created-asset-index"
             case assetFreezeTransaction = "asset-freeze-transaction"
             case assetConfigTransaction = "asset-config-transaction"
             case assetTransferTransaction = "asset-transfer-transaction"

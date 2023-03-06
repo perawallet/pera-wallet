@@ -96,18 +96,10 @@ final class ReceiveCollectibleAssetListViewController:
             guard let self = self else { return }
 
             switch event {
-            case .didUpdate(let snapshot):
+            case .didUpdateAccount:
+                self.configureAccessoryOfVisibleCells()
+            case .didUpdateAssets(let snapshot):
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
-            case .didOptInAssets(let items):
-                for item in items {
-                    if let indexPath = self.listDataSource.indexPath(for: .collectible(item)),
-                       let cell = self.listView.cellForItem(at: indexPath) {
-                        self.configureAccessory(
-                            cell as? OptInAssetListItemCell,
-                            for: item
-                        )
-                    }
-                }
             }
         }
 
@@ -476,6 +468,20 @@ extension ReceiveCollectibleAssetListViewController {
 }
 
 extension ReceiveCollectibleAssetListViewController {
+    private func configureAccessoryOfVisibleCells() {
+        listView.indexPathsForVisibleItems.forEach {
+            indexPath in
+            guard let listItem = listDataSource.itemIdentifier(for: indexPath) else { return }
+            guard case let ReceiveCollectibleAssetListItem.collectible(item) = listItem else { return }
+
+            let cell = listView.cellForItem(at: indexPath) as? OptInAssetListItemCell
+            configureAccessory(
+                cell,
+                for: item
+            )
+        }
+    }
+
     private func configureAccessory(
         _ cell: OptInAssetListItemCell?,
         for item: OptInAssetListItem
@@ -566,7 +572,7 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         if let assetID = getAssetID(from: transactionController) {
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
             let account = dataController.account
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )
@@ -590,7 +596,7 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         if let assetID = getAssetID(from: transactionController) {
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
             let account = dataController.account
-            monitor.finishMonitoringOptInUpdates(
+            monitor.cancelMonitoringOptInUpdates(
                 forAssetID: assetID,
                 for: account
             )
