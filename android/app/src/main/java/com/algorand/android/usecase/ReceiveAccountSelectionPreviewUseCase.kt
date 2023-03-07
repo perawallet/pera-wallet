@@ -22,7 +22,6 @@ class ReceiveAccountSelectionPreviewUseCase @Inject constructor(
     suspend fun getReceiveAccountSelectionPreview(): List<BaseAccountSelectionListItem> {
         return accountSelectionListUseCase.createAccountSelectionListAccountItems(
             showHoldings = true,
-            shouldIncludeWatchAccounts = false,
             showFailedAccounts = true
         )
     }

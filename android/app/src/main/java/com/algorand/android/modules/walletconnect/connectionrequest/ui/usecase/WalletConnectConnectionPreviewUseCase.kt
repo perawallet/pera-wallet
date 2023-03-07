@@ -13,7 +13,6 @@
 package com.algorand.android.modules.walletconnect.connectionrequest.ui.usecase
 
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
-import com.algorand.android.models.Account
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseAccountAndAssetListItem
 import com.algorand.android.models.WalletConnectPeerMeta
@@ -81,9 +80,8 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
     }
 
     private suspend fun createSortedAccountList(): List<BaseAccountAndAssetListItem.AccountListItem> {
-        return getSortedAccountsByPreferenceUseCase.getFilteredSortedAccountListItemsByAccountType(
+        return getSortedAccountsByPreferenceUseCase.getFilteredSortedAccountListItemsWhichCanSignTransaction(
             sortingPreferences = accountSortPreferenceUseCase.getAccountSortPreference(),
-            excludedAccountTypes = listOf(Account.Type.WATCH),
             onLoadedAccountConfiguration = {
                 accountItemConfigurationMapper.mapTo(
                     accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),

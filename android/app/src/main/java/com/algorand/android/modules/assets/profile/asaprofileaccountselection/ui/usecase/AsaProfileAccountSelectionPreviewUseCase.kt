@@ -32,11 +32,11 @@ class AsaProfileAccountSelectionPreviewUseCase @Inject constructor(
     }
 
     suspend fun getAccountSelectionPreviewFlow(): Flow<AsaProfileAccountSelectionPreview> = flow {
-        val accountSelectionList = accountSelectionListUseCase.createAccountSelectionListAccountItems(
-            showFailedAccounts = true,
-            showHoldings = false,
-            shouldIncludeWatchAccounts = false
-        )
+        val accountSelectionList = accountSelectionListUseCase
+            .createAccountSelectionListAccountItemsWhichCanSignTransaction(
+                showFailedAccounts = true,
+                showHoldings = false
+            )
         emit(
             asaProfileAccountSelectionPreviewMapper.mapToAsaProfileAccountSelectionPreview(
                 accountListItems = accountSelectionList,

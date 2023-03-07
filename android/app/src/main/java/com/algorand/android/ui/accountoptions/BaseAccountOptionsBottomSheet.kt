@@ -18,7 +18,6 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetAccountsOptionsBinding
-import com.algorand.android.models.Account
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.viewbinding.viewBinding
 
@@ -62,7 +61,7 @@ abstract class BaseAccountOptionsBottomSheet : DaggerBaseBottomSheet(
     }
 
     private fun setupViewPassphraseButton() {
-        if (accountOptionsViewModel.getAccountType() == Account.Type.STANDARD) {
+        if (accountOptionsViewModel.canDisplayPassphrases()) {
             binding.viewPassphraseButton.apply {
                 show()
                 setOnClickListener { navToViewPassphraseBottomSheet() }

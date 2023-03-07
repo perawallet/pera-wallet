@@ -139,7 +139,6 @@ class ReceiverAccountSelectionViewModel @Inject constructor(
             ) { latestCopiedMessage, query ->
                 receiverAccountSelectionUseCase.getToAccountList(
                     query = query,
-                    assetId = assetTransaction.assetId,
                     latestCopiedMessage = latestCopiedMessage
                 ).collectLatest {
                     _selectableAccountFlow.emit(it)

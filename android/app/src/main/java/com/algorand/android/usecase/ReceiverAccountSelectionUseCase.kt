@@ -59,7 +59,6 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
 
     fun getToAccountList(
         query: String,
-        assetId: Long,
         latestCopiedMessage: String?
     ): Flow<List<BaseAccountSelectionListItem>> {
         val contactList = fetchContactList(query)
@@ -143,7 +142,6 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
     private fun fetchAccountList(query: String) = flow {
         val localAccounts = accountSelectionListUseCase.createAccountSelectionListAccountItems(
             showHoldings = false,
-            shouldIncludeWatchAccounts = true,
             showFailedAccounts = false
         ).filter { it.displayName.contains(query, true) || it.publicKey.contains(query, true) }
         emit(localAccounts)

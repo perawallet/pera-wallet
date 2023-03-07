@@ -179,7 +179,6 @@
     <string name="transaction_received">Transaction reçue</string>
     <string name="too_many_pin_attempts">Trop de tentatives de code PIN</string>
     <string name="this_ledger_device">Cet appareil Ledger peut signer des transactions pour les comptes suivants. Sélectionnez les comptes à ajouter à Pera Wallet.</string>
-    <string name="this_account_has">Ce compte a été recréé. Afin de signer des transactions, veuillez récupérer ce compte avec une phrase secrète ou un appareil Ledger.</string>
     <string name="auth_account_address">Adresse d\'authentification du compte</string>
     <string name="rekeying_account">Récupération du compte…</string>
     <string name="date">Date</string>

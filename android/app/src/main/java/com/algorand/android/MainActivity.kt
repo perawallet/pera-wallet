@@ -70,6 +70,7 @@ import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionP
 import com.algorand.android.modules.webexport.model.WebExportQrCode
 import com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment
 import com.algorand.android.ui.lockpreference.AutoLockSuggestionManager
+import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.IsAccountLimitExceedUseCase.Companion.MAX_NUMBER_OF_ACCOUNTS
 import com.algorand.android.utils.DEEPLINK_AND_NAVIGATION_INTENT
 import com.algorand.android.utils.Event
@@ -127,6 +128,9 @@ class MainActivity :
 
     @Inject
     lateinit var autoLockManager: AutoLockManager
+
+    @Inject
+    lateinit var accountDetailUseCase: AccountDetailUseCase
 
     private val isAppUnlocked: Boolean
         get() = autoLockManager.isAppUnlocked
@@ -332,14 +336,16 @@ class MainActivity :
     private val customAlertDialogListener = object : CustomAlertDialog.Listener {
         override fun onTransactionAlertClick(accountAddress: String, assetId: Long) {
             if (accountAddress.isBlank()) return
-            val accountCacheData = accountCacheManager.getCacheData(accountAddress) ?: return
-            val assetInformation = accountCacheData.assetsInformation.firstOrNull { it.assetId == assetId } ?: return
-            nav(
-                HomeNavigationDirections.actionGlobalAssetProfileNavigation(
-                    assetInformation.assetId,
-                    accountCacheData.account.address
+            val accountCacheData = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data ?: return
+            val hasAsset = accountCacheData.accountInformation.hasAsset(assetId)
+            if (hasAsset) {
+                nav(
+                    HomeNavigationDirections.actionGlobalAssetProfileNavigation(
+                        assetId = assetId,
+                        accountAddress = accountCacheData.account.address
+                    )
                 )
-            )
+            }
         }
 
         override fun onAlertViewHidden() {
@@ -541,7 +547,7 @@ class MainActivity :
                 } else {
                     navController.handleIntentWithBundle(
                         intentToHandle = this,
-                        accountCacheManager = accountCacheManager,
+                        accountDetailUseCase = accountDetailUseCase,
                         onIntentHandlingFailed = ::onIntentHandlingFailed
                     )
                 }
@@ -634,12 +640,14 @@ class MainActivity :
 
     fun signAddAssetTransaction(assetActionResult: AssetActionResult) {
         if (!assetActionResult.publicKey.isNullOrBlank()) {
-            val accountCacheData = accountCacheManager.getCacheData(assetActionResult.publicKey) ?: return
+            val accountCacheData = accountDetailUseCase.getCachedAccountDetail(
+                assetActionResult.publicKey
+            )?.data ?: return
             val transactionData = TransactionData.AddAsset(
                 senderAccountAddress = accountCacheData.account.address,
                 assetInformation = assetActionResult.asset,
-                senderAuthAddress = accountCacheData.authAddress,
-                isSenderRekeyedToAnotherAccount = accountCacheData.isRekeyedToAnotherAccount(),
+                senderAuthAddress = accountCacheData.accountInformation.rekeyAdminAddress,
+                isSenderRekeyedToAnotherAccount = accountCacheData.accountInformation.isRekeyed(),
                 senderAccountType = accountCacheData.account.type,
                 senderAccountDetail = accountCacheData.account.detail
             )
@@ -650,13 +658,15 @@ class MainActivity :
 
     fun signRemoveAssetTransaction(assetActionResult: AssetActionResult) {
         if (!assetActionResult.publicKey.isNullOrBlank()) {
-            val accountCacheData = accountCacheManager.getCacheData(assetActionResult.publicKey) ?: return
+            val accountCacheData = accountDetailUseCase.getCachedAccountDetail(
+                assetActionResult.publicKey
+            )?.data ?: return
             val transactionData = TransactionData.RemoveAsset(
                 senderAccountAddress = accountCacheData.account.address,
                 assetInformation = assetActionResult.asset,
                 creatorPublicKey = assetActionResult.asset.creatorPublicKey.orEmpty(),
-                senderAuthAddress = accountCacheData.authAddress,
-                isSenderRekeyedToAnotherAccount = accountCacheData.isRekeyedToAnotherAccount(),
+                senderAuthAddress = accountCacheData.accountInformation.rekeyAdminAddress,
+                isSenderRekeyedToAnotherAccount = accountCacheData.accountInformation.isRekeyed(),
                 senderAccountType = accountCacheData.account.type,
                 senderAccountDetail = accountCacheData.account.detail
             )

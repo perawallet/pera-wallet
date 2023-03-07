@@ -13,8 +13,10 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
+import com.algorand.android.customviews.accountandassetitem.model.BaseItemConfiguration
 import com.algorand.android.mapper.AccountSelectionListItemMapper
 import com.algorand.android.models.Account
+import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
@@ -36,50 +38,65 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
 ) {
 
     // TODO: 11.03.2022 Use flow here to get realtime updates
+
     suspend fun getAccountSelectionAccounts(
         showHoldings: Boolean,
-        shouldIncludeWatchAccounts: Boolean,
         showFailedAccounts: Boolean,
         assetId: Long? = null,
+        excludedAccountTypes: List<Account.Type>? = null
     ): List<BaseAccountSelectionListItem.BaseAccountItem> {
-        val excludedAccountTypes = if (shouldIncludeWatchAccounts) null else listOf(Account.Type.WATCH)
         val selectedCurrencySymbol = parityUseCase.getPrimaryCurrencySymbolOrEmpty()
 
+        val sortedAccountListItems = getSortedAccountsByPreferenceUseCase.getFilteredSortedAccountListItemsByAssetIds(
+            sortingPreferences = accountSortPreferenceUseCase.getAccountSortPreference(),
+            accountFilterAssetId = assetId,
+            excludedAccountTypes = excludedAccountTypes,
+            onLoadedAccountConfiguration = {
+                createLoadedAccountConfiguration(
+                    accountDetail = this,
+                    account = account,
+                    showHoldings = showHoldings,
+                    selectedCurrencySymbol = selectedCurrencySymbol
+                )
+            },
+            onFailedAccountConfiguration = {
+                createNotLoadedAccountConfiguration(account = this)
+            }
+        )
+        return sortedAccountListItems.map { accountListItem ->
+            if (accountListItem.itemConfiguration.showWarning == true) {
+                accountSelectionListItemMapper.mapToErrorAccountItem(accountListItem)
+            } else {
+                accountSelectionListItemMapper.mapToAccountItem(accountListItem)
+            }
+        }.filter {
+            if (showFailedAccounts) true else it !is BaseAccountSelectionListItem.BaseAccountItem.AccountErrorItem
+        }
+    }
+
+    // TODO: 11.03.2022 Use flow here to get realtime updates
+    suspend fun getAccountSelectionAccountsWhichCanSignTransaction(
+        showHoldings: Boolean,
+        showFailedAccounts: Boolean,
+        assetId: Long? = null,
+        excludedAccountTypes: List<Account.Type>? = null
+    ): List<BaseAccountSelectionListItem.BaseAccountItem> {
+        val selectedCurrencySymbol = parityUseCase.getPrimaryCurrencySymbolOrEmpty()
         val sortedAccountListItems = getSortedAccountsByPreferenceUseCase
-            .getFilteredSortedAccountListItemsByAssetIdAndAccountType(
+            .getFilteredSortedAccountListItemsByAssetIdsWhichCanSignTransaction(
                 sortingPreferences = accountSortPreferenceUseCase.getAccountSortPreference(),
-                excludedAccountTypes = excludedAccountTypes,
                 accountFilterAssetId = assetId,
+                excludedAccountTypes = excludedAccountTypes,
                 onLoadedAccountConfiguration = {
-                    val accountValue = getAccountValueUseCase.getAccountValue(this)
-                    val primaryAccountValue = accountValue.primaryAccountValue
-                    accountItemConfigurationMapper.mapTo(
-                        accountAddress = account.address,
-                        accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
-                        accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
-                        accountPrimaryValueText = if (showHoldings) {
-                            primaryAccountValue.formatAsCurrency(
-                                symbol = selectedCurrencySymbol,
-                                isCompact = true,
-                                isFiat = true
-                            )
-                        } else {
-                            null
-                        },
-                        accountPrimaryValue = primaryAccountValue,
-                        accountType = account.type
+                    createLoadedAccountConfiguration(
+                        accountDetail = this,
+                        account = account,
+                        showHoldings = showHoldings,
+                        selectedCurrencySymbol = selectedCurrencySymbol
                     )
                 },
                 onFailedAccountConfiguration = {
-                    this?.run {
-                        accountItemConfigurationMapper.mapTo(
-                            accountAddress = address,
-                            accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
-                            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
-                            showWarningIcon = true,
-                            accountType = type
-                        )
-                    }
+                    createNotLoadedAccountConfiguration(account = this)
                 }
             )
         return sortedAccountListItems.map { accountListItem ->
@@ -90,6 +107,47 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
             }
         }.filter {
             if (showFailedAccounts) true else it !is BaseAccountSelectionListItem.BaseAccountItem.AccountErrorItem
+        }
+    }
+
+    private fun createLoadedAccountConfiguration(
+        accountDetail: AccountDetail,
+        account: Account,
+        showHoldings: Boolean,
+        selectedCurrencySymbol: String,
+    ): BaseItemConfiguration.AccountItemConfiguration {
+        val accountValue = getAccountValueUseCase.getAccountValue(accountDetail)
+        val primaryAccountValue = accountValue.primaryAccountValue
+        val accountPrimaryValueText = if (showHoldings) {
+            primaryAccountValue.formatAsCurrency(
+                symbol = selectedCurrencySymbol,
+                isCompact = true,
+                isFiat = true
+            )
+        } else {
+            null
+        }
+        return accountItemConfigurationMapper.mapTo(
+            accountAddress = account.address,
+            accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
+            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+            accountPrimaryValueText = accountPrimaryValueText,
+            accountPrimaryValue = primaryAccountValue,
+            accountType = account.type
+        )
+    }
+
+    private fun createNotLoadedAccountConfiguration(
+        account: Account?
+    ): BaseItemConfiguration.AccountItemConfiguration? {
+        return with(account ?: return null) {
+            accountItemConfigurationMapper.mapTo(
+                accountAddress = address,
+                accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
+                accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
+                showWarningIcon = true,
+                accountType = type
+            )
         }
     }
 }

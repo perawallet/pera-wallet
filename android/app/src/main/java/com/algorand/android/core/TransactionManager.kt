@@ -239,7 +239,7 @@ class TransactionManager @Inject constructor(
                     if (accountDetail.authDetail != null) {
                         signTxn(accountDetail.authDetail, checkIfRekeyed = false)
                     } else {
-                        setSignFailed(Defined(AnnotatedString(stringResId = R.string.this_account_has)))
+                        setSignFailed(Defined(AnnotatedString(stringResId = R.string.the_signing_account_has)))
                     }
                 }
                 is Account.Detail.Standard -> {
@@ -263,11 +263,12 @@ class TransactionManager @Inject constructor(
                 sendTransactionWithLedger(authAccountDetail)
             }
             else -> {
-                postResult(Defined(AnnotatedString(stringResId = R.string.this_account_has)))
+                postResult(Defined(AnnotatedString(stringResId = R.string.the_signing_account_has)))
             }
         }
     }
 
+    @SuppressWarnings("LongMethod")
     suspend fun TransactionData.createTransaction(): ByteArray? {
         val transactionParams = getTransactionParams(this) ?: return null
 
@@ -330,6 +331,9 @@ class TransactionManager @Inject constructor(
             is TransactionData.Rekey -> {
                 transactionParams.makeRekeyTx(senderAccountAddress, rekeyAdminAddress)
             }
+            is TransactionData.RekeyToStandardAccount -> {
+                transactionParams.makeRekeyTx(senderAccountAddress, rekeyAdminAddress)
+            }
         }
 
         transactionByteArray = createdTransactionByteArray
@@ -362,6 +366,7 @@ class TransactionManager @Inject constructor(
                             is TransactionData.Rekey,
                             is TransactionData.Send,
                             is TransactionData.SendAndRemoveAsset,
+                            is TransactionData.RekeyToStandardAccount,
                             is TransactionData.RemoveAsset -> {
                                 postResult(
                                     TransactionManagerResult.Error.GlobalWarningError.Api(

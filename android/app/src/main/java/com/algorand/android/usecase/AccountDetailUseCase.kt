@@ -26,7 +26,6 @@ import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUs
 import com.algorand.android.repository.AccountRepository
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
-import com.algorand.android.utils.canSignTransaction
 import com.algorand.android.utils.exceptions.AccountNotFoundException
 import com.algorand.android.utils.extensions.getAssetHoldingOrNull
 import com.algorand.android.utils.extensions.getAssetStatusOrNull
@@ -144,7 +143,20 @@ class AccountDetailUseCase @Inject constructor(
 
     fun canAccountSignTransaction(publicKey: String): Boolean {
         val account = accountManager.getAccount(publicKey)
-        return canSignTransaction(account?.type)
+        return when (account?.type) {
+            Account.Type.LEDGER, Account.Type.STANDARD, Account.Type.REKEYED_AUTH -> true
+            Account.Type.REKEYED -> isAuthAccountInDevice(account.address)
+            Account.Type.WATCH, null -> false
+        }
+    }
+
+    private fun isAuthAccountInDevice(accountAddress: String): Boolean {
+        val accountAuthAddress = getAuthAddress(accountAddress) ?: return false
+        val authAccountDetail = getCachedAccountDetail(accountAuthAddress)?.data ?: return false
+        if (canAccountSignTransaction(authAccountDetail.account.address)) {
+            return true
+        }
+        return false
     }
 
     suspend fun fetchAccountDetail(account: Account): Flow<DataResource<AccountDetail>> {
@@ -173,15 +185,16 @@ class AccountDetailUseCase @Inject constructor(
         } == true
     }
 
-    // TODO this function shouldn't return nullable model also it should be moved into its own UseCase
-    fun getAccountSummary(publicKey: String): AccountDetailSummary? {
-        val accountDetail = getCachedAccountDetail(publicKey)?.data ?: return null
-        return accountSummaryMapper.mapToAccountDetailSummary(
-            canSignTransaction = canAccountSignTransaction(publicKey),
-            accountType = accountDetail.account.type,
-            accountAddress = publicKey,
-            accountDisplayName = getAccountDisplayNameUseCase.invoke(publicKey)
-        )
+    fun getAccountSummaryFlow(publicKey: String): Flow<AccountDetailSummary> {
+        return getAccountDetailCacheFlow(publicKey).map {
+            val accountDetail = it?.data
+            accountSummaryMapper.mapToAccountDetailSummary(
+                canSignTransaction = canAccountSignTransaction(publicKey),
+                accountType = accountDetail?.account?.type,
+                accountAddress = publicKey,
+                accountDisplayName = getAccountDisplayNameUseCase.invoke(publicKey)
+            )
+        }
     }
 
     fun getAccountType(publicKey: String): Account.Type? {
@@ -244,5 +257,10 @@ class AccountDetailUseCase @Inject constructor(
 
     private fun getAccountNameService(accountAddress: String): String? {
         return accountRepository.getCachedAccountDetail(accountAddress)?.data?.nameServiceName
+    }
+
+    fun getAuthAccount(accountAddress: String?): CacheResult<AccountDetail>? {
+        val authAccountAddress = getAuthAddress(accountAddress ?: return null) ?: return null
+        return getCachedAccountDetail(authAccountAddress)
     }
 }

@@ -32,74 +32,125 @@ class GetSortedAccountsByPreferenceUseCase @Inject constructor(
 
     fun getSortedAccountListItems(
         sortingPreferences: AccountSortingType,
+        excludedAccountTypes: List<Account.Type>? = null,
         onLoadedAccountConfiguration: AccountDetail.() -> BaseItemConfiguration.AccountItemConfiguration,
         onFailedAccountConfiguration: Account?.() -> BaseItemConfiguration.AccountItemConfiguration?
     ): List<BaseAccountAndAssetListItem.AccountListItem> {
         val localAccounts = getSortedLocalAccountsUseCase.getSortedLocalAccounts()
-        val accountListItems = localAccounts.asSequence()
-            .map { account -> accountDetailUseCase.getCachedAccountDetail(account.address)?.data }
-            .mapIndexedNotNull { index, accountDetail ->
-                configureListItem(
+        val accountListItems = localAccounts.mapIndexedNotNull { index, account ->
+            val isAccountTypeValid = isAccountTypeValid(excludedAccountTypes, account.type)
+            if (isAccountTypeValid) {
+                val accountDetail = accountDetailUseCase.getCachedAccountDetail(account.address)?.data
+                val accountItemConfiguration = configureListItem(
                     accountDetail = accountDetail,
                     account = localAccounts.getOrNull(index),
                     onLoadedAccountConfiguration = onLoadedAccountConfiguration,
                     onFailedAccountConfiguration = onFailedAccountConfiguration
-                )
-            }.map { accountItemConfiguration ->
+                ) ?: return@mapIndexedNotNull null
                 baseAccountAndAssetListItemMapper.mapToAccountListItem(accountItemConfiguration)
-            }.toList()
+            } else {
+                null
+            }
+        }
         return sortingPreferences.sort(accountListItems)
     }
 
-    fun getFilteredSortedAccountListItemsByAccountType(
+    fun getFilteredSortedAccountListItemsByAssetIds(
         sortingPreferences: AccountSortingType,
-        excludedAccountTypes: List<Account.Type>?,
-        onLoadedAccountConfiguration: AccountDetail.() -> BaseItemConfiguration.AccountItemConfiguration,
-        onFailedAccountConfiguration: Account?.() -> BaseItemConfiguration.AccountItemConfiguration?
-    ): List<BaseAccountAndAssetListItem.AccountListItem> {
-        val localAccounts = getSortedLocalAccountsUseCase.getSortedLocalAccounts()
-            .filterNot { account -> account.type in (excludedAccountTypes ?: return@filterNot false) }
-        val accountListItems = localAccounts.asSequence()
-            .map { account -> accountDetailUseCase.getCachedAccountDetail(account.address)?.data }
-            .mapIndexedNotNull { index, accountDetail ->
-                configureListItem(
-                    accountDetail = accountDetail,
-                    account = localAccounts.getOrNull(index),
-                    onLoadedAccountConfiguration = onLoadedAccountConfiguration,
-                    onFailedAccountConfiguration = onFailedAccountConfiguration
-                )
-            }.map { accountItemConfiguration ->
-                baseAccountAndAssetListItemMapper.mapToAccountListItem(accountItemConfiguration)
-            }.toList()
-        return sortingPreferences.sort(accountListItems)
-    }
-
-    fun getFilteredSortedAccountListItemsByAssetIdAndAccountType(
-        sortingPreferences: AccountSortingType,
-        excludedAccountTypes: List<Account.Type>?,
         accountFilterAssetId: Long?,
+        excludedAccountTypes: List<Account.Type>? = null,
         onLoadedAccountConfiguration: AccountDetail.() -> BaseItemConfiguration.AccountItemConfiguration,
         onFailedAccountConfiguration: Account?.() -> BaseItemConfiguration.AccountItemConfiguration?
     ): List<BaseAccountAndAssetListItem.AccountListItem> {
         val localAccounts = getSortedLocalAccountsUseCase.getSortedLocalAccounts()
-        val accountListItems = localAccounts.asSequence()
-            .filterNot { account -> account.type in (excludedAccountTypes ?: return@filterNot false) }
-            .map { account -> accountDetailUseCase.getCachedAccountDetail(account.address)?.data }
-            .filter { accountDetail ->
-                accountFilterAssetId == null ||
-                    accountFilterAssetId == ALGO_ID ||
-                    accountDetail?.hasAsset(accountFilterAssetId) == true
-            }.mapIndexedNotNull { index, accountDetail ->
-                configureListItem(
+        val accountListItems = localAccounts.mapIndexedNotNull { index, account ->
+            val isAccountTypeValid = isAccountTypeValid(excludedAccountTypes, account.type)
+            if (isAccountTypeValid) {
+                val accountDetail = accountDetailUseCase.getCachedAccountDetail(account.address)?.data
+                val isAssetIdValid = isAssetIdValid(accountDetail, accountFilterAssetId)
+                if (isAssetIdValid) {
+                    val accountItemConfiguration = configureListItem(
+                        accountDetail = accountDetail,
+                        account = localAccounts.getOrNull(index),
+                        onLoadedAccountConfiguration = onLoadedAccountConfiguration,
+                        onFailedAccountConfiguration = onFailedAccountConfiguration
+                    ) ?: return@mapIndexedNotNull null
+                    baseAccountAndAssetListItemMapper.mapToAccountListItem(accountItemConfiguration)
+                } else {
+                    null
+                }
+            } else {
+                null
+            }
+        }
+        return sortingPreferences.sort(accountListItems)
+    }
+
+    // TODO: Filter account which is eligible to signing transaction by their account types
+    fun getFilteredSortedAccountListItemsWhichCanSignTransaction(
+        sortingPreferences: AccountSortingType,
+        excludedAccountTypes: List<Account.Type>? = null,
+        onLoadedAccountConfiguration: AccountDetail.() -> BaseItemConfiguration.AccountItemConfiguration,
+        onFailedAccountConfiguration: Account?.() -> BaseItemConfiguration.AccountItemConfiguration?
+    ): List<BaseAccountAndAssetListItem.AccountListItem> {
+        val localAccounts = getSortedLocalAccountsUseCase.getSortedLocalAccounts()
+        val accountListItems = localAccounts.mapIndexedNotNull { index, account ->
+            val isAccountTypeValid = isAccountTypeValid(excludedAccountTypes, account.type)
+            if (isAccountTypeValid && accountDetailUseCase.canAccountSignTransaction(account.address)) {
+                val accountDetail = accountDetailUseCase.getCachedAccountDetail(account.address)?.data
+                val accountItemConfiguration = configureListItem(
                     accountDetail = accountDetail,
                     account = localAccounts.getOrNull(index),
                     onLoadedAccountConfiguration = onLoadedAccountConfiguration,
                     onFailedAccountConfiguration = onFailedAccountConfiguration
-                )
-            }.map { accountItemConfiguration ->
+                ) ?: return@mapIndexedNotNull null
                 baseAccountAndAssetListItemMapper.mapToAccountListItem(accountItemConfiguration)
-            }.toList()
+            } else {
+                null
+            }
+        }
         return sortingPreferences.sort(accountListItems)
+    }
+
+    fun getFilteredSortedAccountListItemsByAssetIdsWhichCanSignTransaction(
+        sortingPreferences: AccountSortingType,
+        accountFilterAssetId: Long?,
+        excludedAccountTypes: List<Account.Type>? = null,
+        onLoadedAccountConfiguration: AccountDetail.() -> BaseItemConfiguration.AccountItemConfiguration,
+        onFailedAccountConfiguration: Account?.() -> BaseItemConfiguration.AccountItemConfiguration?
+    ): List<BaseAccountAndAssetListItem.AccountListItem> {
+        val localAccounts = getSortedLocalAccountsUseCase.getSortedLocalAccounts()
+        val accountListItems = localAccounts.mapIndexedNotNull { index, account ->
+            val isAccountTypeValid = isAccountTypeValid(excludedAccountTypes, account.type)
+            if (isAccountTypeValid && accountDetailUseCase.canAccountSignTransaction(account.address)) {
+                val accountDetail = accountDetailUseCase.getCachedAccountDetail(account.address)?.data
+                val assetIdValid = isAssetIdValid(accountDetail, accountFilterAssetId)
+                if (assetIdValid) {
+                    val accountItemConfiguration = configureListItem(
+                        accountDetail = accountDetail,
+                        account = localAccounts.getOrNull(index),
+                        onLoadedAccountConfiguration = onLoadedAccountConfiguration,
+                        onFailedAccountConfiguration = onFailedAccountConfiguration
+                    ) ?: return@mapIndexedNotNull null
+                    baseAccountAndAssetListItemMapper.mapToAccountListItem(accountItemConfiguration)
+                } else {
+                    null
+                }
+            } else {
+                null
+            }
+        }
+        return sortingPreferences.sort(accountListItems)
+    }
+
+    private fun isAssetIdValid(accountDetail: AccountDetail?, filteredAssetId: Long?): Boolean {
+        return filteredAssetId == null || filteredAssetId == ALGO_ID || accountDetail?.hasAsset(filteredAssetId) == true
+    }
+
+    private fun isAccountTypeValid(excludedAccountTypes: List<Account.Type>?, accountType: Account.Type?): Boolean {
+        // This means, there is no filter
+        if (excludedAccountTypes.isNullOrEmpty()) return true
+        return accountType !in excludedAccountTypes
     }
 
     private fun configureListItem(

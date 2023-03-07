@@ -151,4 +151,26 @@ sealed class TransactionData : Parcelable {
             )
         }
     }
+
+    data class RekeyToStandardAccount(
+        override val senderAccountAddress: String,
+        override val senderAccountType: Account.Type?,
+        override val senderAuthAddress: String?,
+        override val isSenderRekeyedToAnotherAccount: Boolean,
+        override val senderAccountDetail: Account.Detail?,
+        val senderAccountAuthTypeAndDetail: Account.Detail?,
+        val senderAccountName: String,
+        val rekeyAdminAddress: String
+    ) : TransactionData() {
+        override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
+            return SignedTransactionDetail.RekeyToStandardAccountOperation(
+                signedTransactionData = signedTransactionData,
+                accountDetail = senderAccountDetail,
+                rekeyedAccountDetail = senderAccountAuthTypeAndDetail,
+                accountAddress = senderAccountAddress,
+                accountName = senderAccountName,
+                rekeyAdminAddress = rekeyAdminAddress
+            )
+        }
+    }
 }

@@ -72,9 +72,8 @@ class SenderAccountSelectionPreviewUseCase @Inject constructor(
     }
 
     private suspend fun getBaseNormalAccountListItems(): List<BaseAccountSelectionListItem> {
-        return accountSelectionListUseCase.createAccountSelectionListAccountItems(
+        return accountSelectionListUseCase.createAccountSelectionListAccountItemsWhichCanSignTransaction(
             showHoldings = true,
-            shouldIncludeWatchAccounts = false,
             showFailedAccounts = true
         )
     }
@@ -82,11 +81,11 @@ class SenderAccountSelectionPreviewUseCase @Inject constructor(
     private suspend fun getBaseNormalAccountListItemsFilteredByAssetId(
         assetId: Long
     ): List<BaseAccountSelectionListItem> {
-        return accountSelectionListUseCase.createAccountSelectionListAccountItemsFilteredByAssetId(
-            assetId = assetId,
-            showHoldings = true,
-            shouldIncludeWatchAccounts = false,
-            showFailedAccounts = true
-        )
+        return accountSelectionListUseCase
+            .createAccountSelectionListAccountItemsFilteredByAssetIdWhichCanSignTransaction(
+                assetId = assetId,
+                showHoldings = true,
+                showFailedAccounts = true
+            )
     }
 }

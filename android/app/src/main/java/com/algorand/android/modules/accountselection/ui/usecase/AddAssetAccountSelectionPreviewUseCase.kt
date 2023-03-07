@@ -25,11 +25,11 @@ class AddAssetAccountSelectionPreviewUseCase @Inject constructor(
     fun getInitialStatePreview() = addAssetAccountSelectionPreviewMapper.mapToAddAssetSelectionPreview(emptyList())
 
     suspend fun getAddAssetAccountSelectionPreview(): AddAssetAccountSelectionPreview {
-        val accountSelectionListItems = accountSelectionListUseCase.createAccountSelectionListAccountItems(
-            showHoldings = true,
-            shouldIncludeWatchAccounts = false,
-            showFailedAccounts = true
-        )
+        val accountSelectionListItems = accountSelectionListUseCase
+            .createAccountSelectionListAccountItemsWhichCanSignTransaction(
+                showHoldings = true,
+                showFailedAccounts = true
+            )
         return addAssetAccountSelectionPreviewMapper.mapToAddAssetSelectionPreview(accountSelectionListItems)
     }
 }

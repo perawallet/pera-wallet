@@ -14,7 +14,6 @@ package com.algorand.android.usecase
 
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
 import com.algorand.android.mapper.AccountSelectionMapper
-import com.algorand.android.models.Account
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AccountSelection
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
@@ -38,9 +37,8 @@ class AccountSelectionUseCase @Inject constructor(
     suspend fun getAccountFilteredByAssetId(assetId: Long): List<AccountSelection> {
         val selectedCurrencySymbol = parityUseCase.getPrimaryCurrencySymbolOrEmpty()
         val sortedAccountListItems = getSortedAccountsByPreferenceUseCase
-            .getFilteredSortedAccountListItemsByAssetIdAndAccountType(
+            .getFilteredSortedAccountListItemsByAssetIds(
                 sortingPreferences = accountSortPreferenceUseCase.getAccountSortPreference(),
-                excludedAccountTypes = listOf(Account.Type.WATCH),
                 accountFilterAssetId = assetId,
                 onLoadedAccountConfiguration = {
                     val accountValue = getAccountValueUseCase.getAccountValue(this)

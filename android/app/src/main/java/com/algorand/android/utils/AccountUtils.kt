@@ -31,7 +31,3 @@ fun getAccountImageResource(accountType: Account.Type?, isRekeyedToAnotherAccoun
         else -> R.drawable.ic_ledger_vectorized
     }
 }
-
-fun canSignTransaction(accountType: Account.Type?): Boolean {
-    return accountType != null && accountType != Account.Type.WATCH && accountType != Account.Type.REKEYED
-}

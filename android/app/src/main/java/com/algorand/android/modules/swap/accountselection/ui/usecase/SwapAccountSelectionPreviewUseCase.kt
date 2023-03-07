@@ -47,11 +47,11 @@ class SwapAccountSelectionPreviewUseCase @Inject constructor(
     }
 
     suspend fun getSwapAccountSelectionPreview(): SwapAccountSelectionPreview {
-        val accountSelectionList = accountSelectionListUseCase.createAccountSelectionListAccountItems(
-            showHoldings = false,
-            shouldIncludeWatchAccounts = false,
-            showFailedAccounts = true
-        )
+        val accountSelectionList = accountSelectionListUseCase
+            .createAccountSelectionListAccountItemsWhichCanSignTransaction(
+                showHoldings = false,
+                showFailedAccounts = true
+            )
         return swapAccountSelectionPreviewMapper.mapToSwapAccountSelectionPreview(
             accountListItems = accountSelectionList,
             isLoading = false,

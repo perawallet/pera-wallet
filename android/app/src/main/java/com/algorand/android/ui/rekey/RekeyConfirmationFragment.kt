@@ -122,8 +122,8 @@ class RekeyConfirmationFragment : TransactionBaseFragment(R.layout.fragment_reke
                 }
             }
         } else {
-            val authAccount = accountCacheManager.getAuthAccount(account)
-            setupTransferViewForLedgerToLedger(authAccount, authAddress)
+            val cachedAuthAccount = accountDetailUseCase.getAuthAccount(account?.address)?.data?.account
+            setupTransferViewForLedgerToLedger(cachedAuthAccount, authAddress)
         }
         binding.newLedgerNameTextView.text = args.rekeyAdminAddress.toShortenedAddress()
     }

@@ -180,7 +180,6 @@
     <string name="transaction_received">Transação Recebida</string>
     <string name="too_many_pin_attempts">Muitas tentativas de senha</string>
     <string name="this_ledger_device">Este dispositivo ledger pode assinar transações para as seguintes contas. Selecione as contas para adicionar à sua Pera Wallet.</string>
-    <string name="this_account_has">Esta conta foi rechaveada. Para assinar transações, recupere esta conta com uma frase senha ou dispositivo Ledger.</string>
     <string name="auth_account_address">Autenticar Endereço de Conta</string>
     <string name="rekeying_account">Rechavando Conta…</string>
     <string name="date">Data</string>

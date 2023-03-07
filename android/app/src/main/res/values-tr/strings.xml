@@ -179,7 +179,6 @@
     <string name="transaction_received">İşlem Alındı</string>
     <string name="too_many_pin_attempts">Çok fazla PIN denemesi</string>
     <string name="this_ledger_device">Bu Ledger cihazı aşağıdaki hesapların işlemlerini imzalayabilir. Pera Wallet\'a eklemek istediğiniz hesapları seçin.</string>
-    <string name="this_account_has">Bu hesap yeniden anahtarlanmış. İşlemleri imzalamak için lütfen bu hesabı bir parola veya Ledger cihazı ile kurtarın.</string>
     <string name="auth_account_address">Hesap Adresini Doğrula</string>
     <string name="rekeying_account">Hesap Yeniden Anahtarlanıyor…</string>
     <string name="date">Tarih</string>

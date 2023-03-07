@@ -40,12 +40,22 @@ data class Account constructor(
     fun getSecretKey(): ByteArray? {
         return when (detail) {
             is Detail.Standard -> detail.secretKey
+            is Detail.Rekeyed -> detail.secretKey
             else -> null // TODO may throw exception later.
         }
     }
 
     fun canSignTransaction(): Boolean {
         return type != null && type != WATCH && type != REKEYED
+    }
+
+    fun getAuthTypeAndDetail(): Detail? {
+        return when (val accountDetail = detail) {
+            is Detail.RekeyedAuth -> accountDetail.authDetail
+            is Detail.Standard -> accountDetail
+            is Detail.Ledger -> accountDetail
+            else -> null
+        }
     }
 
     // TODO Combine Detail class with Account.Type class
@@ -60,8 +70,9 @@ data class Account constructor(
             val positionInLedger: Int = 0
         ) : Detail()
 
+        // TODO: we can't keep account secret key here due to migration issue. we cannot support older version
         @Parcelize
-        object Rekeyed : Detail()
+        data class Rekeyed(val secretKey: ByteArray?) : Detail()
 
         @Parcelize
         data class RekeyedAuth(

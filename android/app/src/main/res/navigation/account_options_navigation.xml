@@ -18,6 +18,8 @@
 
     <include app:graph="@navigation/rekey_ledger_navigation" />
 
+    <include app:graph="@navigation/rekey_to_standard_account_navigation" />
+
     <include app:graph="@navigation/view_passphrase_navigation" />
 
     <include app:graph="@navigation/rename_account_navigation" />
@@ -84,6 +86,13 @@
             <argument
                 android:name="warningConfirmation"
                 app:argType="com.algorand.android.models.WarningConfirmation" />
+        </action>
+        <action
+            android:id="@+id/action_accountOptionsBottomSheet_to_rekeyToStandardAccountNavigation"
+            app:destination="@id/rekeyToStandardAccountNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
         </action>
     </dialog>
 

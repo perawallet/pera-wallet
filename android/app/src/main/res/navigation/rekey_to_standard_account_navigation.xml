@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rekeyToStandardAccountNavigation"
+    app:startDestination="@id/rekeyToStandardAccountInstructionFragment">
+
+    <action
+        android:id="@+id/action_rekeyToStandardAccountNavigation_pop"
+        app:popUpTo="@id/rekeyToStandardAccountNavigation"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/rekeyToStandardAccountInstructionFragment"
+        android:name="com.algorand.android.modules.rekey.rekeytostandardaccount.instruction.ui.RekeyToStandardAccountInstructionFragment"
+        android:label="RekeyToStandardAccountInstructionFragment"
+        tools:layout="@layout/fragment_rekey_to_standard_account_instruction">
+        <argument
+            android:name="accountAddress"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_rekeyToStandardAccountInstructionFragment_to_rekeyToAccountSelectionFragment"
+            app:destination="@id/rekeyToAccountSelectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/rekeyToAccountSelectionFragment"
+        android:name="com.algorand.android.modules.rekey.rekeytostandardaccount.accountselection.ui.RekeyToAccountSelectionFragment"
+        android:label="RekeyToAccountSelectionFragment">
+        <argument
+            android:name="accountAddress"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_rekeyToAccountSelectionFragment_to_rekeyToStandardAccountConfirmationFragment"
+            app:destination="@id/rekeyToStandardAccountConfirmationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/rekeyToStandardAccountConfirmationFragment"
+        android:name="com.algorand.android.modules.rekey.rekeytostandardaccount.confirmation.ui.RekeyToStandardAccountConfirmationFragment"
+        android:label="RekeyToStandardAccountConfirmationFragment">
+        <argument
+            android:name="accountAddress"
+            app:argType="string" />
+        <argument
+            android:name="authAccountAddress"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_rekeyToStandardAccountConfirmationFragment_to_rekeyToStandardAccountVerifyInfoFragment"
+            app:destination="@id/rekeyToStandardAccountVerifyInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/rekeyToStandardAccountVerifyInfoFragment"
+        android:name="com.algorand.android.modules.rekey.rekeytostandardaccount.resultinfo.ui.RekeyToStandardAccountVerifyInfoFragment"
+        android:label="RekeyToStandardAccountVerifyInfoFragment">
+        <argument
+            android:name="accountAddress"
+            app:argType="string" />
+        <argument
+            android:name="authAccountAddress"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

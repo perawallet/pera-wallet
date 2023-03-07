@@ -19,7 +19,6 @@ import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetAccountDetailAccountsOptionsBinding
-import com.algorand.android.models.Account
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.collectOnLifecycle
@@ -57,7 +56,8 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
         setupCopyButton()
         setupShowQrButton()
         setupAuthAddressButton()
-        setupRekeyOptionButton()
+        setupRekeyToLedgerAccountOptionButton()
+        setupRekeyToStandardAccountOptionButton()
         setupRenameAccountButton()
         setupRemoveAccountButton()
         initObservers()
@@ -74,12 +74,22 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
         )
     }
 
-    private fun setupRekeyOptionButton() {
-        val accountType = accountOptionsViewModel.getAccountType()
-        if (accountType != Account.Type.WATCH && accountType != null) {
-            binding.rekeyButton.apply {
+    private fun setupRekeyToLedgerAccountOptionButton() {
+        val canAccountSignTransaction = accountOptionsViewModel.canAccountSignTransaction()
+        if (canAccountSignTransaction) {
+            binding.rekeyToLedgerAccountButton.apply {
                 show()
-                setOnClickListener { navToRekeyAccountFragment() }
+                setOnClickListener { navToRekeyToLedgerAccountFragment() }
+            }
+        }
+    }
+
+    private fun setupRekeyToStandardAccountOptionButton() {
+        val canAccountRekeyToStandardAccount = accountOptionsViewModel.canAccountRekeyToStandardAccount()
+        if (canAccountRekeyToStandardAccount) {
+            binding.rekeyToStandardAccountButton.apply {
+                show()
+                setOnClickListener { navToRekeyToStandardAccountFragment() }
             }
         }
     }
@@ -123,8 +133,16 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
         }
     }
 
-    private fun navToRekeyAccountFragment() {
+    private fun navToRekeyToLedgerAccountFragment() {
         nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRekeyLedgerNavigation(publicKey))
+    }
+
+    private fun navToRekeyToStandardAccountFragment() {
+        nav(
+            AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRekeyToStandardAccountNavigation(
+                accountOptionsViewModel.getAccountAddress()
+            )
+        )
     }
 
     private fun navToDisconnectAccountConfirmationBottomSheet() {
@@ -149,7 +167,7 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
     }
 
     private fun setupViewPassphraseButton() {
-        if (accountOptionsViewModel.getAccountType() == Account.Type.STANDARD) {
+        if (accountOptionsViewModel.canDisplayPassphrases()) {
             binding.viewPassphraseButton.apply {
                 setOnClickListener { navToViewPassphraseBottomSheet() }
                 show()

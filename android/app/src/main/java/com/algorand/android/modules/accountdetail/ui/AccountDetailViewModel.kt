@@ -25,11 +25,13 @@ import com.algorand.android.usecase.AccountDeletionUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.getOrThrow
+import com.algorand.android.utils.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -80,8 +82,10 @@ class AccountDetailViewModel @Inject constructor(
     }
 
     fun initAccountDetailSummary() {
-        viewModelScope.launch {
-            _accountDetailSummaryFlow.emit(accountDetailUseCase.getAccountSummary(accountPublicKey))
+        viewModelScope.launchIO {
+            accountDetailUseCase.getAccountSummaryFlow(accountPublicKey).collectLatest { accountDetailSummary ->
+                _accountDetailSummaryFlow.emit(accountDetailSummary)
+            }
         }
     }
 

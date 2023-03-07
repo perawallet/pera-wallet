@@ -59,7 +59,7 @@ class AccountMigrationUnitTest {
     fun serializeAndDeserializeRekeyed() {
         val standardAccount = Account.create(
             "X2..",
-            Account.Detail.Rekeyed,
+            Account.Detail.Rekeyed(byteArrayOf(2, 3)),
             "name"
         )
         val decodedStandardAccount = gson.fromJson(gson.toJson(standardAccount), Account::class.java)

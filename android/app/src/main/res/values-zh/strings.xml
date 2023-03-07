@@ -180,7 +180,6 @@
     <string name="transaction_received">已收到交易</string>
     <string name="too_many_pin_attempts">密码输入次数过于频繁</string>
     <string name="this_ledger_device">该Ledger设备可为下列账户签署交易。请选择要添加到您Pera钱包的账户。</string>
-    <string name="this_account_has">账户密钥已更新。如需签署交易，请通过助记词或Ledger设备恢复本账户。</string>
     <string name="auth_account_address">授权账户地址</string>
     <string name="rekeying_account">账户密钥更新…</string>
     <string name="date">日期</string>

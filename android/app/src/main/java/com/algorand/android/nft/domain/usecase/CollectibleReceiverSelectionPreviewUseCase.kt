@@ -110,7 +110,6 @@ class CollectibleReceiverSelectionPreviewUseCase @Inject constructor(
     private fun createAccountItems(query: String) = flow {
         val accountListItems = accountSelectionListUseCase.createAccountSelectionListAccountItems(
             showHoldings = false,
-            shouldIncludeWatchAccounts = true,
             showFailedAccounts = true
         ).filter { it.displayName.contains(query, true) || it.publicKey.contains(query, true) }
         emit(accountListItems)

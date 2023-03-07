@@ -24,6 +24,7 @@ import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.NotificationType
 import com.algorand.android.models.User
 import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
+import com.algorand.android.usecase.AccountDetailUseCase
 
 const val SELECTED_ACCOUNT_KEY = "selectedAccountKey"
 const val SELECTED_ASSET_ID_KEY = "selectedAssetIdKey"
@@ -34,11 +35,11 @@ const val WC_TRANSACTION_ID_INTENT_KEY = "wcTransactionId"
 private const val NO_VALUE = -1L
 
 private fun NavController.handleSelectedAssetNavigation(
-    accountCacheManager: AccountCacheManager,
-    selectedAccountKey: String,
+    accountDetailUseCase: AccountDetailUseCase,
+    selectedAccountAddress: String,
     selectedAssetId: Long
 ) {
-    val selectedAccountCacheData = accountCacheManager.getCacheData(selectedAccountKey)
+    val selectedAccountCacheData = accountDetailUseCase.getCachedAccountDetail(selectedAccountAddress)?.data
     if (selectedAccountCacheData != null) {
         navigateSafe(
             HomeNavigationDirections.actionGlobalAssetProfileNavigation(
@@ -114,26 +115,9 @@ fun NavController.handleDeeplink(
     }
 }
 
-fun NavController.handleIntent(
-    intentToHandle: Intent,
-    accountCacheManager: AccountCacheManager,
-    onWalletConnectResult: (String) -> Unit,
-    onIntentHandlingFailed: (Int) -> Unit
-): Boolean {
-    with(intentToHandle) {
-        return when {
-            dataString != null -> {
-                val decodedDeeplink = decodeDeeplink(dataString) ?: return false
-                handleDeeplink(decodedDeeplink, accountCacheManager, onWalletConnectResult)
-            }
-            else -> handleIntentWithBundle(this, accountCacheManager, onIntentHandlingFailed)
-        }
-    }
-}
-
 fun NavController.handleIntentWithBundle(
     intentToHandle: Intent,
-    accountCacheManager: AccountCacheManager,
+    accountDetailUseCase: AccountDetailUseCase,
     onIntentHandlingFailed: (Int) -> Unit
 ): Boolean {
     with(intentToHandle) {
@@ -150,7 +134,7 @@ fun NavController.handleIntentWithBundle(
         }
 
         if (!selectedPublicKeyToOpen.isNullOrBlank() && selectedAssetToOpen != NO_VALUE) {
-            handleSelectedAssetNavigation(accountCacheManager, selectedPublicKeyToOpen, selectedAssetToOpen)
+            handleSelectedAssetNavigation(accountDetailUseCase, selectedPublicKeyToOpen, selectedAssetToOpen)
             return true
         }
 
@@ -163,11 +147,11 @@ fun NavController.handleIntentWithBundle(
                 publicKey = assetSupportRequestedPublicKey,
                 asset = assetSupportRequestedAsset
             )
-            val accountType = accountCacheManager.getCacheData(assetSupportRequestedPublicKey)?.account?.type
-            val isAccountExist = accountCacheManager.getCacheData(assetSupportRequestedPublicKey) != null
+            val isAccountExist = accountDetailUseCase.getCachedAccountDetail(assetSupportRequestedPublicKey) != null
+            val canSignTransaction = accountDetailUseCase.canAccountSignTransaction(assetSupportRequestedPublicKey)
             when {
                 !isAccountExist -> onIntentHandlingFailed.invoke(R.string.you_cannot_take)
-                !canSignTransaction(accountType) -> onIntentHandlingFailed.invoke(R.string.you_cannot_optin)
+                !canSignTransaction -> onIntentHandlingFailed.invoke(R.string.you_cannot_optin)
                 else -> {
                     navigateSafe(
                         HomeNavigationDirections.actionGlobalAssetAdditionActionNavigation(assetAction)

@@ -180,7 +180,6 @@
     <string name="transaction_received">트랜잭션 수신 완료</string>
     <string name="too_many_pin_attempts">PIN 입력을 너무 많이 시도하셨습니다</string>
     <string name="this_ledger_device">이 Ledger 기기는 다음 계정의 트랜잭션에 서명 가능합니다. Pera Wallet에 추가할 계정을 선택하세요.</string>
-    <string name="this_account_has">계정의 키가 재지정되었습니다. 트랜잭션에 서명하려면 비밀문구나 Ledger 기기로 계정을 복구해 주세요.</string>
     <string name="auth_account_address">계정 주소 인증</string>
     <string name="rekeying_account">계정 키 재지정 중…</string>
     <string name="date">날짜</string>

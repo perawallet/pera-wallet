@@ -25,11 +25,13 @@ import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.customviews.LedgerLoadingDialog
 import com.algorand.android.models.Account
+import com.algorand.android.models.Account.Type.LEDGER
+import com.algorand.android.models.Account.Type.REKEYED_AUTH
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
 import com.algorand.android.models.TransactionManagerResult
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.BLE_OPEN_REQUEST_CODE
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LOCATION_PERMISSION_REQUEST_CODE
@@ -50,7 +52,7 @@ abstract class TransactionBaseFragment(
     lateinit var transactionManager: TransactionManager
 
     @Inject
-    lateinit var accountCacheManager: AccountCacheManager
+    lateinit var accountDetailUseCase: AccountDetailUseCase
 
     // TODO: 13.06.2022 Remove bleWaitingTransactionData and use a list instance for both txn type
     private var bleWaitingTransactionData: TransactionData? = null
@@ -168,25 +170,28 @@ abstract class TransactionBaseFragment(
     }
 
     fun sendTransaction(transactionData: TransactionData) {
-
-        when (transactionData.senderAccountType) {
-            Account.Type.LEDGER, Account.Type.REKEYED, Account.Type.REKEYED_AUTH -> {
-                if (isBluetoothEnabled().not()) {
-                    bleWaitingTransactionData = transactionData
-                    return
-                }
-            }
-            else -> {
-                sendErrorLog("Unhandled else case in TransactionBaseFragment.sendTransaction")
+        val isLedgerNeeded = with(transactionData.senderAccountType) { this == LEDGER || this == REKEYED_AUTH }
+        if (isLedgerNeeded) {
+            if (isBluetoothEnabled().not()) {
+                bleWaitingTransactionData = transactionData
+                return
             }
         }
-        transactionManager.initSigningTransactions(false, transactionData)
+
+        val canSenderAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(
+            publicKey = transactionData.senderAccountAddress
+        )
+        if (canSenderAccountSignTransaction) {
+            transactionManager.initSigningTransactions(false, transactionData)
+        } else {
+            sendErrorLog("${this::class.simpleName} Not eligible accounts tried to sign transaction")
+        }
     }
 
     fun sendGroupTransaction(transactionDataList: List<TransactionData>) {
         if (transactionDataList.all {
                 with(it.senderAccountType) {
-                    this == Account.Type.LEDGER || this == Account.Type.REKEYED || this == Account.Type.REKEYED_AUTH
+                    this == LEDGER || this == Account.Type.REKEYED || this == REKEYED_AUTH
                 }
             }
         ) {

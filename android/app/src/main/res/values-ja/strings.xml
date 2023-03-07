@@ -181,7 +181,6 @@
     <string name="transaction_received">トランザクションを受信</string>
     <string name="too_many_pin_attempts">PINの試行回数が多すぎます</string>
     <string name="this_ledger_device">接続されたLedgerデバイスは、以下のアカウントのトランザクションに署名できます。Pera Walletに追加するアカウントを選択してください。</string>
-    <string name="this_account_has">このアカウントは再キー化されました。トランザクションに署名するには、パスフレーズまたはLedgerデバイスでこのアカウントをリカバリーしてください。</string>
     <string name="auth_account_address">Authアカウントアドレス</string>
     <string name="rekeying_account">アカウントの再キー化中…</string>
     <string name="date">日付</string>

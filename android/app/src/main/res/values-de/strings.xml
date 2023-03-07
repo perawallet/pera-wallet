@@ -180,7 +180,6 @@
     <string name="transaction_received">Transaktion erhalten</string>
     <string name="too_many_pin_attempts">Zu viele Versuche</string>
     <string name="this_ledger_device">Dieses Ledger-Gerät kann für folgende Konten Transaktionen signieren. Wählen Sie die Konten, die Sie Ihrer Pera Wallet hinzufügen möchten.</string>
-    <string name="this_account_has">Das Rekeying für dieses Konto wurde abgeschlossen. Bitte stellen Sie dieses Konto mit einer Passphrase oder einem Ledger-Gerät wieder her, um Transaktionen zu signieren.</string>
     <string name="auth_account_address">Adresse des authentifizierten Kontos</string>
     <string name="rekeying_account">Konto-Rekeying läuft …</string>
     <string name="date">Datum</string>

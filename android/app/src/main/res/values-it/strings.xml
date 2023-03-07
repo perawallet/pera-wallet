@@ -182,7 +182,6 @@ amountPlaceholder</annotation> Algo.</string>
     <string name="transaction_received">Transazione ricevuta</string>
     <string name="too_many_pin_attempts">Troppi tentativi di PIN</string>
     <string name="this_ledger_device">Questo dispositivo Ledger può firmare transazioni per i seguenti conti. Seleziona i conti da aggiungere al tuo Pera Wallet.</string>
-    <string name="this_account_has">Questo conto è stato ricodificato. Per firmare le transazioni, recupera questo conto con una passphrase o un dispositivo Ledger.</string>
     <string name="auth_account_address">Indirizzo account di autenticazione</string>
     <string name="rekeying_account">Ricodifica del conto in corso …</string>
     <string name="date">Data</string>

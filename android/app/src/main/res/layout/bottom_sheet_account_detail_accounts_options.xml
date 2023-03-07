@@ -105,11 +105,21 @@
             tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/rekeyButton"
+            android:id="@+id/rekeyToLedgerAccountButton"
             style="@style/Button.Text.Options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/rekey_account"
+            android:text="@string/rekey_to_ledger_account"
+            android:visibility="gone"
+            app:icon="@drawable/ic_rekey"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/rekeyToStandardAccountButton"
+            style="@style/Button.Text.Options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rekey_to_standard_account"
             android:visibility="gone"
             app:icon="@drawable/ic_rekey"
             tools:visibility="visible" />

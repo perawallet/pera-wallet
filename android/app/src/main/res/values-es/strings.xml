@@ -180,7 +180,6 @@
     <string name="transaction_received">Transacción recibida</string>
     <string name="too_many_pin_attempts">Demasiados intentos para cargar el PIN</string>
     <string name="this_ledger_device">Este dispositivo Ledger puede firmar transacciones para las siguientes cuentas. Selecciona las cuentas que quieres agregar a Pera Wallet.</string>
-    <string name="this_account_has">Esta cuenta cambió su clave. Para poder firmar transacciones, recupera esta cuenta con la frase secreta o un dispositivo Ledger.</string>
     <string name="auth_account_address">Autorizar dirección de la cuenta</string>
     <string name="rekeying_account">Cambiando la clave de la cuenta…</string>
     <string name="date">Fecha</string>

@@ -21,9 +21,8 @@ class MoonpayAccountSelectionPreviewUseCase @Inject constructor(
 ) {
 
     suspend fun getMoonpayAccountSelectionPreview(): List<BaseAccountSelectionListItem> {
-        return accountSelectionListUseCase.createAccountSelectionListAccountItems(
+        return accountSelectionListUseCase.createAccountSelectionListAccountItemsWhichCanSignTransaction(
             showHoldings = true,
-            shouldIncludeWatchAccounts = false,
             showFailedAccounts = false
         )
     }

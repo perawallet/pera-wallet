@@ -40,16 +40,25 @@ class AccountOptionsUseCase @Inject constructor(
         return accountDetailUseCase.getAuthAddress(publicKey)
     }
 
-    fun getAccountType(publicKey: String): Account.Type? {
-        return accountDetailUseCase.getAccountType(publicKey)
+    fun canDisplayPassphrases(publicKey: String): Boolean {
+        val secretKey = accountDetailUseCase.getCachedAccountDetail(publicKey)?.data?.account?.getSecretKey()
+        return secretKey != null
     }
 
     fun getAccountName(publicKey: String): String {
         return accountDetailUseCase.getAccountName(publicKey)
     }
 
+    fun canAccountSignTransaction(accountAddress: String): Boolean {
+        return accountDetailUseCase.canAccountSignTransaction(accountAddress)
+    }
+
+    fun canAccountRekeyToStandardAccount(accountAddress: String): Boolean {
+        return accountDetailUseCase.getAccountType(accountAddress) == Account.Type.STANDARD
+    }
+
     fun getRemovingAccountWarningConfirmationModel(publicKey: String): WarningConfirmation {
-        val descriptionRes = when (getAccountType(publicKey)) {
+        val descriptionRes = when (accountDetailUseCase.getAccountType(publicKey)) {
             Account.Type.STANDARD, Account.Type.LEDGER, Account.Type.REKEYED, Account.Type.REKEYED_AUTH -> {
                 R.string.you_are_about_to_remove_main_account
             }

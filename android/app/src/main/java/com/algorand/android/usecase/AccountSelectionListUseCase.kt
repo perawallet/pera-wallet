@@ -12,6 +12,7 @@
 
 package com.algorand.android.usecase
 
+import com.algorand.android.models.Account
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.modules.nftdomain.ui.usecase.GetAccountSelectionNftDomainItemsUseCase
 import javax.inject.Inject
@@ -24,26 +25,46 @@ class AccountSelectionListUseCase @Inject constructor(
 ) {
     suspend fun createAccountSelectionListAccountItems(
         showHoldings: Boolean,
-        shouldIncludeWatchAccounts: Boolean,
         showFailedAccounts: Boolean
     ): List<BaseAccountSelectionListItem.BaseAccountItem> {
         return getAccountSelectionAccountsItemUseCase.getAccountSelectionAccounts(
             showHoldings = showHoldings,
-            shouldIncludeWatchAccounts = shouldIncludeWatchAccounts,
             showFailedAccounts = showFailedAccounts,
+        )
+    }
+
+    suspend fun createAccountSelectionListAccountItemsWhichCanSignTransaction(
+        showHoldings: Boolean,
+        showFailedAccounts: Boolean,
+        excludedAccountTypes: List<Account.Type>? = null
+    ): List<BaseAccountSelectionListItem.BaseAccountItem> {
+        return getAccountSelectionAccountsItemUseCase.getAccountSelectionAccountsWhichCanSignTransaction(
+            showHoldings = showHoldings,
+            showFailedAccounts = showFailedAccounts,
+            excludedAccountTypes = excludedAccountTypes
         )
     }
 
     suspend fun createAccountSelectionListAccountItemsFilteredByAssetId(
         assetId: Long,
         showHoldings: Boolean,
-        shouldIncludeWatchAccounts: Boolean,
         showFailedAccounts: Boolean
     ): List<BaseAccountSelectionListItem.BaseAccountItem> {
         return getAccountSelectionAccountsItemUseCase.getAccountSelectionAccounts(
             assetId = assetId,
             showHoldings = showHoldings,
-            shouldIncludeWatchAccounts = shouldIncludeWatchAccounts,
+            showFailedAccounts = showFailedAccounts,
+        )
+    }
+
+    suspend fun createAccountSelectionListAccountItemsFilteredByAssetIdWhichCanSignTransaction(
+        assetId: Long,
+        showHoldings: Boolean,
+        showFailedAccounts: Boolean
+    ): List<BaseAccountSelectionListItem.BaseAccountItem> {
+        return getAccountSelectionAccountsItemUseCase.getAccountSelectionAccountsWhichCanSignTransaction(
+            assetId = assetId,
+            showHoldings = showHoldings,
             showFailedAccounts = showFailedAccounts,
         )
     }

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/rekeyInstructionScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="true"
+        android:paddingBottom="@dimen/bottom_fade_gradient_height">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/bottom_padding_for_screen_with_floating_button"
+            tools:context=".ui.rekey.RekeyInstructionFragment">
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:textAppearance="@style/TextAppearance.Title.Sans.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xxxsmall"
+                android:text="@string/rekey_account"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/descriptionTextView"
+                android:textAppearance="@style/TextAppearance.Description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleTextView"
+                tools:text="@string/replace_your_account" />
+
+            <TextView
+                android:id="@+id/subtitleTextView"
+                android:textAppearance="@style/TextAppearance.Body.Large.Sans.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:text="@string/what_to_expect"
+                app:layout_constraintBottom_toTopOf="@id/firstExpectationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+                app:layout_constraintVertical_bias="0.2"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <ImageView
+                android:id="@+id/firstExpectationImageView"
+                style="@style/InstructionStepIndicator"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                app:layout_constraintBottom_toBottomOf="@id/firstExpectationTextView"
+                app:layout_constraintEnd_toStartOf="@id/firstExpectationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/firstExpectationTextView" />
+
+            <TextView
+                android:id="@+id/firstExpectationTextView"
+                android:textAppearance="@style/TextAppearance.Body.Sans"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:layout_marginEnd="@dimen/spacing_xlarge"
+                android:text="@string/future_transactions_will_be"
+                app:layout_constraintBottom_toTopOf="@id/secondExpectationTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/firstExpectationImageView"
+                app:layout_constraintTop_toBottomOf="@id/subtitleTextView" />
+
+            <ImageView
+                android:id="@+id/secondExpectationImageView"
+                style="@style/InstructionStepIndicator"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                app:layout_constraintBottom_toBottomOf="@id/secondExpectationTextView"
+                app:layout_constraintEnd_toStartOf="@id/secondExpectationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/secondExpectationTextView" />
+
+            <TextView
+                android:id="@+id/secondExpectationTextView"
+                android:textAppearance="@style/TextAppearance.Body.Sans"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:layout_marginEnd="@dimen/spacing_xlarge"
+                app:layout_constraintBottom_toTopOf="@id/thirdExpectationTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/secondExpectationImageView"
+                app:layout_constraintTop_toBottomOf="@id/firstExpectationTextView"
+                tools:text="@string/your_old_ledger" />
+
+            <ImageView
+                android:id="@+id/thirdExpectationImageView"
+                style="@style/InstructionStepIndicator"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                app:layout_constraintBottom_toBottomOf="@id/thirdExpectationTextView"
+                app:layout_constraintEnd_toStartOf="@id/thirdExpectationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/thirdExpectationTextView" />
+
+            <TextView
+                android:id="@+id/thirdExpectationTextView"
+                android:textAppearance="@style/TextAppearance.Body.Sans"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:layout_marginEnd="@dimen/spacing_xlarge"
+                android:text="@string/your_account_s_public"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/thirdExpectationImageView"
+                app:layout_constraintTop_toBottomOf="@id/secondExpectationTextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <View
+        android:id="@+id/bottomGradientView"
+        style="@style/BottomFadeGradient"
+        android:layout_gravity="bottom" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/processButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        android:text="@string/start_process" />
+
+</FrameLayout>

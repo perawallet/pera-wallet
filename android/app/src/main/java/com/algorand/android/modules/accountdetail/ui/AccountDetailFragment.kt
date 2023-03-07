@@ -300,12 +300,6 @@ class AccountDetailFragment :
     }
 
     private fun initAccountDetailSummary(accountDetailSummary: AccountDetailSummary) {
-        with(binding) {
-            configureToolbar(accountDetailSummary)
-        }
-    }
-
-    fun configureToolbar(accountDetailSummary: AccountDetailSummary) {
         binding.toolbar.apply {
             configure(toolbarConfiguration)
             configureToolbarName(accountDetailSummary)

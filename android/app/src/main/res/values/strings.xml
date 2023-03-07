@@ -64,7 +64,7 @@
     <string name="show_rewards">Show Rewards</string>
     <string name="max">Max</string>
     <string name="max_all_caps">MAX</string>
-    <string name="you_earn_rewards_just">You earn rewards just by owning Algo! Here’s a summary of your rewards activity since your last transaction. These rewards are always included in your balance.</string>
+    <string name="you_earn_rewards_just">You earn rewards just by owning Algo! Here\'s a summary of your rewards activity since your last transaction. These rewards are always included in your balance.</string>
     <string name="for_more_information">For more information on Algorand\nRewards, visit our <annotation custom="faq_color"><annotation type="bold">FAQ</annotation></annotation></string>
     <string name="reward">Reward</string>
     <string name="notifications">Notifications</string>
@@ -111,17 +111,17 @@
     <string name="ledger_approval">Ledger Approval</string>
     <string name="please_make_sure">Please make sure to confirm the transaction on your Ledger device <annotation replacement="ledger_name">ledgerNamePlaceholder</annotation> </string>
     <string name="ledger_info_power_first_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <annotation type="bold"><annotation type="color">Bluetooth Connection Guide.</annotation></annotation></annotation>
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">For general usage of your Ledger\'s Bluetooth feature, please refer to Ledger\'s official <annotation type="bold"><annotation type="color">Bluetooth Connection Guide.</annotation></annotation></annotation>
   </string>
     <string name="ledger_info_power_second_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">For more advanced troubleshooting, please refer to Ledger’s official <annotation type="bold"><annotation type="color">Bluetooth Troubleshooting Guide.</annotation></annotation></annotation>
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">For more advanced troubleshooting, please refer to Ledger\'s official <annotation type="bold"><annotation type="color">Bluetooth Troubleshooting Guide.</annotation></annotation></annotation>
   </string>
     <string name="ledger_info_ledger_first_paragraph">
-    <annotation url="https://www.ledger.com/start">Begin by following Ledger’s comprehensive <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> tutorial.</annotation>
+    <annotation url="https://www.ledger.com/start">Begin by following Ledger\'s comprehensive <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> tutorial.</annotation>
   </string>
     <string name="ledger_info_ledger_second_paragraph">When the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.</string>
-    <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Continue with Ledger’s <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> tutorial, which will direct you how to install and open apps on your ledger device.</annotation></string>
-    <string name="ledger_info_algorand_second_paragraph">If you haven’t already installed the <annotation type="bold">Algorand</annotation> app on your Ledger device, when the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type Algorand in the search bar and install.</string>
+    <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Continue with Ledger\'s <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> tutorial, which will direct you how to install and open apps on your ledger device.</annotation></string>
+    <string name="ledger_info_algorand_second_paragraph">If you haven\'t already installed the <annotation type="bold">Algorand</annotation> app on your Ledger device, when the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type Algorand in the search bar and install.</string>
     <string name="error_connection_title">Connection Error</string>
     <string name="error_connection_message">Could not connect to the Ledger device. Make sure the device is unlocked, nearby and has bluetooth enabled.</string>
     <string name="error_app_closed_title">Ledger Connection Error</string>
@@ -175,18 +175,18 @@
     <string name="your_recent_transactions">Your recent transactions, asset requests and other notifications will appear here</string>
     <string name="to_opt_out_from_an_asset">To opt-out from an asset, you must first transfer any remaining balance to another account.</string>
     <string name="connect_to_internet">Connect to the Internet</string>
-    <string name="we_couldn_t_reach">We couldn’t reach the server, make sure you are connected to the internet</string>
+    <string name="we_couldn_t_reach">We couldn\'t reach the server, make sure you are connected to the internet</string>
     <string name="add_note">Add Note</string>
     <string name="try_again_in">Try again in</string>
     <string name="rekey_account">Rekey Account</string>
     <string name="start_process">Start Process</string>
     <string name="replace_your_account">Replace your account ledger with a new Ledger Device</string>
-    <string name="replace_your_accounts">Replace your account’s passphrase with a Ledger Device.</string>
+    <string name="replace_your_accounts">Replace your account\'s passphrase with a Ledger Device.</string>
     <string name="what_to_expect">What to expect</string>
     <string name="future_transactions_will_be">Future transactions will be signed by your new Ledger Device.</string>
     <string name="this_account">This account\'s passphrase will no longer function for this account.</string>
     <string name="your_old_ledger">Your old Ledger device will no longer function for this account.</string>
-    <string name="your_account_s_public">Your account’s public key, balances, and configuration will not change.</string>
+    <string name="your_account_s_public">Your account\'s public key, balances, and configuration will not change.</string>
     <string name="add_account">Add Account</string>
     <string name="confirm_rekeying">Confirm Rekeying</string>
     <string name="total_rekeying_fee">Total Rekeying fee of %1$s Algo</string>
@@ -203,7 +203,6 @@
     <string name="pera_app_is_locked">Pera Wallet app is locked</string>
     <string name="too_many_pin_attempts">Too many PIN attempts</string>
     <string name="this_ledger_device">This ledger device can sign transactions for the following accounts. Select the accounts to add to your Pera Wallet.</string>
-    <string name="this_account_has">This account has been rekeyed. In order to sign transactions, please recover this account with a passphrase or Ledger device.</string>
     <string name="auth_account_address">Auth Account Address</string>
     <string name="rekeying_account">Rekeying Account…</string>
     <string name="date">Date</string>
@@ -253,7 +252,7 @@
         <item quantity="other">+%1$d Assets</item>
     </plurals>
     <string name="continue_text">Continue</string>
-    <string name="when_sending_to_an_address">When sending to an address for the first time, it’s useful to send a small test transaction before sending a large amount.</string>
+    <string name="when_sending_to_an_address">When sending to an address for the first time, it\'s useful to send a small test transaction before sending a large amount.</string>
     <string name="exchanges_change_their">Exchanges change their deposit addresses frequently, and saved exchange addresses may no longer be in use. <annotation custom="highlight_color">Ensure you\'re sending to the correct address.</annotation></string>
     <string name="for_more_information_on">For more information on transacting, <annotation font="dmsans_medium"><annotation custom="tap_here_color">tap here</annotation></annotation></string>
     <string name="i_understand">I Understand</string>
@@ -439,7 +438,7 @@
     <string name="on_the_ledger_home_screen">On the Ledger home screen, confirm pairing.</string>
     <string name="pairing_failed">Pairing failed!</string>
     <string name="having_ledger_nano_x">Having Ledger Nano X connection issues?</string>
-    <string name="make_sure_the_device_is">Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.</string>
+    <string name="make_sure_the_device_is">Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone\'s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.</string>
     <string name="become_a_governor">Become a governor.\nVote on Algorand\'s future.\nEarn rewards.</string>
     <string name="the_registration_window_for">The registration window for Governance Period #2 is Dec 25 to Jan 7, 16:00 UTC</string>
     <string name="connection_failed">Connection failed</string>
@@ -742,7 +741,7 @@
 
     <string name="asa_verification">ASA Verification</string>
     <string name="pera_wallet_s_algorand">Pera Wallet\'s Algorand Standard Asset (ASA) Verification Program allows ASA creators to get <annotation type="bold">automatically</annotation> verified by validating that they are the owners of the asset.</string>
-    <string name="the_main_purpose">The main purpose of ASA Verification is to <annotation type="bold">prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.</annotation></string>
+    <string name="the_main_purpose">The main purpose of ASA Verification is to <annotation type="bold">prevent an ASA from pretending to be affiliated with and acting as the token for a project it\'s not connected to.</annotation></string>
     <string name="asa_verification_is"><annotation type="bold">ASA Verification is not an endorsement of the project.</annotation> Neither Algorand nor Pera would ever use the verification process to endorse a project.</string>
 
     <plurals name="count_inner_txns">
@@ -1034,6 +1033,13 @@
     <string name="get_help">Get Help</string>
 
     <string name="couldn_t_retrieve">Couldn\'t retrieve account details, please try again</string>
+    <string name="rekey_to_ledger_account">Rekey to Ledger Account</string>
+    <string name="rekey_to_standard_account">Rekey to Standard Account</string>
+    <string name="protect_your_account_by_delegating">Protect your account by delegating signatures to another account</string>
+    <string name="future_transactions_can_only">Future transactions can only be signed by the delegated account.</string>
+    <string name="this_account_will_no_longer">This account will no longer be able to sign transactions.</string>
+    <string name="your_account_s_public_key">Your account\'s public key, balances, and configuration will not change.</string>
 
     <string name="invalid_url">Invalid Url</string>
+    <string name="the_signing_account_has">The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.</string>
 </resources>

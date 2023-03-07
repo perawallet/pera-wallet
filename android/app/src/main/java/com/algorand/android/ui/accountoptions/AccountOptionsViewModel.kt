@@ -12,18 +12,17 @@
 
 package com.algorand.android.ui.accountoptions
 
-import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.database.NotificationFilterDao
-import com.algorand.android.models.Account
 import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.usecase.AccountDeletionUseCase
 import com.algorand.android.usecase.AccountOptionsUseCase
 import com.algorand.android.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -76,8 +75,8 @@ class AccountOptionsViewModel @Inject constructor(
         return publicKey
     }
 
-    fun getAccountType(): Account.Type? {
-        return accountOptionsUseCase.getAccountType(publicKey)
+    fun canDisplayPassphrases(): Boolean {
+        return accountOptionsUseCase.canDisplayPassphrases(publicKey)
     }
 
     fun getAccountName(): String {
@@ -92,6 +91,14 @@ class AccountOptionsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             accountDeletionUseCase.removeAccount(address)
         }
+    }
+
+    fun canAccountSignTransaction(): Boolean {
+        return accountOptionsUseCase.canAccountSignTransaction(publicKey)
+    }
+
+    fun canAccountRekeyToStandardAccount(): Boolean {
+        return accountOptionsUseCase.canAccountRekeyToStandardAccount(publicKey)
     }
 
     companion object {
