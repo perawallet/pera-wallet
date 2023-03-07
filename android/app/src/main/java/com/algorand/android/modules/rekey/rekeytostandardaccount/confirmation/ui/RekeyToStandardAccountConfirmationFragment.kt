@@ -23,6 +23,7 @@ import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -77,7 +78,12 @@ class RekeyToStandardAccountConfirmationFragment : TransactionBaseFragment(
     }
 
     private val newAccountTypeIconResourceCollector: suspend (AccountIconResource) -> Unit = { newAccountIconRes ->
-        binding.newAccountTypeImageView.setImageResource(newAccountIconRes.iconResId)
+        val accountIconDrawable = AccountIconDrawable.create(
+            context = binding.root.context,
+            accountIconResource = newAccountIconRes,
+            size = resources.getDimension(R.dimen.account_icon_size_large).toInt()
+        )
+        binding.newAccountTypeImageView.setImageDrawable(accountIconDrawable)
     }
 
     private val newAccountTitleTextResIdCollector: suspend (Int) -> Unit = { newAccountTitleRes ->

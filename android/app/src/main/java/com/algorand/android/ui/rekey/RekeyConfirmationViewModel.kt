@@ -81,12 +81,15 @@ class RekeyConfirmationViewModel @Inject constructor(
                             ),
                             accountName = accountName
                         )
+                        transactionResourceLiveData.postValue(Event(Resource.Success(Any())))
+                        // TODO: There is a bug which solved in per-3138.
+                        //  For the further context, you can take a look at PR description
+                        //  https://github.com/Hipo/algorand-android/pull/1897
                         accountAdditionUseCase.addNewAccount(
                             tempAccount = authAccount,
                             creationType = CreationType.REKEYED
                         )
                     }
-                    transactionResourceLiveData.postValue(Event(Resource.Success(Any())))
                 },
                 onFailed = { exception, _ ->
                     transactionResourceLiveData.postValue(Event(Resource.Error.Api(exception)))
