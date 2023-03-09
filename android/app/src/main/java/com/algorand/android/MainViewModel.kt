@@ -17,7 +17,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
-import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.database.NodeDao
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdMigrationUseCase
@@ -27,10 +26,8 @@ import com.algorand.android.models.Node
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
 import com.algorand.android.modules.appopencount.domain.usecase.IncreaseAppOpeningCountUseCase
-import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
 import com.algorand.android.modules.autolockmanager.ui.usecase.AutoLockManagerUseCase
 import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
-import com.algorand.android.modules.fetchnameservices.domain.usecase.UpdateLocalAccountNameServicesUseCase
 import com.algorand.android.modules.swap.utils.SwapNavigationDestinationHelper
 import com.algorand.android.modules.tracking.main.MainActivityEventTracker
 import com.algorand.android.modules.tutorialdialog.domain.usecase.TutorialUseCase
@@ -40,7 +37,6 @@ import com.algorand.android.network.MobileHeaderInterceptor
 import com.algorand.android.repository.NodeRepository
 import com.algorand.android.usecase.AccountCacheStatusUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.usecase.EncryptedPinUseCase
 import com.algorand.android.usecase.SendSignedTransactionUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.AssetName
@@ -66,7 +62,6 @@ import kotlinx.coroutines.launch
 @Suppress("LongParameterList")
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val autoLockManager: AutoLockManager,
     private val sharedPref: SharedPreferences,
     private val nodeDao: NodeDao,
     private val indexerInterceptor: IndexerInterceptor,
@@ -80,11 +75,8 @@ class MainViewModel @Inject constructor(
     private val tutorialUseCase: TutorialUseCase,
     private val swapNavigationDestinationHelper: SwapNavigationDestinationHelper,
     private val sendSignedTransactionUseCase: SendSignedTransactionUseCase,
-    private val encryptedPinUseCase: EncryptedPinUseCase,
-    private val accountManager: AccountManager,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val accountDetailCacheManager: AccountDetailCacheManager,
-    private val updateLocalAccountNameServicesUseCase: UpdateLocalAccountNameServicesUseCase,
     private val nodeRepository: NodeRepository,
     accountCacheStatusUseCase: AccountCacheStatusUseCase,
     private val autoLockManagerUseCase: AutoLockManagerUseCase
@@ -113,7 +105,6 @@ class MainViewModel @Inject constructor(
         initializeAccountCacheManager()
         initializeNodeInterceptor()
         initializeTutorial()
-        updateLocalAccountNameServices()
     }
 
     fun shouldAppLocked(): Boolean {
@@ -142,7 +133,6 @@ class MainViewModel @Inject constructor(
 
     fun onNewNodeActivated() {
         resetBlockPolling()
-        updateLocalAccountNameServices()
     }
 
     /**
@@ -300,12 +290,6 @@ class MainViewModel @Inject constructor(
             assetName = AssetName.create(assetName),
             assetId = transaction.assetInformation.assetId
         )
-    }
-
-    private fun updateLocalAccountNameServices() {
-        viewModelScope.launch(Dispatchers.IO) {
-            updateLocalAccountNameServicesUseCase.invoke()
-        }
     }
 
     private fun initActiveNodeFlow() {

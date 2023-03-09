@@ -26,6 +26,13 @@ import com.algorand.android.models.TransactionParams
 import java.io.ByteArrayOutputStream
 import java.math.BigInteger
 
+const val ENCRYPTION_SEPARATOR_CHAR = ","
+const val SDK_RESULT_SUCCESS = 0L
+const val SDK_RESULT_ERROR_INVALID_SECRET_KEY = 1L
+const val SDK_RESULT_ERROR_RANDOM_GENERATOR_ERROR_KEY = 2L
+const val SDK_RESULT_ERROR_INVALID_ENCRYPTED_DATA_LENGTH_KEY = 3L
+const val SDK_RESULT_ERROR_DECRYPTION_ERROR_LENGTH_KEY = 4L
+
 fun ByteArray.signTx(secretKey: ByteArray): ByteArray {
     return Mobile.signTransaction(secretKey, this)
 }

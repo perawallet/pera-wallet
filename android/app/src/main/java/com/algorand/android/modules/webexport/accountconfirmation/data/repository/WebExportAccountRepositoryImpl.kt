@@ -15,7 +15,7 @@ package com.algorand.android.modules.webexport.accountconfirmation.data.reposito
 import com.algorand.android.models.Result
 import com.algorand.android.modules.webexport.accountconfirmation.data.mapper.ExportBackupResponseDTOMapper
 import com.algorand.android.modules.webexport.accountconfirmation.domain.repository.WebExportAccountRepository
-import com.algorand.android.modules.webexport.model.WebBackupRequestBody
+import com.algorand.android.modules.webexport.common.data.model.WebBackupRequestBody
 import com.algorand.android.modules.webexport.accountconfirmation.domain.model.ExportBackupResponseDTO
 import com.algorand.android.network.MobileAlgorandApi
 import com.algorand.android.network.requestWithHipoErrorHandler

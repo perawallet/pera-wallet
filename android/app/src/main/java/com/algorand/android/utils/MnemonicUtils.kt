@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.buildSpannedString
 import com.algorand.android.R
+import com.algorand.android.utils.fonts.PeraFontResource
 
 private const val MAX_PASSPHRASE_ON_COLUMN = 13
 private const val PASSPHRASE_WORD_COUNT = 25
@@ -41,7 +42,7 @@ private fun TextView.setupPassphraseColumn(range: IntRange, passphraseWords: Lis
     val positionTextColor = ContextCompat.getColor(context, R.color.secondary_text_color)
     text = buildSpannedString {
         val textSize = context.resources.getDimensionPixelSize(R.dimen.text_size_13)
-        val font = context.resources.getIdentifier("dmmono_medium", "font", context.packageName)
+        val font = PeraFontResource.DmMono.Medium.getFont(context)
         val fontTypeface = ResourcesCompat.getFont(context, font)
         for (position in range) {
             val currentPassphraseWord = passphraseWords[position - 1]

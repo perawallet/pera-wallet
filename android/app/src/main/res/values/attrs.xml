@@ -16,6 +16,9 @@
     <attr name="defaultTintColor" format="color" />
     <attr name="useMicroAlgos" format="boolean" />
     <attr name="title" format="string" />
+    <attr name="description" format="string" />
+    <attr name="icon" format="reference" />
+    <attr name="showBottomDivider" format="boolean" />
 
     <declare-styleable name="PadView">
         <attr name="number" format="integer" />
@@ -75,6 +78,8 @@
     <declare-styleable name="RegisterTypeSelectionItem">
         <attr name="typeSelectionIcon" format="reference" />
         <attr name="typeSelectionTitleText" format="string" />
+        <attr name="typeSelectionTitleBadgeVisible" format="boolean" />
+        <attr name="typeSelectionTitleBadgeText" format="string" />
         <attr name="typeSelectionDescriptionText" format="string" />
     </declare-styleable>
 
@@ -172,9 +177,15 @@
 
     <declare-styleable name="ListMenuItemView">
         <attr name="title" />
-        <attr name="description" format="string" />
-        <attr name="icon" format="reference" />
-        <attr name="showBottomDivider" format="boolean" />
+        <attr name="description" />
+        <attr name="icon" />
+        <attr name="showBottomDivider" />
+    </declare-styleable>
+
+    <declare-styleable name="NumberedListItemView">
+        <attr name="title" />
+        <attr name="icon" />
+        <attr name="iconText" format="string" />
     </declare-styleable>
 
     <declare-styleable name="ListConfigurationHeaderView">

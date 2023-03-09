@@ -67,7 +67,7 @@ import com.algorand.android.modules.qrscanning.QrScannerViewModel
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.WalletConnectConnectionBottomSheet
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
-import com.algorand.android.modules.webexport.model.WebExportQrCode
+import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
 import com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment
 import com.algorand.android.ui.lockpreference.AutoLockSuggestionManager
 import com.algorand.android.usecase.AccountDetailUseCase

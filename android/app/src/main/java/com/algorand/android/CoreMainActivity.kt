@@ -41,6 +41,7 @@ import com.algorand.android.utils.BETANET_NETWORK_SLUG
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import com.algorand.android.utils.coremanager.AccountDetailCacheManager
 import com.algorand.android.utils.coremanager.AssetCacheManager
+import com.algorand.android.utils.coremanager.LocalAccountsNameServiceManager
 import com.algorand.android.utils.coremanager.ParityManager
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
@@ -79,6 +80,9 @@ abstract class CoreMainActivity : BaseActivity() {
 
     @Inject
     lateinit var assetCacheManager: AssetCacheManager
+
+    @Inject
+    lateinit var localAccountsNameServiceManager: LocalAccountsNameServiceManager
 
     @Inject
     lateinit var alertDialogQueueManager: AlertDialogQueueManager
@@ -129,6 +133,7 @@ abstract class CoreMainActivity : BaseActivity() {
             addObserver(parityManager)
             addObserver(accountDetailCacheManager)
             addObserver(assetCacheManager)
+            addObserver(localAccountsNameServiceManager)
         }
     }
 

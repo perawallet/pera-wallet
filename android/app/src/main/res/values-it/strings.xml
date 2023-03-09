@@ -846,7 +846,7 @@ amountPlaceholder</annotation> Algo.</string>
     <string name="unselect_all">Deseleziona tutto</string>
     <string name="disclaimer">DISCLAIMER</string>
     <string name="export_to_pera_web">Esporta in Pera Web</string>
-    <string name="you_re_about_to_share">Stai per condividere e importare la tua passphrase in Pera Web Wallet!</string>
+    <string name="you_re_about_to_share">Stai per condividere e importare la tua passphrase in Pera Web!</string>
     <string name="confirm_export_domain">Conferma Esporta dominio</string>
     <string name="for_your_security_please_confirm">Per la tua sicurezza, conferma che stai esportando i tuoi conti su Pera Web inserendo il nome di dominio che vedi sul tuo computer.</string>
     <string name="enter_url_of_web_wallet">Inserisci l\'URL di Web Wallet</string>
@@ -855,7 +855,7 @@ amountPlaceholder</annotation> Algo.</string>
     <string name="confirm_accounts">Conferma conti</string>
     <string name="you_re_about_to_export">Stai per esportare questi conti in Pera Web in modo sicuro:</string>
     <string name="accounts_exported_successfully">Conti esportati con successo!</string>
-    <string name="you_can_now_use_these">Ora puoi utilizzare questi conti su Pera Web Wallet.</string>
+    <string name="you_can_now_use_these">Ora puoi utilizzare questi conti su Pera Web.</string>
     <string name="we_couldn_t_find">Impossibile trovare conti idonei per l\'esportazione.</string>
     <plurals name="account_count">
         <item quantity="one">Conto</item>

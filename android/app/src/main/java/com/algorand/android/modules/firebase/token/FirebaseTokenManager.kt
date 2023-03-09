@@ -76,6 +76,8 @@ class FirebaseTokenManager @Inject constructor(
         }
     }
 
+    // TODO: Discuss 'having a listener in Singleton manager class'.
+    //  If some other class assigns a listener, others would not work. Solution: flow should be observed instead
     private var listener: Listener? = null
 
     private var coroutineScope: CoroutineScope? = null

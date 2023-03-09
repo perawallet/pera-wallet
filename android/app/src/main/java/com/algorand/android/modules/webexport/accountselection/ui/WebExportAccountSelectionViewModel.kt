@@ -18,7 +18,7 @@ import com.algorand.android.core.BaseViewModel
 import com.algorand.android.customviews.TriStatesCheckBox
 import com.algorand.android.modules.webexport.accountselection.ui.model.WebExportAccountSelectionPreview
 import com.algorand.android.modules.webexport.accountselection.ui.usecase.WebExportAccountSelectionPreviewUseCase
-import com.algorand.android.modules.webexport.model.WebExportQrCode
+import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
 import com.algorand.android.modules.webexport.utils.NAVIGATION_BACKUP_ID_KEY
 import com.algorand.android.modules.webexport.utils.NAVIGATION_ENCRYPTION_KEY
 import com.algorand.android.modules.webexport.utils.NAVIGATION_MODIFICATION_KEY

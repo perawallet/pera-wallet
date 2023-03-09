@@ -34,7 +34,7 @@
             android:layout_margin="@dimen/spacing_normal">
 
             <ImageView
-                android:id="@+id/alertIcon"
+                android:id="@+id/alertIconImageView"
                 android:layout_width="@dimen/account_icon_size_normal"
                 android:layout_height="@dimen/account_icon_size_normal"
                 app:layout_constraintBottom_toTopOf="@id/horizontalGuideline"

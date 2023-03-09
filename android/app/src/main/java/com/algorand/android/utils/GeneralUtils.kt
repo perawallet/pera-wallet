@@ -128,6 +128,15 @@ fun String.decodeBase64(): ByteArray? {
     }
 }
 
+fun ByteArray.encodeBase64(): String? {
+    return try {
+        Base64.encodeToString(this, Base64.DEFAULT)
+    } catch (exception: Exception) {
+        // TODO Log firebase
+        null
+    }
+}
+
 fun String.decodeUrl(charset: String = StandardCharsets.UTF_8.name()): String? {
     return try {
         URLDecoder.decode(this, charset)

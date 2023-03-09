@@ -50,13 +50,29 @@
             android:id="@+id/pairLedgerSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/importFromWebSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recoverAnAccountSelectionItem"
+            app:layout_constraintVertical_bias="0.4"
+            app:layout_constraintVertical_chainStyle="packed"
             app:typeSelectionDescriptionText="@string/i_want_to_recover_an"
             app:typeSelectionIcon="@drawable/ic_ledger"
             app:typeSelectionTitleText="@string/pair_Ledger_device" />
+
+        <com.algorand.android.customviews.RegisterTypeSelectionItem
+            android:id="@+id/importFromWebSelectionItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pairLedgerSelectionItem"
+            app:typeSelectionDescriptionText="@string/i_want_to_import_algorand"
+            app:typeSelectionIcon="@drawable/ic_global"
+            app:typeSelectionTitleText="@string/import_from_pera_web"
+            app:typeSelectionTitleBadgeVisible="true"
+            app:typeSelectionTitleBadgeText="@string/new_text"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

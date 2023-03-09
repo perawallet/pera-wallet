@@ -10,15 +10,14 @@
  *  limitations under the License
  */
 
-package com.algorand.android.modules.webexport.model
+package com.algorand.android.models
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class WebExportQrCode(
-    @SerializedName("backupId") val backupId: String,
-    @SerializedName("modificationKey") val modificationKey: String,
-    @SerializedName("encryptionKey") val encryptionKey: String,
-) : Parcelable
+data class BackupTransferAccountElement(
+    @SerializedName("address") val address: String,
+    @SerializedName("name") val name: String?,
+    @SerializedName("account_type") val accountType: String,
+    @SerializedName("private_key") val privateKey: String?,
+    @SerializedName("metadata") val metadata: String?
+)

@@ -143,6 +143,10 @@
     <dimen name="testnet_badge_height">26dp</dimen>
     <dimen name="testnet_badge_width">60dp</dimen>
 
+    <!-- New Badge-->
+    <dimen name="new_badge_height">18dp</dimen>
+    <dimen name="new_badge_width">36dp</dimen>
+
     <!--  Account Icon  -->
     <dimen name="account_icon_size_xlarge">80dp</dimen>
     <dimen name="account_icon_size_large">40dp</dimen>
@@ -185,6 +189,9 @@
 
     <!-- Asset Transfer Amount Fragment -->
     <dimen name="algorand_amount_text_view_height">48dp</dimen>
+
+    <!--  Info Header Icon Size  -->
+    <dimen name="info_header_icon_size">72dp</dimen>
 
     <!-- TextView Height -->
     <dimen name="primary_portfolio_value_height">48dp</dimen>

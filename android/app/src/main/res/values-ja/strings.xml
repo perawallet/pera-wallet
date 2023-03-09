@@ -833,7 +833,7 @@
     <string name="unselect_all">すべて選択解除</string>
     <string name="disclaimer">免責事項</string>
     <string name="export_to_pera_web">Pera Webにエクスポートする</string>
-    <string name="you_re_about_to_share">Pera Web Walletとパスフレーズを共有し、インポートしようとしています！</string>
+    <string name="you_re_about_to_share">Pera Webとパスフレーズを共有し、インポートしようとしています！</string>
     <string name="confirm_export_domain">ドメインエクスポートの確認</string>
     <string name="for_your_security_please_confirm">セキュリティのため、パソコンに表示されているドメイン名を入力して、Pera Webにアカウントをエクスポートしていることをご確認ください。</string>
     <string name="enter_url_of_web_wallet">Web WalletのURLを入力してください</string>
@@ -842,7 +842,7 @@
     <string name="confirm_accounts">アカウントの確認</string>
     <string name="you_re_about_to_export">これらのアカウントをPera Webに安全にエクスポートしようとしています:</string>
     <string name="accounts_exported_successfully">アカウントは正常にエクスポートされました！</string>
-    <string name="you_can_now_use_these">これらのアカウントは、Pera Web Walletで利用できるようになりました。</string>
+    <string name="you_can_now_use_these">これらのアカウントは、Pera Webで利用できるようになりました。</string>
     <string name="we_couldn_t_find">エクスポートの対象となるアカウントが見つかりませんでした。</string>
     <plurals name="account_count">
         <item quantity="other">%1$d アカウント</item>

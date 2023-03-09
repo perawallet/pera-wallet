@@ -13,6 +13,7 @@
 package com.algorand.android.modules.webexport.accountconfirmation.domain.usecase
 
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
+import com.algorand.android.models.AccountDetail
 import com.algorand.android.modules.webexport.accountconfirmation.domain.mapper.BackupAccountsPayloadElementMapper
 import com.algorand.android.modules.webexport.accountconfirmation.domain.mapper.BackupAccountsPayloadMapper
 import com.algorand.android.modules.webexport.accountconfirmation.domain.mapper.EncryptionResultMapper
@@ -21,7 +22,13 @@ import com.algorand.android.modules.webexport.accountconfirmation.domain.model.E
 import com.algorand.android.modules.webexport.accountconfirmation.domain.repository.WebExportAccountRepository
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.DataResource
+import com.algorand.android.utils.ENCRYPTION_SEPARATOR_CHAR
+import com.algorand.android.utils.PROVIDER_NAME
+import com.algorand.android.utils.SDK_RESULT_SUCCESS
 import com.algorand.android.utils.encrypt
+import com.algorand.android.utils.encodeBase64
+import com.algorand.android.utils.decodeBase64OrByteArray
+import com.algorand.android.utils.exceptions.EncryptionException
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -63,8 +70,7 @@ class WebExportAccountEncryptionUseCase @Inject constructor(
                     )
                 }
                 is EncryptionResult.Error -> {
-                    // TODO handle error with an exception?
-                    // emit(DataResource.Error.Local(encryptionResult.errorCode))
+                    emit(DataResource.Error.Local(EncryptionException(encryptionResult.errorCode)))
                 }
             }
         }
@@ -75,11 +81,7 @@ class WebExportAccountEncryptionUseCase @Inject constructor(
         accountAddresses: List<String>
     ): EncryptionResult? {
         val accountsDetail = accountAddresses.mapNotNull { key ->
-            accountDetailUseCase.getCachedAccountDetail(key)?.data?.let { detail ->
-                detail.account.getSecretKey()?.let { secretKey ->
-                    Pair(detail.account.name, secretKey)
-                }
-            }
+            accountDetailUseCase.getCachedAccountDetail(key)?.data
         }
         val exportContent = deviceIdUseCase.getSelectedNodeDeviceId()?.let { deviceId ->
             createWebExportContent(deviceId, accountsDetail)
@@ -88,14 +90,18 @@ class WebExportAccountEncryptionUseCase @Inject constructor(
         return exportContent?.let { createWebExportEncryptedContent(it, encryptionKey) }
     }
 
-    private fun createWebExportContent(deviceId: String, accounts: List<Pair<String, ByteArray>>): String {
+    private fun createWebExportContent(deviceId: String, accounts: List<AccountDetail>): String {
         return gson.toJson(
             backupAccountsPayloadMapper.mapToBackupAccountsPayload(
                 deviceId,
-                accounts.map { accountPair ->
+                PROVIDER_NAME,
+                accounts.mapNotNull { accountDetail ->
                     backupAccountsPayloadElementMapper.mapToBackupAccountsPayloadElement(
-                        accountPair.first,
-                        accountPair.second.toPrivateKeyStringFormat()
+                        address = accountDetail.account.address,
+                        name = accountDetail.account.name,
+                        accountType = accountDetail.account.type?.name,
+                        privateKey = accountDetail.account.getSecretKey()?.encodeBase64(),
+                        metadata = null
                     )
                 }
             )
@@ -104,37 +110,22 @@ class WebExportAccountEncryptionUseCase @Inject constructor(
 
     @OptIn(ExperimentalUnsignedTypes::class)
     private fun createWebExportEncryptedContent(content: String, encryptionKey: String): EncryptionResult {
-        val encryption = content
-            .toByteArray()
-            .encrypt(encryptionKey.getEncryptionKeyAsByteArray())
-        with(encryption) {
-            return if (errorCode == 0L) {
+        encryptionKey.decodeBase64OrByteArray()?.let { byteArray ->
+            val encryption = content
+                .toByteArray()
+                .encrypt(byteArray)
+            return if (encryption.errorCode == SDK_RESULT_SUCCESS) {
                 encryptionResultMapper.mapToEncryptionResultSuccess(
-                    encryptedData
-                    .toUByteArray()
-                    .toTypedArray()
-                    .joinToString(separator = SEPARATOR_CHAR) {
-                        it.toString()
-                    }
+                    encryption.encryptedData
+                        .toUByteArray()
+                        .toTypedArray()
+                        .joinToString(separator = ENCRYPTION_SEPARATOR_CHAR) {
+                            it.toString()
+                        }
                 )
             } else {
-                encryptionResultMapper.mapToEncryptionResultError(errorCode)
+                encryptionResultMapper.mapToEncryptionResultError(encryption.errorCode)
             }
-        }
-    }
-
-    @OptIn(ExperimentalUnsignedTypes::class)
-    private fun String.getEncryptionKeyAsByteArray(): ByteArray {
-        return this.split(SEPARATOR_CHAR).map {
-            it.toUByte()
-        }.toTypedArray().toUByteArray().toByteArray()
-    }
-
-    private fun ByteArray.toPrivateKeyStringFormat(): String {
-        return this.joinToString(separator = SEPARATOR_CHAR)
-    }
-
-    companion object {
-        private const val SEPARATOR_CHAR = ","
+        } ?: return encryptionResultMapper.mapToEncryptionResultError(null)
     }
 }

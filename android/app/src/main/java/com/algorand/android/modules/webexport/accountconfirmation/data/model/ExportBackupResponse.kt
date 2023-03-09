@@ -26,5 +26,5 @@ data class ExportBackupResponse(
     val encryptedContent: String?,
 
     @SerializedName("creator_device")
-    val creatorDevice: BigInteger?,
+    val creatorDevice: BigInteger?
 )

@@ -86,6 +86,10 @@
 
     <include app:graph="@navigation/nft_card_viewer_navigation" />
 
+    <include app:graph="@navigation/web_export_navigation" />
+
+    <include app:graph="@navigation/web_import_navigation" />
+
     <action
         android:id="@+id/action_global_showQrNavigation"
         app:destination="@id/showQrNavigation">
@@ -107,8 +111,6 @@
             android:name="accountAddress"
             app:argType="string" />
     </action>
-
-    <include app:graph="@navigation/web_export_navigation" />
 
     <action
         android:id="@+id/action_global_send_algo_navigation"
@@ -219,6 +221,15 @@
             android:name="encryptionKey"
             app:argType="string" />
     </action>
+
+    <action
+        android:id="@+id/action_global_webImportNavigation"
+        app:destination="@id/webImportNavigation">
+        <argument
+            android:name="webImportQrCode"
+            app:argType="com.algorand.android.modules.webimport.common.data.model.WebImportQrCode" />
+    </action>
+
 
     <action
         android:id="@+id/action_global_walletConnectSessionsBottomSheet"

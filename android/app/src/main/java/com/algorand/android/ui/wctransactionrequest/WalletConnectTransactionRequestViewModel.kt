@@ -20,9 +20,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.R
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.models.Account.Type.LEDGER
-import com.algorand.android.models.Account.Type.REKEYED
-import com.algorand.android.models.Account.Type.REKEYED_AUTH
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WalletConnectSignResult
@@ -47,6 +44,7 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val walletConnectSignManager: WalletConnectSignManager,
     private val transactionListBuilder: WalletConnectTransactionListBuilder,
+    private val walletConnectTransactionRequestPreviewUseCase: WalletConnectTransactionRequestPreviewUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -106,10 +104,7 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     }
 
     fun isBluetoothNeededToSignTxns(transaction: WalletConnectTransaction): Boolean {
-        return transaction.transactionList.flatten().any {
-            val accountDetail = it.fromAccount?.type ?: return false
-            accountDetail == LEDGER || accountDetail == REKEYED || accountDetail == REKEYED_AUTH
-        }
+        return walletConnectTransactionRequestPreviewUseCase.isBluetoothNeededToSignTxns(transaction)
     }
 
     fun handleStartDestinationAndArgs(transactionList: List<WalletConnectTransactionListItem>): Pair<Int, Bundle?> {

@@ -855,7 +855,7 @@
     <string name="unselect_all">Tümünün seçimini kaldırın</string>
     <string name="disclaimer">SORUMLULUK REDDİ</string>
     <string name="export_to_pera_web">Pera Web\'e Aktarma</string>
-    <string name="you_re_about_to_share">Parolanızı Pera Web Wallet ile paylaşmak ve içe aktarmak üzeresiniz!</string>
+    <string name="you_re_about_to_share">Parolanızı Pera Web ile paylaşmak ve içe aktarmak üzeresiniz!</string>
     <string name="confirm_export_domain">Etki Alanını Dışa Aktarma Onayı</string>
     <string name="for_your_security_please_confirm">Güvenliğiniz için hesaplarınızı Pera Web\'e bilgisayarınızda gördüğünüz etki alanı adını girerek aktarmakta olduğunuzu lütfen onaylayın.</string>
     <string name="enter_url_of_web_wallet">Web Wallet\'ın URL\'sini Girin</string>
@@ -864,7 +864,7 @@
     <string name="confirm_accounts">Hesapları Onayla</string>
     <string name="you_re_about_to_export">Pera Web\'e güvenli bir biçimde aktarmak üzere olduğunuz hesaplar:</string>
     <string name="accounts_exported_successfully">Hesaplar başarıyla dışa aktarıldı!</string>
-    <string name="you_can_now_use_these">Bu hesapları artık Pera Web Wallet ile kullanabilirsiniz.</string>
+    <string name="you_can_now_use_these">Bu hesapları artık Pera Web ile kullanabilirsiniz.</string>
     <string name="we_couldn_t_find">Dışa aktarılabilecek nitelikte hiçbir hesap bulamadık.</string>
     <plurals name="account_count">
         <item quantity="one">Hesap</item>

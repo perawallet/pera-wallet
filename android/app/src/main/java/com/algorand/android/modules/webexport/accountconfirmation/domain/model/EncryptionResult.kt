@@ -14,6 +14,6 @@ package com.algorand.android.modules.webexport.accountconfirmation.domain.model
 
 sealed class EncryptionResult {
 
-    data class Error(val errorCode: Long) : EncryptionResult()
+    data class Error(val errorCode: Long?) : EncryptionResult()
     data class Success(val encryptedString: String) : EncryptionResult()
 }

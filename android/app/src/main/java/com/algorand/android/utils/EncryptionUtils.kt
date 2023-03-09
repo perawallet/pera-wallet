@@ -19,6 +19,7 @@ const val KEYSET_HANDLE = "ALGORAND_KEYSET"
 const val ENCRYPTED_SHARED_PREF_NAME = "ALGORAND_ENCR_ACCOUNTS"
 const val ALGORAND_KEYSTORE_URI = "android-keystore://algorand_keystore_key"
 const val KEY_TEMPLATE_AES256_GCM = "AES256_GCM"
+const val PROVIDER_NAME = "Pera Wallet"
 
 fun Aead.encryptString(value: String?): String? {
     return try {
@@ -44,4 +45,21 @@ fun Aead.decryptString(value: String?): String? {
         exception.printStackTrace()
         null
     }
+}
+
+fun String.decodeBase64OrByteArray(): ByteArray? {
+    // TODO refactor here when we deprecate old encryption key format
+    // Try the ByteArray (old) method first. If that does not work, we use the decoding in base64 (new) method.
+    return try {
+        this.getAsByteArray()
+    } catch (exc: Exception) {
+        this.decodeBase64()
+    }
+}
+
+@OptIn(ExperimentalUnsignedTypes::class)
+private fun String.getAsByteArray(): ByteArray {
+    return this.split(ENCRYPTION_SEPARATOR_CHAR).map {
+        it.toUByte()
+    }.toTypedArray().toUByteArray().toByteArray()
 }

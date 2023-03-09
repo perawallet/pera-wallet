@@ -18,5 +18,5 @@ data class ExportBackupResponseDTO(
     val id: String?,
     val type: String?,
     val encryptedContent: String?,
-    val creatorDevice: BigInteger?,
+    val creatorDevice: BigInteger?
 )

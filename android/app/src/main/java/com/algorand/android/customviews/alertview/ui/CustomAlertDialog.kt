@@ -102,7 +102,7 @@ class CustomAlertDialog constructor(context: Context) : Dialog(context) {
     }
 
     private fun setAlertIconView(@DrawableRes iconResId: Int?, @ColorRes iconTintResId: Int?) {
-        with(binding.alertIcon) {
+        with(binding.alertIconImageView) {
             isVisible = iconResId != null
             iconResId?.let(::setImageResource)
             if (iconTintResId != null) setColorFilter(context.getColor(iconTintResId)) else colorFilter = null

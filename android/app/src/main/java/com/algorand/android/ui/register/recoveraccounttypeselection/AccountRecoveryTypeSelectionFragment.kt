@@ -50,6 +50,7 @@ class AccountRecoveryTypeSelectionFragment : BaseFragment(R.layout.fragment_acco
         with(binding) {
             recoverAnAccountSelectionItem.setOnClickListener { navToRecoverAccountInfoFragment() }
             pairLedgerSelectionItem.setOnClickListener { navToPairLedgerNavigation() }
+            importFromWebSelectionItem.setOnClickListener { navToImportFromWeb() }
         }
     }
 
@@ -64,6 +65,13 @@ class AccountRecoveryTypeSelectionFragment : BaseFragment(R.layout.fragment_acco
         nav(
             AccountRecoveryTypeSelectionFragmentDirections
                 .actionAccountRecoveryTypeSelectionFragmentToPairLedgerNavigation()
+        )
+    }
+
+    private fun navToImportFromWeb() {
+        nav(
+            AccountRecoveryTypeSelectionFragmentDirections
+                .actionAccountRecoveryTypeSelectionFragmentToWebImportNavigation()
         )
     }
 

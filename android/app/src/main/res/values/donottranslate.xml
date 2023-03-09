@@ -98,4 +98,9 @@
     <string name="twenty_five_percent">25%</string>
     <string name="fifty_percent">50%</string>
     <string name="seventy_five_percent">75%</string>
+
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
 </resources>

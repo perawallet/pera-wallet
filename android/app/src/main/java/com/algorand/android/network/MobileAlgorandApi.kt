@@ -47,7 +47,8 @@ import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteResultRes
 import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsRequestBody
 import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsResponse
 import com.algorand.android.modules.webexport.accountconfirmation.data.model.ExportBackupResponse
-import com.algorand.android.modules.webexport.model.WebBackupRequestBody
+import com.algorand.android.modules.webexport.common.data.model.WebBackupRequestBody
+import com.algorand.android.modules.webimport.loading.data.model.ImportBackupResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -212,6 +213,11 @@ interface MobileAlgorandApi {
 
     @GET("v1/discover/assets/trending/")
     suspend fun getTrendingAssets(): Response<List<AssetSearchResponse>>
+
+    @GET("v1/backups/{id}/")
+    suspend fun getBackup(
+        @Path("id") id: String
+    ): Response<ImportBackupResponse>
 
     @POST("v1/accounts/names/bulk-read/")
     suspend fun readAccountsNameServices(

@@ -943,7 +943,7 @@
     <string name="disclaimer">DISCLAIMER</string>
 
     <string name="export_to_pera_web">Export to Pera Web</string>
-    <string name="you_re_about_to_share">You\'re about to share and import your passphrase into Pera Web Wallet!</string>
+    <string name="you_re_about_to_share">You\'re about to share and import your passphrase into Pera Web!</string>
 
     <string name="confirm_export_domain">Confirm Export Domain</string>
     <string name="for_your_security_please_confirm">For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.</string>
@@ -955,7 +955,7 @@
     <string name="you_re_about_to_export">You\'re about to export these accounts to Pera Web securely:</string>
 
     <string name="accounts_exported_successfully">Accounts exported successfully!</string>
-    <string name="you_can_now_use_these">You can now use these accounts on Pera Web Wallet.</string>
+    <string name="you_can_now_use_these">You can now use these accounts on Pera Web.</string>
 
     <string name="we_couldn_t_find">We couldn\'t find any accounts eligible for export.</string>
 
@@ -1027,6 +1027,33 @@
 
     <string name="round">Round</string>
     <string name="do_not_proceed_if_you">Do not proceed if you did not initiate this request.</string>
+
+    <string name="accounts_imported">Accounts imported</string>
+    <plurals name="n_accounts_were_imported_from_pera_web">
+        <item quantity="one">%1$d account was imported from Pera Web</item>
+        <item quantity="other">%1$d accounts were imported from Pera Web</item>
+    </plurals>
+    <string name="explore_pera_mobile">Explore Pera Mobile</string>
+
+    <string name="unimported_accounts">Unimported Accounts</string>
+    <plurals name="n_accounts_were_not_imported_because">
+        <item quantity="one">%1$d account was not imported because it was previously imported.</item>
+        <item quantity="other">%1$d accounts were not imported because they were previously imported.</item>
+    </plurals>
+    <string name="your_accounts_could_not_be_imported">Your accounts could not be imported. Please try again later.</string>
+
+    <string name="import_from_pera_web">Import from Pera Web</string>
+    <string name="i_want_to_import_algorand">I want to import Algorand accounts from Pera Web</string>
+
+    <string name="get_your_qr_ready">Get your QR ready on Pera Web</string>
+    <string name="go_to_web_perawallet">Go to “web.perawallet.app” on your desktop</string>
+    <string name="go_to_settings_transfer_accounts">Go to Settings > Transfer Accounts</string>
+    <string name="select_the_accounts_you_want">Select the accounts you want to import to Pera Mobile and generate your QR</string>
+    <string name="tap_start_to_scan">Tap Start to scan the QR</string>
+    <string name="scan_qr_code_on_web">Scan QR code\non Pera Web</string>
+    <string name="start">Start</string>
+
+    <string name="importing_your_accounts">Importing your accounts</string>
 
     <string name="this_asset_is">This asset is already pending removal.</string>
 

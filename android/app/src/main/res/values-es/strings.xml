@@ -844,7 +844,7 @@
     <string name="unselect_all">Anular la selección de todo</string>
     <string name="disclaimer">DESCARGO DE RESPONSABILIDAD</string>
     <string name="export_to_pera_web">Exportar a Pera Web</string>
-    <string name="you_re_about_to_share">¡Estás a punto de compartir e importar tu frase secreta a Pera Web Wallet!</string>
+    <string name="you_re_about_to_share">¡Estás a punto de compartir e importar tu frase secreta a Pera Web!</string>
     <string name="confirm_export_domain">Confirmar dominio de exportación</string>
     <string name="for_your_security_please_confirm">Para tu seguridad, confirma que estás exportando tus cuentas a Pera Web ingresando el nombre de dominio que ves en tu computadora.</string>
     <string name="enter_url_of_web_wallet">Ingresa la URL del monedero web</string>
@@ -853,7 +853,7 @@
     <string name="confirm_accounts">Confirmar cuentas</string>
     <string name="you_re_about_to_export">Estás a punto de exportar estas cuentas a Pera Web de forma segura:</string>
     <string name="accounts_exported_successfully">¡Se exportaron las cuentas correctamente!</string>
-    <string name="you_can_now_use_these">Ahora puedes usar estas cuentas en Pera Web Wallet.</string>
+    <string name="you_can_now_use_these">Ahora puedes usar estas cuentas en Pera Web.</string>
     <string name="we_couldn_t_find">No pudimos encontrar ninguna cuenta apta para la exportación.</string>
     <plurals name="account_count">
         <item quantity="one">Cuenta</item>

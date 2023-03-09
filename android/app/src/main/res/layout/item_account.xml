@@ -13,4 +13,5 @@
 <com.algorand.android.customviews.accountandassetitem.accountitem.AccountItemView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/accountItemView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spacing_xxsmall"/>

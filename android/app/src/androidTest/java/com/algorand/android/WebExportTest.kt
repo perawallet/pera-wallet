@@ -14,7 +14,7 @@ package com.algorand.android
 
 import com.algorand.android.modules.webexport.createWebExportContent
 import com.algorand.android.modules.webexport.createWebExportEncryptedContent
-import com.algorand.android.modules.webexport.model.WebBackupRequestBody
+import com.algorand.android.modules.webexport.common.data.model.WebBackupRequestBody
 import com.algorand.android.network.MobileAlgorandApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient

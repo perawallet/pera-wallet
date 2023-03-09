@@ -15,11 +15,16 @@ package com.algorand.android.usecase
 import com.algorand.android.core.AccountManager
 import com.algorand.android.models.Account
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class GetLocalAccountsUseCase @Inject constructor(
     private val accountManager: AccountManager
 ) {
     fun getLocalAccountsFromAccountManagerCache(): List<Account> {
         return accountManager.getAccounts()
+    }
+
+    fun getLocalAccountsFromAccountManagerCacheAsFlow(): MutableStateFlow<List<Account>> {
+        return accountManager.accounts
     }
 }

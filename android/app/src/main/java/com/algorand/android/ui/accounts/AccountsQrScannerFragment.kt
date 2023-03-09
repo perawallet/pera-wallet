@@ -18,7 +18,8 @@ import com.algorand.android.R
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.modules.qrscanning.BaseQrScannerFragment
-import com.algorand.android.modules.webexport.model.WebExportQrCode
+import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
+import com.algorand.android.modules.webimport.common.data.model.WebImportQrCode
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -82,6 +83,16 @@ class AccountsQrScannerFragment : BaseQrScannerFragment(R.id.accountsQrScannerFr
                     backupId = webExportQrCode.backupId,
                     modificationKey = webExportQrCode.modificationKey,
                     encryptionKey = webExportQrCode.encryptionKey
+                )
+            )
+        }
+    }
+
+    override fun onWebImportQrCodeDeepLink(webImportQrCode: WebImportQrCode): Boolean {
+        return true.also {
+            nav(
+                HomeNavigationDirections.actionGlobalWebImportNavigation(
+                    webImportQrCode = webImportQrCode
                 )
             )
         }

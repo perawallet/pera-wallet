@@ -24,6 +24,8 @@
 
     <include app:graph="@navigation/backup_passphrases_navigation" />
 
+    <include app:graph="@navigation/web_import_navigation" />
+
     <action
         android:id="@+id/action_global_to_homeNavigation"
         app:destination="@id/homeNavigation"
@@ -139,6 +141,9 @@
         <action
             android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_pairLedgerNavigation"
             app:destination="@id/pairLedgerNavigation" />
+        <action
+            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_webImportNavigation"
+            app:destination="@id/webImportNavigation" />
     </fragment>
 
 

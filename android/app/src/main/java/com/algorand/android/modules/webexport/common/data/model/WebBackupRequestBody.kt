@@ -10,11 +10,10 @@
  *  limitations under the License
  */
 
-package com.algorand.android.modules.webexport.accountconfirmation.domain.model
+package com.algorand.android.modules.webexport.common.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class BackupAccountsPayload(
-    @SerializedName("device_id") val deviceId: String,
-    @SerializedName("accounts") val accounts: List<BackupAccountsPayloadElement>
+data class WebBackupRequestBody(
+    @SerializedName("encrypted_content") val encryptedContent: String
 )

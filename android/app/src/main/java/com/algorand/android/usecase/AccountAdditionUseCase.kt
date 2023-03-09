@@ -16,7 +16,6 @@ package com.algorand.android.usecase
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseUseCase
 import com.algorand.android.models.Account
-import com.algorand.android.modules.fetchnameservices.domain.usecase.UpdateLocalAccountNameServicesUseCase
 import com.algorand.android.utils.analytics.CreationType
 import com.algorand.android.utils.analytics.logRegisterEvent
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -25,15 +24,13 @@ import javax.inject.Inject
 class AccountAdditionUseCase @Inject constructor(
     private val accountManager: AccountManager,
     private val firebaseAnalytics: FirebaseAnalytics,
-    private val registrationUseCase: RegistrationUseCase,
-    private val updateLocalAccountNameServicesUseCase: UpdateLocalAccountNameServicesUseCase
+    private val registrationUseCase: RegistrationUseCase
 ) : BaseUseCase() {
 
-    suspend fun addNewAccount(tempAccount: Account, creationType: CreationType?) {
+    fun addNewAccount(tempAccount: Account, creationType: CreationType?) {
         if (tempAccount.isRegistrationCompleted()) {
             firebaseAnalytics.logRegisterEvent(creationType)
             accountManager.addNewAccount(tempAccount)
-            updateLocalAccountNameServicesUseCase.invoke()
             if (!registrationUseCase.getRegistrationSkipped()) {
                 registrationUseCase.setRegistrationSkipPreferenceAsSkipped()
             }
