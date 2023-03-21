@@ -803,7 +803,7 @@
     <string name="later">Daha sonra</string>
     <string name="set_custom_slippage">Özel slipaj belirleyin</string>
     <string name="auto">Oto.</string>
-    <string name="slippage_tolerance_must_be_between">Slipaj toleransı %%1$.1f% ile %%2$.1f% arasında olmalıdır</string>
+    <string name="slippage_tolerance_must_be_between">Slipaj toleransı %1$.2f%% ile %2$.0f%% arasında olmalıdır</string>
     <string name="balance_percentage_must_be_between">Bakiye yüzdesi %%1$d% ile %%2$d% arasında olmalıdır</string>
     <string name="set_custom_percentage">Özel yüzde belirleyin</string>
     <string name="balance_percentage">Bakiye Yüzdesi</string>

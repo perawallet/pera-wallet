@@ -70,12 +70,14 @@ abstract class TransactionBaseFragment(
                 }
                 is TransactionManagerResult.Error.GlobalWarningError -> {
                     showTransactionError(this)
+                    transactionFragmentListener?.onSignTransactionFailed()
                 }
                 is TransactionManagerResult.Error.SnackbarError.Retry -> {
 //                    Currently, we are showing this kind of error in case of ASA  adding failure. Since we are are
 //                    handling this operation in [MainActivity], no need to check it here. But as a fallback behaviour,
 //                    we will display [CustomSnackbar] here as well.
                     onCustomBottomSheetOpened(this)
+                    transactionFragmentListener?.onSignTransactionFailed()
                 }
                 TransactionManagerResult.Loading -> {
                     transactionFragmentListener?.onSignTransactionLoading()
@@ -253,6 +255,10 @@ abstract class TransactionBaseFragment(
         }
 
         fun onSignTransactionLoading() {
+            // This blank line is here to disable mandatory overriding operation
+        }
+
+        fun onSignTransactionFailed() {
             // This blank line is here to disable mandatory overriding operation
         }
 

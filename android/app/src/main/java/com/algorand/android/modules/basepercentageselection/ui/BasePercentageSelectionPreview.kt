@@ -19,7 +19,7 @@ open class BasePercentageSelectionPreview(
     open val chipOptionList: List<PeraFloatChipItem>,
     open var checkedOption: PeraFloatChipItem?,
     open val returnResultEvent: Event<Float>?,
-    open val showErrorEvent: Event<String>?,
+    open val errorString: String?,
     open val requestFocusToInputEvent: Event<Unit>?,
     open val prefilledAmountInputValue: Event<String>?
 )

@@ -265,7 +265,8 @@ class WalletConnectSignManager @Inject constructor(
             newScanCallback = scanCallback,
             currentTransactionIndex = currentTransactionIndex,
             totalTransactionCount = totalTransactionCount,
-            filteredAddress = ledgerAddress
+            filteredAddress = ledgerAddress,
+            coroutineScope = currentScope
         )
     }
 

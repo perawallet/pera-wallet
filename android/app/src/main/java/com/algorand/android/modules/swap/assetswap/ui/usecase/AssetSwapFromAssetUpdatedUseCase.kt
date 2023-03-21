@@ -12,11 +12,10 @@
 
 package com.algorand.android.modules.swap.assetswap.ui.usecase
 
-import com.algorand.android.modules.currency.domain.usecase.DisplayedCurrencyUseCase
-import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapType
 import com.algorand.android.modules.swap.assetswap.ui.mapper.SelectedAssetAmountDetailMapper
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.modules.swap.assetswap.ui.utils.SwapAmountUtils
+import com.algorand.android.modules.swap.common.SwapAppxValueParityHelper
 import com.algorand.android.modules.swap.common.domain.usecase.GetSwapSlippageToleranceUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.emptyString
@@ -27,8 +26,8 @@ class AssetSwapFromAssetUpdatedUseCase @Inject constructor(
     private val assetSwapPreviewAssetDetailUseCase: AssetSwapPreviewAssetDetailUseCase,
     private val assetSwapCreateQuotePreviewUseCase: AssetSwapCreateQuotePreviewUseCase,
     private val selectedAssetAmountDetailMapper: SelectedAssetAmountDetailMapper,
-    private val displayedCurrencyUseCase: DisplayedCurrencyUseCase,
-    private val getSwapSlippageToleranceUseCase: GetSwapSlippageToleranceUseCase
+    private val swapAppxValueParityHelper: SwapAppxValueParityHelper,
+    private val getSwapSlippageToleranceUseCase: GetSwapSlippageToleranceUseCase,
 ) {
 
     fun getFromAssetUpdatedPreview(
@@ -36,7 +35,6 @@ class AssetSwapFromAssetUpdatedUseCase @Inject constructor(
         toAssetId: Long?,
         amount: String?,
         accountAddress: String,
-        swapType: SwapType,
         previousState: AssetSwapPreview
     ) = flow<AssetSwapPreview> {
         val fromSelectedAssetDetail = assetSwapPreviewAssetDetailUseCase.createFromSelectedAssetDetail(
@@ -61,7 +59,6 @@ class AssetSwapFromAssetUpdatedUseCase @Inject constructor(
                 fromAssetId = fromAssetId,
                 toAssetId = toAssetId,
                 amount = amount,
-                swapType = swapType,
                 slippage = getSwapSlippageToleranceUseCase(),
                 previousState = newState,
                 swapTypeAssetDecimal = fromSelectedAssetDetail.assetDecimal,
@@ -78,12 +75,12 @@ class AssetSwapFromAssetUpdatedUseCase @Inject constructor(
             clearToSelectedAssetDetailEvent = Event(Unit),
             toSelectedAssetAmountDetail = selectedAssetAmountDetailMapper.mapToDefaultSelectedAssetAmountDetail(
                 amount = null,
-                primaryCurrencySymbol = displayedCurrencyUseCase.getDisplayedCurrencySymbol()
+                primaryCurrencySymbol = swapAppxValueParityHelper.getDisplayedCurrencySymbol()
             ),
             fromSelectedAssetAmountDetail = selectedAssetAmountDetailMapper.mapToDefaultSelectedAssetAmountDetail(
                 amount = previousState.fromSelectedAssetAmountDetail?.amount,
                 assetDecimal = previousState.fromSelectedAssetAmountDetail?.assetDecimal,
-                primaryCurrencySymbol = displayedCurrencyUseCase.getDisplayedCurrencySymbol()
+                primaryCurrencySymbol = swapAppxValueParityHelper.getDisplayedCurrencySymbol()
             ),
             isSwapButtonEnabled = false,
             isMaxAndPercentageButtonEnabled = false,

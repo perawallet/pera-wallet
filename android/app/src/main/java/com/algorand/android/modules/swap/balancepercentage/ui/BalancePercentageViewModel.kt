@@ -29,12 +29,16 @@ class BalancePercentageViewModel @Inject constructor(
         return balancePercentagePreviewUseCase.getBalancePercentagePreview(resources)
     }
 
-    override fun getCustomInputResultUpdatedPreview(
-        resources: Resources,
-        inputValue: String
-    ): BasePercentageSelectionPreview? {
+    override fun onInputUpdated(resources: Resources, inputValue: String) {
+        (getCurrentState() as? BalancePercentagePreview)?.run {
+            val newState = balancePercentagePreviewUseCase.getPercentageUpdatedPreview(resources, inputValue, this)
+            updatePreviewFlow(newState)
+        }
+    }
+
+    override fun getCustomInputResultUpdatedPreview(inputValue: String): BasePercentageSelectionPreview? {
         return (getCurrentState() as? BalancePercentagePreview)?.run {
-            balancePercentagePreviewUseCase.getDoneClickUpdatedPreview(resources, inputValue, this)
+            balancePercentagePreviewUseCase.getDoneClickUpdatedPreview(inputValue, this)
         }
     }
 }

@@ -44,6 +44,16 @@ class AssetDrawableProviderDecider @Inject constructor(
         }
     }
 
+    fun getAssetDrawableProvider(assetId: Long, assetName: AssetName, logoUri: String?): BaseAssetDrawableProvider {
+        val isAlgo = assetId == AssetInformation.ALGO_ID
+        val isCollectible = simpleCollectibleUseCase.isCollectibleCached(assetId)
+        return when {
+            isAlgo -> createAlgoDrawableProvider()
+            isCollectible -> CollectibleDrawableProvider(assetName, logoUri)
+            else -> AssetDrawableProvider(assetName, logoUri)
+        }
+    }
+
     private fun createAlgoDrawableProvider(): AlgoDrawableProvider {
         return AlgoDrawableProvider()
     }

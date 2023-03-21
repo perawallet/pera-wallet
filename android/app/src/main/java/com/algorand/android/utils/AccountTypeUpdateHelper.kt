@@ -28,11 +28,21 @@ class AccountTypeUpdateHelper @Inject constructor(
      */
     suspend fun correctAccountTypeIfNeed(accountDetail: AccountDetail): AccountDetail {
         return with(accountDetail) {
-            if (account.type == Account.Type.STANDARD && accountInformation.isRekeyed()) {
-                accountManager.changeAccountType(account.address, Account.Type.REKEYED)
-                copy(account = account.copy(type = Account.Type.REKEYED))
-            } else {
-                this
+            val isRekeyed = accountInformation.isRekeyed()
+            when {
+                account.type == Account.Type.STANDARD && isRekeyed -> {
+                    val newType = Account.Type.REKEYED
+                    val newDetail = Account.Detail.Rekeyed(account.getSecretKey())
+                    accountManager.changeAccountType(account.address, newType, newDetail)
+                    copy(account = account.copy(type = newType, detail = newDetail))
+                }
+                account.type == Account.Type.REKEYED && !isRekeyed -> {
+                    val newType = Account.Type.STANDARD
+                    val newDetail = Account.Detail.Standard(account.getSecretKey() ?: byteArrayOf())
+                    accountManager.changeAccountType(account.address, newType, newDetail)
+                    copy(account = account.copy(type = newType, detail = newDetail))
+                }
+                else -> this
             }
         }
     }

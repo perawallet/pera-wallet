@@ -153,6 +153,10 @@
             <argument
                 android:name="accountAddress"
                 app:argType="string" />
+            <argument
+                android:name="fromAssetId"
+                android:defaultValue="-1L"
+                app:argType="long" />
         </action>
         <action
             android:id="@+id/action_assetDetailFragment_to_discoverDetailNavigation"

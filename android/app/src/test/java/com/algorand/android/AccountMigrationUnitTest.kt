@@ -77,8 +77,9 @@ class AccountMigrationUnitTest {
         val rekeyedAccount = Account.create(
             "X2..",
             Account.Detail.RekeyedAuth.create(
-                standardAccount.detail,
-                mapOf("X2" to ledgerAccount.detail as Account.Detail.Ledger)
+                authDetail = standardAccount.detail,
+                rekeyedAuthDetail = mapOf("X2" to ledgerAccount.detail as Account.Detail.Ledger),
+                secretKey = byteArrayOf(2, 3)
             ),
             "name"
         )
@@ -89,14 +90,18 @@ class AccountMigrationUnitTest {
     @Test
     fun serializeAndDeserializeRekeyedAuthWithoutAuth() {
         val ledgerAccount = Account.create(
-            "X2..",
-            Account.Detail.Ledger(bluetoothAddress = "bluetoothAddress", bluetoothName = ""),
-            "name"
+            publicKey = "X2..",
+            detail = Account.Detail.Ledger(bluetoothAddress = "bluetoothAddress", bluetoothName = ""),
+            accountName = "name"
         )
         val rekeyedAccount = Account.create(
-            "X2..",
-            Account.Detail.RekeyedAuth.create(null, mapOf("X2" to ledgerAccount.detail as Account.Detail.Ledger)),
-            "name"
+            publicKey = "X2..",
+            detail = Account.Detail.RekeyedAuth.create(
+                authDetail = null,
+                rekeyedAuthDetail = mapOf("X2" to ledgerAccount.detail as Account.Detail.Ledger),
+                secretKey = byteArrayOf(2, 3)
+            ),
+            accountName = "name"
         )
         val decodedStandardAccount = gson.fromJson(gson.toJson(rekeyedAccount), Account::class.java)
         compareFields(rekeyedAccount, decodedStandardAccount)

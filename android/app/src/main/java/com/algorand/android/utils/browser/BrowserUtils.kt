@@ -55,6 +55,7 @@ const val ASA_VERIFICATION_URL = "https://explorer.perawallet.app/asa-verificati
 const val BASE_TWITTER_URL = "https://twitter.com/"
 private const val TINYMAN_TERMS_OF_SERVICE_URL = "https://tinyman.org/terms-of-service/"
 const val BLANK_URL = "about:blank"
+private const val TINYMAN_FAQ_PRICE_IMPACT_URL = "https://docs.tinyman.org/faq#what-is-a-price-impact"
 
 const val HTTPS_PROTOCOL = "https://"
 const val HTTP_PROTOCOL = "http://"
@@ -132,7 +133,7 @@ fun Context.openApplicationPageOnStore() {
     try {
         startActivity(
             Intent(ACTION_VIEW, Uri.parse(MARKET_PAGE_URL))
-            .apply { setPackage("com.android.vending") }
+                .apply { setPackage("com.android.vending") }
         )
     } catch (activityNotFoundException: ActivityNotFoundException) {
         recordException(activityNotFoundException)
@@ -176,6 +177,10 @@ fun Context.openTinymanTermsOfServiceUrl() {
 fun Context.openGroupTransactionInAlgoExplorer(groupId: String?, networkSlug: String?) {
     val subDomain = createSubDomainWithNetworkSlug(networkSlug)
     openUrl("https://$subDomain$ALGO_EXPLORER_URL/tx/group/$groupId")
+}
+
+fun Context.openTinymanFaqPriceImpactUrl() {
+    openUrl(TINYMAN_FAQ_PRICE_IMPACT_URL)
 }
 
 fun getGoalSeekerUrl(transactionId: String, nodeSlug: String?): String {

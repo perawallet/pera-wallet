@@ -782,7 +782,7 @@
     <string name="later">後で</string>
     <string name="set_custom_slippage">カスタムスリッページを設定する</string>
     <string name="auto">自動</string>
-    <string name="slippage_tolerance_must_be_between">スリッページ許容範囲は%1$.1f%%から%2$.1f%%の間でなければなりません</string>
+    <string name="slippage_tolerance_must_be_between">スリッページ許容範囲は%1$.2f%%から%2$.0f%%の間でなければなりません</string>
     <string name="balance_percentage_must_be_between">残高パーセンテージは%1$d%%と%2$d%%の間でなければなりません。</string>
     <string name="set_custom_percentage">カスタムパーセンテージを設定する</string>
     <string name="balance_percentage">残高パーセンテージ</string>

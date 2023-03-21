@@ -38,6 +38,10 @@
         <action
             android:id="@+id/action_assetSwapFragment_to_balancePercentageBottomSheet"
             app:destination="@id/balancePercentageBottomSheet" />
+        <argument
+            android:name="fromAssetId"
+            android:defaultValue="-1L"
+            app:argType="long" />
     </fragment>
 
     <fragment
@@ -103,6 +107,9 @@
         <action
             android:id="@+id/action_confirmSwapFragment_to_exchangeFeeInfoBottomSheet"
             app:destination="@id/exchangeFeeInfoBottomSheet" />
+        <action
+            android:id="@+id/action_confirmSwapFragment_to_swapConfirmationBottomSheet"
+            app:destination="@id/swapConfirmationBottomSheet" />
     </fragment>
 
     <fragment
@@ -177,4 +184,14 @@
         android:name="com.algorand.android.modules.swap.confirmswap.ui.ExchangeFeeInfoBottomSheet"
         android:label="ExchangeFeeInfoBottomSheet"
         tools:layout="@layout/bottom_sheet_base_information" />
+    <dialog
+        android:id="@+id/swapConfirmationBottomSheet"
+        android:name="com.algorand.android.modules.swap.confirmswapconfirmation.SwapConfirmationBottomSheet"
+        android:label="SwapConfirmationBottomSheet"
+        tools:layout="@layout/bottom_sheet_double_button">
+
+        <argument
+            android:name="priceImpactPercentage"
+            app:argType="long" />
+    </dialog>
 </navigation>

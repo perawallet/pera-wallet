@@ -16,7 +16,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
@@ -56,8 +55,6 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
     private var lockAttemptCount = 0
 
     private var penaltyRemainingTime: Long = 0L
-
-    private var biometricHandler: Handler? = null
 
     private val pinCodeListener = object : SixDigitPasswordView.Listener {
         override fun onPinCodeCompleted(pinCode: String) {
@@ -127,15 +124,12 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
 
     private fun showShowBiometricAuthenticationIfNeed() {
         if (lockViewModel.shouldShowBiometricDialog()) {
-            biometricHandler = Handler()
-            biometricHandler?.post {
-                activity?.showBiometricAuthentication(
-                    titleText = getString(R.string.app_name),
-                    descriptionText = getString(R.string.please_scan_your_fingerprint_or),
-                    negativeButtonText = getString(R.string.cancel),
-                    successCallback = { onEnteredCorrectPassword() }
-                )
-            }
+            activity?.showBiometricAuthentication(
+                titleText = getString(R.string.app_name),
+                descriptionText = getString(R.string.please_scan_your_fingerprint_or),
+                negativeButtonText = getString(R.string.cancel),
+                successCallback = { onEnteredCorrectPassword() }
+            )
         }
     }
 
@@ -168,7 +162,6 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
     }
 
     override fun onPause() {
-        biometricHandler?.removeCallbacksAndMessages(null)
         clearCountDownTimer()
         lockViewModel.setLockAttemptCount(lockAttemptCount)
         lockViewModel.setLockPenaltyRemainingTime(penaltyRemainingTime)

@@ -792,7 +792,7 @@
     <string name="later">Más tarde</string>
     <string name="set_custom_slippage">Establecer movimiento de precios personalizado</string>
     <string name="auto">Auto</string>
-    <string name="slippage_tolerance_must_be_between">La tolerancia al movimiento de precios debe ser entre %1$.1f%% y %2$.1f%%.</string>
+    <string name="slippage_tolerance_must_be_between">La tolerancia al movimiento de precios debe ser entre %1$.2f%% y %2$.0f%%.</string>
     <string name="balance_percentage_must_be_between">El porcentaje de saldo debe ser entre %1$d%% y %2$d%%</string>
     <string name="set_custom_percentage">Establecer porcentaje personalizado</string>
     <string name="balance_percentage">Porcentaje de saldo</string>

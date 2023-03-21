@@ -781,7 +781,7 @@
     <string name="later">나중에 하기</string>
     <string name="set_custom_slippage">사용자 지정 슬리피지 설정</string>
     <string name="auto">자동</string>
-    <string name="slippage_tolerance_must_be_between">슬리피지 허용값은 %1$.1f%% - %2$.1f%% 사이여야 합니다.</string>
+    <string name="slippage_tolerance_must_be_between">슬리피지 허용값은 %1$.2f%% - %2$.0f%% 사이여야 합니다.</string>
     <string name="balance_percentage_must_be_between">잔액 백분율은 %1$d%% - %2$d%% 사이여야 합니다.</string>
     <string name="set_custom_percentage">사용자 지정 백분율 설정</string>
     <string name="balance_percentage">잔액 백분율</string>

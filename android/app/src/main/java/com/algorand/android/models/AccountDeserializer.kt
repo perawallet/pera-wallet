@@ -76,9 +76,7 @@ class AccountDeserializer : JsonDeserializer<Account> {
             Account.Type.WATCH -> {
                 deserialize<Account.Detail.Watch>(detailJsonObject, Account.Detail.Watch::class.java)
             }
-            Account.Type.REKEYED_AUTH -> {
-                deserializeRekeyedAuth(detailJsonObject)
-            }
+            Account.Type.REKEYED_AUTH -> deserializeRekeyedAuth(detailJsonObject)
         }
     }
 
@@ -103,6 +101,8 @@ class AccountDeserializer : JsonDeserializer<Account> {
             rekeyedAuthDetailJsonObject,
             rekeyedAuthDetailMapType
         )
-        return Account.Detail.RekeyedAuth(rekeyedAuthDetail, rekeyedAuthType, rekeyedAuthDetailMap)
+        val secretKeyObject = jsonObject?.get("secretKey")
+        val secretKey = deserialize<ByteArray>(secretKeyObject, ByteArray::class.java)
+        return Account.Detail.RekeyedAuth(rekeyedAuthDetail, rekeyedAuthType, secretKey, rekeyedAuthDetailMap)
     }
 }

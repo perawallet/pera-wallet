@@ -42,7 +42,7 @@ class AccountOptionsUseCase @Inject constructor(
 
     fun canDisplayPassphrases(publicKey: String): Boolean {
         val secretKey = accountDetailUseCase.getCachedAccountDetail(publicKey)?.data?.account?.getSecretKey()
-        return secretKey != null
+        return secretKey != null && secretKey.isNotEmpty()
     }
 
     fun getAccountName(publicKey: String): String {
@@ -54,7 +54,7 @@ class AccountOptionsUseCase @Inject constructor(
     }
 
     fun canAccountRekeyToStandardAccount(accountAddress: String): Boolean {
-        return accountDetailUseCase.getAccountType(accountAddress) == Account.Type.STANDARD
+        return accountDetailUseCase.canAccountSignTransaction(accountAddress)
     }
 
     fun getRemovingAccountWarningConfirmationModel(publicKey: String): WarningConfirmation {

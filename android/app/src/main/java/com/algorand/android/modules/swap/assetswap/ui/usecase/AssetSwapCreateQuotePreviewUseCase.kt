@@ -13,14 +13,12 @@
 package com.algorand.android.modules.swap.assetswap.ui.usecase
 
 import com.algorand.android.modules.accounts.domain.usecase.AccountDetailSummaryUseCase
-import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapType
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
 import com.algorand.android.modules.swap.assetswap.domain.usecase.GetSwapQuoteUseCase
 import com.algorand.android.modules.swap.assetswap.ui.mapper.AssetSwapPreviewMapper
 import com.algorand.android.modules.swap.assetswap.ui.mapper.SelectedAssetAmountDetailMapper
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.modules.swap.assetswap.ui.utils.SwapBalanceErrorProvider
-import com.algorand.android.usecase.CheckUserHasAssetBalanceUseCase
 import com.algorand.android.utils.ErrorResource
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.toBigDecimalOrZero
@@ -34,17 +32,16 @@ class AssetSwapCreateQuotePreviewUseCase @Inject constructor(
     private val assetSwapPreviewMapper: AssetSwapPreviewMapper,
     private val assetSwapPreviewAssetDetailUseCase: AssetSwapPreviewAssetDetailUseCase,
     private val selectedAssetAmountDetailMapper: SelectedAssetAmountDetailMapper,
-    private val checkUserHasAssetBalanceUseCase: CheckUserHasAssetBalanceUseCase,
-    private val accountDetailSummaryUseCase: AccountDetailSummaryUseCase
+    private val accountDetailSummaryUseCase: AccountDetailSummaryUseCase,
+    private val assetSwapSwitchButtonStatusUseCase: AssetSwapSwitchButtonStatusUseCase
 ) {
 
-    @Suppress("LongParameterList")
+    @Suppress("LongParameterList", "LongMethod")
     suspend fun getSwapQuoteUpdatedPreview(
         accountAddress: String,
         fromAssetId: Long,
         toAssetId: Long,
         amount: String?,
-        swapType: SwapType,
         slippage: Float,
         swapTypeAssetDecimal: Int,
         isMaxAndPercentageButtonEnabled: Boolean,
@@ -57,7 +54,6 @@ class AssetSwapCreateQuotePreviewUseCase @Inject constructor(
             fromAssetId = fromAssetId,
             toAssetId = toAssetId,
             amount = amountAsBigInteger,
-            swapType = swapType,
             slippage = slippage,
             accountAddress = accountAddress
         ).map {
@@ -82,8 +78,12 @@ class AssetSwapCreateQuotePreviewUseCase @Inject constructor(
                         isLoadingVisible = false,
                         fromSelectedAssetAmountDetail = createFromSelectedAssetAmountDetail(swapQuote, amount),
                         toSelectedAssetAmountDetail = createToSelectedAssetAmountDetail(swapQuote),
-                        isSwitchAssetsButtonEnabled = checkUserHasAssetBalanceUseCase
-                            .hasUserAssetBalance(accountAddress, toAssetId),
+                        isSwitchAssetsButtonEnabled = assetSwapSwitchButtonStatusUseCase.isSwitchAssetsButtonEnabled(
+                            accountAddress = accountAddress,
+                            fromAssetId = fromAssetId,
+                            toAssetId = toAssetId,
+                            previousState = previousState
+                        ),
                         isMaxAndPercentageButtonEnabled = isMaxAndPercentageButtonEnabled,
                         formattedPercentageText = formattedPercentageText,
                         errorEvent = errorEvent,
@@ -98,6 +98,9 @@ class AssetSwapCreateQuotePreviewUseCase @Inject constructor(
                         isSwapButtonEnabled = false,
                         errorEvent = errorDataResource.exception?.message?.run {
                             Event(ErrorResource.Api(this))
+                        },
+                        fromSelectedAssetAmountDetail = previousState.swapQuote?.run {
+                            createFromSelectedAssetAmountDetail(this, amount)
                         }
                     )
                 }

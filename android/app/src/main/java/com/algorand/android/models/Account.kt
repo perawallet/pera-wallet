@@ -41,6 +41,7 @@ data class Account constructor(
         return when (detail) {
             is Detail.Standard -> detail.secretKey
             is Detail.Rekeyed -> detail.secretKey
+            is Detail.RekeyedAuth -> detail.secretKey
             else -> null // TODO may throw exception later.
         }
     }
@@ -78,17 +79,22 @@ data class Account constructor(
         data class RekeyedAuth(
             val authDetail: Detail?,
             val authDetailType: Type?,
+            val secretKey: ByteArray?,
             val rekeyedAuthDetail: Map<String, Ledger>
         ) : Detail() {
             companion object {
-                fun create(authDetail: Detail?, rekeyedAuthDetail: Map<String, Ledger>): RekeyedAuth {
+                fun create(
+                    authDetail: Detail?,
+                    rekeyedAuthDetail: Map<String, Ledger>,
+                    secretKey: ByteArray?
+                ): RekeyedAuth {
                     val authDetailType = when (authDetail) {
                         is Standard -> STANDARD
                         is Ledger -> LEDGER
                         else -> null
                     }
                     val safeAuthDetail = authDetail.takeIf { authDetailType != null }
-                    return RekeyedAuth(safeAuthDetail, authDetailType, rekeyedAuthDetail)
+                    return RekeyedAuth(safeAuthDetail, authDetailType, secretKey, rekeyedAuthDetail)
                 }
             }
         }
@@ -121,10 +127,10 @@ data class Account constructor(
             index: Int = NOT_INITIALIZED_ACCOUNT_INDEX
         ): Account {
             val type = when (detail) {
-                is Detail.Standard -> Type.STANDARD
-                is Detail.Ledger -> Type.LEDGER
-                is Detail.Rekeyed -> Type.REKEYED
-                is Detail.Watch -> Type.WATCH
+                is Detail.Standard -> STANDARD
+                is Detail.Ledger -> LEDGER
+                is Detail.Rekeyed -> REKEYED
+                is Detail.Watch -> WATCH
                 is Detail.RekeyedAuth -> Type.REKEYED_AUTH
             }
 

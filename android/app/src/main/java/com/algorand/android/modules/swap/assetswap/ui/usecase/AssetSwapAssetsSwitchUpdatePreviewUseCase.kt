@@ -12,29 +12,24 @@
 
 package com.algorand.android.modules.swap.assetswap.ui.usecase
 
-import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapType
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.modules.swap.assetswap.ui.utils.SwapAmountUtils
 import com.algorand.android.modules.swap.common.domain.usecase.GetSwapSlippageToleranceUseCase
-import com.algorand.android.usecase.CheckUserHasAssetBalanceUseCase
-import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.emptyString
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
 
 class AssetSwapAssetsSwitchUpdatePreviewUseCase @Inject constructor(
     private val assetSwapPreviewAssetDetailUseCase: AssetSwapPreviewAssetDetailUseCase,
-    private val checkUserHasAssetBalanceUseCase: CheckUserHasAssetBalanceUseCase,
     private val assetSwapCreateQuotePreviewUseCase: AssetSwapCreateQuotePreviewUseCase,
-    private val getSwapSlippageToleranceUseCase: GetSwapSlippageToleranceUseCase
+    private val getSwapSlippageToleranceUseCase: GetSwapSlippageToleranceUseCase,
+    private val assetSwapSwitchButtonStatusUseCase: AssetSwapSwitchButtonStatusUseCase
 ) {
 
     fun getAssetsSwitchedUpdatedPreview(
         fromAssetId: Long,
         toAssetId: Long,
-        amount: String?,
         accountAddress: String,
-        swapType: SwapType,
         previousState: AssetSwapPreview
     ) = flow<AssetSwapPreview> {
         emit(previousState.copy(isLoadingVisible = true))
@@ -52,26 +47,28 @@ class AssetSwapAssetsSwitchUpdatePreviewUseCase @Inject constructor(
             fromSelectedAssetDetail = fromAssetDetail,
             toSelectedAssetDetail = toAssetDetail,
             isLoadingVisible = false,
-            isSwitchAssetsButtonEnabled = checkUserHasAssetBalanceUseCase.hasUserAssetBalance(accountAddress, toAssetId)
+            fromSelectedAssetAmountDetail = previousState.toSelectedAssetAmountDetail,
+            toSelectedAssetAmountDetail = previousState.fromSelectedAssetAmountDetail,
+            isSwitchAssetsButtonEnabled = assetSwapSwitchButtonStatusUseCase.isSwitchAssetsButtonEnabled(
+                accountAddress = accountAddress,
+                fromAssetId = fromAssetId,
+                toAssetId = toAssetId,
+                previousState = previousState
+            )
         )
 
+        val amount = previousState.toSelectedAssetAmountDetail?.amount
         if (!SwapAmountUtils.isAmountValidForApiRequest(amount)) {
             emit(newState)
         } else {
-            val assetDecimal = if (swapType == SwapType.FIXED_INPUT) {
-                fromAssetDetail.assetDecimal
-            } else {
-                toAssetDetail?.assetDecimal ?: DEFAULT_ASSET_DECIMAL
-            }
             val swapQuoteUpdatedPreview = assetSwapCreateQuotePreviewUseCase.getSwapQuoteUpdatedPreview(
                 accountAddress = accountAddress,
                 fromAssetId = fromAssetId,
                 toAssetId = toAssetId,
                 amount = amount,
-                swapType = swapType,
                 slippage = getSwapSlippageToleranceUseCase(),
                 previousState = newState,
-                swapTypeAssetDecimal = assetDecimal,
+                swapTypeAssetDecimal = fromAssetDetail.assetDecimal,
                 isMaxAndPercentageButtonEnabled = true,
                 formattedPercentageText = emptyString()
             ) ?: return@flow

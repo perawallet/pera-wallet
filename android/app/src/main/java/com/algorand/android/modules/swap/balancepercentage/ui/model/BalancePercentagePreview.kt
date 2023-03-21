@@ -19,12 +19,12 @@ import com.algorand.android.utils.Event
 data class BalancePercentagePreview(
     override val chipOptionList: List<PeraFloatChipItem>,
     override val returnResultEvent: Event<Float>?,
-    override val showErrorEvent: Event<String>?
+    override val errorString: String?
 ) : BasePercentageSelectionPreview(
     chipOptionList = chipOptionList,
     checkedOption = null,
     returnResultEvent = returnResultEvent,
-    showErrorEvent = showErrorEvent,
+    errorString = errorString,
     requestFocusToInputEvent = null,
     prefilledAmountInputValue = null
 )

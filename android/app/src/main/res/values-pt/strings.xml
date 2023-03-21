@@ -792,7 +792,7 @@
     <string name="later">Mais tarde</string>
     <string name="set_custom_slippage">Personalizar derrapagem</string>
     <string name="auto">Auto</string>
-    <string name="slippage_tolerance_must_be_between">Tolerância de derrapagem deve estar entre %1$.1f%% e %2$.1f%%</string>
+    <string name="slippage_tolerance_must_be_between">Tolerância de derrapagem deve estar entre %1$.2f%% e %2$.0f%%</string>
     <string name="balance_percentage_must_be_between">Porcentagem do saldo deve estar entre %1$d%% e %2$d%%</string>
     <string name="set_custom_percentage">Personalizar porcentagem</string>
     <string name="balance_percentage">Porcentagem do Saldo</string>

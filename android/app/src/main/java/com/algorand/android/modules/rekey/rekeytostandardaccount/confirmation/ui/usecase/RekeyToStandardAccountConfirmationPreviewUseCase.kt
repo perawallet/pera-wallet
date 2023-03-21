@@ -46,14 +46,9 @@ class RekeyToStandardAccountConfirmationPreviewUseCase @Inject constructor(
         emit(preview.copy(isLoading = true))
         transactionsRepository.sendSignedTransaction(transactionDetail.signedTransactionData).use(
             onSuccess = {
-                val accountSecretKey = accountDetailUseCase.getCachedAccountDetail(transactionDetail.accountAddress)
-                    ?.data
-                    ?.account
-                    ?.getSecretKey()
-
-                val rekeyedAccount = Account.create(
-                    publicKey = transactionDetail.accountAddress,
-                    detail = Account.Detail.Rekeyed(accountSecretKey),
+                val rekeyedAccount = createAccountRegardingByRekeyType(
+                    accountAddress = transactionDetail.accountAddress,
+                    rekeyAdminAddress = transactionDetail.rekeyAdminAddress,
                     accountName = transactionDetail.accountName
                 )
                 emit(
@@ -71,7 +66,7 @@ class RekeyToStandardAccountConfirmationPreviewUseCase @Inject constructor(
                 )
             },
             onFailed = { exception, _ ->
-                emit(preview.copy(showGlobalErrorEvent = Event(exception.message.orEmpty())))
+                emit(preview.copy(showGlobalErrorEvent = Event(exception.message.orEmpty()), isLoading = false))
             }
         )
     }
@@ -136,6 +131,40 @@ class RekeyToStandardAccountConfirmationPreviewUseCase @Inject constructor(
                 val formattedFee = MIN_FEE.formatAsAlgoString()
                 emit(preview.copy(onDisplayCalculatedTransactionFeeEvent = Event(formattedFee)))
             }
+        )
+    }
+
+    fun updatePreviewWithLoadingState(
+        preview: RekeyToStandardAccountConfirmationPreview
+    ): RekeyToStandardAccountConfirmationPreview {
+        return preview.copy(isLoading = true)
+    }
+
+    fun updatePreviewWithClearLoadingState(
+        preview: RekeyToStandardAccountConfirmationPreview
+    ): RekeyToStandardAccountConfirmationPreview {
+        return preview.copy(isLoading = false)
+    }
+
+    private fun createAccountRegardingByRekeyType(
+        accountAddress: String,
+        rekeyAdminAddress: String,
+        accountName: String
+    ): Account {
+        val accountSecretKey = accountDetailUseCase.getCachedAccountDetail(accountAddress)
+            ?.data
+            ?.account
+            ?.getSecretKey()
+        val isReverseRekey = accountAddress == rekeyAdminAddress
+        val detail = if (isReverseRekey) {
+            Account.Detail.Standard(accountSecretKey ?: byteArrayOf())
+        } else {
+            Account.Detail.Rekeyed(accountSecretKey)
+        }
+        return Account.create(
+            publicKey = accountAddress,
+            detail = detail,
+            accountName = accountName
         )
     }
 

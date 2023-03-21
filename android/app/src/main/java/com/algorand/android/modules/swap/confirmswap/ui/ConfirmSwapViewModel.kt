@@ -22,12 +22,15 @@ import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
 import com.algorand.android.modules.swap.confirmswap.ui.model.ConfirmSwapPreview
 import com.algorand.android.modules.swap.confirmswap.ui.usecase.ConfirmSwapPreviewUseCase
 import com.algorand.android.modules.tracking.swap.confirmswap.ConfirmSwapConfirmClickEventTracker
+import com.algorand.android.utils.Event
 import com.algorand.android.utils.getOrThrow
+import com.algorand.android.utils.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -69,11 +72,27 @@ class ConfirmSwapViewModel @Inject constructor(
     }
 
     fun onConfirmSwapClick() {
-        viewModelScope.launch {
+        val priceImpactWarningStatus = _confirmSwapPreviewFlow.value.priceImpactWarningStatus
+        if (priceImpactWarningStatus.isConfirmationRequired) {
+            _confirmSwapPreviewFlow.update {
+                val basePriceImpactValue = priceImpactWarningStatus.percentageRange.first.toLong()
+                it.copy(navToSwapConfirmationBottomSheetEvent = Event(basePriceImpactValue))
+            }
+        } else {
+            createQuoteAndUpdateUi()
+        }
+    }
+
+    fun onSwapPriceImpactConfirmationResult(isConfirmed: Boolean) {
+        if (isConfirmed) createQuoteAndUpdateUi()
+    }
+
+    private fun createQuoteAndUpdateUi() {
+        viewModelScope.launchIO {
             confirmClickEventTracker.logConfirmSwapClickEvent()
             confirmSwapPreviewUseCase.createQuoteAndUpdateUi(
                 quoteId = swapQuote.quoteId,
-                accountAddress = swapQuote.accountAddress.orEmpty(),
+                accountAddress = swapQuote.accountAddress,
                 previousState = _confirmSwapPreviewFlow.value
             ).collectLatest { newState ->
                 _confirmSwapPreviewFlow.emit(newState)

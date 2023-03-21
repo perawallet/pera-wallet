@@ -54,7 +54,6 @@ class SlippageToleranceBottomSheet : BasePercentageSelectionBottomSheet() {
     override fun initUi() {
         super.initUi()
         initCustomInputLayout()
-        setCustomPercentageChangeListener { slippageToleranceViewModel.onCustomPercentageChange(it) }
     }
 
     private fun initCustomInputLayout() {

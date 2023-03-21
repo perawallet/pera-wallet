@@ -52,6 +52,7 @@ class AssetDetailViewModel @Inject constructor(
         viewModelScope.launch {
             if (assetId == ALGO_ID) algoSwapClickEventTracker.logAlgoSwapClickEvent()
             assetDetailPreviewUseCase.updatePreviewForNavigatingSwap(
+                assetId = assetId,
                 currentPreview = currentPreview,
                 accountAddress = accountAddress
             ).collect {

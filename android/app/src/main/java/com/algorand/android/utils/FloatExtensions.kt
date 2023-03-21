@@ -15,3 +15,7 @@ package com.algorand.android.utils
 fun String?.toFloatOrZero(): Float {
     return this?.toFloatOrNull() ?: 0f
 }
+
+fun String?.toFloatOrDefault(default: Float = -1f): Float {
+    return this?.toFloatOrNull() ?: default
+}

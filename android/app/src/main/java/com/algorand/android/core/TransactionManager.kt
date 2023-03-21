@@ -243,7 +243,11 @@ class TransactionManager @Inject constructor(
                     }
                 }
                 is Account.Detail.Standard -> {
-                    checkAndCacheSignedTransaction(transactionByteArray?.signTx(accountDetail.secretKey))
+                    if (accountDetail.secretKey.isNotEmpty()) {
+                        checkAndCacheSignedTransaction(transactionByteArray?.signTx(accountDetail.secretKey))
+                    } else {
+                        setSignFailed(Defined(AnnotatedString(stringResId = R.string.the_signing_account_has)))
+                    }
                 }
                 else -> {
                     val exceptionMessage = "$senderAccountType cannot sign by itself."
@@ -517,7 +521,11 @@ class TransactionManager @Inject constructor(
     }
 
     private fun searchForDevice(ledgerAddress: String) {
-        ledgerBleSearchManager.scan(newScanCallback = scanCallback, filteredAddress = ledgerAddress)
+        ledgerBleSearchManager.scan(
+            newScanCallback = scanCallback,
+            filteredAddress = ledgerAddress,
+            coroutineScope = currentScope
+        )
     }
 
     // this also stops LedgerBleOperationManager.

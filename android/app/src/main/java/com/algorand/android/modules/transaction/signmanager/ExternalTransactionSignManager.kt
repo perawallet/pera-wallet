@@ -261,7 +261,8 @@ open class ExternalTransactionSignManager<TRANSACTION : ExternalTransaction> @In
             newScanCallback = scanCallback,
             currentTransactionIndex = currentTransactionIndex,
             totalTransactionCount = totalTransactionCount,
-            filteredAddress = ledgerAddress
+            filteredAddress = ledgerAddress,
+            coroutineScope = currentScope
         )
     }
 

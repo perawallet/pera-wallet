@@ -47,7 +47,7 @@ abstract class BasePercentageSelectionBottomSheet : BaseBottomSheet(R.layout.bot
         it?.run {
             binding.predefinedPercentageChipGroup.initPeraChipGroup(chipOptionList, checkedOption)
             returnResultEvent?.consume()?.run { handleResult(this) }
-            showErrorEvent?.consume()?.run { showGlobalError(this) }
+            binding.customPercentageInput.error = errorString
             requestFocusToInputEvent?.consume()?.run { focusOnInputEditText() }
             prefilledAmountInputValue?.consume()?.run { updateCustomInputEditText(this) }
         }
@@ -81,13 +81,10 @@ abstract class BasePercentageSelectionBottomSheet : BaseBottomSheet(R.layout.bot
             customPercentageInput.apply {
                 hint = getString(inputFieldHintText)
                 setOnEditorEnterClickListener { onDoneClick() }
+                setOnTextChangeListener { basePercentageSelectionViewModel.onInputUpdated(resources, it) }
             }
             predefinedPercentageChipGroup.setListener(peraCheckGroupListener)
         }
-    }
-
-    protected fun setCustomPercentageChangeListener(onChange: (String) -> Unit) {
-        binding.customPercentageInput.setOnTextChangeListener { onChange(it) }
     }
 
     private fun initObservers() {
@@ -99,6 +96,6 @@ abstract class BasePercentageSelectionBottomSheet : BaseBottomSheet(R.layout.bot
 
     private fun onDoneClick() {
         val percentageInput = binding.customPercentageInput.text
-        basePercentageSelectionViewModel.onDoneClick(resources, percentageInput)
+        basePercentageSelectionViewModel.onDoneClick(percentageInput)
     }
 }

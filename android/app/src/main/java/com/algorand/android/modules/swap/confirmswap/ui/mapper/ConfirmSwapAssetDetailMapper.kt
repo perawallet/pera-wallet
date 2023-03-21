@@ -29,7 +29,9 @@ class ConfirmSwapAssetDetailMapper @Inject constructor(
         formattedAmount: String,
         formattedApproximateValue: String,
         shortName: AssetName,
-        verificationTier: VerificationTier
+        verificationTier: VerificationTier,
+        amountTextColorResId: Int,
+        approximateValueTextColorResId: Int
     ): ConfirmSwapPreview.SwapAssetDetail {
         return ConfirmSwapPreview.SwapAssetDetail(
             formattedAmount = formattedAmount,
@@ -38,7 +40,9 @@ class ConfirmSwapAssetDetailMapper @Inject constructor(
             assetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(assetId),
             verificationTierConfig = verificationTierConfigurationDecider.decideVerificationTierConfiguration(
                 verificationTier
-            )
+            ),
+            amountTextColorResId = amountTextColorResId,
+            approximateValueTextColorResId = approximateValueTextColorResId
         )
     }
 }

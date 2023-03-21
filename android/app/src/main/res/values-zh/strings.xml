@@ -792,7 +792,7 @@
     <string name="later">稍后</string>
     <string name="set_custom_slippage">设置自定义滑点</string>
     <string name="auto">自动</string>
-    <string name="slippage_tolerance_must_be_between">滑点公差必须介于%1$.1f%%和%2$.1f%%之间。</string>
+    <string name="slippage_tolerance_must_be_between">滑点公差必须介于%1$.2f%%和%2$.0f%%之间。</string>
     <string name="balance_percentage_must_be_between">余额百分比必须介于%1$d%%和%2$d%%之间。</string>
     <string name="set_custom_percentage">设置自定义百分比</string>
     <string name="balance_percentage">余额百分比</string>

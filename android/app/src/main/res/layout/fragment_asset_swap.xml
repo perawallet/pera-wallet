@@ -39,6 +39,7 @@
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
             android:layout_marginTop="@dimen/spacing_large"
             android:drawablePadding="@dimen/spacing_xsmall"
+            android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
             android:textColor="@color/negative"
             android:visibility="gone"
             app:drawableStartCompat="@drawable/ic_error"

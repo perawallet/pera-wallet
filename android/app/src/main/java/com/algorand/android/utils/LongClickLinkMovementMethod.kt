@@ -12,7 +12,6 @@
 
 package com.algorand.android.utils
 
-import android.os.Handler
 import android.text.Selection
 import android.text.Spannable
 import android.text.method.LinkMovementMethod
@@ -21,12 +20,11 @@ import android.widget.TextView
 
 class LongClickLinkMovementMethod : LinkMovementMethod() {
 
-    private var longClickHandler: Handler? = null
     private var isLongPressed = false
 
     override fun onTouchEvent(widget: TextView, buffer: Spannable, event: MotionEvent): Boolean {
         when (event.action) {
-            MotionEvent.ACTION_CANCEL -> onActionCancel()
+            MotionEvent.ACTION_CANCEL -> onActionCancel(widget)
             MotionEvent.ACTION_UP, MotionEvent.ACTION_DOWN -> {
                 var x = event.x.toInt()
                 var y = event.y.toInt()
@@ -50,12 +48,12 @@ class LongClickLinkMovementMethod : LinkMovementMethod() {
         return super.onTouchEvent(widget, buffer, event)
     }
 
-    private fun onActionCancel() {
-        longClickHandler?.removeCallbacksAndMessages(null)
+    private fun onActionCancel(widget: TextView) {
+        widget.removeCallbacks(null)
     }
 
     private fun onActionUp(span: LongClickableSpan, widget: TextView) {
-        longClickHandler?.removeCallbacksAndMessages(null)
+        onActionCancel(widget)
         if (!isLongPressed) {
             span.onClick(widget)
         }
@@ -64,7 +62,7 @@ class LongClickLinkMovementMethod : LinkMovementMethod() {
 
     private fun onActionDown(span: LongClickableSpan, widget: TextView, buffer: Spannable) {
         Selection.setSelection(buffer, buffer.getSpanStart(span), buffer.getSpanEnd(span))
-        longClickHandler?.postDelayed({
+        widget.postDelayed({
             span.onLongClick(widget)
             isLongPressed = true
         }, LONG_CLICK_TIME)
@@ -77,7 +75,6 @@ class LongClickLinkMovementMethod : LinkMovementMethod() {
         fun getInstance(): LongClickLinkMovementMethod? {
             if (instance == null) {
                 instance = LongClickLinkMovementMethod()
-                instance?.longClickHandler = Handler()
             }
             return instance
         }

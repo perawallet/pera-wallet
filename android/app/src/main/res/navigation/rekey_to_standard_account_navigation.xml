@@ -30,13 +30,13 @@
             android:name="accountAddress"
             app:argType="string" />
         <action
-            android:id="@+id/action_rekeyToStandardAccountInstructionFragment_to_rekeyToAccountSelectionFragment"
-            app:destination="@id/rekeyToAccountSelectionFragment" />
+            android:id="@+id/action_rekeyToStandardAccountInstructionFragment_to_rekeyToStandardAccountSelectionFragment"
+            app:destination="@id/rekeyToStandardAccountSelectionFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/rekeyToAccountSelectionFragment"
-        android:name="com.algorand.android.modules.rekey.rekeytostandardaccount.accountselection.ui.RekeyToAccountSelectionFragment"
+        android:id="@+id/rekeyToStandardAccountSelectionFragment"
+        android:name="com.algorand.android.modules.rekey.rekeytostandardaccount.accountselection.ui.RekeyToStandardAccountSelectionFragment"
         android:label="RekeyToAccountSelectionFragment">
         <argument
             android:name="accountAddress"

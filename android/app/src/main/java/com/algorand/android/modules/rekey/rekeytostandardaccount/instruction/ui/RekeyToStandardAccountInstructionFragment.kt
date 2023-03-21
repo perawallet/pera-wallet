@@ -83,7 +83,9 @@ class RekeyToStandardAccountInstructionFragment : BaseFragment(
         val accountAddress = rekeyToStandardAccountInstructionViewModel.accountAddress
         nav(
             RekeyToStandardAccountInstructionFragmentDirections
-                .actionRekeyToStandardAccountInstructionFragmentToRekeyToAccountSelectionFragment(accountAddress)
+                .actionRekeyToStandardAccountInstructionFragmentToRekeyToStandardAccountSelectionFragment(
+                    accountAddress = accountAddress
+                )
         )
     }
 }

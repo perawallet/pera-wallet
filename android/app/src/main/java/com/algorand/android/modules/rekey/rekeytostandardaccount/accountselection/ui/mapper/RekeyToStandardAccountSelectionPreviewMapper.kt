@@ -12,19 +12,21 @@
 
 package com.algorand.android.modules.rekey.rekeytostandardaccount.accountselection.ui.mapper
 
-import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.ScreenState
-import com.algorand.android.modules.rekey.rekeytostandardaccount.accountselection.ui.model.RekeyToAccountSelectionPreview
+import com.algorand.android.modules.basesingleaccountselection.ui.model.SingleAccountSelectionListItem
+import com.algorand.android.modules.rekey.rekeytostandardaccount.accountselection.ui.model.RekeyToStandardAccountSelectionPreview
 import javax.inject.Inject
 
-class RekeyToAccountSelectionPreviewMapper @Inject constructor() {
+class RekeyToStandardAccountSelectionPreviewMapper @Inject constructor() {
 
-    fun mapToRekeyToAccountSelectionPreview(
-        accountSelectionListItem: List<BaseAccountSelectionListItem>,
+    fun mapToRekeyToStandardAccountSelectionPreview(
+        isLoading: Boolean,
+        singleAccountSelectionListItems: List<SingleAccountSelectionListItem>,
         screenState: ScreenState?
-    ): RekeyToAccountSelectionPreview {
-        return RekeyToAccountSelectionPreview(
-            accountSelectionListItem = accountSelectionListItem,
+    ): RekeyToStandardAccountSelectionPreview {
+        return RekeyToStandardAccountSelectionPreview(
+            isLoading = isLoading,
+            singleAccountSelectionListItems = singleAccountSelectionListItems,
             screenState = screenState
         )
     }

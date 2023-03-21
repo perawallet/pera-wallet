@@ -23,7 +23,7 @@ class SlippageTolerancePreviewMapper @Inject constructor() {
         slippageToleranceList: List<PeraFloatChipItem>,
         checkedToleranceOption: PeraFloatChipItem,
         returnResultEvent: Event<Float>?,
-        showErrorEvent: Event<String>?,
+        errorString: String?,
         requestFocusToInputEvent: Event<Unit>?,
         prefilledAmountInputValue: Event<String>?
     ): SlippageTolerancePreview {
@@ -31,7 +31,7 @@ class SlippageTolerancePreviewMapper @Inject constructor() {
             chipOptionList = slippageToleranceList,
             checkedOption = checkedToleranceOption,
             returnResultEvent = returnResultEvent,
-            showErrorEvent = showErrorEvent,
+            errorString = errorString,
             requestFocusToInputEvent = requestFocusToInputEvent,
             prefilledAmountInputValue = prefilledAmountInputValue
         )

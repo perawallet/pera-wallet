@@ -28,6 +28,7 @@ import androidx.biometric.BiometricPrompt.ERROR_TIMEOUT
 import androidx.biometric.BiometricPrompt.ERROR_UNABLE_TO_PROCESS
 import androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED
 import androidx.fragment.app.FragmentActivity
+import com.algorand.android.utils.executer.MainDispatcherExecutor
 
 const val BIOMETRIC_AUTH_LEVEL = BIOMETRIC_WEAK
 
@@ -52,15 +53,6 @@ fun FragmentActivity.showBiometricAuthentication(
     ) {
         hardwareErrorCallback?.invoke()
         return
-    }
-
-    val biometricExecutor = { command: Runnable ->
-        try {
-            command.run()
-        } catch (exception: Exception) {
-            recordException(exception)
-            exception.printStackTrace()
-        }
     }
 
     val biometricAuthenticationCallback = object : BiometricPrompt.AuthenticationCallback() {
@@ -95,8 +87,12 @@ fun FragmentActivity.showBiometricAuthentication(
         .setNegativeButtonText(negativeButtonText)
         .build()
 
+    val biometricExecutor = MainDispatcherExecutor()
+
     try {
-        BiometricPrompt(this, biometricExecutor, biometricAuthenticationCallback).authenticate(biometricPromptInfo)
+        biometricExecutor.execute {
+            BiometricPrompt(this, biometricExecutor, biometricAuthenticationCallback).authenticate(biometricPromptInfo)
+        }
     } catch (exception: Exception) {
         recordException(exception)
         exception.printStackTrace()

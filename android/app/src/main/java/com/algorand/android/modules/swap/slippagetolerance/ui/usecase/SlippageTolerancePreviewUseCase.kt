@@ -22,6 +22,7 @@ import com.algorand.android.modules.swap.slippagetolerance.ui.model.SlippageTole
 import com.algorand.android.modules.swap.slippagetolerance.ui.util.MAX_SWAP_SLIPPAGE_TOLERANCE
 import com.algorand.android.modules.swap.slippagetolerance.ui.util.MIN_SWAP_SLIPPAGE_TOLERANCE
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.toFloatOrDefault
 import javax.inject.Inject
 
 class SlippageTolerancePreviewUseCase @Inject constructor(
@@ -39,7 +40,7 @@ class SlippageTolerancePreviewUseCase @Inject constructor(
             slippageToleranceList = slippageToleranceOptions,
             checkedToleranceOption = slippageToleranceOptions[defaultSelectedOptionIndex],
             returnResultEvent = null,
-            showErrorEvent = null,
+            errorString = null,
             requestFocusToInputEvent = null,
             prefilledAmountInputValue = previousSelectedTolerance.takeIf {
                 defaultSelectedOptionIndex == CUSTOM_OPTION_CHIP_INDEX
@@ -65,7 +66,6 @@ class SlippageTolerancePreviewUseCase @Inject constructor(
     }
 
     fun getDoneClickUpdatedPreview(
-        resources: Resources,
         inputValue: String,
         previousState: SlippageTolerancePreview
     ): SlippageTolerancePreview {
@@ -78,12 +78,7 @@ class SlippageTolerancePreviewUseCase @Inject constructor(
             } else {
                 val inputAsFloat = inputValue.toFloatOrNull() ?: -1f
                 if (!isInputValid(inputAsFloat)) {
-                    val errorString = resources.getString(
-                        R.string.slippage_tolerance_must_be_between,
-                        MIN_SWAP_SLIPPAGE_TOLERANCE,
-                        MAX_SWAP_SLIPPAGE_TOLERANCE
-                    )
-                    copy(showErrorEvent = Event(errorString))
+                    previousState
                 } else {
                     copy(returnResultEvent = Event(inputAsFloat / SLIPPAGE_TOLERANCE_DIVIDER))
                 }
@@ -91,8 +86,26 @@ class SlippageTolerancePreviewUseCase @Inject constructor(
         }
     }
 
-    fun getCustomItemUpdatedPreview(previousPreview: SlippageTolerancePreview): SlippageTolerancePreview {
-        return previousPreview.copy(checkedOption = previousPreview.chipOptionList[CUSTOM_OPTION_CHIP_INDEX])
+    fun getCustomItemUpdatedPreview(
+        resources: Resources,
+        inputValue: String,
+        previousPreview: SlippageTolerancePreview
+    ): SlippageTolerancePreview {
+        if (inputValue.isBlank()) return previousPreview.copy(errorString = null)
+        val inputAsFloat = inputValue.toFloatOrDefault()
+        val errorString = if (!isInputValid(inputAsFloat)) {
+            resources.getString(
+                R.string.slippage_tolerance_must_be_between,
+                MIN_SWAP_SLIPPAGE_TOLERANCE,
+                MAX_SWAP_SLIPPAGE_TOLERANCE
+            )
+        } else {
+            null
+        }
+        return previousPreview.copy(
+            checkedOption = previousPreview.chipOptionList[CUSTOM_OPTION_CHIP_INDEX],
+            errorString = errorString
+        )
     }
 
     private fun isInputValid(value: Float): Boolean {

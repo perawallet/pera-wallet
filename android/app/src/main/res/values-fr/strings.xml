@@ -791,7 +791,7 @@
     <string name="later">Plus tard</string>
     <string name="set_custom_slippage">Définir un glissement personnalisé</string>
     <string name="auto">Auto</string>
-    <string name="slippage_tolerance_must_be_between">La tolérance de glissement doit être comprise entre %1$.1f et %2$.1f</string>
+    <string name="slippage_tolerance_must_be_between">La tolérance de glissement doit être comprise entre %1$.2f%% et %2$.0f%%</string>
     <string name="balance_percentage_must_be_between">Le pourcentage du solde doit être compris entre %1$d%% et %2$d%%</string>
     <string name="set_custom_percentage">Définir un pourcentage personnalisé</string>
     <string name="balance_percentage">Pourcentage Solde</string>

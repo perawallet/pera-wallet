@@ -13,6 +13,7 @@
 package com.algorand.android.customviews
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Parcelable
 import android.text.InputFilter
 import android.text.InputType
@@ -21,6 +22,7 @@ import android.util.SparseArray
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.updatePadding
 import androidx.core.widget.addTextChangedListener
@@ -61,6 +63,7 @@ class AlgorandInputLayout @JvmOverloads constructor(
     var error: String?
         get() = binding.errorTextView.text.toString()
         set(value) {
+            binding.textInputEditText.backgroundTintList = getEditTextBackgroundColorStateListBasedOnError(value)
             binding.errorTextView.setTextAndVisibility(value)
         }
 
@@ -199,5 +202,10 @@ class AlgorandInputLayout @JvmOverloads constructor(
 
     override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>?) {
         super.dispatchThawSelfOnly(container)
+    }
+
+    private fun getEditTextBackgroundColorStateListBasedOnError(errorText: String?): ColorStateList {
+        val colorRedId = if (errorText.isNullOrBlank()) R.color.text_field_default_background else R.color.negative
+        return ColorStateList.valueOf(ContextCompat.getColor(context, colorRedId))
     }
 }

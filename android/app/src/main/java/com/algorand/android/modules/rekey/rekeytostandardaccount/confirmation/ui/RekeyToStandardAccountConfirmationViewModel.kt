@@ -28,6 +28,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -47,6 +48,18 @@ class RekeyToStandardAccountConfirmationViewModel @Inject constructor(
 
     init {
         updatePreviewWithCalculatedTransactionFee()
+    }
+
+    fun onTransactionSigningFailed() {
+        _rekeyToStandardAccountConfirmationPreviewFlow.update { preview ->
+            rekeyToStandardAccountConfirmationPreviewUseCase.updatePreviewWithClearLoadingState(preview)
+        }
+    }
+
+    fun onTransactionSigningStarted() {
+        _rekeyToStandardAccountConfirmationPreviewFlow.update { preview ->
+            rekeyToStandardAccountConfirmationPreviewUseCase.updatePreviewWithLoadingState(preview)
+        }
     }
 
     fun createRekeyToStandardAccountTransaction(): TransactionData.RekeyToStandardAccount? {

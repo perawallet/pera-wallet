@@ -19,6 +19,7 @@ import com.algorand.android.modules.swap.assetswap.ui.mapper.AssetSwapPreviewMap
 import com.algorand.android.modules.swap.assetswap.ui.mapper.SelectedAssetAmountDetailMapper
 import com.algorand.android.modules.swap.assetswap.ui.mapper.SelectedAssetDetailMapper
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
+import com.algorand.android.modules.swap.common.SwapAppxValueParityHelper
 import com.algorand.android.usecase.AccountAssetDataUseCase
 import com.algorand.android.usecase.CheckUserHasAssetBalanceUseCase
 import com.algorand.android.utils.emptyString
@@ -31,6 +32,7 @@ class AssetSwapInitialPreviewUseCase @Inject constructor(
     private val accountDetailSummaryUseCase: AccountDetailSummaryUseCase,
     private val assetSwapPreviewMapper: AssetSwapPreviewMapper,
     private val checkUserHasAssetBalanceUseCase: CheckUserHasAssetBalanceUseCase,
+    private val swapAppxValueParityHelper: SwapAppxValueParityHelper,
     private val displayedCurrencyUseCase: DisplayedCurrencyUseCase
 ) {
 
@@ -43,7 +45,7 @@ class AssetSwapInitialPreviewUseCase @Inject constructor(
         val toAssetDetail = getToAssetDetail(accountAddress, toAssetId)
 
         val fromSelectedAssetAmountDetail = selectedAssetAmountDetailMapper.mapToDefaultSelectedAssetAmountDetail(
-            primaryCurrencySymbol = displayedCurrencyUseCase.getDisplayedCurrencySymbol()
+            primaryCurrencySymbol = swapAppxValueParityHelper.getDisplayedCurrencySymbol()
         )
         val toSelectedAssetAmountDetail = selectedAssetAmountDetailMapper.mapToDefaultSelectedAssetAmountDetail(
             primaryCurrencySymbol = displayedCurrencyUseCase.getDisplayedCurrencySymbol()

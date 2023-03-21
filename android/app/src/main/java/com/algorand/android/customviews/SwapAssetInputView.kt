@@ -23,6 +23,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -155,6 +156,18 @@ class SwapAssetInputView(context: Context, attrs: AttributeSet? = null) : Constr
             amountEditText.setText(amount)
             chooseAssetButton.hide()
             assetDetailGroup.show()
+        }
+    }
+
+    fun setAmountTextColors(
+        primaryValueTextColorResId: Int,
+        secondaryValueTextColorResId: Int
+    ) {
+        val primaryTextColor = ContextCompat.getColor(context, primaryValueTextColorResId)
+        val secondaryTextColor = ContextCompat.getColor(context, secondaryValueTextColorResId)
+        with(binding) {
+            amountEditText.setTextColor(primaryTextColor)
+            approximateValueTextView.setTextColor(secondaryTextColor)
         }
     }
 

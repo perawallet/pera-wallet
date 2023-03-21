@@ -144,7 +144,8 @@ class AccountDetailUseCase @Inject constructor(
     fun canAccountSignTransaction(publicKey: String): Boolean {
         val account = accountManager.getAccount(publicKey)
         return when (account?.type) {
-            Account.Type.LEDGER, Account.Type.STANDARD, Account.Type.REKEYED_AUTH -> true
+            Account.Type.LEDGER, Account.Type.REKEYED_AUTH -> true
+            Account.Type.STANDARD -> (account.getSecretKey() ?: byteArrayOf()).isNotEmpty()
             Account.Type.REKEYED -> isAuthAccountInDevice(account.address)
             Account.Type.WATCH, null -> false
         }
@@ -262,5 +263,10 @@ class AccountDetailUseCase @Inject constructor(
     fun getAuthAccount(accountAddress: String?): CacheResult<AccountDetail>? {
         val authAccountAddress = getAuthAddress(accountAddress ?: return null) ?: return null
         return getCachedAccountDetail(authAccountAddress)
+    }
+
+    fun getCachedAccountSecretKey(accountAddress: String?): ByteArray? {
+        val safeAccountAddress = accountAddress ?: return null
+        return getCachedAccountDetail(safeAccountAddress)?.data?.account?.getSecretKey()
     }
 }

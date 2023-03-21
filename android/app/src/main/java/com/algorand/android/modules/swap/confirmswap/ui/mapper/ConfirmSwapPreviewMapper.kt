@@ -15,6 +15,7 @@ package com.algorand.android.modules.swap.confirmswap.ui.mapper
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
+import com.algorand.android.modules.swap.confirmswap.ui.mapper.decider.ConfirmSwapPriceImpactWarningStatusDecider
 import com.algorand.android.modules.swap.confirmswap.ui.model.ConfirmSwapPreview
 import com.algorand.android.modules.swap.utils.priceratioprovider.SwapPriceRatioProvider
 import com.algorand.android.utils.AccountDisplayName
@@ -22,7 +23,9 @@ import com.algorand.android.utils.ErrorResource
 import com.algorand.android.utils.Event
 import javax.inject.Inject
 
-class ConfirmSwapPreviewMapper @Inject constructor() {
+class ConfirmSwapPreviewMapper @Inject constructor(
+    private val confirmSwapPriceImpactWarningStatusDecider: ConfirmSwapPriceImpactWarningStatusDecider
+) {
 
     @Suppress("LongParameterList")
     fun mapToConfirmSwapPreview(
@@ -34,7 +37,7 @@ class ConfirmSwapPreviewMapper @Inject constructor() {
         minimumReceived: AnnotatedString,
         swapQuote: SwapQuote,
         isLoading: Boolean,
-        isPriceImpactErrorVisible: Boolean,
+        priceImpact: Float,
         formattedExchangeFee: String,
         formattedPeraFee: String,
         accountIconResource: AccountIconResource,
@@ -53,7 +56,7 @@ class ConfirmSwapPreviewMapper @Inject constructor() {
             formattedPeraFee = formattedPeraFee,
             swapQuote = swapQuote,
             isLoading = isLoading,
-            isPriceImpactErrorVisible = isPriceImpactErrorVisible,
+            priceImpactWarningStatus = confirmSwapPriceImpactWarningStatusDecider.decideWarningStatus(priceImpact),
             accountIconResource = accountIconResource,
             accountDisplayName = accountDisplayName,
             errorEvent = errorEvent,

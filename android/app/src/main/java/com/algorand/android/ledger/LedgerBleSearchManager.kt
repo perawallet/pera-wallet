@@ -17,12 +17,15 @@ import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanFilter
 import android.bluetooth.le.ScanSettings
 import android.content.Context
-import android.os.Handler
 import android.os.ParcelUuid
 import com.algorand.android.R
 import com.algorand.android.ledger.LedgerBleConnectionManager.Companion.SERVICE_UUID
 import com.algorand.android.utils.areBluetoothPermissionsGranted
+import com.algorand.android.utils.launchIO
 import com.algorand.android.utils.sendErrorLog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 
 class LedgerBleSearchManager(
     private val context: Context,
@@ -32,10 +35,11 @@ class LedgerBleSearchManager(
 
     private var isScanning = false
     private var scanCallback: CustomScanCallback? = null
-    private var connectionTimeoutHandler: Handler? = null
+    private var timeoutJob: Job? = null
 
     @SuppressLint("MissingPermission")
     fun scan(
+        coroutineScope: CoroutineScope,
         newScanCallback: CustomScanCallback,
         currentTransactionIndex: Int? = null,
         totalTransactionCount: Int? = null,
@@ -71,24 +75,25 @@ class LedgerBleSearchManager(
         if (context.areBluetoothPermissionsGranted()) {
             bluetoothManager?.adapter?.bluetoothLeScanner?.startScan(scanFilters, scanSettings, scanCallback)
             if (filteredAddress != null) {
-                startTimeout()
+                startTimeout(coroutineScope)
             } else {
                 provideConnectedLedger(
-                currentTransactionIndex = currentTransactionIndex,
-                totalTransactionCount = totalTransactionCount
-            )
+                    currentTransactionIndex = currentTransactionIndex,
+                    totalTransactionCount = totalTransactionCount
+                )
             }
         } else {
             return
         }
     }
 
-    private fun startTimeout() {
-        connectionTimeoutHandler = Handler()
-        connectionTimeoutHandler?.postDelayed({
+    private fun startTimeout(coroutineScope: CoroutineScope) {
+        timeoutJob?.cancel()
+        timeoutJob = coroutineScope.launchIO {
+            delay(MAX_SCAN_DURATION)
             scanCallback?.onScanError(R.string.error_connection_message, R.string.error_connection_title)
             stop()
-        }, MAX_SCAN_DURATION)
+        }
     }
 
     private fun provideConnectedLedger(currentTransactionIndex: Int?, totalTransactionCount: Int?) {
@@ -121,7 +126,7 @@ class LedgerBleSearchManager(
 
     @SuppressLint("MissingPermission")
     fun stop() {
-        connectionTimeoutHandler?.removeCallbacksAndMessages(null)
+        timeoutJob?.cancel()
         scanCallback?.run {
             if (context.areBluetoothPermissionsGranted()) {
                 bluetoothManager?.adapter?.bluetoothLeScanner?.stopScan(this)

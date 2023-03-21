@@ -12,7 +12,6 @@
 
 package com.algorand.android.ledger
 
-import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.Lifecycle
@@ -151,7 +150,7 @@ class LedgerBleOperationManager @Inject constructor(
         }
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressWarnings("MissingPermission", "LongMethod")
     private fun onPublicKeyReceived(device: BluetoothDevice, publicKey: String) {
         currentScope.launch(Dispatchers.IO) {
             currentOperation?.run {
@@ -165,9 +164,13 @@ class LedgerBleOperationManager @Inject constructor(
                     )
                     return@launch
                 }
-                if (this is BaseTransactionOperation &&
-                    (publicKey == accountAddress || publicKey == accountAuthAddress)
-                ) {
+
+                if (this is BaseTransactionOperation && isRekeyedToAnotherAccount && publicKey == accountAuthAddress) {
+                    isAddressVerified = true
+                    sendTransactionRequest()
+                    return@launch
+                }
+                if (this is BaseTransactionOperation && !isRekeyedToAnotherAccount && publicKey == accountAddress) {
                     isAddressVerified = true
                     sendTransactionRequest()
                     return@launch

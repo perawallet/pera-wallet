@@ -19,6 +19,7 @@ import com.algorand.android.models.PeraFloatChipItem
 import com.algorand.android.modules.swap.balancepercentage.ui.mapper.BalancePercentagePreviewMapper
 import com.algorand.android.modules.swap.balancepercentage.ui.model.BalancePercentagePreview
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.toFloatOrDefault
 import javax.inject.Inject
 
 class BalancePercentagePreviewUseCase @Inject constructor(
@@ -30,23 +31,37 @@ class BalancePercentagePreviewUseCase @Inject constructor(
         return balancePercentagePreviewMapper.mapToBalancePercentagePreview(
             chipOptionList = getBalancePercentageOptionList(resources),
             returnResultEvent = null,
-            showErrorEvent = null
+            errorString = null
         )
     }
 
-    fun getDoneClickUpdatedPreview(
+    fun getPercentageUpdatedPreview(
         resources: Resources,
         inputValue: String,
-        previousState: BalancePercentagePreview
+        previousPreview: BalancePercentagePreview
     ): BalancePercentagePreview {
-        val inputAsFloat = inputValue.toFloatOrNull() ?: -1f
-        return if (!isInputValid(inputAsFloat)) {
-            val errorString = resources.getString(
+        if (inputValue.isBlank()) return previousPreview.copy(errorString = null)
+        val inputAsFloat = inputValue.toFloatOrNull() ?: return previousPreview
+        val errorString = if (!isInputValid(inputAsFloat)) {
+            resources.getString(
                 R.string.balance_percentage_must_be_between,
                 MINIMUM_BALANCE_PERCENTAGE.toInt(),
                 MAXIMUM_BALANCE_PERCENTAGE.toInt()
             )
-            previousState.copy(showErrorEvent = Event(errorString))
+        } else {
+            null
+        }
+        return previousPreview.copy(errorString = errorString)
+    }
+
+    fun getDoneClickUpdatedPreview(
+        inputValue: String,
+        previousState: BalancePercentagePreview
+    ): BalancePercentagePreview {
+        if (inputValue.isBlank()) return previousState
+        val inputAsFloat = inputValue.toFloatOrDefault()
+        return if (!isInputValid(inputAsFloat)) {
+            previousState
         } else {
             previousState.copy(returnResultEvent = Event(inputAsFloat))
         }

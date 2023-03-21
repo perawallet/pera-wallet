@@ -22,12 +22,12 @@ class BalancePercentagePreviewMapper @Inject constructor() {
     fun mapToBalancePercentagePreview(
         chipOptionList: List<PeraFloatChipItem>,
         returnResultEvent: Event<Float>?,
-        showErrorEvent: Event<String>?
+        errorString: String?
     ): BalancePercentagePreview {
         return BalancePercentagePreview(
             chipOptionList = chipOptionList,
             returnResultEvent = returnResultEvent,
-            showErrorEvent = showErrorEvent
+            errorString = errorString
         )
     }
 }

@@ -231,6 +231,7 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
             )
             setQuickActionsButtons(
                 isAlgo = isAlgo,
+                isSwapButtonVisible = isSwapButtonVisible,
                 isQuickActionButtonsVisible = isQuickActionButtonsVisible,
                 isSwapButtonSelected = isSwapButtonSelected
             )
@@ -319,13 +320,14 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
 
     private fun setQuickActionsButtons(
         isAlgo: Boolean,
+        isSwapButtonVisible: Boolean,
         isQuickActionButtonsVisible: Boolean,
         isSwapButtonSelected: Boolean
     ) {
         with(binding) {
             quickActionButtons.isVisible = isQuickActionButtonsVisible
             swapButton.apply {
-                isVisible = isAlgo && isQuickActionButtonsVisible
+                isVisible = isSwapButtonVisible
                 isSelected = isSwapButtonSelected
                 setOnClickListener { assetDetailViewModel.onSwapButtonClick() }
             }

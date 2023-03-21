@@ -15,6 +15,7 @@ package com.algorand.android.modules.swap.assetswap.ui.utils
 import com.algorand.android.R
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
+import com.algorand.android.modules.currency.domain.model.Currency
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
 import com.algorand.android.modules.swap.utils.swapFeePadding
 import com.algorand.android.usecase.AccountAssetDataUseCase
@@ -44,7 +45,17 @@ class SwapBalanceErrorProvider @Inject constructor(
                 Event(errorResource)
             }
             !hasAccountEnoughBalanceToPayFees(swapQuote, accountAddress) -> {
-                Event(Local(R.string.account_does_not_have_algo))
+                val formattedMinimumBalance = getUserMinRequiredBalance(accountAddress)
+                    .stripTrailingZeros()
+                    .toPlainString()
+                val errorAnnotatedString = AnnotatedString(
+                    stringResId = R.string.algo_balance_is_too_low,
+                    replacementList = listOf(
+                        "algo_icon" to Currency.ALGO.symbol,
+                        "min_balance" to formattedMinimumBalance
+                    )
+                )
+                Event(ErrorResource.LocalErrorResource.Defined(errorAnnotatedString))
             }
             else -> null
         }
@@ -59,9 +70,7 @@ class SwapBalanceErrorProvider @Inject constructor(
     private fun hasAccountEnoughBalanceToPayFees(swapQuote: SwapQuote, accountAddress: String): Boolean {
         with(swapQuote) {
             val userAlgoBalance = getUserBalance(ALGO_ID, accountAddress)
-            val accountInfo = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data
-            val minBalanceUserNeedsToKeep = accountInfo?.accountInformation?.getMinAlgoBalance()
-                ?.toBigDecimal()?.movePointLeft(ALGO_DECIMALS) ?: BigDecimal.ZERO
+            val minBalanceUserNeedsToKeep = getUserMinRequiredBalance(accountAddress)
             val requiredBalance = if (isFromAssetAlgo) {
                 fromAssetAmount.movePointLeft(ALGO_DECIMALS).add(minBalanceUserNeedsToKeep)
             } else {
@@ -70,6 +79,12 @@ class SwapBalanceErrorProvider @Inject constructor(
 
             return requiredBalance isLesserThan userAlgoBalance || requiredBalance isEqualTo userAlgoBalance
         }
+    }
+
+    private fun getUserMinRequiredBalance(accountAddress: String): BigDecimal {
+        val accountInfo = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data
+        return accountInfo?.accountInformation?.getMinAlgoBalance()?.toBigDecimal()?.movePointLeft(ALGO_DECIMALS)
+            ?: BigDecimal.ZERO
     }
 
     private fun getUserBalance(assetId: Long, accountAddress: String): BigDecimal {

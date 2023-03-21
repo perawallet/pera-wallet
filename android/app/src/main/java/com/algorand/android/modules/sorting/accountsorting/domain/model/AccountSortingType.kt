@@ -16,6 +16,8 @@ import com.algorand.android.R
 import com.algorand.android.models.Account
 import com.algorand.android.models.BaseAccountAndAssetListItem
 import com.algorand.android.modules.sorting.accountsorting.util.LOCAL_ACCOUNT_START_INDEX
+import com.algorand.android.utils.AccountDisplayName
+import java.math.BigDecimal
 
 sealed class AccountSortingType {
 
@@ -35,6 +37,8 @@ sealed class AccountSortingType {
         currentList: List<BaseAccountAndAssetListItem.AccountListItem>
     ): List<BaseAccountAndAssetListItem.AccountListItem>
 
+    abstract fun sort(accountNameAndValueMap: Map<AccountDisplayName, BigDecimal>): Map<AccountDisplayName, BigDecimal>
+
     object ManuallySort : AccountSortingType() {
         override val typeIdentifier: TypeIdentifier = TypeIdentifier.MANUAL
         override val textResId: Int = R.string.manually
@@ -43,6 +47,12 @@ sealed class AccountSortingType {
             currentList: List<BaseAccountAndAssetListItem.AccountListItem>
         ): List<BaseAccountAndAssetListItem.AccountListItem> {
             return currentList
+        }
+
+        override fun sort(
+            accountNameAndValueMap: Map<AccountDisplayName, BigDecimal>
+        ): Map<AccountDisplayName, BigDecimal> {
+            return accountNameAndValueMap
         }
 
         fun manualSort(
@@ -64,6 +74,15 @@ sealed class AccountSortingType {
         ): List<BaseAccountAndAssetListItem.AccountListItem> {
             return currentList.sortedBy { it.alphabeticSortingField?.lowercase() }
         }
+
+        override fun sort(
+            accountNameAndValueMap: Map<AccountDisplayName, BigDecimal>
+        ): Map<AccountDisplayName, BigDecimal> {
+            val comparator = compareBy<AccountDisplayName> { accountDisplayName ->
+                accountDisplayName.getAccountPrimaryDisplayName()
+            }
+            return accountNameAndValueMap.toSortedMap(comparator)
+        }
     }
 
     object AlphabeticallyDescending : AccountSortingType() {
@@ -73,6 +92,15 @@ sealed class AccountSortingType {
             currentList: List<BaseAccountAndAssetListItem.AccountListItem>
         ): List<BaseAccountAndAssetListItem.AccountListItem> {
             return currentList.sortedByDescending { it.alphabeticSortingField?.lowercase() }
+        }
+
+        override fun sort(
+            accountNameAndValueMap: Map<AccountDisplayName, BigDecimal>
+        ): Map<AccountDisplayName, BigDecimal> {
+            val comparator = compareByDescending<AccountDisplayName> { accountDisplayName ->
+                accountDisplayName.getAccountPrimaryDisplayName()
+            }
+            return accountNameAndValueMap.toSortedMap(comparator)
         }
     }
 
@@ -84,6 +112,15 @@ sealed class AccountSortingType {
         ): List<BaseAccountAndAssetListItem.AccountListItem> {
             return currentList.sortedBy { it.numericSortingField }
         }
+
+        override fun sort(
+            accountNameAndValueMap: Map<AccountDisplayName, BigDecimal>
+        ): Map<AccountDisplayName, BigDecimal> {
+            val comparator = compareBy<Pair<AccountDisplayName, BigDecimal>> { (_, accountValue) ->
+                accountValue
+            }
+            return accountNameAndValueMap.toList().sortedWith(comparator).toMap()
+        }
     }
 
     object NumericalDescendingSort : AccountSortingType() {
@@ -93,6 +130,15 @@ sealed class AccountSortingType {
             currentList: List<BaseAccountAndAssetListItem.AccountListItem>
         ): List<BaseAccountAndAssetListItem.AccountListItem> {
             return currentList.sortedByDescending { it.numericSortingField }
+        }
+
+        override fun sort(
+            accountNameAndValueMap: Map<AccountDisplayName, BigDecimal>
+        ): Map<AccountDisplayName, BigDecimal> {
+            val comparator = compareByDescending<Pair<AccountDisplayName, BigDecimal>> { (_, accountValue) ->
+                accountValue
+            }
+            return accountNameAndValueMap.toList().sortedWith(comparator).toMap()
         }
     }
 

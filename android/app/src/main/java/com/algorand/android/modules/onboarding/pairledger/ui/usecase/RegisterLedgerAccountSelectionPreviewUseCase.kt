@@ -23,6 +23,7 @@ import com.algorand.android.modules.onboarding.pairledger.ui.mapper.RegisterLedg
 import com.algorand.android.modules.onboarding.pairledger.ui.model.RegisterLedgerAccountSelectionPreview
 import com.algorand.android.repository.AccountRepository
 import com.algorand.android.ui.ledgeraccountselection.SearchType
+import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.AssetFetchAndCacheUseCase
 import com.algorand.android.usecase.LedgerAccountSelectionUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
@@ -40,6 +41,7 @@ class RegisterLedgerAccountSelectionPreviewUseCase @Inject constructor(
     private val ledgerAccountSelectionAccountItemMapper: LedgerAccountSelectionAccountItemMapper,
     private val accountRepository: AccountRepository,
     private val accountInformationMapper: AccountInformationMapper,
+    private val accountDetailUseCase: AccountDetailUseCase,
     assetFetchAndCacheUseCase: AssetFetchAndCacheUseCase,
     simpleAssetDetailUseCase: SimpleAssetDetailUseCase
 ) : LedgerAccountSelectionUseCase(
@@ -71,22 +73,31 @@ class RegisterLedgerAccountSelectionPreviewUseCase @Inject constructor(
         bluetoothAddress: String,
         bluetoothName: String?
     ) = flow {
+        val ledgerAccountAddress = ledgerAccountsInformation.map { it.address }
         val ledgerAccounts = mutableListOf<AccountSelectionListItem.AccountItem>().apply {
             ledgerAccountsInformation.forEachIndexed { index, ledgerAccountInformation ->
                 // Cache ledger accounts assets
                 cacheLedgerAccountAssets(accountInformation = ledgerAccountInformation)
+
                 val authAccountDetail = Account.Detail.Ledger(
                     bluetoothAddress = bluetoothAddress,
                     bluetoothName = bluetoothName,
                     positionInLedger = index
                 )
-                val authAccountSelectionListItem = ledgerAccountSelectionAccountItemMapper.mapTo(
-                    accountInformation = ledgerAccountInformation,
-                    accountDetail = authAccountDetail,
-                    accountCacheManager = accountCacheManager,
-                    selectorDrawableRes = R.drawable.checkbox_selector
-                )
-                add(authAccountSelectionListItem)
+
+                // Do not add ledger account if rekeyed to the same ledger account
+                val isAuthAccountInLedger = ledgerAccountInformation.rekeyAdminAddress in ledgerAccountAddress
+                if (!ledgerAccountInformation.isRekeyed() || !isAuthAccountInLedger) {
+
+                    val authAccountSelectionListItem = ledgerAccountSelectionAccountItemMapper.mapTo(
+                        accountInformation = ledgerAccountInformation,
+                        accountDetail = authAccountDetail,
+                        accountCacheManager = accountCacheManager,
+                        selectorDrawableRes = R.drawable.checkbox_selector
+                    )
+                    add(authAccountSelectionListItem)
+                }
+
                 val rekeyedAccountSelectionListItems = getRekeyedAccountsOfAuthAccount(
                     rekeyAdminAddress = ledgerAccountInformation.address,
                     ledgerDetail = authAccountDetail
@@ -102,6 +113,7 @@ class RegisterLedgerAccountSelectionPreviewUseCase @Inject constructor(
             )
             addFirst(instructionItem)
         }
+
         val preview = registerLedgerAccountSelectionPreviewMapper.mapToRegisterLedgerAccountSelectionPreview(
             isLoading = false,
             accountSelectionListItems = ledgerAccounts,
@@ -134,9 +146,12 @@ class RegisterLedgerAccountSelectionPreviewUseCase @Inject constructor(
                         )
                         // Cache rekeyed accounts assets
                         cacheLedgerAccountAssets(accountInformation)
+
+                        val accountSecretKey = accountDetailUseCase.getCachedAccountSecretKey(payload.address)
                         val detail = Account.Detail.RekeyedAuth.create(
                             authDetail = null,
-                            rekeyedAuthDetail = mapOf(rekeyAdminAddress to ledgerDetail)
+                            rekeyedAuthDetail = mapOf(rekeyAdminAddress to ledgerDetail),
+                            secretKey = accountSecretKey
                         )
                         ledgerAccountSelectionAccountItemMapper.mapTo(
                             accountInformation = accountInformation,

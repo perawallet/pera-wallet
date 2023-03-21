@@ -36,6 +36,7 @@ data class AssetDetailPreview(
     val assetPrismUrl: String?,
     val isQuickActionButtonsVisible: Boolean,
     val isSwapButtonSelected: Boolean,
+    val isSwapButtonVisible: Boolean,
     val onShowGlobalErrorEvent: Event<Pair<Int, AnnotatedString>>? = null,
     val swapNavigationDirectionEvent: Event<NavDirections>? = null,
     val isMarketInformationVisible: Boolean,

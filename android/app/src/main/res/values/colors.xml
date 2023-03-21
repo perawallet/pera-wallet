@@ -325,6 +325,7 @@
     <color name="paste_button_text_color">@color/gray_100</color>
 
     <color name="text_field_typing_color">@color/gray_800</color>
+    <color name="text_field_default_background">@color/gray_200</color>
 
     <!--  Passphrase Input  -->
     <color name="focused_line_color">@color/gray_800</color>

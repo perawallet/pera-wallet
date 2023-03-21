@@ -39,7 +39,7 @@ class SwapAssetSelectionItemMapper @Inject constructor(
                 formattedPrimaryValue = formattedPrimaryValue,
                 formattedSecondaryValue = formattedSecondaryValue,
                 arePrimaryAndSecondaryValueVisible = arePrimaryAndSecondaryValueVisible,
-                assetDrawableProvider = drawableProviderDecider.getAssetDrawableProvider(assetId),
+                assetDrawableProvider = drawableProviderDecider.getAssetDrawableProvider(assetId, assetName, logoUrl),
                 verificationTier = verificationTierConfigurationDecider
                     .decideVerificationTierConfiguration(verificationTier)
             )
@@ -52,14 +52,19 @@ class SwapAssetSelectionItemMapper @Inject constructor(
         formattedSecondaryValue: String,
         arePrimaryAndSecondaryValueVisible: Boolean
     ): SwapAssetSelectionItem {
+        val assetFullName = AssetName.create(ownedAssetData.name)
         return SwapAssetSelectionItem(
             assetId = ownedAssetData.id,
-            assetFullName = AssetName.create(ownedAssetData.name),
+            assetFullName = assetFullName,
             assetShortName = AssetName.createShortName(ownedAssetData.shortName),
             formattedPrimaryValue = formattedPrimaryValue,
             formattedSecondaryValue = formattedSecondaryValue,
             arePrimaryAndSecondaryValueVisible = arePrimaryAndSecondaryValueVisible,
-            assetDrawableProvider = drawableProviderDecider.getAssetDrawableProvider(ownedAssetData.id),
+            assetDrawableProvider = drawableProviderDecider.getAssetDrawableProvider(
+                assetId = ownedAssetData.id,
+                assetName = assetFullName,
+                logoUri = ownedAssetData.prismUrl
+            ),
             verificationTier = verificationTierConfigurationDecider
                 .decideVerificationTierConfiguration(ownedAssetData.verificationTier)
         )

@@ -13,7 +13,6 @@
 package com.algorand.android.modules.swap.assetswap.ui.usecase
 
 import com.algorand.android.R
-import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapType
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.ErrorResource
@@ -50,7 +49,6 @@ class AssetSwapPreviewUseCase @Inject constructor(
         toAssetId: Long?,
         amount: String?,
         accountAddress: String,
-        swapType: SwapType,
         percentage: Float?,
         previousState: AssetSwapPreview?
     ) = assetSwapAmountUpdatedPreviewUseCase.getUpdatedPreview(
@@ -58,7 +56,6 @@ class AssetSwapPreviewUseCase @Inject constructor(
         toAssetId = toAssetId,
         amount = amount,
         accountAddress = accountAddress,
-        swapType = swapType,
         previousState = previousState,
         percentage = percentage
     )
@@ -66,16 +63,12 @@ class AssetSwapPreviewUseCase @Inject constructor(
     fun getAssetsSwitchedUpdatedPreview(
         fromAssetId: Long,
         toAssetId: Long,
-        amount: String?,
         accountAddress: String,
-        swapType: SwapType,
         previousState: AssetSwapPreview
     ) = assetSwapAssetsSwitchUpdatePreviewUseCase.getAssetsSwitchedUpdatedPreview(
         fromAssetId = fromAssetId,
         toAssetId = toAssetId,
-        amount = amount,
         accountAddress = accountAddress,
-        swapType = swapType,
         previousState = previousState
     )
 
@@ -84,14 +77,12 @@ class AssetSwapPreviewUseCase @Inject constructor(
         toAssetId: Long?,
         amount: String?,
         accountAddress: String,
-        swapType: SwapType,
         previousState: AssetSwapPreview
     ) = fromAssetUpdatedUseCase.getFromAssetUpdatedPreview(
         fromAssetId = fromAssetId,
         toAssetId = toAssetId,
         amount = amount,
         accountAddress = accountAddress,
-        swapType = swapType,
         previousState = previousState
     )
 
@@ -101,7 +92,6 @@ class AssetSwapPreviewUseCase @Inject constructor(
         amount: String?,
         fromAssetDecimal: Int,
         accountAddress: String,
-        swapType: SwapType,
         previousState: AssetSwapPreview
     ) = toAssetUpdatedUseCase.getToAssetUpdatedPreview(
         fromAssetId = fromAssetId,
@@ -109,7 +99,6 @@ class AssetSwapPreviewUseCase @Inject constructor(
         amount = amount,
         fromAssetDecimal = fromAssetDecimal,
         accountAddress = accountAddress,
-        swapType = swapType,
         previousState = previousState
     )
 
@@ -128,7 +117,7 @@ class AssetSwapPreviewUseCase @Inject constructor(
                 it.useSuspended(
                     onSuccess = { updatedAmount ->
                         if (previousAmount == updatedAmount.toString()) onLoadingChange(false)
-                        onSuccess(updatedAmount.toString())
+                        onSuccess(updatedAmount.stripTrailingZeros().toPlainString())
                     },
                     onFailed = {
                         val errorEvent = if (it.exception is InsufficientAlgoBalance) {

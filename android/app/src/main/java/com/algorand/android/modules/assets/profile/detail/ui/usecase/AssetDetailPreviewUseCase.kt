@@ -59,6 +59,7 @@ class AssetDetailPreviewUseCase @Inject constructor(
     }
 
     suspend fun updatePreviewForNavigatingSwap(
+        assetId: Long,
         currentPreview: AssetDetailPreview,
         accountAddress: String
     ): Flow<AssetDetailPreview> = flow {
@@ -66,7 +67,8 @@ class AssetDetailPreviewUseCase @Inject constructor(
         swapNavigationDestinationHelper.getSwapNavigationDestination(
             accountAddress = accountAddress,
             onNavToSwap = { address ->
-                swapNavDirection = AssetDetailFragmentDirections.actionAssetDetailFragmentToSwapNavigation(address)
+                swapNavDirection = AssetDetailFragmentDirections
+                    .actionAssetDetailFragmentToSwapNavigation(address, assetId)
             },
             onNavToIntroduction = {
                 swapNavDirection = AssetDetailFragmentDirections
@@ -92,6 +94,7 @@ class AssetDetailPreviewUseCase @Inject constructor(
                 ?: return@combine null
             val account = cachedAccountDetail.data?.account
             val isSwapButtonSelected = getRedDotVisibility(baseOwnedAssetDetail.isAlgo)
+            val isUserOptedInToAsa = cachedAccountDetail.data?.accountInformation?.isAssetSupported(assetId) ?: false
             // TODO Check Error and Loading cases later
             val assetDetail = if (assetId != ALGO_ID) {
                 (assetDetailResult as? DataResource.Success)?.data
@@ -111,10 +114,10 @@ class AssetDetailPreviewUseCase @Inject constructor(
                 canAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(accountAddress),
                 isQuickActionButtonsVisible = isQuickActionButtonsVisible,
                 isSwapButtonSelected = isSwapButtonSelected,
+                isSwapButtonVisible = isUserOptedInToAsa && isQuickActionButtonsVisible,
                 isMarketInformationVisible = isMarketInformationVisible,
                 last24HoursChange = assetDetail?.last24HoursAlgoPriceChangePercentage,
                 formattedAssetPrice = formattedAssetPrice
-
             )
         }.distinctUntilChanged()
     }

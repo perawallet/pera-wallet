@@ -15,5 +15,9 @@ package com.algorand.android.modules.swap.assetselection.base.ui.model
 enum class SwapType {
     FIXED_INPUT,
     FIXED_OUTPUT,
-    UNKNOWN
+    UNKNOWN;
+
+    companion object {
+        fun getDefaultSwapType() = FIXED_INPUT
+    }
 }

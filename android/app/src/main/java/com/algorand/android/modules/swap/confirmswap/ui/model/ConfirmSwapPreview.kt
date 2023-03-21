@@ -36,7 +36,7 @@ data class ConfirmSwapPreview(
     val formattedPeraFee: String,
     val swapQuote: SwapQuote,
     val isLoading: Boolean,
-    val isPriceImpactErrorVisible: Boolean,
+    val priceImpactWarningStatus: ConfirmSwapPriceImpactWarningStatus,
     val accountIconResource: AccountIconResource,
     val accountDisplayName: AccountDisplayName,
     val errorEvent: Event<ErrorResource>? = null,
@@ -45,6 +45,7 @@ data class ConfirmSwapPreview(
     val navigateToLedgerWaitingForApprovalDialogEvent: Event<LedgerDialogPayload>? = null,
     val navigateToLedgerNotFoundDialogEvent: Event<Unit>? = null,
     val dismissLedgerWaitingForApprovalDialogEvent: Event<Unit>? = null,
+    val navToSwapConfirmationBottomSheetEvent: Event<Long>? = null,
     private val priceRatioProvider: SwapPriceRatioProvider
 ) {
 
@@ -61,6 +62,8 @@ data class ConfirmSwapPreview(
         val formattedApproximateValue: String,
         val shortName: AssetName,
         val assetDrawableProvider: BaseAssetDrawableProvider,
-        val verificationTierConfig: VerificationTierConfiguration
+        val verificationTierConfig: VerificationTierConfiguration,
+        val amountTextColorResId: Int,
+        val approximateValueTextColorResId: Int
     )
 }

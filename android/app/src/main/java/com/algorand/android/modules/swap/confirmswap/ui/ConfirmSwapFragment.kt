@@ -14,6 +14,7 @@ package com.algorand.android.modules.swap.confirmswap.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.algorand.android.HomeNavigationDirections
@@ -28,6 +29,8 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.swap.confirmswap.domain.model.SwapQuoteTransaction
 import com.algorand.android.modules.swap.confirmswap.ui.model.ConfirmSwapPreview
+import com.algorand.android.modules.swap.confirmswap.ui.model.ConfirmSwapPriceImpactWarningStatus
+import com.algorand.android.modules.swap.confirmswapconfirmation.SwapConfirmationBottomSheet.Companion.CONFIRMATION_SUCCESS_KEY
 import com.algorand.android.modules.swap.ledger.signwithledger.ui.model.LedgerDialogPayload
 import com.algorand.android.modules.swap.slippagetolerance.ui.SlippageToleranceBottomSheet.Companion.CHECKED_SLIPPAGE_TOLERANCE_KEY
 import com.algorand.android.utils.AccountDisplayName
@@ -109,6 +112,12 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap) {
         it?.consume()?.run { nav(HomeNavigationDirections.actionGlobalLedgerConnectionIssueBottomSheet()) }
     }
 
+    private val navigateToSwapConfirmationBottomSheetEventCollector: suspend (Event<Long>?) -> Unit = {
+        it?.consume()?.let { priceImpact ->
+            nav(ConfirmSwapFragmentDirections.actionConfirmSwapFragmentToSwapConfirmationBottomSheet(priceImpact))
+        }
+    }
+
     private val dismissLedgerWaitingForApprovalDialogEventCollector: suspend (Event<Unit>?) -> Unit = {
         it?.consume()?.run {
             ledgerLoadingDialog?.dismissAllowingStateLoss()
@@ -160,6 +169,9 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap) {
         super.onResume()
         useFragmentResultListenerValue<Float>(CHECKED_SLIPPAGE_TOLERANCE_KEY) { slippageTolerance ->
             confirmSwapViewModel.onSlippageToleranceUpdated(slippageTolerance)
+        }
+        useFragmentResultListenerValue<Boolean>(CONFIRMATION_SUCCESS_KEY) { isConfirmed ->
+            confirmSwapViewModel.onSwapPriceImpactConfirmationResult(isConfirmed)
         }
     }
 
@@ -218,6 +230,10 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap) {
                     map { it.dismissLedgerWaitingForApprovalDialogEvent }.distinctUntilChanged(),
                     dismissLedgerWaitingForApprovalDialogEventCollector
                 )
+                collectLatestOnLifecycle(
+                    map { it.navToSwapConfirmationBottomSheetEvent }.distinctUntilChanged(),
+                    navigateToSwapConfirmationBottomSheetEventCollector
+                )
             }
         }
     }
@@ -231,8 +247,28 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap) {
                 peraFeeTextView.text = formattedPeraFee
                 exchangeFeeTextView.text = formattedExchangeFee
                 priceRatioTextView.text = context?.getXmlStyledString(getPriceRatio(resources))
-                priceImpactErrorGroup.isVisible = isPriceImpactErrorVisible
+                initPriceImpactWarningStatus(priceImpactWarningStatus)
                 initToolbarAccountDetail(accountDisplayName, accountIconResource)
+            }
+        }
+    }
+
+    private fun initPriceImpactWarningStatus(priceImpactWarningStatus: ConfirmSwapPriceImpactWarningStatus) {
+        with(binding) {
+            with(priceImpactWarningStatus) {
+                priceImpactErrorGroup.isVisible = isPriceImpactErrorVisible
+                priceImpactTextView.setTextColor(ContextCompat.getColor(root.context, priceImpactTextColorResId))
+                confirmSwapButton.isEnabled = isConfirmButtonEnabled
+                priceImpactLabelTextView.setTextColor(
+                    ContextCompat.getColor(root.context, priceImpactLabelTextColorResId)
+                )
+                val errorTextAnnotatedString = getErrorText(root.context)
+                priceImpactErrorTextView.apply {
+                    movementMethod = priceImpactWarningStatus.movementMethod
+                    if (errorTextAnnotatedString != null) {
+                        text = context?.getXmlStyledString(errorTextAnnotatedString)
+                    }
+                }
             }
         }
     }
@@ -275,6 +311,10 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap) {
                     assetShortName = shortName,
                     verificationTierConfiguration = verificationTierConfig,
                     approximateValue = getString(R.string.approximate_currency_value, formattedApproximateValue)
+                )
+                setAmountTextColors(
+                    primaryValueTextColorResId = assetDetail.amountTextColorResId,
+                    secondaryValueTextColorResId = assetDetail.approximateValueTextColorResId
                 )
             }
         }

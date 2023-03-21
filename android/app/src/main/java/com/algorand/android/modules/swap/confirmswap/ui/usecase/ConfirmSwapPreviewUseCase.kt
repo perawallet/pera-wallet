@@ -17,18 +17,22 @@ import com.algorand.android.R
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.modules.accounts.domain.usecase.AccountDetailSummaryUseCase
 import com.algorand.android.modules.currency.domain.model.Currency.ALGO
-import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
+import com.algorand.android.modules.parity.utils.ParityUtils
 import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapType
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuoteAssetDetail
 import com.algorand.android.modules.swap.assetswap.domain.usecase.GetSwapQuoteUseCase
+import com.algorand.android.modules.swap.common.SwapAppxValueParityHelper
 import com.algorand.android.modules.swap.common.domain.usecase.SetSwapSlippageToleranceUseCase
 import com.algorand.android.modules.swap.confirmswap.domain.SwapTransactionSignManager
 import com.algorand.android.modules.swap.confirmswap.domain.model.SwapQuoteTransaction
 import com.algorand.android.modules.swap.confirmswap.domain.usecase.CreateSwapQuoteTransactionsUseCase
 import com.algorand.android.modules.swap.confirmswap.ui.mapper.ConfirmSwapAssetDetailMapper
 import com.algorand.android.modules.swap.confirmswap.ui.mapper.ConfirmSwapPreviewMapper
+import com.algorand.android.modules.swap.confirmswap.ui.mapper.decider.ConfirmSwapPriceImpactWarningStatusDecider
 import com.algorand.android.modules.swap.confirmswap.ui.model.ConfirmSwapPreview
+import com.algorand.android.modules.swap.confirmswap.ui.model.ConfirmSwapPriceImpactWarningStatus
+import com.algorand.android.modules.swap.confirmswap.ui.model.ConfirmSwapPriceImpactWarningStatus.NoWarning
 import com.algorand.android.modules.swap.ledger.signwithledger.ui.model.LedgerDialogPayload
 import com.algorand.android.modules.swap.utils.getFormattedMinimumReceivedAmount
 import com.algorand.android.modules.swap.utils.priceratioprovider.SwapPriceRatioProviderMapper
@@ -56,24 +60,26 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 
+@Suppress("LongParameterList")
 class ConfirmSwapPreviewUseCase @Inject constructor(
     private val confirmSwapPreviewMapper: ConfirmSwapPreviewMapper,
     private val confirmSwapAssetDetailMapper: ConfirmSwapAssetDetailMapper,
     private val getSwapQuoteUseCase: GetSwapQuoteUseCase,
-    private val parityUseCase: ParityUseCase,
     private val createSwapQuoteTransactionsUseCase: CreateSwapQuoteTransactionsUseCase,
     private val swapTransactionSignManager: SwapTransactionSignManager,
     private val swapPriceRatioProviderMapper: SwapPriceRatioProviderMapper,
     private val accountDetailSummaryUseCase: AccountDetailSummaryUseCase,
-    private val setSwapSlippageToleranceUseCase: SetSwapSlippageToleranceUseCase
+    private val setSwapSlippageToleranceUseCase: SetSwapSlippageToleranceUseCase,
+    private val swapAppxValueParityHelper: SwapAppxValueParityHelper,
+    private val priceImpactWarningStatusDecider: ConfirmSwapPriceImpactWarningStatusDecider
 ) {
 
     fun getConfirmSwapPreview(swapQuote: SwapQuote): ConfirmSwapPreview {
         val accountDetailSummary = accountDetailSummaryUseCase.getAccountDetailSummary(swapQuote.accountAddress)
         return with(swapQuote) {
             confirmSwapPreviewMapper.mapToConfirmSwapPreview(
-                fromAssetDetail = createAssetDetail(fromAssetDetail, fromAssetAmount, fromAssetAmountInUsdValue),
-                toAssetDetail = createAssetDetail(toAssetDetail, toAssetAmount, toAssetAmountInUsdValue),
+                fromAssetDetail = createFromAssetDetail(swapQuote),
+                toAssetDetail = createToAssetDetail(swapQuote),
                 priceRatioProvider = swapPriceRatioProviderMapper.mapToSwapPriceRatioProvider(swapQuote),
                 slippageTolerance = slippage.formatAsPercentage(),
                 formattedPriceImpact = priceImpact.formatAsPercentage(),
@@ -82,7 +88,7 @@ class ConfirmSwapPreviewUseCase @Inject constructor(
                 formattedExchangeFee = getFormattedExchangeFee(swapQuote),
                 swapQuote = swapQuote,
                 isLoading = false,
-                isPriceImpactErrorVisible = priceImpact > PRICE_IMPACT_ERROR_VISIBILITY_PERCENTAGE,
+                priceImpact = swapQuote.priceImpact,
                 errorEvent = null,
                 slippageToleranceUpdateSuccessEvent = null,
                 accountIconResource = accountDetailSummary.accountIconResource,
@@ -104,7 +110,6 @@ class ConfirmSwapPreviewUseCase @Inject constructor(
                 fromAssetId = fromAssetDetail.assetId,
                 toAssetId = toAssetDetail.assetId,
                 amount = swapAmount.toBigInteger(),
-                swapType = swapType,
                 accountAddress = accountAddress,
                 slippage = slippageTolerance
             ).collect {
@@ -205,27 +210,55 @@ class ConfirmSwapPreviewUseCase @Inject constructor(
         }
     }
 
+    private fun createFromAssetDetail(swapQuote: SwapQuote): ConfirmSwapPreview.SwapAssetDetail {
+        return with(swapQuote) {
+            createAssetDetail(fromAssetDetail, fromAssetAmount, fromAssetAmountInUsdValue, NoWarning)
+        }
+    }
+
+    private fun createToAssetDetail(swapQuote: SwapQuote): ConfirmSwapPreview.SwapAssetDetail {
+        return with(swapQuote) {
+            val priceImpactWarningStatus = priceImpactWarningStatusDecider.decideWarningStatus(swapQuote.priceImpact)
+            createAssetDetail(toAssetDetail, toAssetAmount, toAssetAmountInUsdValue, priceImpactWarningStatus)
+        }
+    }
+
     private fun createAssetDetail(
         assetDetail: SwapQuoteAssetDetail,
         amount: BigDecimal,
         approximateValueInUsd: BigDecimal,
+        priceImpactWarningStatus: ConfirmSwapPriceImpactWarningStatus
     ): ConfirmSwapPreview.SwapAssetDetail {
         val formattedAmount = amount.movePointLeft(assetDetail.fractionDecimals)
             .formatAmount(assetDetail.fractionDecimals, isDecimalFixed = false)
+        val amountTextColorResId = priceImpactWarningStatus.toAssetAmountTextColorResId
         return confirmSwapAssetDetailMapper.mapToAssetDetail(
             assetId = assetDetail.assetId,
             formattedAmount = formattedAmount,
-            formattedApproximateValue = getFormattedApproximateValue(approximateValueInUsd),
+            formattedApproximateValue = getFormattedApproximateValue(assetDetail, amount, approximateValueInUsd),
             shortName = assetDetail.shortName,
-            verificationTier = assetDetail.verificationTier
+            verificationTier = assetDetail.verificationTier,
+            amountTextColorResId = amountTextColorResId,
+            approximateValueTextColorResId = amountTextColorResId
         )
     }
 
-    private fun getFormattedApproximateValue(approximateValueInUsd: BigDecimal): String {
-        val usdToSelectedCurrencyRate = parityUseCase.getDisplayedCurrencyRatio()
-        val primaryCurrencySymbol = parityUseCase.getDisplayedCurrencySymbol()
-        return usdToSelectedCurrencyRate.multiply(approximateValueInUsd)
-            .formatAsCurrency(primaryCurrencySymbol, isFiat = true)
+    private fun getFormattedApproximateValue(
+        assetDetail: SwapQuoteAssetDetail,
+        amount: BigDecimal,
+        approximateValueInUsd: BigDecimal
+    ): String {
+        val usdValuePerAsset = ParityUtils.getUsdValuePerAsset(
+            amount.toPlainString(),
+            assetDetail.fractionDecimals,
+            approximateValueInUsd.toPlainString()
+        )
+        return swapAppxValueParityHelper.getDisplayedParityCurrencyValue(
+            assetAmount = amount.toBigInteger(),
+            assetUsdValue = usdValuePerAsset,
+            assetDecimal = assetDetail.fractionDecimals,
+            assetId = assetDetail.assetId
+        ).getFormattedValue()
     }
 
     private fun getFormattedExchangeFee(swapQuote: SwapQuote): String {
@@ -246,9 +279,5 @@ class ConfirmSwapPreviewUseCase @Inject constructor(
 
     fun stopAllResources() {
         swapTransactionSignManager.stopAllResources()
-    }
-
-    companion object {
-        private const val PRICE_IMPACT_ERROR_VISIBILITY_PERCENTAGE = 5f
     }
 }

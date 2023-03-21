@@ -35,12 +35,16 @@ class SlippageToleranceViewModel @Inject constructor(
         return slippageTolerancePreviewUseCase.getSlippageTolerancePreview(resources, previousSelectedTolerance)
     }
 
-    override fun getCustomInputResultUpdatedPreview(
-        resources: Resources,
-        inputValue: String
-    ): BasePercentageSelectionPreview? {
+    override fun onInputUpdated(resources: Resources, inputValue: String) {
+        (getCurrentState() as? SlippageTolerancePreview)?.run {
+            val newState = slippageTolerancePreviewUseCase.getCustomItemUpdatedPreview(resources, inputValue, this)
+            updatePreviewFlow(newState)
+        }
+    }
+
+    override fun getCustomInputResultUpdatedPreview(inputValue: String): BasePercentageSelectionPreview? {
         return (getCurrentState() as? SlippageTolerancePreview)?.run {
-            slippageTolerancePreviewUseCase.getDoneClickUpdatedPreview(resources, inputValue, this)
+            slippageTolerancePreviewUseCase.getDoneClickUpdatedPreview(inputValue, this)
         } ?: getCurrentState()
     }
 
@@ -48,13 +52,6 @@ class SlippageToleranceViewModel @Inject constructor(
         (getCurrentState() as? SlippageTolerancePreview)?.run {
             val newState = slippageTolerancePreviewUseCase
                 .getChipItemSelectedUpdatedPreview(selectedChipIndex, peraChipItem, this)
-            updatePreviewFlow(newState)
-        }
-    }
-
-    fun onCustomPercentageChange(value: String) {
-        (getCurrentState() as? SlippageTolerancePreview)?.run {
-            val newState = slippageTolerancePreviewUseCase.getCustomItemUpdatedPreview(this)
             updatePreviewFlow(newState)
         }
     }

@@ -869,7 +869,7 @@
 
     <string name="set_custom_slippage">Set custom slippage</string>
     <string name="auto">Auto</string>
-    <string name="slippage_tolerance_must_be_between">Slippage tolerance must be between %1$.1f%% and %2$.1f%%</string>
+    <string name="slippage_tolerance_must_be_between">Slippage tolerance must be between %1$.2f%% and %2$.0f%%</string>
     <string name="balance_percentage_must_be_between">Balance percentage must be between %1$d%% and %2$d%%</string>
     <string name="set_custom_percentage">Set custom percentage</string>
     <string name="balance_percentage">Balance Percentage</string>
@@ -976,7 +976,7 @@
 
     <string name="this_is_the_fee_charged">This is the fee charged to you by the decentralized exchange. It\'s automatically deducted from the amount you send and factored into the minimum received amount. It won\'t be an additional charge on top.</string>
     <string name="we_encountered_an_unexpected">We encountered an unexpected error, try again later.</string>
-    <string name="caution_price_impact">Caution! Price impact is greater than 5%%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.</string>
+    <string name="algo_balance_is_too_low">Algo balance is too low. The minimum balance should be <annotation replacement="algo_icon">ALGO_ICON_PLACEHOLDER</annotation> <annotation replacement="min_balance">MIN_BALANCE_PLACEHOLDER</annotation></string>
 
     <!-- Discover -->
     <string name="discover">Discover</string>
@@ -1068,5 +1068,10 @@
     <string name="your_account_s_public_key">Your account\'s public key, balances, and configuration will not change.</string>
 
     <string name="invalid_url">Invalid Url</string>
+
+    <string name="high_price_impact_detected">High Price impact detected!</string>
+    <string name="it_appears_that_you_formatted">It appears that you are trying to confirm a Swap with a Price impact greater than <annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation>%.\n\nTo learn more about Price impact, how it is calculated or how it can affect your swap\'s overall value, please visit Tinyman\'s <annotation custom="faq_url">FAQ section</annotation>.</string>
     <string name="the_signing_account_has">The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.</string>
+    <string name="caution_price_impact">Caution! Price impact is greater than <annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation>%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.</string>
+    <string name="this_swap_can_not_be">This swap cannot be executed because the price impact is too large. Find out more about price impact and how it works <annotation custom="faq_url">here</annotation>.</string>
 </resources>

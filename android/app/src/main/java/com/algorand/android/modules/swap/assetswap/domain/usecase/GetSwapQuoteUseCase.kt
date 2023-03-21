@@ -14,8 +14,8 @@ package com.algorand.android.modules.swap.assetswap.domain.usecase
 
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
-import com.algorand.android.modules.currency.domain.usecase.DisplayedCurrencyUseCase
 import com.algorand.android.modules.parity.domain.model.ParityValue
+import com.algorand.android.modules.parity.utils.ParityUtils
 import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapType
 import com.algorand.android.modules.swap.assetswap.domain.mapper.SwapQuoteAssetDetailMapper
 import com.algorand.android.modules.swap.assetswap.domain.mapper.SwapQuoteMapper
@@ -25,6 +25,7 @@ import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuoteProvide
 import com.algorand.android.modules.swap.assetswap.domain.model.dto.SwapQuoteAssetDetailDTO
 import com.algorand.android.modules.swap.assetswap.domain.model.dto.SwapQuoteDTO
 import com.algorand.android.modules.swap.assetswap.domain.repository.AssetSwapRepository
+import com.algorand.android.modules.swap.common.SwapAppxValueParityHelper
 import com.algorand.android.modules.swap.utils.defaultExchangeSwapFee
 import com.algorand.android.modules.swap.utils.defaultPeraSwapFee
 import com.algorand.android.utils.ALGO_DECIMALS
@@ -33,9 +34,7 @@ import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.toBigDecimalOrZero
 import com.algorand.android.utils.toBigIntegerOrZero
 import com.algorand.android.utils.toFloatOrZero
-import java.math.BigDecimal
 import java.math.BigInteger
-import java.math.RoundingMode
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.flow.collect
@@ -48,14 +47,13 @@ class GetSwapQuoteUseCase @Inject constructor(
     private val swapQuoteMapper: SwapQuoteMapper,
     private val swapQuoteAssetDetailMapper: SwapQuoteAssetDetailMapper,
     private val deviceIdUseCase: DeviceIdUseCase,
-    private val displayedCurrencyUseCase: DisplayedCurrencyUseCase
+    private val swapAppxValueParityHelper: SwapAppxValueParityHelper
 ) {
 
     suspend fun getSwapQuote(
         fromAssetId: Long,
         toAssetId: Long,
         amount: BigInteger,
-        swapType: SwapType,
         accountAddress: String,
         slippage: Float
     ) = flow<DataResource<SwapQuote>> {
@@ -64,6 +62,7 @@ class GetSwapQuoteUseCase @Inject constructor(
         val safeToAssetId = if (toAssetId == ALGO_ID) 0 else toAssetId
         val deviceId = deviceIdUseCase.getSelectedNodeDeviceId().orEmpty()
         val providers = SwapQuoteProvider.getProviders() // TODO Get this from UI when design is ready
+        val swapType = SwapType.getDefaultSwapType()
         assetSwapRepository.getSwapQuote(
             safeFromAssetId,
             safeToAssetId,
@@ -119,51 +118,35 @@ class GetSwapQuoteUseCase @Inject constructor(
     }
 
     private fun getFromAssetAmountInSelectedCurrency(swapQuoteDto: SwapQuoteDTO): ParityValue {
-        with(swapQuoteDto) {
-            val usdValuePerAsset = getUsdValuePerAsset(
+        return with(swapQuoteDto) {
+            val usdValuePerAsset = ParityUtils.getUsdValuePerAsset(
                 assetAmount = assetInAmount,
                 assetDecimal = assetInAssetDetail?.fractionDecimals,
                 totalAssetAmountInUsdValue = assetInAmountInUsdValue
             )
-            return displayedCurrencyUseCase.getDisplayedCurrencyParityValue(
+            swapAppxValueParityHelper.getDisplayedParityCurrencyValue(
                 assetAmount = assetInAmount.toBigIntegerOrZero(),
                 assetUsdValue = usdValuePerAsset,
-                assetDecimal = assetInAssetDetail?.fractionDecimals ?: DEFAULT_ASSET_DECIMAL_FOR_SWAP
+                assetDecimal = assetInAssetDetail?.fractionDecimals ?: DEFAULT_ASSET_DECIMAL_FOR_SWAP,
+                assetId = assetInAssetDetail?.assetId ?: FALLBACK_ASSET_ID_FOR_QUOTE
             )
         }
     }
 
     private fun getToAssetAmountInSelectedCurrency(swapQuoteDto: SwapQuoteDTO): ParityValue {
         return with(swapQuoteDto) {
-            val usdValuePerAsset = getUsdValuePerAsset(
+            val usdValuePerAsset = ParityUtils.getUsdValuePerAsset(
                 assetAmount = assetOutAmount,
                 assetDecimal = assetOutAssetDetail?.fractionDecimals,
                 totalAssetAmountInUsdValue = assetOutAmountInUsdValue
             )
-            displayedCurrencyUseCase.getDisplayedCurrencyParityValue(
+            swapAppxValueParityHelper.getDisplayedParityCurrencyValue(
                 assetAmount = assetOutAmount.toBigIntegerOrZero(),
                 assetUsdValue = usdValuePerAsset,
-                assetDecimal = assetOutAssetDetail?.fractionDecimals ?: DEFAULT_ASSET_DECIMAL_FOR_SWAP
+                assetDecimal = assetOutAssetDetail?.fractionDecimals ?: DEFAULT_ASSET_DECIMAL_FOR_SWAP,
+                assetId = assetOutAssetDetail?.assetId ?: FALLBACK_ASSET_ID_FOR_QUOTE
             )
         }
-    }
-
-    private fun getUsdValuePerAsset(
-        assetAmount: String?,
-        assetDecimal: Int?,
-        totalAssetAmountInUsdValue: String?
-    ): BigDecimal {
-        val assetOutAmountAsBigDecimal = assetAmount.toBigDecimalOrZero()
-
-        if (assetOutAmountAsBigDecimal == BigDecimal.ZERO) {
-            return BigDecimal.ZERO
-        }
-
-        val safeAssetDecimal = assetDecimal ?: DEFAULT_ASSET_DECIMAL_FOR_SWAP
-
-        return totalAssetAmountInUsdValue
-            .toBigDecimalOrZero()
-            .divide(assetOutAmountAsBigDecimal.movePointLeft(safeAssetDecimal), safeAssetDecimal, RoundingMode.DOWN)
     }
 
     private fun mapSwapQuoteAssetDetail(dto: SwapQuoteAssetDetailDTO?): SwapQuoteAssetDetail? {
@@ -180,5 +163,6 @@ class GetSwapQuoteUseCase @Inject constructor(
         private const val SLIPPAGE_TOLERANCE_RESPONSE_MULTIPLIER = 100f
         private const val PRICE_IMPACT_RESPONSE_MULTIPLIER = 100f
         private const val DEFAULT_ASSET_DECIMAL_FOR_SWAP = DEFAULT_ASSET_DECIMAL
+        private const val FALLBACK_ASSET_ID_FOR_QUOTE = ALGO_ID
     }
 }

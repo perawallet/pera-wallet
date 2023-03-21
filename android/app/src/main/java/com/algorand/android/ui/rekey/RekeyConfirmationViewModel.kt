@@ -20,6 +20,7 @@ import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.usecase.AccountAdditionUseCase
+import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.MIN_FEE
@@ -36,7 +37,8 @@ import kotlinx.coroutines.launch
 class RekeyConfirmationViewModel @Inject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val transactionsRepository: TransactionsRepository,
-    private val accountAdditionUseCase: AccountAdditionUseCase
+    private val accountAdditionUseCase: AccountAdditionUseCase,
+    private val accountDetailUseCase: AccountDetailUseCase
 ) : BaseViewModel() {
 
     private var sendTransactionJob: Job? = null
@@ -67,26 +69,32 @@ class RekeyConfirmationViewModel @Inject constructor(
             transactionsRepository.sendSignedTransaction(transactionDetail.signedTransactionData).use(
                 onSuccess = {
                     with(transactionDetail) {
-                        val newRekeyedAuthDetailMap = mutableMapOf<String, Account.Detail.Ledger>().apply {
-                            if (accountDetail is Account.Detail.RekeyedAuth) {
-                                putAll(accountDetail.rekeyedAuthDetail)
-                            }
-                            put(rekeyAdminAddress, ledgerDetail)
+                        val tempAccount: Account
+
+                        val isReverseRekey = isReverseRekey(accountAddress, rekeyAdminAddress)
+                        if (isReverseRekey) {
+                            tempAccount = createLedgerAccount(
+                                accountAddress = accountAddress,
+                                ledgerDetail = ledgerDetail,
+                                accountName = accountName
+                            )
+                        } else {
+                            tempAccount = createRekeyedAuthAccount(
+                                accountDetail = accountDetail,
+                                rekeyAdminAddress = rekeyAdminAddress,
+                                ledgerDetail = ledgerDetail,
+                                accountAddress = accountAddress,
+                                rekeyedAccountDetail = rekeyedAccountDetail,
+                                accountName = accountName
+                            )
                         }
-                        val authAccount = Account.create(
-                            publicKey = accountAddress,
-                            detail = Account.Detail.RekeyedAuth.create(
-                                authDetail = rekeyedAccountDetail,
-                                rekeyedAuthDetail = newRekeyedAuthDetailMap
-                            ),
-                            accountName = accountName
-                        )
+
                         transactionResourceLiveData.postValue(Event(Resource.Success(Any())))
                         // TODO: There is a bug which solved in per-3138.
                         //  For the further context, you can take a look at PR description
                         //  https://github.com/Hipo/algorand-android/pull/1897
                         accountAdditionUseCase.addNewAccount(
-                            tempAccount = authAccount,
+                            tempAccount = tempAccount,
                             creationType = CreationType.REKEYED
                         )
                     }
@@ -107,11 +115,57 @@ class RekeyConfirmationViewModel @Inject constructor(
     }
 
     fun getCachedAccountAuthAddress(address: String): String? {
-        return accountCacheManager.accountCacheMap.value[address]?.authAddress
+        return accountDetailUseCase.getAuthAddress(address)
     }
 
     fun getCachedAccountData(address: String): Account? {
-        return accountCacheManager.accountCacheMap.value[address]?.account
+        return accountDetailUseCase.getCachedAccountDetail(address)?.data?.account
+    }
+
+    private fun isReverseRekey(accountAddress: String, rekeyAdminAddress: String): Boolean {
+        return accountAddress == rekeyAdminAddress
+    }
+
+    private fun createLedgerAccount(
+        accountAddress: String,
+        ledgerDetail: Account.Detail.Ledger,
+        accountName: String
+    ): Account {
+        return Account.create(
+            publicKey = accountAddress,
+            detail = Account.Detail.Ledger(
+                bluetoothAddress = ledgerDetail.bluetoothAddress,
+                bluetoothName = ledgerDetail.bluetoothName,
+                positionInLedger = ledgerDetail.positionInLedger
+            ),
+            accountName = accountName
+        )
+    }
+
+    private fun createRekeyedAuthAccount(
+        accountDetail: Account.Detail?,
+        rekeyAdminAddress: String,
+        ledgerDetail: Account.Detail.Ledger,
+        accountAddress: String,
+        rekeyedAccountDetail: Account.Detail?,
+        accountName: String
+    ): Account {
+        val newRekeyedAuthDetailMap = mutableMapOf<String, Account.Detail.Ledger>().apply {
+            if (accountDetail is Account.Detail.RekeyedAuth) {
+                putAll(accountDetail.rekeyedAuthDetail)
+            }
+            put(rekeyAdminAddress, ledgerDetail)
+        }
+        val accountSecretKey = accountDetailUseCase.getCachedAccountSecretKey(accountAddress)
+        return Account.create(
+            publicKey = accountAddress,
+            detail = Account.Detail.RekeyedAuth.create(
+                authDetail = rekeyedAccountDetail,
+                rekeyedAuthDetail = newRekeyedAuthDetailMap,
+                secretKey = accountSecretKey
+            ),
+            accountName = accountName
+        )
     }
 
     companion object {

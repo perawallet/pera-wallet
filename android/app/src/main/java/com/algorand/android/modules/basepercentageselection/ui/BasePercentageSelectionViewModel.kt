@@ -24,8 +24,8 @@ abstract class BasePercentageSelectionViewModel : BaseViewModel() {
         get() = _basePercentageSelectionPreviewFlow
 
     abstract fun getInitialPreview(resources: Resources): BasePercentageSelectionPreview
+    abstract fun onInputUpdated(resources: Resources, inputValue: String)
     abstract fun getCustomInputResultUpdatedPreview(
-        resources: Resources,
         inputValue: String
     ): BasePercentageSelectionPreview?
 
@@ -33,8 +33,8 @@ abstract class BasePercentageSelectionViewModel : BaseViewModel() {
         _basePercentageSelectionPreviewFlow.value = getInitialPreview(resources)
     }
 
-    fun onDoneClick(resources: Resources, inputValue: String) {
-        _basePercentageSelectionPreviewFlow.value = getCustomInputResultUpdatedPreview(resources, inputValue)
+    fun onDoneClick(inputValue: String) {
+        _basePercentageSelectionPreviewFlow.value = getCustomInputResultUpdatedPreview(inputValue)
     }
 
     protected fun updatePreviewFlow(newState: BasePercentageSelectionPreview) {

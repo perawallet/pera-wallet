@@ -202,62 +202,58 @@ class ZoomShapeableImageView(context: Context, attrs: AttributeSet) :
             return true
         }
 
-        override fun onScale(detector: ScaleGestureDetector?): Boolean {
-            detector?.let { _detector ->
-                var scaleFactor = MIN_SCALE_FACTOR.coerceAtLeast(_detector.scaleFactor).coerceAtMost(MAX_SCALE_FACTOR)
-                val originalScale = saveScale
-                saveScale *= scaleFactor
-                if (saveScale > MAX_SCALE) {
-                    saveScale = MAX_SCALE
-                    scaleFactor = MAX_SCALE / originalScale
-                } else if (saveScale < MIN_SCALE) {
-                    saveScale = MIN_SCALE
-                    scaleFactor = MIN_SCALE / originalScale
-                }
-                right = viewWidth * saveScale - viewWidth - (2 * redundantXSpace * saveScale)
-                bottom = viewHeight * saveScale - viewHeight - (2 * redundantYSpace * saveScale)
+        override fun onScale(detector: ScaleGestureDetector): Boolean {
+            var scaleFactor = MIN_SCALE_FACTOR.coerceAtLeast(detector.scaleFactor).coerceAtMost(MAX_SCALE_FACTOR)
+            val originalScale = saveScale
+            saveScale *= scaleFactor
+            if (saveScale > MAX_SCALE) {
+                saveScale = MAX_SCALE
+                scaleFactor = MAX_SCALE / originalScale
+            } else if (saveScale < MIN_SCALE) {
+                saveScale = MIN_SCALE
+                scaleFactor = MIN_SCALE / originalScale
+            }
+            right = viewWidth * saveScale - viewWidth - (2 * redundantXSpace * saveScale)
+            bottom = viewHeight * saveScale - viewHeight - (2 * redundantYSpace * saveScale)
 
-                if (originalWidth * saveScale <= viewWidth || originalHeight * saveScale <= viewHeight) {
-                    calculationMatrix.postScale(
-                        scaleFactor,
-                        scaleFactor,
-                        (viewWidth / 2).toFloat(),
-                        (viewHeight / 2).toFloat()
-                    )
-                    if (scaleFactor < 1) {
-                        calculationMatrix.getValues(matrixBounds)
-                        val x = matrixBounds[Matrix.MTRANS_X]
-                        val y = matrixBounds[Matrix.MTRANS_Y]
-                        if (scaleFactor < 1) {
-                            if ((originalWidth * saveScale).roundToInt() < viewWidth) {
-                                if (y < -bottom)
-                                    calculationMatrix.postTranslate(0f, -(y + bottom))
-                                else if (y > 0)
-                                    calculationMatrix.postTranslate(0f, -y)
-                            } else {
-                                if (x < -right)
-                                    calculationMatrix.postTranslate(-(x + right), 0f)
-                                else if (x > 0)
-                                    calculationMatrix.postTranslate(-x, 0f)
-                            }
-                        }
-                    }
-                } else {
-                    calculationMatrix.postScale(scaleFactor, scaleFactor, _detector.focusX, _detector.focusY)
+            if (originalWidth * saveScale <= viewWidth || originalHeight * saveScale <= viewHeight) {
+                calculationMatrix.postScale(
+                    scaleFactor,
+                    scaleFactor,
+                    (viewWidth / 2).toFloat(),
+                    (viewHeight / 2).toFloat()
+                )
+                if (scaleFactor < 1) {
                     calculationMatrix.getValues(matrixBounds)
                     val x = matrixBounds[Matrix.MTRANS_X]
                     val y = matrixBounds[Matrix.MTRANS_Y]
-
-                    if (scaleFactor < 1) {
-                        if (x < -right)
-                            calculationMatrix.postTranslate(-(x + right), 0f)
-                        else if (x > 0)
-                            calculationMatrix.postTranslate(-x, 0f)
+                    if ((originalWidth * saveScale).roundToInt() < viewWidth) {
                         if (y < -bottom)
                             calculationMatrix.postTranslate(0f, -(y + bottom))
                         else if (y > 0)
                             calculationMatrix.postTranslate(0f, -y)
+                    } else {
+                        if (x < -right)
+                            calculationMatrix.postTranslate(-(x + right), 0f)
+                        else if (x > 0)
+                            calculationMatrix.postTranslate(-x, 0f)
                     }
+                }
+            } else {
+                calculationMatrix.postScale(scaleFactor, scaleFactor, detector.focusX, detector.focusY)
+                calculationMatrix.getValues(matrixBounds)
+                val x = matrixBounds[Matrix.MTRANS_X]
+                val y = matrixBounds[Matrix.MTRANS_Y]
+
+                if (scaleFactor < 1) {
+                    if (x < -right)
+                        calculationMatrix.postTranslate(-(x + right), 0f)
+                    else if (x > 0)
+                        calculationMatrix.postTranslate(-x, 0f)
+                    if (y < -bottom)
+                        calculationMatrix.postTranslate(0f, -(y + bottom))
+                    else if (y > 0)
+                        calculationMatrix.postTranslate(0f, -y)
                 }
             }
             return true

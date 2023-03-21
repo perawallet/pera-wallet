@@ -10,12 +10,19 @@
  * limitations under the License
  */
 
-package com.algorand.android.modules.rekey.rekeytostandardaccount.accountselection.ui.model
+package com.algorand.android.utils.executer
 
-import com.algorand.android.models.BaseAccountSelectionListItem
-import com.algorand.android.models.ScreenState
+import com.algorand.android.utils.recordException
+import java.util.concurrent.Executor
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
 
-data class RekeyToAccountSelectionPreview(
-    val accountSelectionListItem: List<BaseAccountSelectionListItem>,
-    val screenState: ScreenState?
-)
+abstract class PeraExecutor(private val coroutineDispatcher: CoroutineDispatcher) : Executor {
+    override fun execute(command: Runnable) {
+        try {
+            coroutineDispatcher.asExecutor().execute(command)
+        } catch (exception: Exception) {
+            recordException(exception)
+        }
+    }
+}

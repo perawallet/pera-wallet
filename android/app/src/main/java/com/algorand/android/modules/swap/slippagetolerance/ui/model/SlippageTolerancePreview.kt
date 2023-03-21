@@ -20,14 +20,14 @@ data class SlippageTolerancePreview(
     override val chipOptionList: List<PeraFloatChipItem>,
     override var checkedOption: PeraFloatChipItem?,
     override val returnResultEvent: Event<Float>?,
-    override val showErrorEvent: Event<String>?,
+    override val errorString: String?,
     override val requestFocusToInputEvent: Event<Unit>?,
     override val prefilledAmountInputValue: Event<String>?
 ) : BasePercentageSelectionPreview(
     chipOptionList,
     checkedOption,
     returnResultEvent,
-    showErrorEvent,
+    errorString,
     requestFocusToInputEvent,
     prefilledAmountInputValue
 )

@@ -103,10 +103,6 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
         if (charSequence != null) assetSwapViewModel.onFromAmountChanged(charSequence.toString())
     }
 
-    private val onToAmountChangeListener = SwapAssetInputView.TextChangeListener { charSequence ->
-        if (charSequence != null) assetSwapViewModel.onToAmountChanged(charSequence.toString())
-    }
-
     private val swapErrorEventCollector: suspend (Event<ErrorResource>?) -> Unit = { errorEvent ->
         initSwapError(errorEvent)
     }
@@ -222,7 +218,6 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
             }
             toAssetInputView.apply {
                 setChooseAssetButtonOnClickListener { navToToAssetSelectionFragment() }
-                setOnTextChangedListener(onToAmountChangeListener)
             }
             swapButton.setOnClickListener { assetSwapViewModel.onSwapButtonClick() }
             switchAssetsButton.setOnClickListener { assetSwapViewModel.onSwitchAssetsClick() }
@@ -242,6 +237,7 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
         useFragmentResultListenerValue<Float>(CHECKED_BALANCE_PERCENTAGE_KEY) { balancePercentage ->
             assetSwapViewModel.onBalancePercentageSelected(balancePercentage)
         }
+        assetSwapViewModel.refreshPreview()
     }
 
     private fun handleAccountCacheStatus(isAccountCached: Boolean) {

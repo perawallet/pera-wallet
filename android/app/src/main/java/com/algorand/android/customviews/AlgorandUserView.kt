@@ -15,7 +15,6 @@ package com.algorand.android.customviews
 
 import android.content.Context
 import android.net.Uri
-import android.os.Handler
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
@@ -44,7 +43,6 @@ class AlgorandUserView @JvmOverloads constructor(
 
     private val binding = viewBinding(CustomUserViewBinding::inflate)
     private var onAddButtonClick: ((String) -> Unit?)? = null
-    private var tutorialShowHandler: Handler? = null
 
     fun setContact(user: User, enableAddressCopy: Boolean = true, showTooltip: Boolean = false) {
         with(binding) {
@@ -191,9 +189,8 @@ class AlgorandUserView @JvmOverloads constructor(
     }
 
     private fun showCopyTutorial() {
-        tutorialShowHandler = Handler()
-        tutorialShowHandler?.postDelayed({
-            binding.mainTextView.run {
+        with(binding.mainTextView) {
+            postDelayed({
                 val margin = resources.getDimensionPixelOffset(R.dimen.spacing_xlarge)
                 val config = TooltipConfig(
                     anchor = this,
@@ -201,8 +198,8 @@ class AlgorandUserView @JvmOverloads constructor(
                     tooltipTextResId = R.string.press_and_hold
                 )
                 Tooltip(context).show(config, findViewTreeLifecycleOwner())
-            }
-        }, TUTORIAL_SHOW_DELAY)
+            }, TUTORIAL_SHOW_DELAY)
+        }
     }
 
     companion object {

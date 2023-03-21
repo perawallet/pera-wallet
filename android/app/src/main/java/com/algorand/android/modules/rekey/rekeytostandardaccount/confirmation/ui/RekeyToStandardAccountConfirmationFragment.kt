@@ -50,8 +50,12 @@ class RekeyToStandardAccountConfirmationFragment : TransactionBaseFragment(
 
     override val transactionFragmentListener = object : TransactionFragmentListener {
 
-        override fun onSignTransactionLoadingFinished() {
-            loadingDialogFragment?.dismissAllowingStateLoss()
+        override fun onSignTransactionFailed() {
+            rekeyToStandardAccountConfirmationViewModel.onTransactionSigningFailed()
+        }
+
+        override fun onSignTransactionLoading() {
+            rekeyToStandardAccountConfirmationViewModel.onTransactionSigningStarted()
         }
 
         override fun onSignTransactionFinished(signedTransactionDetail: SignedTransactionDetail) {

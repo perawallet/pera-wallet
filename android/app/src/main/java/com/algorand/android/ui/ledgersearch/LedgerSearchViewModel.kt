@@ -13,12 +13,13 @@
 package com.algorand.android.ui.ledgersearch
 
 import android.bluetooth.BluetoothDevice
-import javax.inject.Inject
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.ledger.CustomScanCallback
 import com.algorand.android.ledger.LedgerBleSearchManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @HiltViewModel
 class LedgerSearchViewModel @Inject constructor(
@@ -56,7 +57,7 @@ class LedgerSearchViewModel @Inject constructor(
     }
 
     fun startBluetoothSearch() {
-        ledgerBleSearchManager.scan(scanCallback)
+        ledgerBleSearchManager.scan(newScanCallback = scanCallback, coroutineScope = viewModelScope)
     }
 
     fun stopBluetoothSearch() {

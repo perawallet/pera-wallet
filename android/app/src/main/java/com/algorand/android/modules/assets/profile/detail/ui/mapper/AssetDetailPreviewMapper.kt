@@ -37,6 +37,7 @@ class AssetDetailPreviewMapper @Inject constructor(
         canAccountSignTransaction: Boolean,
         isQuickActionButtonsVisible: Boolean,
         isSwapButtonSelected: Boolean,
+        isSwapButtonVisible: Boolean,
         isMarketInformationVisible: Boolean,
         last24HoursChange: BigDecimal?,
         formattedAssetPrice: String?
@@ -52,10 +53,11 @@ class AssetDetailPreviewMapper @Inject constructor(
                 accountDisplayName = accountDisplayName,
                 baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
                 assetPrismUrl = prismUrl,
-                verificationTierConfiguration =
-                verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier),
+                verificationTierConfiguration = verificationTierConfigurationDecider
+                    .decideVerificationTierConfiguration(verificationTier),
                 isQuickActionButtonsVisible = canAccountSignTransaction && isQuickActionButtonsVisible,
                 isSwapButtonSelected = isSwapButtonSelected,
+                isSwapButtonVisible = isSwapButtonVisible,
                 isMarketInformationVisible = isMarketInformationVisible,
                 isChangePercentageVisible = assetDetailMarketInformationDecider.decideIsChangePercentageVisible(
                     last24HoursChange

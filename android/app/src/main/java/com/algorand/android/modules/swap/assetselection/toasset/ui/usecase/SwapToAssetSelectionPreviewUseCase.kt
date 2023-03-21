@@ -147,10 +147,18 @@ class SwapToAssetSelectionPreviewUseCase @Inject constructor(
             availableSwapAssetList
         )
 
+        val screenState = if (swapAssetSelectionItemList.isEmpty()) {
+            screenStateMapper.mapToCustomState(
+                title = R.string.no_asset_found
+            )
+        } else {
+            null
+        }
+
         return swapAssetSelectionPreviewMapper.mapToSwapAssetSelectionPreview(
             swapAssetSelectionItemList = swapAssetSelectionItemList,
             isLoading = false,
-            screenState = null,
+            screenState = screenState,
             navigateToAssetAdditionBottomSheetEvent = null,
             assetSelectedEvent = null
         )

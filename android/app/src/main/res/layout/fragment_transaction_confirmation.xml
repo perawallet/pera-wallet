@@ -22,7 +22,6 @@
         android:id="@+id/transactionStatusLottieView"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:padding="@dimen/spacing_small"
         app:layout_constraintBottom_toTopOf="@id/transactionTitleTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

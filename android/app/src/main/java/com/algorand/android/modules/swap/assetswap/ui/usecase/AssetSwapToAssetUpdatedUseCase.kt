@@ -12,24 +12,22 @@
 
 package com.algorand.android.modules.swap.assetswap.ui.usecase
 
-import com.algorand.android.modules.currency.domain.usecase.DisplayedCurrencyUseCase
-import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapType
 import com.algorand.android.modules.swap.assetswap.ui.mapper.SelectedAssetAmountDetailMapper
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.modules.swap.assetswap.ui.utils.SwapAmountUtils
+import com.algorand.android.modules.swap.common.SwapAppxValueParityHelper
 import com.algorand.android.modules.swap.common.domain.usecase.GetSwapSlippageToleranceUseCase
-import com.algorand.android.usecase.CheckUserHasAssetBalanceUseCase
 import com.algorand.android.utils.emptyString
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
 
 class AssetSwapToAssetUpdatedUseCase @Inject constructor(
     private val assetSwapPreviewAssetDetailUseCase: AssetSwapPreviewAssetDetailUseCase,
-    private val checkUserHasAssetBalanceUseCase: CheckUserHasAssetBalanceUseCase,
     private val assetSwapCreateQuotePreviewUseCase: AssetSwapCreateQuotePreviewUseCase,
     private val selectedAssetAmountDetailMapper: SelectedAssetAmountDetailMapper,
-    private val displayedCurrencyUseCase: DisplayedCurrencyUseCase,
-    private val getSwapSlippageToleranceUseCase: GetSwapSlippageToleranceUseCase
+    private val swapAppxValueParityHelper: SwapAppxValueParityHelper,
+    private val getSwapSlippageToleranceUseCase: GetSwapSlippageToleranceUseCase,
+    private val assetSwapSwitchButtonStatusUseCase: AssetSwapSwitchButtonStatusUseCase
 ) {
 
     suspend fun getToAssetUpdatedPreview(
@@ -38,7 +36,6 @@ class AssetSwapToAssetUpdatedUseCase @Inject constructor(
         amount: String?,
         fromAssetDecimal: Int,
         accountAddress: String,
-        swapType: SwapType,
         previousState: AssetSwapPreview
     ) = flow<AssetSwapPreview> {
         emit(previousState.copy(isLoadingVisible = true))
@@ -50,13 +47,17 @@ class AssetSwapToAssetUpdatedUseCase @Inject constructor(
         val amountAsBigDecimal = amount?.toBigDecimalOrNull()
         if (amountAsBigDecimal == null) {
             val toSelectedAssetAmountDetail = selectedAssetAmountDetailMapper.mapToDefaultSelectedAssetAmountDetail(
-                primaryCurrencySymbol = displayedCurrencyUseCase.getDisplayedCurrencySymbol()
+                primaryCurrencySymbol = swapAppxValueParityHelper.getDisplayedCurrencySymbol()
             )
             val newState = previousState.copy(
                 toSelectedAssetDetail = toSelectedAssetDetail,
                 isLoadingVisible = false,
-                isSwitchAssetsButtonEnabled = checkUserHasAssetBalanceUseCase
-                    .hasUserAssetBalance(accountAddress, toAssetId),
+                isSwitchAssetsButtonEnabled = assetSwapSwitchButtonStatusUseCase.isSwitchAssetsButtonEnabled(
+                    accountAddress = accountAddress,
+                    toAssetId = toAssetId,
+                    fromAssetId = fromAssetId,
+                    previousState = previousState
+                ),
                 isMaxAndPercentageButtonEnabled = true,
                 toSelectedAssetAmountDetail = toSelectedAssetAmountDetail
             )
@@ -69,7 +70,6 @@ class AssetSwapToAssetUpdatedUseCase @Inject constructor(
                 fromAssetId = fromAssetId,
                 toAssetId = toAssetId,
                 amount = amount,
-                swapType = swapType,
                 slippage = getSwapSlippageToleranceUseCase(),
                 previousState = newState,
                 swapTypeAssetDecimal = fromAssetDecimal,
