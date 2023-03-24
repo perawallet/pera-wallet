@@ -20,7 +20,7 @@ import MacaroonUIKit
 import MacaroonURLImage
 
 final class AccountNameViewModel {
-    private(set) var accountType: AccountType
+    private(set) var accountType: AccountInformation.AccountType
     private(set) var image: ImageSource?
     private(set) var name: String?
     

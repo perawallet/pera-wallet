@@ -35,10 +35,10 @@ extension UIViewController {
         AppDelegate.shared?.launchMainAfterAuthorization(presented: viewController)
     }
     
-    func launchBuyAlgo(
-        draft: BuyAlgoDraft = BuyAlgoDraft()
+    func launchBuyAlgoWithMoonPay(
+        draft: MoonPayDraft = MoonPayDraft()
     ) {
-        AppDelegate.shared?.receive(deeplinkWithSource: .buyAlgo(draft))
+        AppDelegate.shared?.receive(deeplinkWithSource: .buyAlgoWithMoonPay(draft))
     }
 }
 

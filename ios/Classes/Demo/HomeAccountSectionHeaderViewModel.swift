@@ -23,13 +23,13 @@ struct HomeAccountSectionHeaderViewModel:
     TitleWithAccessoryViewModel,
     PairedViewModel,
     Hashable {
-    private(set) var type: AccountType
+    private(set) var type: AccountInformation.AccountType
     private(set) var title: EditText?
     private(set) var accessory: ButtonStyle?
     private(set) var accessoryContentEdgeInsets: UIEdgeInsets?
     
     init(
-        _ model: AccountType
+        _ model: AccountInformation.AccountType
     ) {
         self.type = model
         bind(model)
@@ -38,7 +38,7 @@ struct HomeAccountSectionHeaderViewModel:
 
 extension HomeAccountSectionHeaderViewModel {
     mutating func bind(
-        _ type: AccountType
+        _ type: AccountInformation.AccountType
     ) {
         self.type = type
         
@@ -47,7 +47,7 @@ extension HomeAccountSectionHeaderViewModel {
     }
     
     mutating func bindTitle(
-        _ type: AccountType
+        _ type: AccountInformation.AccountType
     ) {
         let aTitle: String?
         
@@ -60,7 +60,7 @@ extension HomeAccountSectionHeaderViewModel {
     }
     
     mutating func bindAccessory(
-        _ type: AccountType
+        _ type: AccountInformation.AccountType
     ) {
         let item = getOptionsAccessoryItem()
         

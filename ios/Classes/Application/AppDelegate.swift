@@ -205,11 +205,11 @@ class AppDelegate:
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
 
-        if let buyAlgoParams = url.extractBuyAlgoParamsFromMoonPay() {
+        if let moonPayParams = url.extractMoonPayParams() {
             NotificationCenter.default.post(
                 name: .didRedirectFromMoonPay,
                 object: self,
-                userInfo: [BuyAlgoParams.notificationObjectKey: buyAlgoParams]
+                userInfo: [MoonPayParams.notificationObjectKey: moonPayParams]
             )
 
             return true
@@ -526,7 +526,7 @@ extension AppDelegate {
     ) {
         guard let alert = notification.alert else { return }
 
-        bannerController.presentNotification(
+        bannerController.presentInAppNotification(
             alert,
             handler
         )

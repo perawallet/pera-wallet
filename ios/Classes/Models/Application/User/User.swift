@@ -33,7 +33,8 @@ final class User: Codable {
         case deviceIDOnMainnet
         case deviceIDOnTestnet
     }
-    
+    init() {}
+
     init(
         accounts: [AccountInformation]
     ) {
@@ -91,6 +92,11 @@ extension User {
 extension User {
     func addAccount(_ account: AccountInformation) {
         accounts.append(account)
+        syncronize()
+    }
+
+    func addAccounts(_ accounts: [AccountInformation]) {
+        self.accounts.append(contentsOf: accounts)
         syncronize()
     }
     

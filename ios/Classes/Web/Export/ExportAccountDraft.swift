@@ -40,16 +40,20 @@ final class ExportAccountDraft: JSONObjectBody {
 
     func populate(accounts: [Account], with session: Session?) {
         let tempAccounts: [[String: String]] = accounts.compactMap { account in
-            guard let privateKey = session?.privateData(for: account.address) else {
-                return nil
+            let accountAddress = account.address
+            let privateKey = session?.privateData(for: accountAddress)
+
+            var parameters = [
+                APIParamKey.address.rawValue: accountAddress,
+                APIParamKey.accountType.rawValue: AccountImportParameters.AccountType(rawAccountType: account.type).rawValue,
+                APIParamKey.name.rawValue: account.name ?? account.address.shortAddressDisplay
+            ]
+
+            if let privateKey {
+                parameters[APIParamKey.privateKey.rawValue] = privateKey.base64EncodedString()
             }
 
-            let bytes = privateKey.toBytes().map({ String($0) }).joined(separator: ",")
-
-            return [
-                APIParamKey.name.rawValue: account.name ?? "",
-                APIParamKey.privateKey.rawValue: bytes
-            ]
+            return parameters
         }
 
         self.accounts = tempAccounts
@@ -58,18 +62,18 @@ final class ExportAccountDraft: JSONObjectBody {
 
 final class EncryptedExportAccountDraft: JSONObjectBody {
     let draft: ExportAccountDraft
-    let qrExportInformations: QRExportInformations
+    let qrBackupParameters: QRBackupParameters
 
     private(set) var encryptionError: EncryptionError?
 
     private(set) lazy var encryptedContent: String? = {
         do {
             let encodedContent = try draft.encoded()
-            let cryptor = Cryptor(key: qrExportInformations.encryptionKey)
+            let cryptor = Cryptor(key: qrBackupParameters.encryptionKey)
             let encryptedContent = cryptor.encrypt(data: encodedContent)
 
             if let data = encryptedContent.data {
-                let content = data.toBytes().map({ String($0) }).joined(separator: ",")
+                let content = data.base64EncodedString()
                 self.encryptionError = .noError
                 return content
             }
@@ -92,8 +96,8 @@ final class EncryptedExportAccountDraft: JSONObjectBody {
         return params
     }
 
-    init(draft: ExportAccountDraft, qrExportInformations: QRExportInformations) {
+    init(draft: ExportAccountDraft, qrBackupParameters: QRBackupParameters) {
         self.draft = draft
-        self.qrExportInformations = qrExportInformations
+        self.qrBackupParameters = qrBackupParameters
     }
 }

@@ -53,11 +53,12 @@ final class QRScannerOverlayView: View {
         configurationHandler(&configuration)
         self.configuration = configuration
         super.init(frame: .zero)
-        customize(theme)
         setListeners()
     }
 
-    private func customize(_ theme: QRScannerOverlayViewTheme) {
+    func customize(_ theme: QRScannerOverlayViewTheme) {
+        self.theme = theme
+        
         addOverlayView(theme)
         addOverlayImageView(theme)
         addTitleLabel(theme)

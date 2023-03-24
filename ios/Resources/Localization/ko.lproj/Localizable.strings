@@ -68,6 +68,12 @@
 "account-type-selection-create-detail" = "새 알고랜드 계정을 만들거나 읽기 전용 계정을 추가합니다";
 
 /* (No Comment) */
+"account-type-selection-import-web" = "Pera Web에서 가져오기";
+
+/* (No Comment) */
+"account-type-selection-import-web-detail" = "Pera Web에서 알고랜드 계정을 가져오고 싶습니다";
+
+/* (No Comment) */
 "account-type-selection-ledger" = "Ledger 기기 페어링";
 
 /* (No Comment) */
@@ -355,6 +361,9 @@
 /* (No Comment) */
 "asset-support-your-add-title" = "계정에 해당 자산이 없습니다.";
 
+/* (No Comment) */
+"asset-support-your-add-title-singular" = "계정에 해당 자산이 없습니다.";
+
 /* MARK: Asset */
 "asset-title" = "자산";
 
@@ -375,6 +384,24 @@
 
 /* (No Comment) */
 "back-up-phrase-qr" = "QR 표시";
+
+/* (No Comment) */
+"backup-operation-loading-body" = "계정 가져오기";
+
+/* (No Comment) */
+"bidali-introduction-action-title" = "기프트 카드 구매하기";
+
+/* (No Comment) */
+"bidali-introduction-body" = "알고, USDC 또는 USDt 잔액을 사용하여 전 세계 수천 개의 브랜드에서 기프트 카드를 구매하거나 모바일 기기를 충전할 수 있습니다!";
+
+/* MARK: Bidali Introduction */
+"bidali-introduction-navigation-title" = "Bidali로 기프트 카드 구매하기";
+
+/* (No Comment) */
+"bidali-introduction-title" = "암호화폐로 기프트 카드 구매하기";
+
+/* (No Comment) */
+"bidali-not-available-description" = "테스트넷에서는 구매할 수 없습니다. Bidali를 사용하려면 설정에서 메인넷으로 다시 전환하십시오.";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Bluetooth 오류";
@@ -429,6 +456,45 @@
 
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "지원되지 않는 기기";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-body" = "알고, USDC 또는 USDt 잔액을 사용하여 전 세계 수천 개의 브랜드에서 기프트 카드를 구매하거나 모바일 기기를 충전할 수 있습니다!";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-primary-action" = "기프트 카드 구매하기";
+
+/* MARK: Buy Gift Cards with Crypto Alert Item */
+"buy-gift-cards-with-crypto-alert-title" = "암호화폐로 기프트 카드 구매하기";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Apple Pay, 신용카드 또는 은행 계좌 이체를 사용하세요";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-title" = "MoonPay로 알고 구매하기";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-subtitle" = "미국 은행 계좌로 즉시 송금 ACH를 사용하세요";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-title" = "Sardine으로 알고 구매하기";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "알고, USDC, USDt 잔액을 사용할 수 있습니다.";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Bidali로 기프트 카드 구매하기";
+
+/* MARK: Buy / Sell Options */
+"buy-sell-options-buy-header-title" = "암호화폐 구매";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-subtitle" = "150여 개국에서 신용카드 또는 은행 계좌 이체를 사용하세요";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-title" = "Transak으로 USDC 구매하기";
+
+/* (No Comment) */
+"buy-sell-options-sell-header-title" = "암호화폐 판매";
 
 /* (No Comment) */
 "chart-no-data-text" = "현재 가격 API를 사용할 수 없습니다. 잠시 후 다시 확인해 주십시오.";
@@ -1289,6 +1355,9 @@
 "opt-in-title-adding-nft" = "NFT 옵트인";
 
 /* (No Comment) */
+"opt-in-to-usdc" = "USDC 옵트인";
+
+/* (No Comment) */
 "options-auth-account" = "계정 주소 인증";
 
 /* (No Comment) */
@@ -1310,13 +1379,16 @@
 "options-passphrase" = "비밀문구";
 
 /* (No Comment) */
-"options-rekey-ledger" = "Rekey to Ledger Account";
+"options-rekey-ledger" = "Ledger 계정으로 키 재지정";
 
 /* (No Comment) */
-"options-rekey-standard" = "Rekey to Standard Account";
+"options-rekey-standard" = "표준 계정으로 키 재지정";
 
 /* (No Comment) */
 "options-remove-account" = "계정 삭제";
+
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "키가 재지정된 %@의 제거가 완료된 후에 계정을 삭제할 수 있습니다.";
 
 /* (No Comment) */
 "options-remove-main-account-explanation" = "메인 계정을 삭제하려고 하십니다. 정말로 계정을 삭제하시겠습니까?";
@@ -1329,9 +1401,6 @@
 
 /* (No Comment) */
 "options-sort-title" = "정렬";
-
-/* (No Comment) */
-"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 
 /* MARK: Options */
 "options-title" = "자산 설정";
@@ -1555,8 +1624,11 @@
 /* (No Comment) */
 "quick-actions-address-title" = "주소";
 
-/* MARK: QuickActions */
+/* (No Comment) */
 "quick-actions-buy-algo-title" = "알고 구매";
+
+/* MARK: QuickActions */
+"quick-actions-buy-sell-title" = "구매 / 판매";
 
 /* (No Comment) */
 "quick-actions-more-title" = "추가";
@@ -1671,6 +1743,21 @@
 
 /* MARK: Rewards */
 "rewards-title" = "보상";
+
+/* (No Comment) */
+"sardine-introduction-action-title" = "Sardine으로 알고 구매하기";
+
+/* (No Comment) */
+"sardine-introduction-body" = "ACH 즉시 송금을 사용하여 알고 트랜잭션을 즉시 확정하고 저렴한 수수료 혜택을 누리세요. Sardine은 180여 개국에서 Apple Pay 및 GPay, 현지 은행 및 카드 결제를 지원합니다.";
+
+/* MARK:  Sardine Introduction */
+"sardine-introduction-navigation-title" = "Sardine으로 알고 구매하기";
+
+/* (No Comment) */
+"sardine-introduction-title" = "알고 구매";
+
+/* (No Comment) */
+"sardine-not-available-description" = "테스트넷에서는 구매할 수 없습니다. Sardine을 사용하려면 설정에서 메인넷으로 다시 전환하십시오.";
 
 /* (No Comment) */
 "screenshot-description" = "스크린샷을 찍어 복구 비밀문구를 백업하지 마세요. 비밀문구가 포함된 이미지가 존재하면 보안상의 위험이 있습니다.";
@@ -2207,10 +2294,13 @@
 "title-asset-id" = "자산 ID";
 
 /* (No Comment) */
-"title-buy-algo" = "알고 구매";
+"title-buy-sell" = "구매 / 판매";
 
 /* (No Comment) */
 "title-cancel" = "취소";
+
+/* (No Comment) */
+"title-choose-account-to-proceed-with" = "진행할 계정 선택";
 
 /* (No Comment) */
 "title-close" = "닫기";
@@ -2669,7 +2759,7 @@
 "transaction-option-list-add-asset-title" = "자산 추가";
 
 /* MARK: Transaction Options */
-"transaction-option-list-buy-algo-subtitle" = "신용카드 또는 은행 계좌 이체로 암호화폐 구매";
+"transaction-option-list-buy-sell-subtitle" = "모든 암호화폐 매매 옵션을 살펴보세요";
 
 /* (No Comment) */
 "transaction-option-list-more-subtitle" = "더 많은 액션 보기";
@@ -2721,6 +2811,21 @@
 
 /* (No Comment) */
 "transaction-tutorial-title" = "트랜잭션 팁";
+
+/* (No Comment) */
+"transak-introduction-action-title" = "Transak으로 USDC 구매하기";
+
+/* (No Comment) */
+"transak-introduction-body" = "Transak을 통해 800개가 넘는 앱에서 법정화폐로 암호화폐를 이용할 수 있습니다. 150개 이상의 국가에서 신용카드, 직불카드 또는 은행 송금을 지원합니다.";
+
+/* MARK:  Transak Introduction */
+"transak-introduction-navigation-title" = "Transak으로 USDC 구매하기";
+
+/* (No Comment) */
+"transak-introduction-title" = "USDC 구매";
+
+/* (No Comment) */
+"transak-not-available-description" = "테스트넷에서는 구매할 수 없습니다. Transak을 사용하려면 설정에서 메인넷으로 다시 전환하십시오.";
 
 /* (No Comment) */
 "tutorial-action-title-ledger" = "사용 방법";
@@ -2912,6 +3017,15 @@
 "wallet-connect-session-invalid-qr-message" = "WalletConnect에서 세션을 생성할 수 없습니다. 유효한 QR 코드를 사용해 주세요.";
 
 /* (No Comment) */
+"wallet-connect-session-limit-info-detail" = "51번째 세션부터는 가장 오래된 세션이 자동으로 연결 해제됩니다.";
+
+/* (No Comment) */
+"wallet-connect-session-limit-info-title" = "세션은 50개로 제한됩니다";
+
+/* (No Comment) */
+"wallet-connect-session-limit-warning-message" = "WalletConnect 세션의 최대 수를 초과했습니다. 가장 오래된 세션이 자동 연결 해제되었습니다.";
+
+/* (No Comment) */
 "wallet-connect-session-list-empty" = "아직 연동된 앱이 없습니다.";
 
 /* (No Comment) */
@@ -2991,6 +3105,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-error-rejected-user" = "트랜잭션 요청 거부: 사용자가 트랜잭션 요청을 거부했습니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-session-not-found" = "유효한 WalletConnect 세션을 찾을 수 없습니다. 월렛을 디앱에 다시 연결해 보세요.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "잘못된 입력: 트랜잭션 요청에 64개 이상의 트랜잭션이 포함되었습니다.";
@@ -3243,4 +3360,61 @@
 
 /* (No Comment) */
 "web-export-result-title-singular" = "계정을 내보냈습니다!";
+
+/* (No Comment) */
+"web-import-error-action" = "홈으로 이동";
+
+/* (No Comment) */
+"web-import-error-body" = "계정을 가져올 수 없습니다. 나중에 다시 시도해 주세요.";
+
+/* (No Comment) */
+"web-import-error-unsupported-version-body" = "애플리케이션에서 QR 코드 형식(버전: %@)을 인식하지 못합니다. 두 장치 모두 최신 버전의 Pera를 사용하는지 확인하세요.";
+
+/* (No Comment) */
+"web-import-instruction-first-message" = "데스크톱에서 \"web.perawallet.app\"으로 이동하세요";
+
+/* (No Comment) */
+"web-import-instruction-fourth-message" = "시작을 탭하고 QR을 스캔하세요";
+
+/* (No Comment) */
+"web-import-instruction-second-message" = "설정 > 계정 이전으로 이동하세요";
+
+/* MARK: Web Import */
+"web-import-instruction-start-button-title" = "시작";
+
+/* (No Comment) */
+"web-import-instruction-third-message" = "Pera Mobile로 가져올 계정을 선택하고 QR을 생성하세요.";
+
+/* (No Comment) */
+"web-import-instruction-title" = "Pera Web에서 QR을 준비하세요";
+
+/* (No Comment) */
+"web-import-qr-scanner-title" = "Pera Web에서 QR 코드 스캔";
+
+/* (No Comment) */
+"web-import-success-button-title" = "Pera Mobile 둘러보기";
+
+/* (No Comment) */
+"web-import-success-header-body" = "Pera Web에서 계정 %@개를 가져왔습니다.";
+
+/* (No Comment) */
+"web-import-success-header-singular-body" = "Pera Web에서 계정 %@개를 가져왔습니다.";
+
+/* (No Comment) */
+"web-import-success-header-singular-title" = "계정 가져오기 완료";
+
+/* (No Comment) */
+"web-import-success-header-title" = "계정 가져오기 완료";
+
+/* (No Comment) */
+"web-import-success-unimported-body" = "이전에 가져온 계정이므로 계정 %@개를 가져오지 않았습니다.";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-body" = "이전에 가져온 계정이므로 계정 %@개를 가져오지 않았습니다.";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-title" = "가져오기하지 않은 계정";
+
+/* (No Comment) */
+"web-import-success-unimported-title" = "가져오기하지 않은 계정";
 

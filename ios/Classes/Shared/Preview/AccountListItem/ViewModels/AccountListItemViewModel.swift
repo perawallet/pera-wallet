@@ -392,18 +392,6 @@ struct CustomAccountListItem {
         subtitle = nil
         accessory = nil
     }
-
-    init(
-        _ viewModel: AlgoAccountViewModel,
-        address: String?
-    ) {
-        self.address = address
-
-        icon = viewModel.image
-        title = viewModel.address
-        subtitle = nil
-        accessory = viewModel.amount
-    }
 }
 
 struct IconWithShortAddressDraft {

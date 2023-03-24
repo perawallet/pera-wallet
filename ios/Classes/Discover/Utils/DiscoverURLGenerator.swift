@@ -18,13 +18,100 @@ import Foundation
 import UIKit
 
 final class DiscoverURLGenerator {
-    static func generateUrl(
-        discoverUrl: DiscoverURL,
+    static func generateURL(
+        destination: DiscoverDestination,
         theme: UIUserInterfaceStyle,
         session: Session?
     ) -> URL? {
+        switch destination {
+        case .home:
+            return generateURLForHome(
+                theme: theme,
+                session: session
+            )
+        case .assetDetail(let params):
+            return generateURLForAssetDetail(
+                params: params,
+                theme: theme,
+                session: session
+            )
+        case .dappDetail(let params):
+            return generateURLForDappDetail(
+                params: params,
+                theme: theme,
+                session: session
+            )
+        case .generic(let params):
+            return generateGenericURL(
+                params: params,
+                theme: theme,
+                session: session
+            )
+        }
+    }
+
+    private static func generateURLForHome(
+        theme: UIUserInterfaceStyle,
+        session: Session?
+    ) -> URL? {
+        var components = URLComponents(string: Environment.current.discoverBaseUrl)
+        components?.queryItems = makeInHouseQueryItems(
+            theme: theme,
+            session: session
+        )
+        return components?.url
+    }
+
+    private static func generateURLForAssetDetail(
+        params: DiscoverAssetParameters,
+        theme: UIUserInterfaceStyle,
+        session: Session?
+    ) -> URL? {
+        var queryItems = makeInHouseQueryItems(
+            theme: theme,
+            session: session
+        )
+        if let poolID = params.poolID {
+            queryItems.append(.init(name: "poolId", value: poolID))
+        }
+
+        var components = URLComponents(string: Environment.current.discoverBaseUrl)
+        components?.path = "/token-detail/\(params.assetID)/"
+        components?.queryItems = queryItems
+        return components?.url
+    }
+
+    private static func generateURLForDappDetail(
+        params: DiscoverDappParamaters,
+        theme: UIUserInterfaceStyle,
+        session: Session?
+    ) -> URL? {
+        return URL(string: params.url)
+    }
+
+    private static func generateGenericURL(
+        params: DiscoverGenericParameters,
+        theme: UIUserInterfaceStyle,
+        session: Session?
+    ) -> URL? {
+        var components = URLComponents(url: params.url, resolvingAgainstBaseURL: false)
+
+        let presentQueryItems = (components?.queryItems).someArray
+        let additionalQueryItems = makeInHouseQueryItems(
+            theme: theme,
+            session: session
+        )
+        components?.queryItems = presentQueryItems + additionalQueryItems
+
+        return components?.url
+    }
+
+    private static func makeInHouseQueryItems(
+        theme: UIUserInterfaceStyle,
+        session: Session?
+    ) -> [URLQueryItem] {
         var queryItems: [URLQueryItem] = []
-        queryItems.append(.init(name: "version", value: "2"))
+        queryItems.append(.init(name: "version", value: "3"))
         queryItems.append(.init(name: "theme", value: theme.peraRawValue))
         queryItems.append(.init(name: "platform", value: "ios"))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
@@ -38,31 +125,13 @@ final class DiscoverURLGenerator {
         } else {
             queryItems.append(.init(name: "region", value: Locale.current.regionCode))
         }
-
-        guard var components = URLComponents(string: Environment.current.discoverBaseUrl) else {
-            return nil
-        }
-
-        switch discoverUrl {
-        case .other(let url):
-            return url
-        case .assetDetail(let parameters):
-            if let poolID = parameters.poolID {
-                queryItems.append(.init(name: "poolId", value: poolID))
-            }
-            components.path = "/token-detail/\(parameters.assetID)/"
-        case .home:
-            break
-        }
-
-        components.queryItems = queryItems
-
-        return components.url
+        return queryItems
     }
 }
 
-enum DiscoverURL {
-    case assetDetail(parameters: DiscoverAssetParameters)
-    case other(url: URL)
+enum DiscoverDestination {
     case home
+    case assetDetail(DiscoverAssetParameters)
+    case dappDetail(DiscoverDappParamaters)
+    case generic(DiscoverGenericParameters)
 }

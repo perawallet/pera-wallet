@@ -803,6 +803,7 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
                     self.eventHandler?(.didCompleteTransaction)
                 case .didEditNote(let note):
                     self.didEditNote(note: note)
+                default: break
                 }
             }
         }

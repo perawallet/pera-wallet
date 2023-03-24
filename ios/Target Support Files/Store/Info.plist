@@ -4,8 +4,14 @@
 <dict>
 	<key>ALGOD_TOKEN</key>
 	<string>$(ALGOD_TOKEN)</string>
-    <key>API_KEY</key>
-    <string>$(PROD_API_KEY)</string>
+	<key>API_KEY</key>
+	<string>$(PROD_API_KEY)</string>
+	<key>BIDALI_PROD_API_KEY</key>
+	<string>$(BIDALI_PROD_API_KEY)</string>
+	<key>SARDINE_PROD_API_KEY</key>
+	<string>$(SARDINE_PROD_API_KEY)</string>
+	<key>TRANSAK_PROD_API_KEY</key>
+	<string>$(TRANSAK_PROD_API_KEY)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -67,8 +73,6 @@
 	<true/>
 	<key>INDEXER_TOKEN</key>
 	<string>$(INDEXER_TOKEN)</string>
-	<key>API_KEY</key>
-	<string>$(PROD_API_KEY)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>

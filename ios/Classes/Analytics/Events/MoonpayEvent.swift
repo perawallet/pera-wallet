@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoonpayEvent.swift
+//   MoonPayEvent.swift
 
 import Foundation
 import MacaroonVendors
 
-struct MoonpayEvent: ALGAnalyticsEvent {
+struct MoonPayEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata
 
@@ -29,7 +29,7 @@ struct MoonpayEvent: ALGAnalyticsEvent {
     }
 }
 
-extension MoonpayEvent {
+extension MoonPayEvent {
     enum `Type` {
         case tapBuy
         case completed
@@ -38,9 +38,9 @@ extension MoonpayEvent {
         var rawValue: ALGAnalyticsEventName {
             switch self {
             case .tapBuy:
-                return .tapBuyAlgoInMoonpay
+                return .tapBuyAlgoInMoonPay
             case .completed:
-                return .buyAlgoFromMoonpayCompleted
+                return .buyAlgoFromMoonPayCompleted
             case .tapBottomsheetBuy:
                 return .tapBuyAlgoInBottomsheet
             }
@@ -48,10 +48,10 @@ extension MoonpayEvent {
     }
 }
 
-extension AnalyticsEvent where Self == MoonpayEvent {
-    static func moonpay(
-        type: MoonpayEvent.`Type`
+extension AnalyticsEvent where Self == MoonPayEvent {
+    static func moonPay(
+        type: MoonPayEvent.`Type`
     ) -> Self {
-        return MoonpayEvent(type: type)
+        return MoonPayEvent(type: type)
     }
 }

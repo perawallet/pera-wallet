@@ -30,12 +30,12 @@ final class AccountListOptionsViewController:
     
     private lazy var contextView = VStackView()
 
-    private let accountType: AccountType
+    private let accountType: AccountInformation.AccountType
     
     private let theme: AccountListOptionsViewControllerTheme
 
     init(
-        accountType: AccountType,
+        accountType: AccountInformation.AccountType,
         configuration: ViewControllerConfiguration,
         theme: AccountListOptionsViewControllerTheme = .init()
     ) {
@@ -131,6 +131,6 @@ extension AccountListOptionsViewController {
 extension AccountListOptionsViewController {
     enum Event {
         case addAccount
-        case arrangeAccounts(AccountType)
+        case arrangeAccounts(AccountInformation.AccountType)
     }
 }

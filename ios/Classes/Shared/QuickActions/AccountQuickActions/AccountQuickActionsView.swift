@@ -24,14 +24,14 @@ final class AccountQuickActionsView:
     ListReusable,
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .buyAlgo: TargetActionInteraction(),
+        .buySell: TargetActionInteraction(),
         .swap: TargetActionInteraction(),
         .send: TargetActionInteraction(),
         .more: TargetActionInteraction()
     ]
 
     private lazy var contentView = HStackView()
-    private lazy var buyActionView = makeActionView()
+    private lazy var buySellActionView = makeActionView()
     private lazy var swapActionView = makeBadgeActionView()
     private lazy var sendActionView =  makeActionView()
     private lazy var moreActionView = makeActionView()
@@ -59,9 +59,9 @@ final class AccountQuickActionsView:
         fittingIn size: CGSize
     ) -> CGSize {
         let maxActionSize = CGSize((size.width, .greatestFiniteMagnitude))
-        let buyActionSize = calculateActionPreferredSize(
+        let buySellActionSize = calculateActionPreferredSize(
             theme,
-            for: theme.buyAction,
+            for: theme.buySellAction,
             fittingIn: maxActionSize
         )
         let sendActionSize = calculateActionPreferredSize(
@@ -80,7 +80,7 @@ final class AccountQuickActionsView:
             fittingIn: maxActionSize
         )
         let preferredHeight = [
-            buyActionSize.height,
+            buySellActionSize.height,
             swapActionSize.height,
             sendActionSize.height,
             moreActionSize.height
@@ -121,24 +121,24 @@ extension AccountQuickActionsView {
             $0.trailing <= 0
         }
 
-        addBuyAction(theme)
+        addBuySellAction(theme)
         addSwapAction(theme)
         addSendAction(theme)
         addMoreAction(theme)
     }
 
-    private func addBuyAction(_ theme: AccountQuickActionsViewTheme) {
-        buyActionView.customizeAppearance(theme.buyAction)
+    private func addBuySellAction(_ theme: AccountQuickActionsViewTheme) {
+        buySellActionView.customizeAppearance(theme.buySellAction)
         customizeAction(
-            buyActionView,
+            buySellActionView,
             theme
         )
 
-        contentView.addArrangedSubview(buyActionView)
+        contentView.addArrangedSubview(buySellActionView)
 
         startPublishing(
-            event: .buyAlgo,
-            for: buyActionView
+            event: .buySell,
+            for: buySellActionView
         )
     }
 
@@ -222,7 +222,7 @@ extension AccountQuickActionsView {
 
 extension AccountQuickActionsView {
     enum Event {
-        case buyAlgo
+        case buySell
         case swap
         case send
         case more

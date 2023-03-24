@@ -89,6 +89,7 @@ extension AsaVerificationInfoScreen {
     private func addIllustration() {
         illustrationView.customizeAppearance(theme.illustration)
         illustrationView.clipsToBounds = true
+        illustrationView.isUserInteractionEnabled = false
 
         view.addSubview(illustrationView)
         illustrationView.snp.makeConstraints {

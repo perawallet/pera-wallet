@@ -23,7 +23,7 @@ struct CompleteTransactionEvent: ALGAnalyticsEvent {
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
-        accountType: AccountType,
+        accountType: AccountInformation.AccountType,
         assetId: String?,
         isMaxTransaction: Bool,
         amount: UInt64?,

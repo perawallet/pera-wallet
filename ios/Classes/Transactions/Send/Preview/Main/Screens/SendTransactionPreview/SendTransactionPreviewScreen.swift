@@ -63,6 +63,11 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       self.draft = draft
       super.init(configuration: configuration)
    }
+   
+   override func didTapDismissBarButton() -> Bool {
+      eventHandler?(.didPerformDismiss)
+      return true
+   }
 
    override func viewDidLayoutSubviews() {
       super.viewDidLayoutSubviews()
@@ -500,6 +505,7 @@ extension SendTransactionPreviewScreen {
 extension SendTransactionPreviewScreen {
    enum Event {
       case didCompleteTransaction
+      case didPerformDismiss
       case didEditNote(note: String?)
    }
 }

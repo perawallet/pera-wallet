@@ -59,14 +59,33 @@ extension ALGAPI {
         _ draft: EncryptedExportAccountDraft,
         onCompleted handler: @escaping (Response.Result<NoAPIModel, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
+        let modificationHeader: Headers
+
+        if let modificationKey = draft.qrBackupParameters.modificationKey {
+            modificationHeader = [ModificationHeader(modificationKey)]
+        } else {
+            modificationHeader = []
+        }
+
         return EndpointBuilder(api: self)
             .base(.mobileV1(network))
-            .path(.backups, args: draft.qrExportInformations.backupIdentifier)
+            .path(.backups, args: draft.qrBackupParameters.id)
             .method(.put)
-            .headers([
-                ModificationHeader(draft.qrExportInformations.modificationKey)
-            ])
+            .headers(modificationHeader)
             .body(draft)
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
+    func fetchBackupDetail(
+        _ backupID: String,
+        onCompleted handler: @escaping (Response.Result<Backup, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.backups, args: backupID)
+            .method(.get)
             .completionHandler(handler)
             .execute()
     }

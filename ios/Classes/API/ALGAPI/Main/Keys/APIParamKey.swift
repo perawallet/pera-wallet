@@ -24,6 +24,7 @@ enum APIParamKey: String, CodingKey {
     case availableOnDiscover = "available_on_discover_mobile"
     case accessToken = "access_token"
     case accounts = "accounts"
+    case accountType = "account_type"
     case address = "address"
     case afterTime = "after-time"
     case algoDollarConversion = "symbol"

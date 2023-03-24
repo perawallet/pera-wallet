@@ -28,6 +28,14 @@ extension URL {
     var isWebURL: Bool {
         return (scheme?.lowercased() == "http" || scheme?.lowercased() == "https") && host != nil
     }
+    var isPeraURL: Bool {
+        /// <note>
+        /// Swift `Regex` can NOT support this pattern at the moment.
+        let pattern = #"^https://([\da-z-]+\.)*(?<!web\.)perawallet\.app((?:/.*)?|(?:\?.*)?|(?:#.*)?)"#
+        let regex = try! NSRegularExpression(pattern: pattern)
+        let range = NSRange(location: 0, length: absoluteString.utf16.count)
+        return regex.firstMatch(in: absoluteString, options: [], range: range) != nil
+    }
 }
 
 extension URL {

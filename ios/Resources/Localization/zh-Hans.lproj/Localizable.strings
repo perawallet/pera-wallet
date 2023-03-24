@@ -68,6 +68,12 @@
 "account-type-selection-create-detail" = "创建新的Algorand账户或添加watch账户";
 
 /* (No Comment) */
+"account-type-selection-import-web" = "从Pera网络中导出";
+
+/* (No Comment) */
+"account-type-selection-import-web-detail" = "我想要从Pera网络中导出Algorand账户";
+
+/* (No Comment) */
 "account-type-selection-ledger" = "配对Ledger账户";
 
 /* (No Comment) */
@@ -355,6 +361,9 @@
 /* (No Comment) */
 "asset-support-your-add-title" = "您的账户不包含该项资产";
 
+/* (No Comment) */
+"asset-support-your-add-title-singular" = "您的账户不包含该项资产";
+
 /* MARK: Asset */
 "asset-title" = "资产";
 
@@ -375,6 +384,24 @@
 
 /* (No Comment) */
 "back-up-phrase-qr" = "显示二维码";
+
+/* (No Comment) */
+"backup-operation-loading-body" = "导入您的账户";
+
+/* (No Comment) */
+"bidali-introduction-action-title" = "购买礼品卡";
+
+/* (No Comment) */
+"bidali-introduction-body" = "您可以使用ALGO、USDC或USDT余额购买全世界数千品牌的礼品卡和手机充值卡！";
+
+/* MARK: Bidali Introduction */
+"bidali-introduction-navigation-title" = "使用Bidali购买礼品卡";
+
+/* (No Comment) */
+"bidali-introduction-title" = "使用加密货币购买礼品卡";
+
+/* (No Comment) */
+"bidali-not-available-description" = "您无法在测试网TestNet上进行购买交易。请从设置切换回主网MainNet，再使用Bidali。";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "蓝牙错误";
@@ -429,6 +456,45 @@
 
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "不支持的设备";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-body" = "您可以使用ALGO、USDC或USDT余额购买全世界数千品牌的礼品卡和手机充值卡！";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-primary-action" = "购买礼品卡";
+
+/* MARK: Buy Gift Cards with Crypto Alert Item */
+"buy-gift-cards-with-crypto-alert-title" = "使用加密货币购买礼品卡";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "使用Apple Pay、信用卡或银行转账方式";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-title" = "使用Moonpay购买ALGO";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-subtitle" = "通过您的美国银行账户使用即时ACH转账";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-title" = "使用Sardine购买ALGO";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "您可以使用您的ALGO、USDC或USDT余额";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "使用Bidali购买礼品卡";
+
+/* MARK: Buy / Sell Options */
+"buy-sell-options-buy-header-title" = "购买加密货币";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-subtitle" = "在150+个国家使用信用卡或银行转账";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-title" = "使用Transak购买USDC";
+
+/* (No Comment) */
+"buy-sell-options-sell-header-title" = "出售加密货币";
 
 /* (No Comment) */
 "chart-no-data-text" = "无可用的图表数据。";
@@ -1289,6 +1355,9 @@
 "opt-in-title-adding-nft" = "选择加入NFT";
 
 /* (No Comment) */
+"opt-in-to-usdc" = "选择加入USDC";
+
+/* (No Comment) */
 "options-auth-account" = "授权账户地址";
 
 /* (No Comment) */
@@ -1310,13 +1379,16 @@
 "options-passphrase" = "助记词";
 
 /* (No Comment) */
-"options-rekey-ledger" = "Rekey to Ledger Account";
+"options-rekey-ledger" = "Ledger账户密钥更新";
 
 /* (No Comment) */
-"options-rekey-standard" = "Rekey to Standard Account";
+"options-rekey-standard" = "标准账户密钥更新";
 
 /* (No Comment) */
 "options-remove-account" = "移除账户";
+
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "在移除密钥%@前，您无法删除该账户";
 
 /* (No Comment) */
 "options-remove-main-account-explanation" = "您将移除您的主要账户。您确定要这样做吗？";
@@ -1329,9 +1401,6 @@
 
 /* (No Comment) */
 "options-sort-title" = "分类";
-
-/* (No Comment) */
-"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 
 /* MARK: Options */
 "options-title" = "账户设置";
@@ -1555,8 +1624,11 @@
 /* (No Comment) */
 "quick-actions-address-title" = "地址";
 
-/* MARK: QuickActions */
+/* (No Comment) */
 "quick-actions-buy-algo-title" = "购买ALGO";
+
+/* MARK: QuickActions */
+"quick-actions-buy-sell-title" = "买入 / 卖出";
 
 /* (No Comment) */
 "quick-actions-more-title" = "更多";
@@ -1671,6 +1743,21 @@
 
 /* MARK: Rewards */
 "rewards-title" = "奖励";
+
+/* (No Comment) */
+"sardine-introduction-action-title" = "使用Sardine购买ALGO";
+
+/* (No Comment) */
+"sardine-introduction-body" = "使用即时ACH转账方式能够享受即时结算和低手续费的ALGO交易。Sardine还支持超过180个国家的本地银行与银行转账方式、Apple Pay和GPay。";
+
+/* MARK:  Sardine Introduction */
+"sardine-introduction-navigation-title" = "使用Sardine购买ALGO";
+
+/* (No Comment) */
+"sardine-introduction-title" = "购买ALGO";
+
+/* (No Comment) */
+"sardine-not-available-description" = "您无法在测试网TestNet上进行购买交易。请从设置切换回主网MainNet，再使用Sardine。";
 
 /* (No Comment) */
 "screenshot-description" = "请勿截屏备份恢复助记词。保存含有助记词的图片会带来安全风险。";
@@ -2207,10 +2294,13 @@
 "title-asset-id" = "资产ID";
 
 /* (No Comment) */
-"title-buy-algo" = "购买ALGO";
+"title-buy-sell" = "买入 / 卖出";
 
 /* (No Comment) */
 "title-cancel" = "取消";
+
+/* (No Comment) */
+"title-choose-account-to-proceed-with" = "选择账户以继续下一步";
 
 /* (No Comment) */
 "title-close" = "关闭";
@@ -2669,7 +2759,7 @@
 "transaction-option-list-add-asset-title" = "添加资产";
 
 /* MARK: Transaction Options */
-"transaction-option-list-buy-algo-subtitle" = "用信用卡或银行转账方式购买加密货币";
+"transaction-option-list-buy-sell-subtitle" = "查看买入或卖出加密货币的所有选项";
 
 /* (No Comment) */
 "transaction-option-list-more-subtitle" = "展示更多操作";
@@ -2721,6 +2811,21 @@
 
 /* (No Comment) */
 "transaction-tutorial-title" = "交易提示";
+
+/* (No Comment) */
+"transak-introduction-action-title" = "使用Transak购买USDC";
+
+/* (No Comment) */
+"transak-introduction-body" = "Transak在800多个应用程序中为用户提供包括法定货币与加密货币在内的多种服务。支持150+个国家的信用卡、借记卡或银行转账。";
+
+/* MARK:  Transak Introduction */
+"transak-introduction-navigation-title" = "使用Transak购买USDC";
+
+/* (No Comment) */
+"transak-introduction-title" = "买入USDC";
+
+/* (No Comment) */
+"transak-not-available-description" = "您无法在测试网TestNet上进行购买交易。请从设置切换回主网MainNet，再使用Transak。";
 
 /* (No Comment) */
 "tutorial-action-title-ledger" = "它的运作方式";
@@ -2912,6 +3017,15 @@
 "wallet-connect-session-invalid-qr-message" = "无法在WalletConnect上创建会话。请使用有效的二维码。";
 
 /* (No Comment) */
+"wallet-connect-session-limit-info-detail" = "当您有51个会话时，最早之前的会话会自动断开连接。";
+
+/* (No Comment) */
+"wallet-connect-session-limit-info-title" = "最大会话数量为50";
+
+/* (No Comment) */
+"wallet-connect-session-limit-warning-message" = "已超出WalletConnect的最大会话数量。您最早以前的会话将会自动断开连接。";
+
+/* (No Comment) */
 "wallet-connect-session-list-empty" = "尚未连接任何APP。";
 
 /* (No Comment) */
@@ -2991,6 +3105,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-error-rejected-user" = "交易请求被拒：用户拒绝了该交易请求。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-session-not-found" = "未找到有效的WalletConnect会话。请尝试重新将您的钱包连接到dApp";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "无效输入：交易请求含有超过 16 笔交易";
@@ -3243,4 +3360,61 @@
 
 /* (No Comment) */
 "web-export-result-title-singular" = "成功导出账户！";
+
+/* (No Comment) */
+"web-import-error-action" = "返回主页";
+
+/* (No Comment) */
+"web-import-error-body" = "无法导入您的账户。请稍后重试。";
+
+/* (No Comment) */
+"web-import-error-unsupported-version-body" = "该应用程序无法识别二维码格式（版本：%@）。请确保这两台设备都配有最新版本的Pera。";
+
+/* (No Comment) */
+"web-import-instruction-first-message" = "在您的桌面上前往“web.perawallet.app”";
+
+/* (No Comment) */
+"web-import-instruction-fourth-message" = "点击开始扫描二维码";
+
+/* (No Comment) */
+"web-import-instruction-second-message" = "前往设置 > 转移账户";
+
+/* MARK: Web Import */
+"web-import-instruction-start-button-title" = "开始";
+
+/* (No Comment) */
+"web-import-instruction-third-message" = "选择您想导入到Pera Mobile上的账户并生成二维码";
+
+/* (No Comment) */
+"web-import-instruction-title" = "准备好您在Pera网络上的二维码";
+
+/* (No Comment) */
+"web-import-qr-scanner-title" = "在Pera网络上扫描二维码";
+
+/* (No Comment) */
+"web-import-success-button-title" = "探索Pera Mobile";
+
+/* (No Comment) */
+"web-import-success-header-body" = "已从Pera钱包导入%@账户";
+
+/* (No Comment) */
+"web-import-success-header-singular-body" = "已从Pera钱包导入%@账户";
+
+/* (No Comment) */
+"web-import-success-header-singular-title" = "已导入账户";
+
+/* (No Comment) */
+"web-import-success-header-title" = "已导入账户";
+
+/* (No Comment) */
+"web-import-success-unimported-body" = "无法导入%@账户，因为先前已导入这些账户。";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-body" = "无法导入%@账户，因为先前已导入该账户。";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-title" = "未导入的账户";
+
+/* (No Comment) */
+"web-import-success-unimported-title" = "未导入的账户";
 

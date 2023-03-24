@@ -38,6 +38,10 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
     let connectedAppsButtonTitleImageSpacing: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.init(family, title: "qr-scan-overlay-title".localized)
+    }
+
+    init(_ family: LayoutFamily, title: String) {
         self.backgroundColor = Colors.QRScanner.background
         let backButtonIcon = "icon-back".uiImage.withRenderingMode(.alwaysTemplate)
         self.backButton = [
@@ -50,9 +54,9 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
             .tintColor(Colors.Text.white)
         ]
         self.title = [
-            .text("qr-scan-overlay-title".localized),
+            .text(title),
             .textAlignment(.center),
-            .textOverflow(SingleLineText(lineBreakMode: .byTruncatingTail)),
+            .textOverflow(FittingText()),
             .textColor(Colors.Text.white),
             .font(Fonts.DMSans.regular.make(24))
         ]

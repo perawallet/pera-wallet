@@ -25,4 +25,8 @@ extension Decimal {
     var doubleValue: Double {
         return number.doubleValue
     }
+
+    var stringValue: String {
+        return number.stringValue
+    }
 }

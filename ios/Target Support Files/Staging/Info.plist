@@ -4,8 +4,18 @@
 <dict>
 	<key>ALGOD_TOKEN</key>
 	<string>$(ALGOD_TOKEN)</string>
-    <key>API_KEY</key>
-    <string>$(STAGING_API_KEY)</string>
+	<key>API_KEY</key>
+	<string>$(STAGING_API_KEY)</string>
+	<key>BIDALI_PROD_API_KEY</key>
+	<string>$(BIDALI_PROD_API_KEY)</string>
+	<key>BIDALI_STAGING_API_KEY</key>
+	<string>$(BIDALI_STAGING_API_KEY)</string>
+	<key>SARDINE_PROD_API_KEY</key>
+	<string>$(SARDINE_PROD_API_KEY)</string>
+	<key>TRANSAK_PROD_API_KEY</key>
+	<string>$(TRANSAK_PROD_API_KEY)</string>
+	<key>TRANSAK_STAGING_API_KEY</key>
+	<string>$(TRANSAK_STAGING_API_KEY)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

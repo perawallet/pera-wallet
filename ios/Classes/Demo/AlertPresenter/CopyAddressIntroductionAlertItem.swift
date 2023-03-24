@@ -57,14 +57,7 @@ extension CopyAddressIntroductionAlertItem {
             body: body
         )
 
-        let gotItAction = AlertAction(
-            title: "title-got-it".localized,
-            style: .secondary
-        ) {
-            [weak self] in
-            guard let self = self else { return }
-            self.delegate.copyAddressIntroductionAlertItemDidPerformGotIt(self)
-        }
+        let gotItAction = makeGotItAction()
         alert.addAction(gotItAction)
 
         return alert
@@ -72,6 +65,18 @@ extension CopyAddressIntroductionAlertItem {
 
     func cancel() {
         isSeen = isSeen ?? false
+    }
+}
+
+extension CopyAddressIntroductionAlertItem {
+    private func makeGotItAction() -> AlertAction {
+        return AlertAction(
+            title: "title-got-it".localized,
+            style: .secondary
+        ) {
+            [unowned self] in
+            self.delegate.copyAddressIntroductionAlertItemDidPerformGotIt(self)
+        }
     }
 }
 

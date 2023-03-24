@@ -46,7 +46,7 @@ final class Account: ALGEntityModel {
     var totalCreatedApps: Int
 
     var name: String?
-    var type: AccountType = .standard
+    var type: AccountInformation.AccountType = .standard
     var ledgerDetail: LedgerDetail?
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
@@ -98,7 +98,7 @@ final class Account: ALGEntityModel {
 
     init(
         address: String,
-        type: AccountType,
+        type: AccountInformation.AccountType,
         ledgerDetail: LedgerDetail? = nil,
         name: String? = nil,
         rekeyDetail: RekeyDetail? = nil,
@@ -452,5 +452,22 @@ extension Array where Self.Element == CollectibleAsset {
         _ algorithm: CollectibleSortingAlgorithm
     ) -> Self {
         return sorted(by: algorithm.getFormula)
+    }
+}
+
+extension Account {
+    /// <todo>
+    /// Set the network in Account when it is fetched from the indexer, then we won't need to pass the network.
+    func usdc(_ network: ALGAPI.Network) -> Asset? {
+        let assetID = ALGAsset.usdcAssetID(network)
+        return self[assetID]
+    }
+
+    func usdt(_ network: ALGAPI.Network) -> Asset? {
+        guard let assetID = ALGAsset.usdtAssetID(network) else {
+            return nil
+        }
+
+        return self[assetID]
     }
 }

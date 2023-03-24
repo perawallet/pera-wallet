@@ -41,7 +41,6 @@ final class AccountAssetListViewController:
 
     private lazy var listDataSource = AccountAssetListDataSource(listView)
 
-    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listView: UICollectionView = {
@@ -505,13 +504,13 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
             positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
-            item.startObserving(event: .buyAlgo) {
+            item.startObserving(event: .buySell) {
                 [weak self] in
                 guard let self = self else {
                     return
                 }
 
-                self.eventHandler?(.buyAlgo)
+                self.eventHandler?(.buySell)
             }
 
             item.startObserving(event: .swap) {
@@ -956,7 +955,7 @@ extension AccountAssetListViewController {
         case didRemoveAccount
         case manageAssets(isWatchAccount: Bool)
         case addAsset
-        case buyAlgo
+        case buySell
         case swap
         case send
         case more

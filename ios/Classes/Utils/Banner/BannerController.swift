@@ -35,52 +35,43 @@ final class BannerController: MacaroonBanner.BannerController {
     func presentErrorBanner(
         title: String,
         message: String,
-        icon: UIImage? = "icon-info-24".uiImage,
         _ completion: (() -> Void)? = nil
     ) {
-        let bannerView = makeErrorBanner()
-        let draft = BannerDraft(
+        let view = makeErrorBanner()
+        let viewModel = BannerErrorViewModel(
             title: title,
-            icon: icon,
-            description: message
+            message: message
         )
+        view.bindData(viewModel)
 
-        bannerView.bindData(
-            BannerErrorViewModel(draft)
-        )
-
-        bannerView.startObserving(event: .performAction) {
+        view.startObserving(event: .performAction) {
             completion?()
         }
 
-        enqueue(bannerView)
+        enqueue(view)
     }
 
     func presentSuccessBanner(
         title: String,
-        message: String? = nil,
-        icon: UIImage? = "icon-success-24".uiImage
+        message: String? = nil
     ) {
-        let bannerView = makeSuccessBanner()
-        let draft = BannerDraft(
+        let view = makeSuccessBanner()
+        let viewModel = BannerSuccessViewModel(
             title: title,
-            icon: icon,
-            description: message ?? ""
+            message: message
         )
+        view.bindData(viewModel)
 
-        bannerView.bindData(
-            BannerErrorViewModel(draft)
-        )
-
-        enqueue(bannerView)
+        enqueue(view)
     }
 
-    func presentNotification(
+    func presentInAppNotification(
         _ title: String,
         _ completion: (() -> Void)? = nil
     ) {
-        let view = makeNotificationBanner()
-        view.bindData(BannerInfoViewModel(title))
+        let view = makeInAppNotificationBanner()
+        let viewModel = BannerInAppNotificationViewModel(title: title)
+        view.bindData(viewModel)
 
         view.startObserving(event: .performAction) {
             completion?()
@@ -94,7 +85,8 @@ final class BannerController: MacaroonBanner.BannerController {
         _ completion: (() -> Void)? = nil
     ) {
         let view = makeInfoBanner()
-        view.bindData(BannerInfoViewModel(title))
+        let viewModel = BannerInfoViewModel(title: title)
+        view.bindData(viewModel)
 
         view.startObserving(event: .performAction) {
             completion?()
@@ -107,7 +99,8 @@ final class BannerController: MacaroonBanner.BannerController {
 extension BannerController {
     private func makeErrorBanner() -> BannerView {
         let view = BannerView()
-        view.customize(BannerViewTheme())
+        let theme = BannerViewTheme()
+        view.customize(theme)
         return view
     }
 
@@ -119,10 +112,10 @@ extension BannerController {
         return view
     }
 
-    private func makeNotificationBanner() -> BannerView {
+    private func makeInAppNotificationBanner() -> BannerView {
         let view = BannerView()
         var theme = BannerViewTheme()
-        theme.configureForNotification()
+        theme.configureForInAppNotification()
         view.customize(theme)
         return view
     }

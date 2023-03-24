@@ -81,6 +81,29 @@ extension NavigationContainer {
             ]
         )
     }
+
+    func customizeNavigationBarTransparentAppearance(_ textColor: UIColor) {
+        let titleAttributeGroup: TextAttributeGroup = [
+            .font(Fonts.DMSans.medium.make(15)),
+            .textColor(textColor)
+        ]
+        let largeTitleAttributeGroup: TextAttributeGroup = [
+            .font(Fonts.DMSans.medium.make(32)),
+            .textColor(textColor)
+        ]
+
+        navigationBar.customizeAppearance(
+            [
+                .backImage("icon-back"),
+                .isOpaque(false),
+                .largeTitleAttributes(largeTitleAttributeGroup.asSystemAttributes()),
+                .shadowImage(UIImage()),
+                .shadowColor(nil),
+                .tintColor(Colors.Text.main),
+                .titleAttributes(titleAttributeGroup.asSystemAttributes())
+            ]
+        )
+    }
 }
 
 extension UIViewController {
@@ -94,5 +117,9 @@ extension UIViewController {
 
     func switchToHighlightedNavigationBarAppearance() {
         navigationContainer?.customizeNavigationBarHighlightedAppearance()
+    }
+
+    func switchToTransparentNavigationBarAppearance(_ textColor: UIColor = .white) {
+        navigationContainer?.customizeNavigationBarTransparentAppearance(textColor)
     }
 }

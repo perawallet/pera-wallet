@@ -61,12 +61,12 @@ extension TransactionOptionsScreen {
 
 extension TransactionOptionsScreen {
     private func composeActions() -> [TransactionOptionListAction] {
-        let buyAlgoAction = TransactionOptionListAction(
-            viewModel: BuyAlgoTransactionOptionListItemButtonViewModel()
+        let buySellAction = TransactionOptionListAction(
+            viewModel: BuySellTransactionOptionListItemButtonViewModel()
         ) {
             [weak self] _ in
             guard let self = self else { return }
-            self.delegate?.transactionOptionsScreenDidBuyAlgo(self)
+            self.delegate?.transactionOptionsScreenDidBuySell(self)
         }
 
         let swapDisplayStore = SwapDisplayStore()
@@ -120,7 +120,7 @@ extension TransactionOptionsScreen {
         }
 
         return [
-            buyAlgoAction,
+            buySellAction,
             swapAction,
             sendAction,
             receiveAction,
@@ -131,7 +131,7 @@ extension TransactionOptionsScreen {
 }
 
 protocol TransactionOptionsScreenDelegate: AnyObject {
-    func transactionOptionsScreenDidBuyAlgo(
+    func transactionOptionsScreenDidBuySell(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
     func transactionOptionsScreenDidSwap(

@@ -23,10 +23,12 @@ struct AccountTypeViewModel: PairedViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
     private(set) var detail: String?
+    private(set) var badge: String?
     
     init(_ model: AccountSetupMode) {
         bindImage(model)
         bindTitle(model)
+        bindBadge(model)
         bindDetail(model)
     }
 }
@@ -47,6 +49,8 @@ extension AccountTypeViewModel {
                 image = img("icon-recover-passphrase")
             case .ledger:
                 image = img("icon-pair-ledger-account")
+            case .importFromWeb:
+                image = img("icon-import-from-web")
             }
         case .rekey,
              .none:
@@ -71,11 +75,27 @@ extension AccountTypeViewModel {
                 title = "account-type-selection-passphrase".localized
             case .ledger:
                 title = "account-type-selection-ledger".localized
+            case .importFromWeb:
+                title = "account-type-selection-import-web".localized
             case .none:
                 title = "account-type-selection-recover".localized
             }
         case .rekey,
              .none:
+            break
+        }
+    }
+
+    private mutating func bindBadge(_ mode: AccountSetupMode) {
+        switch mode {
+        case let .recover(type):
+            switch type {
+            case .importFromWeb:
+                badge = "title-new-uppercased".localized
+            default:
+                break
+            }
+        default:
             break
         }
     }
@@ -97,6 +117,8 @@ extension AccountTypeViewModel {
                 detail = "account-type-selection-passphrase-detail".localized
             case .ledger:
                 detail = "account-type-selection-ledger-detail".localized
+            case .importFromWeb:
+                detail = "account-type-selection-import-web-detail".localized
             case .none:
                 detail = "account-type-selection-recover-detail".localized
             }

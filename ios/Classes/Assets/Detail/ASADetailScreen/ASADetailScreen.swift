@@ -56,7 +56,7 @@ final class ASADetailScreen:
     private lazy var transitionToConfirmToDeleteAccount = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
-    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(
             account: dataController.account,
@@ -1141,9 +1141,9 @@ extension ASADetailScreen {
 
 extension ASADetailScreen {
     private func navigateToBuyAlgo() {
-        let draft = BuyAlgoDraft()
+        let draft = MoonPayDraft()
         draft.address = dataController.account.address
-        buyAlgoFlowCoordinator.launch(draft: draft)
+        moonPayFlowCoordinator.launch(draft: draft)
     }
 
     private func navigateToSwapAsset() {

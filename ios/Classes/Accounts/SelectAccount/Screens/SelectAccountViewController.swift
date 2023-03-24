@@ -149,7 +149,6 @@ extension SelectAccountViewController: SharedDataControllerObserver {
 enum TransactionAction: Equatable {
     case send
     case receive
-    case buyAlgo
     case optIn(asset: AssetID)
     case softRekey
 }

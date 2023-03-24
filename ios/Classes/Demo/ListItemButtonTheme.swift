@@ -90,6 +90,18 @@ extension ListItemButtonTheme {
         ]
     }
 
+    mutating func configureForBuySellOptionsView() {
+        self.iconContentEdgeInsets = (12, 0)
+        self.iconAlignment = .aligned(top: 0)
+        self.contentVerticalPaddings = (8, 8)
+        self.contentMinHeight = 40
+        self.spacingBetweenTitleAndSubtitle = 0
+        self.subtitle = [
+            .textOverflow(FittingText()),
+            .textColor(Colors.Text.gray)
+        ]
+    }
+
     mutating func configureForQRScanOptionsView() {
         self.iconContentEdgeInsets = (16, 0)
         self.contentVerticalPaddings = (8, 8)

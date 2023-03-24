@@ -19,19 +19,13 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct BannerInfoViewModel: BannerViewModel, BindableViewModel {
+struct BannerInfoViewModel: BannerViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var message: EditText?
 
-    init<T>(_ model: T) {
-        bind(model)
-    }
-
-    mutating func bind<T>(_ model: T) {
-        if let title = model as? String {
-            bindTitle(title)
-        }
+    init(title: String) {
+        bindTitle(title)
     }
 }
 

@@ -87,9 +87,9 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
-        case .close:
-            if let icon = img("icon-close") {
-                return ImageContent(normal: icon)
+        case .close(let color):
+            if let icon = img("icon-close")?.withRenderingMode(.alwaysTemplate) {
+                return ImageContent(normal: icon, tintColor: color)
             }
             return nil
         case .closeTitle:
@@ -174,6 +174,11 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon, disabled: disabledIcon)
             }
         case .flexibleSpace:
+            return nil
+        case .reload:
+            if let icon = img("icon-reload") {
+                return ImageContent(normal: icon, tintColor: Colors.Text.main.uiColor)
+            }
             return nil
         }
         return nil
@@ -269,6 +274,8 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .flexibleSpace:
             return .explicit(CGSize(width: 40, height: 40))
+        case .reload:
+            return .explicit(CGSize(width: 40, height: 40))
         }
     }
     
@@ -285,7 +292,7 @@ struct ALGBarButtonItem: BarButtonItem {
     }
 
     static func dismiss() -> ALGBarButtonItem? {
-        return ALGBarButtonItem(kind: .close)
+        return ALGBarButtonItem(kind: .close(Colors.Text.main.uiColor))
     }
 
     static func flexibleSpace() -> ALGBarButtonItem {
@@ -302,7 +309,7 @@ extension ALGBarButtonItem {
         case add
         case notification
         case newNotification
-        case close
+        case close(UIColor? = nil)
         case closeTitle
         case save
         case qr
@@ -322,6 +329,7 @@ extension ALGBarButtonItem {
         case discoverPrevious
         case discoverHome
         case flexibleSpace
+        case reload
     }
 }
 

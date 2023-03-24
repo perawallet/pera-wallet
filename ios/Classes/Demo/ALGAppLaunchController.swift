@@ -112,10 +112,10 @@ final class ALGAppLaunchController:
         sharedDataController.startPolling()
     }
     
-    func launchBuyAlgo(shouldStartPolling: Bool = false, draft: BuyAlgoDraft) {
+    func launchBuyAlgo(shouldStartPolling: Bool = false, draft: MoonPayDraft) {
         authChecker.authorize()
         uiHandler.launchUI(.main(completion: {
-            self.receive(deeplinkWithSource: .buyAlgo(draft))
+            self.receive(deeplinkWithSource: .buyAlgoWithMoonPay(draft))
         }))
         
         if shouldStartPolling {
@@ -296,8 +296,8 @@ extension ALGAppLaunchController {
             )
         case .walletConnectRequest(let draft):
             result = determineUIStateIfPossible(forWalletConnectRequest: draft)
-        case .buyAlgo(let draft):
-            result = determineUIStateIfPossible(forBuyAlgo: draft)
+        case .buyAlgoWithMoonPay(let draft):
+            result = determineUIStateIfPossible(forMoonPay: draft)
         case .qrText(let qrText):
             result = determineUIStateIfPossible(forQRText: qrText)
         }
@@ -412,8 +412,8 @@ extension ALGAppLaunchController {
         }
     }
     
-    private func determineUIStateIfPossible(forBuyAlgo draft: BuyAlgoDraft) -> DeeplinkResult {
-        let parserResult = deeplinkParser.discoverBuyAlgo(draft: draft)
+    private func determineUIStateIfPossible(forMoonPay draft: MoonPayDraft) -> DeeplinkResult {
+        let parserResult = deeplinkParser.discoverBuyAlgoWithMoonPay(draft: draft)
         
         switch parserResult {
         case .none: return nil

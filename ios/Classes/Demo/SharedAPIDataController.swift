@@ -246,7 +246,7 @@ extension SharedAPIDataController {
             assetID: assetID,
             for: account
         )
-        let hasAlreadyOptedIn = account[assetID] != nil
+        let hasAlreadyOptedIn = account.isOptedIn(to: assetID)
 
         switch (hasPendingOptedIn, hasAlreadyOptedIn) {
         case (true, false): return .pending

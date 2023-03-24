@@ -34,12 +34,12 @@ final class TabBarController: TabBarContainer {
 
     private lazy var toggleTransactionOptionsActionView = Button()
 
-    private lazy var buyAlgoAction = TransactionOptionListAction(
-        viewModel: BuyAlgoTransactionOptionListItemButtonViewModel()
+    private lazy var buySellAction = TransactionOptionListAction(
+        viewModel: BuySellTransactionOptionListItemButtonViewModel()
     ) {
         [weak self] _ in
         guard let self = self else { return }
-        self.navigateToBuyAlgo()
+        self.navigateToBuySell()
     }
 
     private lazy var swapActionViewModel = createSwapActionViewModel()
@@ -71,7 +71,18 @@ final class TabBarController: TabBarContainer {
 
     private lazy var transactionOptionsView = createTransactionOptions()
 
-    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
+    private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api)
+    private lazy var transakFlowCoordinator = TransakFlowCoordinator(
+        presentingScreen: self,
+        api: api,
+        sharedDataController: sharedDataController,
+        bannerController: bannerController,
+        loadingController: loadingController,
+        analytics: analytics
+    )
+    private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api)
+
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
         dataStore: swapDataStore,
@@ -97,8 +108,8 @@ final class TabBarController: TabBarContainer {
         sharedDataController: sharedDataController
     )
 
-    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
-    
+    private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
+
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
 
@@ -229,7 +240,7 @@ extension TabBarController {
 
         let aView = TransactionOptionsView(
             actions: [
-                buyAlgoAction,
+                buySellAction,
                 swapAction,
                 sendAction,
                 receiveAction,
@@ -367,11 +378,61 @@ extension TabBarController {
         analytics.track(.tapReceiveTab())
     }
 
-    private func navigateToBuyAlgo() {
+    private func navigateToBuySell() {
         toggleTransactionOptions()
-        buyAlgoFlowCoordinator.launch()
 
-        analytics.track(.moonpay(type: .tapBottomsheetBuy))
+        let eventHandler: BuySellOptionsScreen.EventHandler = {
+            [unowned self] event in
+            switch event {
+            case .performBuyAlgoWithMoonPay:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyAlgoWithMoonPay()
+                }
+            case .performBuyAlgoWithSardine:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyAlgoWithSardine()
+                }
+            case .performBuyWithTransak:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyWithTransak()
+                }
+            case .performBuyGiftCardsWithBidali:
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    self.openBuyGiftCardsWithBidali()
+                }
+            }
+        }
+
+        transitionToBuySellOptions.perform(
+            .buySellOptions(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openBuyAlgoWithMoonPay() {
+        moonPayFlowCoordinator.launch()
+
+        analytics.track(.moonPay(type: .tapBottomsheetBuy))
+    }
+
+    private func openBuyAlgoWithSardine() {
+        sardineFlowCoordinator.launch()
+    }
+
+    private func openBuyWithTransak() {
+        transakFlowCoordinator.launch()
+    }
+
+    private func openBuyGiftCardsWithBidali() {
+        bidaliFlowCoordinator.launch()
     }
 
     private func navigateToQRScanner() {

@@ -515,14 +515,14 @@ extension DeepLinkParser {
         return .success(.wcMainTransactionScreen(draft: draft))
     }
     
-    func discoverBuyAlgo(
-        draft: BuyAlgoDraft
+    func discoverBuyAlgoWithMoonPay(
+        draft: MoonPayDraft
     ) -> Result? {
         if !sharedDataController.isAvailable {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
-        return .success(.buyAlgo(draft: draft))
+        return .success(.buyAlgoWithMoonPay(draft: draft))
     }
 }
 
@@ -559,7 +559,7 @@ extension DeepLinkParser {
             shouldFilterAccount: ((Account) -> Bool)? = nil
         )
         case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
-        case buyAlgo(draft: BuyAlgoDraft)
+        case buyAlgoWithMoonPay(draft: MoonPayDraft)
         case accountSelect(asset: AssetID)
     }
     

@@ -27,6 +27,7 @@ final class RecoverAccountView:
     private lazy var stackView = UIStackView()
     private lazy var recoverWithPassphraseView = AccountTypeView()
     private lazy var recoverWithLedgerView = AccountTypeView()
+    private lazy var importFromWebView = AccountTypeView()
 
     func customize(_ theme: RecoverAccountViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -51,11 +52,18 @@ final class RecoverAccountView:
             action: #selector(notifyDelegateToRecoverWithLedger),
             for: .touchUpInside
         )
+
+        importFromWebView.addTarget(
+            self,
+            action: #selector(notifyDelegateToImportFromWeb),
+            for: .touchUpInside
+        )
     }
 
     func bindData(_ viewModel: RecoverAccountViewModel?) {
         recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseViewModel)
         recoverWithLedgerView.bindData(viewModel?.recoverWithLedgerViewModel)
+        importFromWebView.bindData(viewModel?.importFromWebViewModel)
     }
 }
 
@@ -68,6 +76,11 @@ extension RecoverAccountView {
     @objc
     private func notifyDelegateToRecoverWithLedger() {
         delegate?.recoverAccountView(self, didSelect: .ledger)
+    }
+
+    @objc
+    private func notifyDelegateToImportFromWeb() {
+        delegate?.recoverAccountView(self, didSelect: .importFromWeb)
     }
 }
 
@@ -98,6 +111,8 @@ extension RecoverAccountView {
         stackView.addArrangedSubview(recoverWithPassphraseView)
         recoverWithLedgerView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(recoverWithLedgerView)
+        importFromWebView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(importFromWebView)
     }
 }
 

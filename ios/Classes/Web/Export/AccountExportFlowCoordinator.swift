@@ -25,7 +25,7 @@ final class AccountExportFlowCoordinator {
     private var accounts: [Account] = []
     private var session: Session?
     private var confirmDomainScreen: UIViewController?
-    private var qrExportInformations: QRExportInformations?
+    private var qrBackupParameters: QRBackupParameters?
 
     init(
         presentingScreen: UIViewController,
@@ -39,11 +39,8 @@ final class AccountExportFlowCoordinator {
 }
 
 extension AccountExportFlowCoordinator {
-    func populate(qrExportInformations: QRExportInformations) {
-        self.qrExportInformations = qrExportInformations
-    }
-
-    func launch() {
+    func launch(qrBackupParameters: QRBackupParameters) {
+        self.qrBackupParameters = qrBackupParameters
         navigateToAccountSelection()
     }
 
@@ -179,7 +176,7 @@ extension AccountExportFlowCoordinator {
     ) {
         /// TODO:
         /// These logics should be located in necessary screens not coordinator
-        guard let qrExportInformations = self.qrExportInformations else {
+        guard let qrBackupParameters else {
             return
         }
 
@@ -194,7 +191,7 @@ extension AccountExportFlowCoordinator {
 
         let encryptedAccountDraft = EncryptedExportAccountDraft(
             draft: exportAccountDraft,
-            qrExportInformations: qrExportInformations
+            qrBackupParameters: qrBackupParameters
         )
 
         let encryptedContent = encryptedAccountDraft.encryptedContent

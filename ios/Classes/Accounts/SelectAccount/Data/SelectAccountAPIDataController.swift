@@ -47,7 +47,6 @@ final class SelectAccountAPIDataController:
     deinit {
         sharedDataController.remove(self)
     }
-
 }
 
 extension SelectAccountAPIDataController {
@@ -128,32 +127,16 @@ extension SelectAccountAPIDataController {
                     return
                 }
 
-                let cellItem: SelectAccountListViewItem
-                
-                if self.transactionAction == .buyAlgo {
-                    let account = accountHandle.value
-                    let algoAccount = CustomAccountListItem(
-                        AlgoAccountViewModel(
-                            account,
-                            currencyFormatter: currencyFormatter
-                        ),
-                        address: account.address
-                    )
-                    
-                    cellItem = .account(AccountListItemViewModel(algoAccount), accountHandle)
-                } else {
-                    let accountPortfolioItem = AccountPortfolioItem(
-                        accountValue: accountHandle,
-                        currency: currency,
-                        currencyFormatter: currencyFormatter
-                    )
-                    let accountListItemViewModel = AccountListItemViewModel(accountPortfolioItem)
+                let item = AccountPortfolioItem(
+                    accountValue: accountHandle,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
+                )
+                let viewModel = AccountListItemViewModel(item)
+                let listItem = SelectAccountListViewItem.account(viewModel, accountHandle)
 
-                    cellItem = .account(accountListItemViewModel, accountHandle)
-                }
-                
                 accounts.append(accountHandle)
-                accountItems.append(cellItem)
+                accountItems.append(listItem)
             }
 
             var snapshot = Snapshot()

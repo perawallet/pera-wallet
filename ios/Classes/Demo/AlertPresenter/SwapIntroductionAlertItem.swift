@@ -61,29 +61,37 @@ extension SwapIntroductionAlertItem {
             theme: AlertScreenWithFillingImageTheme()
         )
 
-        let trySwapAction = AlertAction(
-            title: "swap-alert-primary-action".localized,
-            style: .primary
-        ) {
-            [weak self] in
-            guard let self = self else { return }
-            self.delegate.swapIntroductionAlertItemDidPerformTrySwap(self)
-        }
+        let trySwapAction = makeTrySwapAction()
         alert.addAction(trySwapAction)
 
-        let laterAction = AlertAction(
-            title: "title-later".localized,
-            style: .secondary
-        ) {
-            [weak self] in
-            guard let self = self else { return }
-            self.delegate.swapIntroductionAlertItemDidPerformLaterAction(self)
-        }
+        let laterAction = makeLaterAction()
         alert.addAction(laterAction)
         return alert
     }
 
     func cancel() {}
+}
+
+extension SwapIntroductionAlertItem {
+    private func makeTrySwapAction() -> AlertAction {
+        return AlertAction(
+            title: "swap-alert-primary-action".localized,
+            style: .primary
+        ) {
+            [unowned self] in
+            self.delegate.swapIntroductionAlertItemDidPerformTrySwap(self)
+        }
+    }
+
+    private func makeLaterAction() -> AlertAction {
+        return AlertAction(
+            title: "title-later".localized,
+            style: .secondary
+        ) {
+            [unowned self] in
+            self.delegate.swapIntroductionAlertItemDidPerformLaterAction(self)
+        }
+    }
 }
 
 extension SwapIntroductionAlertItem {

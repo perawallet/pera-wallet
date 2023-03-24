@@ -82,7 +82,7 @@ extension BannerViewTheme {
         message = message.modify([ .textColor(Colors.Toast.description) ])
     }
 
-    mutating func configureForNotification() {
+    mutating func configureForInAppNotification() {
         backgroundShadow = MacaroonUIKit.Shadow(
             color: UIColor.black,
             fillColor: Colors.Defaults.background.uiColor,

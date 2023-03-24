@@ -63,6 +63,8 @@ final class TransactionResultScreen: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        if !isViewFirstAppeared { return }
+
         eventHandler?(.didCompleteTransaction)
 
         // Close screen after 1 seconds

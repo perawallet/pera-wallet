@@ -100,6 +100,17 @@ extension AccountInformation {
 }
 
 extension AccountInformation {
+    enum AccountType:
+        String,
+        Codable {
+        case standard = "standard"
+        case watch = "watch"
+        case ledger = "ledger"
+        case rekeyed = "rekeyed"
+    }
+}
+
+extension AccountInformation {
     enum CodingKeys: String, CodingKey {
         case address = "address"
         case name = "name"
@@ -111,15 +122,12 @@ extension AccountInformation {
     }
 }
 
-extension AccountInformation: Equatable {
+extension AccountInformation: Hashable {
     static func == (lhs: AccountInformation, rhs: AccountInformation) -> Bool {
         return lhs.address == rhs.address
     }
-}
 
-enum AccountType: String, Codable {
-    case standard = "standard"
-    case watch = "watch"
-    case ledger = "ledger"
-    case rekeyed = "rekeyed"
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(address)
+    }
 }

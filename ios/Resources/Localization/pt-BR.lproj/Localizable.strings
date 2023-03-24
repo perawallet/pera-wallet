@@ -68,6 +68,12 @@
 "account-type-selection-create-detail" = "Criar uma nova conta Algorand ou adicionar uma conta de observação";
 
 /* (No Comment) */
+"account-type-selection-import-web" = "Importação da Pera Web";
+
+/* (No Comment) */
+"account-type-selection-import-web-detail" = "Quero importar contas Algorand da Pera Web";
+
+/* (No Comment) */
 "account-type-selection-ledger" = "Parear Dispositivo Ledger";
 
 /* (No Comment) */
@@ -355,6 +361,9 @@
 /* (No Comment) */
 "asset-support-your-add-title" = "Suas contas não contêm este ativo";
 
+/* (No Comment) */
+"asset-support-your-add-title-singular" = "Sua conta não contém este ativo";
+
 /* MARK: Asset */
 "asset-title" = "Ativo";
 
@@ -375,6 +384,24 @@
 
 /* (No Comment) */
 "back-up-phrase-qr" = "Exibir QR";
+
+/* (No Comment) */
+"backup-operation-loading-body" = "Importando suas contas";
+
+/* (No Comment) */
+"bidali-introduction-action-title" = "Comprar vales-presente";
+
+/* (No Comment) */
+"bidali-introduction-body" = "Você pode utilizar seu saldo Algo, USDC ou USDt para comprar vales-presente e recargas de celular de milhares de marcas em todo o mundo!";
+
+/* MARK: Bidali Introduction */
+"bidali-introduction-navigation-title" = "Comprar vales-presente com Bidali";
+
+/* (No Comment) */
+"bidali-introduction-title" = "Compre vales-presente com Crypto";
+
+/* (No Comment) */
+"bidali-not-available-description" = "Você não pode comprar enquanto estiver na TestNet. Volte para MainNet em Configurações para usar o Bidali.";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Erro de Bluetooth";
@@ -429,6 +456,45 @@
 
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "Dispositivo Não Suportado";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-body" = "Você pode utilizar seu saldo Algo, USDC ou USDt para comprar vales-presente e recargas de celular de milhares de marcas em todo o mundo!";
+
+/* (No Comment) */
+"buy-gift-cards-with-crypto-alert-primary-action" = "Comprar vales-presente";
+
+/* MARK: Buy Gift Cards with Crypto Alert Item */
+"buy-gift-cards-with-crypto-alert-title" = "Compre vales-presente com Crypto";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-subtitle" = "Utilize Apple Pay, cartões de crédito ou transferência bancária";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-moonpay-option-title" = "Comprar ALGO com MoonPay";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-subtitle" = "Utilize o Instant ACH com sua conta bancária nos EUA";
+
+/* (No Comment) */
+"buy-sell-options-buy-algo-with-sardine-option-title" = "Comprar ALGO com Sardine";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "Você pode utilizar seu saldo de Algo, USDC ou USDt";
+
+/* (No Comment) */
+"buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Comprar vales-presente com Bidali";
+
+/* MARK: Buy / Sell Options */
+"buy-sell-options-buy-header-title" = "Comprar cripto";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-subtitle" = "Utilize cartões de crédito ou transferências bancárias de mais de 150 países";
+
+/* (No Comment) */
+"buy-sell-options-buy-usdc-with-transak-option-title" = "Comprar USDC com Transak";
+
+/* (No Comment) */
+"buy-sell-options-sell-header-title" = "Vender cripto";
 
 /* (No Comment) */
 "chart-no-data-text" = "API de preços momentaneamente indisponível. Volte mais tarde.";
@@ -1289,6 +1355,9 @@
 "opt-in-title-adding-nft" = "Optar por NFT";
 
 /* (No Comment) */
+"opt-in-to-usdc" = "Optar por USDC";
+
+/* (No Comment) */
 "options-auth-account" = "Autenticar Endereço de Conta";
 
 /* (No Comment) */
@@ -1310,13 +1379,16 @@
 "options-passphrase" = "Frase Senha";
 
 /* (No Comment) */
-"options-rekey-ledger" = "Rekey to Ledger Account";
+"options-rekey-ledger" = "Rechavear para Conta Ledger";
 
 /* (No Comment) */
-"options-rekey-standard" = "Rekey to Standard Account";
+"options-rekey-standard" = "Rechavear para Conta Padrão";
 
 /* (No Comment) */
 "options-remove-account" = "Remover Conta";
+
+/* (No Comment) */
+"options-remove-account-auth-address-error" = "Você não pode remover esta conta antes de remover %@ rechaveado";
 
 /* (No Comment) */
 "options-remove-main-account-explanation" = "Você está prestes a remover sua conta principal. Tem certeza de que quer prosseguir?";
@@ -1329,9 +1401,6 @@
 
 /* (No Comment) */
 "options-sort-title" = "Ordenar";
-
-/* (No Comment) */
-"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
 
 /* MARK: Options */
 "options-title" = "CONFIGURAÇÕES DE CONTA";
@@ -1555,8 +1624,11 @@
 /* (No Comment) */
 "quick-actions-address-title" = "Endereço";
 
-/* MARK: QuickActions */
+/* (No Comment) */
 "quick-actions-buy-algo-title" = "Comprar ALGO";
+
+/* MARK: QuickActions */
+"quick-actions-buy-sell-title" = "Comprar / Vender";
 
 /* (No Comment) */
 "quick-actions-more-title" = "Mais";
@@ -1671,6 +1743,21 @@
 
 /* MARK: Rewards */
 "rewards-title" = "Recompensas";
+
+/* (No Comment) */
+"sardine-introduction-action-title" = "Comprar ALGO com Sardine";
+
+/* (No Comment) */
+"sardine-introduction-body" = "Liquidação instantânea e tarifas mais baixas para o Algo usando transferências ACH instantâneas. O Sardine também suporta pagamentos bancários e com cartão locais em mais de 180 países, Apple Pay e GPay.";
+
+/* MARK:  Sardine Introduction */
+"sardine-introduction-navigation-title" = "Comprar ALGO com Sardine";
+
+/* (No Comment) */
+"sardine-introduction-title" = "Comprar ALGO";
+
+/* (No Comment) */
+"sardine-not-available-description" = "Você não pode comprar enquanto estiver na TestNet. Volte para a MainNet em Configurações para usar o Sardine.";
 
 /* (No Comment) */
 "screenshot-description" = "Não grave sua frase senha de recuperação fazendo a captura de tela. Ter uma imagem contendo sua senha é um risco à segurança.";
@@ -2207,10 +2294,13 @@
 "title-asset-id" = "ID do Ativo";
 
 /* (No Comment) */
-"title-buy-algo" = "Comprar ALGO";
+"title-buy-sell" = "Comprar / Vender";
 
 /* (No Comment) */
 "title-cancel" = "Cancelar";
+
+/* (No Comment) */
+"title-choose-account-to-proceed-with" = "Escolha uma conta para prosseguir";
 
 /* (No Comment) */
 "title-close" = "Fechar";
@@ -2669,7 +2759,7 @@
 "transaction-option-list-add-asset-title" = "Adicionar Ativo";
 
 /* MARK: Transaction Options */
-"transaction-option-list-buy-algo-subtitle" = "Compre criptomoedas com cartão de crédito ou transferência bancária";
+"transaction-option-list-buy-sell-subtitle" = "Veja todas as opções para comprar ou vender cripto";
 
 /* (No Comment) */
 "transaction-option-list-more-subtitle" = "Exibir mais ações";
@@ -2721,6 +2811,21 @@
 
 /* (No Comment) */
 "transaction-tutorial-title" = "Dicas para Transações";
+
+/* (No Comment) */
+"transak-introduction-action-title" = "Compre USDC com Transak";
+
+/* (No Comment) */
+"transak-introduction-body" = "A Transak integra usuários de fiduciário a cripto em mais de 800 aplicativos. Suporta cartões de crédito, cartões de débito ou transferências bancárias em mais de 150 países.";
+
+/* MARK:  Transak Introduction */
+"transak-introduction-navigation-title" = "Compre USDC com Transak";
+
+/* (No Comment) */
+"transak-introduction-title" = "Comprar USDC";
+
+/* (No Comment) */
+"transak-not-available-description" = "Você não pode comprar enquanto estiver no TestNet. Volte para a MainNet em Configurações para usar o Transak.";
 
 /* (No Comment) */
 "tutorial-action-title-ledger" = "Como funciona?";
@@ -2912,6 +3017,15 @@
 "wallet-connect-session-invalid-qr-message" = "Não foi possível criar uma sessão no WalletConnect. Tente com um QR válido.";
 
 /* (No Comment) */
+"wallet-connect-session-limit-info-detail" = "Com 51 sessões, sua sessão mais antiga será automaticamente desconectada.";
+
+/* (No Comment) */
+"wallet-connect-session-limit-info-title" = "As sessões são limitadas a 50";
+
+/* (No Comment) */
+"wallet-connect-session-limit-warning-message" = "O número máximo de sessões do WalletConnect foi excedido. Sua sessão mais antiga foi desconectada automaticamente.";
+
+/* (No Comment) */
 "wallet-connect-session-list-empty" = "Você ainda não conectou qualquer aplicativo.";
 
 /* (No Comment) */
@@ -2991,6 +3105,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-error-rejected-user" = "Solicitação de Transação Recusada: O Usuário recusou a solicitação de transação.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-session-not-found" = "Nenhuma sessão válida do WalletConnect foi encontrada. Tente reconectar sua carteira à DApp";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "Entrada Inválida: A solicitação de transação contém mais de 64 transações";
@@ -3243,4 +3360,61 @@
 
 /* (No Comment) */
 "web-export-result-title-singular" = "Conta exportada com sucesso!";
+
+/* (No Comment) */
+"web-import-error-action" = "Ir para Início";
+
+/* (No Comment) */
+"web-import-error-body" = "Suas contas não puderam ser importadas. Tente novamente mais tarde.";
+
+/* (No Comment) */
+"web-import-error-unsupported-version-body" = "Este aplicativo não reconhece o formato de código QR (versão: %@). Certifique-se de que ambos os dispositivos estejam usando a versão mais recente da Pera.";
+
+/* (No Comment) */
+"web-import-instruction-first-message" = "Vá ao “web.perawallet.app” na sua área de trabalho";
+
+/* (No Comment) */
+"web-import-instruction-fourth-message" = "Toque em Iniciar para escanear o QR";
+
+/* (No Comment) */
+"web-import-instruction-second-message" = "Vá a Configurações > Transferir Contas";
+
+/* MARK: Web Import */
+"web-import-instruction-start-button-title" = "Iniciar";
+
+/* (No Comment) */
+"web-import-instruction-third-message" = "Selecione as contas que quer importar ao Pera Mobile e gere seu QR";
+
+/* (No Comment) */
+"web-import-instruction-title" = "Prepare seu QR na Pera Web";
+
+/* (No Comment) */
+"web-import-qr-scanner-title" = "Escaneie o código QR na Pera Web";
+
+/* (No Comment) */
+"web-import-success-button-title" = "Explore o Pera Mobile";
+
+/* (No Comment) */
+"web-import-success-header-body" = "%@ contas foram importadas da Pera Web";
+
+/* (No Comment) */
+"web-import-success-header-singular-body" = "%@ conta foi importada da Pera Web";
+
+/* (No Comment) */
+"web-import-success-header-singular-title" = "Conta importada";
+
+/* (No Comment) */
+"web-import-success-header-title" = "Contas importadas";
+
+/* (No Comment) */
+"web-import-success-unimported-body" = "%@ contas não foram importadas porque foram importadas anteriormente.";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-body" = "%@ conta não foi importada porque foi importada anteriormente.";
+
+/* (No Comment) */
+"web-import-success-unimported-singular-title" = "Conta Não Importada";
+
+/* (No Comment) */
+"web-import-success-unimported-title" = "Contas Não Importadas";
 

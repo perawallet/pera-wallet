@@ -34,7 +34,7 @@ enum ALGAnalyticsEventName:
     String,
     AnalyticsEventName {
     case addAsset
-    case buyAlgoFromMoonpayCompleted
+    case buyAlgoFromMoonPayCompleted
     case changeAssetDetail
     case changeCurrency
     case changeLanguage
@@ -78,7 +78,7 @@ enum ALGAnalyticsEventName:
     case tapBuyAlgoInAccountDetail
     case tapBuyAlgoInBottomsheet
     case tapBuyAlgoInHome
-    case tapBuyAlgoInMoonpay
+    case tapBuyAlgoInMoonPay
     case tapBuyAlgoTab
     case tapCollectiblesInAccountDetail
     case tapConfirmSwap
@@ -143,8 +143,8 @@ extension ALGAnalyticsEventName {
         case .qrConnectedInHome: rawName = "homescr_qr_scan_connected"
         case .changeLanguage: rawName = "language_change"
         case .tapAlgoPriceMenu: rawName = "nftscr_nft_receive"
-        case .tapBuyAlgoInMoonpay: rawName = "moonpayscr_algo_buy_tap"
-        case .buyAlgoFromMoonpayCompleted: rawName = "moonpaycom_algo_buy_completed"
+        case .tapBuyAlgoInMoonPay: rawName = "moonpayscr_algo_buy_tap"
+        case .buyAlgoFromMoonPayCompleted: rawName = "moonpaycom_algo_buy_completed"
         case .tapNftReceive: rawName = "nftscr_nft_receive"
         case .changeNotificationFilter: rawName = "notification_filter_change"
         case .onboardCreateAccountNew: rawName = "onb_createacc_recover"

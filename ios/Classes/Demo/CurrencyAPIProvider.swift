@@ -103,12 +103,10 @@ extension CurrencyAPIProvider {
     private func performUpdates(
         with error: CurrencyError
     ) {
-        if hasCachedValue() {
-            return
+        if !hasCachedValue() {
+            primaryValue = .failure(error)
+            secondaryValue = .failure(error)
         }
-
-        primaryValue = .failure(error)
-        secondaryValue = .failure(error)
 
         notifyObservers(for: .didUpdate)
     }

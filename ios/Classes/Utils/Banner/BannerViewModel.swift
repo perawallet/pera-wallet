@@ -45,7 +45,6 @@ extension BannerViewModel {
             return nil
         }
 
-
         return .attributedString(
             aMessage
                 .footnoteRegular()
