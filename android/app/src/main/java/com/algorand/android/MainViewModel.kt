@@ -281,15 +281,22 @@ class MainViewModel @Inject constructor(
 
     private fun getAssetOperationResult(transaction: SignedTransactionDetail.AssetOperation): AssetOperationResult {
         val assetName = transaction.assetInformation.fullName ?: transaction.assetInformation.shortName
-        val resultTitleResId = when (transaction) {
-            is SignedTransactionDetail.AssetOperation.AssetAddition -> R.string.asset_successfully_opted_in
-            is SignedTransactionDetail.AssetOperation.AssetRemoval -> R.string.asset_successfully_opted_out_from_your
+        return when (transaction) {
+            is SignedTransactionDetail.AssetOperation.AssetAddition -> {
+                AssetOperationResult.AssetAdditionOperationResult(
+                    resultTitleResId = R.string.asset_successfully_opted_in,
+                    assetName = AssetName.create(assetName),
+                    assetId = transaction.assetInformation.assetId
+                )
+            }
+            is SignedTransactionDetail.AssetOperation.AssetRemoval -> {
+                AssetOperationResult.AssetRemovalOperationResult(
+                    resultTitleResId = R.string.asset_successfully_opted_out_from_your,
+                    assetName = AssetName.create(assetName),
+                    assetId = transaction.assetInformation.assetId
+                )
+            }
         }
-        return AssetOperationResult(
-            resultTitleResId = resultTitleResId,
-            assetName = AssetName.create(assetName),
-            assetId = transaction.assetInformation.assetId
-        )
     }
 
     private fun initActiveNodeFlow() {

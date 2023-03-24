@@ -141,6 +141,7 @@ class MainActivity :
         }
 
         override fun onUnlock() {
+            nav(MainNavigationDirections.actionGlobalLockFragmentPop())
             handleRedirection()
         }
     }

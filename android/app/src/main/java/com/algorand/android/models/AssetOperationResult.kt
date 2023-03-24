@@ -15,8 +15,21 @@ package com.algorand.android.models
 import androidx.annotation.StringRes
 import com.algorand.android.utils.AssetName
 
-data class AssetOperationResult(
-    @StringRes val resultTitleResId: Int,
-    val assetName: AssetName,
-    val assetId: Long
-)
+sealed class AssetOperationResult {
+
+    abstract val resultTitleResId: Int
+    abstract val assetName: AssetName
+    abstract val assetId: Long
+
+    data class AssetAdditionOperationResult(
+        @StringRes override val resultTitleResId: Int,
+        override val assetName: AssetName,
+        override val assetId: Long
+    ) : AssetOperationResult()
+
+    data class AssetRemovalOperationResult(
+        @StringRes override val resultTitleResId: Int,
+        override val assetName: AssetName,
+        override val assetId: Long
+    ) : AssetOperationResult()
+}

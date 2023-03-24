@@ -19,7 +19,27 @@ import javax.inject.Inject
 
 class AssetOperationResultMapper @Inject constructor() {
 
-    fun mapTo(@StringRes resultTitleResId: Int, assetName: AssetName, assetId: Long): AssetOperationResult {
-        return AssetOperationResult(resultTitleResId, assetName, assetId)
+    fun mapToAssetRemovalOperationResult(
+        @StringRes resultTitleResId: Int,
+        assetName: AssetName,
+        assetId: Long
+    ): AssetOperationResult {
+        return AssetOperationResult.AssetRemovalOperationResult(
+            resultTitleResId = resultTitleResId,
+            assetName = assetName,
+            assetId = assetId
+        )
+    }
+
+    fun mapToAssetAdditionOperationResult(
+        @StringRes resultTitleResId: Int,
+        assetName: AssetName,
+        assetId: Long
+    ): AssetOperationResult {
+        return AssetOperationResult.AssetAdditionOperationResult(
+            resultTitleResId = resultTitleResId,
+            assetName = assetName,
+            assetId = assetId
+        )
     }
 }

@@ -33,8 +33,8 @@ class AssetSwapSwitchButtonStatusUseCase @Inject constructor(
             accountAddress = accountAddress,
             previousState = previousState
         ).verificationTierConfiguration.toVerificationTier()
-        return checkUserHasAssetBalanceUseCase.hasUserAssetBalance(accountAddress, toAssetId) &&
-            fromAssetVerificationTier == VerificationTier.VERIFIED ||
-            fromAssetVerificationTier == VerificationTier.TRUSTED
+        val hasUserToAssetBalance = checkUserHasAssetBalanceUseCase.hasUserAssetBalance(accountAddress, toAssetId)
+        return hasUserToAssetBalance &&
+            with(fromAssetVerificationTier) { this == VerificationTier.VERIFIED || this == VerificationTier.TRUSTED }
     }
 }

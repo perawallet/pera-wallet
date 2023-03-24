@@ -19,6 +19,8 @@ import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapAssetS
 import com.algorand.android.modules.swap.assetselection.base.ui.model.SwapAssetSelectionPreview
 import com.algorand.android.usecase.AccountAssetDataUseCase
 import com.algorand.android.utils.doesAssetPassSearchFilter
+import com.algorand.android.utils.isGreaterThan
+import java.math.BigInteger
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -35,7 +37,11 @@ class SwapFromAssetSelectionPreviewUseCase @Inject constructor(
     ): Flow<SwapAssetSelectionPreview> = flow {
         val accountAssets = accountAssetDataUseCase.getAccountOwnedAssetData(accountAddress, includeAlgo = true)
         val balanceFilteredAccountAssetList = accountAssets.filter { ownedAssetData ->
-            if (ownedAssetData.isAlgo && query == null) return@filter true
+            if (ownedAssetData.isAlgo && query.isNullOrBlank()) return@filter true
+
+            val hasUserBalanceOnAsset = ownedAssetData.amount isGreaterThan BigInteger.ZERO
+            if (!hasUserBalanceOnAsset) return@filter false
+
             doesAssetPassSearchFilter(query, ownedAssetData)
         }
         val swapAssetSelectionItemList = createSwapAssetSelectionItemList(balanceFilteredAccountAssetList)

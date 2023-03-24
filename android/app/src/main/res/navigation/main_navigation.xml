@@ -46,6 +46,11 @@
         app:popUpToInclusive="true" />
 
     <action
+        android:id="@+id/action_global_lockFragment_pop"
+        app:popUpTo="@id/lockFragment"
+        app:popUpToInclusive="true" />
+
+    <action
         android:id="@+id/action_newAccount"
         app:destination="@id/loginNavigation">
         <argument

@@ -18,6 +18,7 @@ import com.algorand.android.R
 import com.algorand.android.customviews.CustomToolbar
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetActionResult
+import com.algorand.android.models.AssetOperationResult
 import com.algorand.android.modules.assets.action.addition.AddAssetActionBottomSheet.Companion.ADD_ASSET_ACTION_RESULT_KEY
 import com.algorand.android.modules.swap.assetselection.base.BaseSwapAssetSelectionFragment
 import com.algorand.android.modules.swap.assetselection.base.BaseSwapAssetSelectionViewModel
@@ -83,7 +84,7 @@ class SwapToAssetSelectionFragment : BaseSwapAssetSelectionFragment() {
         (activity as? MainActivity)?.mainViewModel?.assetOperationResultLiveData?.observe(viewLifecycleOwner) {
             it.peek().use(
                 onSuccess = {
-                    if (it.assetId == assetAction.assetId) {
+                    if (it is AssetOperationResult.AssetAdditionOperationResult && it.assetId == assetAction.assetId) {
                         setResultAndNavigateBack(it.assetId)
                     }
                 }

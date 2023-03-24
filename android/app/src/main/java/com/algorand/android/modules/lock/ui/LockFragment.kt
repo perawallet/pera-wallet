@@ -218,7 +218,6 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
         lockAttemptCount = 0
         penaltyRemainingTime = 0
         lockViewModel.onAuthSucceed()
-        nav(LockFragmentDirections.actionLockFragmentPop())
     }
 
     companion object {
