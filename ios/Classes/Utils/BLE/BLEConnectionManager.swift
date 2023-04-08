@@ -30,37 +30,58 @@ final class BLEConnectionManager: NSObject {
     private var peripherals: [CBPeripheral] = []
     private var isScanning = false
     private var isDisconnectedInternally = false
-    
-    override init() {
-        super.init()
-        centralManager = CBCentralManager(
-            delegate: self,
-            queue: nil,
+
+    var state: CBManagerState {
+        return centralManager?.state ?? .unknown
+    }
+}
+
+extension BLEConnectionManager {
+    func startScanForPeripherals() {
+        if isScanning {
+            return
+        }
+
+        isScanning = true
+
+        guard let centralManager else {
+            centralManager = makeCentralManager()
+            return
+        }
+
+        let state = centralManager.state
+        guard state == .poweredOn else {
+            delegate?.bleConnectionManager(self, didFailWith: .failedBLEConnection(state: state))
+            return
+        }
+
+        scanForPeripherals()
+    }
+
+    private func scanForPeripherals() {
+        peripherals = []
+
+        centralManager?.scanForPeripherals(
+            withServices: [BLEConnectionManager.Keys.serviceUuid],
             options: [
                 CBCentralManagerScanOptionAllowDuplicatesKey: false,
                 CBCentralManagerOptionShowPowerAlertKey: true
             ]
         )
     }
-}
-
-extension BLEConnectionManager {
-    func startScanForPeripherals() {
-        if !isScanning {
-            isScanning = true
-            peripherals = []
-            centralManager?.scanForPeripherals(
-                withServices: [BLEConnectionManager.Keys.serviceUuid],
-                options: [
-                    CBCentralManagerScanOptionAllowDuplicatesKey: false,
-                    CBCentralManagerOptionShowPowerAlertKey: true
-                ]
-            )
-        }
-    }
     
     func stopScan() {
+        if !isScanning {
+            return
+        }
+
         isScanning = false
+
+        let state = centralManager?.state
+        guard state == .poweredOn else {
+            return
+        }
+
         peripherals = []
         centralManager?.stopScan()
     }
@@ -86,10 +107,14 @@ extension BLEConnectionManager {
 
 extension BLEConnectionManager: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        if central.state == .poweredOn {
-            startScanForPeripherals()
-        } else {
-            delegate?.bleConnectionManager(self, didFailWith: .failedBLEConnection(state: central.state))
+        let state = central.state
+        guard state == .poweredOn else {
+            delegate?.bleConnectionManager(self, didFailWith: .failedBLEConnection(state: state))
+            return
+        }
+
+        if isScanning {
+            scanForPeripherals()
         }
     }
     
@@ -195,6 +220,19 @@ extension BLEConnectionManager: CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
     
+    }
+}
+
+extension BLEConnectionManager {
+    private func makeCentralManager() -> CBCentralManager {
+        return CBCentralManager(
+            delegate: self,
+            queue: nil,
+            options: [
+                CBCentralManagerScanOptionAllowDuplicatesKey: false,
+                CBCentralManagerOptionShowPowerAlertKey: true
+            ]
+        )
     }
 }
 

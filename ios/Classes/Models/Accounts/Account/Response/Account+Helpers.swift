@@ -27,6 +27,10 @@ extension Account {
 }
 
 extension Account {
+    func isSameAccount(with otherAcc: Account) -> Bool {
+        return isSameAccount(with: otherAcc.address)
+    }
+
     func isSameAccount(with address: String) -> Bool {
         return self.address == address
     }
@@ -100,6 +104,10 @@ extension Account {
 
     func hasAuthAccount() -> Bool {
         return authAddress != nil
+    }
+    
+    func hasLedgerDetail() -> Bool {
+        return ledgerDetail != nil
     }
     
     func isWatchAccount() -> Bool {

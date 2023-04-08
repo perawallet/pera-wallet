@@ -55,6 +55,12 @@
 /* (No Comment) */
 "account-select-search-empty-title" = "アカウントが見つかりません";
 
+/* (No Comment) */
+"account-select-soft-rekey-empty-detail" = "続けるには、スタンダード（Ledgerではない）アカウントを追加してください。";
+
+/* (No Comment) */
+"account-select-soft-rekey-empty-title" = "スタンダードアカウントが見つかりません";
+
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "アカウントを作成したい";
 
@@ -971,6 +977,9 @@
 "ledger-approval-message" = "Ledgerデバイス (%@) でアカウントを確認してください";
 
 /* (No Comment) */
+"ledger-approval-sign-info-message" = "Ledgerで引き続き認証できます。認証をキャンセルする場合は、Ledgerから行ってください。";
+
+/* (No Comment) */
 "ledger-approval-sign-message" = "Ledgerデバイス%@でトランザクションを確認して署名してください。";
 
 /* MARK: Ledger Approval */
@@ -1022,7 +1031,7 @@
 "ledger-rekey-error-add-auth" = "接続されたLedgerデバイスは、このアカウントのトランザクションに署名できません。署名するには、%@を接続してください。";
 
 /* (No Comment) */
-"ledger-rekey-error-not-found" = "このアカウントは再キー化されました。パスフレーズまたはLedgerデバイスでこのアカウントをリカバリーしてください。";
+"ledger-rekey-error-not-found" = "署名するアカウントがウォレットに無いアカウントで再キー化されたか、設定が間違っています。認証アカウントがウォレットに追加されていることをご確認ください。Ledgerアカウントをお使いの場合は、正しく接続されていることをご確認ください。";
 
 /* (No Comment) */
 "ledger-rekey-finalize" = "再キー化を完了する";
@@ -1698,6 +1707,18 @@
 
 /* (No Comment) */
 "rekey-instruction-second-standard" = "このアカウントのパスフレーズは、このアカウントでは機能しなくなります";
+
+/* (No Comment) */
+"rekey-instruction-soft-first" = "今後のトランザクションは、委任されたアカウントによってのみ署名できます。";
+
+/* (No Comment) */
+"rekey-instruction-soft-second" = "このアカウントでは、トランザクションに署名することはできなくなります。";
+
+/* (No Comment) */
+"rekey-instruction-soft-subtitle" = "署名を別のアカウントに委任することで、アカウントを保護できます。";
+
+/* (No Comment) */
+"rekey-instruction-soft-third" = "アカウントの公開鍵、残高、設定は変更されません。";
 
 /* MARK: Rekey Instruction */
 "rekey-instruction-start" = "プロセスの開始";
@@ -2375,6 +2396,9 @@
 "title-generic-response-description" = "一部の資産を取得できませんでした。もう一度お試しください。";
 
 /* (No Comment) */
+"title-go-home" = "ホームに移動";
+
+/* (No Comment) */
 "title-go-to-accounts" = "アカウントに移動";
 
 /* (No Comment) */
@@ -2837,6 +2861,9 @@
 "tutorial-description-back-up" = "パスフレーズのバックアップを作成することで、アカウントを回復できます。パスフレーズ無しでは、デバイスを紛失したり、アカウントやアプリを削除した場合、Algorandアカウントへのアクセスを永久に失ってしまいます！";
 
 /* (No Comment) */
+"tutorial-description-failed-to-import-ledger-accounts" = "認証手順を完了していないため、アカウントをインポートできませんでした。もう一度やり直してください。";
+
+/* (No Comment) */
 "tutorial-description-ledger" = "Ledgerのロックが解除され、Bluetoothが有効になっていることを確認してください";
 
 /* (No Comment) */
@@ -2883,6 +2910,9 @@
 
 /* (No Comment) */
 "tutorial-title-back-up" = "アカウントのパスフレーズのバックアップを作成する";
+
+/* (No Comment) */
+"tutorial-title-failed-to-import-ledger-accounts" = "アカウントがインポートされていません";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledgerが正常に接続されました";

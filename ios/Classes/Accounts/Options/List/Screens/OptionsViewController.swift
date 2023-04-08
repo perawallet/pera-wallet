@@ -46,7 +46,10 @@ final class OptionsViewController:
         theme: OptionsViewControllerTheme = .init()
     ) {
         self.account = account
-        self.optionGroup = OptionGroup.makeOptionGroup(for: account)
+        self.optionGroup = OptionGroup.makeOptionGroup(
+            for: account,
+            session: configuration.session!
+        )
         self.theme = theme
         
         super.init(configuration: configuration)
@@ -354,20 +357,28 @@ extension OptionsViewController {
         let secondaryOptions: [Option]
 
         static func makeOptionGroup(
-            for account: Account
+            for account: Account,
+            session: Session
         ) -> OptionGroup {
             return account.isWatchAccount()
             ? makeOptionGroup(forWatchAccount: account)
-            : makeOptionGroup(forNonWatchAccount: account)
+            : makeOptionGroup(
+                forNonWatchAccount: account,
+                session: session
+            )
         }
 
         private static func makeOptionGroup(
             forWatchAccount account: Account
         ) -> OptionGroup {
-            let primaryOptions: [Option] = [
+            var primaryOptions: [Option] = [
                 .copyAddress,
                 .showAddress
             ]
+            
+            if account.isRekeyed() {
+                primaryOptions.append(.rekeyInformation)
+            }
 
             let secondaryOptions: [Option] = [
                 .renameAccount,
@@ -381,7 +392,8 @@ extension OptionsViewController {
         }
 
         private static func makeOptionGroup(
-            forNonWatchAccount account: Account
+            forNonWatchAccount account: Account,
+            session: Session
         ) -> OptionGroup {
             var primaryOptions: [Option] = []
 
@@ -391,16 +403,13 @@ extension OptionsViewController {
             if account.isRekeyed() {
                 primaryOptions.append(.rekeyInformation)
             }
-
-            if !account.requiresLedgerConnection() {
+            
+            if session.hasPrivateData(for: account.address) {
                 primaryOptions.append(.viewPassphrase)
             }
 
             primaryOptions.append(.rekeyToLedger)
-            
-            if !account.isRekeyed() && !account.requiresLedgerConnection() {
-                primaryOptions.append(.rekeyToStandardAccount)
-            }
+            primaryOptions.append(.rekeyToStandardAccount)
 
             let secondaryOptions: [Option] = [
                 .renameAccount,

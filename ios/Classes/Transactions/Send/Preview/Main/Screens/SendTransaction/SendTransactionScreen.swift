@@ -445,13 +445,9 @@ extension SendTransactionScreen {
 }
 
 // MARK: - Actions
-extension SendTransactionScreen: TransactionSignChecking {
+extension SendTransactionScreen {
     @objc
     private func didTapNext() {
-        if !canSignTransaction(for: &draft.from) {
-            return
-        }
-
         let validation = validate(value: amount)
 
         switch validation {

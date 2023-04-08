@@ -20,8 +20,6 @@ import MacaroonUIKit
 final class ReceiveCollectibleAccountListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
-    weak var delegate: ReceiveCollectibleAccountListViewControllerDelegate?
-
     private lazy var titleView = Label()
 
     private lazy var listView: UICollectionView = {
@@ -203,33 +201,12 @@ extension ReceiveCollectibleAccountListViewController {
                       return
                   }
 
-            let controller = open(
+            open(
                 .receiveCollectibleAssetList(account: account),
                 by: .push
-            ) as? ReceiveCollectibleAssetListViewController
-
-            controller?.delegate = self
+            )
         default:
             break
         }
     }
-}
-
-extension ReceiveCollectibleAccountListViewController: ReceiveCollectibleAssetListViewControllerDelegate {
-    func receiveCollectibleAssetListViewController(
-        _ controller: ReceiveCollectibleAssetListViewController,
-        didCompleteTransaction account: Account
-    ) {
-        delegate?.receiveCollectibleAccountListViewController(
-            self,
-            didCompleteTransaction: account
-        )
-    }
-}
-
-protocol ReceiveCollectibleAccountListViewControllerDelegate: AnyObject {
-    func receiveCollectibleAccountListViewController(
-        _ controller: ReceiveCollectibleAccountListViewController,
-        didCompleteTransaction account: Account
-    )
 }

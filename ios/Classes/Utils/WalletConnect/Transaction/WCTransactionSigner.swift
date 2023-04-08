@@ -60,6 +60,7 @@ class WCTransactionSigner {
 extension WCTransactionSigner {
     private func signLedgerTransaction(_ transaction: WCTransaction, with transactionRequest: WalletConnectRequest, for account: Account) {
         guard let unsignedTransaction = transaction.unparsedTransactionDetail else {
+            delegate?.wcTransactionSigner(self, didFailedWith: .missingUnparsedTransactionDetail)
             return
         }
 
@@ -71,15 +72,11 @@ extension WCTransactionSigner {
         ledgerTransactionOperation.delegate = self
         startTimer()
         ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransaction)
-
-        // Needs a bit delay since the bluetooth scanning for the first time is working initially
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.ledgerTransactionOperation.startScan()
-        }
+        ledgerTransactionOperation.startScan()
     }
 
     private func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+        timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { [weak self] timer in
             guard let self = self else {
                 timer.invalidate()
                 return
@@ -102,11 +99,20 @@ extension WCTransactionSigner {
         }
     }
 
-    private func sign(_ signature: Data?, signer: TransactionSigner, for transaction: WCTransaction, with request: WalletConnectRequest) {
+    private func sign(
+        _ signature: Data?,
+        signer: TransactionSigner,
+        for transaction: WCTransaction,
+        with request: WalletConnectRequest
+    ) {
         signer.delegate = self
 
-        guard let unsignedTransaction = transaction.unparsedTransactionDetail,
-              let signedTransaction = signer.sign(unsignedTransaction, with: signature) else {
+        guard let unsignedTransaction = transaction.unparsedTransactionDetail else {
+            delegate?.wcTransactionSigner(self, didFailedWith: .missingUnparsedTransactionDetail)
+            return
+        }
+
+        guard let signedTransaction = signer.sign(unsignedTransaction, with: signature) else {
             return
         }
 
@@ -145,6 +151,10 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
         delegate?.wcTransactionSignerDidResetLedgerOperation(self)
     }
 
+    func ledgerTransactionOperationDidResetOperationOnSuccess(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+        delegate?.wcTransactionSignerDidResetLedgerOperationOnSuccess(self)
+    }
+
     func ledgerTransactionOperationDidRejected(_ ledgerTransactionOperation: LedgerTransactionOperation) {
         delegate?.wcTransactionSignerDidRejectedLedgerOperation(self)
     }
@@ -160,6 +170,7 @@ extension WCTransactionSigner {
     enum WCSignError: Error {
         case ledger(error: LedgerOperationError)
         case api(error: HIPTransactionError)
+        case missingUnparsedTransactionDetail
     }
 }
 
@@ -169,5 +180,6 @@ protocol WCTransactionSignerDelegate: AnyObject {
     func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didRequestUserApprovalFrom ledger: String)
     func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner)
     func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner)
+    func wcTransactionSignerDidResetLedgerOperationOnSuccess(_ wcTransactionSigner: WCTransactionSigner)
     func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner)
 }

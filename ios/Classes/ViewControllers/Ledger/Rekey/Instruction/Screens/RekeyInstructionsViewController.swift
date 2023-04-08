@@ -18,12 +18,19 @@
 import UIKit
 
 final class RekeyInstructionsViewController: BaseScrollViewController {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+    
     private lazy var rekeyInstructionsView = RekeyInstructionsView()
     
-    private let account: Account
+    private let viewModel: RekeyToAnyAccountInstructionsViewModel
     
-    init(account: Account, configuration: ViewControllerConfiguration) {
-        self.account = account
+    init(
+        viewModel: RekeyToAnyAccountInstructionsViewModel,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.viewModel = viewModel
         super.init(configuration: configuration)
     }
     
@@ -55,12 +62,22 @@ final class RekeyInstructionsViewController: BaseScrollViewController {
 
     override func bindData() {
         super.bindData()
-        rekeyInstructionsView.bindData(RekeyInstructionsViewModel(account.requiresLedgerConnection()))
+        rekeyInstructionsView.bindData(viewModel)
     }
 }
 
 extension RekeyInstructionsViewController: RekeyInstructionsViewDelegate {
     func rekeyInstructionsViewDidStartRekeying(_ rekeyInstructionsView: RekeyInstructionsView) {
-        open(.ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: account))), by: .push)
+        self.dismiss(animated: true) {
+            [weak self] in
+            guard let self else { return }
+            self.eventHandler?(.performRekey)
+        }
+    }
+}
+
+extension RekeyInstructionsViewController {
+    enum Event {
+        case performRekey
     }
 }

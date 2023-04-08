@@ -215,7 +215,7 @@ extension SelectAssetViewController {
                 draft: sendCollectibleDraft
             ),
             by: .customPresent(
-                presentationStyle: .overCurrentContext,
+                presentationStyle: .fullScreen,
                 transitionStyle: .crossDissolve,
                 transitioningDelegate: nil
             ),

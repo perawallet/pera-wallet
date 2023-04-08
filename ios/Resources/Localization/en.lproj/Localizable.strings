@@ -86,6 +86,7 @@
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
 "title-disclaimer" = "DISCLAIMER";
+"title-go-home" = "Go to Home";
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
@@ -601,6 +602,7 @@
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
 "ledger-approval-sign-message" = "Please review and sign the transaction on your Ledger device %@.";
+"ledger-approval-sign-info-message" = "Verification will continue on Ledger. To cancel verification, cancel from Ledger.";
 
 // MARK: Terms and Services
 "terms-and-services-title" = "Terms and Services";
@@ -649,6 +651,10 @@
 "rekey-instruction-second-ledger" = "Your old Ledger will no longer function for this account.";
 "rekey-instruction-second-standard" = "This account's passphrase will no longer function for this account";
 "rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
+"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
+"rekey-instruction-soft-first" = "Future transactions can only be signed by the delegated account.";
+"rekey-instruction-soft-second" = "This account will no longer be able to sign transactions.";
+"rekey-instruction-soft-third" = "Your account’s public key, balances, and configuration will not change.";
 
 // MARK: Rekey Confirm
 "ledger-rekey-confirm-title" = "Confirm Rekeying";
@@ -670,7 +676,7 @@
 "ledger-account-selection-verify" = "Verify Selected Account";
 "ledger-account-selection-verify-plural" = "Verify Selected Accounts";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
-"ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
+"ledger-rekey-error-not-found" = "The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.";
 "ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
 
 "ledger-pairing-issue-error-title" = "Having Ledger Nano X connection issues?";
@@ -739,6 +745,8 @@
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-ledger" = "Please make sure your Ledger is unlocked with Bluetooth enabled";
 "tutorial-description-ledger-connected" = "Welcome to Pera Wallet! Your account is\nready to use";
+"tutorial-title-failed-to-import-ledger-accounts" = "Accounts not imported";
+"tutorial-description-failed-to-import-ledger-accounts" = "Your accounts could not be imported because you did not complete the verification step. Please try again.";
 
 "tutorial-main-title-back-up" = "I Understand";
 "tutorial-main-title-recover" = "Recover an Algorand Account";
@@ -998,6 +1006,8 @@
 "account-select-search-empty-title" = "No Account Found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
+"account-select-soft-rekey-empty-title" = "No Standard Accounts Found";
+"account-select-soft-rekey-empty-detail" = "Please add a standard (non-ledger) account to continue.";
 
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Transaction";

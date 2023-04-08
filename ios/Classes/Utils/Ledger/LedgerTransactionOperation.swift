@@ -95,13 +95,14 @@ extension LedgerTransactionOperation {
             accountFetchOperation.completeOperation(with: data)
             return
         }
-        
-        reset()
-        
+
         guard let signature = parseSignedTransaction(from: data) else {
+            reset()
             delegate?.ledgerTransactionOperation(self, didFailed: .failedToSign)
             return
         }
+
+        resetOnSuccess()
         
         delegate?.ledgerTransactionOperation(self, didReceiveSignature: signature)
     }
@@ -116,12 +117,27 @@ extension LedgerTransactionOperation {
     }
     
     func reset() {
+        reset {
+            delegate?.ledgerTransactionOperationDidResetOperation(self)
+        }
+    }
+
+    /// This is a temporary solution for handling reset operations as successful resets until the whole flow is refactored.
+    /// A successful reset means that you should not cancel any pending opt-in/opt-out requests in the delegate method implementation.
+    /// The actual `reset` method is used for failure cases.
+    private func resetOnSuccess() {
+        reset {
+            delegate?.ledgerTransactionOperationDidResetOperationOnSuccess(self)
+        }
+    }
+
+    private func reset(then completion: () -> Void) {
         accountFetchOperation.reset()
         stopScan()
         disconnectFromCurrentDevice()
         unsignedTransactionData = nil
         connectedDevice = nil
-        delegate?.ledgerTransactionOperationDidResetOperation(self)
+        completion()
         isCorrectLedgerAddressFetched = false
     }
 
@@ -227,4 +243,17 @@ protocol LedgerTransactionOperationDelegate: AnyObject {
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didRequestUserApprovalFor ledger: String)
     func ledgerTransactionOperationDidFinishTimingOperation(_ ledgerTransactionOperation: LedgerTransactionOperation)
     func ledgerTransactionOperationDidResetOperation(_ ledgerTransactionOperation: LedgerTransactionOperation)
+
+    /// This is a temporary solution for handling reset operations as successful resets until the whole flow is refactored.
+    /// A successful reset means that you should not cancel any pending opt-in/opt-out requests in the delegate method implementation.
+    /// The actual `reset` method is used for failure cases.
+    func ledgerTransactionOperationDidResetOperationOnSuccess(_ ledgerTransactionOperation: LedgerTransactionOperation)
+}
+
+extension LedgerTransactionOperationDelegate {
+    func ledgerTransactionOperationDidResetOperationOnSuccess(
+        _ ledgerTransactionOperation: LedgerTransactionOperation
+    ) {
+        ledgerTransactionOperationDidResetOperation(ledgerTransactionOperation)
+    }
 }

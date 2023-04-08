@@ -55,6 +55,12 @@
 /* (No Comment) */
 "account-select-search-empty-title" = "Hesap Bulunamadı";
 
+/* (No Comment) */
+"account-select-soft-rekey-empty-detail" = "Devam etmek için lütfen standart (Ledger dışı) bir hesap ekleyin.";
+
+/* (No Comment) */
+"account-select-soft-rekey-empty-title" = "Standart Hesap Bulunamadı";
+
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "Bir hesap oluşturmak istiyorum";
 
@@ -971,6 +977,9 @@
 "ledger-approval-message" = "Lütfen hesap adresini Ledger cihazınızda doğrulayın (%@)";
 
 /* (No Comment) */
+"ledger-approval-sign-info-message" = "Doğrulama, Ledger'da devam edecek. Doğrulamayı iptal etmek için işlemi Ledger'dan iptal edin.";
+
+/* (No Comment) */
 "ledger-approval-sign-message" = "Lütfen işlemi %@ adlı Ledger cihazınızda önizleyin ve imzalayın.";
 
 /* MARK: Ledger Approval */
@@ -1022,7 +1031,7 @@
 "ledger-rekey-error-add-auth" = "Bağlanan Ledger cihazı, bu hesabın işlemlerini imzalayamaz. İmzalamak için, lütfen %@ bağlanın.";
 
 /* (No Comment) */
-"ledger-rekey-error-not-found" = "Bu hesap yeniden anahtarlanmış. Lütfen bu hesabı bir parola veya Ledger cihazı ile kurtarın.";
+"ledger-rekey-error-not-found" = "İmzalayan hesap, cüzdanınızda olmayan veya yanlış yapılandırılmış bir hesap için yeniden anahtarlandı. Lütfen yetkilendirme hesabının cüzdanınıza eklendiğinden ve bu bir Ledger hesabıysa doğru şekilde bağlandığından emin olun.";
 
 /* (No Comment) */
 "ledger-rekey-finalize" = "Yeniden Anahtarlamayı Bitir";
@@ -1698,6 +1707,18 @@
 
 /* (No Comment) */
 "rekey-instruction-second-standard" = "Bu hesabın parolası, bu hesap için artık çalışmayacak";
+
+/* (No Comment) */
+"rekey-instruction-soft-first" = "Gelecekteki işlemler yalnızca yetki verilen hesap tarafından imzalanabilir.";
+
+/* (No Comment) */
+"rekey-instruction-soft-second" = "Bu hesap artık işlemleri imzalayamayacak.";
+
+/* (No Comment) */
+"rekey-instruction-soft-subtitle" = "İmzaları başka bir hesaba devrederek hesabınızı koruyun.";
+
+/* (No Comment) */
+"rekey-instruction-soft-third" = "Hesabınızın ortak anahtarı, bakiyeleri ve yapılandırması değişmeyecek.";
 
 /* MARK: Rekey Instruction */
 "rekey-instruction-start" = "Süreci Başlat";
@@ -2375,6 +2396,9 @@
 "title-generic-response-description" = "Varlıkların bazılarını getiremedik. Lütfen tekrar deneyin.";
 
 /* (No Comment) */
+"title-go-home" = "Ana Sayfaya Git";
+
+/* (No Comment) */
 "title-go-to-accounts" = "Hesaplara Git";
 
 /* (No Comment) */
@@ -2837,6 +2861,9 @@
 "tutorial-description-back-up" = "Bir parola yedeği oluşturmanız hesabınızı kurtarmanızı sağlayacak. Parolaya sahip olmadığınızda cihazınızı kaybeder, hesabı kaldırır veya uygulamayı silerseniz, Algorand hesabınıza erişiminizi kalıcı olarak kaybedebilirsiniz!";
 
 /* (No Comment) */
+"tutorial-description-failed-to-import-ledger-accounts" = "Doğrulama adımını tamamlamadığınız için hesaplarınız içe aktarılamadı. Lütfen tekrar deneyin.";
+
+/* (No Comment) */
 "tutorial-description-ledger" = "Ledger'ınızın kilidinin açık ve Bluetooth özelliğinin etkin olduğundan lütfen emin olun";
 
 /* (No Comment) */
@@ -2883,6 +2910,9 @@
 
 /* (No Comment) */
 "tutorial-title-back-up" = "Hesabınız için bir parola yedeği oluşturun";
+
+/* (No Comment) */
+"tutorial-title-failed-to-import-ledger-accounts" = "Hesap içe aktarılmadı";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledger başarıyla bağlandı";

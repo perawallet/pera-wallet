@@ -55,6 +55,12 @@
 /* (No Comment) */
 "account-select-search-empty-title" = "Aucun Compte Trouvé";
 
+/* (No Comment) */
+"account-select-soft-rekey-empty-detail" = "Veuillez ajouter un compte standard (non-Ledger) pour continuer.";
+
+/* (No Comment) */
+"account-select-soft-rekey-empty-title" = "Aucun compte standard trouvé";
+
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "Je veux créer un compte";
 
@@ -971,6 +977,9 @@
 "ledger-approval-message" = "Veuillez examiner et signer la transaction sur votre appareil Ledger.";
 
 /* (No Comment) */
+"ledger-approval-sign-info-message" = "La vérification se poursuivra via le Ledger. Pour annuler la vérification, annulez depuis le Ledger.";
+
+/* (No Comment) */
 "ledger-approval-sign-message" = "Veuillez vérifier et signer la transaction sur votre appareil Ledger %@ .";
 
 /* MARK: Ledger Approval */
@@ -1022,7 +1031,7 @@
 "ledger-rekey-error-add-auth" = "L'appareil Ledger connecté ne peut pas signer de transactions pour ce compte. Pour ce faire, veuillez connecter %@ .";
 
 /* (No Comment) */
-"ledger-rekey-error-not-found" = "Ce compte a été recréé. Veuillez récupérer ce compte avec une phrase secrète ou un appareil Ledger.";
+"ledger-rekey-error-not-found" = "Le compte de signature a été réattribué à un compte qui n'est pas dans votre portefeuille ou qui est mal configuré. Veuillez vous assurer que le compte d'autorisation a été ajouté à votre portefeuille, et s'il s'agit d'un compte Ledger, assurez-vous que le dispositif est correctement connecté.";
 
 /* (No Comment) */
 "ledger-rekey-finalize" = "Finaliser Récupération";
@@ -1698,6 +1707,18 @@
 
 /* (No Comment) */
 "rekey-instruction-second-standard" = "La phrase secrète de ce compte ne fonctionnera plus pour ce compte";
+
+/* (No Comment) */
+"rekey-instruction-soft-first" = "Les transactions futures ne peuvent être signées que par le compte délégué.";
+
+/* (No Comment) */
+"rekey-instruction-soft-second" = "Ce compte ne pourra plus signer de transactions.";
+
+/* (No Comment) */
+"rekey-instruction-soft-subtitle" = "Protégez votre compte en déléguant les signatures à un autre compte.";
+
+/* (No Comment) */
+"rekey-instruction-soft-third" = "La clé publique, les soldes et la configuration de votre compte ne changeront pas.";
 
 /* MARK: Rekey Instruction */
 "rekey-instruction-start" = "Démarrer le processus";
@@ -2375,6 +2396,9 @@
 "title-generic-response-description" = "Nous n'avons pas pu récupérer certains des actifs. Veuillez réessayer.";
 
 /* (No Comment) */
+"title-go-home" = "Aller à l'accueil";
+
+/* (No Comment) */
 "title-go-to-accounts" = "Accéder aux Comptes";
 
 /* (No Comment) */
@@ -2837,6 +2861,9 @@
 "tutorial-description-back-up" = "Créer une sauvegarde de la phrase secrète vous permettra de récupérer votre compte. Sans cette phrase secrète, si vous perdez votre appareil, supprimez le compte ou supprimez l'application, vous pouvez perdre définitivement l'accès à votre compte Algorand!";
 
 /* (No Comment) */
+"tutorial-description-failed-to-import-ledger-accounts" = "Vos comptes n'ont pas pu être importés car vous n'avez pas terminé l'étape de vérification. Veuillez réessayer.";
+
+/* (No Comment) */
 "tutorial-description-ledger" = "Veuillez vous assurer que votre Ledger est déverrouillé avec Bluetooth activé";
 
 /* (No Comment) */
@@ -2883,6 +2910,9 @@
 
 /* (No Comment) */
 "tutorial-title-back-up" = "Créer une sauvegarde de la phrase secrète pour votre compte";
+
+/* (No Comment) */
+"tutorial-title-failed-to-import-ledger-accounts" = "Comptes non importés";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledger connecté avec succès";

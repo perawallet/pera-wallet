@@ -151,16 +151,14 @@ extension CollectiblesViewController {
 
 extension CollectiblesViewController {
     private func openReceiveCollectible() {
-        let controller = open(
+        open(
             .receiveCollectibleAccountList(
                 dataController: ReceiveCollectibleAccountListAPIDataController(
                     sharedDataController
                 )
             ),
             by: .present
-        ) as? ReceiveCollectibleAccountListViewController
-
-        controller?.delegate = self
+        )
     }
 }
 
@@ -184,13 +182,5 @@ extension CollectiblesViewController {
             .collectiblesFilterSelection(uiInteractions: uiInteractions),
             by: .present
         )
-    }
-}
-
-extension CollectiblesViewController: ReceiveCollectibleAccountListViewControllerDelegate {
-    func receiveCollectibleAccountListViewController(
-        _ controller: ReceiveCollectibleAccountListViewController,
-        didCompleteTransaction account: Account
-    ) {
     }
 }

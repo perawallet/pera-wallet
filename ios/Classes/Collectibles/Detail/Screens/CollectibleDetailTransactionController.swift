@@ -19,7 +19,7 @@ import Foundation
 final class CollectibleDetailTransactionController {
     lazy var eventHandlers = Event()
 
-    private let account: Account
+    private var account: Account
     private let asset: CollectibleAsset
     private let transactionController: TransactionController
     private let sharedDataController: SharedDataController
@@ -42,6 +42,8 @@ extension CollectibleDetailTransactionController {
         guard let creator = asset.creator else {
             return
         }
+        
+        if !transactionController.canSignTransaction(for: account) { return }
 
         let monitor = sharedDataController.blockchainUpdatesMonitor
         let request = OptOutBlockchainRequest(account: account, asset: asset)
@@ -66,6 +68,8 @@ extension CollectibleDetailTransactionController {
     }
 
     func optInToAsset() {
+        if !transactionController.canSignTransaction(for: account) { return }
+        
         let monitor = self.sharedDataController.blockchainUpdatesMonitor
         let request = OptInBlockchainRequest(account: account, asset: asset)
         monitor.startMonitoringOptInUpdates(request)

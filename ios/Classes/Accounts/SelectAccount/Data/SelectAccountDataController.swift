@@ -40,7 +40,7 @@ enum SelectAccountListViewItem: Hashable {
 
 enum SelectAccountListEmptyItem: Hashable {
     case loading(String)
-    case noContent
+    case noContent(SelectAccountNoContentViewModel)
 }
 
 enum SelectAccountDataControllerEvent {

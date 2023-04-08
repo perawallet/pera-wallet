@@ -81,14 +81,16 @@ indirect enum Screen {
     case rewardDetail(account: Account)
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
-    case ledgerApproval(mode: LedgerApprovalViewController.Mode, deviceName: String)
     case passphraseDisplay(address: String)
     case assetDetailNotification(address: String, assetId: Int64?)
     case assetActionConfirmationNotification(address: String, assetId: Int64?)
     case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime, delegate: TransactionFilterViewControllerDelegate)
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
-    case rekeyInstruction(account: Account)
+    case rekeyInstruction(
+        viewModel: RekeyToAnyAccountInstructionsViewModel,
+        eventHandler: RekeyInstructionsViewController.EventHandler
+    )
     case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, newAuthAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating
@@ -212,8 +214,8 @@ indirect enum Screen {
         swapAssetFlowCoordinator: SwapAssetFlowCoordinator,
         eventHandler: AccountSelectionListScreen<SwapAccountSelectionListLocalDataController>.EventHandler
     )
-    case swapSignWithLedgerProcess(
-        transactionSigner: SwapTransactionSigner,
+    case ledgerConnection(eventHandler: LedgerConnectionScreen.EventHandler)
+    case signWithLedgerProcess(
         draft: SignWithLedgerProcessDraft,
         eventHandler: SignWithLedgerProcessScreen.EventHandler
     )

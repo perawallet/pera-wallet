@@ -45,12 +45,13 @@ final class LedgerAccountSelectionViewController: BaseViewController {
         }
     }
 
-    private lazy var dataSource: LedgerAccountSelectionDataSource = {
-        guard let api = api else {
-            fatalError("API should be set.") 
-        }
-        return LedgerAccountSelectionDataSource(api: api, accounts: ledgerAccounts, isMultiSelect: isMultiSelect)
-    }()
+    private lazy var dataSource = LedgerAccountSelectionDataSource(
+        api: api!,
+        sharedDataController: sharedDataController,
+        accounts: ledgerAccounts,
+        rekeyingAccount: accountSetupFlow.rekeyingAccount,
+        isMultiSelect: isMultiSelect
+    )
     
     private lazy var listLayout = LedgerAccountSelectionListLayout(theme: theme, dataSource: dataSource)
     

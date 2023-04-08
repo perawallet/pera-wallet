@@ -36,14 +36,18 @@ final class SwapAssetFlowCoordinator:
     private var alertTransitionToSwapIntroduction: AlertUITransition?
     private var transitionToSignWithLedger: BottomSheetTransition?
     private var transitionToLedgerSigningProcess: BottomSheetTransition?
+    private var transitionToLedgerConnection: BottomSheetTransition?
+    private var transitionToLedgerConnectionIssuesWarning: BottomSheetTransition?
     private var transitionToSlippageToleranceInfo: BottomSheetTransition?
     private var transitionToPriceImpactInfo: BottomSheetTransition?
     private var transitionToExchangeFeeInfo: BottomSheetTransition?
     private var transitionToOptInAsset: BottomSheetTransition?
     private var transitionToAdjustAmount: BottomSheetTransition?
-    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
     private var transitionToEditAmount: BottomSheetTransition?
     private var transitionToEditSlippage: BottomSheetTransition?
+
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private lazy var assetCacher = MobileAPIAssetCache(
         api: api,
@@ -265,6 +269,8 @@ extension SwapAssetFlowCoordinator {
                     signWithLedgerProcessScreen.increaseProgress()
 
                     if signWithLedgerProcessScreen.isProgressFinished {
+                        self.stopLoading()
+
                         self.visibleScreen.dismissScreen {
                             [weak self] in
                             guard let self = self else { return }
@@ -278,6 +284,7 @@ extension SwapAssetFlowCoordinator {
                     return
                 }
 
+                self.stopLoading()
                 self.openSwapLoading(swapController)
             case .didCompleteSwap:
                 if let quote = swapController.quote {
@@ -297,6 +304,9 @@ extension SwapAssetFlowCoordinator {
                 if !(self.visibleScreen is LoadingScreen) {
                     return
                 }
+
+                swapController.clearTransactions()
+                self.stopLoading()
 
                 self.analytics.track(
                     .swapFailed(
@@ -321,6 +331,9 @@ extension SwapAssetFlowCoordinator {
                 if !(self.visibleScreen is LoadingScreen) {
                     return
                 }
+
+                swapController.clearTransactions()
+                self.stopLoading()
 
                 self.analytics.track(
                     .swapFailed(
@@ -355,30 +368,48 @@ extension SwapAssetFlowCoordinator {
                     self.goBackToScreen(SwapAssetScreen.self)
                 }
             case .didCancelTransaction:
-                break
+                swapController.clearTransactions()
+                self.stopLoading()
             case .didFailSigning(let error):
                 switch error {
                 case .api(let apiError):
                     self.displaySigningError(apiError)
                 case .ledger(let ledgerError):                    
-                    self.displayLedgerError(ledgerError)
+                    self.displayLedgerError(
+                        swapController: swapController,
+                        ledgerError: ledgerError
+                    )
                 }
             case .didLedgerRequestUserApproval(let ledger, let transactionGroups):
-                self.openSignWithLedgerProcess(
-                    transactionSigner: transactionSigner,
-                    swapController: swapController,
-                    ledger: ledger,
-                    transactionGroups: transactionGroups
-                )
+                self.ledgerConnectionScreen?.dismiss(animated: true) {
+                    self.ledgerConnectionScreen = nil
+
+                    self.openSignWithLedgerProcess(
+                        swapController: swapController,
+                        ledger: ledger,
+                        transactionGroups: transactionGroups
+                    )
+                }
             case .didFinishTiming:
                 break
             case .didLedgerReset:
-                break
-            case .didLedgerRejectSigning:
+                swapController.clearTransactions()
+                self.stopLoading()
+
+                if self.visibleScreen is LedgerConnectionScreen {
+                    self.ledgerConnectionScreen?.dismissScreen()
+                    self.ledgerConnectionScreen = nil
+                    return
+                }
+
                 if self.visibleScreen is SignWithLedgerProcessScreen {
                     self.signWithLedgerProcessScreen?.dismissScreen()
                     self.signWithLedgerProcessScreen = nil
                 }
+            case .didLedgerResetOnSuccess:
+                break
+            case .didLedgerRejectSigning:
+                break
             }
         }
 
@@ -431,6 +462,7 @@ extension SwapAssetFlowCoordinator {
                     return
                 }
 
+                self.startLoading()
                 swapController.signTransactions(transactionGroups)
             case .didTapPriceImpactInfo:
                 self.openPriceImpactInfo()
@@ -575,8 +607,13 @@ extension SwapAssetFlowCoordinator {
         ) { [weak self] in
             guard let self = self else { return }
 
-            self.visibleScreen.dismissScreen()
-            swapController.signTransactions(transactionGroups)
+            self.visibleScreen.dismissScreen() {
+                self.startLoading()
+
+                self.openLedgerConnection(swapController)
+
+                swapController.signTransactions(transactionGroups)
+            }
         }
         uiSheet.addAction(signTransactionsAction)
 
@@ -591,8 +628,52 @@ extension SwapAssetFlowCoordinator {
         transitionToSignWithLedger = transition
     }
 
+    private func openLedgerConnection(_ swapController: SwapController) {
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                swapController.clearTransactions()
+                swapController.disconnectFromLedger()
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transition.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToLedgerConnection = transition
+    }
+
+    private func openLedgerConnectionIssues() {
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        transition.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToLedgerConnectionIssuesWarning = transition
+    }
+    
     private func openSignWithLedgerProcess(
-        transactionSigner: SwapTransactionSigner,
         swapController: SwapController,
         ledger: String,
         transactionGroups: [SwapTransactionGroup]
@@ -620,13 +701,17 @@ extension SwapAssetFlowCoordinator {
             switch event {
             case .performCancelApproval:
                 swapController.clearTransactions()
+                swapController.disconnectFromLedger()
+
                 self.visibleScreen.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.stopLoading()
             }
         }
 
         signWithLedgerProcessScreen = transition.perform(
-            .swapSignWithLedgerProcess(
-                transactionSigner: transactionSigner,
+            .signWithLedgerProcess(
                 draft: draft,
                 eventHandler: eventHandler
             ),
@@ -641,12 +726,13 @@ extension SwapAssetFlowCoordinator {
     ) {
         bannerController.presentErrorBanner(
             title: "title-error".localized,
-            message: error.localizedDescription
+            message: error.debugDescription
         )
     }
 
     private func displayLedgerError(
-        _ ledgerError: LedgerOperationError
+        swapController: SwapController,
+        ledgerError: LedgerOperationError
     ) {
         switch ledgerError {
         case .cancelled:
@@ -674,6 +760,41 @@ extension SwapAssetFlowCoordinator {
                 title: title,
                 message: message
             )
+        case .failedBLEConnectionError(let state):
+            guard let errorTitle = state.errorDescription.title,
+                  let errorSubtitle = state.errorDescription.subtitle else {
+                return
+            }
+
+            swapController.clearTransactions()
+            stopLoading()
+
+            if visibleScreen is LedgerConnectionScreen {
+                ledgerConnectionScreen?.dismissScreen()
+                ledgerConnectionScreen = nil
+            } else if visibleScreen is SignWithLedgerProcessScreen {
+                signWithLedgerProcessScreen?.dismissScreen()
+                signWithLedgerProcessScreen = nil
+            }
+
+            bannerController.presentErrorBanner(
+                title: errorTitle,
+                message: errorSubtitle
+            )
+        case .ledgerConnectionWarning:
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.ledgerConnectionScreen = nil
+
+                swapController.clearTransactions()
+                self.stopLoading()
+
+                self.bannerController.presentErrorBanner(
+                    title: "ble-error-connection-title".localized,
+                    message: ""
+                )
+
+                self.openLedgerConnectionIssues()
+            }
         default:
             break
         }
@@ -943,6 +1064,16 @@ extension SwapAssetFlowCoordinator {
     ) {
         analytics.track(.swapBannerLater())
         visibleScreen.dismiss(animated: true)
+    }
+}
+
+extension SwapAssetFlowCoordinator {
+    private func startLoading() {
+        loadingController.startLoadingWithMessage("title-loading".localized)
+    }
+
+    private func stopLoading() {
+        loadingController.stopLoading()
     }
 }
 

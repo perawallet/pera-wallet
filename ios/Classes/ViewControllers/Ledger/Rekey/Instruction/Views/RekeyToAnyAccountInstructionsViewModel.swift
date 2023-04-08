@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,21 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   LedgerApprovalViewController+Theme.swift
+//   RekeyToAnyAccountInstructionsViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-extension LedgerApprovalViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let ledgerApprovalViewTheme: LedgerApprovalViewTheme
-        let backgroundColor: Color
-        let modalHeight: LayoutMetric
-
-        init(_ family: LayoutFamily) {
-            ledgerApprovalViewTheme = LedgerApprovalViewTheme()
-            backgroundColor = Colors.Defaults.background
-            modalHeight = 362
-        }
-    }
+protocol RekeyToAnyAccountInstructionsViewModel {
+    var subtitle: String? { get }
+    var firstInstructionViewTitle: EditText? { get }
+    var secondInstructionViewTitle: EditText? { get }
+    var thirdInstructionViewTitle: EditText? { get }
+    var fourthInstructionViewTitle: EditText? { get }
 }

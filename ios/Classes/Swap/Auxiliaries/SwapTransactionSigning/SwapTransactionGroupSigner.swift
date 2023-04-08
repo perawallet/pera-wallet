@@ -59,6 +59,13 @@ final class SwapTransactionGroupSigner {
                         at: index,
                         in: transactionGroup
                     )
+
+                    /// <note>
+                    /// If an account requires a Ledger connection, one transaction should be signed at a time
+                    /// since the signing process happens on the Ledger one by one.
+                    if account.requiresLedgerConnection() {
+                        return
+                    }
                 }
             }
         }
@@ -66,6 +73,10 @@ final class SwapTransactionGroupSigner {
 
     func clearTransactions()  {
         transactionGroups = []
+    }
+
+    func disconnectFromLedger() {
+        transactionSigner.disonnectFromLedger()
     }
 }
 
@@ -100,11 +111,9 @@ extension SwapTransactionGroupSigner {
                 self.publishEvent(.didFinishTiming)
             case .didLedgerReset:
                 self.publishEvent(.didLedgerReset)
+            case .didLedgerResetOnSuccess:
+                self.publishEvent(.didLedgerResetOnSuccess)
             case .didLedgerRejectSigning:
-                if self.account.requiresLedgerConnection() {
-                    self.transactionSigner.disonnectFromLedger()
-                }
-
                 self.publishEvent(.didLedgerRejectSigning)
             }
         }
@@ -164,6 +173,7 @@ extension SwapTransactionGroupSigner {
         case didLedgerRequestUserApproval(ledger: String)
         case didFinishTiming
         case didLedgerReset
+        case didLedgerResetOnSuccess
         case didLedgerRejectSigning
     }
 }

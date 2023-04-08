@@ -29,7 +29,9 @@ struct SignWithLedgerProcessScreenTheme:
     let spacingBetweenTitleAndBody: LayoutMetric
     let body: TextStyle
     let action: ButtonStyle
-    let actionEdgeInsets: LayoutPaddings
+    let spacingBetweenActionAndInfo: LayoutMetric
+    let info: TextStyle
+    let footerEdgeInsets: LayoutPaddings
     let actionContentEdgeInsets: LayoutPaddings
 
     init(
@@ -59,7 +61,12 @@ struct SignWithLedgerProcessScreenTheme:
                 .highlighted("components/buttons/secondary/bg-highlighted"),
             ])
         ]
-        self.actionEdgeInsets = (8, 24, 16, 24)
+        self.spacingBetweenActionAndInfo = 12
+        self.info = [
+            .textOverflow(FittingText()),
+            .textColor(Colors.Text.gray),
+        ]
+        self.footerEdgeInsets = (8, 24, 16, 24)
         self.actionContentEdgeInsets = (16, 24, 16, 24)
     }
 }

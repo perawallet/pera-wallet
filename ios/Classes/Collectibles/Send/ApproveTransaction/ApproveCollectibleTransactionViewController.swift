@@ -305,7 +305,7 @@ extension ApproveCollectibleTransactionViewController {
 
     @objc
     private func didTapCancel() {
-        dismissScreen()
+        eventHandler?(.cancelledSend)
     }
 
     private func openOptOutInformation() {
@@ -338,4 +338,5 @@ extension ApproveCollectibleTransactionViewController {
 enum ApproveCollectibleTransactionViewControllerEvent {
     case approvedSend
     case approvedSendAndOptOut
+    case cancelledSend
 }

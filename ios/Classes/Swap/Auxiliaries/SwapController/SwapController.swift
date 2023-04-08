@@ -35,6 +35,8 @@ protocol SwapController {
     func signTransactions(_ transactions: [SwapTransactionGroup])
     func clearTransactions()
     func uploadTransactions()
+
+    func disconnectFromLedger()
 }
 
 enum SwapControllerEvent {
@@ -48,5 +50,6 @@ enum SwapControllerEvent {
     case didLedgerRequestUserApproval(ledger: String, transactionGroups: [SwapTransactionGroup])
     case didFinishTiming
     case didLedgerReset
+    case didLedgerResetOnSuccess
     case didLedgerRejectSigning
 }

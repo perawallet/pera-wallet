@@ -22,13 +22,22 @@ import MagpieExceptions
 final class AssetAdditionViewController:
     BaseViewController,
     TestNetTitleDisplayable,
-    TransactionSignChecking,
     UICollectionViewDelegateFlowLayout {
     private lazy var theme = Theme()
 
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnection = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
+    private lazy var transitionToSignWithLedgerProcess = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
 
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private var optInTransactions: [AssetID: AssetOptInTransaction] = [:]
 
@@ -116,21 +125,17 @@ final class AssetAdditionViewController:
         restartLoadingOfVisibleCellsIfNeeded()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        transactionControllers.forEach { controller in
-            controller.stopBLEScan()
-            controller.stopTimer()
-        }
-    }
-
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
         assetListView.collectionView.visibleCells.forEach {
             let loadingCell = $0 as? PreviewLoadingCell
             loadingCell?.stopAnimating()
+        }
+
+        transactionControllers.forEach { controller in
+            controller.stopBLEScan()
+            controller.stopTimer()
         }
     }
 }
@@ -459,20 +464,26 @@ extension AssetAdditionViewController {
             [weak self] in
             guard let self = self else { return }
 
-            var account = self.dataController.account
-
-            if !self.canSignTransaction(for: &account) { return }
+            let account = self.dataController.account
+            let transactionController = self.createNewTransactionController(for: asset)
+            
+            if !transactionController.canSignTransaction(for: account) {
+                self.clearTransactionCache(transactionController)
+                self.restoreCellState(for: transactionController)
+                return
+            }
 
             let monitor = self.sharedDataController.blockchainUpdatesMonitor
             let request = OptInBlockchainRequest(account: account, asset: asset)
             monitor.startMonitoringOptInUpdates(request)
 
             let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: asset.id)
-            let transactionController = self.createNewTransactionController(for: asset)
             transactionController.setTransactionDraft(assetTransactionDraft)
             transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
             if account.requiresLedgerConnection() {
+                self.openLedgerConnection(transactionController)
+
                 transactionController.initializeLedgerTransactionAccount()
                 transactionController.startTimer()
             }
@@ -510,15 +521,7 @@ extension AssetAdditionViewController: SearchInputViewDelegate {
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
-        if let assetID = getAssetID(from: transactionController) {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let account = dataController.account
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
-
+        cancelMonitoringOptInUpdates(for: transactionController)
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
 
@@ -534,15 +537,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     }
 
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
-        if let assetID = getAssetID(from: transactionController) {
-            let monitor = self.sharedDataController.blockchainUpdatesMonitor
-            let account = dataController.account
-            monitor.cancelMonitoringOptInUpdates(
-                forAssetID: assetID,
-                for: account
-            )
-        }
-
+        cancelMonitoringOptInUpdates(for: transactionController)
         restoreCellState(for: transactionController)
         clearTransactionCache(transactionController)
 
@@ -601,51 +596,135 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.ledgerConnectionScreen = nil
 
-            bottomTransition.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
+                self.openLedgerConnectionIssues()
+            }
         default:
             break
         }
     }
 
-    func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
-        let ledgerApprovalTransition = BottomSheetTransition(
-            presentingViewController: self,
-            interactable: false
-        )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
-        )
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
 
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-            }
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
         }
     }
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
+
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+
+        cancelMonitoringOptInUpdates(for: transactionController)
+        restoreCellState(for: transactionController)
     }
 
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {}
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+    }
+
+    private func cancelMonitoringOptInUpdates(for transactionController: TransactionController) {
+        if let assetID = getAssetID(from: transactionController) {
+            let monitor = sharedDataController.blockchainUpdatesMonitor
+            let account = dataController.account
+            monitor.cancelMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+    }
+}
+
+extension AssetAdditionViewController {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.cancelMonitoringOptInUpdates(for: transactionController)
+                self.restoreCellState(for: transactionController)
+                self.clearTransactionCache(transactionController)
+            }
+        }
+        signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+    }
+}
+
+extension AssetAdditionViewController {
+    private func openLedgerConnection(_ transactionController: TransactionController) {
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+                self.cancelMonitoringOptInUpdates(for: transactionController)
+                self.restoreCellState(for: transactionController)
+                self.clearTransactionCache(transactionController)
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.loadingController?.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transitionToLedgerConnection.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension AssetAdditionViewController {
+    private func openLedgerConnectionIssues() {
+        transitionToLedgerConnectionIssuesWarning.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
 }
 
 struct AssetOptInTransaction: Equatable {

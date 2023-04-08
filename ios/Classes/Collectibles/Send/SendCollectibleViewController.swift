@@ -26,17 +26,20 @@ final class SendCollectibleViewController:
     SendCollectibleActionViewDelegate,
     UIScrollViewDelegate,
     KeyboardControllerDataSource {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return api!.isTestNet ? .darkContent : .lightContent
+    }
+
     var eventHandler: ((SendCollectibleViewControllerEvent) -> Void)?
 
-    private lazy var bottomTransition = BottomSheetTransition(
+    private lazy var transitionToTransferFailedWithRetryWarning = BottomSheetTransition(
         presentingViewController: self,
         interactable: false
     )
-    private lazy var approveModalTransition = BottomSheetTransition(
-        presentingViewController: approveCollectibleTransactionViewController!,
+    private lazy var transitionToApproveTransaction = BottomSheetTransition(
+        presentingViewController: self,
         interactable: false
     )
-
     private lazy var transitionToAskReceiverToOptIn = BottomSheetTransition(
         presentingViewController: self,
         interactable: false
@@ -45,6 +48,11 @@ final class SendCollectibleViewController:
         presentingViewController: self,
         interactable: false
     )
+
+    private var transitionToLedgerConnection: BottomSheetTransition?
+    private var transitionToSignWithLedgerProcess: BottomSheetTransition?
+    private var transitionToLedgerConnectionIssuesWarning: BottomSheetTransition?
+    private var transitionToTransferFailedWarning: BottomSheetTransition?
 
     private(set) lazy var sendCollectibleView = SendCollectibleView()
 
@@ -76,7 +84,8 @@ final class SendCollectibleViewController:
 
     let theme: SendCollectibleViewControllerTheme
 
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
     private var approveCollectibleTransactionViewController: ApproveCollectibleTransactionViewController?
 
     private var ongoingFetchAccountsEnpoint: EndpointOperatable?
@@ -108,8 +117,8 @@ final class SendCollectibleViewController:
         animateBottomSheetLayout()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         transactionController.stopBLEScan()
         transactionController.stopTimer()
     }
@@ -325,13 +334,13 @@ extension SendCollectibleViewController {
                 word: "collectible-recipient-opt-in-description-marked".localized,
                 handler: {
                     [weak self] in
-                    guard let self = self else {
-                        return
-                    }
+                    guard let self else { return }
 
                     self.dismiss(animated: true) {
                         [weak self] in
-                        self?.openOptInInformation()
+                        guard let self else { return }
+
+                        self.openOptInInformation()
                     }
                 }
             )
@@ -432,7 +441,7 @@ extension SendCollectibleViewController {
     }
 
     private func openApproveTransaction() {
-        approveCollectibleTransactionViewController = bottomTransition.perform(
+        approveCollectibleTransactionViewController = transitionToApproveTransaction.perform(
             .approveCollectibleTransaction(
                 draft: draft
             ),
@@ -450,7 +459,12 @@ extension SendCollectibleViewController {
                     isOptingOut: true
                 )
             case .approvedSend:
+                self.isRecreatingTransaction = false
                 self.transactionController.uploadTransaction()
+            case .cancelledSend:
+                self.isRecreatingTransaction = false
+                self.approveCollectibleTransactionViewController?.dismiss(animated: true)
+                self.approveCollectibleTransactionViewController = nil
             }
         }
     }
@@ -474,15 +488,15 @@ extension SendCollectibleViewController {
     }
 }
 
-extension SendCollectibleViewController: TransactionSignChecking {
+extension SendCollectibleViewController {
     private func composeCollectibleAssetTransactionData(
         isOptingOut: Bool
     ) {
-        var fromAccount = draft.fromAccount
+        let fromAccount = draft.fromAccount
+        
+        if !transactionController.canSignTransaction(for: fromAccount) { return }
 
-        if !canSignTransaction(for: &fromAccount) {
-            return
-        }
+        sendCollectibleActionView.startLoading()
 
         let creatorAddress = isOptingOut ? draft.collectibleAsset.creator?.address ?? "" : ""
 
@@ -500,6 +514,8 @@ extension SendCollectibleViewController: TransactionSignChecking {
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
 
         if fromAccount.requiresLedgerConnection() {
+            openLedgerConnection()
+
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }
@@ -514,7 +530,8 @@ extension SendCollectibleViewController: TransactionSignChecking {
         let closeAction = UISheetAction(
             title: "title-close".localized,
             style: .cancel
-        ) { [unowned self] in
+        ) { [weak self] in
+            guard let self else { return }
             self.dismiss(animated: true)
         }
         uiSheet.addAction(closeAction)
@@ -556,7 +573,8 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        loadingController?.stopLoading()
+        sendCollectibleActionView.stopLoading()
+
         self.draft.fee = draft?.fee
 
         if isRecreatingTransaction {
@@ -571,7 +589,8 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
-        loadingController?.stopLoading()
+        sendCollectibleActionView.stopLoading()
+        approveCollectibleTransactionViewController?.stopLoading()
 
         switch error {
         case .network:
@@ -598,7 +617,7 @@ extension SendCollectibleViewController {
                 title: "collectible-transfer-failed-title".localized,
                 description: "send-algos-minimum-amount-custom-error".localized(
                     params: amountText.someString
-                                                                               )
+                )
             )
         case .invalidAddress:
             bannerController?.presentErrorBanner(
@@ -611,24 +630,11 @@ extension SendCollectibleViewController {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let transition: BottomSheetTransition
-            if isRecreatingTransaction {
-                transition = approveModalTransition
-            } else {
-                transition = bottomTransition
-            }
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.ledgerConnectionScreen = nil
 
-            transition.perform(
-                .bottomWarning(
-                    configurator: BottomWarningViewConfigurator(
-                        image: "icon-info-green".uiImage,
-                        title: "ledger-pairing-issue-error-title".localized,
-                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
-                        secondaryActionButtonTitle: "title-ok".localized
-                    )
-                ),
-                by: .presentWithoutNavigationController
-            )
+                self.openLedgerConnectionIssues()
+            }
         default:
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
@@ -641,39 +647,27 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let transition: BottomSheetTransition
-        if isRecreatingTransaction {
-            transition = approveModalTransition
-        } else {
-            transition = bottomTransition
-        }
+        ledgerConnectionScreen?.dismiss(animated: true) {
+            self.ledgerConnectionScreen = nil
 
-        ledgerApprovalViewController = transition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
-        )
-
-        ledgerApprovalViewController?.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-            switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
-                self.loadingController?.stopLoading()
-            }
+            self.openSignWithLedgerProcess(
+                transactionController: transactionController,
+                ledgerDeviceName: ledger
+            )
         }
     }
 
     func transactionControllerDidResetLedgerOperation(
         _ transactionController: TransactionController
     ) {
-        ledgerApprovalViewController?.dismissScreen()
-    }
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
 
-    func transactionControllerDidRejectedLedgerOperation(
-        _ transactionController: TransactionController
-    ) {
-        loadingController?.stopLoading()
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+
+        sendCollectibleActionView.stopLoading()
+        approveCollectibleTransactionViewController?.stopLoading()
     }
 
     func transactionController(
@@ -697,7 +691,11 @@ extension SendCollectibleViewController {
         approveCollectibleTransactionViewController?.stopLoading()
         approveCollectibleTransactionViewController?.dismissScreen {
             [weak self] in
-            self?.openSuccessScreen()
+            guard let self else { return }
+
+            self.approveCollectibleTransactionViewController = nil
+
+            self.openSuccessScreen()
         }
     }
 
@@ -705,6 +703,7 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
+        sendCollectibleActionView.stopLoading()
         approveCollectibleTransactionViewController?.stopLoading()
 
         switch error {
@@ -733,16 +732,105 @@ extension SendCollectibleViewController {
 }
 
 extension SendCollectibleViewController {
+    private func openLedgerConnection() {
+        let transition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                self.transactionController.stopBLEScan()
+                self.transactionController.stopTimer()
+
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.sendCollectibleActionView.stopLoading()
+            }
+        }
+
+        ledgerConnectionScreen = transition.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToLedgerConnection = transition
+    }
+}
+
+extension SendCollectibleViewController {
+    private func openLedgerConnectionIssues() {
+        let visibleScreen = findVisibleScreen()
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+        transition.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToLedgerConnectionIssuesWarning = transition
+    }
+}
+
+extension SendCollectibleViewController {
+    private func openSignWithLedgerProcess(
+        transactionController: TransactionController,
+        ledgerDeviceName: String
+    ) {
+        let visibleScreen = findVisibleScreen()
+        let transition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
+
+        let draft = SignWithLedgerProcessDraft(
+            ledgerDeviceName: ledgerDeviceName,
+            totalTransactionCount: 1
+        )
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+
+                self.signWithLedgerProcessScreen?.dismissScreen()
+                self.signWithLedgerProcessScreen = nil
+
+                self.sendCollectibleActionView.stopLoading()
+                self.approveCollectibleTransactionViewController?.stopLoading()
+            }
+        }
+        signWithLedgerProcessScreen = transition.perform(
+            .signWithLedgerProcess(
+                draft: draft,
+                eventHandler: eventHandler
+            ),
+            by: .present
+        ) as? SignWithLedgerProcessScreen
+
+        transitionToSignWithLedgerProcess = transition
+    }
+}
+
+extension SendCollectibleViewController {
     private func openTransferFailed(
         title: String,
         description: String
     ) {
-        let transition: BottomSheetTransition
-        if isRecreatingTransaction {
-            transition = approveModalTransition
-        } else {
-            transition = bottomTransition
-        }
+        let visibleScreen = findVisibleScreen()
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         let configurator = BottomWarningViewConfigurator(
             title: title,
@@ -756,6 +844,8 @@ extension SendCollectibleViewController {
             ),
             by: .presentWithoutNavigationController
         )
+
+        transitionToTransferFailedWarning = transition
     }
 
     private func openTransferFailedWithRetry() {
@@ -767,9 +857,10 @@ extension SendCollectibleViewController {
             secondaryActionButtonTitle: "title-close".localized,
             primaryAction: {
                 [weak self] in
-                guard let self = self else {
-                    return
-                }
+                guard let self else { return }
+
+                self.approveCollectibleTransactionViewController?.startLoading()
+
                 self.transactionController.uploadTransaction()
             }
         )
@@ -777,7 +868,10 @@ extension SendCollectibleViewController {
         approveCollectibleTransactionViewController?.dismissScreen {
             [weak self] in
             guard let self = self else { return }
-            self.bottomTransition.perform(
+
+            self.approveCollectibleTransactionViewController = nil
+
+            self.transitionToTransferFailedWithRetryWarning.perform(
                 .bottomWarning(
                     configurator: configurator
                 ),

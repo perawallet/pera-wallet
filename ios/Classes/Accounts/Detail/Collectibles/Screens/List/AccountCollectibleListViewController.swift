@@ -175,12 +175,10 @@ extension AccountCollectibleListViewController {
     private func openReceiveCollectible() {
         view.endEditing(true)
 
-        let controller = open(
+        open(
             .receiveCollectibleAssetList(account: account),
             by: .present
-        ) as? ReceiveCollectibleAssetListViewController
-
-        controller?.delegate = self
+        )
     }
 }
 
@@ -204,14 +202,6 @@ extension AccountCollectibleListViewController {
             .accountCollectibleListFilterSelection(uiInteractions: uiInteractions),
             by: .present
         )
-    }
-}
-
-extension AccountCollectibleListViewController: ReceiveCollectibleAssetListViewControllerDelegate {
-    func receiveCollectibleAssetListViewController(
-        _ controller: ReceiveCollectibleAssetListViewController,
-        didCompleteTransaction account: Account
-    ) {
     }
 }
 

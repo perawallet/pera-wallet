@@ -17,6 +17,17 @@
 
 import Foundation
 
+extension Dictionary {
+    subscript(safe key: Key?) -> Value? {
+        guard let key,
+              let value = self[key] else {
+            return nil
+        }
+        
+        return value
+    }
+}
+
 extension Dictionary where Value: Collection {
     mutating func clearValuesIfEmpty(for key: Key) {
         if self[key]?.isEmpty ?? false {

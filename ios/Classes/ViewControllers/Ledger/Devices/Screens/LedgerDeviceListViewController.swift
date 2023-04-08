@@ -30,8 +30,12 @@ final class LedgerDeviceListViewController: BaseViewController {
     }()
 
     private lazy var initialPairingWarningTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
 
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
+
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var transitionToLedgerConnection: BottomSheetTransition?
+
     private var timer: Timer?
 
     private let accountSetupFlow: AccountSetupFlow
@@ -47,19 +51,24 @@ final class LedgerDeviceListViewController: BaseViewController {
     override func configureNavigationBarAppearance() {
         addBarButtons()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         ledgerDeviceListView.startAnimatingImageView()
         ledgerDeviceListView.startAnimatingIndicatorView()
+
+        ledgerAccountFetchOperation.startScan()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+
         ledgerAccountFetchOperation.reset()
+        stopTimer()
+
         ledgerDeviceListView.stopAnimatingImageView()
         ledgerDeviceListView.stopAnimatingIndicatorView()
-        stopTimer()
     }
     
     override func linkInteractors() {
@@ -67,17 +76,6 @@ final class LedgerDeviceListViewController: BaseViewController {
         ledgerAccountFetchOperation.delegate = self
         ledgerDeviceListView.devicesCollectionView.delegate = self
         ledgerDeviceListView.devicesCollectionView.dataSource = self
-    }
-
-    override func setListeners() {
-        super.setListeners()
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(startScanFromBackground),
-            name: UIApplication.didBecomeActiveNotification,
-            object: nil
-        )
     }
 
     override func configureAppearance() {
@@ -131,6 +129,13 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
         selectedDevice = ledgerDevices[indexPath.item]
 
         let oneTimeDisplayStorage = OneTimeDisplayStorage()
+        let bleState = ledgerAccountFetchOperation.bleConnectionManager.state
+        let isBLEPoweredOn = bleState == .poweredOn
+        if !isBLEPoweredOn {
+            presentBLEError(bleState)
+            return
+        }
+
         if oneTimeDisplayStorage.isDisplayedOnce(for: .ledgerPairingWarning) {
             ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
             selectedDevice = nil
@@ -145,6 +150,18 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
         )
         
         ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
+    }
+
+    private func presentBLEError(_ state: CBManagerState) {
+        guard let title = state.errorDescription.title,
+              let subtitle = state.errorDescription.subtitle else {
+            return
+        }
+
+        bannerController?.presentErrorBanner(
+            title: title,
+            message: subtitle
+        )
     }
 }
 
@@ -169,9 +186,7 @@ extension LedgerDeviceListViewController: LedgerPairWarningViewControllerDelegat
 
 extension LedgerDeviceListViewController {
     private func presentConnectionSupportWarningAlert() {
-        let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
-        bottomTransition.perform(
+        transitionToLedgerConnectionIssuesWarning.perform(
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-green".uiImage,
@@ -185,13 +200,13 @@ extension LedgerDeviceListViewController {
     }
 
     private func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+        timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { [weak self] timer in
             guard let self = self else {
                 timer.invalidate()
                 return
             }
 
-            self.ledgerAccountFetchOperation.bleConnectionManager.stopScan()
+            self.ledgerAccountFetchOperation.stopScan()
 
             self.bannerController?.presentErrorBanner(
                 title: "ble-error-connection-title".localized,
@@ -209,14 +224,6 @@ extension LedgerDeviceListViewController {
     }
 }
 
-extension LedgerDeviceListViewController {
-    @objc
-    private func startScanFromBackground() {
-        ledgerDeviceListView.startAnimatingImageView()
-        ledgerAccountFetchOperation.startScan()
-    }
-}
-
 extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
     func ledgerAccountFetchOperation(
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
@@ -228,7 +235,7 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
             return
         }
         
-        ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
+        ledgerConnectionScreen?.closeScreen(by: .dismiss, animated: true) {
             self.open(.ledgerAccountSelection(flow: self.accountSetupFlow, accounts: accounts), by: .push)
         }
     }
@@ -262,6 +269,19 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
                 title: "title-error".localized,
                 message: "ledger-account-fetct-error".localized
             )
+        case .failedBLEConnectionError(let state):
+            guard let errorTitle = state.errorDescription.title,
+                  let errorSubtitle = state.errorDescription.subtitle else {
+                return
+            }
+
+            bannerController?.presentErrorBanner(
+                title: errorTitle,
+                message: errorSubtitle
+            )
+
+            ledgerConnectionScreen?.dismissScreen()
+            ledgerConnectionScreen = nil
         case let .custom(title, message):
             bannerController?.presentErrorBanner(
                 title: title,
@@ -276,23 +296,30 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
         didRequestUserApprovalFor ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(
+        let transition = BottomSheetTransition(
             presentingViewController: self,
             interactable: false
         )
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
-            .ledgerApproval(mode: .approve, deviceName: ledger),
-            by: .present
-        )
-
-        ledgerApprovalViewController?.eventHandler = {
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
             [weak self] event in
             guard let self = self else { return }
+
             switch event {
-            case .didCancel:
-                self.ledgerApprovalViewController?.dismissScreen()
+            case .performCancel:
+                self.ledgerConnectionScreen?.dismissScreen()
+                self.ledgerConnectionScreen = nil
+
+                self.ledgerAccountFetchOperation.disconnectFromCurrentDevice()
+                self.stopTimer()
             }
         }
+
+        ledgerConnectionScreen = transition.perform(
+            .ledgerConnection(eventHandler: eventHandler),
+            by: .presentWithoutNavigationController
+        )
+
+        transitionToLedgerConnection = transition
     }
 
     func ledgerAccountFetchOperationDidFinishTimingOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {
@@ -300,6 +327,7 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
     }
 
     func ledgerAccountFetchOperationDidResetOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {
-        ledgerApprovalViewController?.dismissScreen()
+        ledgerConnectionScreen?.dismissScreen()
+        ledgerConnectionScreen = nil
     }
 }

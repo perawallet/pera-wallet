@@ -28,6 +28,12 @@ class WCMainTransactionDataSource: NSObject {
         return totalTransactionCount == transactions.count
     }
 
+    lazy var totalTransactionCountToSign: Int = {
+        return transactions
+            .filter(\.hasSignerAccount)
+            .count
+    }()
+
     private let walletConnector: WalletConnector
     private(set) var transactionRequest: WalletConnectRequest
     let transactionOption: WCTransactionOption?

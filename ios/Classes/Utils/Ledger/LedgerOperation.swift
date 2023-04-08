@@ -74,12 +74,12 @@ extension LedgerOperation where Self: BLEConnectionManagerDelegate {
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailWith error: BLEConnectionManager.BLEError) {
         switch error {
         case let .failedBLEConnection(state):
-            guard let errorTitle = state.errorDescription.title,
-                let errorSubtitle = state.errorDescription.subtitle else {
-                    return
+            /// <todo>: Refactor
+            /// Scanning should only be stopped on transaction operations.
+            if self is LedgerTransactionOperation {
+                stopScan()
             }
-
-            returnError(.custom(title: errorTitle, message: errorSubtitle))
+            returnError(.failedBLEConnectionError(state))
             finishTimingOperation()
         default:
             reset()
@@ -127,4 +127,5 @@ enum LedgerOperationError: Error {
     case unmatchedAddress
     case ledgerConnectionWarning
     case custom(title: String, message: String)
+    case failedBLEConnectionError(CBManagerState)
 }

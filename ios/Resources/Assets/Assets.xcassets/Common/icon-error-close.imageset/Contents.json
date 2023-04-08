@@ -3,6 +3,16 @@
     {
       "filename" : "icon-error-close.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-error-close-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

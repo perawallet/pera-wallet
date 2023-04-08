@@ -31,6 +31,11 @@ protocol TransactionControllerDelegate: AnyObject {
     func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String)
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController)
     func transactionControllerDidRejectedLedgerOperation(_ transactionController: TransactionController)
+
+    /// This is a temporary solution for handling reset operations as successful resets until the whole flow is refactored.
+    /// A successful reset means that you should not cancel any pending opt-in/opt-out requests in the delegate method implementation.
+    /// The actual `reset` method is used for failure cases.
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController)
 }
 
 extension TransactionControllerDelegate where Self: BaseViewController {
@@ -52,6 +57,10 @@ extension TransactionControllerDelegate where Self: BaseViewController {
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {}
 
     func transactionControllerDidRejectedLedgerOperation(_ transactionController: TransactionController) {}
+
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+        transactionControllerDidResetLedgerOperation(transactionController)
+    }
 }
 
 class PrintableErrorDetail: DebugPrintable {

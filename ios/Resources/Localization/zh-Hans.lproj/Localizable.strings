@@ -55,6 +55,12 @@
 /* (No Comment) */
 "account-select-search-empty-title" = "未找到账户";
 
+/* (No Comment) */
+"account-select-soft-rekey-empty-detail" = "请添加一个标准（非-Ledger）账户以继续。";
+
+/* (No Comment) */
+"account-select-soft-rekey-empty-title" = "未找到标准账户";
+
 /* MARK: Account Type Selection */
 "account-type-selection-add" = "我想要创建一个账户";
 
@@ -971,6 +977,9 @@
 "ledger-approval-message" = "请在您的Ledger设备上验证账户地址（%@）";
 
 /* (No Comment) */
+"ledger-approval-sign-info-message" = "验证流程将在Ledger上继续。如需取消验证流程，请在Ledger上取消。";
+
+/* (No Comment) */
 "ledger-approval-sign-message" = "请在Ledger设备上%@，检查和签署交易。";
 
 /* MARK: Ledger Approval */
@@ -1022,7 +1031,7 @@
 "ledger-rekey-error-add-auth" = "连接的Ledger设备无法为此账户签署交易。如有需要，请连接%@。";
 
 /* (No Comment) */
-"ledger-rekey-error-not-found" = "账户已完成密钥更新。请使用助记词或Ledger设备恢复该账户。";
+"ledger-rekey-error-not-found" = "签名账户已重新键入到另一个不在您钱包里的账户，或是配置错误了。请确保授权账户已添加到您的钱包上，如果授权账户是Ledger账户，请确保该账户能够正确连接上。";
 
 /* (No Comment) */
 "ledger-rekey-finalize" = "最终确认密钥更新";
@@ -1698,6 +1707,18 @@
 
 /* (No Comment) */
 "rekey-instruction-second-standard" = "该账户将不再支持这些助记词。";
+
+/* (No Comment) */
+"rekey-instruction-soft-first" = "未来的交易只能由委托账户签署。";
+
+/* (No Comment) */
+"rekey-instruction-soft-second" = "该账户将无法签署交易。";
+
+/* (No Comment) */
+"rekey-instruction-soft-subtitle" = "通过将签名授权给其他账户来保护您的账户。";
+
+/* (No Comment) */
+"rekey-instruction-soft-third" = "您账户的公钥、余额以及配置不会改变。";
 
 /* MARK: Rekey Instruction */
 "rekey-instruction-start" = "启动进程";
@@ -2375,6 +2396,9 @@
 "title-generic-response-description" = "我们无法获取某些资产。请再次尝试。";
 
 /* (No Comment) */
+"title-go-home" = "返回主页";
+
+/* (No Comment) */
 "title-go-to-accounts" = "回到账户";
 
 /* (No Comment) */
@@ -2837,6 +2861,9 @@
 "tutorial-description-back-up" = "创建恢复助记词备份能让您恢复账户。若您在无助记词的情况下丢失设备，一旦您移除账户或删除APP，那么您将永远无法再访问您的Algorand账号！";
 
 /* (No Comment) */
+"tutorial-description-failed-to-import-ledger-accounts" = "由于您没有完成验证步骤，您的账户无法导入。请重试。";
+
+/* (No Comment) */
 "tutorial-description-ledger" = "请确认您的Ledger设备已开启，并启用了蓝牙功能。";
 
 /* (No Comment) */
@@ -2883,6 +2910,9 @@
 
 /* (No Comment) */
 "tutorial-title-back-up" = "为账户创建密码备份";
+
+/* (No Comment) */
+"tutorial-title-failed-to-import-ledger-accounts" = "未导入的账户";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "成功连接Ledger";

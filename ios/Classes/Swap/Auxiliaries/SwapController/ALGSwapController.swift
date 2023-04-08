@@ -91,6 +91,8 @@ extension ALGSwapController {
                 self.publishEvent(.didFinishTiming)
             case .didLedgerReset:
                 self.publishEvent(.didLedgerReset)
+            case .didLedgerResetOnSuccess:
+                self.publishEvent(.didLedgerResetOnSuccess)
             case .didLedgerRejectSigning:
                 self.publishEvent(.didLedgerRejectSigning)
             }
@@ -146,6 +148,10 @@ extension ALGSwapController {
         signedTransactions = []
         parsedTransactions = []
         swapTransactionGroupSigner.clearTransactions()
+    }
+
+    func disconnectFromLedger() {
+        swapTransactionGroupSigner.disconnectFromLedger()
     }
 }
 

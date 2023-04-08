@@ -34,13 +34,13 @@ final class SelectAccountDataSource: UICollectionViewDiffableDataSource<SelectAc
                         PreviewLoadingCell.self,
                         at: indexPath
                     )
-                case .noContent:
+                case .noContent(let emptyItem):
                     let cell = collectionView.dequeue(
                         NoContentCell.self,
                         at: indexPath
                     )
                     cell.bindData(
-                        HomeNoContentViewModel()
+                        emptyItem
                     )
                     return cell
                 }
