@@ -25,7 +25,10 @@ import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.Owned
 import com.algorand.android.utils.extensions.getAssetHoldingList
 import com.algorand.android.utils.extensions.getAssetIdList
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.mapNotNull
 
@@ -62,6 +65,16 @@ class AccountAssetDataUseCase @Inject constructor(
     fun getAccountOwnedAssetData(publicKey: String, includeAlgo: Boolean): List<OwnedAssetData> {
         val accountDetail = accountDetailUseCase.getCachedAccountDetail(publicKey)?.data ?: return emptyList()
         return createAccountOwnedAssetData(accountDetail, includeAlgo)
+    }
+
+    suspend fun fetchAccountOwnedAssetData(
+        publicKey: String,
+        includeAlgo: Boolean,
+        coroutineScope: CoroutineScope
+    ) = channelFlow<List<OwnedAssetData>> {
+        accountDetailUseCase.fetchAndCacheAccountDetail(publicKey, coroutineScope).collectLatest {
+            send(getAccountOwnedAssetData(publicKey, includeAlgo))
+        }
     }
 
     private fun createAccountOwnedAssetData(account: AccountDetail, includeAlgo: Boolean): List<OwnedAssetData> {

@@ -18,10 +18,12 @@ import androidx.lifecycle.viewModelScope
 import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail
 import com.algorand.android.modules.transaction.detail.domain.usecase.ApplicationCallTransactionDetailPreviewUseCase
 import com.algorand.android.modules.transaction.detail.ui.BaseTransactionDetailViewModel
+import com.algorand.android.utils.Event
 import com.algorand.android.utils.getOrElse
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -38,6 +40,10 @@ class ApplicationCallTransactionDetailViewModel @Inject constructor(
     )
     val shouldShowCloseButton = savedStateHandle.getOrElse(SHOW_CLOSE_BUTTON_KEY, false)
 
+    val navToInnerTransactionFragmentEventFlow: StateFlow<Event<Unit>?>
+        get() = _navToInnerTransactionFragmentEventFlow
+    private val _navToInnerTransactionFragmentEventFlow = MutableStateFlow<Event<Unit>?>(null)
+
     init {
         if (transaction != null) {
             createTransactionDetailFromExistingModel(transaction)
@@ -49,6 +55,7 @@ class ApplicationCallTransactionDetailViewModel @Inject constructor(
     fun putInnerTransactionToStackCache(transaction: List<BaseTransactionDetail>) {
         viewModelScope.launch {
             baseTransactionDetailPreviewUseCase.putInnerTransactionToStackCache(transaction)
+            _navToInnerTransactionFragmentEventFlow.emit(Event(Unit))
         }
     }
 

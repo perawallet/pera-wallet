@@ -36,7 +36,7 @@ class ScreenStateView @JvmOverloads constructor(
 
     init {
         loadAttrs()
-        gravity = Gravity.CENTER_HORIZONTAL
+        gravity = Gravity.CENTER
         orientation = VERTICAL
     }
 

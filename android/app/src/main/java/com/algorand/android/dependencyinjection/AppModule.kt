@@ -12,6 +12,7 @@
 
 package com.algorand.android.dependencyinjection
 
+import android.app.NotificationManager
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.SharedPreferences
@@ -185,5 +186,11 @@ object AppModule {
     @Provides
     fun provideFirebaseAnalytics(@ApplicationContext appContext: Context): FirebaseAnalytics {
         return FirebaseAnalytics.getInstance(appContext)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationManager(@ApplicationContext appContext: Context): NotificationManager? {
+        return appContext.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
     }
 }

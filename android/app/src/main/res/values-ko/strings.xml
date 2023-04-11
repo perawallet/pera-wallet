@@ -556,9 +556,7 @@
     <string name="transfer">전송</string>
     <string name="send_your_nft">NFT 보내기</string>
     <string name="paste_an_algorand_wallet_address">알고랜드 지갑 주소 붙여넣기</string>
-    <string name="ask_recipient_to">받는 분께 옵트인 요청</string>
     <string name="you_cant_send"><annotation replacement="nft_name">NFTNamePlaceHolder</annotation>을(를) <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> 주소로 보낼 수 없습니다. 이 지갑은 아직 해당 자산을 옵트인 설정하지 않았습니다. <annotation font="dmsans_medium"><annotation custom="learn_more">옵트인에 대해 자세히 알아보세요</annotation></annotation></string>
-    <string name="request_opt_in">옵트인 요청</string>
     <string name="information_about_opt">옵트인 정보</string>
     <string name="to_avoid_spammy">스팸 트랜잭션을 방지하기 위해, 알고랜드 블록체인은 이전에 옵트인한 자산에 대해서만 트랜잭션을 보내고 받도록 허용합니다.</string>
     <string name="search_or_enter_wallet_address">지갑 주소를 검색하거나 입력하세요</string>

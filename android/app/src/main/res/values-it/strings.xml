@@ -567,7 +567,6 @@ amountPlaceholder</annotation> Algo.</string>
     <string name="paste_an_algorand_wallet_address">Incolla un indirizzo di wallet Algorand</string>
     <string name="ask_recipient_to">Chiedi al destinatario di aderire (opt-in)</string>
     <string name="you_cant_send">Non è possibile inviare <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> a <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> perché questo wallet non ha ancora effettuato l\'adesione (opt-in) per questa risorsa. <annotation font="dmsans_medium"><annotation custom="learn_more">Per saperne di più sull\'adesione (opt-in)</annotation></annotation></string>
-    <string name="request_opt_in">Richiedi l\'adesione (opt-in)</string>
     <string name="information_about_opt">Informazioni sull\'adesione (Opt-in)</string>
     <string name="to_avoid_spammy">Per evitare transazioni di spam, Algorand Blockchain ti consente di inviare e ricevere transazioni solo per le risorse che sono state precedentemente attivate (opt-in).</string>
     <string name="search_or_enter_wallet_address">Cerca o inserisci l\'indirizzo del wallet</string>

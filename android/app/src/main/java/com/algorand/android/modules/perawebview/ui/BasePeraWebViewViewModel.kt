@@ -23,6 +23,7 @@ abstract class BasePeraWebViewViewModel : BaseWebViewViewModel() {
     private val _lastErrorFlow: MutableStateFlow<WebViewError?> = MutableStateFlow(null)
 
     open fun onPageRequestedShouldOverrideUrlLoading(url: String): Boolean { return false }
+    open fun onPageStarted() {}
     open fun onPageFinished(title: String? = null, url: String? = null) {}
     open fun onError() {}
     open fun onHttpError() {}

@@ -49,6 +49,18 @@ class AccountHistoryAdapter(
         }
     }
 
+    fun getTitleForPosition(position: Int): String? {
+        if (position in 0 until itemCount) {
+            var currentPosition = position
+            while (currentPosition >= 0) {
+                val currentItem = getItem(currentPosition)
+                if (currentItem is BaseTransactionItem.StringTitleItem) return currentItem.title
+                currentPosition--
+            }
+        }
+        return null
+    }
+
     private fun createApplicationCallItemViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         return ApplicationCallItemViewHolder.create(parent, applicationCallItemListener)
     }

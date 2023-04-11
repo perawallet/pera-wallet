@@ -12,9 +12,8 @@
 
 package com.algorand.android.utils.coremanager
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +22,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
-abstract class BaseCacheManager : LifecycleObserver {
+abstract class BaseCacheManager : DefaultLifecycleObserver {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var currentJob: Job? = null
@@ -66,18 +65,15 @@ abstract class BaseCacheManager : LifecycleObserver {
         coroutineScope.coroutineContext.cancelChildren()
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    private fun onResume() {
+    override fun onResume(owner: LifecycleOwner) {
         initializationJob = coroutineScope.launch(Dispatchers.IO) { initialize(this) }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    private fun onPause() {
+    override fun onPause(owner: LifecycleOwner) {
         stop()
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    private fun onDestroy() {
+    override fun onDestroy(owner: LifecycleOwner) {
         clearResources()
     }
 }

@@ -82,6 +82,7 @@ abstract class BasePercentageSelectionBottomSheet : BaseBottomSheet(R.layout.bot
                 hint = getString(inputFieldHintText)
                 setOnEditorEnterClickListener { onDoneClick() }
                 setOnTextChangeListener { basePercentageSelectionViewModel.onInputUpdated(resources, it) }
+                setImeOptionsDone { onDoneClick() }
             }
             predefinedPercentageChipGroup.setListener(peraCheckGroupListener)
         }

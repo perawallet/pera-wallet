@@ -32,12 +32,15 @@ class CoreActionsTabBarView @JvmOverloads constructor(
     private val binding = viewBinding(CustomCoreActionsTabBarBinding::inflate)
 
     init {
-        binding.coreActionsButton.setOnClickListener { onCoreActionsButtonClick() }
-        binding.sendButton.setOnClickListener { listener?.onSendClick() }
-        binding.receiveButton.setOnClickListener { listener?.onReceiveClick() }
-        binding.buyAlgoButton.setOnClickListener { listener?.onBuyAlgoClick() }
-        binding.scanQrButton.setOnClickListener { listener?.onScanQRClick() }
-        binding.swapButton.setOnClickListener { listener?.onSwapClick() }
+        with(binding) {
+            coreActionsButton.setOnClickListener { onCoreActionsButtonClick() }
+            sendButton.setOnClickListener { listener?.onSendClick() }
+            receiveButton.setOnClickListener { listener?.onReceiveClick() }
+            buySellButton.setOnClickListener { listener?.onBuySellClick() }
+            scanQrButton.setOnClickListener { listener?.onScanQRClick() }
+            swapButton.setOnClickListener { listener?.onSwapClick() }
+            backgroundColorView.setOnClickListener { startHidingAnimation() }
+        }
     }
 
     fun hideWithoutAnimation() {
@@ -95,7 +98,7 @@ class CoreActionsTabBarView @JvmOverloads constructor(
     interface Listener {
         fun onSendClick()
         fun onReceiveClick()
-        fun onBuyAlgoClick()
+        fun onBuySellClick()
         fun onScanQRClick()
         fun onCoreActionsClick(isCoreActionsOpen: Boolean)
         fun onSwapClick()

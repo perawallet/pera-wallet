@@ -37,19 +37,19 @@ data class AccountInformation(
 ) : Parcelable {
 
     val assetHoldingMap: HashMap<Long, AssetHolding>
-        get() = allAssetHoldingMap?.filterNot { it.value.isDeleted } as? HashMap<Long, AssetHolding> ?: hashMapOf()
+        get() = allAssetHoldingMap.filterNot { it.value.isDeleted } as? HashMap<Long, AssetHolding> ?: hashMapOf()
 
     fun isCreated(): Boolean {
         return createdAtRound != null
     }
 
     fun setAssetHoldingStatus(assetId: Long, status: AssetStatus) {
-        allAssetHoldingMap?.get(assetId)?.status = status
+        allAssetHoldingMap.get(assetId)?.status = status
     }
 
     fun addPendingAssetHolding(assetHolding: AssetHolding) {
         if (!AssetStatus.isPending(assetHolding.status)) return
-        allAssetHoldingMap?.put(assetHolding.assetId, assetHolding)
+        allAssetHoldingMap.put(assetHolding.assetId, assetHolding)
     }
 
     fun isRekeyed(): Boolean {
@@ -77,7 +77,7 @@ data class AccountInformation(
         return getAllAssetIds().toMutableList().apply { add(0, ALGO_ID) }
     }
 
-    fun getOptedInAssetsCount() = allAssetHoldingMap?.size ?: 0
+    fun getOptedInAssetsCount() = allAssetHoldingMap.size
 
     fun getMinAlgoBalance(): BigInteger {
         return calculateMinBalance(

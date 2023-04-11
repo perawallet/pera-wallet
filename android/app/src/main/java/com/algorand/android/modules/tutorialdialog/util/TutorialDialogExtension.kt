@@ -35,3 +35,14 @@ fun Context.showSwapFeatureTutorialDialog(onTrySwap: (() -> Unit)? = null, onLat
         .setSecondaryButton(textRes = R.string.later, onClick = onLater)
         .show()
 }
+
+fun Context.showGiftCardsTutorialDialog(onBuyGiftCards: (() -> Unit)? = null, onLater: (() -> Unit)? = null) {
+    TutorialDialogBuilder.create(this)
+        .setImageView(imageRes = R.drawable.gift_cards)
+        .setTitleTextView(textRes = R.string.buy_gift_cards_with_crypto)
+        .setTagTextView(textRes = R.string.new_text)
+        .setDescriptionTextView(textRes = R.string.you_can_use_your_algo_or)
+        .setPrimaryButton(textRes = R.string.buy_gift_cards, onClick = onBuyGiftCards)
+        .setSecondaryButton(textRes = R.string.later, onClick = onLater)
+        .show()
+}

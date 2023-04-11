@@ -15,7 +15,9 @@ package com.algorand.android.modules.assets.profile.about.domain.usecase
 import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.models.Result
 import com.algorand.android.modules.assets.profile.about.domain.repository.AssetAboutRepository
+import com.algorand.android.modules.assets.profile.about.domain.repository.AssetAboutRepository.Companion.ASSET_NOT_FOUND_ERROR_CODE
 import com.algorand.android.utils.DataResource
+import com.algorand.android.utils.exception.AssetNotFoundException
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.flow.Flow
@@ -31,7 +33,13 @@ class GetAssetDetailUseCase @Inject constructor(
         return assetAboutRepository.getAssetDetail(assetId).map {
             when (it) {
                 is Result.Success -> DataResource.Success(data = it.data)
-                is Result.Error -> DataResource.Error.Api(exception = it.exception, code = it.code)
+                is Result.Error -> {
+                    if (it.code == ASSET_NOT_FOUND_ERROR_CODE) {
+                        DataResource.Error.Local(exception = AssetNotFoundException())
+                    } else {
+                        DataResource.Error.Api(exception = it.exception, code = it.code)
+                    }
+                }
             }
         }
     }

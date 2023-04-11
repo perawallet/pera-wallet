@@ -37,7 +37,7 @@ import com.algorand.android.models.WalletConnectSignResult.Error.Api
 import com.algorand.android.models.WalletConnectSignResult.Error.Defined
 import com.algorand.android.models.WalletConnectSignResult.LedgerWaitingForApproval
 import com.algorand.android.models.WalletConnectSignResult.Success
-import com.algorand.android.models.WalletConnectSignResult.TransactionCancelled
+import com.algorand.android.models.WalletConnectSignResult.TransactionCancelledByLedger
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.Event
@@ -130,7 +130,7 @@ class WalletConnectSignManager @Inject constructor(
                 is SignedTransactionResult -> signHelper.cacheDequeuedItem(transactionByteArray)
                 is LedgerErrorResult -> postResult(Api(errorMessage))
                 is AppErrorResult -> postResult(Defined(AnnotatedString(errorMessageId), titleResId))
-                is OperationCancelledResult -> postResult(TransactionCancelled())
+                is OperationCancelledResult -> postResult(TransactionCancelledByLedger())
                 else -> {
                     sendErrorLog("Unhandled else case in WalletConnectSignManager.operationManagerCollectorAction")
                 }

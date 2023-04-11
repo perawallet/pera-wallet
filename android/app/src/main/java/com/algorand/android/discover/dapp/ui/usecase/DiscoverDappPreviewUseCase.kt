@@ -62,8 +62,9 @@ class DiscoverDappPreviewUseCase @Inject constructor(
         )
     }
 
-    fun onPageRequestedShouldOverrideUrlLoading(previousState: DiscoverDappPreview) = previousState.copy(
-        isLoading = true
+    fun onPageRequestedShouldOverrideUrlLoading(previousState: DiscoverDappPreview, url: String) = previousState.copy(
+        isLoading = true,
+        isFavorite = previousState.favorites.any { it.isSameUrl(url) }
     )
 
     fun onPageFinished(
@@ -74,6 +75,7 @@ class DiscoverDappPreviewUseCase @Inject constructor(
         isLoading = false,
         dappTitle = title ?: previousState.dappTitle,
         dappUrl = url ?: previousState.dappUrl,
+        isFavorite = previousState.favorites.any { it.isSameUrl(url ?: previousState.dappUrl) }
     )
 
     fun onError(previousState: DiscoverDappPreview) = previousState.copy(

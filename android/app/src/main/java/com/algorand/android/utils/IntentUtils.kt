@@ -16,7 +16,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.provider.MediaStore
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
@@ -36,11 +35,6 @@ fun Context.openTextShareBottomMenuChooser(text: String, title: String) {
     sharingIntent.type = "text/plain"
     sharingIntent.putExtra(Intent.EXTRA_TEXT, text)
     startActivity(Intent.createChooser(sharingIntent, title))
-}
-
-fun Fragment.startImagePickerIntent() {
-    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-    startActivityForResult(Intent.createChooser(intent, ""), IMAGE_READ_REQUEST)
 }
 
 fun Fragment.openImageShareBottomMenu(bitmap: Bitmap, activityResultLauncher: ActivityResultLauncher<Intent>): File? {
@@ -68,7 +62,7 @@ fun Fragment.shareFile(file: File, type: String, activityResultLauncher: Activit
             file
         )
 
-        val sharingIntent = ShareCompat.IntentBuilder.from(requireActivity())
+        val sharingIntent = ShareCompat.IntentBuilder(requireActivity())
             .setType(type)
             .setStream(uri)
             .createChooserIntent()

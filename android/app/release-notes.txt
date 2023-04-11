@@ -1,2 +1,4 @@
-Android - 4 - Swap v2
-Android - 14 - Rekey v2
+Android - 5 - Offramp
+Android - 2 - Discover V3
+Android - 10 - Bug / Enhancement Sprint 8
+Android - 9 - Algorand Secure Backup

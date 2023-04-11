@@ -54,6 +54,6 @@
         app:autoSizeMaxTextSize="@dimen/text_size_36"
         app:autoSizeMinTextSize="@dimen/text_size_13"
         app:autoSizeTextType="uniform"
-        tools:text="≈ $15,594.15" />
+        tools:text="$15,594.15" />
 
 </LinearLayout>

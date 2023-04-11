@@ -12,14 +12,4 @@
 
 package com.algorand.android.utils
 
-import java.net.URL
-
 fun emptyString(): String = ""
-
-fun getUrlHost(url: String): String {
-    return try {
-        URL(url).host
-    } catch (exception: Exception) {
-        ""
-    }
-}

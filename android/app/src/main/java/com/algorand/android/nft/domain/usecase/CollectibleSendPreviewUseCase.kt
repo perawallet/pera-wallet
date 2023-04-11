@@ -42,8 +42,8 @@ class CollectibleSendPreviewUseCase @Inject constructor(
     suspend fun getInitialStateOfCollectibleSendPreview(nftId: Long) = flow {
         getCollectibleDetailUseCase.getCollectibleDetail(nftId).use(
             onSuccess = { baseCollectibleDetail ->
-                val collectionName = baseCollectibleDetail.fullName.orEmpty()
-                val collectibleName = baseCollectibleDetail.collectionName.orEmpty()
+                val collectibleName = baseCollectibleDetail.fullName.orEmpty()
+                val collectionName = baseCollectibleDetail.collectionName.orEmpty()
                 emit(
                     collectibleSendPreviewMapper.mapToCollectibleSendPreview(
                         collectibleId = nftId,

@@ -12,17 +12,14 @@
 
 package com.algorand.android.ui.settings.developersettings
 
-import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.network.AlgodInterceptor
-import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class DeveloperSettingsViewModel @Inject constructor(
-    private val algodInterceptor: AlgodInterceptor,
     private val developerSettingsPreviewUseCase: DeveloperSettingsPreviewUseCase
 ) : BaseViewModel() {
 
@@ -33,7 +30,7 @@ class DeveloperSettingsViewModel @Inject constructor(
     }
 
     fun isConnectedToTestnet(): Boolean {
-        return algodInterceptor.currentActiveNode?.networkSlug == TESTNET_NETWORK_SLUG
+        return developerSettingsPreviewUseCase.isConnectedToTestnet()
     }
 
     private fun updateFirstAccountAddress() {

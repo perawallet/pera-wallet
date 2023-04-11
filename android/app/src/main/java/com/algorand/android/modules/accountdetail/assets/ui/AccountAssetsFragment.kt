@@ -74,9 +74,10 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
             listener?.onManageAssetsClick()
         }
 
-        override fun onBuyAlgoClick() {
+        override fun onBuySellClick() {
+            // TODO refactor with a better name for logging
             accountAssetsViewModel.logAccountAssetsBuyAlgoTapEventTracker()
-            listener?.onBuyAlgoClick()
+            listener?.onBuySellClick()
         }
 
         override fun onSendClick() {
@@ -151,7 +152,7 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
         fun onAssetLongClick(assetId: Long)
         fun onNFTClick(nftId: Long)
         fun onNFTLongClick(nftId: Long)
-        fun onBuyAlgoClick()
+        fun onBuySellClick()
         fun onSendClick()
         fun onSwapClick()
         fun onMoreClick()

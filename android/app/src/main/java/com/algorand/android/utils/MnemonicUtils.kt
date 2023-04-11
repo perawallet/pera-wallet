@@ -12,69 +12,13 @@
 
 package com.algorand.android.utils
 
-import android.graphics.Typeface
-import android.text.SpannableStringBuilder
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.text.buildSpannedString
-import com.algorand.android.R
-import com.algorand.android.utils.fonts.PeraFontResource
-
-private const val MAX_PASSPHRASE_ON_COLUMN = 13
-private const val PASSPHRASE_WORD_COUNT = 25
-private const val DOUBLE_DIGIT_START_POSITION = 10
 const val MNEMONIC_DELIMITER_REGEX = "[, ]+"
-
-fun setupMnemonic(
-    mnemonicString: String,
-    leftColumnTextView: TextView,
-    rightColumnTextView: TextView
-) {
-    val passphraseWords = mnemonicString.splitMnemonic()
-    leftColumnTextView.setupPassphraseColumn(1..MAX_PASSPHRASE_ON_COLUMN, passphraseWords)
-    rightColumnTextView.setupPassphraseColumn(
-        (MAX_PASSPHRASE_ON_COLUMN + 1)..PASSPHRASE_WORD_COUNT, passphraseWords
-    )
-}
-
-private fun TextView.setupPassphraseColumn(range: IntRange, passphraseWords: List<String>) {
-    val positionTextColor = ContextCompat.getColor(context, R.color.secondary_text_color)
-    text = buildSpannedString {
-        val textSize = context.resources.getDimensionPixelSize(R.dimen.text_size_13)
-        val font = PeraFontResource.DmMono.Medium.getFont(context)
-        val fontTypeface = ResourcesCompat.getFont(context, font)
-        for (position in range) {
-            val currentPassphraseWord = passphraseWords[position - 1]
-            appendPosition(position, positionTextColor, textSize, fontTypeface)
-            append("    $currentPassphraseWord")
-            if (position != range.last) {
-                append("\n")
-            }
-        }
-    }
-}
-
-private fun SpannableStringBuilder.appendPosition(
-    position: Int,
-    positionTextColor: Int,
-    textSize: Int,
-    fontTypeface: Typeface?
-) {
-    val positionOfSpannable = SpannableStringBuilder().apply {
-        if (position < DOUBLE_DIGIT_START_POSITION) {
-            append(" $position")
-        } else {
-            append("$position")
-        }
-        setColor(positionTextColor)
-        setTextSize(textSize)
-        setFont(fontTypeface)
-    }
-
-    append(positionOfSpannable)
-}
+const val MNEMONIC_SEPARATOR = " "
 
 fun String.splitMnemonic(): List<String> {
     return this.trim().split(Regex(MNEMONIC_DELIMITER_REGEX))
+}
+
+fun List<String>.joinMnemonics(): String {
+    return joinToString(MNEMONIC_SEPARATOR)
 }

@@ -14,5 +14,6 @@ package com.algorand.android.modules.tutorialdialog.data.model
 
 enum class Tutorial(val id: Int) {
     ACCOUNT_ADDRESS_COPY(0),
-    SWAP(1)
+    SWAP(1),
+    GIFT_CARDS(2)
 }

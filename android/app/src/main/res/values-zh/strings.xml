@@ -567,9 +567,7 @@
     <string name="transfer">转账</string>
     <string name="send_your_nft">发送您的NFT</string>
     <string name="paste_an_algorand_wallet_address">粘贴一个Algorand钱包地址</string>
-    <string name="ask_recipient_to">要求接收人选择加入</string>
     <string name="you_cant_send">你不能发送<annotation replacement="nft_name">NFTNamePlaceHolder</annotation>到<annotation replacement="wallet_address">walletAddressPlaceholder</annotation>，因为钱包还未选择加入该资产。 <annotation font="dmsans_medium"><annotation custom="learn_more">了解更多关于选择加入的信息</annotation></annotation></string>
-    <string name="request_opt_in">请求选择加入</string>
     <string name="information_about_opt">关于选择加入的信息</string>
     <string name="to_avoid_spammy">为了避免垃圾交易，Algorand区块链只允许用户发送和接收先前选择的资产的交易。</string>
     <string name="search_or_enter_wallet_address">搜索或输入钱包地址</string>
@@ -817,7 +815,7 @@
     <plurals name="sign_transaction">
         <item quantity="other">签署交易</item>
     </plurals>
-    <string name="signing_index_out_of_count">从%2$d中签出 % %1$d …</string>
+    <string name="signing_index_out_of_count">从%2$d中签出 %1$d…</string>
     <string name="view_transaction_detail_in_algoexplorer">在Algo浏览器中查看交易细节</string>
     <string name="go_to_homepage">转到主页</string>
     <string name="sending_the_transaction">发送交易</string>

@@ -27,6 +27,7 @@ import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
 import android.widget.TextView
 import androidx.annotation.ColorRes
+import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -36,6 +37,7 @@ import com.algorand.android.R
 import com.algorand.android.customviews.CenteredImageSpan
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.PluralAnnotatedString
 import com.algorand.android.utils.exceptions.InvalidAnnotationException
 import java.util.Locale
 
@@ -157,48 +159,7 @@ fun Context.getXmlStyledString(
     customAnnotations: List<Pair<CharSequence, Any>> = emptyList()
 ): CharSequence {
     val xmlText = resources.getText(stringResId)
-    if (xmlText !is SpannedString) {
-        return xmlText
-    }
-
-    val spannableString = SpannableStringBuilder(xmlText)
-    xmlText.getSpans(0, xmlText.length, Annotation::class.java).forEach { annotation ->
-        when (annotation.key) {
-            "type" -> {
-                when (annotation.value) {
-                    "bold" -> StyleSpan(BOLD)
-                    "underline" -> UnderlineSpan()
-                    else -> null
-                }?.let { span ->
-                    spannableString.applySpan(span, annotation)
-                }
-            }
-            "font" -> {
-                spannableString.applyFontAnnotation(this, annotation)
-            }
-            "replacement" -> {
-                replacementList.find { (key, _) ->
-                    key == annotation.value
-                }?.let { (_, replacementValue) ->
-                    spannableString.replaceAnnotation(annotation, replacementValue)
-                }
-            }
-            "iconReplacement" -> {
-                replacementList.find { (key, _) ->
-                    key == annotation.value
-                }?.let { (_, replacementValue) ->
-                    spannableString.replaceIconAnnotation(this, annotation, replacementValue)
-                }
-            }
-            "custom" -> {
-                val customAnnotation = customAnnotations.find { it.first == annotation.value }
-                if (customAnnotation != null) {
-                    spannableString.applySpan(customAnnotation.second, annotation)
-                }
-            }
-        }
-    }
-    return spannableString
+    return replaceAnnotatedStringsWithTheirReplacements(this, xmlText, replacementList, customAnnotations)
 }
 
 private fun SpannableStringBuilder.replaceAnnotation(
@@ -252,4 +213,69 @@ fun SpannableStringBuilder.setColor(textColor: Int) {
 
 fun SpannableStringBuilder.setTextSize(textSize: Int) {
     setSpan(AbsoluteSizeSpan(textSize), 0, this.length, SPAN_EXCLUSIVE_EXCLUSIVE)
+}
+
+fun Context.getXmlStyledPluralString(pluralAnnotatedString: PluralAnnotatedString): CharSequence {
+    with(pluralAnnotatedString) {
+        return getXmlStyledPluralString(pluralStringResId, quantity, replacementList, customAnnotationList)
+    }
+}
+
+fun Context.getXmlStyledPluralString(
+    @PluralsRes stringResId: Int,
+    quantity: Int,
+    replacementList: List<Pair<CharSequence, CharSequence>> = emptyList(),
+    customAnnotations: List<Pair<CharSequence, Any>> = emptyList()
+): CharSequence {
+    val xmlText: CharSequence = resources.getQuantityString(stringResId, quantity, quantity)
+    return replaceAnnotatedStringsWithTheirReplacements(this, xmlText, replacementList, customAnnotations)
+}
+
+private fun replaceAnnotatedStringsWithTheirReplacements(
+    context: Context,
+    xmlText: CharSequence,
+    replacementList: List<Pair<CharSequence, CharSequence>> = emptyList(),
+    customAnnotations: List<Pair<CharSequence, Any>> = emptyList()
+): CharSequence {
+    if (xmlText !is SpannedString) {
+        return xmlText
+    }
+    val spannableString = SpannableStringBuilder(xmlText)
+    xmlText.getSpans(0, xmlText.length, Annotation::class.java).forEach { annotation ->
+        when (annotation.key) {
+            "type" -> {
+                when (annotation.value) {
+                    "bold" -> StyleSpan(BOLD)
+                    "underline" -> UnderlineSpan()
+                    else -> null
+                }?.let { span ->
+                    spannableString.applySpan(span, annotation)
+                }
+            }
+            "font" -> {
+                spannableString.applyFontAnnotation(context, annotation)
+            }
+            "replacement" -> {
+                replacementList.find { (key, _) ->
+                    key == annotation.value
+                }?.let { (_, replacementValue) ->
+                    spannableString.replaceAnnotation(annotation, replacementValue)
+                }
+            }
+            "iconReplacement" -> {
+                replacementList.find { (key, _) ->
+                    key == annotation.value
+                }?.let { (_, replacementValue) ->
+                    spannableString.replaceIconAnnotation(context, annotation, replacementValue)
+                }
+            }
+            "custom" -> {
+                val customAnnotation = customAnnotations.find { it.first == annotation.value }
+                if (customAnnotation != null) {
+                    spannableString.applySpan(customAnnotation.second, annotation)
+                }
+            }
+        }
+    }
+    return spannableString
 }

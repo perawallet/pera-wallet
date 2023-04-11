@@ -15,7 +15,6 @@
 package com.algorand.android.modules.deeplink.domain.model
 
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.NotificationGroupType
 import com.algorand.android.modules.swap.assetswap.data.utils.getSafeAssetIdForResponse
 import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
 import com.algorand.android.modules.webimport.common.data.model.WebImportQrCode

@@ -21,16 +21,17 @@
         android:id="@+id/nodeSettingsListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:settingsIcon="@drawable/ic_node"
-        app:settingsText="@string/node_settings" />
+        app:endViewLayoutResource="@layout/layout_right_arrow"
+        app:settingIcon="@drawable/ic_node"
+        app:settingTitle="@string/node_settings" />
 
     <com.algorand.android.customviews.SettingsListItem
         android:id="@+id/dispenserListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:settingsIcon="@drawable/ic_algo_sign"
-        app:settingsText="@string/algorand_dispenser">
-
+        app:endViewLayoutResource="@layout/layout_right_arrow"
+        app:settingIcon="@drawable/ic_algo_sign"
+        app:settingTitle="@string/algorand_dispenser">
 
     </com.algorand.android.customviews.SettingsListItem>
 

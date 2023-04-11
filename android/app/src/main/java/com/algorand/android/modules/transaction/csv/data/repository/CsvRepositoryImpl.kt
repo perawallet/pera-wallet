@@ -17,7 +17,7 @@ import com.algorand.android.models.Result
 import com.algorand.android.modules.transaction.csv.domain.repository.CsvRepository
 import com.algorand.android.network.MobileAlgorandApi
 import com.algorand.android.network.requestWithHipoErrorHandler
-import com.algorand.android.utils.CSV_API_REQUEST_PATTERN
+import com.algorand.android.utils.ISO_EXTENDED_DATE_FORMAT
 import com.hipo.hipoexceptionsandroid.RetrofitErrorHandler
 import javax.inject.Inject
 import java.io.File
@@ -35,7 +35,7 @@ class CsvRepositoryImpl @Inject constructor(
         dateRange: DateRange?,
         assetId: Long?
     ): Result<InputStream> {
-        val csvFormatter = DateTimeFormatter.ofPattern(CSV_API_REQUEST_PATTERN)
+        val csvFormatter = DateTimeFormatter.ofPattern(ISO_EXTENDED_DATE_FORMAT)
         val fromFormatted = dateRange?.from?.format(csvFormatter)
         val toFormatted = dateRange?.to?.format(csvFormatter)
         return requestWithHipoErrorHandler(hipoApiErrorHandler) {

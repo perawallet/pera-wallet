@@ -12,6 +12,7 @@
 
 package com.algorand.android.discover.common.ui.model
 
+import android.graphics.Bitmap
 import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -23,6 +24,7 @@ import com.algorand.android.utils.EMAIL_APPS_URI_SCHEME
 import com.algorand.android.utils.walletconnect.isValidWalletConnectUrl
 import java.net.HttpURLConnection
 
+// TODO maybe refactor this in a different folder than discover as more parts use this (onramp)
 class PeraWebViewClient(val listener: PeraWebViewClientListener?) : WebViewClient() {
 
     override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
@@ -62,6 +64,12 @@ class PeraWebViewClient(val listener: PeraWebViewClientListener?) : WebViewClien
             }
         }
     }
+
+    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+        super.onPageStarted(view, url, favicon)
+        listener?.onPageStarted()
+    }
+
     override fun onPageFinished(view: WebView?, url: String?) {
         super.onPageFinished(view, url)
         listener?.onPageFinished(view?.title, url)
@@ -88,6 +96,7 @@ class PeraWebViewClient(val listener: PeraWebViewClientListener?) : WebViewClien
         fun onWalletConnectUrlDetected(url: String)
         fun onEmailRequested(url: String)
         fun onPageRequestedShouldOverrideUrlLoading(url: String): Boolean
+        fun onPageStarted()
         fun onPageFinished(title: String? = null, url: String? = null)
         fun onError()
         fun onHttpError()

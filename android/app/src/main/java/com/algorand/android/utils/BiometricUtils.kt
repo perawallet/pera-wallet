@@ -15,6 +15,7 @@ package com.algorand.android.utils
 import android.content.Context
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
+import androidx.biometric.BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE
 import androidx.biometric.BiometricManager.BIOMETRIC_SUCCESS
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.ERROR_CANCELED
@@ -48,9 +49,7 @@ fun FragmentActivity.showBiometricAuthentication(
     userCancelledErrorCallback: (() -> Unit)? = null
 
 ) {
-    if (BiometricManager.from(this)
-            .canAuthenticate(BIOMETRIC_AUTH_LEVEL) == BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE
-    ) {
+    if (BiometricManager.from(this).canAuthenticate(BIOMETRIC_AUTH_LEVEL) == BIOMETRIC_ERROR_NO_HARDWARE) {
         hardwareErrorCallback?.invoke()
         return
     }

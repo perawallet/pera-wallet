@@ -39,6 +39,8 @@ abstract class BaseBottomSheet(@LayoutRes private val layoutResId: Int) : Bottom
     open val fullPageNeeded: Boolean = false
 
     private val bottomSheetTag: String = this::class.simpleName.orEmpty()
+    protected val baseActivityTag: String
+        get() = (activity as? BaseActivity)?.getTag().orEmpty()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)

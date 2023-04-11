@@ -120,9 +120,27 @@ class AccountsViewModel @Inject constructor(
         }
     }
 
+    fun onGiftCardsClickFromTutorialDialog() {
+        viewModelScope.launch {
+            // TODO add logging?
+            updatePreviewForGiftCardsNavigation()
+        }
+    }
+
+    fun onGiftCardsLaterClick() {
+        // TODO add logging?
+    }
+
     private suspend fun updatePreviewForSwapNavigation() {
         with(_accountPreviewFlow) {
             val newState = accountsPreviewUseCase.getSwapNavigationUpdatedPreview(value ?: return@with)
+            emit(newState)
+        }
+    }
+
+    private suspend fun updatePreviewForGiftCardsNavigation() {
+        with(_accountPreviewFlow) {
+            val newState = accountsPreviewUseCase.getGiftCardsNavigationUpdatedPreview(value ?: return@with)
             emit(newState)
         }
     }

@@ -13,7 +13,6 @@
 package com.algorand.android.modules.swap.transactionsummary.ui.usecase
 
 import android.content.res.Resources
-import com.algorand.android.R
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.currency.domain.model.Currency
@@ -75,10 +74,7 @@ class SwapTransactionSummaryPreviewUseCase @Inject constructor(
                     transactionSign = TransactionSign.POSITIVE.signTextRes?.run { resources.getString(this) }
                 )
             return baseSwapTransactionSummaryItemMapper.mapToSwapAmountsItem(
-                formattedReceivedAmount = resources.getString(
-                    R.string.approximate_currency_value,
-                    formattedReceivedAmount
-                ),
+                formattedReceivedAmount = formattedReceivedAmount,
                 formattedPaidAmount = fromAssetAmount
                     .movePointLeft(fromAssetFractionalDigit)
                     .formatAmount(fromAssetFractionalDigit, isDecimalFixed = false)

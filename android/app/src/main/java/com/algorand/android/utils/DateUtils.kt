@@ -29,7 +29,7 @@ import java.time.temporal.TemporalAdjusters
 
 const val MONTH_DAY_YEAR_PATTERN = "MMMM dd, yyyy"
 const val MONTH_DAY_YEAR_WITH_DOT_PATTERN = "MM.dd.yyyy"
-const val CSV_API_REQUEST_PATTERN = "yyyy-MM-dd"
+const val ISO_EXTENDED_DATE_FORMAT = "yyyy-MM-dd"
 const val CSV_PATTERN = "MM-dd-yyyy"
 const val MONTH_DAY_PATTERN = "MMM dd"
 const val DATE_AND_TIME_PATTERN = "MMMM dd, yyyy - HH:mm"
@@ -43,6 +43,7 @@ private const val WEEK_IN_DAYS = 7L
 private const val MINUTE_IN_SECONDS = 60
 private const val MIN_TO_SEC_MULTIPLIER = 60
 const val ONE_DAY_IN_MILLIS = (1000 * 60 * 60 * 24)
+const val ONE_SECOND_IN_MILLIS = 1_000L
 
 fun ZonedDateTime.formatAsTxString(): String {
     return format(DateTimeFormatter.ofPattern(MONTH_DAY_YEAR_PATTERN))

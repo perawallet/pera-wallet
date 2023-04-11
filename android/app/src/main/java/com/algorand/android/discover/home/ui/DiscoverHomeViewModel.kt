@@ -17,15 +17,11 @@ import androidx.paging.cachedIn
 import com.algorand.android.assetsearch.domain.pagination.AssetSearchPagerBuilder
 import com.algorand.android.discover.common.ui.BaseDiscoverViewModel
 import com.algorand.android.discover.common.ui.model.DappFavoriteElement
-import com.algorand.android.discover.home.domain.model.TokenDetailInfo
-import com.algorand.android.discover.home.ui.mapper.DiscoverDappFavoritesMapper
 import com.algorand.android.discover.home.ui.model.DiscoverHomePreview
 import com.algorand.android.discover.home.ui.usecase.DiscoverHomePreviewUseCase
-import com.algorand.android.discover.utils.getAddToFavoriteFunction
-import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
+import com.algorand.android.discover.home.ui.usecase.DiscoverHomeUseCase
 import com.algorand.android.modules.tracking.discover.home.DiscoverHomeEventTracker
 import com.algorand.android.utils.preference.ThemePreference
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -41,9 +37,7 @@ import kotlinx.coroutines.launch
 class DiscoverHomeViewModel @Inject constructor(
     private val discoverHomePreviewUseCase: DiscoverHomePreviewUseCase,
     private val discoverHomeEventTracker: DiscoverHomeEventTracker,
-    private val discoverDappFavoritesMapper: DiscoverDappFavoritesMapper,
-    private val currencyUseCase: CurrencyUseCase,
-    private val gson: Gson
+    private val discoverHomeUseCase: DiscoverHomeUseCase,
 ) : BaseDiscoverViewModel() {
 
     private val assetSearchPagerBuilder = AssetSearchPagerBuilder.create()
@@ -53,14 +47,14 @@ class DiscoverHomeViewModel @Inject constructor(
     private val searchPaginationFlow = discoverHomePreviewUseCase.getSearchPaginationFlow(
         searchPagerBuilder = assetSearchPagerBuilder,
         scope = viewModelScope,
-        queryText = queryTextFlow.value
+        queryText = queryTextFlow.value,
     ).cachedIn(viewModelScope)
 
     val assetSearchPaginationFlow
         get() = searchPaginationFlow
 
     private val _discoverHomePreviewFlow = MutableStateFlow(
-        discoverHomePreviewUseCase.getInitialStatePreview()
+        discoverHomePreviewUseCase.getInitialStatePreview(),
     )
     val discoverHomePreviewFlow: StateFlow<DiscoverHomePreview>
         get() = _discoverHomePreviewFlow
@@ -81,34 +75,50 @@ class DiscoverHomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             discoverHomeEventTracker.logQueryEvent(
                 query = queryTextFlow.value,
-                assetId = assetId
+                assetId = assetId,
             )
         }
     }
 
     fun navigateToAssetDetail(assetId: Long) {
         logQueryEvent(assetId)
-        pushTokenDetailScreen(gson.toJson(TokenDetailInfo(tokenId = assetId.toString(), poolId = null)))
+        pushTokenDetailScreen(discoverHomeUseCase.tokenDetailIdToJson(assetId))
     }
 
-    fun pushTokenDetailScreen(data: String) {
+    fun pushTokenDetailScreen(jsonEncodedPayload: String) {
         viewModelScope.launch {
             _discoverHomePreviewFlow
-                .emit(discoverHomePreviewUseCase.pushTokenDetailScreen(data, _discoverHomePreviewFlow.value))
+                .emit(
+                    discoverHomePreviewUseCase.pushTokenDetailScreen(jsonEncodedPayload, _discoverHomePreviewFlow.value)
+                )
         }
     }
 
-    fun pushDappViewerScreen(data: String) {
+    fun pushDappViewerScreen(jsonEncodedPayload: String) {
         viewModelScope.launch {
             _discoverHomePreviewFlow
-                .emit(discoverHomePreviewUseCase.pushDappViewerScreen(data, _discoverHomePreviewFlow.value))
+                .emit(
+                    discoverHomePreviewUseCase.pushDappViewerScreen(jsonEncodedPayload, _discoverHomePreviewFlow.value)
+                )
         }
     }
 
-    fun pushNewScreen(data: String) {
+    fun pushNewScreen(jsonEncodedPayload: String) {
         viewModelScope.launch {
             _discoverHomePreviewFlow
-                .emit(discoverHomePreviewUseCase.pushNewScreen(data, _discoverHomePreviewFlow.value))
+                .emit(discoverHomePreviewUseCase.pushNewScreen(jsonEncodedPayload, _discoverHomePreviewFlow.value))
+        }
+    }
+
+    fun getDeviceId() {
+        viewModelScope.launch {
+            val webView = getWebView()
+            webView?.url?.let { webViewUrl ->
+                val sendDeviceIdJSFunction = discoverHomeUseCase.getSendDeviceIdJSFunctionOrNull(webViewUrl)
+                if (sendDeviceIdJSFunction != null) {
+                    webView.evaluateJavascript(sendDeviceIdJSFunction, null)
+                }
+            }
         }
     }
 
@@ -136,7 +146,7 @@ class DiscoverHomeViewModel @Inject constructor(
     fun updateSearchScreenLoadState(
         isListEmpty: Boolean,
         isCurrentStateError: Boolean,
-        isLoading: Boolean
+        isLoading: Boolean,
     ) {
         viewModelScope.launch {
             _discoverHomePreviewFlow.emit(
@@ -144,21 +154,21 @@ class DiscoverHomeViewModel @Inject constructor(
                     isListEmpty,
                     isCurrentStateError,
                     isLoading,
-                    _discoverHomePreviewFlow.value
-                )
+                    _discoverHomePreviewFlow.value,
+                ),
             )
         }
     }
 
     fun getPrimaryCurrencyId(): String {
-        return currencyUseCase.getPrimaryCurrencyId()
+        return discoverHomeUseCase.getPrimaryCurrencyId()
     }
 
     fun onFavoritesUpdate(favorite: DappFavoriteElement) {
         getWebView()?.let { webView ->
             webView.evaluateJavascript(
-                getAddToFavoriteFunction(discoverDappFavoritesMapper.mapFromDappFavoriteElement(favorite), gson),
-                null
+                discoverHomeUseCase.getAddToFavoriteJSFunction(favorite),
+                null,
             )
             saveWebView(webView)
         }
@@ -169,7 +179,7 @@ class DiscoverHomeViewModel @Inject constructor(
             _discoverHomePreviewFlow
                 .emit(
                     discoverHomePreviewUseCase
-                    .onPageRequestedShouldOverrideUrlLoading(_discoverHomePreviewFlow.value)
+                    .onPageRequestedShouldOverrideUrlLoading(_discoverHomePreviewFlow.value),
                 )
         }
         return false

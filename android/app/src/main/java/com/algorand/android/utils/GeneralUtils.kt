@@ -128,6 +128,7 @@ fun String.decodeBase64(): ByteArray? {
     }
 }
 
+// TODO: Remove this whenever web import/export encryption/decryption parts are refactored
 fun ByteArray.encodeBase64(): String? {
     return try {
         Base64.encodeToString(this, Base64.DEFAULT)

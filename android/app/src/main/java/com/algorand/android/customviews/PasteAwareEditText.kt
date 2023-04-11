@@ -15,27 +15,29 @@ package com.algorand.android.customviews
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
+import com.algorand.android.utils.getTextFromClipboard
 
 class PasteAwareEditText @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : AppCompatEditText(context, attrs) {
 
-    var listener: Listener? = null
+    private var listener: Listener? = null
 
     override fun onTextContextMenuItem(id: Int): Boolean {
         val result = super.onTextContextMenuItem(id)
         if (id == android.R.id.paste || id == android.R.id.pasteAsPlainText) {
-           listener?.onPaste()
+            val clipboardText = context?.getTextFromClipboard().toString()
+            listener?.onPaste(clipboardText)
         }
         return result
     }
 
-    fun doOnPaste(listener: Listener) {
+    fun setListener(listener: Listener) {
         this.listener = listener
     }
 
     fun interface Listener {
-        fun onPaste()
+        fun onPaste(clipboardText: String)
     }
 }

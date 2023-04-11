@@ -206,7 +206,12 @@ abstract class BaseLedgerSearchFragment :
     }
 
     private fun onLedgerSelected(bluetoothDevice: BluetoothDevice) {
-        if (ledgerBleOperationManager.isBondingRequired(bluetoothDevice.address)) {
+        val bluetoothAdapter = (context?.getSystemService(Context.BLUETOOTH_SERVICE) as? BluetoothManager)?.adapter
+        if (bluetoothAdapter != null && ledgerBleOperationManager.isBondingRequired(
+                address = bluetoothDevice.address,
+                bluetoothAdapter = bluetoothAdapter
+            )
+        ) {
             navToPairInstructionBottomSheet(bluetoothDevice)
         } else {
             connectLedger(bluetoothDevice)

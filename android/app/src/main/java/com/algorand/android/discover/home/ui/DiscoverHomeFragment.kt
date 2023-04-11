@@ -21,11 +21,8 @@ import androidx.fragment.app.viewModels
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import com.algorand.android.CoreMainActivity
 import com.algorand.android.R
-import com.algorand.android.core.BackPressedControllerComponent
 import com.algorand.android.core.BaseActivity
-import com.algorand.android.core.BottomNavigationBackPressedDelegate
 import com.algorand.android.databinding.FragmentDiscoverHomeBinding
 import com.algorand.android.discover.common.ui.BaseDiscoverFragment
 import com.algorand.android.discover.common.ui.model.DappFavoriteElement
@@ -42,6 +39,8 @@ import com.algorand.android.discover.utils.getDiscoverAuthHeader
 import com.algorand.android.discover.utils.getDiscoverHomeUrl
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegation
+import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegationImpl
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
@@ -51,10 +50,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
 @AndroidEntryPoint
-class DiscoverHomeFragment :
-    BaseDiscoverFragment(R.layout.fragment_discover_home),
+class DiscoverHomeFragment : BaseDiscoverFragment(R.layout.fragment_discover_home),
     PeraMobileWebInterface.WebInterfaceListener,
-    BackPressedControllerComponent by BottomNavigationBackPressedDelegate() {
+    BottomNavBarFragmentDelegation by BottomNavBarFragmentDelegationImpl() {
 
     private val toolbarConfiguration = ToolbarConfiguration()
 
@@ -133,7 +131,7 @@ class DiscoverHomeFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? CoreMainActivity)?.let { initBackPressedControllerComponent(it, viewLifecycleOwner) }
+        registerBottomNavBarFragmentDelegation(this)
         initObservers()
         initUi()
         initSavedStateListener()
@@ -156,16 +154,20 @@ class DiscoverHomeFragment :
         view?.let { binding = FragmentDiscoverHomeBinding.bind(it) }
     }
 
-    override fun pushTokenDetailScreen(data: String) {
-        discoverViewModel.pushTokenDetailScreen(data)
+    override fun pushTokenDetailScreen(jsonEncodedPayload: String) {
+        discoverViewModel.pushTokenDetailScreen(jsonEncodedPayload)
     }
 
-    override fun pushDappViewerScreen(data: String) {
-        discoverViewModel.pushDappViewerScreen(data)
+    override fun pushDappViewerScreen(jsonEncodedPayload: String) {
+        discoverViewModel.pushDappViewerScreen(jsonEncodedPayload)
     }
 
-    override fun pushNewScreen(data: String) {
-        discoverViewModel.pushNewScreen(data)
+    override fun pushNewScreen(jsonEncodedPayload: String) {
+        discoverViewModel.pushNewScreen(jsonEncodedPayload)
+    }
+
+    override fun getDeviceId() {
+        discoverViewModel.getDeviceId()
     }
 
     private fun initSavedStateListener() {

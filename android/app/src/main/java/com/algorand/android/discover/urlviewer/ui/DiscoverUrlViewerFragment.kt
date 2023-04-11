@@ -21,8 +21,11 @@ import com.algorand.android.R
 import com.algorand.android.core.BaseActivity
 import com.algorand.android.databinding.FragmentDiscoverUrlViewerBinding
 import com.algorand.android.discover.common.ui.BaseDiscoverFragment
+import com.algorand.android.discover.common.ui.model.DappFavoriteElement
 import com.algorand.android.discover.common.ui.model.PeraWebViewClient
 import com.algorand.android.discover.common.ui.model.WebViewError
+import com.algorand.android.discover.dapp.ui.DiscoverDappFragment
+import com.algorand.android.discover.home.domain.PeraMobileWebInterface
 import com.algorand.android.discover.urlviewer.ui.model.DiscoverUrlViewerPreview
 import com.algorand.android.discover.utils.getDiscoverNewScreenUrl
 import com.algorand.android.models.FragmentConfiguration
@@ -30,11 +33,13 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.listenToNavigationResult
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DiscoverUrlViewerFragment :
-    BaseDiscoverFragment(R.layout.fragment_discover_url_viewer) {
+    BaseDiscoverFragment(R.layout.fragment_discover_url_viewer),
+    PeraMobileWebInterface.WebInterfaceListener {
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_left_arrow,
@@ -59,13 +64,17 @@ class DiscoverUrlViewerFragment :
             reloadPageEvent?.consume()?.run {
                 loadUrl(preview)
             }
+            dappViewerScreenRequestEvent?.consume()?.run {
+                nav(this)
+            }
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
-        initUi()
+        initWebview()
+        initSavedStateListener()
     }
 
     override fun onReportActionFailed() {
@@ -83,6 +92,20 @@ class DiscoverUrlViewerFragment :
 
     override fun bindWebView(view: View?) {
         view?.let { binding = FragmentDiscoverUrlViewerBinding.bind(it) }
+    }
+
+    override fun pushDappViewerScreen(jsonEncodedPayload: String) {
+        discoverViewModel.pushDappViewerScreen(jsonEncodedPayload)
+    }
+
+    override fun pushNewScreen(jsonEncodedPayload: String) {
+        discoverViewModel.pushNewScreen(jsonEncodedPayload)
+    }
+
+    private fun initSavedStateListener() {
+        listenToNavigationResult<DappFavoriteElement?>(DiscoverDappFragment.ADD_FAVORITE_RESULT_KEY) { favorite ->
+            favorite?.let { discoverViewModel.onFavoritesUpdate(it) }
+        }
     }
 
     private fun handleLoadingError(error: WebViewError) {
@@ -104,8 +127,12 @@ class DiscoverUrlViewerFragment :
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun initUi() {
-        binding.webView.webViewClient = PeraWebViewClient(peraWebViewClientListener)
+    private fun initWebview() {
+        with(binding) {
+            val peraWebInterface = PeraMobileWebInterface.create(this@DiscoverUrlViewerFragment)
+            webView.addJavascriptInterface(peraWebInterface, PeraMobileWebInterface.WEB_INTERFACE_NAME)
+            webView.webViewClient = PeraWebViewClient(peraWebViewClientListener)
+        }
     }
 
     private fun updateUi(preview: DiscoverUrlViewerPreview) {

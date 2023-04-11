@@ -22,17 +22,9 @@
         android:id="@+id/enablePinCodeListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:settingsIcon="@drawable/ic_shield_check"
-        app:settingsShowArrow="false"
-        app:settingsText="@string/enable_pin_code">
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/pinCodeSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:useMaterialThemeColors="false" />
-
-    </com.algorand.android.customviews.SettingsListItem>
+        app:endViewLayoutResource="@layout/layout_switch_view"
+        app:settingIcon="@drawable/ic_shield_check"
+        app:settingTitle="@string/enable_pin_code" />
 
     <TextView
         android:id="@+id/securityPreferencesTextView"
@@ -49,24 +41,16 @@
         android:id="@+id/setChangePasswordListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:settingsIcon="@drawable/ic_locked"
-        app:settingsShowArrow="true"
-        app:settingsText="@string/change_pin_code" />
+        app:endViewLayoutResource="@layout/layout_right_arrow"
+        app:settingIcon="@drawable/ic_locked"
+        app:settingTitle="@string/change_pin_code" />
 
     <com.algorand.android.customviews.SettingsListItem
         android:id="@+id/enableFaceIDTouchIDListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:settingsIcon="@drawable/ic_faceid"
-        app:settingsShowArrow="false"
-        app:settingsText="@string/enable_face_id_touch_id">
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/biometricSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:useMaterialThemeColors="false" />
-
-    </com.algorand.android.customviews.SettingsListItem>
+        app:endViewLayoutResource="@layout/layout_switch_view"
+        app:settingIcon="@drawable/ic_faceid"
+        app:settingTitle="@string/enable_face_id_touch_id" />
 
 </LinearLayout>

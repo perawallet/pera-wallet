@@ -50,6 +50,7 @@ import com.algorand.android.utils.makeRekeyTx
 import com.algorand.android.utils.makeRemoveAssetTx
 import com.algorand.android.utils.makeSendAndRemoveAssetTx
 import com.algorand.android.utils.makeTx
+import com.algorand.android.utils.mapToNotNullableListOrNull
 import com.algorand.android.utils.minBalancePerAssetAsBigInteger
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.sendErrorLog
@@ -136,7 +137,12 @@ class TransactionManager @Inject constructor(
             if (signedTransactions.size == 1) {
                 transactionDataList?.let { postTxnSignResult(signedTransactions.firstOrNull(), it.firstOrNull()) }
             } else {
-                transactionDataList?.let { postGroupTxnSignResult(signedTransactions, it) }
+                val safeSignedTransactions = signedTransactions.mapToNotNullableListOrNull { it }
+                if (safeSignedTransactions == null) {
+                    postResult(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
+                    return
+                }
+                transactionDataList?.let { postGroupTxnSignResult(safeSignedTransactions, it) }
             }
         }
 
@@ -307,7 +313,7 @@ class TransactionManager @Inject constructor(
                     amount = amount,
                     assetId = assetInformation.assetId,
                     isMax = isMax,
-                    note = note
+                    note = if (xnote.isNullOrBlank()) note else xnote
                 )
             }
             is TransactionData.AddAsset -> {
@@ -568,7 +574,7 @@ class TransactionManager @Inject constructor(
     }
 
     private fun postGroupTxnSignResult(
-        groupedBytesArrayList: List<ByteArray?>,
+        groupedBytesArrayList: List<ByteArray>,
         transactionDataList: List<TransactionData>
     ) {
         val signedGroupTxnDetailList = createSignedTransactionDetailList(transactionDataList, groupedBytesArrayList)
@@ -588,13 +594,12 @@ class TransactionManager @Inject constructor(
 
     private fun createSignedTransactionDetailList(
         transactionDataList: List<TransactionData>,
-        signedBytesArrayList: List<ByteArray?>
+        signedBytesArrayList: List<ByteArray>
     ): List<SignedTransactionDetail>? {
         return mutableListOf<SignedTransactionDetail>().apply {
             for (index in transactionDataList.indices) {
-                signedBytesArrayList[index]?.let {
-                    add(transactionDataList[index].getSignedTransactionDetail(it))
-                } ?: return null
+                val signedTxn = signedBytesArrayList[index]
+                add(transactionDataList[index].getSignedTransactionDetail(signedTxn))
             }
         }
     }

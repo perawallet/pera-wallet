@@ -86,9 +86,17 @@
 
     <include app:graph="@navigation/nft_card_viewer_navigation" />
 
+    <include app:graph="@navigation/bidali_navigation" />
+
+    <include app:graph="@navigation/transak_navigation" />
+
+    <include app:graph="@navigation/sardine_navigation" />
+
     <include app:graph="@navigation/web_export_navigation" />
 
     <include app:graph="@navigation/web_import_navigation" />
+
+    <include app:graph="@navigation/asb_creation_navigation" />
 
     <action
         android:id="@+id/action_global_showQrNavigation"
@@ -207,6 +215,13 @@
     <action
         android:id="@+id/action_global_moonpayNavigation"
         app:destination="@id/moonpayNavigation" />
+    <action
+        android:id="@+id/action_global_buySellActionsBottomSheet"
+        app:destination="@id/buySellActionsBottomSheet" />
+
+    <action
+        android:id="@+id/action_global_bidaliNavigation"
+        app:destination="@id/bidaliNavigation" />
 
     <action
         android:id="@+id/action_global_webExportNavigation"
@@ -455,6 +470,12 @@
             android:id="@+id/action_accountsFragment_to_moonpayNavigation"
             app:destination="@id/moonpayNavigation" />
         <action
+            android:id="@+id/action_accountsFragment_to_buySellActionsBottomSheet"
+            app:destination="@id/buySellActionsBottomSheet" />
+        <action
+            android:id="@+id/action_accountsFragment_to_bidaliNavigation"
+            app:destination="@id/bidaliNavigation" />
+        <action
             android:id="@+id/action_accountsFragment_to_assetProfileNavigation"
             app:destination="@id/assetDetailNavigation">
             <argument
@@ -601,6 +622,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_contactsFragment"
             app:destination="@id/contactsFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_asbCreationNavigation"
+            app:destination="@id/asbCreationNavigation" />
     </fragment>
 
     <fragment
@@ -624,7 +648,7 @@
 
     <fragment
         android:id="@+id/notificationCenterFragment"
-        android:name="com.algorand.android.ui.notificationcenter.NotificationCenterFragment"
+        android:name="com.algorand.android.modules.notification.ui.NotificationCenterFragment"
         android:label="NotificationCenterFragment"
         tools:layout="@layout/fragment_notification_center">
         <action
@@ -785,6 +809,13 @@
                 app:argType="string" />
         </action>
         <action
+            android:id="@+id/action_accountDetailFragment_to_buySellActionsBottomSheet"
+            app:destination="@id/buySellActionsBottomSheet">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
+        </action>
+        <action
             android:id="@+id/action_accountDetailFragment_to_transactionDetailNavigation"
             app:destination="@id/transactionDetailNavigation">
             <argument
@@ -931,12 +962,6 @@
         android:name="com.algorand.android.ui.common.transactiontips.TransactionTipsBottomSheet"
         android:label="TransactionTipsBottomSheet"
         tools:layout="@layout/bottom_sheet_transaction_tips" />
-
-    <fragment
-        android:id="@+id/algoPriceFragment"
-        android:name="com.algorand.android.ui.analyticsdetail.AlgoPriceFragment"
-        android:label="AnalyticsDetailBottomSheet"
-        tools:layout="@layout/fragment_algo_price" />
 
     <dialog
         android:id="@+id/ledgerConnectionIssueBottomSheet"
@@ -1252,6 +1277,13 @@
                 app:argType="string" />
         </action>
         <action
+            android:id="@+id/action_accountQuickActionsBottomSheet_to_buySellActionsBottomSheet"
+            app:destination="@id/buySellActionsBottomSheet">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
+        </action>
+        <action
             android:id="@+id/action_accountQuickActionsBottomSheet_to_assetAdditionNavigation"
             app:destination="@id/assetAdditionNavigation">
             <argument
@@ -1324,6 +1356,50 @@
         <action
             android:id="@+id/action_manageAccountNFTsBottomSheet_to_accountNFTFilterFragment"
             app:destination="@id/accountNFTFilterFragment" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/buySellActionsBottomSheet"
+        android:name="com.algorand.android.modules.onramp.ui.BuySellActionsBottomSheet"
+        android:label="BuySellActionsBottomSheet"
+        tools:layout="@layout/bottom_sheet_buy_sell_actions">
+        <argument
+            android:name="accountAddress"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_buySellActionsBottomSheet_to_moonpayNavigation"
+            app:destination="@id/moonpayNavigation">
+            <argument
+                android:name="walletAddress"
+                app:argType="string"
+                app:nullable="true"/>
+        </action>
+        <action
+            android:id="@+id/action_buySellActionsBottomSheet_to_bidaliNavigation"
+            app:destination="@id/bidaliNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string"
+                app:nullable="true"/>
+        </action>
+        <action
+            android:id="@+id/action_buySellActionsBottomSheet_to_transakNavigation"
+            app:destination="@id/transakNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string"
+                app:nullable="true"/>
+        </action>
+        <action
+            android:id="@+id/action_buySellActionsBottomSheet_to_sardineNavigation"
+            app:destination="@id/sardineNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string"
+                app:nullable="true"/>
+        </action>
     </dialog>
 
 </navigation>

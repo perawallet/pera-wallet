@@ -380,10 +380,7 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
     private fun setAssetValues(formattedPrimaryValue: String, formattedSecondaryValue: String) {
         with(binding) {
             assetPrimaryValueTextView.text = formattedPrimaryValue
-            assetSecondaryValueTextView.text = resources.getString(
-                R.string.approximate_currency_value,
-                formattedSecondaryValue
-            )
+            assetSecondaryValueTextView.text = formattedSecondaryValue
         }
     }
 

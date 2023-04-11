@@ -22,6 +22,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import com.algorand.android.R
 
 fun Context.copyToClipboard(textToCopy: CharSequence, label: String = "", showToast: Boolean = true) {
@@ -32,24 +33,30 @@ fun Context.copyToClipboard(textToCopy: CharSequence, label: String = "", showTo
     if (showToast) Toast.makeText(this, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
 }
 
-fun Context.getTextFromClipboard(): CharSequence {
-    val clipboard = ContextCompat.getSystemService(this, ClipboardManager::class.java)
+// TODO: Delete these extension functions after all clipboard related operations are managed by PeraClipboardModule
+//  and move related logic into [PeraClipboardManager] function
+fun Context.getTextFromClipboard(): String? {
+    val clipboard = ContextCompat.getSystemService(this, ClipboardManager::class.java) ?: return emptyString()
     return clipboard.getTextFromClipboard()
 }
 
-fun ClipboardManager?.getTextFromClipboard(): CharSequence {
-    return when {
-        this == null -> ""
-        hasPrimaryClip().not() -> ""
-        isClipDescriptionMimeTypeValid(primaryClipDescription) -> primaryClip?.getItemAt(0)?.text ?: ""
-        else -> ""
+fun ClipboardManager.getTextFromClipboard(): String? {
+    val firstClip = primaryClip?.getItemAt(0)?.text?.toString().orEmpty()
+    return when (getClipboardMimeType(primaryClipDescription)) {
+        MIMETYPE_TEXT_PLAIN -> firstClip
+        MIMETYPE_TEXT_HTML -> HtmlCompat.fromHtml(firstClip, HtmlCompat.FROM_HTML_MODE_COMPACT).toString()
+        else -> null
     }
 }
 
-private fun isClipDescriptionMimeTypeValid(clipDescription: ClipDescription?): Boolean {
-    return clipDescription?.let {
-        it.hasMimeType(MIMETYPE_TEXT_PLAIN) || it.hasMimeType(MIMETYPE_TEXT_HTML)
-    } ?: false
+private fun getClipboardMimeType(clipDescription: ClipDescription?): String? {
+    return clipDescription?.let { safeClipDescription ->
+        when {
+            safeClipDescription.hasMimeType(MIMETYPE_TEXT_HTML) -> MIMETYPE_TEXT_HTML
+            safeClipDescription.hasMimeType(MIMETYPE_TEXT_PLAIN) -> MIMETYPE_TEXT_PLAIN
+            else -> null
+        }
+    }
 }
 
 fun TextView.enableClickToCopy() {

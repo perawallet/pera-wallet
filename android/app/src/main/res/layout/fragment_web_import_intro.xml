@@ -71,61 +71,61 @@
             android:id="@+id/stepOneSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_xlarge"
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/spacing_xlarge"
             app:layout_constraintBottom_toTopOf="@id/stepTwoSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
             app:layout_constraintVertical_bias="0.4"
             app:layout_constraintVertical_chainStyle="packed"
-            app:title="@string/go_to_web_perawallet"
-            app:iconText="@string/one"/>
+            app:numeratorText="1"
+            app:title="@string/go_to_web_perawallet" />
 
         <com.algorand.android.customviews.NumberedListItemView
             android:id="@+id/stepTwoSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_xlarge"
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/spacing_xlarge"
             app:layout_constraintBottom_toTopOf="@id/stepThreeSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/stepOneSelectionItem"
             app:layout_constraintVertical_bias="0.4"
             app:layout_constraintVertical_chainStyle="packed"
-            app:title="@string/go_to_settings_transfer_accounts"
-            app:iconText="@string/two" />
+            app:numeratorText="2"
+            app:title="@string/go_to_settings_transfer_accounts" />
 
         <com.algorand.android.customviews.NumberedListItemView
             android:id="@+id/stepThreeSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_xlarge"
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/spacing_xlarge"
             app:layout_constraintBottom_toTopOf="@id/stepFourSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/stepTwoSelectionItem"
             app:layout_constraintVertical_bias="0.4"
             app:layout_constraintVertical_chainStyle="packed"
-            app:title="@string/select_the_accounts_you_want"
-            app:iconText="@string/three"/>
+            app:numeratorText="3"
+            app:title="@string/select_the_accounts_you_want" />
 
         <com.algorand.android.customviews.NumberedListItemView
             android:id="@+id/stepFourSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_xlarge"
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/spacing_xlarge"
             app:layout_constraintBottom_toTopOf="@id/firstButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/stepThreeSelectionItem"
             app:layout_constraintVertical_bias="0.4"
             app:layout_constraintVertical_chainStyle="packed"
-            app:title="@string/tap_start_to_scan"
-            app:iconText="@string/four" />
+            app:numeratorText="4"
+            app:title="@string/tap_start_to_scan" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/firstButton"
@@ -134,11 +134,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
             android:layout_marginBottom="@dimen/spacing_normal"
+            android:text="@string/start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_goneMarginBottom="@dimen/bottom_safe_area_margin"
-            android:text="@string/start" />
+            app:layout_goneMarginBottom="@dimen/bottom_safe_area_margin" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

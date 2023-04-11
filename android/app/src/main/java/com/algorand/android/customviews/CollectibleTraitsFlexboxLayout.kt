@@ -30,10 +30,11 @@ class CollectibleTraitsFlexboxLayout(
     }
 
     fun initView(traits: List<CollectibleTraitItem>) {
-        createTraitItem(traits)
+        removeAllViews()
+        createTraitItemViews(traits)
     }
 
-    private fun createTraitItem(traits: List<CollectibleTraitItem>) {
+    private fun createTraitItemViews(traits: List<CollectibleTraitItem>) {
         traits.forEach {
             val propertyView = CollectibleTraitItemView.create(context, it)
             addView(propertyView)

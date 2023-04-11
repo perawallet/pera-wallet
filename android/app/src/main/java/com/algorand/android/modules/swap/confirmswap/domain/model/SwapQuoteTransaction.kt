@@ -24,6 +24,7 @@ import com.algorand.android.utils.MAINNET_NETWORK_SLUG
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import com.algorand.android.utils.flatten
 import com.algorand.android.utils.isEqualTo
+import com.algorand.android.utils.mapToNotNullableListOrNull
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
 
@@ -59,7 +60,8 @@ sealed class SwapQuoteTransaction : Parcelable {
         return if (signedTransactions.size == 1) {
             signedTransactions.first().signedTransactionMsgPack
         } else {
-            signedTransactions.map { it.signedTransactionMsgPack }.flatten()
+            val safeSignedTransactions = signedTransactions.mapToNotNullableListOrNull { it?.signedTransactionMsgPack }
+            safeSignedTransactions?.flatten()
         }
     }
 

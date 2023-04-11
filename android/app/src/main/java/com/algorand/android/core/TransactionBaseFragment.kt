@@ -13,11 +13,11 @@
 package com.algorand.android.core
 
 import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
@@ -32,7 +32,6 @@ import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
 import com.algorand.android.models.TransactionManagerResult
 import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.utils.BLE_OPEN_REQUEST_CODE
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LOCATION_PERMISSION_REQUEST_CODE
 import com.algorand.android.utils.Resource
@@ -103,13 +102,17 @@ abstract class TransactionBaseFragment(
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        transactionManager.setup(lifecycle)
+    private val bleRequestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            sendWaitingTransactionData()
+        } else {
+            permissionDeniedOnTransactionData(R.string.error_bluetooth_message, R.string.error_bluetooth_title)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        transactionManager.setup(lifecycle)
         transactionManager.transactionManagerResultLiveData.observe(viewLifecycleOwner, transactionManagerObserver)
     }
 
@@ -119,17 +122,6 @@ abstract class TransactionBaseFragment(
                 sendWaitingTransactionData()
             } else {
                 permissionDeniedOnTransactionData(R.string.error_location_message, R.string.error_permission_title)
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == BLE_OPEN_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                sendWaitingTransactionData()
-            } else {
-                permissionDeniedOnTransactionData(R.string.error_bluetooth_message, R.string.error_bluetooth_title)
             }
         }
     }
@@ -174,7 +166,7 @@ abstract class TransactionBaseFragment(
     fun sendTransaction(transactionData: TransactionData) {
         val isLedgerNeeded = with(transactionData.senderAccountType) { this == LEDGER || this == REKEYED_AUTH }
         if (isLedgerNeeded) {
-            if (isBluetoothEnabled().not()) {
+            if (isBluetoothEnabled(bleRequestLauncher).not()) {
                 bleWaitingTransactionData = transactionData
                 return
             }
@@ -197,7 +189,7 @@ abstract class TransactionBaseFragment(
                 }
             }
         ) {
-            if (isBluetoothEnabled().not()) {
+            if (isBluetoothEnabled(bleRequestLauncher).not()) {
                 bleWaitingGroupTransactionData = transactionDataList
                 return
             }

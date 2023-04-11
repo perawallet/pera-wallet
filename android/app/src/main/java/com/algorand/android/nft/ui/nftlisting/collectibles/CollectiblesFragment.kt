@@ -17,24 +17,22 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.CoreMainActivity
 import com.algorand.android.R
-import com.algorand.android.core.BackPressedControllerComponent
-import com.algorand.android.core.BottomNavigationBackPressedDelegate
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.domain.usecase.CollectiblesListingPreviewUseCase.Companion.COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX
 import com.algorand.android.nft.ui.nftlisting.BaseCollectiblesListingFragment
 import com.algorand.android.utils.addItemVisibilityChangeListener
+import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegation
+import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegationImpl
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
-class CollectiblesFragment :
-    BaseCollectiblesListingFragment(),
-    BackPressedControllerComponent by BottomNavigationBackPressedDelegate() {
+class CollectiblesFragment : BaseCollectiblesListingFragment(),
+    BottomNavBarFragmentDelegation by BottomNavBarFragmentDelegationImpl() {
 
     private val toolbarConfiguration = ToolbarConfiguration(backgroundColor = R.color.primary_background)
 
@@ -47,7 +45,7 @@ class CollectiblesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? CoreMainActivity)?.let { initBackPressedControllerComponent(it, viewLifecycleOwner) }
+        registerBottomNavBarFragmentDelegation(this)
     }
 
     override fun onOwnedNFTItemClick(collectibleAssetId: Long, publicKey: String) {

@@ -46,7 +46,6 @@
     <string name="position_with_dot"><annotation replacement="position">positionPlaceholder</annotation>.</string>
 
     <string name="formatted_amount_with_asset_name_txn"><annotation replacement="asset_amount">assetAmountPlaceholder</annotation> <annotation custom="text_size"><annotation font="dmsans_medium"><annotation replacement="asset_short_name">assetShortNamePlaceholder</annotation></annotation></annotation></string>
-    <string name="approximate_currency_value">≈ %1$s</string>
     <string name="interpunct">·</string>
     <string name="discord">Discord</string>
     <string name="twitter">Twitter</string>
@@ -98,6 +97,9 @@
     <string name="twenty_five_percent">25%</string>
     <string name="fifty_percent">50%</string>
     <string name="seventy_five_percent">75%</string>
+
+    <string name="bidali">Bidali</string>
+    <string name="bidali_url">https://www.bidali.com/</string>
 
     <string name="one">1</string>
     <string name="two">2</string>

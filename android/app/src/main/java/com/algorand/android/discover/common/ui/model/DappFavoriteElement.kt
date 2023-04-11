@@ -13,7 +13,7 @@
 package com.algorand.android.discover.common.ui.model
 
 import android.os.Parcelable
-import com.algorand.android.utils.getUrlHost
+import com.algorand.android.utils.getBaseUrlOrEmpty
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -22,6 +22,6 @@ data class DappFavoriteElement(
     val url: String
 ) : Parcelable {
     fun isSameUrl(otherUrl: String): Boolean {
-        return getUrlHost(url) == getUrlHost(otherUrl)
+        return getBaseUrlOrEmpty(url) == getBaseUrlOrEmpty(otherUrl)
     }
 }

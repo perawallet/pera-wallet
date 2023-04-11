@@ -13,21 +13,43 @@
 package com.algorand.android.ui.settings
 
 import android.app.NotificationManager
-import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.modules.settings.ui.model.SettingsPreview
+import com.algorand.android.modules.settings.ui.usecase.SettingsPreviewUseCase
 import com.algorand.android.usecase.DeleteAllDataUseCase
+import com.algorand.android.utils.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val deleteAllDataUseCase: DeleteAllDataUseCase
+    private val deleteAllDataUseCase: DeleteAllDataUseCase,
+    private val settingsPreviewUseCase: SettingsPreviewUseCase
 ) : BaseViewModel() {
+
+    private val _settingsPreviewFlow = MutableStateFlow<SettingsPreview?>(null)
+    val settingsPreviewFlow: StateFlow<SettingsPreview?> get() = _settingsPreviewFlow
+
+    init {
+        initSettingsPreviewFlow()
+    }
 
     fun deleteAllData(notificationManager: NotificationManager?, onDeletionCompleted: () -> Unit) {
         viewModelScope.launch {
             deleteAllDataUseCase.deleteAllData(notificationManager, onDeletionCompleted)
+        }
+    }
+
+    private fun initSettingsPreviewFlow() {
+        viewModelScope.launchIO {
+            settingsPreviewUseCase.getSettingsPreviewFlow().collectLatest { preview ->
+                _settingsPreviewFlow.emit(preview)
+            }
         }
     }
 }

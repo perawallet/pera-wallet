@@ -27,7 +27,6 @@ class PassphraseWordSuggestor @JvmOverloads constructor(
 ) : LinearLayout(context, attrs) {
 
     private val binding = viewBinding(CustomPassphraseWordSuggestorBinding::inflate)
-    private var index: Int = 0
     var listener: Listener? = null
 
     init {
@@ -42,8 +41,7 @@ class PassphraseWordSuggestor @JvmOverloads constructor(
         wordTextView.setOnClickListener { view -> onSuggestedWordClick((view as TextView).text.toString()) }
     }
 
-    fun setSuggestedWords(index: Int, words: List<String>) {
-        this.index = index
+    fun setSuggestedWords(words: List<String>) {
         binding.firstWordTextView.text = words.getOrNull(0).orEmpty()
         binding.secondWordTextView.text = words.getOrNull(1).orEmpty()
         binding.thirdWordTextView.text = words.getOrNull(2).orEmpty()
@@ -51,11 +49,11 @@ class PassphraseWordSuggestor @JvmOverloads constructor(
 
     private fun onSuggestedWordClick(suggestedWord: String) {
         if (suggestedWord.isNotEmpty()) {
-            listener?.onSuggestedWordSelected(index, suggestedWord)
+            listener?.onSuggestedWordSelected(suggestedWord)
         }
     }
 
-    interface Listener {
-        fun onSuggestedWordSelected(index: Int, word: String)
+    fun interface Listener {
+        fun onSuggestedWordSelected(word: String)
     }
 }

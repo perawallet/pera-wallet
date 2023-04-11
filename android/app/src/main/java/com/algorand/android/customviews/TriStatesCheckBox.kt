@@ -28,7 +28,7 @@ class TriStatesCheckBox @JvmOverloads constructor(
 ) : AppCompatCheckBox(context, attrs) {
 
     private var checkBoxState: CheckBoxState by Delegates.observable(DEFAULT_CHECKBOX_STATE) { _, oldValue, newValue ->
-        if (newValue != oldValue) updateUi()
+        if (newValue != oldValue) updateUi(newValue)
     }
 
     init {
@@ -47,9 +47,13 @@ class TriStatesCheckBox @JvmOverloads constructor(
         this.checkBoxState = state
     }
 
-    private fun updateUi() {
-        text = context.getString(checkBoxState.titleResId)
-        setCompoundDrawablesWithIntrinsicBounds(0, 0, checkBoxState.drawableResId, 0)
+    fun updateState(state: CheckBoxState) {
+        updateUi(state)
+    }
+
+    private fun updateUi(state: CheckBoxState) {
+        text = context.getString(state.titleResId)
+        setCompoundDrawablesWithIntrinsicBounds(0, 0, state.drawableResId, 0)
     }
 
     enum class CheckBoxState(@DrawableRes val drawableResId: Int, @StringRes val titleResId: Int) {

@@ -31,11 +31,11 @@
                 android:layout_marginBottom="@dimen/spacing_xxxlarge"
                 android:text="@string/enter_your_recovery_passphrase" />
 
-            <com.algorand.android.customviews.PassphraseInputGroup
+            <com.algorand.android.customviews.passphraseinput.PassphraseInputGroup
                 android:id="@+id/passphraseInputGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/spacing_normal" />
+                android:layout_marginHorizontal="@dimen/spacing_xlarge" />
 
         </LinearLayout>
 

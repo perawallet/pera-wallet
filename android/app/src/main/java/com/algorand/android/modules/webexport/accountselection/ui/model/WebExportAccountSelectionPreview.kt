@@ -12,10 +12,13 @@
 
 package com.algorand.android.modules.webexport.accountselection.ui.model
 
+import com.algorand.android.utils.Event
+
 data class WebExportAccountSelectionPreview(
     val listItems: List<BaseAccountMultipleSelectionListItem>,
     val isContinueButtonEnabled: Boolean,
     val isLoadingStateVisible: Boolean,
     val isEmptyStateVisible: Boolean,
-    val isSingleAccountItem: Boolean
+    val isSingleAccountItem: Boolean,
+    val activeNodeIsTestnetErrorEvent: Event<Unit>?
 )

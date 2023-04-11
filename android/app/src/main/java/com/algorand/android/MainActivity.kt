@@ -52,16 +52,18 @@ import com.algorand.android.models.AssetOperationResult
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.Node
 import com.algorand.android.models.NotificationMetadata
-import com.algorand.android.models.NotificationType
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
 import com.algorand.android.models.TransactionManagerResult
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
 import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
+import com.algorand.android.modules.deeplink.DeepLinkParser
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
+import com.algorand.android.modules.deeplink.domain.model.NotificationGroupType
 import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
 import com.algorand.android.modules.firebase.token.FirebaseTokenManager
+import com.algorand.android.modules.firebase.token.model.FirebaseTokenResult
 import com.algorand.android.modules.perawebview.ui.BasePeraWebViewFragment
 import com.algorand.android.modules.qrscanning.QrScannerViewModel
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.WalletConnectConnectionBottomSheet
@@ -70,19 +72,19 @@ import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionP
 import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
 import com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment
 import com.algorand.android.ui.lockpreference.AutoLockSuggestionManager
-import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.IsAccountLimitExceedUseCase.Companion.MAX_NUMBER_OF_ACCOUNTS
-import com.algorand.android.utils.DEEPLINK_AND_NAVIGATION_INTENT
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
-import com.algorand.android.utils.WC_TRANSACTION_ID_INTENT_KEY
 import com.algorand.android.utils.analytics.logTapReceive
 import com.algorand.android.utils.analytics.logTapSend
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.extensions.collectOnLifecycle
-import com.algorand.android.utils.handleIntentWithBundle
+import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.getSafeParcelableExtra
 import com.algorand.android.utils.inappreview.InAppReviewManager
-import com.algorand.android.utils.isNotificationCanBeShown
 import com.algorand.android.utils.navigateSafe
 import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.showWithStateCheck
@@ -130,7 +132,7 @@ class MainActivity :
     lateinit var autoLockManager: AutoLockManager
 
     @Inject
-    lateinit var accountDetailUseCase: AccountDetailUseCase
+    lateinit var deepLinkParser: DeepLinkParser
 
     private val isAppUnlocked: Boolean
         get() = autoLockManager.isAppUnlocked
@@ -168,17 +170,57 @@ class MainActivity :
 
     private val newNotificationObserver = Observer<Event<NotificationMetadata>> {
         it?.consume()?.let { newNotificationData ->
-            with(newNotificationData) {
-                val notificationType = getNotificationType()
-                if (navController.isNotificationCanBeShown(notificationType, isAppUnlocked).not()) {
-                    return@let
-                }
-                when (notificationType) {
-                    NotificationType.ASSET_SUPPORT_REQUEST -> handleAssetSupportRequest(this)
-                    else -> showForegroundNotification(this)
-                }
+            if (!isAppUnlocked) {
+                return@let
             }
+            handleNewNotification(newNotificationData)
         }
+    }
+
+    private fun handleNewNotification(newNotificationData: NotificationMetadata) {
+        val rawDeepLink = deepLinkParser.parseDeepLink(newNotificationData.url.orEmpty())
+        when (val baseDeepLink = BaseDeepLink.create(rawDeepLink)) {
+            is BaseDeepLink.NotificationDeepLink -> handleNotificationWithDeepLink(newNotificationData, baseDeepLink)
+            else -> showForegroundNotification(newNotificationData)
+        }
+    }
+
+    private fun handleNotificationWithDeepLink(
+        newNotificationData: NotificationMetadata,
+        deeplink: BaseDeepLink.NotificationDeepLink
+    ) {
+        when (deeplink.notificationGroupType) {
+            NotificationGroupType.OPT_IN -> handleAssetOptInRequestDeepLink(deeplink.address, deeplink.assetId)
+            else -> showForegroundNotification(newNotificationData)
+        }
+    }
+
+    private fun handleAssetOptInRequestDeepLink(accountAddress: String, assetId: Long) {
+        if (!accountDetailUseCase.isThereAnyAccountWithPublicKey(accountAddress)) {
+            showGlobalError(getString(R.string.you_cannot_take))
+            return
+        }
+
+        val assetAction = AssetAction(publicKey = accountAddress, assetId = assetId)
+        nav(
+            HomeNavigationDirections.actionGlobalAssetAdditionActionNavigation(
+                assetAction = assetAction
+            )
+        )
+    }
+
+    private fun handleAssetTransactionDeepLink(accountAddress: String, assetId: Long) {
+        if (!accountDetailUseCase.isThereAnyAccountWithPublicKey(accountAddress)) {
+            showGlobalError(getString(R.string.you_cannot_take))
+            return
+        }
+
+        nav(
+            HomeNavigationDirections.actionGlobalAssetProfileNavigation(
+                assetId = assetId,
+                accountAddress = accountAddress
+            )
+        )
     }
 
     private val invalidTransactionCauseObserver = Observer<Event<Resource.Error.Local>> { cause ->
@@ -264,6 +306,18 @@ class MainActivity :
             }
         }
 
+        override fun onNotificationDeepLink(
+            accountAddress: String,
+            assetId: Long,
+            notificationGroupType: NotificationGroupType
+        ): Boolean {
+            when (notificationGroupType) {
+                NotificationGroupType.TRANSACTIONS -> handleAssetTransactionDeepLink(accountAddress, assetId)
+                NotificationGroupType.OPT_IN -> handleAssetOptInRequestDeepLink(accountAddress, assetId)
+            }
+            return true
+        }
+
         override fun onUndefinedDeepLink(undefinedDeeplink: BaseDeepLink.UndefinedDeepLink) {
             // TODO show error after discussing with the team
         }
@@ -335,18 +389,8 @@ class MainActivity :
     }
 
     private val customAlertDialogListener = object : CustomAlertDialog.Listener {
-        override fun onTransactionAlertClick(accountAddress: String, assetId: Long) {
-            if (accountAddress.isBlank()) return
-            val accountCacheData = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data ?: return
-            val hasAsset = accountCacheData.accountInformation.hasAsset(assetId)
-            if (hasAsset) {
-                nav(
-                    HomeNavigationDirections.actionGlobalAssetProfileNavigation(
-                        assetId = assetId,
-                        accountAddress = accountCacheData.account.address
-                    )
-                )
-            }
+        override fun onTransactionAlertClick(uri: String) {
+            handleDeepLink(uri)
         }
 
         override fun onAlertViewHidden() {
@@ -358,12 +402,15 @@ class MainActivity :
         }
     }
 
-    private val firebaseTokenManagerListener = FirebaseTokenManager.Listener {
-        onNewNodeActivated()
-    }
-
     private val activeNodeCollector: suspend (Node?) -> Unit = { activatedNode ->
         checkIfConnectedToTestNetOrBetaNet(activatedNode)
+    }
+
+    private val firebaseTokenResultCollector: suspend (FirebaseTokenResult) -> Unit = { firebaseTokenResult ->
+        when (firebaseTokenResult) {
+            FirebaseTokenResult.TokenLoaded -> onNewNodeActivated()
+            FirebaseTokenResult.TokenLoading -> onNewNodeLoading()
+        }
     }
 
     private fun retryLatestAssetAdditionTransaction() {
@@ -384,7 +431,7 @@ class MainActivity :
     private fun onSessionConnected(wcSessionRequest: WalletConnectSessionProposal) {
         nav(
             HomeNavigationDirections
-            .actionGlobalWalletConnectConnectionNavigation(wcSessionRequest, isBasePeraWebViewFragmentActive())
+                .actionGlobalWalletConnectConnectionNavigation(wcSessionRequest, isBasePeraWebViewFragmentActive())
         )
     }
 
@@ -394,23 +441,10 @@ class MainActivity :
         showGlobalError(errorMessage = errorMessage, tag = activityTag)
     }
 
-    private fun handleAssetSupportRequest(notificationMetadata: NotificationMetadata) {
-        if (mainViewModel.canAccountSignTransaction(notificationMetadata.receiverPublicKey)) {
-            val assetInformation = notificationMetadata.getAssetDescription().convertToAssetInformation()
-            val assetAction = AssetAction(
-                assetId = assetInformation.assetId,
-                publicKey = notificationMetadata.receiverPublicKey,
-                asset = assetInformation
-            )
-            nav(HomeNavigationDirections.actionGlobalAssetAdditionActionNavigation(assetAction))
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         mainViewModel.setDeepLinkHandlerListener(deepLinkHandlerListener)
-        firebaseTokenManager.setListener(firebaseTokenManagerListener)
         autoLockManager.setListener(autoLockManagerListener)
         setupCoreActionsTabBarView()
 
@@ -432,12 +466,7 @@ class MainActivity :
 
     override fun onMenuItemClicked(item: MenuItem) {
         when (item.itemId) {
-            R.id.algoPriceFragment -> {
-                mainViewModel.logBottomNavAlgoPriceTapEvent()
-            }
-            R.id.accountsFragment -> {
-                mainViewModel.logBottomNavAccountsTapEvent()
-            }
+            R.id.accountsFragment -> mainViewModel.logBottomNavAccountsTapEvent()
         }
     }
 
@@ -480,6 +509,11 @@ class MainActivity :
         collectLatestOnLifecycle(
             flow = mainViewModel.activeNodeFlow,
             collection = activeNodeCollector
+        )
+
+        collectLatestOnLifecycle(
+            flow = firebaseTokenManager.firebaseTokenResultFlow,
+            collection = firebaseTokenResultCollector
         )
     }
 
@@ -527,7 +561,7 @@ class MainActivity :
     }
 
     private fun handleDeeplinkAndNotificationNavigation() {
-        intent.getParcelableExtra<Intent?>(DEEPLINK_AND_NAVIGATION_INTENT)?.apply {
+        intent.getSafeParcelableExtra<Intent?>(DEEPLINK_AND_NAVIGATION_INTENT)?.apply {
             pendingIntent = this
             handlePendingIntent()
         }
@@ -535,7 +569,7 @@ class MainActivity :
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        pendingIntent = intent?.getParcelableExtra(DEEPLINK_AND_NAVIGATION_INTENT)
+        pendingIntent = intent?.getSafeParcelableExtra(DEEPLINK_AND_NAVIGATION_INTENT)
         handlePendingIntent()
     }
 
@@ -544,18 +578,32 @@ class MainActivity :
             val canPendingBeHandled = isAssetSetupCompleted && (isAppUnlocked || !mainViewModel.shouldAppLocked())
             if (canPendingBeHandled) {
                 if (dataString != null) {
-                    mainViewModel.handleDeepLink(dataString.orEmpty())
+                    handleDeepLink(dataString.orEmpty())
                 } else {
-                    navController.handleIntentWithBundle(
-                        intentToHandle = this,
-                        accountDetailUseCase = accountDetailUseCase,
-                        onIntentHandlingFailed = ::onIntentHandlingFailed
-                    )
+                    handlePendingIntentWithExtras(this)
                 }
                 pendingIntent = null
             }
             canPendingBeHandled
         } ?: false
+    }
+
+    private fun handlePendingIntentWithExtras(pendingIntent: Intent) {
+        with(pendingIntent) {
+            // TODO change your architecture for the bug here. https://issuetracker.google.com/issues/37053389
+            // This fixes the problem for now. Be careful when adding more than one parcelable.
+            setExtrasClassLoader(com.algorand.android.models.AssetInformation::class.java.classLoader)
+
+            if (getLongExtra(WC_TRANSACTION_ID_INTENT_KEY, -1L) != -1L) {
+                nav(HomeNavigationDirections.actionGlobalWalletConnectRequestNavigation())
+            } else {
+                getStringExtra(DEEPLINK_KEY)?.let { handleDeepLink(it) }
+            }
+        }
+    }
+
+    fun handleDeepLink(uri: String) {
+        mainViewModel.handleDeepLink(uri)
     }
 
     fun handleWalletConnectUrl(walletConnectUrl: String) {
@@ -586,9 +634,10 @@ class MainActivity :
                 nav(HomeNavigationDirections.actionGlobalReceiveAccountSelectionFragment())
             }
 
-            override fun onBuyAlgoClick() {
+            override fun onBuySellClick() {
+                // TODO refactor with a better name for logging
                 mainViewModel.logBottomNavigationBuyAlgoEvent()
-                navToMoonpayIntroFragment()
+                navToBuySellActionsBottomSheet()
             }
 
             override fun onScanQRClick() {
@@ -623,7 +672,12 @@ class MainActivity :
     }
 
     private fun onNewNodeActivated() {
+        binding.progressBar.loadingProgressBar.hide()
         mainViewModel.onNewNodeActivated()
+    }
+
+    private fun onNewNodeLoading() {
+        binding.progressBar.loadingProgressBar.show()
     }
 
     override fun onSessionRequestResult(wCSessionRequestResult: WCSessionRequestResult) {
@@ -699,8 +753,8 @@ class MainActivity :
         )
     }
 
-    private fun navToMoonpayIntroFragment() {
-        nav(HomeNavigationDirections.actionGlobalMoonpayNavigation())
+    private fun navToBuySellActionsBottomSheet() {
+        nav(HomeNavigationDirections.actionGlobalBuySellActionsBottomSheet())
     }
 
     private fun navToQRCodeScannerNavigation() {
@@ -737,5 +791,9 @@ class MainActivity :
                 putExtra(DEEPLINK_AND_NAVIGATION_INTENT, deepLinkIntent)
             }
         }
+
+        const val DEEPLINK_KEY = "deeplinkKey"
+        const val DEEPLINK_AND_NAVIGATION_INTENT = "deeplinknavIntent"
+        const val WC_TRANSACTION_ID_INTENT_KEY = "wcTransactionId"
     }
 }

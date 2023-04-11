@@ -88,16 +88,28 @@ class DiscoverDetailViewModel @Inject constructor(
         }
     }
 
-    fun handleTokenDetailActionButtonClick(data: String) {
+    fun handleTokenDetailActionButtonClick(jsonEncodedPayload: String) {
         viewModelScope.launch {
-            discoverDetailPreviewUseCase.logTokenDetailActionButtonClick(data)
+            discoverDetailPreviewUseCase.logTokenDetailActionButtonClick(jsonEncodedPayload)
             _discoverDetailPreviewFlow
                 .emit(
                     discoverDetailPreviewUseCase.handleTokenDetailActionButtonClick(
-                        data,
+                        jsonEncodedPayload,
                         _discoverDetailPreviewFlow.value
                     )
                 )
+        }
+    }
+
+    fun getDeviceId() {
+        viewModelScope.launch {
+            val webView = getWebView()
+            webView?.url?.let { webViewUrl ->
+                val sendDeviceIdJSFunction = discoverDetailPreviewUseCase.getSendDeviceIdJSFunctionOrNull(webViewUrl)
+                if (sendDeviceIdJSFunction != null) {
+                    webView.evaluateJavascript(sendDeviceIdJSFunction, null)
+                }
+            }
         }
     }
 

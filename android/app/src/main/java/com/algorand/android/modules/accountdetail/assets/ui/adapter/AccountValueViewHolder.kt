@@ -15,10 +15,9 @@ package com.algorand.android.modules.accountdetail.assets.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountValueBinding
-import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem
 import com.algorand.android.models.BaseViewHolder
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem
 
 class AccountValueViewHolder(
     private val binding: ItemAccountValueBinding
@@ -35,10 +34,7 @@ class AccountValueViewHolder(
         if (item !is AccountDetailAssetsItem.AccountPortfolioItem) return
         with(binding) {
             primaryValueTextView.text = item.accountPrimaryFormattedParityValue
-            secondaryValueTextView.text = binding.root.resources.getString(
-                R.string.approximate_currency_value,
-                item.accountSecondaryFormattedParityValue
-            )
+            secondaryValueTextView.text = item.accountSecondaryFormattedParityValue.orEmpty()
         }
     }
 }

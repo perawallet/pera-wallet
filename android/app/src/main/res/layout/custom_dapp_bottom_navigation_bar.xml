@@ -23,12 +23,12 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_home"
-        android:tint="@color/discover_helper_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/previousNavButton"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/dapp_bottom_navigation_bar_button_color" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/previousNavButton"
@@ -37,12 +37,12 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_left_arrow"
-        android:tint="@color/discover_helper_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/nextNavButton"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@id/homeNavButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/dapp_bottom_navigation_bar_button_color" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/nextNavButton"
@@ -51,12 +51,12 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_right_arrow"
-        android:tint="@color/discover_helper_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/favoritesNavButton"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@id/previousNavButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/dapp_bottom_navigation_bar_button_color" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/favoritesNavButton"
@@ -65,11 +65,11 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_star_empty"
-        android:tint="@color/discover_helper_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@id/nextNavButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/dapp_bottom_navigation_bar_button_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

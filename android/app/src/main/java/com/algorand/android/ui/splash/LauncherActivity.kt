@@ -18,12 +18,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.algorand.android.MainActivity
+import com.algorand.android.MainActivity.Companion.DEEPLINK_KEY
 import com.algorand.android.core.BaseActivity
-import com.algorand.android.models.AssetInformation
-import com.algorand.android.utils.ASSET_SUPPORT_REQUESTED_ASSET_KEY
-import com.algorand.android.utils.ASSET_SUPPORT_REQUESTED_PUBLIC_KEY
-import com.algorand.android.utils.SELECTED_ACCOUNT_KEY
-import com.algorand.android.utils.SELECTED_ASSET_ID_KEY
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,21 +47,9 @@ class LauncherActivity : BaseActivity() {
     companion object {
         fun newIntent(context: Context) = Intent(context, LauncherActivity::class.java)
 
-        fun newIntentWithNewSelectedAccount(context: Context, publicKey: String?, assetId: Long?): Intent {
+        fun newIntentWithDeeplink(context: Context, deeplink: String): Intent {
             return Intent(context, LauncherActivity::class.java).apply {
-                putExtra(SELECTED_ACCOUNT_KEY, publicKey)
-                putExtra(SELECTED_ASSET_ID_KEY, assetId ?: AssetInformation.ALGO_ID)
-            }
-        }
-
-        fun newIntentWithAssetSupportRequest(
-            context: Context,
-            publicKey: String?,
-            assetInformation: AssetInformation
-        ): Intent {
-            return Intent(context, LauncherActivity::class.java).apply {
-                putExtra(ASSET_SUPPORT_REQUESTED_PUBLIC_KEY, publicKey)
-                putExtra(ASSET_SUPPORT_REQUESTED_ASSET_KEY, assetInformation)
+                putExtra(DEEPLINK_KEY, deeplink)
             }
         }
     }

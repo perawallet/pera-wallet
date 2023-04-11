@@ -12,15 +12,13 @@
 
 package com.algorand.android.modules.transaction.detail.ui.applicationcallassets
 
-import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.algorand.android.modules.transaction.detail.ui.model.ApplicationCallAssetInformation
 import com.algorand.android.modules.transaction.detail.domain.model.ApplicationCallAssetInformationPreview
 import com.algorand.android.modules.transaction.detail.domain.usecase.ApplicationCallAssetsPreviewUseCase
-import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -31,9 +29,7 @@ class ApplicationCallAssetsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val assetInformationList = savedStateHandle.getOrThrow<Array<ApplicationCallAssetInformation>>(
-        ASSET_INFORMATION_LIST_KEY
-    )
+    private val args = ApplicationCallAssetsBottomSheetArgs.fromSavedStateHandle(savedStateHandle)
 
     private val _assetItemConfigurationFlow = MutableStateFlow<ApplicationCallAssetInformationPreview?>(null)
     val assetItemConfigurationFlow: StateFlow<ApplicationCallAssetInformationPreview?>
@@ -46,12 +42,10 @@ class ApplicationCallAssetsViewModel @Inject constructor(
     private fun initPreviewFlow() {
         viewModelScope.launch {
             _assetItemConfigurationFlow.emit(
-                applicationCallAssetsPreviewUseCase.initApplicationCallAssetInformationPreview(assetInformationList)
+                applicationCallAssetsPreviewUseCase.initApplicationCallAssetInformationPreview(
+                    applicationCallAssetInformationArray = args.assetInformationList
+                )
             )
         }
-    }
-
-    companion object {
-        private const val ASSET_INFORMATION_LIST_KEY = "assetInformationList"
     }
 }

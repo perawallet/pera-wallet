@@ -15,8 +15,8 @@
 package com.algorand.android.modules.deeplink
 
 import android.net.Uri
-import com.algorand.android.models.NotificationGroupType
 import com.algorand.android.models.RawMnemonicPayload
+import com.algorand.android.modules.deeplink.domain.model.NotificationGroupType
 import com.algorand.android.models.WebQrCode
 import com.algorand.android.modules.deeplink.domain.model.RawDeepLink
 import com.algorand.android.modules.webexport.common.data.mapper.WebExportQrCodeMapper
@@ -142,7 +142,7 @@ class DeepLinkParser @Inject constructor(
         return with(uri) {
             when (authority + path) {
                 NOTIFICATION_ACTION_ASSET_TRANSACTIONS -> NotificationGroupType.TRANSACTIONS
-                NOTIFICATION_ACTION_ASSET_OPTIN -> NotificationGroupType.OPTIN
+                NOTIFICATION_ACTION_ASSET_OPTIN -> NotificationGroupType.OPT_IN
                 else -> null
             }
         }

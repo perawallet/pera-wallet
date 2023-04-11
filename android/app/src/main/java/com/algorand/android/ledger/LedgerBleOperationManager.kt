@@ -62,8 +62,8 @@ class LedgerBleOperationManager @Inject constructor(
         postResult(LedgerBleResult.OnBondingFailed)
     }
 
-    fun isBondingRequired(address: String): Boolean {
-        return BluetoothAdapter.getDefaultAdapter().bondedDevices.all {
+    fun isBondingRequired(address: String, bluetoothAdapter: BluetoothAdapter): Boolean {
+        return bluetoothAdapter.bondedDevices.all {
             it.address != address
         }
     }

@@ -36,7 +36,7 @@
             android:id="@+id/recoverAnAccountSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/pairLedgerSelectionItem"
+            app:layout_constraintBottom_toTopOf="@id/algorandSecureBackupSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleTextView"
@@ -47,14 +47,27 @@
             app:typeSelectionTitleText="@string/recover_an_account" />
 
         <com.algorand.android.customviews.RegisterTypeSelectionItem
+            android:id="@+id/algorandSecureBackupSelectionItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/pairLedgerSelectionItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recoverAnAccountSelectionItem"
+            app:typeSelectionDescriptionText="@string/i_want_to_restore_my"
+            app:typeSelectionIcon="@drawable/ic_backup"
+            app:typeSelectionTitleBadgeText="@string/new_text"
+            app:typeSelectionTitleBadgeVisible="true"
+            app:typeSelectionTitleText="@string/algorand_secure_backup" />
+
+        <com.algorand.android.customviews.RegisterTypeSelectionItem
             android:id="@+id/pairLedgerSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/importFromWebSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recoverAnAccountSelectionItem"
-            app:layout_constraintVertical_bias="0.4"
+            app:layout_constraintTop_toBottomOf="@id/algorandSecureBackupSelectionItem"
             app:layout_constraintVertical_chainStyle="packed"
             app:typeSelectionDescriptionText="@string/i_want_to_recover_an"
             app:typeSelectionIcon="@drawable/ic_ledger"
@@ -70,9 +83,9 @@
             app:layout_constraintTop_toBottomOf="@id/pairLedgerSelectionItem"
             app:typeSelectionDescriptionText="@string/i_want_to_import_algorand"
             app:typeSelectionIcon="@drawable/ic_global"
-            app:typeSelectionTitleText="@string/import_from_pera_web"
+            app:typeSelectionTitleBadgeText="@string/new_text"
             app:typeSelectionTitleBadgeVisible="true"
-            app:typeSelectionTitleBadgeText="@string/new_text"/>
+            app:typeSelectionTitleText="@string/import_from_pera_web" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

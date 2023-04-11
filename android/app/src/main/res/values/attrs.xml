@@ -70,9 +70,10 @@
     </declare-styleable>
 
     <declare-styleable name="SettingsListItem">
-        <attr name="settingsShowArrow" format="boolean" />
-        <attr name="settingsIcon" format="reference" />
-        <attr name="settingsText" format="string" />
+        <attr name="settingIcon" format="reference" />
+        <attr name="settingTitle" format="string" />
+        <attr name="settingSubTitle" format="string" />
+        <attr name="endViewLayoutResource" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="RegisterTypeSelectionItem">
@@ -184,8 +185,13 @@
 
     <declare-styleable name="NumberedListItemView">
         <attr name="title" />
-        <attr name="icon" />
-        <attr name="iconText" format="string" />
+        <attr name="titleTextAppearance" format="reference" />
+        <attr name="titleTextColor" format="color" />
+        <attr name="description" />
+        <attr name="descriptionTextAppearance" format="reference" />
+        <attr name="descriptionTextColor" format="color" />
+        <attr name="numeratorBackground" format="reference" />
+        <attr name="numeratorText" format="string" />
     </declare-styleable>
 
     <declare-styleable name="ListConfigurationHeaderView">

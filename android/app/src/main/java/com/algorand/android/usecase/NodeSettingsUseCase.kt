@@ -15,10 +15,10 @@ package com.algorand.android.usecase
 
 import com.algorand.android.models.Node
 import com.algorand.android.modules.firebase.token.FirebaseTokenManager
+import com.algorand.android.modules.firebase.token.model.FirebaseTokenResult
 import com.algorand.android.repository.NodeRepository
 import com.algorand.android.ui.settings.node.ui.mapper.NodeSettingsPreviewMapper
 import com.algorand.android.ui.settings.node.ui.model.NodeSettingsPreview
-import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import com.algorand.android.utils.defaultNodeList
 import javax.inject.Inject
@@ -34,10 +34,10 @@ class NodeSettingsUseCase @Inject constructor(
     fun getNodeSettingsPreviewFlow(): Flow<NodeSettingsPreview?> {
         return combine(
             nodeRepository.getAllNodesAsFlow(),
-            firebaseTokenManager.firebasePushTokenStatusFlow
-        ) { nodeList, pushTokenStatus ->
+            firebaseTokenManager.firebaseTokenResultFlow
+        ) { nodeList, firebaseTokenResult ->
             nodeSettingsPreviewMapper.mapToNodeSettingsPreview(
-                isLoading = pushTokenStatus is DataResource.Loading,
+                isLoading = firebaseTokenResult is FirebaseTokenResult.TokenLoading,
                 nodeList = nodeList
             )
         }

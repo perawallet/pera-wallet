@@ -17,6 +17,7 @@ import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUs
 import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
+import com.algorand.android.usecase.GetIsActiveNodeTestnetUseCase
 import javax.inject.Inject
 
 class DeveloperSettingsPreviewUseCase @Inject constructor(
@@ -24,7 +25,8 @@ class DeveloperSettingsPreviewUseCase @Inject constructor(
     private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
     private val getAccountValueUseCase: GetAccountValueUseCase,
     private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
-    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val getIsActiveNodeTestnetUseCase: GetIsActiveNodeTestnetUseCase
 ) {
 
     suspend fun getFirstAccountAddress(): String? {
@@ -50,5 +52,9 @@ class DeveloperSettingsPreviewUseCase @Inject constructor(
             }
         )
         return sortedAccountListItem.firstOrNull()?.itemConfiguration?.accountAddress
+    }
+
+    fun isConnectedToTestnet(): Boolean {
+        return getIsActiveNodeTestnetUseCase.invoke()
     }
 }

@@ -37,6 +37,7 @@ import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.notification.PeraNotificationManager
+import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.BETANET_NETWORK_SLUG
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import com.algorand.android.utils.coremanager.AccountDetailCacheManager
@@ -86,6 +87,9 @@ abstract class CoreMainActivity : BaseActivity() {
 
     @Inject
     lateinit var alertDialogQueueManager: AlertDialogQueueManager
+
+    @Inject
+    lateinit var accountDetailUseCase: AccountDetailUseCase
 
     lateinit var navController: NavController
 

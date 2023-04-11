@@ -15,7 +15,7 @@ package com.algorand.android.models
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import java.math.BigInteger
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 sealed class DecodedQrCode : Parcelable {
 

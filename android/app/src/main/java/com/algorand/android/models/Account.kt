@@ -46,10 +46,6 @@ data class Account constructor(
         }
     }
 
-    fun canSignTransaction(): Boolean {
-        return type != null && type != WATCH && type != REKEYED
-    }
-
     fun getAuthTypeAndDetail(): Detail? {
         return when (val accountDetail = detail) {
             is Detail.RekeyedAuth -> accountDetail.authDetail

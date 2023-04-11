@@ -29,7 +29,9 @@ data class AccountPreview(
     @ColorRes val portfolioValuesBackgroundRes: Int,
     val isSuccessStateVisible: Boolean,
     val hasNewNotification: Boolean,
+    val onGiftCardsTutorialDisplayEvent: Event<Int>? = null,
     val onAccountAddressCopyTutorialDisplayEvent: Event<Int>? = null,
     val onSwapTutorialDisplayEvent: Event<Int>? = null,
-    val swapNavigationDestinationEvent: Event<NavDirections>? = null
+    val swapNavigationDestinationEvent: Event<NavDirections>? = null,
+    val giftCardsNavigationDestinationEvent: Event<NavDirections>? = null
 )

@@ -68,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbarPrimaryPortfolioValue"
-        tools:text="≈ $105,413.95" />
+        tools:text="$105,413.95" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/notificationImageButton"
@@ -133,7 +133,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/primaryPortfolioValue"
-        tools:text="≈ $105,413.95" />
+        tools:text="$105,413.95" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/accountsRecyclerView"

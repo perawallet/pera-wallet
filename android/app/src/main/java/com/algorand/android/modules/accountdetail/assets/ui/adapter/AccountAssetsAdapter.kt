@@ -43,8 +43,8 @@ class AccountAssetsAdapter(
     }
 
     private val quickActionsViewHolderListener = object : AccountDetailQuickActionsListener {
-        override fun onBuyAlgoClick() {
-            listener.onBuyAlgoClick()
+        override fun onBuySellClick() {
+            listener.onBuySellClick()
         }
 
         override fun onSendClick() {
@@ -173,7 +173,7 @@ class AccountAssetsAdapter(
         fun onNFTLongClick(nftId: Long)
         fun onAddNewAssetClick() {}
         fun onManageAssetsClick()
-        fun onBuyAlgoClick()
+        fun onBuySellClick()
         fun onSendClick()
         fun onSwapClick()
         fun onMoreClick()

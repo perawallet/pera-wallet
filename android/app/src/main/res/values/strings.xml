@@ -644,9 +644,9 @@
     <string name="transfer">Transfer</string>
     <string name="send_your_nft">Send your NFT</string>
     <string name="paste_an_algorand_wallet_address">Paste an Algorand wallet address</string>
-    <string name="ask_recipient_to">Ask recipient to opt-in</string>
+    <string name="ask_recipient_to">Ask recipient to opt-in to\n%1$s</string>
     <string name="you_cant_send">You can\'t send <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> to <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> because this wallet didn\'t opt-in for this asset yet. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more about Opt-in</annotation></annotation></string>
-    <string name="request_opt_in">Request Opt-in</string>
+    <string name="request_receiver_to">Request receiver to opt-in</string>
     <string name="information_about_opt">Information about Opt-in</string>
     <string name="to_avoid_spammy">To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.</string>
     <string name="search_or_enter_wallet_address">Search or enter wallet address</string>
@@ -1028,6 +1028,8 @@
     <string name="round">Round</string>
     <string name="do_not_proceed_if_you">Do not proceed if you did not initiate this request.</string>
 
+    <string name="this_asset_is">This asset is already pending removal.</string>
+
     <string name="accounts_imported">Accounts imported</string>
     <plurals name="n_accounts_were_imported_from_pera_web">
         <item quantity="one">%1$d account was imported from Pera Web</item>
@@ -1055,8 +1057,6 @@
 
     <string name="importing_your_accounts">Importing your accounts</string>
 
-    <string name="this_asset_is">This asset is already pending removal.</string>
-
     <string name="get_help">Get Help</string>
 
     <string name="couldn_t_retrieve">Couldn\'t retrieve account details, please try again</string>
@@ -1066,6 +1066,7 @@
     <string name="future_transactions_can_only">Future transactions can only be signed by the delegated account.</string>
     <string name="this_account_will_no_longer">This account will no longer be able to sign transactions.</string>
     <string name="your_account_s_public_key">Your account\'s public key, balances, and configuration will not change.</string>
+    <string name="account_transfer_is">Account transfer is disabled on Testnet for your security. Please switch to Mainnet to use this feature.</string>
 
     <string name="invalid_url">Invalid Url</string>
 
@@ -1074,4 +1075,117 @@
     <string name="the_signing_account_has">The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.</string>
     <string name="caution_price_impact">Caution! Price impact is greater than <annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation>%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.</string>
     <string name="this_swap_can_not_be">This swap cannot be executed because the price impact is too large. Find out more about price impact and how it works <annotation custom="faq_url">here</annotation>.</string>
+
+    <string name="select_your_backup_file">Select your backup file</string>
+    <string name="uploading_three_dots">Uploading…</string>
+    <string name="upload_successful">Upload Successful</string>
+    <string name="replace_file">Replace File</string>
+    <string name="upload_failed">Upload Failed</string>
+    <string name="select_file">Select File</string>
+    <string name="this_file_type_isn_t_supported">This file type isn\'t supported</string>
+    <string name="algorand_secure_backup">Algorand Secure Backup</string>
+    <string name="i_want_to_restore_my">I want to restore my accounts using an Algorand Secure Backup file and 12-word key</string>
+    <string name="not_backed_up">Not backed up (%1$d)</string>
+    <string name="algorand_secure_n_backup">Algorand Secure\nBackup</string>
+    <string name="backup_your_accounts_using">Backup your accounts using the Algorand Secure Backup protocol. You will generate an encrypted text file representing your accounts and a 12-word key used to decrypt them in future.</string>
+    <string name="select_your_accounts">Select your accounts</string>
+    <string name="select_one_some_or_all">Select one, some or all of your accounts to be included in your backup file.</string>
+    <string name="store_your_12_word_key">Store your 12-word key</string>\
+    <string name="record_or_save_your_12">Record or save your 12-word key securely. <annotation font="dmsans_medium"><annotation custom="learn_more_click">Learn more</annotation></annotation></string>
+    <string name="save_your_backup_file">Save your backup file</string>
+    <string name="download_your_backup_to">Download your backup to a secure location on your device.</string>
+
+    <string name="backup_accounts">Backup account (%1$d)</string>
+    <string name="choose_accounts_n_to_backup">Choose accounts\nto backup</string>
+    <string name="we_couldn_t_find_any_accounts">We couldn\'t find any accounts eligible for backup.</string>
+    <string name="have_you_stored_your_key">Have you stored your key?</string>
+    <string name="store_your_key_somewhere_secure">Store your key somewhere secure, like a password manager. If you lose your key, you will lose access to your backup file forever.</string>
+    <string name="create_backup_file">Create backup file</string>
+    <string name="show_key_again">Show key again</string>
+    <string name="create_new_key">Create new key</string>
+    <string name="you_are_about_to_reset">You are about to reset your Algorand Secure Backup Key. You will generate a new 12-word key which will be used to encrypt and decrypt all future ASB files created from this device.\n\nYour previous ASB files remain encrypted with your old 12-word key. Ensure this is stored securely before proceeding.</string>
+    <string name="i_understand_proceed">I understand, proceed</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
+    <string name="create_new_12_word_key">Create New 12-Word Key</string>
+    <string name="store_your_n_12_word_key">Store your\n12-word key</string>
+    <string name="i_ve_stored_my_key">I\'ve stored my key</string>
+    <string name="your_12_word_key_is">Your 12-word key is used decrypt any Algorand Secure Backup file generated by you.\n\nStore your 12-word key securely.\n<annotation font="dmsans_medium"><annotation custom="url_click">Find out how</annotation></annotation> with Pera Learn.</string>
+    <string name="review_your_n_12_word_key">Review your\n12-word key</string>
+    <string name="you_stored_your_key_during">You stored your key during a previous backup. Review it now to ensure it is still stored securely.\n\n<annotation font="dmsans_medium"><annotation custom="url_click">Learn more</annotation></annotation> with Pera Learn</string>
+    <string name="key_copied_as_text">Key copied as text</string>
+    <string name="save_backup_file">Save backup file</string>
+    <string name="your_backup_file_is_ready">Your backup file is ready</string>
+    <string name="save_your_file_somewhere_secure">Save your file somewhere secure, in a different place to your 12-word key. <annotation font="dmsans_medium"><annotation custom="url_click">Learn more</annotation></annotation></string>
+    <string name="an_error_occurred_while_generating">An error occurred while generating your Algorand Secure Backup. Please try again or <annotation font="dmsans_medium"><annotation custom="url_click">Contact support</annotation></annotation></string>
+    <string name="backup_file_copied_to">Backup file copied to clipboard as text</string>
+    <string name="can_t_save_backup_file">Can\'t save backup file</string>
+    <string name="please_allow_pera_wallet_to">Please allow Pera Wallet to access photos and media on your device to save your file.</string>
+    <string name="have_you_stored_your">Have you stored your backup file?</string>
+    <string name="if_you_lose_your_algorand">If you lose your Algorand Secure Backup file, you cannot restore your accounts.</string>
+    <string name="yes_i_stored_my_file">Yes, I stored my file</string>
+    <string name="show_backup_file_again">Show backup file again</string>
+
+    <string name="select_your_n_backup_file">Select your\nbackup file</string>
+    <string name="to_restore_your_wallet">To restore your wallet, select or paste your backup file.</string>
+    <string name="paste_backup_file_text">Paste backup file text</string>
+    <string name="unable_to_parse_file">Unable to parse the backup file: JSON formatting error.</string>
+    <string name="unable_to_parse_key_name">Unable to parse the backup file: <annotation replacement="key_name">keyNamePlaceholder</annotation> does not exist</string>
+    <string name="backup_file_was_generated_with">Backup file was generated with an unsupported version of Algorand Secure Backup Format.</string>
+    <string name="unable_to_parse_suite">Unable to parse the backup file: Cipher Suite unknown</string>
+    <string name="backup_file_successfully_pasted">Backup file successfully pasted</string>
+    <string name="enter_12_word_key">Enter 12-word key</string>
+    <string name="wrong_12_word_key">Wrong 12-word key</string>
+    <string name="please_try_again_by_entering">Please try again by entering the correct 12-word key.</string>
+    <string name="choose_accounts_n_to_restore">Choose accounts\nto restore</string>
+    <string name="restore_account">Restore Account (%1$d)</string>
+    <string name="nothing_to_paste">Nothing to paste</string>
+    <string name="nothing_is_copied_to_the">Nothing is copied to the clipboard. Make sure you have copied your backup file.</string>
+
+    <plurals name="accounts_restored">
+        <item quantity="one">Account restored</item>
+        <item quantity="other">Accounts restored</item>
+    </plurals>
+    <plurals name="accounts_were_restored">
+        <item quantity="one">1 account was restored from backup file</item>
+        <item quantity="other">%1$d accounts were restored from backup file</item>
+    </plurals>
+
+    <plurals name="account_was_not_restored_because_exist">
+        <item quantity="one">1 account was not restored because it already exist in your wallet</item>
+        <item quantity="other">%1$d accounts were not restored because they already exist in your wallet</item>
+    </plurals>
+    <plurals name="account_was_not_restored_because_unsupported">
+        <item quantity="one">1 account was not restored because it has an unsupported account type</item>
+        <item quantity="other">%1$d accounts were not restored because they have an unsupported account type</item>
+    </plurals>
+    <plurals name="account_was_not_restored">
+        <item quantity="one">1 account was not restored. It may already exist in your wallet or be unsupported account type</item>
+        <item quantity="other">%1$d accounts were not restored. They may already exist in your wallet or be unsupported account types</item>
+    </plurals>
+
+    <string name="buy_sell">Buy / Sell</string>
+    <string name="see_all_options_to_buy">See all options to buy or sell your cypto</string>
+    <string name="buy_crypto">Buy crypto</string>
+    <string name="sell_crypto">Sell crypto</string>
+
+    <string name="use_apple_pay_credit_cards">Use Apple Pay, credit cards or bank transfer</string>
+    <string name="buy_algo_with_sardine">Buy ALGO with Sardine</string>
+    <string name="use_instant_ach">Use Instant ACH with your US bank account</string>
+    <string name="buy_usdc_with_transak">Buy USDC with Transak</string>
+    <string name="use_credit_card_bank_transfer">Use credit cards or bank transfers from 150+ countries</string>
+    <string name="buy_gift_cards_with_bidali">Buy gift cards with Bidali</string>
+    <string name="you_can_use_your_algo">You can use your Algo, USDC or USDt balance</string>
+
+    <string name="buy_gift_cards_with_crypto">Buy gift cards with Crypto</string>
+    <string name="buy_gift_cards">Buy gift cards</string>
+    <string name="you_can_use_your_algo_or">You can use your ALGO or USDC balance to Buy gift card and mobile topups from thousands of brands worldwide!</string>
+    <string name="you_can_not_purchase_bidali">You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Bidali.</string>
+
+    <string name="buy_usdc">Buy USDC</string>
+    <string name="transak_onboards_users_from_fiat">Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.</string>
+    <string name="you_can_not_purchase_transak">You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Transak.</string>
+
+    <string name="instant_settlement_and_lower">Instant settlement and lower fees for Algo using Instant ACH transfers. Sardine also supports local bank and card payments across 180+ countries, Apple Pay and GPay.</string>
+    <string name="you_can_not_purchase_sardine">You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Sardine.</string>
+    <string name="choose_an_account_to_proceed">Choose an account to proceed with</string>
 </resources>

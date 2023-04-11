@@ -91,12 +91,16 @@ abstract class BaseDiscoverFragment(
         themePreference: ThemePreference,
         webView: PeraWebView
     ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            when (
-                getWebViewThemeFromThemePreference(themePreference)
-            ) {
-                WebViewTheme.DARK -> webView.settings.forceDark = WebSettings.FORCE_DARK_ON
-                WebViewTheme.LIGHT -> webView.settings.forceDark = WebSettings.FORCE_DARK_OFF
+        with(webView.settings) {
+            val isDarkMode = getWebViewThemeFromThemePreference(themePreference) == WebViewTheme.DARK
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                isAlgorithmicDarkeningAllowed = isDarkMode
+                return
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                forceDark = if (isDarkMode) WebSettings.FORCE_DARK_ON else WebSettings.FORCE_DARK_OFF
+                return
             }
         }
     }

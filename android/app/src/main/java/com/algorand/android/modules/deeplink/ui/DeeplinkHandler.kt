@@ -15,11 +15,11 @@ package com.algorand.android.modules.deeplink.ui
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransaction
-import com.algorand.android.models.NotificationGroupType
 import com.algorand.android.models.User
 import com.algorand.android.modules.deeplink.DeepLinkParser
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink.WalletConnectConnectionDeepLink
+import com.algorand.android.modules.deeplink.domain.model.NotificationGroupType
 import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
 import com.algorand.android.modules.webimport.common.data.model.WebImportQrCode
 import com.algorand.android.usecase.AccountDetailUseCase
@@ -164,6 +164,7 @@ class DeeplinkHandler @Inject constructor(
             assetId: Long,
             notificationGroupType: NotificationGroupType
         ): Boolean = false
+
         fun onUndefinedDeepLink(undefinedDeeplink: BaseDeepLink.UndefinedDeepLink)
         fun onDeepLinkNotHandled(deepLink: BaseDeepLink)
     }

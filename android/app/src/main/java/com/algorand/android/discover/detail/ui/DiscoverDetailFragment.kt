@@ -97,8 +97,12 @@ class DiscoverDetailFragment :
         view?.let { binding = FragmentDiscoverDetailBinding.bind(it) }
     }
 
-    override fun handleTokenDetailActionButtonClick(data: String) {
-        discoverViewModel.handleTokenDetailActionButtonClick(data)
+    override fun handleTokenDetailActionButtonClick(jsonEncodedPayload: String) {
+        discoverViewModel.handleTokenDetailActionButtonClick(jsonEncodedPayload)
+    }
+
+    override fun getDeviceId() {
+        discoverViewModel.getDeviceId()
     }
 
     private fun loadUrl(preview: DiscoverDetailPreview) {

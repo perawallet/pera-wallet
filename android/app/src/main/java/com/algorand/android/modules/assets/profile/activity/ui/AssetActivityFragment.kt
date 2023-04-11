@@ -32,6 +32,7 @@ import com.algorand.android.models.ui.TransactionLoadStatePreview
 import com.algorand.android.modules.transaction.csv.ui.model.CsvStatusPreview
 import com.algorand.android.modules.transactionhistory.ui.AccountHistoryAdapter
 import com.algorand.android.modules.transactionhistory.ui.PendingTransactionAdapter
+import com.algorand.android.modules.transactionhistory.ui.StickyAccountHistoryHeaderDecoration
 import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem
 import com.algorand.android.ui.datepicker.DateFilterListBottomSheet
 import com.algorand.android.utils.CSV_FILE_MIME_TYPE
@@ -176,7 +177,16 @@ class AssetActivityFragment : BaseFragment(R.layout.fragment_asset_activity) {
 
     private fun initUi() {
         with(binding) {
-            assetActivityRecyclerView.adapter = concatAdapter
+            assetActivityRecyclerView.apply {
+                adapter = concatAdapter
+                addItemDecoration(
+                    StickyAccountHistoryHeaderDecoration(
+                        accountHistoryAdapter = transactionAdapter,
+                        pendingTransactionAdapter = pendingTransactionAdapter,
+                        context = context
+                    )
+                )
+            }
             assetActivityToolbar.apply {
                 setPrimaryButtonClickListener(::onFilterClick)
                 setSecondaryButtonClickListener(::onExportClick)

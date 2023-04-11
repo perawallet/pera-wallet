@@ -310,7 +310,7 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap) {
                     amount = formattedAmount,
                     assetShortName = shortName,
                     verificationTierConfiguration = verificationTierConfig,
-                    approximateValue = getString(R.string.approximate_currency_value, formattedApproximateValue)
+                    approximateValue = formattedApproximateValue
                 )
                 setAmountTextColors(
                     primaryValueTextColorResId = assetDetail.amountTextColorResId,

@@ -14,42 +14,53 @@ package com.algorand.android.discover.utils
 
 import com.algorand.android.BuildConfig
 import com.algorand.android.discover.common.ui.model.WebViewTheme
-import com.algorand.android.utils.UrlBuilder
+import com.algorand.android.utils.BaseUrlBuilder
 
-class DiscoverUrlBuilder private constructor(customBaseUrl: String? = null) : UrlBuilder() {
+class DiscoverUrlBuilder private constructor(
+    customBaseUrl: String? = null
+) : BaseUrlBuilder(customBaseUrl?.trim() ?: BuildConfig.DISCOVER_URL) {
 
-    override val baseUrl: StringBuilder =
-        StringBuilder(customBaseUrl ?: BuildConfig.DISCOVER_URL).append(QUERY_SYMBOL)
+    enum class DiscoverQuery(override val key: String) : UrlQueryParam {
+        THEME("theme"),
+        VERSION("version"),
+        PLATFORM("platform"),
+        CURRENCY("currency"),
+        LOCALE("locale"),
+        POOL_ID("poolId"),
+
+        TOKEN_DETAIL("token-detail"),
+    }
 
     fun addTheme(themePreference: WebViewTheme): DiscoverUrlBuilder {
-        addQuery(Query.THEME, themePreference.key)
+        addQuery(DiscoverQuery.THEME, themePreference.key)
         return this
     }
 
     fun addVersion(version: String): DiscoverUrlBuilder {
-        addQuery(Query.VERSION, version)
+        addQuery(DiscoverQuery.VERSION, version)
         return this
     }
 
     fun addPlatform(): DiscoverUrlBuilder {
-        addQuery(Query.PLATFORM, PLATFORM_NAME)
+        addQuery(DiscoverQuery.PLATFORM, PLATFORM_NAME)
         return this
     }
 
     fun addCurrency(currency: String): DiscoverUrlBuilder {
-        addQuery(Query.CURRENCY, currency)
+        addQuery(DiscoverQuery.CURRENCY, currency)
         return this
     }
 
     fun addLocale(locale: String): DiscoverUrlBuilder {
-        addQuery(Query.LOCALE, locale)
+        addQuery(DiscoverQuery.LOCALE, locale)
         return this
     }
 
     fun addTokenDetail(tokenId: String, poolId: String?): DiscoverUrlBuilder {
-        addUrlSlug(UrlSlug.TOKEN_DETAIL, tokenId)
+        addUrlSlug(DiscoverQuery.TOKEN_DETAIL.key)
+        addUrlSlug(tokenId)
         poolId?.let {
-            addQuery(Query.POOL_ID, it)
+            addQuery(DiscoverQuery.POOL_ID, it)
         }
         return this
     }

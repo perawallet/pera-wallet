@@ -85,6 +85,7 @@ abstract class BaseAddEditContactFragment : DaggerBaseFragment(R.layout.fragment
     open fun setDeleteContactButton(materialButton: MaterialButton) {}
 
     abstract fun openQrScannerForAlgorandAddress()
+    abstract fun onImeOptionDoneClicked()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -104,7 +105,11 @@ abstract class BaseAddEditContactFragment : DaggerBaseFragment(R.layout.fragment
 
     open fun initUi() {
         with(binding) {
-            addressCustomInputLayout.setOnTextChangeListener(::onAddressChangedListener)
+            addressCustomInputLayout.apply {
+                setOnTextChangeListener(::onAddressChangedListener)
+                setRawInputTypeText()
+                setImeOptionsDone { onImeOptionDoneClicked() }
+            }
             contactNameCustomInputLayout.setOnTextChangeListener(::onNameChangedListener)
         }
     }

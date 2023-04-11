@@ -14,9 +14,8 @@ package com.algorand.android.customviews
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.Gravity.CENTER_VERTICAL
-import android.widget.LinearLayout
-import androidx.core.content.res.getResourceIdOrThrow
+import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.use
 import androidx.core.view.isVisible
 import com.algorand.android.R
@@ -26,29 +25,60 @@ import com.algorand.android.utils.viewbinding.viewBinding
 class SettingsListItem @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : LinearLayout(context, attrs) {
+) : ConstraintLayout(context, attrs) {
 
     private val binding = viewBinding(CustomSettingsListItemBinding::inflate)
+
+    private var endComponent: View? = null
 
     init {
         setLayoutAttributes()
         initAttributes(attrs)
     }
 
+    fun updateSubTitle(charSequence: CharSequence) {
+        binding.settingSubTitleTextView.text = charSequence
+    }
+
+    fun updateSubTitleVisibility(isVisible: Boolean) {
+        binding.settingSubTitleTextView.isVisible = isVisible
+    }
+
+    /**
+     * CAUTION
+     * Ensure your generic model that is the same as that you already inflate in [ViewStub]
+     */
+    fun <T : View> getEndComponentViewStub(): T? {
+        return endComponent as? T
+    }
+
     private fun initAttributes(attrs: AttributeSet?) {
         context.obtainStyledAttributes(attrs, R.styleable.SettingsListItem).use {
-            binding.nameTextView.text = it.getText(R.styleable.SettingsListItem_settingsText)
-            binding.iconImageView.setImageResource(
-                it.getResourceIdOrThrow(R.styleable.SettingsListItem_settingsIcon)
-            )
-            binding.arrowImageView.isVisible =
-                it.getBoolean(R.styleable.SettingsListItem_settingsShowArrow, true)
+            with(binding) {
+                it.getText(R.styleable.SettingsListItem_settingTitle)?.let { safeTitle ->
+                    settingTitleTextView.text = safeTitle
+                }
+                it.getText(R.styleable.SettingsListItem_settingSubTitle)?.let { safeSubTitle ->
+                    settingSubTitleTextView.text = safeSubTitle
+                }
+                it.getDrawable(R.styleable.SettingsListItem_settingIcon)?.let { safeIcon ->
+                    settingIconImageView.setImageDrawable(safeIcon)
+                }
+                it.getResourceId(R.styleable.SettingsListItem_endViewLayoutResource, INVALID_RES_ID).takeIf { resId ->
+                    resId != INVALID_RES_ID
+                }?.run {
+                    endComponentViewStub.layoutResource = this
+                    endComponent = endComponentViewStub.inflate()
+                }
+            }
         }
     }
 
     private fun setLayoutAttributes() {
-        orientation = HORIZONTAL
-        gravity = CENTER_VERTICAL
-        minimumHeight = resources.getDimensionPixelOffset(R.dimen.settings_list_item_min_height)
+        minHeight = resources.getDimensionPixelOffset(R.dimen.settings_list_item_min_height)
+    }
+
+    companion object {
+        private const val INVALID_RES_ID = -1
     }
 }

@@ -63,6 +63,7 @@ class NodeSettingsFragment : DaggerBaseFragment(R.layout.fragment_node_settings)
 
     private fun initPreview(nodeSettingsPreview: NodeSettingsPreview) {
         with(nodeSettingsPreview) {
+            // TODO: block user back-press event while isLoading is true instead of displaying loading bar.
             binding.loadingLayout.root.isVisible = isLoading
             nodeAdapter.setNewList(nodeList)
         }

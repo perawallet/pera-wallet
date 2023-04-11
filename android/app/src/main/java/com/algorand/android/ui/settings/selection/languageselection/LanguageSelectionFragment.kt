@@ -23,6 +23,7 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.settings.selection.LanguageListItem
 import com.algorand.android.ui.settings.selection.SelectionAdapter
+import com.algorand.android.utils.extensions.capitalizeFirstChar
 import com.algorand.android.utils.supportedLanguages
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,7 +57,11 @@ class LanguageSelectionFragment : DaggerBaseFragment(R.layout.fragment_selection
         languageSelectionAdapter.setItems(
             supportedLanguages.map {
                 Locale(it).run {
-                    LanguageListItem(language, getDisplayLanguage(this).capitalize(), currentLocale == language)
+                    LanguageListItem(
+                        languageId = language,
+                        languageName = getDisplayLanguage(this).capitalizeFirstChar(),
+                        isSelected = currentLocale == language
+                    )
                 }
             }
         )

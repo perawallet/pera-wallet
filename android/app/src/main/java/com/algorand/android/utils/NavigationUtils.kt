@@ -41,9 +41,9 @@ fun BottomNavigationView.setupWithNavController(
     navController: NavController,
     onMenuItemClicked: (item: MenuItem) -> Unit
 ) {
-    setOnNavigationItemSelectedListener { item ->
+    setOnItemSelectedListener { item ->
         onMenuItemClicked(item)
-        return@setOnNavigationItemSelectedListener onNavDestinationChanged(item, navController)
+        return@setOnItemSelectedListener onNavDestinationChanged(item, navController)
     }
 }
 

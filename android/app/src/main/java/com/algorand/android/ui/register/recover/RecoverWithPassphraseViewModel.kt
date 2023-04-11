@@ -12,62 +12,78 @@
 
 package com.algorand.android.ui.register.recover
 
-import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
-import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.models.Account
-import com.algorand.android.utils.PassphraseKeywordUtils
+import com.algorand.android.customviews.passphraseinput.model.PassphraseInputGroupConfiguration
+import com.algorand.android.modules.recovery.recoverypassphrase.ui.model.RecoverWithPassphrasePreview
+import com.algorand.android.modules.recovery.recoverypassphrase.ui.usecase.RecoverWithPassphrasePreviewUseCase
 import com.algorand.android.utils.getOrElse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class RecoverWithPassphraseViewModel @Inject constructor(
-    private val accountManager: AccountManager,
+    private val recoverWithPassphrasePreviewUseCase: RecoverWithPassphrasePreviewUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    private val passphraseKeywordUtils = PassphraseKeywordUtils()
+    private val mnemonic: String? = savedStateHandle.getOrElse(MNEMONIC_KEY, null)
 
-    var mnemonic: String = savedStateHandle.getOrElse(MNEMONIC_KEY, "")
-    val newUpdateFlow = MutableSharedFlow<Pair<Int, String>>()
-    val validationFlow = MutableSharedFlow<Pair<Int, Boolean>>()
-    val suggestionWordsFlow = MutableStateFlow<Pair<Int, List<String>>>(Pair(0, listOf()))
+    private val _recoverWithPassphrasePreviewFlow = MutableStateFlow(createInitialPreview())
+    val recoverWithPassphrasePreviewFlow: StateFlow<RecoverWithPassphrasePreview>
+        get() = _recoverWithPassphrasePreviewFlow
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
-            newUpdateFlow.collect { (index, word) ->
-                onNewUpdate(index, word)
-            }
+        if (!mnemonic.isNullOrBlank()) {
+            onClipboardTextPasted(mnemonic)
         }
     }
 
-    private suspend fun onNewUpdate(index: Int, word: String) {
-        checkValidation(index, word)
-        handleKeywordSuggestor(index, word)
+    fun getInitialPassphraseInputGroupConfiguration(): PassphraseInputGroupConfiguration {
+        return _recoverWithPassphrasePreviewFlow.value.passphraseInputGroupConfiguration
     }
 
-    private fun handleKeywordSuggestor(index: Int, word: String) {
-        val suggestedWords = passphraseKeywordUtils.getSuggestedWords(SUGGESTED_WORD_COUNT, word)
-        suggestionWordsFlow.value = Pair(index, suggestedWords)
+    fun onFocusedInputChanged(value: String) {
+        _recoverWithPassphrasePreviewFlow.update { preview ->
+            recoverWithPassphrasePreviewUseCase.updatePreviewAfterFocusedInputChanged(
+                preview = preview,
+                word = value
+            )
+        }
     }
 
-    private suspend fun checkValidation(index: Int, word: String) {
-        validationFlow.emit(Pair(index, passphraseKeywordUtils.isWordInKeywords(word)))
+    fun onFocusedViewChanged(focusedItemOrder: Int) {
+        _recoverWithPassphrasePreviewFlow.update { preview ->
+            recoverWithPassphrasePreviewUseCase.updatePreviewAfterFocusChanged(
+                preview = preview,
+                focusedItemOrder = focusedItemOrder
+            )
+        }
     }
 
-    fun getAccountIfExist(publicKey: String): Account? {
-        return accountManager.getAccounts().find { account -> account.address == publicKey }
+    fun onClipboardTextPasted(clipboardData: String) {
+        _recoverWithPassphrasePreviewFlow.update { preview ->
+            recoverWithPassphrasePreviewUseCase.updatePreviewAfterPastingClipboardData(
+                preview = preview,
+                clipboardData = clipboardData
+            )
+        }
+    }
+
+    fun onRecoverButtonClick() {
+        _recoverWithPassphrasePreviewFlow.update {
+            recoverWithPassphrasePreviewUseCase.validateEnteredMnemonics(it)
+        }
+    }
+
+    private fun createInitialPreview(): RecoverWithPassphrasePreview {
+        return recoverWithPassphrasePreviewUseCase.getRecoverWithPassphraseInitialPreview()
     }
 
     companion object {
-        private const val SUGGESTED_WORD_COUNT = 3
         private const val MNEMONIC_KEY = "mnemonic"
     }
 }

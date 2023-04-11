@@ -227,9 +227,14 @@
 
     <!-- Discover -->
     <color name="discover_helper_purple">#AC8EFF</color>
+    <color name="discover_helper_purple_alpha_35">#59AC8EFF</color>
     <color name="discover_helper_text">#1A1A1A</color>
     <color name="discover_warning">#FF6E41</color>
 
     <color name="negative_market_value_background_color">@color/salmon_600_alpha_10</color>
     <color name="positive_market_value_background">@color/turquoise_500_alpha_24</color>
+
+    <!-- Notification -->
+    <color name="notification_icon_placeholder_tint_color">@color/gray_400</color>
+    <color name="notification_icon_placeholder_border_color">@color/gray_800</color>
 </resources>

@@ -69,7 +69,7 @@ abstract class BaseFragment(
         (activity as? CoreMainActivity)?.statusBarConfiguration = statusBarConfiguration
     }
 
-    private fun handleBottomBarVisibility(isBottomBarVisible: Boolean?) {
+    fun handleBottomBarVisibility(isBottomBarVisible: Boolean?) {
         if (isBottomBarVisible != null) {
             (activity as? CoreMainActivity)?.isBottomBarNavigationVisible = isBottomBarVisible
             if (isBottomBarVisible) {

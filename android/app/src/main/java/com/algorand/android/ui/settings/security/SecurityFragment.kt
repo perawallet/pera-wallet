@@ -32,6 +32,7 @@ import com.algorand.android.utils.showBiometricAuthentication
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
+import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,9 +50,15 @@ class SecurityFragment : DaggerBaseFragment(R.layout.fragment_security) {
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
+    private val biometricSwitch: SwitchMaterial?
+        get() = binding.enableFaceIDTouchIDListItem.getEndComponentViewStub()
+
+    private val pinCodeSwitch: SwitchMaterial?
+        get() = binding.enablePinCodeListItem.getEndComponentViewStub()
+
     private val isBiometricEnabledObserver = Observer<Boolean> { isChecked ->
         securityViewModel.setBiometricRegistrationPreference(isChecked)
-        binding.biometricSwitch.isChecked = isChecked
+        biometricSwitch?.isChecked = isChecked
     }
 
     private val isPasswordChosenObserver = Observer<Boolean> { isEnabled ->
@@ -87,17 +94,8 @@ class SecurityFragment : DaggerBaseFragment(R.layout.fragment_security) {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initSwitchChangeListeners() {
-        with(binding) {
-            biometricSwitch.setOnTouchListener { _, _ ->
-                onEnableBiometricCodeTouch()
-                true
-            }
-
-            pinCodeSwitch.setOnTouchListener { _, _ ->
-                onEnablePinCodeTouch()
-                true
-            }
-        }
+        biometricSwitch?.setOnTouchListener { _, _ -> onEnableBiometricCodeTouch(); true }
+        pinCodeSwitch?.setOnTouchListener { _, _ -> onEnablePinCodeTouch(); true }
     }
 
     private fun onEnableBiometricCodeTouch() {
@@ -175,7 +173,7 @@ class SecurityFragment : DaggerBaseFragment(R.layout.fragment_security) {
 
     private fun changeSecurityPreferencesGroupVisibility(isVisible: Boolean) {
         with(binding) {
-            pinCodeSwitch.isChecked = isVisible
+            pinCodeSwitch?.isChecked = isVisible
             securityPreferencesTextView.isVisible = isVisible
             setChangePasswordListItem.isVisible = isVisible
 

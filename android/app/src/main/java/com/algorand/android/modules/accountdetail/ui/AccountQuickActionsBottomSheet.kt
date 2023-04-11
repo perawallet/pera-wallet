@@ -54,7 +54,10 @@ class AccountQuickActionsBottomSheet : BaseBottomSheet(
 
     private fun initUi() {
         with(binding) {
-            buyAlgoButton.setOnClickListener { navToMoonpayNavigation() }
+            buySellButton.setOnClickListener {
+                // TODO add logging?
+                navToBuySellActionsBottomSheet()
+            }
             sendButton.setOnClickListener { navToGlobalSendAlgoNavigation() }
             receiveButton.setOnClickListener { navToShowQrFragment() }
             addNewAssetButton.setOnClickListener { navToAddAssetFragment() }
@@ -76,10 +79,10 @@ class AccountQuickActionsBottomSheet : BaseBottomSheet(
         }
     }
 
-    private fun navToMoonpayNavigation() {
+    private fun navToBuySellActionsBottomSheet() {
         nav(
-            AccountQuickActionsBottomSheetDirections.actionAccountQuickActionsBottomSheetToMoonpayNavigation(
-                walletAddress = accountQuickActionsViewModel.accountAddress
+            AccountQuickActionsBottomSheetDirections.actionAccountQuickActionsBottomSheetToBuySellActionsBottomSheet(
+                accountAddress = accountQuickActionsViewModel.accountAddress
             )
         )
     }

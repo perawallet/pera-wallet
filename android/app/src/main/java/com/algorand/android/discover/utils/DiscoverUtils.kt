@@ -22,10 +22,12 @@ private const val WEBVIEW_AUTH_PASSWORD = BuildConfig.DISCOVER_WEBVIEW_PASSWORD
 private const val WEBVIEW_AUTH_HEADER_NAME = "Authorization"
 private const val WEBVIEW_AUTH_HEADER_PREFIX = "Basic "
 
+val regexPatternPeraURL = """^https://([\da-z-]+\.)*(?<!web\.)perawallet\.app((?:/.*)?|(?:\?.*)?|(?:#.*)?)""".toRegex()
+
 fun getDiscoverHomeUrl(
     themePreference: WebViewTheme,
     currency: String,
-    locale: String
+    locale: String,
 ): String {
     return DiscoverUrlBuilder.create()
         .addTheme(themePreference)
@@ -41,7 +43,7 @@ fun getDiscoverTokenDetailUrl(
     tokenId: String,
     poolId: String?,
     currency: String,
-    locale: String
+    locale: String,
 ): String {
     return DiscoverUrlBuilder.create()
         .addTheme(themePreference)
@@ -57,7 +59,7 @@ fun getDiscoverNewScreenUrl(
     url: String,
     themePreference: WebViewTheme,
     currency: String,
-    locale: String
+    locale: String,
 ): String {
     return DiscoverUrlBuilder.create(url)
         .addTheme(themePreference)
@@ -72,8 +74,12 @@ fun getDiscoverAuthHeader(): HashMap<String, String> {
     val headers: HashMap<String, String> = HashMap()
     val basicAuthHeader = Base64.encodeToString(
         (WEBVIEW_AUTH_USERNAME + WEBVIEW_AUTH_SEPARATOR + WEBVIEW_AUTH_PASSWORD).toByteArray(),
-        Base64.NO_WRAP
+        Base64.NO_WRAP,
     )
     headers[WEBVIEW_AUTH_HEADER_NAME] = WEBVIEW_AUTH_HEADER_PREFIX + basicAuthHeader
     return headers
+}
+
+fun isValidDiscoverURL(url: String): Boolean {
+    return url.matches(regexPatternPeraURL)
 }

@@ -12,14 +12,13 @@
 
 package com.algorand.android.modules.swap.utils
 
-import com.algorand.android.models.Account
 import com.algorand.android.modules.swap.introduction.domain.usecase.IsSwapFeatureIntroductionPageShownUseCase
 import com.algorand.android.modules.swap.reddot.domain.usecase.SetSwapFeatureRedDotVisibilityUseCase
 import com.algorand.android.usecase.GetLocalAccountsUseCase
 import javax.inject.Inject
 
 class SwapNavigationDestinationHelper @Inject constructor(
-    private val accountsUseCase: GetLocalAccountsUseCase,
+    private val getLocalAccountsUseCase: GetLocalAccountsUseCase,
     isSwapFeatureIntroductionPageShownUseCase: IsSwapFeatureIntroductionPageShownUseCase,
     setSwapFeatureRedDotVisibilityUseCase: SetSwapFeatureRedDotVisibilityUseCase
 ) : BaseSwapNavigationDestinationHelper(
@@ -49,18 +48,12 @@ class SwapNavigationDestinationHelper @Inject constructor(
         if (accountAddress != null) {
             onNavToSwap(accountAddress)
         } else {
-            val authorizedAccounts = getAccountsThatCanSignTransaction()
+            val authorizedAccounts = getLocalAccountsUseCase.getLocalAccountsThatCanSignTransaction()
             if (authorizedAccounts.size == 1) {
                 onNavToSwap(authorizedAccounts.first().address)
             } else {
                 onNavToAccountSelection?.invoke()
             }
-        }
-    }
-
-    private fun getAccountsThatCanSignTransaction(): List<Account> {
-        return accountsUseCase.getLocalAccountsFromAccountManagerCache().filter {
-            it.canSignTransaction()
         }
     }
 }

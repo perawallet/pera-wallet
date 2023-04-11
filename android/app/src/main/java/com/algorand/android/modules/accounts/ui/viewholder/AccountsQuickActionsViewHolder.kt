@@ -26,7 +26,7 @@ class AccountsQuickActionsViewHolder(
     override fun bind(item: BaseAccountListItem) {
         if (item !is BaseAccountListItem.QuickActionsItem) return
         with(binding) {
-            buyAlgoButton.setOnClickListener { listener.onBuyAlgoClick() }
+            buySellButton.setOnClickListener { listener.onBuySellClick() }
             sendButton.setOnClickListener { listener.onSendClick() }
             swapButton.apply {
                 isSelected = item.isSwapButtonSelected
@@ -37,7 +37,7 @@ class AccountsQuickActionsViewHolder(
     }
 
     interface AccountsQuickActionsListener {
-        fun onBuyAlgoClick()
+        fun onBuySellClick()
         fun onSendClick()
         fun onSwapClick()
         fun onScanQrClick()

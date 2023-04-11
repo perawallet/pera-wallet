@@ -12,40 +12,32 @@
 
 package com.algorand.android.utils.coremanager
 
-import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.modules.fetchnameservices.domain.usecase.FetchGivenAccountsNameServicesUseCase
 import com.algorand.android.modules.fetchnameservices.domain.usecase.SetGivenAccountsNameServicesNameUseCase
 import com.algorand.android.modules.firebase.token.FirebaseTokenManager
+import com.algorand.android.modules.firebase.token.model.FirebaseTokenResult
 import com.algorand.android.usecase.AccountCacheStatusUseCase
 import com.algorand.android.usecase.GetLocalAccountsUseCase
 import com.algorand.android.utils.DataResource
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 /**
  * Helper class to manage local accounts name services continuously.
- * Should be provided by Hilt as Singleton
  */
-class LocalAccountsNameServiceManager(
-    private var firebaseTokenManager: FirebaseTokenManager,
+@Singleton
+class LocalAccountsNameServiceManager @Inject constructor(
+    private val firebaseTokenManager: FirebaseTokenManager,
     private val getLocalAccountsUseCase: GetLocalAccountsUseCase,
     private val fetchGivenAccountsNameServicesUseCase: FetchGivenAccountsNameServicesUseCase,
     private val setGivenAccountsNameServicesNameUseCase: SetGivenAccountsNameServicesNameUseCase,
     private val accountCacheStatusUseCase: AccountCacheStatusUseCase
 ) : BaseCacheManager() {
-
-    private val localAccountsCollector: (List<Account>) -> Unit = {
-        if (it.isNotEmpty()) startJob() else stopCurrentJob()
-    }
-
-    private val nodeSwitchCollector: (DataResource<Unit>?) -> Unit = {
-        val localAccounts = getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache()
-        if (it is DataResource.Success && localAccounts.isNotEmpty()) startJob()
-    }
 
     override suspend fun initialize(coroutineScope: CoroutineScope) {
         initObservers()
@@ -60,8 +52,16 @@ class LocalAccountsNameServiceManager(
     }
 
     private suspend fun initObservers() {
-        getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCacheAsFlow().collectLatest(localAccountsCollector)
-        firebaseTokenManager.firebasePushTokenStatusFlow.collectLatest(nodeSwitchCollector)
+        combine(
+            getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCacheAsFlow(),
+            firebaseTokenManager.firebaseTokenResultFlow
+        ) { localAccounts, firebaseTokenResult ->
+            if (localAccounts.isNotEmpty() && firebaseTokenResult is FirebaseTokenResult.TokenLoaded) {
+                startJob()
+            } else {
+                stopCurrentJob()
+            }
+        }.collect()
     }
 
     private suspend fun updateLocalAccountNameServices() {

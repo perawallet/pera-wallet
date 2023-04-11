@@ -22,19 +22,19 @@
     <androidx.constraintlayout.helper.widget.Flow
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="buyAlgoButton, swapButton, sendButton,moreButton"
+        app:constraint_referenced_ids="buySellButton, swapButton, sendButton,moreButton"
         app:flow_maxElementsWrap="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/buyAlgoButton"
+        android:id="@+id/buySellButton"
         style="@style/IconButton.Transparent.QuickAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/buy_algo"
-        app:icon="@drawable/ic_algo_quick_action_button" />
+        android:text="@string/buy_sell"
+        app:icon="@drawable/ic_buy_sell" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/swapButton"

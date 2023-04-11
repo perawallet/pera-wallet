@@ -78,7 +78,7 @@ class WebImportAccountDecryptionUseCase @Inject constructor(
         } ?: return Result.Error(DecryptionException(null))
     }
 
-    private fun handleDecryptionResult(result: Result<String>): DataResource<ImportedAccountResult> {
+    private suspend fun handleDecryptionResult(result: Result<String>): DataResource<ImportedAccountResult> {
         when (result) {
             is Result.Success -> {
                 val elements = gson.fromJson<List<BackupTransferAccountElement>>(result.data)
@@ -114,7 +114,7 @@ class WebImportAccountDecryptionUseCase @Inject constructor(
             sameAccount.type != Account.Type.WATCH
     }
 
-    private fun addNewAccount(account: Account, creationType: CreationType? = CreationType.RECOVER) {
+    private suspend fun addNewAccount(account: Account, creationType: CreationType? = CreationType.RECOVER) {
         accountAdditionUseCase.addNewAccount(account, creationType)
     }
 

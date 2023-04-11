@@ -557,9 +557,7 @@
     <string name="transfer">転送</string>
     <string name="send_your_nft">NFTを送信する</string>
     <string name="paste_an_algorand_wallet_address">Algorandウォレットアドレスを貼り付ける</string>
-    <string name="ask_recipient_to">受信者にオプトインをリクエストする</string>
     <string name="you_cant_send">このウォレットはまだこの資産をオプトインしていないため、<annotation replacement="nft_name">NFTNamePlaceHolder</annotation>を<annotation replacement="wallet_address">walletAddressPlaceholder</annotation>に送信できません。<annotation font="dmsans_medium"><annotation custom="learn_more">オプトインについて詳しく知る</annotation></annotation></string>
-    <string name="request_opt_in">オプトインをリクエスト</string>
     <string name="information_about_opt">オプトインに関する情報</string>
     <string name="to_avoid_spammy">スパム的なトランザクションを避けるため、Algorand Blockchainでは事前にオプトインされた資産のみ、トランザクションの送受信が可能です。</string>
     <string name="search_or_enter_wallet_address">検索またはウォレットアドレスを入力</string>

@@ -12,7 +12,6 @@
 
 package com.algorand.android.ui.wcrawtransaction
 
-import javax.inject.Inject
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.DecodedWalletConnectTransactionRequest
 import com.algorand.android.models.WCAlgoTransactionRequest
@@ -20,10 +19,10 @@ import com.algorand.android.models.WalletConnectRawTransaction
 import com.algorand.android.models.WalletConnectTransactionAssetDetail
 import com.algorand.android.models.WalletConnectTransactionRequest
 import com.algorand.android.utils.decodeBase64DecodedMsgPackToJsonString
-import com.algorand.android.utils.getBase64DecodedPublicKey
 import com.algorand.android.utils.getFormattedJsonArrayString
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @HiltViewModel
 class WalletConnectRawMessageViewModel @Inject constructor(
@@ -36,8 +35,8 @@ class WalletConnectRawMessageViewModel @Inject constructor(
             WalletConnectTransactionRequest::class.java
         )
         val decodedTransaction = DecodedWalletConnectTransactionRequest.create(transaction)
-        val decodedSignerList = txnRequest.signers?.mapNotNull { getBase64DecodedPublicKey(it) }
-        val rawTxn = WalletConnectRawTransaction(decodedTransaction, decodedSignerList)
+        val signerAccountList = txnRequest.signers
+        val rawTxn = WalletConnectRawTransaction(decodedTransaction, signerAccountList)
         return getFormattedJsonArrayString(gson.toJson(rawTxn))
     }
 

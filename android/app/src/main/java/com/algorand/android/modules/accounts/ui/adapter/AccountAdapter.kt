@@ -86,8 +86,8 @@ class AccountAdapter(
     }
 
     private val accountsQuickActionsListener = object : AccountsQuickActionsViewHolder.AccountsQuickActionsListener {
-        override fun onBuyAlgoClick() {
-            accountAdapterListener.onBuyAlgoClick()
+        override fun onBuySellClick() {
+            accountAdapterListener.onBuySellClick()
         }
 
         override fun onSendClick() {
@@ -129,7 +129,7 @@ class AccountAdapter(
         fun onAccountItemLongPressed(publicKey: String)
         fun onBannerCloseButtonClick(bannerId: Long)
         fun onBannerActionButtonClick(url: String, isGovernance: Boolean)
-        fun onBuyAlgoClick()
+        fun onBuySellClick()
         fun onSendClick()
         fun onSwapClick()
         fun onScanQrClick()

@@ -46,6 +46,10 @@ abstract class BasePeraWebViewFragment(
             return basePeraWebViewViewModel.onPageRequestedShouldOverrideUrlLoading(url)
         }
 
+        override fun onPageStarted() {
+            basePeraWebViewViewModel.onPageStarted()
+        }
+
         override fun onPageFinished(title: String?, url: String?) {
             basePeraWebViewViewModel.onPageFinished(title, url)
         }
@@ -76,6 +80,7 @@ abstract class BasePeraWebViewFragment(
             reloadWebView(view, previousWebView)
             bindWebView(view)
         } ?: bindWebView(view)
+        getWebView(binding.root)?.let { basePeraWebViewViewModel.saveWebView(it) }
         return view
     }
 

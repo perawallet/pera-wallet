@@ -17,19 +17,14 @@ import com.algorand.android.modules.accountblockpolling.domain.usecase.ClearLast
 import com.algorand.android.modules.accountblockpolling.domain.usecase.GetResultWhetherAccountsUpdateIsRequiredUseCase
 import com.algorand.android.modules.accountblockpolling.domain.usecase.UpdateLastKnownBlockUseCase
 import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
-import com.algorand.android.modules.fetchnameservices.domain.usecase.FetchGivenAccountsNameServicesUseCase
-import com.algorand.android.modules.fetchnameservices.domain.usecase.SetGivenAccountsNameServicesNameUseCase
-import com.algorand.android.modules.firebase.token.FirebaseTokenManager
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.usecase.AccountCacheStatusUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.AssetFetchAndCacheUseCase
-import com.algorand.android.usecase.GetLocalAccountsUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.AccountDetailUpdateHelper
 import com.algorand.android.utils.coremanager.AccountDetailCacheManager
 import com.algorand.android.utils.coremanager.AssetCacheManager
-import com.algorand.android.utils.coremanager.LocalAccountsNameServiceManager
 import com.algorand.android.utils.coremanager.ParityManager
 import dagger.Module
 import dagger.Provides
@@ -83,24 +78,6 @@ object ManagerModule {
             simpleAssetDetailUseCase,
             accountDetailUseCase,
             assetFetchAndCacheUseCase
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideLocalAccountsNameServiceManager(
-        firebaseTokenManager: FirebaseTokenManager,
-        getLocalAccountsUseCase: GetLocalAccountsUseCase,
-        fetchGivenAccountsNameServicesUseCase: FetchGivenAccountsNameServicesUseCase,
-        setGivenAccountsNameServicesNameUseCase: SetGivenAccountsNameServicesNameUseCase,
-        accountCacheStatusUseCase: AccountCacheStatusUseCase
-    ): LocalAccountsNameServiceManager {
-        return LocalAccountsNameServiceManager(
-            firebaseTokenManager,
-            getLocalAccountsUseCase,
-            fetchGivenAccountsNameServicesUseCase,
-            setGivenAccountsNameServicesNameUseCase,
-            accountCacheStatusUseCase
         )
     }
 }

@@ -34,6 +34,7 @@ import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem.He
 import com.algorand.android.modules.accounts.domain.model.BasePortfolioValueItem
 import com.algorand.android.modules.accounts.ui.AccountsFragmentDirections
 import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
+import com.algorand.android.modules.notification.domain.usecase.NotificationStatusUseCase
 import com.algorand.android.modules.parity.domain.model.SelectedCurrencyDetail
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
@@ -42,6 +43,7 @@ import com.algorand.android.modules.swap.reddot.domain.usecase.GetSwapFeatureRed
 import com.algorand.android.modules.swap.utils.SwapNavigationDestinationHelper
 import com.algorand.android.modules.tutorialdialog.data.model.Tutorial
 import com.algorand.android.modules.tutorialdialog.data.model.Tutorial.ACCOUNT_ADDRESS_COPY
+import com.algorand.android.modules.tutorialdialog.data.model.Tutorial.GIFT_CARDS
 import com.algorand.android.modules.tutorialdialog.data.model.Tutorial.SWAP
 import com.algorand.android.modules.tutorialdialog.domain.usecase.TutorialUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
@@ -149,6 +151,14 @@ class AccountsPreviewUseCase @Inject constructor(
         } ?: previousState
     }
 
+    fun getGiftCardsNavigationUpdatedPreview(previousState: AccountPreview): AccountPreview {
+        return previousState.copy(
+            giftCardsNavigationDestinationEvent = Event(
+                AccountsFragmentDirections.actionAccountsFragmentToBidaliNavigation()
+            )
+        )
+    }
+
     private suspend fun getAlgoPriceErrorState(
         selectedCurrencyDetailCache: CacheResult.Error<SelectedCurrencyDetail>?,
         previousState: AccountPreview,
@@ -237,7 +247,9 @@ class AccountsPreviewUseCase @Inject constructor(
             } else {
                 portfolioValueItemMapper.mapToPortfolioValuesErrorItem()
             }
-
+            val giftCardsTutorialDisplayEvent = with(tutorial) {
+                if (this == GIFT_CARDS) Event(id) else null
+            }
             val swapTutorialDisplayEvent = with(tutorial) {
                 if (this == SWAP) Event(id) else null
             }
@@ -252,6 +264,7 @@ class AccountsPreviewUseCase @Inject constructor(
                 hasNewNotification = hasNewNotification,
                 onSwapTutorialDisplayEvent = swapTutorialDisplayEvent,
                 onAccountAddressCopyTutorialDisplayEvent = accountAddressCopyDisplayEvent,
+                onGiftCardsTutorialDisplayEvent = giftCardsTutorialDisplayEvent
             )
         }
     }

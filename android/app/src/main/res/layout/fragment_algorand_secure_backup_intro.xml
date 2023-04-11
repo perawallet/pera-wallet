@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".modules.asb.createbackup.intro.ui.AsbIntroFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xxxsmall"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingHorizontal="@dimen/spacing_xlarge"
+        android:paddingBottom="@dimen/bottom_fade_gradient_height">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/algorand_secure_n_backup"
+                android:textAppearance="@style/TextAppearance.Title.Sans.Medium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:text="@string/backup_your_accounts_using"
+                android:textAppearance="@style/TextAppearance.Body.Sans"
+                android:textColor="@color/text_gray" />
+
+            <com.algorand.android.customviews.NumberedListItemView
+                android:id="@+id/firstInstructionListItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxxxlarge"
+                app:description="@string/select_one_some_or_all"
+                app:descriptionTextAppearance="@style/TextAppearance.Footnote.Sans"
+                app:numeratorText="1"
+                app:title="@string/select_your_accounts"
+                app:titleTextAppearance="@style/TextAppearance.Body.Sans.Medium" />
+
+            <com.algorand.android.customviews.NumberedListItemView
+                android:id="@+id/secondInstructionListItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                app:description="@string/record_or_save_your_12"
+                app:descriptionTextAppearance="@style/TextAppearance.Footnote.Sans"
+                app:numeratorText="2"
+                app:title="@string/store_your_12_word_key"
+                app:titleTextAppearance="@style/TextAppearance.Body.Sans.Medium" />
+
+            <com.algorand.android.customviews.NumberedListItemView
+                android:id="@+id/thirdInstructionListItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                app:description="@string/download_your_backup_to"
+                app:descriptionTextAppearance="@style/TextAppearance.Footnote.Sans"
+                app:numeratorText="3"
+                app:title="@string/save_your_backup_file"
+                app:titleTextAppearance="@style/TextAppearance.Body.Sans.Medium" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <View
+        style="@style/BottomFadeGradient"
+        android:layout_gravity="bottom" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/startButton"
+        style="@style/Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        android:text="@string/start" />
+
+</FrameLayout>

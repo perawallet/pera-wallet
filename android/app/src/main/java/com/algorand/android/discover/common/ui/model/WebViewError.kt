@@ -12,6 +12,7 @@
 
 package com.algorand.android.discover.common.ui.model
 
+// TODO maybe refactor this in a different folder than discover as more parts use this (onramp)
 enum class WebViewError {
     NO_CONNECTION,
     HTTP_ERROR

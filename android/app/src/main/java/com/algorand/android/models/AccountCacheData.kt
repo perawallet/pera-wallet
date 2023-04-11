@@ -16,7 +16,7 @@ import android.os.Parcelable
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.calculateMinBalance
 import com.algorand.android.utils.isRekeyedToAnotherAccount
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AccountCacheData(

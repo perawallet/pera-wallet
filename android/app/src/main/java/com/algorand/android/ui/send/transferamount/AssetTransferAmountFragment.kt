@@ -256,7 +256,7 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
     ) {
         binding.algorandApproximateValueTextView.apply {
             isVisible = isAmountInSelectedCurrencyVisible
-            text = getString(R.string.approximate_currency_value, formattedCurrencyValue)
+            text = formattedCurrencyValue.orEmpty()
         }
     }
 

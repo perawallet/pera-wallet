@@ -18,11 +18,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.algorand.android.BuildConfig
-import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
-import com.algorand.android.core.BackPressedControllerComponent
-import com.algorand.android.core.BottomNavigationBackPressedDelegate
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentSettingsBinding
 import com.algorand.android.models.AnnotatedString
@@ -32,6 +29,9 @@ import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBot
 import com.algorand.android.utils.browser.openPrivacyPolicyUrl
 import com.algorand.android.utils.browser.openSupportCenterUrl
 import com.algorand.android.utils.browser.openTermsAndServicesUrl
+import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegation
+import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegationImpl
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -39,10 +39,11 @@ import com.google.crypto.tink.Aead
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings),
-    BackPressedControllerComponent by BottomNavigationBackPressedDelegate() {
+    BottomNavBarFragmentDelegation by BottomNavBarFragmentDelegationImpl() {
 
     @Inject
     lateinit var aead: Aead
@@ -54,14 +55,25 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings),
 
     private val binding by viewBinding(FragmentSettingsBinding::bind)
 
-    override val fragmentConfiguration = FragmentConfiguration(
-        isBottomBarNeeded = true
-    )
+    override val fragmentConfiguration = FragmentConfiguration(isBottomBarNeeded = true)
+
+    private val algorandSecureBackupDescriptionVisibilityCollector: suspend (Boolean?) -> Unit = { isVisible ->
+        binding.algorandSecureBackupListItem.updateSubTitleVisibility(isVisible == true)
+    }
+
+    private val notBackedUpAccountCountsCollector: suspend (Int?) -> Unit = { notBackedUpAccountCount ->
+        binding.algorandSecureBackupListItem.updateSubTitle(getString(R.string.not_backed_up, notBackedUpAccountCount))
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        registerBottomNavBarFragmentDelegation(this)
         initDialogSavedStateListener()
-        (activity as? CoreMainActivity)?.let { initBackPressedControllerComponent(it, viewLifecycleOwner) }
+        initObservers()
+        initUi()
+    }
+
+    private fun initUi() {
         with(binding) {
             securityListItem.setOnClickListener { onSecurityClick() }
             contactsListItem.setOnClickListener { onContactsClick() }
@@ -76,8 +88,27 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings),
             privacyPolicyListItem.setOnClickListener { onPrivacyPolicyClick() }
             developerListItem.setOnClickListener { onDeveloperSettingsClick() }
             logoutButton.setOnClickListener { onLogoutClick() }
+            algorandSecureBackupListItem.setOnClickListener { onAlgorandSecureBackupClick() }
             versionCodeTextView.text = getString(R.string.version_format, BuildConfig.VERSION_NAME)
         }
+    }
+
+    private fun initObservers() {
+        with(settingsViewModel.settingsPreviewFlow) {
+            collectLatestOnLifecycle(
+                flow = map { it?.isAlgorandSecureBackupDescriptionVisible },
+                collection = algorandSecureBackupDescriptionVisibilityCollector
+            )
+            collectLatestOnLifecycle(
+                flow = map { it?.notBackedUpAccountCounts },
+                collection = notBackedUpAccountCountsCollector
+            )
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initDialogSavedStateListener()
     }
 
     private fun onContactsClick() {
@@ -159,5 +190,9 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings),
 
     private fun onPrivacyPolicyClick() {
         context?.openPrivacyPolicyUrl()
+    }
+
+    private fun onAlgorandSecureBackupClick() {
+        nav(SettingsFragmentDirections.actionSettingsFragmentToAsbCreationNavigation())
     }
 }

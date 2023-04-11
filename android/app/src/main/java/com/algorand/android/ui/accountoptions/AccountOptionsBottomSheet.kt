@@ -178,7 +178,7 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
     private fun setupCopyButton() {
         with(binding) {
             copyAddressLayout.setOnClickListener {
-                val accountAddress = accountOptionsViewModel.getAccountAddress() ?: return@setOnClickListener
+                val accountAddress = accountOptionsViewModel.getAccountAddress()
                 onAccountAddressCopied(accountAddress)
                 navBack()
             }
@@ -192,9 +192,5 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
 
     private fun navToViewPassphraseBottomSheet() {
         nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToViewPassphraseNavigation(publicKey))
-    }
-
-    companion object {
-        private const val ADDRESS_COPY_LABEL = "address"
     }
 }

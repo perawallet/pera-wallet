@@ -13,20 +13,22 @@
 package com.algorand.android.utils
 
 @SuppressWarnings("LargeClass")
-class PassphraseKeywordUtils {
+object PassphraseKeywordUtils {
+    const val ACCOUNT_PASSPHRASES_WORD_COUNT = 25
+    const val SUGGESTED_WORD_COUNT = 3
 
     fun getSuggestedWords(wordCount: Int, prefix: String): List<String> {
         if (prefix.isEmpty()) {
             return listOf()
         }
-        return words.asSequence().filter { it.startsWith(prefix) }.take(wordCount).toList()
+        return predefinedWords.asSequence().filter { it.startsWith(prefix) }.take(wordCount).toList()
     }
 
     fun isWordInKeywords(word: String): Boolean {
-        return words.binarySearch(word) >= 0
+        return predefinedWords.binarySearch(word) >= 0
     }
 
-    val words = listOf(
+    private val predefinedWords = listOf(
         "abandon",
         "ability",
         "able",

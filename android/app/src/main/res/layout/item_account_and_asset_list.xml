@@ -161,6 +161,7 @@
         android:layout_marginEnd="@dimen/spacing_small"
         android:gravity="center"
         android:visibility="gone"
+        app:cornerRadius="@dimen/action_button_corner_radius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/progressBar"
         app:layout_constraintTop_toTopOf="parent"

@@ -14,13 +14,21 @@ package com.algorand.android.discover.urlviewer.ui.usecase
 
 import android.content.SharedPreferences
 import com.algorand.android.discover.common.ui.model.WebViewError
+import com.algorand.android.discover.home.domain.model.DappInfo
+import com.algorand.android.discover.home.domain.model.UrlElement
+import com.algorand.android.discover.home.ui.mapper.DiscoverDappFavoritesMapper
+import com.algorand.android.discover.urlviewer.ui.DiscoverUrlViewerFragmentDirections
 import com.algorand.android.discover.urlviewer.ui.model.DiscoverUrlViewerPreview
+import com.algorand.android.discover.utils.isValidDiscoverURL
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.preference.getSavedThemePreference
+import com.google.gson.Gson
 import javax.inject.Inject
 
 class DiscoverUrlViewerPreviewUseCase @Inject constructor(
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
+    private val discoverDappFavoritesMapper: DiscoverDappFavoritesMapper,
+    private val gson: Gson
 ) {
 
     fun getInitialStatePreview(
@@ -53,4 +61,43 @@ class DiscoverUrlViewerPreviewUseCase @Inject constructor(
         isLoading = false,
         loadingErrorEvent = Event(WebViewError.HTTP_ERROR)
     )
+
+    fun pushNewScreen(
+        data: String,
+        previousState: DiscoverUrlViewerPreview
+    ): DiscoverUrlViewerPreview {
+        val newUrl = gson.fromJson(data, UrlElement::class.java).url
+        return if (newUrl?.let { isValidDiscoverURL(it) } == true) {
+            previousState.copy(
+                isLoading = true,
+                reloadPageEvent = Event(Unit),
+                url = newUrl
+            )
+        } else {
+            previousState
+        }
+    }
+
+    fun pushDappViewerScreen(
+        data: String,
+        previousState: DiscoverUrlViewerPreview
+    ): DiscoverUrlViewerPreview {
+        val dappInfo = gson.fromJson(data, DappInfo::class.java)
+        return if (!dappInfo.url.isNullOrBlank()) {
+            previousState.copy(
+                dappViewerScreenRequestEvent = Event(
+                    DiscoverUrlViewerFragmentDirections
+                        .actionDiscoverUrlViewerFragmentToDiscoverDappFragment(
+                            dappUrl = dappInfo.url,
+                            dappTitle = dappInfo.name.orEmpty(),
+                            favorites = dappInfo.favorites?.map {
+                                discoverDappFavoritesMapper.mapToDappFavoriteElement(it)
+                            }?.toTypedArray() ?: emptyArray()
+                        )
+                )
+            )
+        } else {
+            previousState
+        }
+    }
 }

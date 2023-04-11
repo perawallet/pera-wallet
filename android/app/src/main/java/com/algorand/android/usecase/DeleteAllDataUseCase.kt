@@ -26,7 +26,7 @@ class DeleteAllDataUseCase @Inject constructor(
     private val coreCacheUseCase: CoreCacheUseCase,
     private val bannersUseCase: BannersUseCase
 ) {
-    suspend fun deleteAllData(notificationManager: NotificationManager?, onDeletionCompleted: (() -> Unit)) {
+    suspend fun deleteAllData(notificationManager: NotificationManager?, onDeletionCompleted: suspend (() -> Unit)) {
         accountManager.removeAllData()
         contactRepository.deleteAllContacts()
         walletConnectManager.killAllSessions()

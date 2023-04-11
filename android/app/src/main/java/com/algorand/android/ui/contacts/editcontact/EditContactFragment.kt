@@ -91,6 +91,10 @@ class EditContactFragment : BaseAddEditContactFragment() {
         nav(EditContactFragmentDirections.actionEditContactFragmentToEditContactQrScannerFragment())
     }
 
+    override fun onImeOptionDoneClicked() {
+        onContactEdit()
+    }
+
     override fun setToolbar(customToolbar: CustomToolbar?) {
         customToolbar?.setEndButton(button = TextButton(R.string.done, onClick = ::onContactEdit))
     }

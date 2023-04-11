@@ -12,7 +12,6 @@
 
 package com.algorand.android.customviews.alertview.ui
 
-import com.algorand.android.customviews.alertview.ui.usecase.GetTitleForAlertNotificationUseCase
 import com.algorand.android.models.AlertMetadata
 import com.algorand.android.models.NotificationMetadata
 import java.util.ArrayDeque
@@ -25,9 +24,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Singleton
-class AlertDialogQueueManager @Inject constructor(
-    private val getTitleForAlertNotificationUseCase: GetTitleForAlertNotificationUseCase
-) {
+class AlertDialogQueueManager @Inject constructor() {
 
     private val alertQueue = ArrayDeque<AlertMetadata>()
 
@@ -67,7 +64,7 @@ class AlertDialogQueueManager @Inject constructor(
         )
     }
 
-    suspend fun addAlertNotification(
+    fun addAlertNotification(
         notificationMetadata: NotificationMetadata,
         title: String? = null,
         description: String? = null,
@@ -75,7 +72,7 @@ class AlertDialogQueueManager @Inject constructor(
     ) {
         addAlert(
             AlertMetadata.AlertNotification(
-                title = title ?: getTitleForAlertNotificationUseCase.invoke(notificationMetadata),
+                title = title ?: notificationMetadata.alertMessage,
                 description = description,
                 metadata = notificationMetadata,
                 tag = tag
@@ -114,6 +111,9 @@ class AlertDialogQueueManager @Inject constructor(
     }
 
     private fun addAlert(alertMetadata: AlertMetadata) {
+        val isThereAnySameAlert = alertQueue.any { it.hashCode() == alertMetadata.hashCode() }
+        if (isThereAnySameAlert) return
+
         alertQueue.add(alertMetadata)
         if (!isAlertShown) {
             showNextAlert()

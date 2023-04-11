@@ -19,20 +19,6 @@ import android.graphics.Point
 import android.view.View
 import android.view.WindowManager
 
-fun Activity.switchToFullScreen() {
-    var flags: Int = window.decorView.systemUiVisibility
-    flags = flags xor
-        (View.SYSTEM_UI_FLAG_VISIBLE or (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN))
-    this.window.decorView.systemUiVisibility = flags
-}
-
-fun Activity.switchToNonFullscreen() {
-    var flags: Int = window.decorView.systemUiVisibility
-    flags = flags xor
-        ((View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN) or View.SYSTEM_UI_FLAG_VISIBLE)
-    this.window.decorView.systemUiVisibility = flags
-}
-
 fun Activity.showDarkStatusBarIcons() {
     var flags: Int = window.decorView.systemUiVisibility // get current flag
     flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR // add LIGHT_STATUS_BAR to flag

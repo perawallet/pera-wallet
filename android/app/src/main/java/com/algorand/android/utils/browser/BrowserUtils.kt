@@ -43,7 +43,6 @@ private const val ALGO_EXPLORER_URL = "algoexplorer.io"
 private const val MARKET_PAGE_URL = "https://play.google.com/store/apps/details?id=com.algorand.android"
 private const val SUPPORT_CENTER_URL = "https://perawallet.app/support/"
 private const val TRANSACTION_INFO_URL = "https://perawallet.app/support/transactions/"
-private const val GOVERNANCE_URL = "https://governance.algorand.foundation/"
 private const val RECOVERY_PASSPHRASE_SUPPORT_URL = "https://perawallet.app/support/passphrase/"
 private const val WATCH_ACCOUNT_SUPPORT_URL = "https://perawallet.app/support/watch-accounts/"
 const val RECOVER_INFO_URL = "https://perawallet.app/support/recover-account/"
@@ -56,6 +55,7 @@ const val BASE_TWITTER_URL = "https://twitter.com/"
 private const val TINYMAN_TERMS_OF_SERVICE_URL = "https://tinyman.org/terms-of-service/"
 const val BLANK_URL = "about:blank"
 private const val TINYMAN_FAQ_PRICE_IMPACT_URL = "https://docs.tinyman.org/faq#what-is-a-price-impact"
+const val ASB_SUPPORT_URL = "https://perawallet.app/support/asb"
 
 const val HTTPS_PROTOCOL = "https://"
 const val HTTP_PROTOCOL = "http://"
@@ -89,8 +89,8 @@ fun Context.openUrl(url: String) {
         CustomTabsIntent.Builder()
             .build()
             .launchUrl(this, Uri.parse(url))
-    } catch (activityNotFoundException: ActivityNotFoundException) {
-        recordException(activityNotFoundException)
+    } catch (runtimeException: RuntimeException) {
+        recordException(runtimeException)
     }
 }
 
@@ -135,15 +135,6 @@ fun Context.openApplicationPageOnStore() {
             Intent(ACTION_VIEW, Uri.parse(MARKET_PAGE_URL))
                 .apply { setPackage("com.android.vending") }
         )
-    } catch (activityNotFoundException: ActivityNotFoundException) {
-        recordException(activityNotFoundException)
-    }
-}
-
-fun Context.openAlgorandGovernancePage() {
-    try {
-        val intent = Intent(ACTION_VIEW, Uri.parse(GOVERNANCE_URL))
-        startActivity(intent)
     } catch (activityNotFoundException: ActivityNotFoundException) {
         recordException(activityNotFoundException)
     }

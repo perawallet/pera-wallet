@@ -14,13 +14,10 @@ package com.algorand.android.ui.rekey
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.modules.onboarding.rekeyledger.ui.model.RekeyLedgerAccountSelectionPreview
 import com.algorand.android.modules.onboarding.rekeyledger.ui.usecase.RekeyLedgerAccountSelectionPreviewUseCase
 import com.algorand.android.ui.ledgeraccountselection.LedgerAccountSelectionViewModel
-import com.algorand.android.utils.getOrElse
-import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -36,14 +33,14 @@ class RekeyLedgerAccountSelectionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : LedgerAccountSelectionViewModel(rekeyLedgerAccountSelectionPreviewUseCase) {
 
-    private val ledgerAccounts = savedStateHandle.getOrThrow<Array<AccountInformation>>(LEDGER_ACCOUNTS_INFORMATION_KEY)
-    private val ledgerBluetoothAddress = savedStateHandle.getOrThrow<String>(LEDGER_BLUETOOTH_ADDRESS_KEY)
-    val ledgerBluetoothName = savedStateHandle.getOrElse<String?>(LEDGER_BLUETOOTH_NAME_KEY, null)
-    val rekeyAddressKey = savedStateHandle.getOrThrow<String>(REKEY_ADDRESS_KEY)
+    private val args = RekeyLedgerAccountSelectionFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    private val _rekeyLedgerAccountSelectionPreviewFlow = MutableStateFlow<RekeyLedgerAccountSelectionPreview?>(
-        null
-    )
+    val ledgerBluetoothName: String?
+        get() = args.bluetoothName
+    val rekeyAddressKey: String
+        get() = args.rekeyAddress
+
+    private val _rekeyLedgerAccountSelectionPreviewFlow = MutableStateFlow<RekeyLedgerAccountSelectionPreview?>(null)
     val rekeyLedgerAccountSelectionPreviewFlow: StateFlow<RekeyLedgerAccountSelectionPreview?>
         get() = _rekeyLedgerAccountSelectionPreviewFlow
 
@@ -57,9 +54,9 @@ class RekeyLedgerAccountSelectionViewModel @Inject constructor(
     private fun getAccountSelectionListItems() {
         viewModelScope.launch(Dispatchers.IO) {
             rekeyLedgerAccountSelectionPreviewUseCase.getRekeyLedgerAccountSelectionPreview(
-                ledgerAccountsInformation = ledgerAccounts,
-                bluetoothAddress = ledgerBluetoothAddress,
-                bluetoothName = ledgerBluetoothName
+                ledgerAccountsInformation = args.ledgerAccountsInformation,
+                bluetoothAddress = args.bluetoothAddress,
+                bluetoothName = args.bluetoothName
             ).collectLatest { preview ->
                 _rekeyLedgerAccountSelectionPreviewFlow.emit(preview)
             }
@@ -73,12 +70,5 @@ class RekeyLedgerAccountSelectionViewModel @Inject constructor(
             accountItem = accountItem
         )
         _rekeyLedgerAccountSelectionPreviewFlow.update { updatedPreview }
-    }
-
-    companion object {
-        private const val LEDGER_ACCOUNTS_INFORMATION_KEY = "ledgerAccountsInformation"
-        private const val LEDGER_BLUETOOTH_NAME_KEY = "bluetoothName"
-        private const val LEDGER_BLUETOOTH_ADDRESS_KEY = "bluetoothAddress"
-        private const val REKEY_ADDRESS_KEY = "rekeyAddress"
     }
 }

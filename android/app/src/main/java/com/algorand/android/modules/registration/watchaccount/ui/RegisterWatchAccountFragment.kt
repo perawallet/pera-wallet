@@ -119,6 +119,7 @@ class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_regist
     private fun initSavedStateListeners() {
         startSavedStateListener(R.id.registerWatchAccountFragment) {
             useSavedStateValue<String>(ACCOUNT_ADDRESS_SCAN_RESULT_KEY) { accountAddress ->
+                binding.addressCustomInputLayout.text = accountAddress
                 registerWatchAccountViewModel.onAccountSelected(accountAddress)
             }
         }
@@ -151,6 +152,8 @@ class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_regist
                 text = registerWatchAccountViewModel.queriedAccountAddress
                 setOnTextChangeListener(registerWatchAccountViewModel::updateQueryFlow)
                 addTrailingIcon(R.drawable.ic_qr_scan, ::onScanQrClick)
+                setRawInputTypeText()
+                setImeOptionsDone { onNextClick() }
             }
             confirmationButton.setOnClickListener { onNextClick() }
         }

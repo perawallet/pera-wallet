@@ -163,8 +163,8 @@ class AccountDetailFragment :
         accountDetailViewModel.onAssetLongClick(nftId)
     }
 
-    override fun onBuyAlgoClick() {
-        navToMoonpayIntroFragment()
+    override fun onBuySellClick() {
+        navToBuySellActionsBottomSheet()
     }
 
     override fun onSendClick() {
@@ -336,8 +336,8 @@ class AccountDetailFragment :
         }
     }
 
-    private fun navToMoonpayIntroFragment() {
-        nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToMoonpayNavigation(args.publicKey))
+    private fun navToBuySellActionsBottomSheet() {
+        nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToBuySellActionsBottomSheet(args.publicKey))
     }
 
     private fun navToSendNavigation() {

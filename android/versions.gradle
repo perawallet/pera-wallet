@@ -1,8 +1,8 @@
 ext {
     targets = [
-            compileSdkVersion: 31,
+            compileSdkVersion: 33,
             minSdkVersion    : 24,
-            targetSdkVersion : 31
+            targetSdkVersion : 33
     ]
 
     application = [
@@ -52,8 +52,8 @@ ext {
     ]
 
     discoverVersions = [
-            staging: 2,
-            prod   : 2
+            staging: 4,
+            prod   : 4
     ]
 
     debugLibVersions = [

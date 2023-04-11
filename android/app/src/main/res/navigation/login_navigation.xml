@@ -26,6 +26,8 @@
 
     <include app:graph="@navigation/web_import_navigation" />
 
+    <include app:graph="@navigation/asb_import_navigation" />
+
     <action
         android:id="@+id/action_global_to_homeNavigation"
         app:destination="@id/homeNavigation"
@@ -144,6 +146,9 @@
         <action
             android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_webImportNavigation"
             app:destination="@id/webImportNavigation" />
+        <action
+            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_asbImportNavigation"
+            app:destination="@id/asbImportNavigation" />
     </fragment>
 
 

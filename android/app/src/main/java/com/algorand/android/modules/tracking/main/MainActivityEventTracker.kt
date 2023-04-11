@@ -23,10 +23,6 @@ class MainActivityEventTracker @Inject constructor(
     private val moonpayEventTracker: MoonpayEventTracker
 ) {
 
-    suspend fun logAlgoPriceTapEvent() {
-        bottomNavigationEventTracker.logAlgoPriceTapEvent()
-    }
-
     suspend fun logAccountsTapEvent() {
         bottomNavigationEventTracker.logAccountsTapEvent()
     }

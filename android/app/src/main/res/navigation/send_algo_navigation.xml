@@ -68,6 +68,11 @@
             app:argType="com.algorand.android.models.AssetTransaction"
             app:nullable="true" />
         <argument
+            android:name="transactionData"
+            android:defaultValue="@null"
+            app:argType="com.algorand.android.models.TransactionData$Send"
+            app:nullable="true" />
+        <argument
             android:name="shouldPopulateAmountWithMax"
             android:defaultValue="false"
             app:argType="boolean" />

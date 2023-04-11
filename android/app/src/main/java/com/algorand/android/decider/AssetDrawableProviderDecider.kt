@@ -39,8 +39,8 @@ class AssetDrawableProviderDecider @Inject constructor(
         return when {
             isAlgo -> createAlgoDrawableProvider()
             isCollectible -> createCollectibleDrawableProvider(assetId)
-            isAsset -> crateAssetDrawableProvider(assetId)
-            else -> crateAssetDrawableProvider(assetId)
+            isAsset -> createAssetDrawableProvider(assetId)
+            else -> createAssetDrawableProvider(assetId)
         }
     }
 
@@ -66,7 +66,7 @@ class AssetDrawableProviderDecider @Inject constructor(
         )
     }
 
-    private fun crateAssetDrawableProvider(assetId: Long): AssetDrawableProvider {
+    private fun createAssetDrawableProvider(assetId: Long): AssetDrawableProvider {
         val assetDetail = simpleAssetDetailUseCase.getCachedAssetDetail(assetId)?.data
         return AssetDrawableProvider(
             assetName = AssetName.create(assetDetail?.fullName),

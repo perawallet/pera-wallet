@@ -17,11 +17,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
-import com.algorand.android.modules.swap.confirmswap.domain.model.SwapQuoteTransaction
 import com.algorand.android.modules.swap.transactionstatus.ui.model.SwapTransactionStatusPreview
 import com.algorand.android.modules.swap.transactionstatus.ui.model.SwapTransactionStatusType
 import com.algorand.android.modules.swap.transactionstatus.ui.usecase.SwapTransactionStatusPreviewUseCase
-import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,8 +33,9 @@ class SwapTransactionStatusViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    private val signedTransactions = savedStateHandle.getOrThrow<Array<SwapQuoteTransaction>>(TRANSACTION_LIST_KEY)
-    val swapQuote = savedStateHandle.getOrThrow<SwapQuote>(SWAP_QUOTE_KEY)
+    private val args = SwapTransactionStatusFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    val swapQuote: SwapQuote
+        get() = args.swapQuote
 
     private val _swapTransactionStatusPreviewFlow = MutableStateFlow<SwapTransactionStatusPreview?>(null)
     val swapTransactionStatusPreviewFlow: StateFlow<SwapTransactionStatusPreview?>
@@ -64,9 +63,9 @@ class SwapTransactionStatusViewModel @Inject constructor(
     private fun updateTransactionStatusPreviewFlow(resources: Resources) {
         viewModelScope.launch {
             swapTransactionStatusPreviewUseCase.getSwapTransactionStatusPreviewFlow(
-                resources,
-                swapQuote,
-                signedTransactions
+                resources = resources,
+                swapQuote = args.swapQuote,
+                signedTransactions = args.swapQuoteTransaction
             ).collectLatest { preview ->
                 _swapTransactionStatusPreviewFlow.emit(preview)
             }
@@ -74,11 +73,11 @@ class SwapTransactionStatusViewModel @Inject constructor(
     }
 
     fun getOptInTransactionsFees(): Long {
-        return swapTransactionStatusPreviewUseCase.getOptInTransactionFees(signedTransactions)
+        return swapTransactionStatusPreviewUseCase.getOptInTransactionFees(args.swapQuoteTransaction)
     }
 
     fun getAlgorandTransactionFees(): Long {
-        return swapTransactionStatusPreviewUseCase.getAlgorandTransactionFees(signedTransactions)
+        return swapTransactionStatusPreviewUseCase.getAlgorandTransactionFees(args.swapQuoteTransaction)
     }
 
     private fun onSwapDoneClick() {
@@ -93,10 +92,5 @@ class SwapTransactionStatusViewModel @Inject constructor(
             _swapTransactionStatusPreviewFlow.value = swapTransactionStatusPreviewUseCase
                 .updatePreviewForTryAgain(preview)
         }
-    }
-
-    companion object {
-        private const val TRANSACTION_LIST_KEY = "swapQuoteTransaction"
-        private const val SWAP_QUOTE_KEY = "swapQuote"
     }
 }

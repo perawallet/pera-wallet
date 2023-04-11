@@ -564,8 +564,7 @@
     <string name="send_your_nft">Enviar NFT</string>
     <string name="paste_an_algorand_wallet_address">Pegar una dirección de monedero Algorand</string>
     <string name="ask_recipient_to">Pídele al destinatario que se suscriba</string>
-    <string name="you_cant_send">No puedes enviar <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> a <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> porque este monedero no se suscribió a estos activos todavía. <annotation font="dmsans_medium"><annotation custom="learn_more">Obtén más información sobre la suscripción de activos</annotation></annotation></string>
-    <string name="request_opt_in">Solicitar aceptación de activos</string>
+    <string name="you_cant_send">No puedes enviar <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> a <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> porque este monedero no aceptó recibir estos activos todavía. <annotation font="dmsans_medium"><annotation custom="learn_more">Obtén más información sobre la aceptación de activos</annotation></annotation></string>
     <string name="information_about_opt">Información sobre la aceptación de activos</string>
     <string name="to_avoid_spammy">Para evitar transacciones spam, la blockchain Algorand solo te permite enviar y recibir transacciones para activos que ya aceptaste recibir o enviar.</string>
     <string name="search_or_enter_wallet_address">Busca o ingresa una dirección de monedero</string>

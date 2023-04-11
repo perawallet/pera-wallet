@@ -23,6 +23,7 @@ import com.algorand.android.usecase.IsAccountLimitExceedUseCase
 import com.algorand.android.usecase.NameRegistrationPreviewUseCase
 import com.algorand.android.utils.analytics.CreationType
 import com.algorand.android.utils.getOrThrow
+import com.algorand.android.utils.launchIO
 import com.algorand.android.utils.toShortenedAddress
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -68,7 +69,9 @@ class NameRegistrationViewModel @Inject constructor(
     }
 
     fun addNewAccount(account: Account, creationType: CreationType?) {
-        nameRegistrationPreviewUseCase.addNewAccount(account, creationType)
+        viewModelScope.launchIO {
+            nameRegistrationPreviewUseCase.addNewAccount(account, creationType)
+        }
     }
 
     private fun getInitialPreview(): NameRegistrationPreview {

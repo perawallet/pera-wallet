@@ -74,4 +74,35 @@ sealed class AlertMetadata(
         override val metadata: Any? = null,
         override val tag: String? = null
     ) : AlertMetadata()
+
+    @Suppress("MagicNumber")
+    override fun hashCode(): Int {
+        var result = iconRes.hashCode()
+        result = 31 * result + iconTintRes.hashCode()
+        result = 31 * result + backgroundColorRes.hashCode()
+        result = 31 * result + title.hashCode()
+        result = 31 * result + titleColorRes.hashCode()
+        result = 31 * result + description.hashCode()
+        result = 31 * result + descriptionColorRes.hashCode()
+        result = 31 * result + metadata.hashCode()
+        result = 31 * result + tag.hashCode()
+        return result
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is AlertMetadata) return false
+
+        if (iconRes != other.iconRes) return false
+        if (iconTintRes != other.iconTintRes) return false
+        if (backgroundColorRes != other.backgroundColorRes) return false
+        if (title != other.title) return false
+        if (titleColorRes != other.titleColorRes) return false
+        if (description != other.description) return false
+        if (descriptionColorRes != other.descriptionColorRes) return false
+        if (metadata != other.metadata) return false
+        if (tag != other.tag) return false
+
+        return true
+    }
 }

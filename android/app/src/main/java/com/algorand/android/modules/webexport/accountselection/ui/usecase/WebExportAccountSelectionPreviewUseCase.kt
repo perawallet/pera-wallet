@@ -27,13 +27,16 @@ import com.algorand.android.modules.webexport.accountselection.ui.model.BaseAcco
 import com.algorand.android.modules.webexport.accountselection.ui.model.BaseAccountMultipleSelectionListItem.HeaderItem
 import com.algorand.android.modules.webexport.accountselection.ui.model.WebExportAccountSelectionPreview
 import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.usecase.GetIsActiveNodeTestnetUseCase
+import com.algorand.android.utils.Event
 import javax.inject.Inject
 
 class WebExportAccountSelectionPreviewUseCase @Inject constructor(
     private val webExportAccountSelectionPreviewMapper: WebExportAccountSelectionPreviewMapper,
     private val baseAccountMultipleSelectionListItemMapper: BaseAccountMultipleSelectionListItemMapper,
     private val accountAssetIconNameConfigurationMapper: AccountAssetIconNameConfigurationMapper,
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val getIsActiveNodeTestnetUseCase: GetIsActiveNodeTestnetUseCase
 ) {
 
     fun getInitialPreview(): WebExportAccountSelectionPreview {
@@ -42,7 +45,8 @@ class WebExportAccountSelectionPreviewUseCase @Inject constructor(
             listItems = emptyList(),
             isLoadingStateVisible = true,
             isEmptyStateVisible = false,
-            isSingleAccountItem = false
+            isSingleAccountItem = false,
+            activeNodeIsTestnetErrorEvent = getActiveNodeIsTestnetErrorEvent()
         )
     }
 
@@ -73,7 +77,8 @@ class WebExportAccountSelectionPreviewUseCase @Inject constructor(
             listItems = listItems,
             isLoadingStateVisible = false,
             isEmptyStateVisible = cachedStandardAccounts.isEmpty(),
-            isSingleAccountItem = isSingleAccountItem
+            isSingleAccountItem = isSingleAccountItem,
+            activeNodeIsTestnetErrorEvent = getActiveNodeIsTestnetErrorEvent()
         )
     }
 
@@ -183,5 +188,9 @@ class WebExportAccountSelectionPreviewUseCase @Inject constructor(
         return preview.listItems.mapNotNull { item ->
             if (item is AccountItem) item.address.takeIf { item.isChecked } else null
         }
+    }
+
+    private fun getActiveNodeIsTestnetErrorEvent(): Event<Unit>? {
+        return if (getIsActiveNodeTestnetUseCase.invoke()) Event(Unit) else null
     }
 }

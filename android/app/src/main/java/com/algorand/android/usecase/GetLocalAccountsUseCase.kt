@@ -18,7 +18,8 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class GetLocalAccountsUseCase @Inject constructor(
-    private val accountManager: AccountManager
+    private val accountManager: AccountManager,
+    private val accountDetailUseCase: AccountDetailUseCase
 ) {
     fun getLocalAccountsFromAccountManagerCache(): List<Account> {
         return accountManager.getAccounts()
@@ -26,5 +27,11 @@ class GetLocalAccountsUseCase @Inject constructor(
 
     fun getLocalAccountsFromAccountManagerCacheAsFlow(): MutableStateFlow<List<Account>> {
         return accountManager.accounts
+    }
+
+    fun getLocalAccountsThatCanSignTransaction(): List<Account> {
+        return accountManager.accounts.value.filter {
+            accountDetailUseCase.canAccountSignTransaction(it.address)
+        }
     }
 }

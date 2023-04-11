@@ -16,9 +16,10 @@ import com.algorand.android.discover.common.ui.model.WebViewTheme
 import com.algorand.android.discover.home.domain.model.DappFavorite
 import com.google.gson.Gson
 
-@Suppress("MaxLineLength", "MaxLineLength")
+@Suppress("MaxLineLength")
 const val JAVASCRIPT_PERACONNECT = "function setupPeraConnectObserver(){const e=new MutationObserver(()=>{const t=document.getElementById(\"pera-wallet-connect-modal-wrapper\"),e=document.getElementById(\"pera-wallet-redirect-modal-wrapper\");if(e&&e.remove(),t){const o=t.getElementsByTagName(\"pera-wallet-connect-modal\");let e=\"\";if(o&&o[0]&&o[0].shadowRoot){const r=o[0].shadowRoot.querySelector(\"pera-wallet-modal-touch-screen-mode\").shadowRoot.querySelector(\"#pera-wallet-connect-modal-touch-screen-mode-launch-pera-wallet-button\");r&&(e=r.getAttribute(\"href\"))}else{const n=t.getElementsByClassName(\"pera-wallet-connect-modal-touch-screen-mode__launch-pera-wallet-button\");n&&(e=n[0].getAttribute(\"href\"))}e&&(e=e.replace(/&browser=\\w+/,\"\"),window.open(e)),t.remove()}});e.disconnect(),e.observe(document.body,{childList:!0,subtree:!0})}setupPeraConnectObserver();"
 private const val BROWSER_FAVORITE_BUTTON_CLICK_ACTION = "handleBrowserFavoriteButtonClick"
+private const val GET_DEVICE_ID_ACTION = "getDeviceId"
 
 fun getJavascriptThemeChangeFunctionForTheme(theme: WebViewTheme): String {
     return "updateTheme('" + theme.key + "');"
@@ -29,6 +30,16 @@ fun getAddToFavoriteFunction(favorite: DappFavorite, gson: Gson): String {
         DiscoverWebMessage(
             action = BROWSER_FAVORITE_BUTTON_CLICK_ACTION,
             payload = favorite
+        ),
+        gson
+    )
+}
+
+fun getSendDeviceId(deviceId: String, gson: Gson): String {
+    return getHandleMessageWithStringifiedPayload(
+        DiscoverWebMessage(
+            action = GET_DEVICE_ID_ACTION,
+            payload = deviceId
         ),
         gson
     )

@@ -94,7 +94,6 @@ class MainViewModel @Inject constructor(
 
     private val _activeNodeFlow = MutableStateFlow<Node?>(null)
     val activeNodeFlow: StateFlow<Node?> get() = _activeNodeFlow
-
     private var sendTransactionJob: Job? = null
     var refreshBalanceJob: Job? = null
 
@@ -214,12 +213,6 @@ class MainViewModel @Inject constructor(
 
     fun setDeepLinkHandlerListener(listener: DeeplinkHandler.Listener) {
         deepLinkHandler.setListener(listener)
-    }
-
-    fun logBottomNavAlgoPriceTapEvent() {
-        viewModelScope.launch {
-            mainActivityEventTracker.logAlgoPriceTapEvent()
-        }
     }
 
     fun logBottomNavAccountsTapEvent() {

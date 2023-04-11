@@ -19,10 +19,10 @@ import com.algorand.android.modules.webimport.loading.ui.model.WebImportLoadingP
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Event
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 
 class WebImportLoadingPreviewUseCase @Inject constructor(
     private val webImportAccountDecryptionUseCase: WebImportAccountDecryptionUseCase,

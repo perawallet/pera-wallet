@@ -15,11 +15,15 @@ apply from: 'https://raw.githubusercontent.com/Hipo/macaron/master/config/qualit
 
 def flavorsGradlePath = 'flavors.gradle'
 def browsersGradlePath = 'browsers.gradle'
+def offrampGradlePath = 'offramp.gradle'
 if (project.file(flavorsGradlePath).exists()) {
     apply from: flavorsGradlePath
 }
 if (project.file(browsersGradlePath).exists()) {
     apply from: browsersGradlePath
+}
+if (project.file(offrampGradlePath).exists()) {
+    apply from: offrampGradlePath
 }
 
 android {

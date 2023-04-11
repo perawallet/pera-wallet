@@ -15,17 +15,12 @@ package com.algorand.android.modules.tracking.bottomnavigation
 import javax.inject.Inject
 
 class BottomNavigationEventTracker @Inject constructor(
-    private val bottomNavigationAlgoPriceTapEventTracker: BottomNavigationAlgoPriceTapEventTracker,
     private val bottomNavigationAccountsTapEventTracker: BottomNavigationAccountsTapEventTracker,
     private val bottomNavigationAlgoBuyTapEventTracker: BottomNavigationAlgoBuyTapEventTracker
 ) {
 
     suspend fun logAccountsTapEvent() {
         bottomNavigationAccountsTapEventTracker.logAccountTapEvent()
-    }
-
-    suspend fun logAlgoPriceTapEvent() {
-        bottomNavigationAlgoPriceTapEventTracker.logAlgoPriceTapEvent()
     }
 
     suspend fun logBottomNavigationAlgoBuyTapEvent() {

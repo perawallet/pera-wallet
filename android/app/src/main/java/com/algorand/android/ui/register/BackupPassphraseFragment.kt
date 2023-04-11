@@ -26,7 +26,7 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.analytics.CreationType
 import com.algorand.android.utils.disableScreenCapture
 import com.algorand.android.utils.enableScreenCapture
-import com.algorand.android.utils.setupMnemonic
+import com.algorand.android.utils.getSafeParcelable
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,7 +48,7 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
     private val backupPassphraseViewModel: BackupPassphraseViewModel by viewModels()
 
     private val accountCreation: AccountCreation?
-        get() = arguments?.getParcelable(ACCOUNT_CREATION_KEY)
+        get() = arguments?.getSafeParcelable(ACCOUNT_CREATION_KEY)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,9 +91,7 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
     }
 
     private fun setupPassphrase() {
-        getMnemonicString()?.let { mnemonicString ->
-            setupMnemonic(mnemonicString, binding.passphraseLeftColumnTextView, binding.passphraseRightColumnTextView)
-        }
+        getMnemonicString()?.let { mnemonicString -> binding.passphraseBoxView.setPassphrases(mnemonicString) }
     }
 
     private fun onNextClick() {

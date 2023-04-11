@@ -27,14 +27,14 @@
         android:layout_marginTop="@dimen/spacing_small" />
 
     <com.algorand.android.customviews.ListMenuItemView
-        android:id="@+id/buyAlgoButton"
+        android:id="@+id/buySellButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xxlarge"
         android:layout_marginBottom="@dimen/spacing_large"
-        app:description="@string/buy_crypto_with_credit"
-        app:icon="@drawable/ic_algo_helper_button"
-        app:title="@string/buy_algo" />
+        app:description="@string/see_all_options_to_buy"
+        app:icon="@drawable/ic_buy_sell"
+        app:title="@string/buy_sell" />
 
     <com.algorand.android.customviews.ListMenuItemView
         android:id="@+id/swapButton"

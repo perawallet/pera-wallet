@@ -562,9 +562,7 @@
     <string name="transfer">Transfert</string>
     <string name="send_your_nft">Envoyer votre NFT</string>
     <string name="paste_an_algorand_wallet_address">Coller une adresse de portefeuille Algorand</string>
-    <string name="ask_recipient_to">Demander au destinataire d\'accepter</string>
     <string name="you_cant_send">Vous ne pouvez pas envoyer <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> à <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> car ce portefeuille n\'a pas encore ajouté cet actif. <annotation font="dmsans_medium"><annotation custom="learn_more">En savoir plus sur l\'ajout</annotation></annotation></string>
-    <string name="request_opt_in">Demander l\'activation</string>
     <string name="information_about_opt">Informations sur l\'activation</string>
     <string name="to_avoid_spammy">Pour éviter les transactions spammées, la Blockchain Algorand vous permet uniquement d\'envoyer et de recevoir des transactions pour des actifs qui ont déjà été activés.</string>
     <string name="search_or_enter_wallet_address">Rechercher ou saisir l\'adresse du portefeuille</string>

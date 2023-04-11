@@ -14,6 +14,7 @@ package com.algorand.android.discover.detail.ui.usecase
 
 import android.content.SharedPreferences
 import androidx.navigation.NavDirections
+import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.discover.detail.domain.model.DetailActionRequest
 import com.algorand.android.discover.detail.ui.DiscoverDetailFragmentDirections
@@ -22,6 +23,8 @@ import com.algorand.android.discover.detail.ui.model.BuySellActionRequest
 import com.algorand.android.discover.detail.ui.model.DiscoverDetailAction
 import com.algorand.android.discover.detail.ui.model.DiscoverDetailPreview
 import com.algorand.android.discover.home.domain.model.TokenDetailInfo
+import com.algorand.android.discover.utils.getSendDeviceId
+import com.algorand.android.discover.utils.isValidDiscoverURL
 import com.algorand.android.modules.swap.assetswap.data.utils.getSafeAssetIdForResponse
 import com.algorand.android.modules.swap.utils.DiscoverSwapNavigationDestinationHelper
 import com.algorand.android.modules.tracking.discover.detail.DiscoverDetailEventTracker
@@ -36,6 +39,7 @@ class DiscoverDetailPreviewUseCase @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val discoverSwapNavigationDestinationHelper: DiscoverSwapNavigationDestinationHelper,
     private val discoverDetailEventTracker: DiscoverDetailEventTracker,
+    private val deviceIdUseCase: DeviceIdUseCase,
     private val gson: Gson
 ) {
 
@@ -67,8 +71,8 @@ class DiscoverDetailPreviewUseCase @Inject constructor(
         loadingErrorEvent = Event(WebViewError.HTTP_ERROR)
     )
 
-    suspend fun logTokenDetailActionButtonClick(data: String) {
-        val detailActionRequest = getDetailActionRequestFromJson(data)
+    suspend fun logTokenDetailActionButtonClick(jsonEncodedPayload: String) {
+        val detailActionRequest = getDetailActionRequestFromJson(jsonEncodedPayload)
 
         detailActionRequest?.let {
             logDetailAction(
@@ -121,8 +125,17 @@ class DiscoverDetailPreviewUseCase @Inject constructor(
         } ?: previousState
     }
 
-    private fun getDetailActionRequestFromJson(data: String): DetailActionRequest? {
-        return gson.fromJson<DetailActionRequest>(data)
+    suspend fun getSendDeviceIdJSFunctionOrNull(callingUrl: String): String? {
+        val deviceId = deviceIdUseCase.getSelectedNodeDeviceId()
+        return if (deviceId != null && isValidDiscoverURL(callingUrl)) {
+            getSendDeviceId(deviceId, gson)
+        } else {
+            null
+        }
+    }
+
+    private fun getDetailActionRequestFromJson(jsonEncodedPayload: String): DetailActionRequest? {
+        return gson.fromJson<DetailActionRequest>(jsonEncodedPayload)
     }
 
     private suspend fun logDetailAction(

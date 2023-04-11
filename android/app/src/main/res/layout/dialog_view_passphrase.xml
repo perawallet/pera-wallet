@@ -30,32 +30,11 @@
         android:layout_height="@dimen/default_toolbar_height"
         android:layout_marginTop="@dimen/spacing_xsmall" />
 
-    <LinearLayout
-        android:id="@+id/passphraseLayout"
-        style="@style/PassphrasesLayout"
+    <com.algorand.android.customviews.PassphrasesBoxView
+        android:id="@+id/passphraseBoxView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_large"
-        android:layout_marginTop="@dimen/spacing_large">
-
-        <TextView
-            android:id="@+id/passphraseLeftColumnTextView"
-            style="@style/TextAppearance.Body.Sans"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/spacing_xsmall"
-            android:layout_weight="1"
-            tools:text=" 1.   test\n 2.   test\n 3.   test" />
-
-        <TextView
-            android:id="@+id/passphraseRightColumnTextView"
-            style="@style/TextAppearance.Body.Sans"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_xsmall"
-            android:layout_weight="1"
-            tools:text="13.   test\n14.   test\n15.   test" />
-
-    </LinearLayout>
+        android:layout_marginTop="@dimen/spacing_large" />
 
 </LinearLayout>

@@ -25,131 +25,143 @@
         android:paddingHorizontal="@dimen/spacing_xlarge">
 
         <TextView
-            style="@style/TextAppearance.Title.Sans.Medium"
+            android:id="@+id/settingsTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="46dp"
-            android:text="@string/settings" />
+            android:text="@string/settings"
+            android:textAppearance="@style/TextAppearance.Title.Sans.Medium" />
 
         <TextView
-            style="@style/TextAppearance.Footnote.Description"
+            android:id="@+id/accountSettingsTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="46dp"
             android:layout_marginBottom="@dimen/spacing_xsmall"
-            android:text="@string/account" />
+            android:text="@string/account"
+            android:textAppearance="@style/TextAppearance.Footnote.Description" />
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/algorandSecureBackupListItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_backup"
+            app:settingTitle="@string/algorand_secure_backup" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/securityListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_shield_check"
-            app:settingsShowArrow="true"
-            app:settingsText="@string/security" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_shield_check"
+            app:settingTitle="@string/security" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/contactsListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_contacts"
-            app:settingsShowArrow="true"
-            app:settingsText="@string/contacts" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_contacts"
+            app:settingTitle="@string/contacts" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/notificationListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_notification"
-            app:settingsShowArrow="true"
-            app:settingsText="@string/notifications" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_notification"
+            app:settingTitle="@string/notifications" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/walletConnectListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_wallet_connect"
-            app:settingsShowArrow="true"
-            app:settingsText="@string/wallet_connect_sessions" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_wallet_connect"
+            app:settingTitle="@string/wallet_connect_sessions" />
 
         <TextView
-            style="@style/TextAppearance.Footnote.Description"
+            android:id="@+id/appPreferencesTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_xxxlarge"
             android:layout_marginBottom="@dimen/spacing_xsmall"
-            android:text="@string/app_preferences" />
+            android:text="@string/app_preferences"
+            android:textAppearance="@style/TextAppearance.Footnote.Description" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/languageListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_language"
-            app:settingsShowArrow="true"
-            app:settingsText="@string/language" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_language"
+            app:settingTitle="@string/language" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/currencyListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_dollar"
-            app:settingsShowArrow="true"
-            app:settingsText="@string/currency" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_dollar"
+            app:settingTitle="@string/currency" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/themeListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_moon"
-            app:settingsShowArrow="true"
-            app:settingsText="@string/theme" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_moon"
+            app:settingTitle="@string/theme" />
 
         <TextView
-            style="@style/TextAppearance.Footnote.Description"
+            android:id="@+id/supportTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_xxxlarge"
             android:layout_marginBottom="@dimen/spacing_xsmall"
-            android:text="@string/support" />
+            android:text="@string/support"
+            android:textAppearance="@style/TextAppearance.Footnote.Description" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/supportCenterListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_feedback"
-            app:settingsShowArrow="true"
-            app:settingsText="@string/get_help" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_feedback"
+            app:settingTitle="@string/get_help" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/rateListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_rate_star"
-            app:settingsShowArrow="false"
-            app:settingsText="@string/rate_pera_wallet" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_rate_star"
+            app:settingTitle="@string/rate_pera_wallet" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/termsAndServicesListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_text_document"
-            app:settingsShowArrow="true"
-            app:settingsText="@string/terms_and_services" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_text_document"
+            app:settingTitle="@string/terms_and_services" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/privacyPolicyListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_text_document"
-            app:settingsShowArrow="true"
-            app:settingsText="@string/privacy_policy" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_text_document"
+            app:settingTitle="@string/privacy_policy" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/developerListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_code"
-            app:settingsShowArrow="true"
-            app:settingsText="@string/developer_settings" />
+            app:endViewLayoutResource="@layout/layout_right_arrow"
+            app:settingIcon="@drawable/ic_code"
+            app:settingTitle="@string/developer_settings" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/logoutButton"

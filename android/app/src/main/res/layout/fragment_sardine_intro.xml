@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<com.algorand.android.customviews.ProgressSaverMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/fragment_sardine_introduction_scene"
+    tools:context=".modules.dapp.sardine.ui.intro.SardineIntroFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/introductionImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/sardine"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="375:275"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_sardine_intro_bg" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/introductionLogoImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/introductionImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/introductionImageView"
+        app:srcCompat="@drawable/ic_sardine_logo" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/introductionPageBodyScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/bottom_fade_gradient_height"
+        app:layout_constraintBottom_toTopOf="@id/poweredByTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/introductionImageView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/introductionTitleFlow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="introductionTitleTextView"
+                app:flow_horizontalBias="0"
+                app:flow_horizontalGap="@dimen/spacing_xxsmall"
+                app:flow_horizontalStyle="packed"
+                app:flow_wrapMode="chain"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/introductionTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/buy_algo"
+                android:textAppearance="@style/TextAppearance.Title.Sans.Medium" />
+
+            <TextView
+                android:id="@+id/introductionDescriptionTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:text="@string/instant_settlement_and_lower"
+                android:textAppearance="@style/TextAppearance.Body.Sans"
+                android:textColor="@color/text_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/introductionTitleFlow" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/securedByTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:drawablePadding="@dimen/spacing_small"
+                android:gravity="center_vertical"
+                android:text="@string/secured_by"
+                android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+                android:textColor="@color/positive"
+                app:drawableStartCompat="@drawable/ic_locked"
+                app:drawableTint="@color/positive"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/introductionDescriptionTextView" />
+
+            <ImageView
+                android:id="@+id/masterpassImageView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginBottom="@dimen/spacing_xxlarge"
+                android:src="@drawable/ic_masterpass"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/securedByTextView"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <ImageView
+                android:id="@+id/visaImageView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:src="@drawable/ic_visa"
+                app:layout_constraintBottom_toBottomOf="@id/masterpassImageView"
+                app:layout_constraintStart_toEndOf="@id/masterpassImageView"
+                app:layout_constraintTop_toTopOf="@id/masterpassImageView" />
+
+            <ImageView
+                android:id="@+id/googlePayImageView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:src="@drawable/ic_google_pay"
+                app:layout_constraintBottom_toBottomOf="@id/visaImageView"
+                app:layout_constraintStart_toEndOf="@id/visaImageView"
+                app:layout_constraintTop_toTopOf="@id/visaImageView" />
+
+            <ImageView
+                android:id="@+id/achImageView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:src="@drawable/ic_ach"
+                app:layout_constraintBottom_toBottomOf="@id/googlePayImageView"
+                app:layout_constraintStart_toEndOf="@id/googlePayImageView"
+                app:layout_constraintTop_toTopOf="@id/googlePayImageView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <View
+        android:id="@+id/bottomGradientView"
+        style="@style/BottomFadeGradient"
+        app:layout_constraintBottom_toTopOf="@id/buyAlgoWithSardineButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buyAlgoWithSardineButton"
+        style="@style/Button.Primary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/spacing_large"
+        android:text="@string/buy_algo_with_sardine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</com.algorand.android.customviews.ProgressSaverMotionLayout>

@@ -20,7 +20,7 @@
     <TextView
         android:id="@+id/passphraseIndexTextView"
         style="@style/TextAppearance.Description"
-        android:layout_width="24dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:autoSizeMaxTextSize="14sp"
         android:autoSizeMinTextSize="10sp"
@@ -37,7 +37,7 @@
         style="@style/TextAppearance.Body.Sans"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="@dimen/spacing_xsmall"
         android:background="@null"
         android:inputType="textVisiblePassword"
         android:maxLines="1"

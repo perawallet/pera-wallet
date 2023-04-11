@@ -15,9 +15,10 @@ package com.algorand.android.discover.urlviewer.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.discover.common.ui.BaseDiscoverViewModel
+import com.algorand.android.discover.common.ui.model.DappFavoriteElement
 import com.algorand.android.discover.urlviewer.ui.model.DiscoverUrlViewerPreview
 import com.algorand.android.discover.urlviewer.ui.usecase.DiscoverUrlViewerPreviewUseCase
-import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
+import com.algorand.android.discover.urlviewer.ui.usecase.DiscoverUrlViewerUseCase
 import com.algorand.android.utils.getOrThrow
 import com.algorand.android.utils.preference.ThemePreference
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,7 +30,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class DiscoverUrlViewerViewModel @Inject constructor(
     private val discoverUrlViewerPreviewUseCase: DiscoverUrlViewerPreviewUseCase,
-    private val currencyUseCase: CurrencyUseCase,
+    private val discoverUrlViewerUseCase: DiscoverUrlViewerUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseDiscoverViewModel() {
 
@@ -82,8 +83,42 @@ class DiscoverUrlViewerViewModel @Inject constructor(
         return _discoverUrlViewerPreviewFlow.value.themePreference
     }
 
+    fun pushDappViewerScreen(jsonEncodedPayload: String) {
+        viewModelScope.launch {
+            _discoverUrlViewerPreviewFlow
+                .emit(
+                    discoverUrlViewerPreviewUseCase.pushDappViewerScreen(
+                        jsonEncodedPayload,
+                        _discoverUrlViewerPreviewFlow.value
+                    )
+                )
+        }
+    }
+
+    fun onFavoritesUpdate(favorite: DappFavoriteElement) {
+        getWebView()?.let { webView ->
+            webView.evaluateJavascript(
+                discoverUrlViewerUseCase.getAddToFavoriteJSFunction(favorite),
+                null
+            )
+            saveWebView(webView)
+        }
+    }
+
+    fun pushNewScreen(jsonEncodedPayload: String) {
+        viewModelScope.launch {
+            _discoverUrlViewerPreviewFlow
+                .emit(
+                    discoverUrlViewerPreviewUseCase.pushNewScreen(
+                        jsonEncodedPayload,
+                        _discoverUrlViewerPreviewFlow.value
+                    )
+                )
+        }
+    }
+
     fun getPrimaryCurrencyId(): String {
-        return currencyUseCase.getPrimaryCurrencyId()
+        return discoverUrlViewerUseCase.getPrimaryCurrencyId()
     }
 
     companion object {

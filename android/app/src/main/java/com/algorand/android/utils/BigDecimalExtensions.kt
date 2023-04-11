@@ -22,6 +22,7 @@ infix fun BigDecimal.percentageChangeOf(secondValue: BigDecimal): BigDecimal {
     val firstValue = this
     if (firstValue <= ZERO) return ZERO
     val percentageChange = (secondValue.minus(firstValue).div(firstValue).toFloat() * MAX_PERCENTAGE)
+    // This method is only used for AlgoPriceFragment. Remove this function when we remove all Analytics implementation
     return BigDecimal(percentageChange).setScale(PERCENTAGE_PRECISION, BigDecimal.ROUND_HALF_UP)
 }
 

@@ -82,6 +82,10 @@ class WebExportAccountSelectionFragment : BaseFragment(R.layout.fragment_web_exp
     }
 
     private fun updateUiWithPreview(preview: WebExportAccountSelectionPreview) {
+        preview.activeNodeIsTestnetErrorEvent?.consume()?.let {
+            showGlobalError(errorMessage = getString(R.string.account_transfer_is), tag = baseActivityTag)
+            handleNavBack()
+        }
         binding.continueButton.isEnabled = preview.isContinueButtonEnabled
         webExportAccountSelectionAdapter.submitList(preview.listItems)
         binding.successStateGroup.isVisible = preview.isEmptyStateVisible.not() && preview.isLoadingStateVisible.not()
@@ -92,13 +96,13 @@ class WebExportAccountSelectionFragment : BaseFragment(R.layout.fragment_web_exp
         val selectedAccountAddressList = webExportAccountSelectionViewModel.getAllSelectedAccountAddressList()
         val qrCodeData = webExportAccountSelectionViewModel.getQRCodeData()
         nav(
-                WebExportAccountSelectionFragmentDirections
-                    .actionWebExportAccountSelectionFragmentToWebExportDomainNameConfirmationFragment(
-                backupId = qrCodeData.backupId,
-                encryptionKey = qrCodeData.encryptionKey,
-                modificationKey = qrCodeData.modificationKey,
-                accountList = selectedAccountAddressList.toTypedArray()
-            )
+            WebExportAccountSelectionFragmentDirections
+                .actionWebExportAccountSelectionFragmentToWebExportDomainNameConfirmationFragment(
+                    backupId = qrCodeData.backupId,
+                    encryptionKey = qrCodeData.encryptionKey,
+                    modificationKey = qrCodeData.modificationKey,
+                    accountList = selectedAccountAddressList.toTypedArray()
+                )
         )
     }
 }

@@ -17,6 +17,7 @@ package com.algorand.android.ui.wctransactionrequest
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -95,6 +96,10 @@ class WalletConnectTransactionRequestFragment :
                 peerMeta = peerMeta
             )
         )
+    }
+
+    private val bleRequestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        // Nothing to do
     }
 
     private val ledgerLoadingDialogListener = LedgerLoadingDialog.Listener { shouldStopResources ->
@@ -191,7 +196,7 @@ class WalletConnectTransactionRequestFragment :
             transaction?.let { transaction ->
                 val isBluetoothNeeded = transactionRequestViewModel.isBluetoothNeededToSignTxns(transaction)
                 if (isBluetoothNeeded) {
-                    if (isBluetoothEnabled()) signTransactionRequest(transaction)
+                    if (isBluetoothEnabled(bleRequestLauncher)) signTransactionRequest(transaction)
                 } else {
                     signTransactionRequest(transaction)
                 }
@@ -272,7 +277,10 @@ class WalletConnectTransactionRequestFragment :
             }
             is WalletConnectSignResult.Success -> onSigningSuccess(result)
             is WalletConnectSignResult.Error -> showSigningError(result)
-            is WalletConnectSignResult.TransactionCancelled -> rejectRequest()
+            is WalletConnectSignResult.TransactionCancelledByLedger -> {
+                showSigningError(result.error)
+                rejectRequest()
+            }
             is WalletConnectSignResult.LedgerScanFailed -> showLedgerNotFoundDialog()
             else -> {
                 sendErrorLog("Unhandled else case in WalletConnectTransactionRequestFragment.handleSignResult")
@@ -320,7 +328,7 @@ class WalletConnectTransactionRequestFragment :
     private fun showSigningError(error: WalletConnectSignResult.Error) {
         hideLoading()
         val (title, errorMessage) = error.getMessage(requireContext())
-        showGlobalError(errorMessage, title)
+        showGlobalError(errorMessage = errorMessage, title = title, tag = baseActivityTag)
     }
 
     override fun onNavigate(navDirections: NavDirections) {

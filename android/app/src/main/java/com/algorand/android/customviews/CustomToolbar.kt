@@ -52,10 +52,10 @@ class CustomToolbar @JvmOverloads constructor(
         binding.buttonContainerView.removeAllViews()
         with(toolbarConfiguration) {
             initBackground(backgroundColor)
-            initTitle(titleResId, titleColor)
+            initTitle(titleColor = titleColor, titleResId = titleResId)
             initSubtitle(subtitleResId)
-            configureStartButton(startIconResId, startIconClick, startIconColor)
-            initTitleDrawables(textStartDrawable, textEndDrawable)
+            configureStartButton(resId = startIconResId, clickAction = startIconClick, iconColor = startIconColor)
+            initTitleDrawables(leftDrawable = textStartDrawable, rightDrawable = textEndDrawable)
             initCenterDrawable(centerDrawable)
             clearSubtitleStartDrawable()
         }
@@ -67,12 +67,16 @@ class CustomToolbar @JvmOverloads constructor(
         setEndDrawable(rightDrawable)
     }
 
-    private fun initTitle(titleResId: Int?, titleColor: Int? = null) {
+    private fun initTitle(titleColor: Int, titleResId: Int?) {
         with(binding.toolbarTitleTextView) {
             isVisible = titleResId != null
             if (titleResId != null) setText(titleResId)
-            if (titleColor != null) setTextColor(ContextCompat.getColor(context, titleColor))
+            setTextColor(ContextCompat.getColor(context, titleColor))
         }
+    }
+
+    private fun hideTitle() {
+        binding.toolbarTitleTextView.isVisible = false
     }
 
     private fun initSubtitle(subtitleResId: Int?) {
@@ -92,7 +96,7 @@ class CustomToolbar @JvmOverloads constructor(
 
     private fun initCenterDrawable(drawable: Drawable?) {
         if (drawable != null) {
-            initTitle(null)
+            hideTitle()
             initSubtitle(null)
             initTitleDrawables(null, null)
         }

@@ -197,7 +197,7 @@ class ZoomShapeableImageView(context: Context, attrs: AttributeSet) :
     }
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-        override fun onScaleBegin(detector: ScaleGestureDetector?): Boolean {
+        override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
             mode = Mode.ZOOM
             return true
         }

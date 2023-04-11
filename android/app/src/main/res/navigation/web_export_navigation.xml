@@ -47,7 +47,7 @@
                 app:argType="string" />
             <argument
                 android:name="accountList"
-                app:argType="string[]"/>
+                app:argType="string[]" />
         </action>
     </fragment>
 
@@ -163,7 +163,9 @@
             app:argType="string[]" />
         <action
             android:id="@+id/action_webExportAccountConfirmationFragment_to_webExportSuccessResultFragment"
-            app:destination="@id/webExportSuccessResultFragment" />
+            app:destination="@id/webExportSuccessResultFragment"
+            app:popUpTo="@id/accountsQrScannerFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

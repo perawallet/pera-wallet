@@ -15,6 +15,7 @@ package com.algorand.android.ledger
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
+import android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
 import android.bluetooth.BluetoothProfile
 import android.content.Context
 import android.util.Log
@@ -24,11 +25,11 @@ import com.algorand.android.utils.getAccountIndexAsByteArray
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.removeExcessBytes
 import com.algorand.android.utils.shiftOneByteLeft
+import java.io.ByteArrayOutputStream
+import java.util.UUID
 import no.nordicsemi.android.ble.BleManager
 import no.nordicsemi.android.ble.callback.DataReceivedCallback
 import no.nordicsemi.android.ble.data.Data
-import java.io.ByteArrayOutputStream
-import java.util.UUID
 
 // Use with dagger.
 // https://github.com/NordicSemiconductor/Android-BLE-Library/blob/master/MIGRATION.md
@@ -66,8 +67,8 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager(appContext) {
                 beginAtomicRequestQueue()
                     .add(
                         requestMtu(DEFAULT_MTU)
-                        .with { _, mtu -> log(Log.INFO, "MTU set to $mtu") }
-                        .fail { _, status -> log(Log.WARN, "Requested MTU not supported: $status") }
+                            .with { _, mtu -> log(Log.INFO, "MTU set to $mtu") }
+                            .fail { _, status -> log(Log.WARN, "Requested MTU not supported: $status") }
                     )
                     .add(enableNotifications(characteristicNotify))
                     .done { log(Log.INFO, "Target initialized") }
@@ -179,7 +180,7 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager(appContext) {
                     }
                 }
                 data.size > ERROR_DATA_SIZE -> {
-                    ledgerBleObserver?.onDataReceived(
+                    ledgerBleObserver.onDataReceived(
                         device = ledgerDevice,
                         data = data.dropLast(RETURN_CODE_BYTE_COUNT).toByteArray()
                     )
@@ -199,7 +200,7 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager(appContext) {
         val atomicRequest = beginAtomicRequestQueue()
         val publicKeyRequestInstruction = PUBLIC_KEY_WITH_INDEX + getAccountIndexAsByteArray(index)
         packetizeData(publicKeyRequestInstruction).forEach { packet ->
-            atomicRequest.add(writeCharacteristic(characteristicWrite, packet))
+            atomicRequest.add(writeCharacteristic(characteristicWrite, packet, WRITE_TYPE_DEFAULT))
         }
         atomicRequest.enqueue()
     }
@@ -208,9 +209,10 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager(appContext) {
         val atomicRequest = beginAtomicRequestQueue()
         val verifyPublicKeyRequestInstruction = VERIFY_PUBLIC_KEY_WITH_INDEX + getAccountIndexAsByteArray(index)
         packetizeData(verifyPublicKeyRequestInstruction).forEach { packet ->
-            atomicRequest.add(writeCharacteristic(characteristicWrite, packet)).fail { device, status ->
-                ledgerBleObserver.onError(device, "", status)
-            }
+            atomicRequest.add(writeCharacteristic(characteristicWrite, packet, WRITE_TYPE_DEFAULT))
+                .fail { device, status ->
+                    ledgerBleObserver.onError(device, "", status)
+                }
         }
         atomicRequest.enqueue()
     }
@@ -274,7 +276,7 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager(appContext) {
             val atomicRequest = beginAtomicRequestQueue()
             output.forEach { chunkData ->
                 packetizeData(chunkData).forEach { packet ->
-                    atomicRequest.add(writeCharacteristic(characteristicWrite, packet))
+                    atomicRequest.add(writeCharacteristic(characteristicWrite, packet, WRITE_TYPE_DEFAULT))
                 }
             }
             atomicRequest.enqueue()
@@ -331,8 +333,8 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager(appContext) {
     fun isTryingToConnect(): Boolean {
         return (
             connectionState == BluetoothProfile.STATE_DISCONNECTED ||
-            connectionState == BluetoothProfile.STATE_DISCONNECTING
-        ).not()
+                connectionState == BluetoothProfile.STATE_DISCONNECTING
+            ).not()
     }
 
     fun isDeviceConnected(deviceAddress: String): Boolean {

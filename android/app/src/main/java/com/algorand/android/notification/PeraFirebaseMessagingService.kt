@@ -17,14 +17,12 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.algorand.android.R
 import com.algorand.android.deviceregistration.domain.usecase.FirebasePushTokenUseCase
 import com.algorand.android.models.NotificationMetadata
-import com.algorand.android.models.NotificationType
 import com.algorand.android.ui.splash.LauncherActivity
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.preference.isNotificationActivated
@@ -61,9 +59,6 @@ class PeraFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         val notificationData = getNotificationData(remoteMessage)
-
-        val accountPublicKey = notificationData.getAccountPublicKey()
-
         notificationData.alertMessage = remoteMessage.data[ALERT].toString()
 
         if (peraNotificationManager.newNotificationLiveData.hasActiveObservers()) {
@@ -71,31 +66,11 @@ class PeraFirebaseMessagingService : FirebaseMessagingService() {
             return
         }
 
-        val intent = when (notificationData.getNotificationType()) {
-            NotificationType.TRANSACTION_SENT,
-            NotificationType.ASSET_TRANSACTION_SENT,
-            NotificationType.TRANSACTION_RECEIVED,
-            NotificationType.ASSET_TRANSACTION_RECEIVED -> {
-                LauncherActivity.newIntentWithNewSelectedAccount(
-                    this,
-                    accountPublicKey,
-                    notificationData.getAssetDescription().assetId
-                )
-            }
-            NotificationType.ASSET_SUPPORT_REQUEST -> {
-                LauncherActivity.newIntentWithAssetSupportRequest(
-                    this,
-                    accountPublicKey,
-                    notificationData.getAssetDescription().convertToAssetInformation()
-                )
-            }
-            else -> Intent(this, LauncherActivity::class.java)
-        }.apply {
-            // Set intent action to keep extras as it is, otherwise if there are another notification intent coming
-            // the existing intents extras will drop
-            // https://stackoverflow.com/a/44688505
-            action = System.currentTimeMillis().toString()
-        }
+        val intent = if (notificationData.url != null) {
+            LauncherActivity.newIntentWithDeeplink(context = this, deeplink = notificationData.url)
+        } else {
+            LauncherActivity.newIntent(context = this)
+        }.apply { action = System.currentTimeMillis().toString() }
 
         val pendingIntent: PendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getActivity(
@@ -113,8 +88,8 @@ class PeraFirebaseMessagingService : FirebaseMessagingService() {
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setContentTitle(getString(R.string.app_name))
-            .setContentText(notificationData.alertMessage)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(notificationData.alertMessage))
+            .setContentText(notificationData.alertMessage.orEmpty())
+            .setStyle(NotificationCompat.BigTextStyle().bigText(notificationData.alertMessage.orEmpty()))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setDefaults(Notification.DEFAULT_ALL)
 

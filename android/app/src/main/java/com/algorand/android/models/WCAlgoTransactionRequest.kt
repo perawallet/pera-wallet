@@ -28,7 +28,7 @@ data class WCAlgoTransactionRequest(
     val hasMultipleSigner: Boolean
         get() = (signers?.size ?: 0) > 1
 
-    val firstSignerAddressBase64: String?
+    val firstSignerAddress: String?
         get() = signers?.firstOrNull()
 
     val hasMultisig: Boolean

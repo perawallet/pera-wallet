@@ -12,6 +12,8 @@
 
 package com.algorand.android.modules.transaction.detail.ui.applicationcalltransaction
 
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.models.FragmentConfiguration
@@ -21,7 +23,9 @@ import com.algorand.android.modules.transaction.detail.ui.model.ApplicationCallA
 import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail
 import com.algorand.android.modules.transaction.detail.ui.BaseTransactionDetailFragment
 import com.algorand.android.modules.transaction.detail.ui.adapter.TransactionDetailAdapter
+import com.algorand.android.utils.Event
 import com.algorand.android.utils.copyToClipboard
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,6 +44,10 @@ class ApplicationCallTransactionDetailFragment : BaseTransactionDetailFragment()
 
     override val transactionDetailViewModel by viewModels<ApplicationCallTransactionDetailViewModel>()
 
+    private val navToInnerTransactionFragmentEventCollector: suspend (Event<Unit>?) -> Unit = {
+        it?.consume()?.let { navToInnerTransactionFragment() }
+    }
+
     private val transactionDetailLongClickListener = object : TransactionDetailAdapter.LongPressListener {
         override fun onTransactionIdLongClick(transactionId: String) {
             context?.copyToClipboard(transactionId)
@@ -50,7 +58,6 @@ class ApplicationCallTransactionDetailFragment : BaseTransactionDetailFragment()
         object : TransactionDetailAdapter.ApplicationCallTransactionListener {
             override fun onInnerTransactionClick(transactions: List<BaseTransactionDetail>) {
                 transactionDetailViewModel.putInnerTransactionToStackCache(transactions)
-                navToInnerTransactionFragment()
             }
 
             override fun onShowMoreAssetClick(assetInformationList: List<ApplicationCallAssetInformation>) {
@@ -65,8 +72,20 @@ class ApplicationCallTransactionDetailFragment : BaseTransactionDetailFragment()
         applicationCallTransactionListener = applicationCallTransactionListener
     )
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initObservers()
+    }
+
     override fun initUi() {
         configureToolbar()
+    }
+
+    private fun initObservers() {
+        collectLatestOnLifecycle(
+            flow = transactionDetailViewModel.navToInnerTransactionFragmentEventFlow,
+            collection = navToInnerTransactionFragmentEventCollector
+        )
     }
 
     private fun configureToolbar() {

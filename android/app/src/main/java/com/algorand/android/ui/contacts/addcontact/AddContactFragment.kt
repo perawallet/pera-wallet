@@ -138,6 +138,10 @@ class AddContactFragment : BaseAddEditContactFragment() {
         nav(AddContactFragmentDirections.actionAddContactFragmentToAddContactQrScannerFragment())
     }
 
+    override fun onImeOptionDoneClicked() {
+        checkContactNameAndAddress()
+    }
+
     override fun setAddContactButton(materialButton: MaterialButton) {
         materialButton.show()
         materialButton.setOnClickListener { checkContactNameAndAddress() }

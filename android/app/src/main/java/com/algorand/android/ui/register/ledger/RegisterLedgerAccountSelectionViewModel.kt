@@ -14,13 +14,10 @@ package com.algorand.android.ui.register.ledger
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.modules.onboarding.pairledger.ui.model.RegisterLedgerAccountSelectionPreview
 import com.algorand.android.modules.onboarding.pairledger.ui.usecase.RegisterLedgerAccountSelectionPreviewUseCase
 import com.algorand.android.ui.ledgeraccountselection.LedgerAccountSelectionViewModel
-import com.algorand.android.utils.getOrElse
-import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -36,9 +33,9 @@ class RegisterLedgerAccountSelectionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : LedgerAccountSelectionViewModel(registerLedgerAccountSelectionPreviewUseCase) {
 
-    private val ledgerAccounts = savedStateHandle.getOrThrow<Array<AccountInformation>>(LEDGER_ACCOUNTS_INFORMATION_KEY)
-    private val ledgerBluetoothAddress = savedStateHandle.getOrThrow<String>(LEDGER_BLUETOOTH_ADDRESS_KEY)
-    val ledgerBluetoothName = savedStateHandle.getOrElse<String?>(LEDGER_BLUETOOTH_NAME_KEY, null)
+    private val args = RegisterLedgerAccountSelectionFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    val ledgerBluetoothName: String?
+        get() = args.bluetoothName
 
     private val _registerLedgerAccountSelectionPreviewFlow = MutableStateFlow<RegisterLedgerAccountSelectionPreview?>(
         null
@@ -56,9 +53,9 @@ class RegisterLedgerAccountSelectionViewModel @Inject constructor(
     private fun getAccountSelectionListItems() {
         viewModelScope.launch(Dispatchers.IO) {
             registerLedgerAccountSelectionPreviewUseCase.getRegisterLedgerAccountSelectionPreview(
-                ledgerAccountsInformation = ledgerAccounts,
-                bluetoothAddress = ledgerBluetoothAddress,
-                bluetoothName = ledgerBluetoothName
+                ledgerAccountsInformation = args.ledgerAccountsInformation,
+                bluetoothAddress = args.bluetoothAddress,
+                bluetoothName = args.bluetoothName
             ).collectLatest { preview ->
                 _registerLedgerAccountSelectionPreviewFlow.emit(preview)
             }
@@ -72,11 +69,5 @@ class RegisterLedgerAccountSelectionViewModel @Inject constructor(
             accountItem = accountItem
         )
         _registerLedgerAccountSelectionPreviewFlow.update { updatedPreview }
-    }
-
-    companion object {
-        private const val LEDGER_ACCOUNTS_INFORMATION_KEY = "ledgerAccountsInformation"
-        private const val LEDGER_BLUETOOTH_NAME_KEY = "bluetoothName"
-        private const val LEDGER_BLUETOOTH_ADDRESS_KEY = "bluetoothAddress"
     }
 }

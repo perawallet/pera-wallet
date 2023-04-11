@@ -72,7 +72,7 @@ fun String.toBigDecimalWithLocale(): BigDecimal {
     }
 }
 
-fun String.capitalize(): String {
+fun String.capitalizeFirstChar(): String {
     return lowercase(Locale.getDefault())
         .replaceFirstChar {
             if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()

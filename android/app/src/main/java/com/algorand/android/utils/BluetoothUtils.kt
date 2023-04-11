@@ -13,6 +13,7 @@
 package com.algorand.android.utils
 
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
@@ -20,15 +21,16 @@ import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.core.location.LocationManagerCompat
-import androidx.fragment.app.Fragment
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.ui.common.BaseLedgerSearchFragment
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequestFragment
 
-fun BaseFragment.isBluetoothEnabled(): Boolean {
-    val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter() ?: return false
+fun BaseFragment.isBluetoothEnabled(resultLauncher: ActivityResultLauncher<Intent>): Boolean {
+
+    val bluetoothAdapter =
+        (context?.getSystemService(Context.BLUETOOTH_SERVICE) as? BluetoothManager)?.adapter ?: return false
 
     if (context?.areBluetoothPermissionsGranted() != true) {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -41,7 +43,7 @@ fun BaseFragment.isBluetoothEnabled(): Boolean {
         }
     }
     if (bluetoothAdapter.isEnabled.not()) {
-        showEnableBluetoothPopup()
+        showEnableBluetoothPopup(resultLauncher)
         return false
     }
     if (context?.isLocationEnabled() != true) {
@@ -60,11 +62,6 @@ fun BaseFragment.isBluetoothEnabled(): Boolean {
         return false
     }
     return true
-}
-
-fun Fragment.showEnableBluetoothPopup() {
-    val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-    startActivityForResult(enableBtIntent, BLE_OPEN_REQUEST_CODE)
 }
 
 fun Context.isLocationEnabled(): Boolean {

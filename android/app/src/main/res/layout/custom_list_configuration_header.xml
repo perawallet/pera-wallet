@@ -68,7 +68,7 @@
         android:textColor="@color/button_square_icon"
         android:textSize="@dimen/text_size_13"
         app:backgroundTint="@color/button_square_bg"
-        app:cornerRadius="8dp"
+        app:cornerRadius="@dimen/action_button_corner_radius"
         app:icon="@drawable/ic_plus"
         app:iconPadding="@dimen/spacing_xsmall"
         app:iconTint="@color/button_square_icon"

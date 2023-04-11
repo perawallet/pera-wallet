@@ -66,6 +66,7 @@ class DiscoverDappFragment :
                 with(binding) {
                     if (webView.canGoBack()) {
                         webView.goBack()
+                        discoverViewModel.onPageFinished(webView.title, webView.url)
                     }
                 }
             }
@@ -73,6 +74,7 @@ class DiscoverDappFragment :
                 with(binding) {
                     if (webView.canGoForward()) {
                         webView.goForward()
+                        discoverViewModel.onPageFinished(webView.title, webView.url)
                     }
                 }
             }

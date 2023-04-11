@@ -37,7 +37,7 @@ class MoonpayIntroViewModel @Inject constructor(
     fun signMoonpayUrl(walletAddress: String) {
         viewModelScope.launch {
             moonpaySignUrlUseCase(walletAddress).collect { response ->
-                signMoonpayUrlFlow?.emit(response)
+                signMoonpayUrlFlow.emit(response)
             }
         }
     }

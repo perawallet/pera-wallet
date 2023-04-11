@@ -22,23 +22,22 @@ import com.algorand.android.models.AssetSupportRequest
 import com.algorand.android.models.Feedback
 import com.algorand.android.models.FeedbackCategory
 import com.algorand.android.models.NotificationFilterRequest
-import com.algorand.android.models.NotificationItem
+import com.algorand.android.modules.notification.data.model.NotificationResponse
 import com.algorand.android.models.Pagination
 import com.algorand.android.models.PushTokenDeleteRequest
-import com.algorand.android.modules.accountblockpolling.data.model.ShouldRefreshRequestBody
-import com.algorand.android.modules.accountblockpolling.data.model.ShouldRefreshResponse
 import com.algorand.android.models.TrackTransactionRequest
 import com.algorand.android.models.VerifiedAssetDetail
-import com.algorand.android.modules.walletconnect.subscription.data.model.WalletConnectSessionSubscriptionBody
-import com.algorand.android.modules.accounts.data.model.LastSeenNotificationRequest
-import com.algorand.android.modules.accounts.data.model.LastSeenNotificationResponse
-import com.algorand.android.modules.accounts.data.model.NotificationStatusResponse
+import com.algorand.android.modules.accountblockpolling.data.model.ShouldRefreshRequestBody
+import com.algorand.android.modules.accountblockpolling.data.model.ShouldRefreshResponse
+import com.algorand.android.modules.notification.data.model.LastSeenNotificationRequest
+import com.algorand.android.modules.notification.data.model.LastSeenNotificationResponse
+import com.algorand.android.modules.notification.data.model.NotificationStatusResponse
 import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
 import com.algorand.android.modules.currency.data.model.CurrencyOptionResponse
-import com.algorand.android.modules.nftdomain.data.model.NftDomainSearchResponse
-import com.algorand.android.modules.parity.data.model.CurrencyDetailResponse
 import com.algorand.android.modules.fetchnameservices.data.model.FetchNameServicesRequestBody
 import com.algorand.android.modules.fetchnameservices.data.model.FetchNameServicesResponse
+import com.algorand.android.modules.nftdomain.data.model.NftDomainSearchResponse
+import com.algorand.android.modules.parity.data.model.CurrencyDetailResponse
 import com.algorand.android.modules.swap.assetselection.toasset.data.model.AvailableSwapAssetListResponse
 import com.algorand.android.modules.swap.assetswap.data.model.PeraFeeRequestBody
 import com.algorand.android.modules.swap.assetswap.data.model.PeraFeeResponse
@@ -46,6 +45,7 @@ import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteRequestBo
 import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteResultResponse
 import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsRequestBody
 import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsResponse
+import com.algorand.android.modules.walletconnect.subscription.data.model.WalletConnectSessionSubscriptionBody
 import com.algorand.android.modules.webexport.accountconfirmation.data.model.ExportBackupResponse
 import com.algorand.android.modules.webexport.common.data.model.WebBackupRequestBody
 import com.algorand.android.modules.webimport.loading.data.model.ImportBackupResponse
@@ -99,7 +99,7 @@ interface MobileAlgorandApi {
     @GET("v2/devices/{device_id}/notifications/")
     suspend fun getNotifications(
         @Path("device_id") deviceId: String
-    ): Response<Pagination<NotificationItem>>
+    ): Response<Pagination<NotificationResponse>>
 
     @GET("v1/devices/{device_id}/notification-status/")
     suspend fun getNotificationStatus(
@@ -113,7 +113,7 @@ interface MobileAlgorandApi {
     ): Response<LastSeenNotificationResponse>
 
     @GET
-    suspend fun getNotificationsMore(@Url url: String): Response<Pagination<NotificationItem>>
+    suspend fun getNotificationsMore(@Url url: String): Response<Pagination<NotificationResponse>>
 
     @GET("v1/assets/search/")
     suspend fun getAssets(

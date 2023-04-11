@@ -196,4 +196,6 @@
     <!-- TextView Height -->
     <dimen name="primary_portfolio_value_height">48dp</dimen>
 
+    <dimen name="action_button_corner_radius">8dp</dimen>
+
 </resources>

@@ -47,7 +47,7 @@ sealed class WalletConnectSignResult {
         ) : Error(titleResId)
     }
 
-    data class TransactionCancelled(
+    data class TransactionCancelledByLedger(
         val error: Error = Defined(AnnotatedString(R.string.error_cancelled_message), R.string.error_cancelled_title)
     ) : WalletConnectSignResult()
 

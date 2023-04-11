@@ -564,9 +564,7 @@
     <string name="transfer">Übertragen</string>
     <string name="send_your_nft">Senden Sie Ihren NFT</string>
     <string name="paste_an_algorand_wallet_address">Algorand-Wallet-Adresse einfügen</string>
-    <string name="ask_recipient_to">Empfänger um Opt-in bitten</string>
     <string name="you_cant_send">Sie können <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> nicht an <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> senden, da diese Wallet noch nicht für dieses Asset optiert hat. <annotation font="dmsans_medium"><annotation custom="learn_more">Erfahren Sie mehr über Opt-in</annotation></annotation></string>
-    <string name="request_opt_in">Opt-in anfordern</string>
     <string name="information_about_opt">Informationen zum Opt-in</string>
     <string name="to_avoid_spammy">Um Spam-Transaktionen zu vermeiden, erlaubt die Algorand-Blockchain nur das Senden und Empfangen von Transaktionen für Assets, für die zuvor ein Opt-in erteilt wurde.</string>
     <string name="search_or_enter_wallet_address">Wallet-Adresse suchen oder eingeben</string>

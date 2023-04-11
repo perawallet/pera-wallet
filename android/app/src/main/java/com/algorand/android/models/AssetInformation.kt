@@ -21,7 +21,7 @@ import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import com.algorand.android.utils.formatAmount
 import java.math.BigInteger
-import kotlinx.android.parcel.IgnoredOnParcel
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -47,6 +47,9 @@ data class AssetInformation(
 
     companion object {
         const val ALGO_ID = -7L
+        const val USDC_MAINNET_ID = 31566704L
+        const val USDC_TESTNET_ID = 10458941L
+        const val USDT_MAINNET_ID = 312769L
 
         fun getAlgorandAsset(amount: BigInteger = BigInteger.ZERO): AssetInformation {
             return AssetInformation(

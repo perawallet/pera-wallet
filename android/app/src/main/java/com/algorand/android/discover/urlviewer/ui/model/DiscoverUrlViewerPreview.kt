@@ -12,6 +12,7 @@
 
 package com.algorand.android.discover.urlviewer.ui.model
 
+import androidx.navigation.NavDirections
 import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.preference.ThemePreference
@@ -21,5 +22,6 @@ data class DiscoverUrlViewerPreview(
     val isLoading: Boolean = false,
     val loadingErrorEvent: Event<WebViewError>? = null,
     val reloadPageEvent: Event<Unit>? = null,
+    val dappViewerScreenRequestEvent: Event<NavDirections>? = null,
     val url: String
 )

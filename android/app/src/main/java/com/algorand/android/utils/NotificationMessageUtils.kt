@@ -40,7 +40,7 @@ private fun Context.getAssetNameCharSequence(
                 appendSpace()
             }
             color(ContextCompat.getColor(context, R.color.gray_500)) {
-                append(getString(R.string.ticker_asset_format, asset?.shortName?.toUpperCase(Locale.ENGLISH)))
+                append(getString(R.string.ticker_asset_format, asset?.shortName?.uppercase(Locale.ENGLISH)))
             }
         }
         if (isFullNameNullOrBlank && isShortNameNullOrBlank) {

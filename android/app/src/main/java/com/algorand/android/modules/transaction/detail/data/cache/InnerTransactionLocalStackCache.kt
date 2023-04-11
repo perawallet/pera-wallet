@@ -13,6 +13,8 @@
 package com.algorand.android.modules.transaction.detail.data.cache
 
 import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail
+import com.algorand.android.utils.extensions.peekOrNull
+import com.algorand.android.utils.extensions.popOrNull
 import java.util.Stack
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -36,7 +38,7 @@ class InnerTransactionLocalStackCache @Inject constructor() {
     suspend fun pop() {
         withContext(Dispatchers.Default) {
             val newStack = _innerTransactionCacheStackFlow.value
-            newStack.pop()
+            newStack.popOrNull()
             _innerTransactionCacheStackFlow.value = newStack
         }
     }
@@ -45,7 +47,7 @@ class InnerTransactionLocalStackCache @Inject constructor() {
         var latestItem: List<BaseTransactionDetail>? = null
         withContext(Dispatchers.Default) {
             val newStack = _innerTransactionCacheStackFlow.value
-            latestItem = newStack.peek()
+            latestItem = newStack.peekOrNull()
             _innerTransactionCacheStackFlow.value = newStack
         }
         return latestItem

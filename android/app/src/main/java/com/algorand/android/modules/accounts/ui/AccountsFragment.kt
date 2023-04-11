@@ -20,12 +20,9 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
-import com.algorand.android.CoreMainActivity
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
-import com.algorand.android.core.BackPressedControllerComponent
-import com.algorand.android.core.BottomNavigationBackPressedDelegate
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentAccountsBinding
 import com.algorand.android.models.AnnotatedString
@@ -35,10 +32,13 @@ import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
 import com.algorand.android.modules.accounts.domain.model.BasePortfolioValueItem
 import com.algorand.android.modules.accounts.ui.adapter.AccountAdapter
 import com.algorand.android.modules.tutorialdialog.util.showCopyAccountAddressTutorialDialog
+import com.algorand.android.modules.tutorialdialog.util.showGiftCardsTutorialDialog
 import com.algorand.android.modules.tutorialdialog.util.showSwapFeatureTutorialDialog
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.TestnetBadgeDrawable
 import com.algorand.android.utils.copyToClipboard
+import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegation
+import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegationImpl
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.setDrawableTintColor
 import com.algorand.android.utils.toShortenedAddress
@@ -49,9 +49,8 @@ import kotlinx.coroutines.flow.map
 
 @Suppress("TooManyFunctions")
 @AndroidEntryPoint
-class AccountsFragment :
-    DaggerBaseFragment(R.layout.fragment_accounts),
-    BackPressedControllerComponent by BottomNavigationBackPressedDelegate() {
+class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
+    BottomNavBarFragmentDelegation by BottomNavBarFragmentDelegationImpl() {
 
     override val fragmentConfiguration = FragmentConfiguration(
         isBottomBarNeeded = true,
@@ -93,9 +92,10 @@ class AccountsFragment :
             nav(AccountsFragmentDirections.actionAccountsFragmentToBannerFragment(url))
         }
 
-        override fun onBuyAlgoClick() {
+        override fun onBuySellClick() {
+            // TODO refactor with a better name for logging
             accountsViewModel.logAccountsFragmentAlgoBuyTapEvent()
-            navToMoonpayIntroFragment()
+            navToBuySellActionsBottomSheet()
         }
 
         override fun onSendClick() {
@@ -159,6 +159,10 @@ class AccountsFragment :
         event?.consume()?.run(::showSwapTutorialDialog)
     }
 
+    private val onGiftCardsTutorialDisplayEventCollector: suspend (Event<Int>?) -> Unit = { event ->
+        event?.consume()?.run(::showGiftCardsTutorialDialog)
+    }
+
     private val portfolioValuesBackgroundColorCollector: suspend (Int?) -> Unit = {
         if (it != null) binding.toolbarLayout.setBackgroundColor(ContextCompat.getColor(binding.root.context, it))
     }
@@ -186,6 +190,9 @@ class AccountsFragment :
     private val swapNavigationDirectionEventCollector: suspend (Event<NavDirections>?) -> Unit = {
         it?.consume()?.run { nav(this) }
     }
+    private val giftCardsNavigationDirectionEventCollector: suspend (Event<NavDirections>?) -> Unit = {
+        it?.consume()?.run { nav(this) }
+    }
 
     private fun showAccountAddressCopyTutorialDialog(tutorialId: Int) {
         accountsViewModel.dismissTutorial(tutorialId)
@@ -198,6 +205,16 @@ class AccountsFragment :
             binding.root.context.showSwapFeatureTutorialDialog(
                 onTrySwap = ::onSwapClickFromTutorialDialog,
                 onLater = ::onSwapLaterClick
+            )
+        }
+    }
+
+    private fun showGiftCardsTutorialDialog(tutorialId: Int) {
+        with(accountsViewModel) {
+            accountsViewModel.dismissTutorial(tutorialId)
+            binding.root.context.showGiftCardsTutorialDialog(
+                onBuyGiftCards = ::onGiftCardsClickFromTutorialDialog,
+                onLater = ::onGiftCardsLaterClick
             )
         }
     }
@@ -226,7 +243,7 @@ class AccountsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? CoreMainActivity)?.let { initBackPressedControllerComponent(it, viewLifecycleOwner) }
+        registerBottomNavBarFragmentDelegation(this)
         initObservers()
         initUi()
     }
@@ -281,6 +298,11 @@ class AccountsFragment :
                 onSwapTutorialDisplayEventCollector
             )
             viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.onGiftCardsTutorialDisplayEvent }
+                    .distinctUntilChanged(),
+                onGiftCardsTutorialDisplayEventCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
                 accountPreviewFlow.map { it?.portfolioValuesBackgroundRes }.distinctUntilChanged(),
                 portfolioValuesBackgroundColorCollector
             )
@@ -295,6 +317,10 @@ class AccountsFragment :
             viewLifecycleOwner.collectLatestOnLifecycle(
                 accountPreviewFlow.map { it?.swapNavigationDestinationEvent }.distinctUntilChanged(),
                 swapNavigationDirectionEventCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.giftCardsNavigationDestinationEvent }.distinctUntilChanged(),
+                giftCardsNavigationDirectionEventCollector
             )
         }
     }
@@ -335,8 +361,8 @@ class AccountsFragment :
         )
     }
 
-    private fun navToMoonpayIntroFragment() {
-        nav(AccountsFragmentDirections.actionAccountsFragmentToMoonpayNavigation())
+    private fun navToBuySellActionsBottomSheet() {
+        nav(AccountsFragmentDirections.actionAccountsFragmentToBuySellActionsBottomSheet())
     }
 
     private fun navToSendAlgoNavigation() {

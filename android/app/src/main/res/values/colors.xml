@@ -230,6 +230,15 @@
     <!-- Moonpay -->
     <color name="moonpay">#7D01FF</color>
 
+    <!-- Bidali -->
+    <color name="bidali">#6241E2</color>
+
+    <!-- Transak -->
+    <color name="transak">#2A6BE6</color>
+
+    <!-- Sardine -->
+    <color name="sardine">#2925CB</color>
+
     <!-- Algorand Standart Assets (ASA) Tiers -->
     <color name="trusted_icon_bg">@color/turquoise_600</color>
     <color name="trusted_icon_inline">@color/white</color>
@@ -353,9 +362,14 @@
 
     <!-- Discover -->
     <color name="discover_helper_purple">#6B46FE</color>
+    <color name="discover_helper_purple_alpha_35">#596B46FE</color>
     <color name="discover_helper_text">#FFFFFF</color>
     <color name="discover_warning">#FF4820</color>
 
     <color name="negative_market_value_background_color">@color/salmon_500_alpha_24</color>
     <color name="positive_market_value_background">@color/turquoise_700_alpha_10</color>
+
+    <!-- Notification -->
+    <color name="notification_icon_placeholder_tint_color">@color/gray_500</color>
+    <color name="notification_icon_placeholder_border_color">@color/gray_100</color>
 </resources>

@@ -27,10 +27,9 @@ class FlingDetector(val listener: FlingDetectorListener) : GestureDetector.Simpl
      * This has the potential to cause unexpected problems in your app. The only time you should
      * return false from onDown() is if you truly want to ignore an entire gesture.
      */
-    override fun onDown(e: MotionEvent?): Boolean = true
+    override fun onDown(e: MotionEvent): Boolean = true
 
-    override fun onFling(event1: MotionEvent?, event2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-        if (event2 == null || event1 == null) return false
+    override fun onFling(event1: MotionEvent, event2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
         var result = false
         val diffY = event2.y - event1.y
         val diffX = event2.x - event1.x

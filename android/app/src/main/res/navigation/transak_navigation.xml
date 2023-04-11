@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/transakNavigation"
+    app:startDestination="@id/transakIntroFragment">
+
+    <include app:graph="@navigation/asset_opt_in_action_navigation" />
+
+    <fragment
+        android:id="@+id/transakIntroFragment"
+        android:name="com.algorand.android.modules.dapp.transak.ui.intro.TransakIntroFragment"
+        android:label="TransakIntroFragment"
+        tools:layout="@layout/fragment_transak_intro">
+        <argument
+            android:name="accountAddress"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_transakIntroFragment_to_transakAccountSelectionFragment"
+            app:destination="@id/transakAccountSelectionFragment" />
+        <action
+            android:id="@+id/action_transakIntroFragment_to_assetOptInActionNavigation"
+            app:destination="@id/assetOptInActionNavigation">
+            <argument
+                android:name="assetAction"
+                app:argType="com.algorand.android.models.AssetAction" />
+            <argument
+                android:name="shouldWaitForConfirmation"
+                app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/action_transakIntroFragment_to_transakBrowserFragment"
+            app:destination="@id/transakBrowserFragment">
+            <argument
+                android:name="title"
+                app:argType="string"
+                android:defaultValue="" />
+            <argument
+                android:name="url"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/transakAccountSelectionFragment"
+        android:name="com.algorand.android.modules.dapp.transak.ui.accountselection.TransakAccountSelectionFragment"
+        android:label="TransakAccountSelectionFragment"
+        tools:layout="@layout/fragment_base_account_selection" >
+        <action
+            android:id="@+id/action_transakAccountSelectionFragment_to_assetOptInActionNavigation"
+            app:destination="@id/assetOptInActionNavigation">
+            <argument
+                android:name="assetAction"
+                app:argType="com.algorand.android.models.AssetAction" />
+            <argument
+                android:name="shouldWaitForConfirmation"
+                app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/action_transakAccountSelectionFragment_to_transakBrowserFragment"
+            app:destination="@id/transakBrowserFragment">
+            <argument
+                android:name="title"
+                app:argType="string"
+                android:defaultValue="" />
+            <argument
+                android:name="url"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/transakBrowserFragment"
+        android:name="com.algorand.android.modules.dapp.transak.ui.browser.TransakBrowserFragment"
+        android:label="TransakBrowserFragment"
+        tools:layout="@layout/fragment_transak_browser" >
+    </fragment>
+
+</navigation>

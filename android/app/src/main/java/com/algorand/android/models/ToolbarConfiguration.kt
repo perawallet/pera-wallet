@@ -16,6 +16,7 @@ import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.algorand.android.R
 
 data class ToolbarConfiguration(
     @StringRes
@@ -30,7 +31,7 @@ data class ToolbarConfiguration(
     @ColorRes
     val startIconColor: Int? = null,
     @ColorRes
-    val titleColor: Int? = null,
+    val titleColor: Int = R.color.primary_text_color,
     val textStartDrawable: Drawable? = null,
     val textEndDrawable: Drawable? = null,
     val centerDrawable: Drawable? = null

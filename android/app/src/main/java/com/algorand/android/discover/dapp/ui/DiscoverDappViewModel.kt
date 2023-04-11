@@ -15,11 +15,9 @@ package com.algorand.android.discover.dapp.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.discover.common.ui.BaseDiscoverViewModel
-import com.algorand.android.discover.common.ui.model.DappFavoriteElement
 import com.algorand.android.discover.dapp.ui.model.DiscoverDappPreview
 import com.algorand.android.discover.dapp.ui.usecase.DiscoverDappPreviewUseCase
 import com.algorand.android.modules.tracking.discover.dapp.DiscoverDappEventTracker
-import com.algorand.android.utils.getOrThrow
 import com.algorand.android.utils.preference.ThemePreference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -35,12 +33,14 @@ class DiscoverDappViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseDiscoverViewModel() {
 
-    private val dappUrl = savedStateHandle.getOrThrow<String>(DAPP_URL_KEY)
-    private val dappTitle = savedStateHandle.getOrThrow<String>(DAPP_TITLE_KEY)
-    private val favorites = savedStateHandle.getOrThrow<Array<DappFavoriteElement>>(FAVORITES_KEY)
+    private val args = DiscoverDappFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     private val _discoverDappPreviewFlow = MutableStateFlow(
-        discoverDappPreviewUseCase.getInitialStatePreview(dappUrl, dappTitle, favorites.toList())
+        discoverDappPreviewUseCase.getInitialStatePreview(
+            dappUrl = args.dappUrl,
+            dappTitle = args.dappTitle,
+            favorites = args.favorites?.toList() ?: emptyList()
+        )
     )
     val discoverDappPreviewFlow: StateFlow<DiscoverDappPreview>
         get() = _discoverDappPreviewFlow
@@ -52,8 +52,8 @@ class DiscoverDappViewModel @Inject constructor(
     private fun logDappVisitEvent() {
         viewModelScope.launch(Dispatchers.IO) {
             discoverDappEventTracker.logDappVisitEvent(
-                dappTitle = dappTitle,
-                dappUrl = dappUrl
+                dappTitle = args.dappTitle,
+                dappUrl = args.dappUrl
             )
         }
     }
@@ -105,7 +105,7 @@ class DiscoverDappViewModel @Inject constructor(
             _discoverDappPreviewFlow
                 .emit(
                     discoverDappPreviewUseCase
-                    .onPageRequestedShouldOverrideUrlLoading(_discoverDappPreviewFlow.value)
+                        .onPageRequestedShouldOverrideUrlLoading(_discoverDappPreviewFlow.value, url)
                 )
         }
         return false
@@ -147,11 +147,5 @@ class DiscoverDappViewModel @Inject constructor(
 
     override fun getDiscoverThemePreference(): ThemePreference {
         return _discoverDappPreviewFlow.value.themePreference
-    }
-
-    companion object {
-        private const val DAPP_URL_KEY = "dappUrl"
-        private const val DAPP_TITLE_KEY = "dappTitle"
-        private const val FAVORITES_KEY = "favorites"
     }
 }

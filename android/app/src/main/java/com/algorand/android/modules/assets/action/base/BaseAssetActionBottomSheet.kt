@@ -127,7 +127,7 @@ abstract class BaseAssetActionBottomSheet : BaseBottomSheet(R.layout.bottom_shee
     private fun showErrorAndNavBack(error: Resource.Error) {
         context?.run {
             val errorMessage = error.parse(this).toString()
-            showGlobalError(errorMessage = errorMessage)
+            showGlobalError(errorMessage = errorMessage, tag = baseActivityTag)
             navBack()
         }
     }

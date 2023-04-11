@@ -92,6 +92,10 @@
         <argument
             android:name="dappTitle"
             app:argType="string" />
+        <argument
+            android:name="favorites"
+            app:argType="com.algorand.android.discover.common.ui.model.DappFavoriteElement[]"
+            app:nullable="true" />
         <action
             android:id="@+id/action_discoverDappFragment_to_singleButtonBottomSheetNavigation"
             app:destination="@id/singleButtonBottomSheetNavigation"
@@ -161,6 +165,20 @@
                 android:name="shouldDescriptionHasLinkMovementMethod"
                 android:defaultValue="false"
                 app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/action_discoverUrlViewerFragment_to_discoverDappFragment"
+            app:destination="@id/discoverDappFragment">
+            <argument
+                android:name="dappUrl"
+                app:argType="string" />
+            <argument
+                android:name="dappTitle"
+                app:argType="string" />
+            <argument
+                android:name="favorites"
+                app:argType="com.algorand.android.discover.common.ui.model.DappFavoriteElement[]"
+                app:nullable="true" />
         </action>
     </fragment>
 

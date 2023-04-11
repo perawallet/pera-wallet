@@ -37,3 +37,16 @@ fun <T> MutableList<T>.popIfOrNull(predicate: (T) -> Boolean): T? {
     remove(element)
     return element
 }
+
+fun <T, R> List<T?>.mapToNotNullableListOrNull(transform: (T?) -> R?): List<R>? {
+    val safeList = mutableListOf<R>()
+    forEach {
+        val mappedData = transform(it)
+        if (mappedData == null) {
+            return null
+        } else {
+            safeList.add(mappedData)
+        }
+    }
+    return safeList
+}

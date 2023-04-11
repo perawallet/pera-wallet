@@ -15,6 +15,7 @@ package com.algorand.android.modules.assets.profile.about.domain.repository
 import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.models.Result
 import com.algorand.android.utils.CacheResult
+import java.net.HttpURLConnection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -28,5 +29,6 @@ interface AssetAboutRepository {
 
     companion object {
         const val INJECTION_NAME = "assetAboutRepository"
+        const val ASSET_NOT_FOUND_ERROR_CODE = HttpURLConnection.HTTP_NOT_FOUND
     }
 }

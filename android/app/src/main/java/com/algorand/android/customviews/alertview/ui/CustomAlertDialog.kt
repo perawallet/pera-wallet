@@ -31,11 +31,6 @@ import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import com.algorand.android.databinding.CustomAlertViewBinding
 import com.algorand.android.models.AlertMetadata
-import com.algorand.android.models.NotificationMetadata
-import com.algorand.android.models.NotificationType.ASSET_TRANSACTION_RECEIVED
-import com.algorand.android.models.NotificationType.ASSET_TRANSACTION_SENT
-import com.algorand.android.models.NotificationType.TRANSACTION_RECEIVED
-import com.algorand.android.models.NotificationType.TRANSACTION_SENT
 import com.algorand.android.utils.getDisplaySize
 import com.algorand.android.utils.viewbinding.viewBinding
 
@@ -44,21 +39,21 @@ class CustomAlertDialog constructor(context: Context) : Dialog(context) {
     private val binding = viewBinding(CustomAlertViewBinding::inflate)
 
     private val toOriginalPositionListener = object : AlertViewAnimatorListener {
-        override fun onAnimationStart(animation: Animator?) {
+        override fun onAnimationStart(animation: Animator) {
             if (!isShowing) show()
         }
 
-        override fun onAnimationCancel(animation: Animator?) {
+        override fun onAnimationCancel(animation: Animator) {
             binding.cardView.apply { y = -height.toFloat() + -marginBottom.toFloat() }
         }
     }
 
     private val fromOriginalPositionListener = object : AlertViewAnimatorListener {
-        override fun onAnimationEnd(animation: Animator?) {
+        override fun onAnimationEnd(animation: Animator) {
             hideAlertView()
         }
 
-        override fun onAnimationCancel(animation: Animator?) {
+        override fun onAnimationCancel(animation: Animator) {
             binding.cardView.apply { y = -height.toFloat() + -marginBottom.toFloat() }
         }
     }
@@ -202,10 +197,9 @@ class CustomAlertDialog constructor(context: Context) : Dialog(context) {
     private fun onAlertViewClick() {
         useLatestAlertMetadata { alertMetadata ->
             if (alertMetadata is AlertMetadata.AlertNotification) {
-                listener?.onTransactionAlertClick(
-                    accountAddress = getAccountAddressFromTransactionAlertMetadata(alertMetadata.metadata),
-                    assetId = alertMetadata.metadata.getAssetDescription().assetId
-                )
+                alertMetadata.metadata.url?.let { uri ->
+                    listener?.onTransactionAlertClick(uri)
+                }
             }
             listener?.onAlertViewCancelled()
             dismissCurrentAlertView()
@@ -221,14 +215,6 @@ class CustomAlertDialog constructor(context: Context) : Dialog(context) {
         latestAlertMetadata = null
     }
 
-    private fun getAccountAddressFromTransactionAlertMetadata(metadata: NotificationMetadata): String {
-        return when (metadata.getNotificationType()) {
-            TRANSACTION_RECEIVED, ASSET_TRANSACTION_RECEIVED -> metadata.receiverPublicKey
-            TRANSACTION_SENT, ASSET_TRANSACTION_SENT -> metadata.senderPublicKey
-            else -> null
-        }.orEmpty()
-    }
-
     private fun useLatestAlertMetadata(block: (AlertMetadata) -> Unit) {
         synchronized(this) {
             latestAlertMetadata?.let(block)
@@ -236,7 +222,7 @@ class CustomAlertDialog constructor(context: Context) : Dialog(context) {
     }
 
     interface Listener {
-        fun onTransactionAlertClick(accountAddress: String, assetId: Long)
+        fun onTransactionAlertClick(uri: String)
         fun onAlertViewHidden()
         fun onAlertViewCancelled()
     }

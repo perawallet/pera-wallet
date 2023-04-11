@@ -13,35 +13,60 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:gravity="center_vertical"
+    android:paddingVertical="@dimen/spacing_large"
     tools:layout_height="wrap_content"
     tools:layout_width="match_parent"
     tools:minHeight="@dimen/settings_list_item_min_height"
-    tools:orientation="horizontal"
-    tools:paddingVertical="@dimen/spacing_large"
-    tools:parentTag="android.widget.LinearLayout">
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <ImageView
-        android:id="@+id/iconImageView"
+        android:id="@+id/settingIconImageView"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/primary_icon_tint_color"
         tools:srcCompat="@drawable/ic_code" />
 
     <TextView
-        android:id="@+id/nameTextView"
-        style="@style/TextAppearance.Body.Sans"
+        android:id="@+id/settingTitleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_large"
-        android:layout_weight="1"
-        android:text="@string/developer_settings" />
+        android:layout_marginHorizontal="@dimen/spacing_normal"
+        android:maxLines="2"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        android:textColor="@color/text_main"
+        app:layout_constraintBottom_toTopOf="@id/settingSubTitleTextView"
+        app:layout_constraintEnd_toStartOf="@id/endComponentViewStub"
+        app:layout_constraintStart_toEndOf="@id/settingIconImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@tools:sample/lorem[2]" />
 
-    <ImageView
-        android:id="@+id/arrowImageView"
+    <TextView
+        android:id="@+id/settingSubTitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_xxxsmall"
+        android:maxLines="2"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/text_gray_lighter"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/endComponentViewStub"
+        app:layout_constraintStart_toEndOf="@id/settingIconImageView"
+        app:layout_constraintTop_toBottomOf="@id/settingTitleTextView"
+        tools:text="@tools:sample/lorem[2]"
+        tools:visibility="visible" />
+
+    <ViewStub
+        android:id="@+id/endComponentViewStub"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_right_arrow"
-        app:tint="@color/secondary_text_color" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </merge>

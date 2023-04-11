@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -13,7 +12,6 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -29,8 +27,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_xlarge"
-            android:layout_marginEnd="@dimen/spacing_xlarge"
             android:layout_marginTop="@dimen/spacing_xxxsmall"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
             android:text="@string/recovery_passphrase"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,51 +46,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
-        <LinearLayout
-            android:id="@+id/passphraseLayout"
-            style="@style/PassphrasesLayout"
+        <com.algorand.android.customviews.PassphrasesBoxView
+            android:id="@+id/passphraseBoxView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
             android:layout_marginTop="@dimen/spacing_xxlarge"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionTextView">
-
-            <TextView
-                android:id="@+id/passphraseLeftColumnTextView"
-                style="@style/TextAppearance.Body.Sans"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_xsmall"
-                android:layout_weight="1"
-                tools:text=" 1.   test\n 2.   test\n 3.   test" />
-
-            <TextView
-                android:id="@+id/passphraseRightColumnTextView"
-                style="@style/TextAppearance.Body.Sans"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_xsmall"
-                android:layout_weight="1"
-                tools:text="13.   test\n14.   test\n15.   test" />
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextButton"
             style="@style/Button.Primary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
             android:layout_marginTop="@dimen/spacing_xxlarge"
             android:layout_marginBottom="@dimen/bottom_safe_area_margin"
             android:text="@string/next"
-            android:layout_marginHorizontal="@dimen/spacing_xlarge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/passphraseLayout"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@id/passphraseBoxView"
+            app:layout_constraintVertical_bias="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

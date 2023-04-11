@@ -36,7 +36,8 @@ class RequestOptInConfirmationBottomSheet : BaseDoubleButtonBottomSheet() {
     private val requestOptInConfirmationViewModel by viewModels<RequestOptInConfirmationViewModel>()
 
     override fun setTitleText(textView: TextView) {
-        textView.setText(R.string.ask_recipient_to)
+        textView.text =
+            getString(R.string.ask_recipient_to, requestOptInConfirmationViewModel.getAssetDisplayText())
     }
 
     private val requestOptInConfirmationPreviewCollector: suspend (RequestOptInConfirmationPreview) -> Unit = {
@@ -53,7 +54,7 @@ class RequestOptInConfirmationBottomSheet : BaseDoubleButtonBottomSheet() {
         val annotatedString = AnnotatedString(
             stringResId = R.string.you_cant_send,
             replacementList = listOf(
-                "nft_name" to requestOptInConfirmationViewModel.getCollectibleDisplayText(),
+                "nft_name" to requestOptInConfirmationViewModel.getAssetDisplayText(),
                 "wallet_address" to requestOptInConfirmationViewModel.getReceiverPublicKey()
             ),
             customAnnotationList = listOf(
@@ -77,7 +78,7 @@ class RequestOptInConfirmationBottomSheet : BaseDoubleButtonBottomSheet() {
 
     override fun setAcceptButton(materialButton: MaterialButton) {
         materialButton.apply {
-            text = getString(R.string.request_opt_in)
+            text = getString(R.string.request_receiver_to)
             setOnClickListener { requestOptInConfirmationViewModel.sendOptInRequest() }
         }
     }

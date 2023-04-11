@@ -17,30 +17,36 @@ import android.webkit.JavascriptInterface
 class PeraMobileWebInterface private constructor(val listener: WebInterfaceListener) {
 
     @JavascriptInterface
-    fun pushTokenDetailScreen(jsonData: String) {
-        listener.pushTokenDetailScreen(jsonData)
+    fun pushTokenDetailScreen(jsonEncodedPayload: String) {
+        listener.pushTokenDetailScreen(jsonEncodedPayload)
     }
 
     @JavascriptInterface
-    fun pushDappViewerScreen(jsonData: String) {
-        listener.pushDappViewerScreen(jsonData)
+    fun pushDappViewerScreen(jsonEncodedPayload: String) {
+        listener.pushDappViewerScreen(jsonEncodedPayload)
     }
 
     @JavascriptInterface
-    fun pushNewScreen(jsonData: String) {
-        listener.pushNewScreen(jsonData)
+    fun pushNewScreen(jsonEncodedPayload: String) {
+        listener.pushNewScreen(jsonEncodedPayload)
     }
 
     @JavascriptInterface
-    fun handleTokenDetailActionButtonClick(jsonData: String) {
-        listener.handleTokenDetailActionButtonClick(jsonData)
+    fun getDeviceId(jsonEncodedPayload: String) {
+        listener.getDeviceId()
+    }
+
+    @JavascriptInterface
+    fun handleTokenDetailActionButtonClick(jsonEncodedPayload: String) {
+        listener.handleTokenDetailActionButtonClick(jsonEncodedPayload)
     }
 
     interface WebInterfaceListener {
-        fun pushTokenDetailScreen(data: String) {}
-        fun pushDappViewerScreen(data: String) {}
-        fun pushNewScreen(data: String) {}
-        fun handleTokenDetailActionButtonClick(data: String) {}
+        fun pushTokenDetailScreen(jsonEncodedPayload: String) {}
+        fun pushDappViewerScreen(jsonEncodedPayload: String) {}
+        fun pushNewScreen(jsonEncodedPayload: String) {}
+        fun handleTokenDetailActionButtonClick(jsonEncodedPayload: String) {}
+        fun getDeviceId() {}
     }
 
     companion object {

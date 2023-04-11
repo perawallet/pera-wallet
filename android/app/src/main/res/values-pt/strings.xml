@@ -565,7 +565,6 @@
     <string name="paste_an_algorand_wallet_address">Cole um endereço de Carteira Algorand</string>
     <string name="ask_recipient_to">Pedir ao destinatário para optar</string>
     <string name="you_cant_send">Você não pode enviar <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> a <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> porque esta carteira ainda não optou por este ativo. <annotation font="dmsans_medium"><annotation custom="learn_more">Saiba mais sobre como Optar</annotation></annotation></string>
-    <string name="request_opt_in">Solicitar Opção</string>
     <string name="information_about_opt">Informações sobre como Optar</string>
     <string name="to_avoid_spammy">Para evitar spam de transações, a blockchain da Algorand permite apenas que você envie e receba transações envolvendo ativos para os quais você já optou.</string>
     <string name="search_or_enter_wallet_address">Busque ou insira seu endereço de carteira</string>

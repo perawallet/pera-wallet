@@ -14,6 +14,7 @@ package com.algorand.android.modules.webexport.accountselection.ui.mapper
 
 import com.algorand.android.modules.webexport.accountselection.ui.model.BaseAccountMultipleSelectionListItem
 import com.algorand.android.modules.webexport.accountselection.ui.model.WebExportAccountSelectionPreview
+import com.algorand.android.utils.Event
 import javax.inject.Inject
 
 class WebExportAccountSelectionPreviewMapper @Inject constructor() {
@@ -23,14 +24,16 @@ class WebExportAccountSelectionPreviewMapper @Inject constructor() {
         listItems: List<BaseAccountMultipleSelectionListItem>,
         isLoadingStateVisible: Boolean,
         isEmptyStateVisible: Boolean,
-        isSingleAccountItem: Boolean
+        isSingleAccountItem: Boolean,
+        activeNodeIsTestnetErrorEvent: Event<Unit>?
     ): WebExportAccountSelectionPreview {
         return WebExportAccountSelectionPreview(
             isContinueButtonEnabled = isContinueButtonEnabled,
             listItems = listItems,
             isLoadingStateVisible = isLoadingStateVisible,
             isEmptyStateVisible = isEmptyStateVisible,
-            isSingleAccountItem = isSingleAccountItem
+            isSingleAccountItem = isSingleAccountItem,
+            activeNodeIsTestnetErrorEvent = activeNodeIsTestnetErrorEvent
         )
     }
 }

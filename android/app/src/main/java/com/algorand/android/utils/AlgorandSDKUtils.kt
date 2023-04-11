@@ -274,7 +274,7 @@ fun BytesArray.assignGroupId(): BytesArray {
     return Mobile.assignGroupID(this)
 }
 
-fun List<ByteArray?>.flatten(): ByteArray {
+fun List<ByteArray>.flatten(): ByteArray {
     return ByteArrayOutputStream().apply {
         this@flatten.forEach { write(it) }
     }.toByteArray()

@@ -73,8 +73,8 @@ abstract class BaseWalletConnectTransaction : Parcelable {
         get() = rawTransactionPayload.transactionMsgPack.decodeBase64()
 
     protected val signerAddressList: List<WalletConnectAddress>?
-        get() = rawTransactionPayload.signers?.map { addressBase64 ->
-            WalletConnectAddress.create(addressBase64)
+        get() = rawTransactionPayload.signers?.map { signerAccount ->
+            WalletConnectAddress(signerAccount, signerAccount)
         }
 
     fun isAuthAddressValid(): Boolean {

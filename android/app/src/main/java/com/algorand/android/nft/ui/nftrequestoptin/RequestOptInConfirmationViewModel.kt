@@ -23,7 +23,6 @@ import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -55,7 +54,7 @@ class RequestOptInConfirmationViewModel @Inject constructor(
         }
     }
 
-    fun getCollectibleDisplayText(): String = with(requestOptInConfirmationArgs) {
+    fun getAssetDisplayText(): String = with(requestOptInConfirmationArgs) {
         assetName ?: assetId.toString()
     }
 

@@ -308,8 +308,7 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
     private fun updateAssetAmountDetail(amount: String?, formattedAppxValue: String, inputView: SwapAssetInputView) {
         with(inputView) {
             setAmountWithoutTriggeringTextChangeListener(amount.orEmpty())
-            val formattedApproximateValue = getString(R.string.approximate_currency_value, formattedAppxValue)
-            setApproximateValueText(formattedApproximateValue)
+            setApproximateValueText(formattedAppxValue)
         }
     }
 

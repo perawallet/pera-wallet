@@ -51,8 +51,6 @@
             android:layout_marginStart="@dimen/spacing_xlarge"
             android:layout_marginTop="@dimen/spacing_xxxxlarge"
             android:layout_marginEnd="@dimen/spacing_xlarge"
-            android:imeOptions="actionDone"
-            android:inputType="textMultiLine"
             app:hint="@string/account_address_or_short_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

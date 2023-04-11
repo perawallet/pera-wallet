@@ -15,6 +15,7 @@ package com.algorand.android.ui.send.confirmation.ui
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.ColorRes
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
@@ -25,6 +26,7 @@ import com.algorand.android.SendAlgoNavigationDirections
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentTransactionConfirmationBinding
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.send.confirmation.ui.model.TransactionStatusPreview
 import com.algorand.android.utils.setFragmentNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -34,7 +36,12 @@ import kotlinx.coroutines.flow.collectLatest
 @AndroidEntryPoint
 class TransactionConfirmationFragment : BaseFragment(R.layout.fragment_transaction_confirmation) {
 
-    override val fragmentConfiguration = FragmentConfiguration()
+    private val toolbarConfiguration: ToolbarConfiguration = ToolbarConfiguration(
+        startIconResId = R.drawable.ic_left_arrow,
+        startIconClick = ::onBackPressed
+    )
+
+    override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
     private val binding by viewBinding(FragmentTransactionConfirmationBinding::bind)
 
@@ -44,10 +51,17 @@ class TransactionConfirmationFragment : BaseFragment(R.layout.fragment_transacti
         updatePreview(preview)
     }
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            onBackPressed()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setLottieAnimatorListener()
         initObservers()
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, onBackPressedCallback)
     }
 
     private fun setLottieAnimatorListener() {
@@ -96,6 +110,11 @@ class TransactionConfirmationFragment : BaseFragment(R.layout.fragment_transacti
         // TODO: use new extension function to return fragment result
         setFragmentNavigationResult(TRANSACTION_CONFIRMATION_KEY, true)
         nav(SendAlgoNavigationDirections.actionSendAlgoNavigationPop())
+    }
+
+    private fun onBackPressed() {
+        setFragmentNavigationResult(TRANSACTION_CONFIRMATION_KEY, false)
+        navBack()
     }
 
     companion object {
