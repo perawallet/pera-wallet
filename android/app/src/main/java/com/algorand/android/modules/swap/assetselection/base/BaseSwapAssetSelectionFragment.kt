@@ -17,7 +17,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
-import com.algorand.android.customviews.CustomToolbar
+import com.algorand.android.customviews.toolbar.CustomToolbar
 import com.algorand.android.databinding.FragmentSwapAssetSelectionBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ScreenState

@@ -20,8 +20,6 @@
 
     <include app:graph="@navigation/moonpay_navigation" />
 
-    <include app:graph="@navigation/account_options_navigation" />
-
     <include app:graph="@navigation/show_qr_navigation" />
 
     <include app:graph="@navigation/asset_total_supply_navigation" />
@@ -35,6 +33,8 @@
     <include app:graph="@navigation/swap_navigation" />
 
     <include app:graph="@navigation/swap_introduction_navigation" />
+
+    <include app:graph="@navigation/account_status_detail_navigation" />
 
     <fragment
         android:id="@+id/assetDetailFragment"
@@ -65,13 +65,6 @@
                 android:name="assetTransaction"
                 app:argType="com.algorand.android.models.AssetTransaction"
                 app:nullable="true" />
-        </action>
-        <action
-            android:id="@+id/action_assetDetailFragment_to_accountOptionsNavigation"
-            app:destination="@id/accountOptionsNavigation">
-            <argument
-                android:name="publicKey"
-                app:argType="string" />
         </action>
         <action
             android:id="@+id/action_assetDetailFragment_to_showQrNavigation"
@@ -164,6 +157,13 @@
             <argument
                 android:name="tokenDetail"
                 app:argType="com.algorand.android.discover.home.domain.model.TokenDetailInfo" />
+        </action>
+        <action
+            android:id="@+id/action_assetDetailFragment_to_accountStatusDetailNavigation"
+            app:destination="@id/accountStatusDetailNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
         </action>
     </fragment>
 

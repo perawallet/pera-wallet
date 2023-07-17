@@ -14,6 +14,7 @@ package com.algorand.android.usecase
 
 import com.algorand.android.mapper.AccountAssetDataMapper
 import com.algorand.android.models.AccountDetail
+import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.modules.parity.domain.usecase.PrimaryCurrencyParityCalculationUseCase
@@ -36,6 +37,13 @@ class AccountAlgoAmountUseCase @Inject constructor(
 
     fun getAccountAlgoAmount(accountDetail: AccountDetail): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
         val accountAlgoAmount = accountDetail.accountInformation.amount
+        return createAccountAlgoAmount(accountAlgoAmount)
+    }
+
+    fun getAccountAlgoAmount(
+        accountInformation: AccountInformation
+    ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
+        val accountAlgoAmount = accountInformation.amount
         return createAccountAlgoAmount(accountAlgoAmount)
     }
 

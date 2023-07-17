@@ -45,6 +45,7 @@ private const val SUPPORT_CENTER_URL = "https://perawallet.app/support/"
 private const val TRANSACTION_INFO_URL = "https://perawallet.app/support/transactions/"
 private const val RECOVERY_PASSPHRASE_SUPPORT_URL = "https://perawallet.app/support/passphrase/"
 private const val WATCH_ACCOUNT_SUPPORT_URL = "https://perawallet.app/support/watch-accounts/"
+private const val WC_ADVANCED_PERMISSIONS_URL = "https://perawallet.app/support/walletconnect-advanced-options"
 const val RECOVER_INFO_URL = "https://perawallet.app/support/recover-account/"
 const val LEDGER_HELP_WEB_URL = "https://perawallet.app/support/ledger/"
 private const val PERA_INTRODUCTION_URL = "https://perawallet.app/blog/launch-announcement/"
@@ -56,6 +57,9 @@ private const val TINYMAN_TERMS_OF_SERVICE_URL = "https://tinyman.org/terms-of-s
 const val BLANK_URL = "about:blank"
 private const val TINYMAN_FAQ_PRICE_IMPACT_URL = "https://docs.tinyman.org/faq#what-is-a-price-impact"
 const val ASB_SUPPORT_URL = "https://perawallet.app/support/asb"
+
+// TODO: update here whenever page is ready
+const val LEDGER_SUPPORT_URL = "https://perawallet.app/support/rekey/"
 
 const val HTTPS_PROTOCOL = "https://"
 const val HTTP_PROTOCOL = "http://"
@@ -150,6 +154,10 @@ fun Context.openWatchAccountSupportUrl() {
 
 fun Context.openPeraSupportUrl() {
     openUrl(PERA_SUPPORT_URL)
+}
+
+fun Context.openWalletConnectAdvancedPermissionsUrl() {
+    openUrl(WC_ADVANCED_PERMISSIONS_URL)
 }
 
 fun Context.openDispenserUrl(accountAddress: String?) {

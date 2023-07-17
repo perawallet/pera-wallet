@@ -13,6 +13,8 @@
 
 package com.algorand.android.utils.extensions
 
+import android.text.Editable
+import com.algorand.android.utils.emptyString
 import com.algorand.android.utils.recordException
 import java.math.BigDecimal
 import java.net.URLEncoder
@@ -88,3 +90,8 @@ fun String.encodeToURL(charset: String = Charsets.UTF_8.name()): String {
 }
 
 inline fun <T : CharSequence, R> T.mapNotBlank(block: (T) -> R): R? = if (isNotBlank()) block(this) else null
+
+fun Editable?.hasMultipleParagraph(): Boolean {
+    if (this == null) return false
+    return lines().any { it == emptyString() }
+}

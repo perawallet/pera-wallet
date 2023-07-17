@@ -37,6 +37,7 @@ const val DATE_AND_TIME_SEC_PATTERN = "MMMM dd, yyyy - HH:mm:ss"
 const val TXN_DATE_AND_TIME_PATTERN = "MMMM dd, yyyy hh:mm a"
 const val TXN_DATE_PATTERN = "MMM dd, yyyy"
 const val UTC_ZONE_ID = "UTC"
+const val HOUR_MINUTE_AM_PM_PATTERN = "hh:mm a"
 
 const val UNIX_TIME_STAMP_MULTIPLIER = 1000
 private const val WEEK_IN_DAYS = 7L
@@ -156,7 +157,7 @@ fun convertSecToMills(sec: Long) = sec * UNIX_TIME_STAMP_MULTIPLIER
 
 fun getZonedDateTimeAsSec() = ZonedDateTime.now().toEpochSecond()
 
-fun getZonedDateTimeFromSec(sec: Long): ZonedDateTime? {
+fun getZonedDateTimeFromSec(sec: Long): ZonedDateTime {
     return ZonedDateTime.ofInstant(Instant.ofEpochSecond(sec), ZoneId.systemDefault())
 }
 

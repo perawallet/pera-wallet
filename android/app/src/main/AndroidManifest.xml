@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <!-- BLE communication -->
     <uses-feature
@@ -81,16 +82,20 @@
     <application
         android:name=".core.PeraApp"
         android:allowBackup="false"
-        android:fullBackupContent="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:fullBackupContent"
+        tools:replace="android:fullBackupContent,android:dataExtractionRules"
         tools:targetApi="s">
+        <!--
+        We override `dataExtractionRules` because of WalletConnect v2 library.
+        Our rules cover their files as well.
+        -->
 
         <service
             android:name=".notification.PeraFirebaseMessagingService"
@@ -111,10 +116,12 @@
                 android:resource="@xml/fileprovider" />
         </provider>
 
-        <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing"
+        <meta-data
+            android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="true" />
 
-        <meta-data android:name="android.webkit.WebView.MetricsOptOut"
+        <meta-data
+            android:name="android.webkit.WebView.MetricsOptOut"
             android:value="true" />
 
         <meta-data
@@ -127,10 +134,10 @@
 
         <activity
             android:name=".ui.splash.LauncherActivity"
+            android:exported="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Splash"
-            android:exported="true">
+            android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <data android:scheme="wc" />
                 <action android:name="android.intent.action.VIEW" />
@@ -172,9 +179,9 @@
 
         <activity-alias
             android:name=".Launcher"
+            android:exported="true"
             android:label="@string/app_name"
-            android:targetActivity=".ui.splash.LauncherActivity"
-            android:exported="true">
+            android:targetActivity=".ui.splash.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

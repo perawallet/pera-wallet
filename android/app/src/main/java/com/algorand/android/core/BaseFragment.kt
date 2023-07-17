@@ -21,7 +21,7 @@ import androidx.navigation.fragment.FragmentNavigator
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainActivity
 import com.algorand.android.R
-import com.algorand.android.customviews.CustomToolbar
+import com.algorand.android.customviews.toolbar.CustomToolbar
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.StatusBarConfiguration
@@ -137,6 +137,11 @@ abstract class BaseFragment(
     fun onAccountAddressCopied(accountAddress: String) {
         context?.copyToClipboard(textToCopy = accountAddress, showToast = false)
         showTopToast(getString(R.string.address_copied_to_clipboard), accountAddress.toShortenedAddress())
+    }
+
+    fun onAssetIdCopied(assetId: Long) {
+        context?.copyToClipboard(textToCopy = assetId.toString(), showToast = false)
+        showTopToast(getString(R.string.asset_id_copied_to_clipboard), assetId.toString())
     }
 
     private fun removeAlertsWithTag(tag: String) {

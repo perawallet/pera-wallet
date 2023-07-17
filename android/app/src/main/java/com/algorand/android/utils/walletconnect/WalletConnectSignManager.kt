@@ -280,13 +280,33 @@ class WalletConnectSignManager @Inject constructor(
                 ?.account
                 ?.detail
         ) {
-            is Standard -> signHelper.cacheDequeuedItem(decodedTransaction?.signTx(authAccountDetail.secretKey))
+            is Standard -> {
+                if (authAccountDetail.secretKey.isNotEmpty()) {
+                    signHelper.cacheDequeuedItem(decodedTransaction?.signTx(authAccountDetail.secretKey))
+                } else {
+                    signHelper.cacheDequeuedItem(null)
+                }
+            }
             is Ledger -> {
                 sendTransactionWithLedger(
                     ledgerDetail = authAccountDetail,
                     currentTransactionIndex = currentTransactionIndex,
                     totalTransactionCount = totalTransactionCount
                 )
+            }
+            is Account.Detail.Rekeyed -> {
+                if (authAccountDetail.secretKey?.isNotEmpty() == true) {
+                    signHelper.cacheDequeuedItem(decodedTransaction?.signTx(authAccountDetail.secretKey))
+                } else {
+                    signHelper.cacheDequeuedItem(null)
+                }
+            }
+            is RekeyedAuth -> {
+                if (authAccountDetail.secretKey?.isNotEmpty() == true) {
+                    signHelper.cacheDequeuedItem(decodedTransaction?.signTx(authAccountDetail.secretKey))
+                } else {
+                    signHelper.cacheDequeuedItem(null)
+                }
             }
             else -> signHelper.cacheDequeuedItem(null)
         }

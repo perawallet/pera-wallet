@@ -12,8 +12,8 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.domain.usecase
 
-import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionAccountDTOMapper
-import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionDTOMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionAccountDtoMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionDtoMapper
 import com.algorand.android.modules.walletconnect.client.v1.domain.repository.WalletConnectRepository
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import javax.inject.Inject
@@ -22,17 +22,17 @@ import javax.inject.Named
 class InsertWalletConnectV1SessionToDBUseCase @Inject constructor(
     @Named(WalletConnectRepository.INJECTION_NAME)
     private val walletConnectRepository: WalletConnectRepository,
-    private val walletConnectSessionDTOMapper: WalletConnectSessionDTOMapper,
-    private val sessionAccountDTOMapper: WalletConnectSessionAccountDTOMapper
+    private val walletConnectSessionDtoMapper: WalletConnectSessionDtoMapper,
+    private val sessionAccountDtoMapper: WalletConnectSessionAccountDtoMapper
 ) {
 
     suspend operator fun invoke(settle: WalletConnect.Session.Settle.Result) {
         val sessionMeta = settle.session.sessionMeta as WalletConnect.Session.Meta.Version1
-        val walletConnectSessionDTO = walletConnectSessionDTOMapper.mapToSessionDTO(settle, sessionMeta)
+        val walletConnectSessionDto = walletConnectSessionDtoMapper.mapToSessionDto(settle, sessionMeta)
         val sessionId = settle.session.sessionIdentifier.getIdentifier().toLong()
-        val connectedAddressDTOList = settle.session.connectedAddresses.map {
-            sessionAccountDTOMapper.mapToSessionAccountDTO(sessionId, it)
+        val connectedAddressDtoList = settle.session.connectedAccounts.map { connectedAccount ->
+            sessionAccountDtoMapper.mapToSessionAccountDto(sessionId, connectedAccount.accountAddress)
         }
-        walletConnectRepository.insertConnectedWalletConnectSession(walletConnectSessionDTO, connectedAddressDTOList)
+        walletConnectRepository.insertConnectedWalletConnectSession(walletConnectSessionDto, connectedAddressDtoList)
     }
 }

@@ -13,10 +13,10 @@
 package com.algorand.android.modules.walletconnect.client.v1.data.di
 
 import com.algorand.android.database.WalletConnectDao
-import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionAccountDTOMapper
-import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionByAccountsAddressDTOMapper
-import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionDTOMapper
-import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionWithAccountsAddressesDTOMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionAccountDtoMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionByAccountsAddressDtoMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionDtoMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionWithAccountsAddressesDtoMapper
 import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectSessionAccountEntityMapper
 import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectSessionEntityMapper
 import com.algorand.android.modules.walletconnect.client.v1.data.repository.WalletConnectV1RepositoryImpl
@@ -37,21 +37,21 @@ object WalletConnectRepositoryModule {
     @Named(WalletConnectRepository.INJECTION_NAME)
     fun provideWalletConnectRepository(
         walletConnectDao: WalletConnectDao,
-        sessionAccountDTOMapper: WalletConnectSessionAccountDTOMapper,
+        sessionAccountDtoMapper: WalletConnectSessionAccountDtoMapper,
         sessionAccountEntityMapper: WalletConnectSessionAccountEntityMapper,
-        sessionDTOMapper: WalletConnectSessionDTOMapper,
+        sessionDtoMapper: WalletConnectSessionDtoMapper,
         sessionEntityMapper: WalletConnectSessionEntityMapper,
-        sessionByAccountsAddressDTOMapper: WalletConnectSessionByAccountsAddressDTOMapper,
-        sessionWithAccountsAddressesDTOMapper: WalletConnectSessionWithAccountsAddressesDTOMapper
+        sessionByAccountsAddressDtoMapper: WalletConnectSessionByAccountsAddressDtoMapper,
+        sessionWithAccountsAddressesDtoMapper: WalletConnectSessionWithAccountsAddressesDtoMapper
     ): WalletConnectRepository {
         return WalletConnectV1RepositoryImpl(
             walletConnectDao = walletConnectDao,
-            sessionAccountDTOMapper = sessionAccountDTOMapper,
+            sessionAccountDtoMapper = sessionAccountDtoMapper,
             sessionAccountEntityMapper = sessionAccountEntityMapper,
-            sessionDTOMapper = sessionDTOMapper,
+            sessionDtoMapper = sessionDtoMapper,
             sessionEntityMapper = sessionEntityMapper,
-            sessionByAccountsAddressDTOMapper = sessionByAccountsAddressDTOMapper,
-            sessionWithAccountsAddressesDTOMapper = sessionWithAccountsAddressesDTOMapper
+            sessionByAccountsAddressDtoMapper = sessionByAccountsAddressDtoMapper,
+            sessionWithAccountsAddressesDtoMapper = sessionWithAccountsAddressesDtoMapper
         )
     }
 }

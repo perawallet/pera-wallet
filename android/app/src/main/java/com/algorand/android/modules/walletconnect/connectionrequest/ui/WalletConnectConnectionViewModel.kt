@@ -15,17 +15,17 @@ package com.algorand.android.modules.walletconnect.connectionrequest.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WalletConnectConnectionPreview
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.usecase.WalletConnectConnectionPreviewUseCase
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.getOrThrow
+import com.algorand.android.utils.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class WalletConnectConnectionViewModel @Inject constructor(
@@ -35,30 +35,17 @@ class WalletConnectConnectionViewModel @Inject constructor(
 
     private val sessionProposal = savedStateHandle.getOrThrow<WalletConnectSessionProposal>(SESSION_PROPOSAL_KEY)
 
-    val shouldSkipConfirmation = savedStateHandle.getOrThrow<Boolean>(SHOULD_SKIP_CONFIRMATION_KEY)
-
-    val peerMetaName: String
-        get() = sessionProposal.peerMeta.name
-
     val walletConnectConnectionPreviewFlow: StateFlow<WalletConnectConnectionPreview?>
         get() = _walletConnectConnectionPreviewFlow
     private val _walletConnectConnectionPreviewFlow = MutableStateFlow<WalletConnectConnectionPreview?>(null)
-
-    private val selectedAccountAddresses: List<String>
-        get() = walletConnectConnectionPreviewFlow.value
-            ?.baseWalletConnectConnectionItems
-            ?.filterIsInstance<BaseWalletConnectConnectionItem.AccountItem>()
-            ?.filter { it.isChecked }
-            ?.map { it.accountAddress }
-            .orEmpty()
 
     init {
         initWalletConnectConnectionPreview()
     }
 
     fun onAccountChecked(accountAddress: String) {
-        viewModelScope.launch {
-            val currentPreview = _walletConnectConnectionPreviewFlow.value ?: return@launch
+        viewModelScope.launchIO {
+            val currentPreview = _walletConnectConnectionPreviewFlow.value ?: return@launchIO
             val preview = walletConnectConnectionPreviewUseCase.updatePreviewStateAccordingToAccountSelection(
                 preview = currentPreview,
                 accountAddress = accountAddress
@@ -68,21 +55,17 @@ class WalletConnectConnectionViewModel @Inject constructor(
     }
 
     fun onConnectSessionConnect() {
-        viewModelScope.launch {
-            val currentPreview = _walletConnectConnectionPreviewFlow.value ?: return@launch
-            val sessionResult = walletConnectConnectionPreviewUseCase.getApprovedWalletConnectSessionResult(
-                accountAddresses = selectedAccountAddresses,
+        _walletConnectConnectionPreviewFlow.update { preview ->
+            walletConnectConnectionPreviewUseCase.getApprovedWalletConnectSessionResult(
+                preview = preview,
                 sessionProposal = sessionProposal
-            )
-            _walletConnectConnectionPreviewFlow.emit(
-                currentPreview.copy(approveWalletConnectSessionRequest = Event(sessionResult))
             )
         }
     }
 
     fun onSessionCancelled() {
-        viewModelScope.launch {
-            val currentPreview = _walletConnectConnectionPreviewFlow.value ?: return@launch
+        viewModelScope.launchIO {
+            val currentPreview = _walletConnectConnectionPreviewFlow.value ?: return@launchIO
             val sessionResult = walletConnectConnectionPreviewUseCase.getRejectedWalletConnectSessionResult(
                 sessionProposal = sessionProposal
             )
@@ -93,9 +76,9 @@ class WalletConnectConnectionViewModel @Inject constructor(
     }
 
     private fun initWalletConnectConnectionPreview() {
-        viewModelScope.launch {
+        viewModelScope.launchIO {
             val preview = walletConnectConnectionPreviewUseCase.getWalletConnectConnectionPreview(
-                walletConnectPeerMeta = sessionProposal.peerMeta
+                sessionProposal = sessionProposal
             )
             _walletConnectConnectionPreviewFlow.emit(preview)
         }
@@ -103,6 +86,5 @@ class WalletConnectConnectionViewModel @Inject constructor(
 
     companion object {
         private const val SESSION_PROPOSAL_KEY = "sessionProposal"
-        private const val SHOULD_SKIP_CONFIRMATION_KEY = "shouldSkipConfirmation"
     }
 }

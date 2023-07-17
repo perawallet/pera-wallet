@@ -18,8 +18,8 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetSwapPreviewSummaryBinding
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.swap.previewsummary.ui.model.SwapPreviewSummaryPreview
 import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AccountIconDrawable
@@ -68,7 +68,7 @@ class SwapPreviewSummaryBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_swap
 
     private fun initPreview(preview: SwapPreviewSummaryPreview) {
         with(preview) {
-            initAccountDetails(accountDisplayName, accountIconResource)
+            initAccountDetails(accountDisplayName, accountIconDrawablePreview)
             with(binding) {
                 priceRatioTextView.text = root.context.getXmlStyledString(getPriceRatio(resources))
                 slippageToleranceTextView.text = slippageTolerance
@@ -81,10 +81,16 @@ class SwapPreviewSummaryBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_swap
         }
     }
 
-    private fun initAccountDetails(accountDisplayName: AccountDisplayName, accountIconResource: AccountIconResource) {
+    private fun initAccountDetails(
+        accountDisplayName: AccountDisplayName,
+        accountIconDrawablePreview: AccountIconDrawablePreview
+    ) {
         with(binding) {
-            val iconSize = resources.getDimensionPixelSize(R.dimen.account_icon_size_normal)
-            val accountIconDrawable = AccountIconDrawable.create(root.context, accountIconResource, iconSize)
+            val accountIconDrawable = AccountIconDrawable.create(
+                context = root.context,
+                accountIconDrawablePreview = accountIconDrawablePreview,
+                sizeResId = R.dimen.spacing_xlarge
+            )
             val accountName = accountDisplayName.getAccountPrimaryDisplayName()
             accountTextView.apply {
                 setDrawable(start = accountIconDrawable)

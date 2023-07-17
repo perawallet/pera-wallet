@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.walletconnect.mapper
 
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectPeerMetaDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectPeerMetaDto
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import javax.inject.Inject
 import org.walletconnect.Session
@@ -45,7 +45,7 @@ class WalletConnectPeerMetaMapper @Inject constructor() {
         )
     }
 
-    fun mapToPeerMeta(peerMeta: WalletConnectPeerMetaDTO): WalletConnect.PeerMeta {
+    fun mapToPeerMeta(peerMeta: WalletConnectPeerMetaDto): WalletConnect.PeerMeta {
         return WalletConnect.PeerMeta(
             name = peerMeta.name,
             url = peerMeta.url,

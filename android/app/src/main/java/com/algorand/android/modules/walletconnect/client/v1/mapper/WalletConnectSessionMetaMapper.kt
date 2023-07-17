@@ -12,14 +12,14 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.mapper
 
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionMetaDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionMetaDto
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import javax.inject.Inject
 import org.walletconnect.Session
 
 class WalletConnectSessionMetaMapper @Inject constructor() {
 
-    fun mapToSessionMeta(sessionMeta: WalletConnectSessionMetaDTO): WalletConnect.Session.Meta {
+    fun mapToSessionMeta(sessionMeta: WalletConnectSessionMetaDto): WalletConnect.Session.Meta {
         return WalletConnect.Session.Meta.Version1(
             bridge = sessionMeta.bridge,
             topic = sessionMeta.topic,

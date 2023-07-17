@@ -58,6 +58,14 @@ class AccountAssetsAdapter(
         override fun onMoreClick() {
             listener.onMoreClick()
         }
+
+        override fun onCopyAddressClick() {
+            listener.onCopyAddressClick()
+        }
+
+        override fun onShowAddressClick() {
+            listener.onShowAddressClick()
+        }
     }
 
     private val assetsTitleViewHolderListener = object : AccountDetailAssetsTitleViewHolderListener {
@@ -178,6 +186,8 @@ class AccountAssetsAdapter(
         fun onSwapClick()
         fun onMoreClick()
         fun onRequiredMinimumBalanceClick()
+        fun onCopyAddressClick()
+        fun onShowAddressClick()
     }
 
     companion object {

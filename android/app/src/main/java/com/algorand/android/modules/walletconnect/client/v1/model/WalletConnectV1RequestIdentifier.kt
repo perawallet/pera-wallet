@@ -15,12 +15,9 @@ package com.algorand.android.modules.walletconnect.client.v1.model
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectVersionIdentifier
 
-data class WalletConnectV1RequestIdentifier(
-    private val requestId: Long,
-    override val versionIdentifier: WalletConnectVersionIdentifier
-) : WalletConnect.RequestIdentifier {
+data class WalletConnectV1RequestIdentifier(private val requestId: Long) : WalletConnect.RequestIdentifier {
 
-    override fun getIdentifier(): Long {
-        return requestId
-    }
+    override val versionIdentifier: WalletConnectVersionIdentifier = WalletConnectVersionIdentifier.VERSION_1
+
+    override fun getIdentifier(): Long = requestId
 }

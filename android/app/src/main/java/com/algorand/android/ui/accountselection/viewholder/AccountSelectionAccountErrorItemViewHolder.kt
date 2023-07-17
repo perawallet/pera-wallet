@@ -19,9 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountErrorSimpleBinding
-import com.algorand.android.models.AccountIconResource
-import com.algorand.android.models.AccountIconResource.Companion.DEFAULT_ACCOUNT_ICON_RESOURCE
 import com.algorand.android.models.BaseAccountSelectionListItem
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountIconDrawable
 
 class AccountSelectionAccountErrorItemViewHolder(
@@ -31,7 +30,7 @@ class AccountSelectionAccountErrorItemViewHolder(
     fun bind(item: BaseAccountSelectionListItem.BaseAccountItem.AccountErrorItem) {
         with(binding) {
             with(item.accountListItem.itemConfiguration) {
-                setAccountStartIconDrawable(accountIconResource)
+                setAccountStartIconDrawable(accountIconDrawablePreview)
                 setAccountTitleText(accountDisplayName?.getAccountPrimaryDisplayName())
                 setAccountDescriptionText(accountDisplayName?.getAccountSecondaryDisplayName(root.resources))
                 setAccountEndIconDrawable()
@@ -39,15 +38,16 @@ class AccountSelectionAccountErrorItemViewHolder(
         }
     }
 
-    private fun setAccountStartIconDrawable(accountIconResource: AccountIconResource?) {
-        with(binding.accountItemView) {
-            val accountIconSize = resources.getDimension(R.dimen.account_icon_size_large).toInt()
-            val accountIconDrawable = AccountIconDrawable.create(
-                context = context,
-                accountIconResource = accountIconResource ?: DEFAULT_ACCOUNT_ICON_RESOURCE,
-                size = accountIconSize
-            )
-            setStartIconDrawable(accountIconDrawable)
+    private fun setAccountStartIconDrawable(accountIconDrawablePreview: AccountIconDrawablePreview?) {
+        if (accountIconDrawablePreview != null) {
+            with(binding.accountItemView) {
+                val accountIconDrawable = AccountIconDrawable.create(
+                    context = context,
+                    accountIconDrawablePreview = accountIconDrawablePreview,
+                    sizeResId = R.dimen.spacing_xxxxlarge
+                )
+                setStartIconDrawable(accountIconDrawable)
+            }
         }
     }
 

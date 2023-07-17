@@ -13,12 +13,12 @@
 package com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity
 
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectPeerMetaEntity
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectPeerMetaDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectPeerMetaDto
 import javax.inject.Inject
 
 class WalletConnectPeerMetaEntityMapper @Inject constructor() {
 
-    fun mapToPeerMetaEntity(peerMeta: WalletConnectPeerMetaDTO): WalletConnectPeerMetaEntity {
+    fun mapToPeerMetaEntity(peerMeta: WalletConnectPeerMetaDto): WalletConnectPeerMetaEntity {
         return WalletConnectPeerMetaEntity(
             name = peerMeta.name,
             url = peerMeta.url,

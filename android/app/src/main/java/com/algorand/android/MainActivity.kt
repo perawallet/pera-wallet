@@ -34,17 +34,15 @@ import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
-import androidx.lifecycle.coroutineScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import com.algorand.android.core.TransactionManager
 import com.algorand.android.customviews.CoreActionsTabBarView
 import com.algorand.android.customviews.LedgerLoadingDialog
-import com.algorand.android.customviews.alertview.ui.AlertDialogQueueManager
-import com.algorand.android.customviews.alertview.ui.CustomAlertDialog
+import com.algorand.android.customviews.alertview.ui.delegation.AlertDialogDelegation
+import com.algorand.android.customviews.alertview.ui.delegation.AlertDialogDelegationImpl
 import com.algorand.android.customviews.customsnackbar.CustomSnackbar
 import com.algorand.android.models.AccountCacheStatus
-import com.algorand.android.models.AlertMetadata
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetActionResult
@@ -64,10 +62,12 @@ import com.algorand.android.modules.deeplink.domain.model.NotificationGroupType
 import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
 import com.algorand.android.modules.firebase.token.FirebaseTokenManager
 import com.algorand.android.modules.firebase.token.model.FirebaseTokenResult
+import com.algorand.android.modules.pendingintentkeeper.ui.PendingIntentKeeper
 import com.algorand.android.modules.perawebview.ui.BasePeraWebViewFragment
 import com.algorand.android.modules.qrscanning.QrScannerViewModel
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.WalletConnectConnectionBottomSheet
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
 import com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment
@@ -78,17 +78,12 @@ import com.algorand.android.utils.Resource
 import com.algorand.android.utils.analytics.logTapReceive
 import com.algorand.android.utils.analytics.logTapSend
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
-import com.algorand.android.utils.extensions.hide
-import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.extensions.collectOnLifecycle
-import com.algorand.android.utils.extensions.hide
-import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.getSafeParcelableExtra
 import com.algorand.android.utils.inappreview.InAppReviewManager
 import com.algorand.android.utils.navigateSafe
 import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.showWithStateCheck
-import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import com.algorand.android.utils.walletconnect.WalletConnectUrlHandler
 import com.algorand.android.utils.walletconnect.WalletConnectViewModel
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -100,13 +95,12 @@ import kotlin.properties.Delegates
 class MainActivity :
     CoreMainActivity(),
     WalletConnectConnectionBottomSheet.Callback,
-    ReceiveAccountSelectionFragment.ReceiveAccountSelectionFragmentListener {
+    ReceiveAccountSelectionFragment.ReceiveAccountSelectionFragmentListener,
+    AlertDialogDelegation by AlertDialogDelegationImpl() {
 
     val mainViewModel: MainViewModel by viewModels()
     private val walletConnectViewModel: WalletConnectViewModel by viewModels()
     private val qrScannerViewModel: QrScannerViewModel by viewModels()
-
-    private var pendingIntent: Intent? = null
 
     private var ledgerLoadingDialog: LedgerLoadingDialog? = null
 
@@ -123,9 +117,6 @@ class MainActivity :
     lateinit var autoLockSuggestionManager: AutoLockSuggestionManager
 
     @Inject
-    lateinit var errorProvider: WalletConnectTransactionErrorProvider
-
-    @Inject
     lateinit var firebaseTokenManager: FirebaseTokenManager
 
     @Inject
@@ -133,6 +124,9 @@ class MainActivity :
 
     @Inject
     lateinit var deepLinkParser: DeepLinkParser
+
+    @Inject
+    lateinit var pendingIntentKeeper: PendingIntentKeeper
 
     private val isAppUnlocked: Boolean
         get() = autoLockManager.isAppUnlocked
@@ -147,8 +141,6 @@ class MainActivity :
             handleRedirection()
         }
     }
-
-    private val alertViewDialog by lazy { CustomAlertDialog(this) }
 
     private var isAssetSetupCompleted: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
         if (oldValue != newValue && newValue && isAppUnlocked) {
@@ -181,7 +173,7 @@ class MainActivity :
         val rawDeepLink = deepLinkParser.parseDeepLink(newNotificationData.url.orEmpty())
         when (val baseDeepLink = BaseDeepLink.create(rawDeepLink)) {
             is BaseDeepLink.NotificationDeepLink -> handleNotificationWithDeepLink(newNotificationData, baseDeepLink)
-            else -> showForegroundNotification(newNotificationData)
+            else -> showForegroundNotification(notificationMetadata = newNotificationData, tag = activityTag)
         }
     }
 
@@ -191,13 +183,13 @@ class MainActivity :
     ) {
         when (deeplink.notificationGroupType) {
             NotificationGroupType.OPT_IN -> handleAssetOptInRequestDeepLink(deeplink.address, deeplink.assetId)
-            else -> showForegroundNotification(newNotificationData)
+            else -> showForegroundNotification(notificationMetadata = newNotificationData, tag = activityTag)
         }
     }
 
     private fun handleAssetOptInRequestDeepLink(accountAddress: String, assetId: Long) {
         if (!accountDetailUseCase.isThereAnyAccountWithPublicKey(accountAddress)) {
-            showGlobalError(getString(R.string.you_cannot_take))
+            showGlobalError(errorMessage = getString(R.string.you_cannot_take), tag = activityTag)
             return
         }
 
@@ -211,7 +203,7 @@ class MainActivity :
 
     private fun handleAssetTransactionDeepLink(accountAddress: String, assetId: Long) {
         if (!accountDetailUseCase.isThereAnyAccountWithPublicKey(accountAddress)) {
-            showGlobalError(getString(R.string.you_cannot_take))
+            showGlobalError(errorMessage = getString(R.string.you_cannot_take), tag = activityTag)
             return
         }
 
@@ -240,6 +232,14 @@ class MainActivity :
         override fun onInvalidWalletConnectUrl(errorResId: Int) {
             qrScannerViewModel.setQrCodeInProgress(false)
             showGlobalError(errorMessage = getString(errorResId), tag = activityTag)
+        }
+    }
+
+    private val walletConnectSessionSettleCollector: suspend (Event<WalletConnectSessionIdentifier>) -> Unit = {
+        it.consume()?.let { sessionIdentifier ->
+            if (!isBasePeraWebViewFragmentActive()) {
+                nav(HomeNavigationDirections.actionGlobalWcConnectionLaunchBackBrowserBottomSheet(sessionIdentifier))
+            }
         }
     }
 
@@ -374,32 +374,8 @@ class MainActivity :
         }
     }
 
-    private val alertDialogQueueManagerListener = object : AlertDialogQueueManager.Listener {
-        override fun onDisplayAlertView(alertMetadata: AlertMetadata) {
-            alertViewDialog.displayAlertView(alertMetadata)
-        }
-
-        override fun onDismissAlertView() {
-            alertViewDialog.dismissCurrentAlertView()
-        }
-
-        override fun onQueueCompleted() {
-            alertViewDialog.cancel()
-        }
-    }
-
-    private val customAlertDialogListener = object : CustomAlertDialog.Listener {
-        override fun onTransactionAlertClick(uri: String) {
-            handleDeepLink(uri)
-        }
-
-        override fun onAlertViewHidden() {
-            alertDialogQueueManager.showNextAlert()
-        }
-
-        override fun onAlertViewCancelled() {
-            alertDialogQueueManager.removeHeadOfQueue()
-        }
+    private val alertDialogDelegationListener = AlertDialogDelegationImpl.Listener { deepLinkUri ->
+        handleDeepLink(deepLinkUri)
     }
 
     private val activeNodeCollector: suspend (Node?) -> Unit = { activatedNode ->
@@ -409,6 +385,7 @@ class MainActivity :
     private val firebaseTokenResultCollector: suspend (FirebaseTokenResult) -> Unit = { firebaseTokenResult ->
         when (firebaseTokenResult) {
             FirebaseTokenResult.TokenLoaded -> onNewNodeActivated()
+            // TODO: do not show activity loading while token is loading
             FirebaseTokenResult.TokenLoading -> onNewNodeLoading()
         }
     }
@@ -429,10 +406,7 @@ class MainActivity :
     }
 
     private fun onSessionConnected(wcSessionRequest: WalletConnectSessionProposal) {
-        nav(
-            HomeNavigationDirections
-                .actionGlobalWalletConnectConnectionNavigation(wcSessionRequest, isBasePeraWebViewFragmentActive())
-        )
+        nav(HomeNavigationDirections.actionGlobalWalletConnectConnectionNavigation(wcSessionRequest))
     }
 
     private fun onSessionFailed(error: Resource.Error) {
@@ -448,14 +422,8 @@ class MainActivity :
         autoLockManager.setListener(autoLockManagerListener)
         setupCoreActionsTabBarView()
 
-        alertDialogQueueManager.apply {
-            setScope(lifecycle.coroutineScope)
-            setListener(alertDialogQueueManagerListener)
-        }
-
-        alertViewDialog.setListener(customAlertDialogListener)
-
         initObservers()
+        registerAlertDialogDelegation(this, alertDialogDelegationListener)
 
         if (savedInstanceState == null) {
             handleDeeplinkAndNotificationNavigation()
@@ -473,7 +441,7 @@ class MainActivity :
     private fun showAssetOperationForegroundNotification(assetOperationResult: AssetOperationResult) {
         val safeAssetName = assetOperationResult.assetName.getName(resources)
         val messageDescription = getString(assetOperationResult.resultTitleResId, safeAssetName)
-        showAlertSuccess(title = messageDescription, successMessage = null, tag = activityTag)
+        showAlertSuccess(title = messageDescription, description = null, tag = activityTag)
     }
 
     override fun onAccountSelected(publicKey: String) {
@@ -505,6 +473,11 @@ class MainActivity :
         )
 
         walletConnectViewModel.setWalletConnectSessionTimeoutListener(::onWalletConnectSessionTimedOut)
+
+        collectLatestOnLifecycle(
+            walletConnectViewModel.sessionSettleFlow,
+            walletConnectSessionSettleCollector
+        )
 
         collectLatestOnLifecycle(
             flow = mainViewModel.activeNodeFlow,
@@ -555,26 +528,28 @@ class MainActivity :
     }
 
     private fun saveWcTransactionToPendingIntent(transactionRequestId: Long) {
-        pendingIntent = Intent().apply {
+        val pendingIntent = Intent().apply {
             putExtra(WC_TRANSACTION_ID_INTENT_KEY, transactionRequestId)
         }
+        pendingIntentKeeper.setPendingIntent(pendingIntent)
     }
 
     private fun handleDeeplinkAndNotificationNavigation() {
         intent.getSafeParcelableExtra<Intent?>(DEEPLINK_AND_NAVIGATION_INTENT)?.apply {
-            pendingIntent = this
+            pendingIntentKeeper.setPendingIntent(this)
             handlePendingIntent()
         }
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        pendingIntent = intent?.getSafeParcelableExtra(DEEPLINK_AND_NAVIGATION_INTENT)
+        val pendingIntent = intent?.getSafeParcelableExtra<Intent?>(DEEPLINK_AND_NAVIGATION_INTENT)
+        pendingIntentKeeper.setPendingIntent(pendingIntent)
         handlePendingIntent()
     }
 
     private fun handlePendingIntent(): Boolean {
-        return pendingIntent?.run {
+        return pendingIntentKeeper.pendingIntent?.run {
             val canPendingBeHandled = isAssetSetupCompleted && (isAppUnlocked || !mainViewModel.shouldAppLocked())
             if (canPendingBeHandled) {
                 if (dataString != null) {
@@ -582,7 +557,7 @@ class MainActivity :
                 } else {
                     handlePendingIntentWithExtras(this)
                 }
-                pendingIntent = null
+                pendingIntentKeeper.clearPendingIntent()
             }
             canPendingBeHandled
         } ?: false
@@ -619,7 +594,7 @@ class MainActivity :
     }
 
     private fun onIntentHandlingFailed(@StringRes errorMessageResId: Int) {
-        showGlobalError(errorMessage = getString(errorMessageResId))
+        showGlobalError(errorMessage = getString(errorMessageResId), tag = activityTag)
     }
 
     private fun setupCoreActionsTabBarView() {
@@ -672,23 +647,19 @@ class MainActivity :
     }
 
     private fun onNewNodeActivated() {
-        binding.progressBar.loadingProgressBar.hide()
+        hideProgress()
         mainViewModel.onNewNodeActivated()
     }
 
     private fun onNewNodeLoading() {
-        binding.progressBar.loadingProgressBar.show()
+        showProgress()
     }
 
     override fun onSessionRequestResult(wCSessionRequestResult: WCSessionRequestResult) {
-        handleSessionConnectionResult(wCSessionRequestResult)
-    }
-
-    private fun handleSessionConnectionResult(result: WCSessionRequestResult) {
         with(walletConnectViewModel) {
-            when (result) {
-                is WCSessionRequestResult.ApproveRequest -> approveSession(result)
-                is WCSessionRequestResult.RejectRequest -> rejectSession(result.sessionProposal)
+            when (wCSessionRequestResult) {
+                is WCSessionRequestResult.ApproveRequest -> approveSession(wCSessionRequestResult)
+                is WCSessionRequestResult.RejectRequest -> rejectSession(wCSessionRequestResult.sessionProposal)
             }
         }
     }

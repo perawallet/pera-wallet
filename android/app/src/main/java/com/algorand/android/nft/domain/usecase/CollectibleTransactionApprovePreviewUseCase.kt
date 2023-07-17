@@ -59,7 +59,7 @@ class CollectibleTransactionApprovePreviewUseCase @Inject constructor(
             senderAccountIconResource = senderAccountIcon,
             receiverAccountPublicKey = receiverPublicKey,
             receiverAccountDisplayText = receiverDisplayText,
-            receiverAccountIconResource = receiverAccountIcon,
+            receiverAccountIconDrawablePreview = receiverAccountIcon,
             formattedTransactionFee = fee.toLong().formatAsAlgoString().formatAsAlgoAmount(),
             isOptOutGroupVisible = isOptOutGroupVisible,
             nftDomainName = nftDomainName,

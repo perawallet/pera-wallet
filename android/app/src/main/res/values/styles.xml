@@ -683,6 +683,10 @@
         <item name="cornerSize">4dp</item>
     </style>
 
+    <style name="CircleImageShapeAppearance">
+        <item name="cornerSize">50%</item>
+    </style>
+
     <style name="BannerTextAppearance" />
 
     <style name="BannerTextAppearance.BannerTitleTextAppearance">
@@ -784,4 +788,15 @@
         <item name="android:paddingBottom">@dimen/spacing_small</item>
     </style>
 
+    <style name="WalletConnectV1BadgeTextStyle">
+        <item name="android:background">@drawable/bg_rectangle_radius_12</item>
+        <item name="android:backgroundTint">@color/layer_gray_lighter</item>
+        <item name="android:paddingEnd">6dp</item>
+        <item name="android:paddingStart">6dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:text">@string/wc_v1</item>
+        <item name="android:textAppearance">@style/TextAppearance.Caption.Medium</item>
+        <item name="android:textColor">@color/text_gray</item>
+    </style>
 </resources>

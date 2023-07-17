@@ -12,15 +12,15 @@
 
 package com.algorand.android.models.ui
 
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 
 data class CollectibleTransactionApprovePreview(
     val senderAccountPublicKey: String,
     val senderAccountDisplayText: String,
-    val senderAccountIconResource: AccountIconResource,
+    val senderAccountIconDrawablePreview: AccountIconDrawablePreview,
     val receiverAccountPublicKey: String,
     val receiverAccountDisplayText: String,
-    val receiverAccountIconResource: AccountIconResource?,
+    val receiverAccountIconResource: AccountIconDrawablePreview?,
     val formattedTransactionFee: String,
     val isOptOutGroupVisible: Boolean,
     val nftDomainName: String?,

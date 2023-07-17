@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2022 Pera Wallet, LDA
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
   -->
 
 <resources>
@@ -105,7 +105,6 @@
     <string name="advanced_troubleshooting">高级故障排除</string>
     <string name="connecting_to_ledger">正在连接Ledger…</string>
     <string name="ledger_approval">Ledger批准</string>
-    <string name="please_make_sure">请在Ledger设备上确认交易</string>
     <string name="ledger_info_ledger_second_paragraph">当教程指导您\"选择想在设备上安装的应用\"，请在搜索栏上输入Algorand，并进行安装。</string>
     <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">继续学习Ledger的 <annotation type="bold"><annotation type="color">入门</annotation></annotation>教程，了解如何在您的Ledger设备上安装和打开APP。</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">若您尚未在Ledger设备上安装<annotation type="bold">Algorand</annotation> 应用，当教程指导您\"选择想在设备上安装的应用\"，请在搜索栏上输入Algorand，并进行安装。</string>
@@ -162,7 +161,6 @@
     <string name="add_note">添加备注</string>
     <string name="try_again_in">再次尝试</string>
     <string name="rekey_account">密钥更新账户</string>
-    <string name="start_process">启动进程</string>
     <string name="replace_your_account">通过新的Ledger设备替换现有账户。</string>
     <string name="replace_your_accounts">通过Ledger设备替换您的账户助记词。</string>
     <string name="what_to_expect">值得期待：</string>
@@ -215,7 +213,6 @@
     <string name="can_be_signed_by">签署人为</string>
     <string name="can_sign_for_these">请为这些账户进行签名</string>
     <string name="select_account">选择账户</string>
-    <string name="choose_the_account">请选择想要登录的账户。</string>
     <string name="a_network_error">获取账户详细信息时出现网络错误。请稍后重试。</string>
     <string name="it_appears_this">Ledger设备已重置，该设备上的账户与此账户不再匹配。请在首页上再次配对Ledger。</string>
     <plurals name="asset_count">
@@ -567,6 +564,7 @@
     <string name="transfer">转账</string>
     <string name="send_your_nft">发送您的NFT</string>
     <string name="paste_an_algorand_wallet_address">粘贴一个Algorand钱包地址</string>
+    <string name="ask_recipient_to">要求接收人选择加入\n%1$s</string>
     <string name="you_cant_send">你不能发送<annotation replacement="nft_name">NFTNamePlaceHolder</annotation>到<annotation replacement="wallet_address">walletAddressPlaceholder</annotation>，因为钱包还未选择加入该资产。 <annotation font="dmsans_medium"><annotation custom="learn_more">了解更多关于选择加入的信息</annotation></annotation></string>
     <string name="information_about_opt">关于选择加入的信息</string>
     <string name="to_avoid_spammy">为了避免垃圾交易，Algorand区块链只允许用户发送和接收先前选择的资产的交易。</string>
@@ -598,7 +596,6 @@
     <string name="opted_in_to">已选择加入</string>
     <string name="show_on">显示于</string>
     <string name="you_are_about_to_remove_watch_account">您将移除watch账户。您确定要这样做吗？</string>
-    <string name="you_are_about_to_remove_main_account">您将要移除您的主要账户，您确定要这样做吗？</string>
     <string name="this_watch_account_has_opted">Watch账户已选择加入但尚未拥有该NFT。</string>
     <string name="display_opted_in_nfts">显示选择加入的NFT</string>
     <string name="filter">筛选</string>
@@ -766,7 +763,7 @@
     <string name="this_account_doesn_t">该账户没有足够余额用于该交易。</string>
     <string name="we_couldn_t">我们无法自动检测您用于启动 WalletConnection 会话的浏览器。请选择浏览器并返回到%1$s：</string>
     <string name="select_a_browser">选择浏览器</string>
-    <string name="switch_back_to">切换回<annotation iconReplacement="browserIconResId">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation></string>
+    <string name="switch_back_to">切换回<annotation iconReplacement="browser_icon_res_id">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation></string>
     <string name="account_connected">账户已连接！</string>
     <string name="you_ve_connected">您已将账户连接到%1$s了。返回到您的网络浏览器完成操作。</string>
     <string name="transaction_signed">交易已签署！</string>
@@ -790,7 +787,6 @@
     <string name="later">稍后</string>
     <string name="set_custom_slippage">设置自定义滑点</string>
     <string name="auto">自动</string>
-    <string name="slippage_tolerance_must_be_between">滑点公差必须介于%1$.2f%%和%2$.0f%%之间。</string>
     <string name="balance_percentage_must_be_between">余额百分比必须介于%1$d%%和%2$d%%之间。</string>
     <string name="set_custom_percentage">设置自定义百分比</string>
     <string name="balance_percentage">余额百分比</string>
@@ -815,7 +811,7 @@
     <plurals name="sign_transaction">
         <item quantity="other">签署交易</item>
     </plurals>
-    <string name="signing_index_out_of_count">从%2$d中签出 %1$d…</string>
+    <string name="signing_index_out_of_count">从%2$d中签出  %1$d …</string>
     <string name="view_transaction_detail_in_algoexplorer">在Algo浏览器中查看交易细节</string>
     <string name="go_to_homepage">转到主页</string>
     <string name="sending_the_transaction">发送交易</string>
@@ -867,7 +863,7 @@
     </plurals>
     <string name="you_cannot_optin">您无法加入此账户：这是一个只读的Watch账户。</string>
     <string name="you_cannot_take">您无法对此账户采取行动：该账户已从该设备上移除。</string>
-    <string name="caution_price_impact">注意！价格影响高于5%%，意味着该池子的流动性可能较低。在确认交换前，请确保您了解相应后果。</string>
+    <string name="caution_price_impact">注意！价格影响高于<annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation>%%，意味着该池子的流动性可能较低。在确认交换前，请确保您了解相应后果。</string>
     <string name="discover">发现</string>
     <string name="search_for_any_asa_by">按名称或ID搜索任意ASA</string>
     <string name="we_are_not_able_to_find">我们无法找到该项资产。请稍后重试。</string>
@@ -925,4 +921,137 @@
     <string name="this_asset_is">该资产正待删除中。</string>
     <string name="get_help">获取帮助</string>
     <string name="couldn_t_retrieve">无法检索到账户信息，请重试。</string>
+    <string name="request_receiver_to">请求接收者选择加入</string>
+    <string name="algo_balance_is_too_low">ALGO余额太低。最低余额应该是<annotation replacement="algo_icon">ALGO_ICON_PLACEHOLDER</annotation> <annotation replacement="min_balance">MIN_BALANCE_PLACEHOLDER</annotation></string>
+    <string name="accounts_imported">账户已导入</string>
+    <plurals name="n_accounts_were_imported_from_pera_web">
+        <item quantity="other">%1$d 账户已从 Pera 网页上导入</item>
+    </plurals>
+    <string name="explore_pera_mobile">探索 Pera Mobile</string>
+    <string name="unimported_accounts">未导入的账户</string>
+    <plurals name="n_accounts_were_not_imported_because">
+        <item quantity="other">由于之前已导入，%1$d 账户无法导入。</item>
+    </plurals>
+    <string name="your_accounts_could_not_be_imported">无法导入您的账户。请稍后再试。</string>
+    <string name="import_from_pera_web">从 Pera 网页上导入</string>
+    <string name="i_want_to_import_algorand">我想从 Pera 网页上导入 Algorand 账户</string>
+    <string name="get_your_qr_ready">在 Pera 网页上准备好您的二维码</string>
+    <string name="go_to_web_perawallet">前往桌面上的\"web.perawallet.app\"</string>
+    <string name="go_to_settings_transfer_accounts">前往设置 &gt; 转移账户</string>
+    <string name="select_the_accounts_you_want">选择想要导入Pera Mobile的账户，并生成二维码。</string>
+    <string name="tap_start_to_scan">点击开始扫描二维码</string>
+    <string name="scan_qr_code_on_web">在 Pera 网页上\n 扫描二维码</string>
+    <string name="start">开始</string>
+    <string name="importing_your_accounts">导入你的账户</string>
+    <string name="rekey_to_ledger_account">密钥更新至Ledger账户</string>
+    <string name="rekey_to_standard_account">密钥更新至标准账户</string>
+    <string name="protect_your_account_by_delegating">为保护您的账户，请将签名委托给另一个账户。</string>
+    <string name="future_transactions_can_only">未来的交易只能由被委托的账户签署。</string>
+    <string name="this_account_will_no_longer">该账户将不能再签署交易。</string>
+    <string name="your_account_s_public_key">您的账户公钥、余额和配置不会改变。</string>
+    <string name="account_transfer_is">出于安全原因，测试网上的账户转移功能已被禁用。请切换到主网后，再使用此功能。</string>
+    <string name="invalid_url">无效网址</string>
+    <string name="high_price_impact_detected">检测到高价格影响！</string>
+    <string name="it_appears_that_you_formatted">您似乎正在尝试确认价格影响大于<annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation>。\n\n如需了解价格影响、相关计算方式或其对交换总价值影响的更多信息，请查看 Tinyman 的<annotation custom="faq_url">常见问题解答部分</annotation>。</string>
+    <string name="the_signing_account_has">签名账户重新键入到了您钱包外的账户，或者配置错误。请确保授权账户被添加到您的钱包中，如果是一个Ledger账户，请确保该账户有被正确连接。</string>
+    <string name="this_swap_can_not_be">由于价格影响过大，此交换无法执行。<annotation custom="faq_url">在此</annotation>详细了解价格影响及其运作方式。</string>
+    <string name="select_your_backup_file">请选择您的备份文件</string>
+    <string name="uploading_three_dots">正在上传…</string>
+    <string name="upload_successful">上传成功</string>
+    <string name="replace_file">替换文件</string>
+    <string name="upload_failed">上传失败</string>
+    <string name="select_file">选择文件</string>
+    <string name="this_file_type_isn_t_supported">不支持此文件类型</string>
+    <string name="algorand_secure_backup">Algorand 安全备份</string>
+    <string name="i_want_to_restore_my">我想使用 Algorand 安全备份文件和12字密钥恢复我的账户</string>
+    <string name="not_backed_up">未备份（%1$d）</string>
+    <string name="algorand_secure_n_backup">Algorand 安全\n备份</string>
+    <string name="backup_your_accounts_using">使用Algorand安全备份协议备份您的账户。您将生成代表您账户的加密文本文件和用于解密该文件的12字密钥。</string>
+    <string name="select_your_accounts">选择您的账户</string>
+    <string name="select_one_some_or_all">选择一个、部分或全部账户并纳入备份文件中。</string>
+    <string name="store_your_12_word_key">存储您的\n 12字密钥</string>
+    <string name="record_or_save_your_12">安全记录或保存您的12字密钥。<annotation font="dmsans_medium"><annotation custom="learn_more_click">了解更多</annotation></annotation></string>
+    <string name="save_your_backup_file">保存备份文件</string>
+    <string name="download_your_backup_to">将备份文件下载到设备的安全位置。</string>
+    <string name="backup_accounts">备份账户（%1$d）</string>
+    <string name="choose_accounts_n_to_backup">选择账户\n 进行备份</string>
+    <string name="we_couldn_t_find_any_accounts">我们无法找到任何符合备份条件的账户。</string>
+    <string name="have_you_stored_your_key">您是否存储了您的密钥？</string>
+    <string name="store_your_key_somewhere_secure">将您的密钥存储在安全的地方，如密码管理器中。如果您丢失了密钥，您将永远无法访问备份文件。</string>
+    <string name="create_backup_file">创建备份文件</string>
+    <string name="show_key_again">再次显示密钥</string>
+    <string name="create_new_key">创建新的密钥</string>
+    <string name="you_are_about_to_reset">您即将重置 Algorand 安全备份密钥。您将生成新的12字密钥，该密钥将用于加密和解密从此设备创建的所有 ASB 文件。\n\n您以前的 ASB 文件仍然使用旧的12字密钥进行加密。在继续之前，请确保将其安全存储。</string>
+    <string name="i_understand_proceed">我明白了，继续</string>
+    <string name="copy_to_clipboard">复制到剪贴板</string>
+    <string name="create_new_12_word_key">创建新的12字密钥</string>
+    <string name="store_your_n_12_word_key">存储您的\n 12字密钥</string>
+    <string name="i_ve_stored_my_key">我已经保存了我的密钥</string>
+    <string name="your_12_word_key_is">您的12字密钥用于解密您生成的任何 Algorand 安全备份文件。\n\n安全存储您的12字密钥。<annotation font="dmsans_medium"><annotation custom="url_click">了解如何使用</annotation></annotation> Pera Learn。</string>
+    <string name="review_your_n_12_word_key">查看您的\n 12 字密钥</string>
+    <string name="you_stored_your_key_during">您在上次备份期间存储了密钥。立即查看以确保它仍然安全存储。\n\n 使用 Pera Learn <annotation font="dmsans_medium"><annotation custom="url_click">了解更多信息</annotation></annotation></string>
+    <string name="key_copied_as_text">密钥复制为文本</string>
+    <string name="save_backup_file">保存备份文件</string>
+    <string name="your_backup_file_is_ready">您的备份文件已准备就绪</string>
+    <string name="save_your_file_somewhere_secure">将您的文件保存在安全的地方，且是与您的12字密钥不同的保存地点。<annotation font="dmsans_medium"><annotation custom="url_click">了解更多</annotation></annotation></string>
+    <string name="an_error_occurred_while_generating">生成 Algorand 安全备份时出错。请重试或<annotation font="dmsans_medium"><annotation custom="url_click">联系支持人员</annotation></annotation></string>
+    <string name="backup_file_copied_to">备份文件已作为文本复制到剪贴板</string>
+    <string name="can_t_save_backup_file">无法保存备份文件</string>
+    <string name="please_allow_pera_wallet_to">请允许 Pera 钱包访问您设备上的照片和媒体以保存您的文件。</string>
+    <string name="have_you_stored_your">您是否存储了备份文件？</string>
+    <string name="if_you_lose_your_algorand">丢失Algorand安全备份文件后，您将无法恢复账户。</string>
+    <string name="yes_i_stored_my_file">是的，我已储存了我的文件</string>
+    <string name="show_backup_file_again">再次显示备份文件</string>
+    <string name="select_your_n_backup_file">请选择您的\n备份文件</string>
+    <string name="to_restore_your_wallet">如要恢复您的钱包，请选择或粘贴您的备份文件。</string>
+    <string name="paste_backup_file_text">粘贴备份文件文本</string>
+    <string name="unable_to_parse_file">无法解析备份文件：JSON 格式错误。</string>
+    <string name="unable_to_parse_key_name">无法解析备份文件：<annotation replacement="key_name">keyNamePlaceholder</annotation>不存在</string>
+    <string name="backup_file_was_generated_with">备份文件是用Algorand安全备份格式不支持的版本生成的。</string>
+    <string name="unable_to_parse_suite">无法解析备份文件：密码套件未知</string>
+    <string name="backup_file_successfully_pasted">成功复制备份文件</string>
+    <string name="enter_12_word_key">输入12字的密钥</string>
+    <string name="wrong_12_word_key">12字的密钥错误</string>
+    <string name="please_try_again_by_entering">请重新输入正确的12字的密钥。</string>
+    <string name="choose_accounts_n_to_restore">选择账户\n 进行恢复</string>
+    <string name="restore_account">恢复账户（%1$d）</string>
+    <string name="nothing_to_paste">没有粘贴内容</string>
+    <string name="nothing_is_copied_to_the">剪贴板上没有任何复制内容。请确保您已复制了备份文件。</string>
+    <plurals name="accounts_restored">
+        <item quantity="other">账户已恢复</item>
+    </plurals>
+    <plurals name="accounts_were_restored">
+        <item quantity="other">%1$d 账户无法从备份文件中恢复</item>
+    </plurals>
+    <plurals name="account_was_not_restored_because_exist">
+        <item quantity="other">由于账户已存在于您的钱包中，%1$d 账户无法被恢复。</item>
+    </plurals>
+    <plurals name="account_was_not_restored_because_unsupported">
+        <item quantity="other">由于账户中有不受支持的账户类型，所以%1$d 账户无法被恢复。</item>
+    </plurals>
+    <plurals name="account_was_not_restored">
+        <item quantity="other">%1$d 账户无法恢复。账户可能已存在于您的钱包中或是不被支持的账户类型。</item>
+    </plurals>
+    <string name="buy_sell">购买/出售</string>
+    <string name="see_all_options_to_buy">查看所有购买或出售加密货币的选项</string>
+    <string name="buy_crypto">购买机密货币</string>
+    <string name="sell_crypto">出售加密货币</string>
+    <string name="use_apple_pay_credit_cards">使用Apple Pay、信用卡或银行转账</string>
+    <string name="buy_algo_with_sardine">使用Sardine购买ALGO</string>
+    <string name="use_instant_ach">通过您的美国银行账户使用即时ACH</string>
+    <string name="buy_usdc_with_transak">使用Transak购买USDC</string>
+    <string name="use_credit_card_bank_transfer">在150+个国家与地区使用信用卡或银行转账服务</string>
+    <string name="buy_gift_cards_with_bidali">使用Bidali购买礼品卡</string>
+    <string name="you_can_use_your_algo">您可以使用自己的ALGO、USDC或是USDT余额</string>
+    <string name="buy_gift_cards_with_crypto">使用加密货币购买礼品卡</string>
+    <string name="buy_gift_cards">购买礼品卡</string>
+    <string name="you_can_use_your_algo_or">您可以在全球数千个品牌店内使用ALGO或USDC余额购买礼品卡与进行手机话费充值！</string>
+    <string name="you_can_not_purchase_bidali">您无法在测试网（TestNet）上进行购买。请在\"设置\"处切换回主网（MainNet），再使用Bidali购买。</string>
+    <string name="buy_usdc">购买 USDC</string>
+    <string name="transak_onboards_users_from_fiat">Transak 在800多个APP中帮助用户熟悉操作使用法币与加密货币。Transak支持超过150+个国家与地区的信用卡、借记卡及银行转账服务。</string>
+    <string name="you_can_not_purchase_transak">您无法在测试网（TestNet）上进行购买。请在\"设置\"处切换回主网（MainNet），再使用Transak购买。</string>
+    <string name="instant_settlement_and_lower">使用ACH即时转账功能进行ALGO即时结算且费用更低。Sardine同样支持超过180+个国家与地区的本地银行与银行卡支付、Apple Pay与GPay。</string>
+    <string name="you_can_not_purchase_sardine">您无法在测试网（TestNet）上进行购买。请在\"设置\"处切换回主网（MainNet），再使用Sardine购买。</string>
+    <string name="choose_an_account_to_proceed">选择账户以继续</string>
 </resources>
+

@@ -13,8 +13,8 @@
 package com.algorand.android.modules.swap.previewsummary.ui.model
 
 import android.content.res.Resources
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.swap.utils.priceratioprovider.SwapPriceRatioProvider
 import com.algorand.android.utils.AccountDisplayName
 
@@ -26,7 +26,7 @@ data class SwapPreviewSummaryPreview(
     val formattedPeraFee: String,
     val formattedTotalFee: String,
     val accountDisplayName: AccountDisplayName,
-    val accountIconResource: AccountIconResource,
+    val accountIconDrawablePreview: AccountIconDrawablePreview,
     private val priceRatioProvider: SwapPriceRatioProvider
 ) {
     fun getPriceRatio(resources: Resources): AnnotatedString {

@@ -12,22 +12,33 @@
 
 package com.algorand.android.modules.basesingleaccountselection.ui.mapper
 
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.models.AnnotatedString
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.basesingleaccountselection.ui.model.SingleAccountSelectionListItem
 import com.algorand.android.utils.AccountDisplayName
 import javax.inject.Inject
 
 class SingleAccountSelectionListItemMapper @Inject constructor() {
 
+    fun mapToTitleItem(textResId: Int): SingleAccountSelectionListItem.TitleItem {
+        return SingleAccountSelectionListItem.TitleItem(textResId)
+    }
+
+    fun mapToDescriptionItem(
+        descriptionAnnotatedString: AnnotatedString
+    ): SingleAccountSelectionListItem.DescriptionItem {
+        return SingleAccountSelectionListItem.DescriptionItem(descriptionAnnotatedString)
+    }
+
     fun mapToAccountItem(
         accountDisplayName: AccountDisplayName,
-        accountIconResource: AccountIconResource,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
         accountFormattedPrimaryValue: String?,
         accountFormattedSecondaryValue: String?
     ): SingleAccountSelectionListItem.AccountItem {
         return SingleAccountSelectionListItem.AccountItem(
             accountDisplayName = accountDisplayName,
-            accountIconResource = accountIconResource,
+            accountIconDrawablePreview = accountIconDrawablePreview,
             accountFormattedPrimaryValue = accountFormattedPrimaryValue,
             accountFormattedSecondaryValue = accountFormattedSecondaryValue
         )

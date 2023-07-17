@@ -34,12 +34,16 @@ class NumberedListItemView @JvmOverloads constructor(
         initAttributes(attrs)
     }
 
+    fun setIconLabelTextView(numeratorText: String) {
+        binding.iconLabelTextView.setTextAndVisibility(numeratorText)
+    }
+
     fun setTitleText(text: CharSequence) {
-        binding.titleTextView.text = text
+        binding.titleTextView.setTextAndVisibility(text.toString())
     }
 
     fun setDescriptionText(text: CharSequence) {
-        binding.descriptionTextView.text = text
+        binding.descriptionTextView.setTextAndVisibility(text.toString())
     }
 
     fun setDescriptionMovementMethod(movementMethod: MovementMethod) {

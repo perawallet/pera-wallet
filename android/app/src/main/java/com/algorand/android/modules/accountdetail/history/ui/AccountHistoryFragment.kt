@@ -38,6 +38,7 @@ import com.algorand.android.ui.datepicker.DateFilterListBottomSheet
 import com.algorand.android.utils.CSV_FILE_MIME_TYPE
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.collectOnLifecycle
+import com.algorand.android.utils.scrollToTop
 import com.algorand.android.utils.shareFile
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
@@ -73,7 +74,7 @@ class AccountHistoryFragment : BaseFragment(R.layout.fragment_account_history) {
         }
 
         override fun onNewPendingItemInserted() {
-            binding.accountHistoryRecyclerView.scrollToPosition(0)
+            binding.accountHistoryRecyclerView.scrollToTop()
         }
     }
 

@@ -22,13 +22,13 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectTransactionInfoBinding
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.TransactionRequestAssetInformation
 import com.algorand.android.models.TransactionRequestTransactionInfo
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.ALGO_DECIMALS
+import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.addUnnamedAssetName
-import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.setAssetNameTextColorByVerificationTier
@@ -57,8 +57,8 @@ class WalletConnectTransactionInfoCardView(
         if (transactionInfo == null) return
         with(transactionInfo) {
             binding.assetDeletionRequestWarningTextView.isVisible = showDeletionWarning
-            initFromAddress(fromDisplayedAddress, fromAccountIcon)
-            initToAddress(toDisplayedAddress, toAccountIcon)
+            initFromAddress(fromDisplayedAddress, fromAccountIconDrawablePreview)
+            initToAddress(toDisplayedAddress, toAccountIconDrawablePreview)
             initAssetInformation(assetInformation, fromDisplayedAddress?.fullAddress)
             initAccountBalance(accountBalance, assetInformation)
             initRekeyToAddress(rekeyToAccountAddress, isLocalAccountSigner)
@@ -113,7 +113,7 @@ class WalletConnectTransactionInfoCardView(
 
     private fun initFromAddress(
         displayedAddress: BaseWalletConnectDisplayedAddress?,
-        accountIconResource: AccountIconResource?
+        accountIconDrawablePreview: AccountIconDrawablePreview?
     ) {
         if (displayedAddress != null) {
             with(binding) {
@@ -125,11 +125,14 @@ class WalletConnectTransactionInfoCardView(
                         return@setOnLongClickListener true
                     }
                 }
-                if (accountIconResource != null) {
-                    fromAccountTypeImageView.setAccountIconDrawable(
-                        accountIconResource,
-                        R.dimen.account_icon_size_normal
+                if (accountIconDrawablePreview != null) {
+                    val accountIconDrawable = AccountIconDrawable.create(
+                        context = context,
+                        accountIconDrawablePreview = accountIconDrawablePreview,
+                        sizeResId = R.dimen.spacing_xlarge
+
                     )
+                    fromAccountTypeImageView.setImageDrawable(accountIconDrawable)
                     fromAccountTypeImageView.show()
                 }
                 fromGroup.show()
@@ -139,7 +142,7 @@ class WalletConnectTransactionInfoCardView(
 
     private fun initToAddress(
         displayedAddress: BaseWalletConnectDisplayedAddress?,
-        accountIconResource: AccountIconResource?
+        accountIconDrawablePreview: AccountIconDrawablePreview?
     ) {
         if (displayedAddress != null) {
             with(binding) {
@@ -150,11 +153,14 @@ class WalletConnectTransactionInfoCardView(
                         return@setOnLongClickListener true
                     }
                 }
-                if (accountIconResource != null) {
-                    toAccountTypeImageView.setAccountIconDrawable(
-                        accountIconResource,
-                        R.dimen.account_icon_size_normal
+                if (accountIconDrawablePreview != null) {
+                    val accountIconDrawable = AccountIconDrawable.create(
+                        context = context,
+                        accountIconDrawablePreview = accountIconDrawablePreview,
+                        sizeResId = R.dimen.spacing_xlarge
+
                     )
+                    toAccountTypeImageView.setImageDrawable(accountIconDrawable)
                     toAccountTypeImageView.show()
                 }
                 toGroup.show()

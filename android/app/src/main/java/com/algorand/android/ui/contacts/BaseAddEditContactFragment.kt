@@ -26,7 +26,7 @@ import androidx.core.net.toUri
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.AlgorandInputLayout
-import com.algorand.android.customviews.CustomToolbar
+import com.algorand.android.customviews.toolbar.CustomToolbar
 import com.algorand.android.databinding.FragmentBaseAddEditContactBinding
 import com.algorand.android.models.User
 import com.algorand.android.utils.extensions.setContactIconDrawable

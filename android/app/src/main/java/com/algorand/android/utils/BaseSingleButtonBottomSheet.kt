@@ -14,6 +14,7 @@ package com.algorand.android.utils
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
@@ -39,6 +40,8 @@ abstract class BaseSingleButtonBottomSheet : BaseBottomSheet(
 
     abstract fun onConfirmationButtonClick()
 
+    open fun initDescriptionTextView(textView: TextView) {}
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initTitle()
@@ -57,6 +60,7 @@ abstract class BaseSingleButtonBottomSheet : BaseBottomSheet(
             descriptionAnnotatedString
                 ?.let {
                     descriptionTextView.apply {
+                        initDescriptionTextView(this)
                         text = context?.getXmlStyledString(it)
                         if (shouldDescriptionHasLinkMovementMethod) {
                             movementMethod = LongClickLinkMovementMethod.getInstance()

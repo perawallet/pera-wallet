@@ -13,15 +13,20 @@
 package com.algorand.android.modules.assets.addition.base.ui.domain
 
 import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
+import com.algorand.android.modules.assets.addition.base.ui.mapper.BaseAddAssetPreviewMapper
 import com.algorand.android.modules.assets.addition.base.ui.mapper.BaseAddAssetTransactionResultPreviewMapper
+import com.algorand.android.modules.assets.addition.base.ui.model.BaseAddAssetPreview
 import com.algorand.android.modules.assets.addition.base.ui.model.BaseAddAssetTransactionResultPreview
 import com.algorand.android.modules.assets.addition.ui.model.AssetAdditionType
 import com.algorand.android.usecase.AssetAdditionUseCase
+import com.algorand.android.utils.Event
 import javax.inject.Inject
 
 class BaseAddAssetPreviewUseCase @Inject constructor(
     private val baseAddAssetTransactionResultPreviewMapper: BaseAddAssetTransactionResultPreviewMapper,
+    private val baseAddAssetPreviewMapper: BaseAddAssetPreviewMapper,
     private val assetAdditionUseCase: AssetAdditionUseCase
 ) {
 
@@ -46,4 +51,23 @@ class BaseAddAssetPreviewUseCase @Inject constructor(
             assetAdditionType = assetAdditionType
         )
     }
+
+    fun createInitialBaseAddAssetPreview() = baseAddAssetPreviewMapper.mapToInitialBaseAddAssetPreview()
+
+    fun createBaseAddAssetPreviewWithLoadState(
+        combinedLoadStates: CombinedLoadStates,
+        previousPreview: BaseAddAssetPreview
+    ): BaseAddAssetPreview {
+        val isLoadingFinished = combinedLoadStates.refresh != LoadState.Loading
+        val isThereHandleQueryChangeEvent = previousPreview.handleQueryChangeForScrollEvent?.consumed?.not() ?: false
+        return if (isLoadingFinished && isThereHandleQueryChangeEvent) {
+            previousPreview.copy(scrollToTopEvent = Event(Unit))
+        } else {
+            previousPreview
+        }
+    }
+
+    fun getPreviewWithHandleQueryChangeForScrollEvent(previousPreview: BaseAddAssetPreview) = previousPreview.copy(
+        handleQueryChangeForScrollEvent = Event(Unit)
+    )
 }

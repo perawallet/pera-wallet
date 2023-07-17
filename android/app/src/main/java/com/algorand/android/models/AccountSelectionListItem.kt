@@ -14,7 +14,9 @@ package com.algorand.android.models
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
-import com.algorand.android.ui.ledgeraccountselection.SearchType
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
+import com.algorand.android.modules.baseledgeraccountselection.accountselection.ui.model.SearchType
+import com.algorand.android.utils.AccountDisplayName
 import kotlinx.parcelize.Parcelize
 
 sealed class AccountSelectionListItem : RecyclerListItem, Parcelable {
@@ -49,6 +51,8 @@ sealed class AccountSelectionListItem : RecyclerListItem, Parcelable {
         val account: Account,
         val accountInformation: AccountInformation,
         val assetInformationList: List<AssetInformation>,
+        val accountDisplayName: AccountDisplayName,
+        val accountIconDrawablePreview: AccountIconDrawablePreview,
         var isSelected: Boolean = false,
         @DrawableRes val selectorDrawableRes: Int
     ) : AccountSelectionListItem() {

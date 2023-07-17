@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!--
-  Copyright 2022 Pera Wallet, LDA
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
   -->
 
 <resources>
@@ -104,7 +104,6 @@
     <string name="advanced_troubleshooting">Gelişmiş Sorun Giderme</string>
     <string name="connecting_to_ledger">Ledger\'a bağlanıyor…</string>
     <string name="ledger_approval">Ledger Onayı</string>
-    <string name="please_make_sure">İşlemi  <annotation replacement="ledger_name">ledgerNamePlaceholder</annotation> adlı Ledger cihazınızda onayladığınızdan lütfen emin olun</string>
     <string name="ledger_info_ledger_second_paragraph">Öğretici sizi \"Cihazınıza yüklemek istediğiniz uygulamaları seçin\" adımına getirdiğinde, arama çubuğuna Algorand yazın ve yükleyin.</string>
     <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Uygulamaları Ledger cihazınıza nasıl yükleyeceğinizi ve nasıl açacağınızı gösteren Ledger\'ın kapsamlı <annotation type="bold"><annotation type="color">Kullanmaya Başlama</annotation></annotation> öğreticisini izleyerek başlayın.</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">Ledger cihazınıza <annotation type="bold">Algorand</annotation> uygulamasını henüz yüklemediyseniz, öğretici sizi \"Cihazınıza yüklemek istediğiniz uygulamaları seçin\" adımına getirdiğinde, arama çubuğuna Algorand yazın ve yükleyin.</string>
@@ -161,7 +160,6 @@
     <string name="add_note">Not Ekle</string>
     <string name="try_again_in">Tekrar deneyin:</string>
     <string name="rekey_account">Hesabı Yeniden Anahtarla</string>
-    <string name="start_process">Süreci Başlat</string>
     <string name="replace_your_account">Ledger hesabınızı, yeni bir Ledger Cihazı ile değiştirin</string>
     <string name="replace_your_accounts">Hesabınızın parolasını bir Ledger Cihazı ile değiştirin.</string>
     <string name="what_to_expect">Sizi neler bekliyor?</string>
@@ -218,7 +216,6 @@
     <string name="can_be_signed_by">Şunun tarafından imzalanabilir:</string>
     <string name="can_sign_for_these">Bu hesaplar için imzalayabilir</string>
     <string name="select_account">Hesap Seç</string>
-    <string name="choose_the_account">Bu hesabı imzalamak için kullanmak istediğiniz hesabı seçin.</string>
     <string name="a_network_error">Hesap ayrıntıları alınırken bir ağ hatası oluştu. Lütfen işlemi yeniden başlatın.</string>
     <string name="it_appears_this">Görünüşe göre bu Ledger cihazı sıfırlanmış ve cihazda bulunan hesap artık bu hesapla eşleşmiyor. Lütfen ana sayfadan Ledger\'ı tekrar eşleştirin.</string>
     <plurals name="asset_count">
@@ -574,6 +571,7 @@
     <string name="transfer">Transfer</string>
     <string name="send_your_nft">NFT\'nizi gönderin</string>
     <string name="paste_an_algorand_wallet_address">Bir Algorand cüzdan adresini yapıştırın</string>
+    <string name="ask_recipient_to">Alıcıdan şuna katılmasını isteyin:\n%1$s</string>
     <string name="you_cant_send"><annotation replacement="nft_name">NFTNamePlaceHolder</annotation> varlığını <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> adresine gönderemezsiniz çünkü bu cüzdan henüz bu varlığa katılım sağlamamış. <annotation font="dmsans_medium"><annotation custom="learn_more">Katılım sağlama hakkında daha fazla bilgi edinin</annotation></annotation></string>
     <string name="information_about_opt">Katılım Hakkında Bilgiler</string>
     <string name="to_avoid_spammy">Algorand Blockchain, istenmeyen türde işlemlerin yapılmasını önlemek için yalnızca önceden katılım sağlanan varlıklarda gönderim ve alım yapmanızı sağlar.</string>
@@ -605,7 +603,6 @@
     <string name="opted_in_to">Şuna katılım sağladı:</string>
     <string name="show_on">Göster</string>
     <string name="you_are_about_to_remove_watch_account">İzleme hesabını kaldırmak üzeresiniz. Devam etmek istediğinizden emin misiniz?</string>
-    <string name="you_are_about_to_remove_main_account">Ana hesabınızı kaldırmak üzeresiniz. Devam etmek istediğinizden emin misiniz?</string>
     <string name="this_watch_account_has_opted">Bu izleme hesabı, bu NFT\'ye katılım sağlamış ancak söz konusu NFT\'ye sahip değil.</string>
     <string name="display_opted_in_nfts">Katılım sağlanan NFT\'leri göster</string>
     <string name="filter">Filtrele</string>
@@ -777,7 +774,7 @@
     <string name="this_account_doesn_t">Hesapta bu işlem için yeterli bakiye bulunmuyor.</string>
     <string name="we_couldn_t">WalletConnect oturumunu başlattığınız tarayıcıyı otomatik olarak algılayamadık. Lütfen %1$s konumuna geri dönün:</string>
     <string name="select_a_browser">Bir Tarayıcı Seçin</string>
-    <string name="switch_back_to"><annotation iconReplacement="browserIconResId">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation> tarayıcısına dönün</string>
+    <string name="switch_back_to"><annotation iconReplacement="browser_icon_res_id">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation> tarayıcısına dönün</string>
     <string name="account_connected">Hesap bağlandı!</string>
     <string name="you_ve_connected">Hesabınızın %1$s ile bağlantısını kurduk. İşlemi tamamlamak için web tarayıcınıza dönün.</string>
     <string name="transaction_signed">İşlem imzalandı!</string>
@@ -801,7 +798,6 @@
     <string name="later">Daha sonra</string>
     <string name="set_custom_slippage">Özel slipaj belirleyin</string>
     <string name="auto">Oto.</string>
-    <string name="slippage_tolerance_must_be_between">Slipaj toleransı %%%1$.1f ile %%%2$.1f arasında olmalıdır</string>
     <string name="balance_percentage_must_be_between">Bakiye yüzdesi %%%1$d ile %%%2$d arasında olmalıdır</string>
     <string name="set_custom_percentage">Özel yüzde belirleyin</string>
     <string name="balance_percentage">Bakiye Yüzdesi</string>
@@ -881,7 +877,7 @@
     </plurals>
     <string name="you_cannot_optin">Bu hesap için katılım sağlayamazsınız: Bu hesap, salt okunur bir İzleme Hesabı.</string>
     <string name="you_cannot_take">Bu hesap için işlem yapamazsınız: Hesap, bu cihazdan kaldırılmış.</string>
-    <string name="caution_price_impact">Dikkat! Fiyat etkisi %%5\'in üzerinde. Bu durum, bu havuzdaki likiditenin düşük olabileceği anlamına geliyor. Takas işlemine devam etmeden önce lütfen işlemin neden olabileceği sonuçları anladığınızdan emin olun.</string>
+    <string name="caution_price_impact">Dikkat! Fiyat etkisi %%<annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation> üzerinde. Bu durum, bu havuzdaki likiditenin düşük olabileceği anlamına geliyor. Takas işlemine devam etmeden önce lütfen işlemin neden olabileceği sonuçları anladığınızdan emin olun.</string>
     <string name="discover">Keşfedin</string>
     <string name="search_for_any_asa_by">Ada veya kimliğe göre herhangi bir ASA varlığını arayın</string>
     <string name="we_are_not_able_to_find">Bu varlığı bulamadık. Lütfen daha sonra tekrar deneyin.</string>
@@ -941,4 +937,143 @@
     <string name="this_asset_is">Bu varlık zaten kaldırılmayı bekliyor.</string>
     <string name="get_help">Yardım Alın</string>
     <string name="couldn_t_retrieve">Hesap ayrıntıları alınamadı, lütfen tekrar deneyin</string>
+    <string name="request_receiver_to">Alıcıdan katılmasını isteyin</string>
+    <string name="algo_balance_is_too_low">Algo bakiyesi çok düşük. Minimum bakiye şu olmalıdır: <annotation replacement="algo_icon">ALGO_ICON_PLACEHOLDER</annotation> <annotation replacement="min_balance">MIN_BALANCE_PLACEHOLDER</annotation></string>
+    <string name="accounts_imported">Hesaplar içe aktarıldı</string>
+    <plurals name="n_accounts_were_imported_from_pera_web">
+        <item quantity="one">%1$d hesap, Pera Web\'ten içe aktarılmadı.</item>
+        <item quantity="other">%1$d hesap, Pera Web\'ten içe aktarılmadı.</item>
+    </plurals>
+    <string name="explore_pera_mobile">Pera Mobile\'ı Keşfedin</string>
+    <string name="unimported_accounts">İçe Aktarılmamış Hesaplar</string>
+    <plurals name="n_accounts_were_not_imported_because">
+        <item quantity="one">%1$d hesap, daha önce içe aktarıldığı için yeniden içe aktarılmadı.</item>
+        <item quantity="other">%1$d hesap, daha önce içe aktarıldıkları için yeniden içe aktarılmadı.</item>
+    </plurals>
+    <string name="your_accounts_could_not_be_imported">Hesaplarınız içe aktarılamadı. Lütfen daha sonra tekrar deneyin.</string>
+    <string name="import_from_pera_web">Pera Web\'den İçe Aktarın</string>
+    <string name="i_want_to_import_algorand">Algorand hesaplarını Pera Web\'den içe aktarmak istiyorum</string>
+    <string name="get_your_qr_ready">Pera Web\'de QR kodunuzu hazırlayın</string>
+    <string name="go_to_web_perawallet">Masaüstünüzde \"web.perawallet.app\" adresine gidin</string>
+    <string name="go_to_settings_transfer_accounts">Ayarlar &gt; Hesapları Aktar\'a gidin</string>
+    <string name="select_the_accounts_you_want">Pera Mobil\'e aktarmak istediğiniz hesapları seçin ve QR\'ınızı oluşturun</string>
+    <string name="tap_start_to_scan">QR kodunu taramak için Başla\'ya dokunun</string>
+    <string name="scan_qr_code_on_web">Pera Web\'de\nQR kodunu tarayın</string>
+    <string name="start">Başla</string>
+    <string name="importing_your_accounts">Hesaplarınız içe aktarılıyor</string>
+    <string name="rekey_to_ledger_account">Ledger Hesabına Yeniden Anahtarlandı</string>
+    <string name="rekey_to_standard_account">Standart Hesaba Yeniden Anahtarlandı</string>
+    <string name="protect_your_account_by_delegating">İmzaları başka bir hesaba devrederek hesabınızı koruyun</string>
+    <string name="future_transactions_can_only">Gelecekteki işlemler yalnızca yetki verilen hesap tarafından imzalanabilir.</string>
+    <string name="this_account_will_no_longer">Bu hesap artık işlemleri imzalayamayacak.</string>
+    <string name="your_account_s_public_key">Hesabınızın herkese açık anahtarı, bakiyeleri ve yapılandırması değişmeyecektir.</string>
+    <string name="account_transfer_is">Güvenliğiniz için Testnet\'te hesap aktarımı devre dışı bırakılmıştır. Bu özelliği kullanmak için lütfen Mainnet\'e geçin.</string>
+    <string name="invalid_url">Geçersiz URL</string>
+    <string name="high_price_impact_detected">Yüksek Fiyat etkisi tespit edildi!</string>
+    <string name="it_appears_that_you_formatted">Fiyat etkisi %%<annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation> üzerinde olan bir Takası onaylamaya çalıştığınız anlaşılıyor.\n\nFiyat etkisi, bu etkinin nasıl hesaplandığı veya takasınızın genel değerini nasıl etkileyebileceği hakkında daha fazla bilgi edinmek için lütfen Tinyman\'ın <annotation custom="faq_url">SSS bölümünü</annotation> ziyaret edin.</string>
+    <string name="the_signing_account_has">İmzalayan hesap, cüzdanınızda olmayan veya yanlış yapılandırılmış bir hesap için yeniden anahtarlandı. Lütfen yetkilendirme hesabının cüzdanınıza eklendiğinden ve bu bir Ledger hesabıysa doğru şekilde bağlandığından emin olun.</string>
+    <string name="this_swap_can_not_be">Fiyat etkisi çok büyük olduğu için bu takas gerçekleştirilemez. Fiyat etkisi ve bu olgunun nasıl çalıştığı hakkında daha fazla bilgiyi <annotation custom="faq_url">burada</annotation> bulabilirsiniz.</string>
+    <string name="select_your_backup_file">Yedekleme dosyanızı seçin</string>
+    <string name="uploading_three_dots">Yükleniyor...</string>
+    <string name="upload_successful">Yükleme Başarılı</string>
+    <string name="replace_file">Dosya Değiştir</string>
+    <string name="upload_failed">Yükleme Başarısız</string>
+    <string name="select_file">Dosya Seç</string>
+    <string name="this_file_type_isn_t_supported">Bu dosya türü desteklenmiyor</string>
+    <string name="algorand_secure_backup">Algorand Güvenli Yedekleme</string>
+    <string name="i_want_to_restore_my">Bir Algorand Güvenli Yedekleme dosyası ve 12 kelimelik anahtar kullanarak hesaplarımı geri yüklemek istiyorum</string>
+    <string name="not_backed_up">Yedeklenmemiş (%1$d)</string>
+    <string name="algorand_secure_n_backup">Algorand Güvenli\nYedekleme</string>
+    <string name="backup_your_accounts_using">Algorand Güvenli Yedekleme protokolünü kullanarak hesaplarınızı yedekleyin. Hesaplarınızı temsil eden şifreli bir metin dosyası ve gelecekte şifrelerini çözmek için kullanılan 12 kelimelik bir anahtar oluşturacaksınız.</string>
+    <string name="select_your_accounts">Hesaplarınızı seçin</string>
+    <string name="select_one_some_or_all">Yedekleme dosyanıza dahil edilecek hesaplarınızdan birini, birkaçını veya tümünü seçin.</string>
+    <string name="store_your_12_word_key">12 kelimelik anahtarınızı saklayın</string>
+    <string name="record_or_save_your_12">12 kelimelik anahtarınızı güvenli bir şekilde kaydedin veya saklayın. <annotation font="dmsans_medium"><annotation custom="learn_more_click">Daha fazla bilgi alın</annotation></annotation></string>
+    <string name="save_your_backup_file">Yedekleme dosyanızı kaydedin</string>
+    <string name="download_your_backup_to">Yedeklemenizi cihazınızdaki güvenli bir konuma indirin.</string>
+    <string name="backup_accounts">Yedek hesap (%1$d)</string>
+    <string name="choose_accounts_n_to_backup">Yedeklemek için\nhesapları seçin</string>
+    <string name="we_couldn_t_find_any_accounts">Yedekleme için uygun herhangi bir hesap bulamadık.</string>
+    <string name="have_you_stored_your_key">Anahtarınızı sakladınız mı?</string>
+    <string name="store_your_key_somewhere_secure">Anahtarınızı şifre yöneticisi gibi güvenli bir yerde saklayın. Anahtarınızı kaybederseniz, yedekleme dosyanıza erişiminizi sonsuza kadar kaybedersiniz.</string>
+    <string name="create_backup_file">Yedekleme dosyası oluştur</string>
+    <string name="show_key_again">Anahtarı tekrar göster</string>
+    <string name="create_new_key">Yeni anahtar oluştur</string>
+    <string name="you_are_about_to_reset">Algorand Güvenli Yedekleme Anahtarınızı sıfırlamak üzeresiniz. Bu cihazdan oluşturulan gelecekteki tüm ASB dosyalarını şifrelemek ve şifrelerini çözmek için kullanılacak 12 kelimelik yeni bir anahtar oluşturacaksınız.\n\nÖnceki ASB dosyalarınız eski 12 kelimelik anahtarınızla şifrelenmiş olarak kalır. Devam etmeden önce bu anahtarların güvenli bir şekilde saklandığından emin olun.</string>
+    <string name="i_understand_proceed">Anlıyorum, devam et</string>
+    <string name="copy_to_clipboard">Panoya Kopyala</string>
+    <string name="create_new_12_word_key">Yeni 12 Kelimelik Anahtar Oluşturun</string>
+    <string name="store_your_n_12_word_key">12 kelimelik anahtarınızı\nsaklayın</string>
+    <string name="i_ve_stored_my_key">Anahtarımı sakladım.</string>
+    <string name="your_12_word_key_is">12 kelimelik anahtarınız, sizin tarafınızdan oluşturulan herhangi bir Algorand Güvenli Yedekleme dosyasının şifresini çözmek için kullanılır.\n\n12 kelimelik anahtarınızı güvenli bir şekilde saklayın.\nPera Learn ile bunu nasıl yapacağınızı <annotation font="dmsans_medium"><annotation custom="url_click">öğrenin</annotation></annotation>.</string>
+    <string name="review_your_n_12_word_key">12 kelimelik anahtarınızı\ngözden geçirin</string>
+    <string name="you_stored_your_key_during">Anahtarınızı önceki bir yedekleme sırasında sakladınız. Hala güvenli bir şekilde saklandığından emin olmak için şimdi gözden geçirin.\n\nPera Learn ile <annotation font="dmsans_medium"><annotation custom="url_click">daha fazla bilgi edinin</annotation></annotation></string>
+    <string name="key_copied_as_text">Anahtar metin olarak kopyalandı</string>
+    <string name="save_backup_file">Yedekleme dosyasını kaydet</string>
+    <string name="your_backup_file_is_ready">Yedekleme dosyanız hazır</string>
+    <string name="save_your_file_somewhere_secure">Dosyanızı  12 kelimelik anahtarınızdan farklı, güvenli bir yere kaydedin. <annotation font="dmsans_medium"><annotation custom="url_click">Daha fazla bilgi edinin</annotation></annotation></string>
+    <string name="an_error_occurred_while_generating">Algorand Güvenli Yedeklemeniz oluşturulurken bir hata oluştu. Lütfen tekrar deneyin veya <annotation font="dmsans_medium"><annotation custom="url_click">Destek Birimi ile iletişime geçin</annotation></annotation></string>
+    <string name="backup_file_copied_to">Yedekleme dosyası panoya metin olarak kopyalandı</string>
+    <string name="can_t_save_backup_file">Yedekleme dosyası kaydedilemiyor</string>
+    <string name="please_allow_pera_wallet_to">Dosyanızı kaydetmek için lütfen Pera Wallet\'ın cihazınızdaki fotoğraflara ve medyaya erişmesine izin verin.</string>
+    <string name="have_you_stored_your">Yedekleme dosyanızı kaydettiniz mi?</string>
+    <string name="if_you_lose_your_algorand">Algorand Güvenli Yedekleme dosyanızı kaybederseniz hesaplarınızı geri yükleyemezsiniz.</string>
+    <string name="yes_i_stored_my_file">Evet, dosyamı sakladım</string>
+    <string name="show_backup_file_again">Yedekleme dosyasını tekrar göster</string>
+    <string name="select_your_n_backup_file">Yedekleme dosyanızı seçin</string>
+    <string name="to_restore_your_wallet">Cüzdanınızı geri yüklemek için yedekleme dosyanızı seçin veya yapıştırın.</string>
+    <string name="paste_backup_file_text">Yedekleme dosyası metnini yapıştırın</string>
+    <string name="unable_to_parse_file">Yedekleme dosyası ayrıştırılamıyor: JSON biçimlendirme hatası.</string>
+    <string name="unable_to_parse_key_name">Yedekleme dosyası ayrıştırılamıyor: <annotation replacement="key_name">keyNamePlaceholder</annotation> mevcut değil</string>
+    <string name="backup_file_was_generated_with">Yedekleme dosyası Algorand Güvenli Yedekleme Biçiminin desteklenmeyen bir sürümü ile oluşturuldu.</string>
+    <string name="unable_to_parse_suite">Yedekleme dosyası ayrıştırılamıyor: Şifre Paketi bilinmiyor</string>
+    <string name="backup_file_successfully_pasted">Yedekleme dosyası başarıyla yapıştırıldı</string>
+    <string name="enter_12_word_key">12 kelimelik anahtar girin</string>
+    <string name="wrong_12_word_key">Yanlış 12 kelimelik anahtar</string>
+    <string name="please_try_again_by_entering">Lütfen doğru 12 kelimelik anahtarı girerek tekrar deneyin.</string>
+    <string name="choose_accounts_n_to_restore">Geri yüklenecek\nhesap seçin</string>
+    <string name="restore_account">Hesabı Geri Yükle (%1$d)</string>
+    <string name="nothing_to_paste">Yapıştırılacak bir şey yok</string>
+    <string name="nothing_is_copied_to_the">Panoya hiçbir şey kopyalandı. Yedek dosyanızı kopyaladığınızdan emin olun.</string>
+    <plurals name="accounts_restored">
+        <item quantity="one">Hesap geri yüklendi</item>
+        <item quantity="other">Hesaplar geri yüklendi</item>
+    </plurals>
+    <plurals name="accounts_were_restored">
+        <item quantity="one">1 hesap yedekleme dosyasından geri yüklendi</item>
+        <item quantity="other">%1$d hesap yedekleme dosyasından geri yüklendi</item>
+    </plurals>
+    <plurals name="account_was_not_restored_because_exist">
+        <item quantity="one">Zaten cüzdanınızda olduğu için 1 hesap geri yüklenemedi</item>
+        <item quantity="other">Zaten cüzdanınızda olduğu için %1$d hesap geri yüklenemedi</item>
+    </plurals>
+    <plurals name="account_was_not_restored_because_unsupported">
+        <item quantity="one">Desteklenmeyen bir hesap türünde olduğu için 1 hesap geri yüklenemedi</item>
+        <item quantity="other">Desteklenmeyen bir hesap türünde olduğu için %1$d hesap geri yüklenemedi</item>
+    </plurals>
+    <plurals name="account_was_not_restored">
+        <item quantity="one">1 hesap geri yüklenemedi. Cüzdanınızda zaten olabilir veya desteklenmeyen bir hesap türü olabilir</item>
+        <item quantity="other">%1$d hesap geri yüklenemedi. Cüzdanınızda zaten olabilir veya desteklenmeyen bir hesap türü olabilir</item>
+    </plurals>
+    <string name="buy_sell">Alım / Satım</string>
+    <string name="see_all_options_to_buy">Kripto almak veya satmak için tüm seçenekleri görün</string>
+    <string name="buy_crypto">Kripto alın</string>
+    <string name="sell_crypto">Kripto satın</string>
+    <string name="use_apple_pay_credit_cards">Apple Pay\'i, kredi kartlarını veya banka transferi seçeneğini kullanın</string>
+    <string name="buy_algo_with_sardine">Sardine ile ALGO Alın</string>
+    <string name="use_instant_ach">ABD banka hesabınızla Instant ACH\'yi kullanın</string>
+    <string name="buy_usdc_with_transak">Transak ile USDC Alın</string>
+    <string name="use_credit_card_bank_transfer">150\'den fazla ülkede kredi kartlarını veya banka transferlerini kullanın</string>
+    <string name="buy_gift_cards_with_bidali">Bidali ile hediye kartı alın</string>
+    <string name="you_can_use_your_algo">Algo, USDC veya USDt bakiyenizi kullanabilirsiniz</string>
+    <string name="buy_gift_cards_with_crypto">Kripto ile hediye kartı alın</string>
+    <string name="buy_gift_cards">Hediye kartı alın</string>
+    <string name="you_can_use_your_algo_or">ALGO veya USDC bakiyenizi dünya çapında binlerce markadan hediye kartı ve mobil yükleme satın almak için kullanabilirsiniz!</string>
+    <string name="you_can_not_purchase_bidali">TestNet\'te satın alma işlemi gerçekleştiremezsiniz. Bidali\'yi kullanmak için lütfen Ayarlar\'a giderek MainNet\'e geçiş yapın.</string>
+    <string name="buy_usdc">USDC Alın</string>
+    <string name="transak_onboards_users_from_fiat">Transak, 800\'ü aşkın uygulama üzerinden kullanıcıların itibari paradan kriptoya geçmelerini sağlar. 150\'den fazla ülkede kredi kartlarını, banka kartlarını veya banka transferlerini destekler.</string>
+    <string name="you_can_not_purchase_transak">TestNet\'te satın alma işlemi gerçekleştiremezsiniz. Transak\'ı kullanmak için lütfen Ayarlar\'a giderek MainNet\'e geçiş yapın.</string>
+    <string name="instant_settlement_and_lower">Instant ACH transferlerini kullandığınızda Algo\'lar düşük işlem ücretleriyle anında hesaba geçer. Sardine, 180\'i aşkın ülkede yerel bankalar ile kart ödemelerini, Apple Pay ile GPay\'i de destekler.</string>
+    <string name="you_can_not_purchase_sardine">TestNet\'te satın alma işlemi gerçekleştiremezsiniz. Sardine\'i kullanmak için lütfen Ayarlar\'a giderek MainNet\'e geçiş yapın.</string>
+    <string name="choose_an_account_to_proceed">İlerlemek için bir hesap seçin</string>
 </resources>

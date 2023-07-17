@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/recoverWithPassphraseFragment"
-        android:name="com.algorand.android.ui.register.recover.RecoverWithPassphraseFragment"
+        android:name="com.algorand.android.modules.onboarding.recoverypassphrase.enterpassphrase.ui.RecoverWithPassphraseFragment"
         android:label="fragment_recover_from_seed"
         tools:layout="@layout/fragment_recover_with_passphrase">
         <argument
@@ -37,17 +37,20 @@
         <action
             android:id="@+id/action_recoverWithPassphraseFragment_to_recoverAccountNameRegistrationFragment"
             app:destination="@id/recoverAccountNameRegistrationFragment" />
+        <action
+            android:id="@+id/action_recoverWithPassphraseFragment_to_rekeyedAccountSelectionFragment"
+            app:destination="@id/rekeyedAccountSelectionFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/recoverWithPassphraseQrScannerFragment"
-        android:name="com.algorand.android.ui.register.recover.RecoverWithPassphraseQrScannerFragment"
+        android:name="com.algorand.android.modules.onboarding.recoverypassphrase.qrscanner.ui.RecoverWithPassphraseQrScannerFragment"
         android:label="RecoverWithPassphraseQrScannerFragment"
         tools:layout="@layout/fragment_qr_code_scanner" />
 
     <fragment
         android:id="@+id/recoverAccountNameRegistrationFragment"
-        android:name="com.algorand.android.ui.register.recover.name.RecoverAccountNameRegistrationFragment"
+        android:name="com.algorand.android.modules.onboarding.recoverypassphrase.nameregistration.RecoverAccountNameRegistrationFragment"
         android:label="RecoverAccountNameRegistrationFragment"
         tools:layout="@layout/fragment_name_registration">
         <argument
@@ -62,7 +65,7 @@
 
     <fragment
         android:id="@+id/recoverAccountResultInfoFragment"
-        android:name="com.algorand.android.ui.register.recover.result.RecoverAccountResultInfoFragment"
+        android:name="com.algorand.android.modules.onboarding.recoverypassphrase.result.ui.RecoverAccountResultInfoFragment"
         android:label="RecoverAccountResultInfoFragment"
         tools:layout="@layout/fragment_base_info">
         <action
@@ -89,8 +92,37 @@
 
     <dialog
         android:id="@+id/recoverOptionsBottomSheet"
-        android:name="com.algorand.android.ui.register.recover.RecoverOptionsBottomSheet"
+        android:name="com.algorand.android.modules.onboarding.recoverypassphrase.options.ui.RecoverOptionsBottomSheet"
         android:label="RecoverOptionsBottomSheet"
         tools:layout="@layout/bottom_sheet_recover_options" />
+
+    <fragment
+        android:id="@+id/rekeyedAccountSelectionFragment"
+        android:name="com.algorand.android.modules.onboarding.recoverypassphrase.rekeyedaccountselection.selection.ui.RekeyedAccountSelectionFragment"
+        android:label="RekeyedAccountSelectionFragment"
+        tools:layout="@layout/fragment_base_found_account_selection">
+        <argument
+            android:name="accountCreation"
+            app:argType="com.algorand.android.models.AccountCreation" />
+        <argument
+            android:name="rekeyedAccountAddresses"
+            app:argType="string[]" />
+        <action
+            android:id="@+id/action_rekeyedAccountSelectionFragment_to_recoverAccountNameRegistrationFragment"
+            app:destination="@id/recoverAccountNameRegistrationFragment" />
+        <action
+            android:id="@+id/action_rekeyedAccountSelectionFragment_to_rekeyedAccountInformationFragment"
+            app:destination="@id/rekeyedAccountInformationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/rekeyedAccountInformationFragment"
+        android:name="com.algorand.android.modules.onboarding.recoverypassphrase.rekeyedaccountselection.information.ui.RekeyedAccountInformationFragment"
+        android:label="RekeyedAccountInformationFragment"
+        tools:layout="@layout/fragment_base_found_account_information">
+        <argument
+            android:name="accountAddress"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

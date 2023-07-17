@@ -16,8 +16,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountBinding
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseViewHolder
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.webimport.result.ui.model.BaseAccountResultListItem
 import com.algorand.android.utils.AccountIconDrawable
 
@@ -25,14 +25,12 @@ class WebImportResultAccountItemViewHolder(
     private val binding: ItemAccountBinding
 ) : BaseViewHolder<BaseAccountResultListItem>(binding.root) {
 
-    private fun setAccountStartIconDrawable(accountIconResource: AccountIconResource?) {
+    private fun setAccountStartIconDrawable(accountIconDrawablePreview: AccountIconDrawablePreview) {
         with(binding.accountItemView) {
-            val accountIconSize = resources.getDimension(R.dimen.account_icon_size_large).toInt()
             val accountIconDrawable = AccountIconDrawable.create(
                 context = context,
-                accountIconResource = accountIconResource
-                    ?: AccountIconResource.DEFAULT_ACCOUNT_ICON_RESOURCE,
-                size = accountIconSize
+                accountIconDrawablePreview = accountIconDrawablePreview,
+                sizeResId = R.dimen.spacing_xxxxlarge
             )
             setStartIconDrawable(accountIconDrawable)
         }
@@ -49,7 +47,7 @@ class WebImportResultAccountItemViewHolder(
     override fun bind(item: BaseAccountResultListItem) {
         if (item !is BaseAccountResultListItem.AccountItem) return
         with(item.accountAssetIconNameConfiguration) {
-            setAccountStartIconDrawable(startAccountIconResource)
+            setAccountStartIconDrawable(accountIconDrawablePreview)
             setAccountTitleText(title)
             setAccountDescriptionText(description)
         }

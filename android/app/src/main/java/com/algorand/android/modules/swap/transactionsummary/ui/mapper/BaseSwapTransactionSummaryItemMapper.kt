@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.swap.transactionsummary.ui.mapper
 
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.swap.transactionsummary.ui.model.BaseSwapTransactionSummaryItem
 import com.algorand.android.utils.AccountDisplayName
 import javax.inject.Inject
@@ -31,11 +31,11 @@ class BaseSwapTransactionSummaryItemMapper @Inject constructor() {
 
     fun mapToSwapAccountItem(
         accountDisplayName: AccountDisplayName,
-        accountIconResource: AccountIconResource
+        accountIconDrawablePreview: AccountIconDrawablePreview
     ): BaseSwapTransactionSummaryItem.SwapAccountItemTransaction {
         return BaseSwapTransactionSummaryItem.SwapAccountItemTransaction(
             accountDisplayName = accountDisplayName,
-            accountIconResource = accountIconResource
+            accountIconDrawablePreview = accountIconDrawablePreview
         )
     }
 

@@ -12,21 +12,57 @@
 
 package com.algorand.android.modules.basesingleaccountselection.ui.model
 
-import com.algorand.android.models.AccountIconResource
+import androidx.annotation.StringRes
+import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.RecyclerListItem
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountDisplayName
 
 sealed class SingleAccountSelectionListItem : RecyclerListItem {
 
     enum class ItemType {
-        ACCOUNT_ITEM
+        ACCOUNT_ITEM,
+        TITLE_ITEM,
+        DESCRIPTION_ITEM
     }
 
     abstract val itemType: ItemType
 
+    data class TitleItem(
+        @StringRes val textResId: Int
+    ) : SingleAccountSelectionListItem() {
+
+        override val itemType: ItemType
+            get() = ItemType.TITLE_ITEM
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is TitleItem && textResId == other.textResId
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is TitleItem && this == other
+        }
+    }
+
+    data class DescriptionItem(
+        val descriptionAnnotatedString: AnnotatedString
+    ) : SingleAccountSelectionListItem() {
+
+        override val itemType: ItemType
+            get() = ItemType.DESCRIPTION_ITEM
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is DescriptionItem && descriptionAnnotatedString == other.descriptionAnnotatedString
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is DescriptionItem && this == other
+        }
+    }
+
     data class AccountItem(
         val accountDisplayName: AccountDisplayName,
-        val accountIconResource: AccountIconResource,
+        val accountIconDrawablePreview: AccountIconDrawablePreview,
         val accountFormattedPrimaryValue: String?,
         val accountFormattedSecondaryValue: String?
     ) : SingleAccountSelectionListItem() {

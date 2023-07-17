@@ -95,7 +95,7 @@ class SlippageTolerancePreviewUseCase @Inject constructor(
         val inputAsFloat = inputValue.toFloatOrDefault()
         val errorString = if (!isInputValid(inputAsFloat)) {
             resources.getString(
-                R.string.slippage_tolerance_must_be_between,
+                R.string.percentage_must_be_between,
                 MIN_SWAP_SLIPPAGE_TOLERANCE,
                 MAX_SWAP_SLIPPAGE_TOLERANCE
             )

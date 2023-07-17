@@ -79,7 +79,9 @@ class WalletConnectFirebaseEventLogger(
             bundleOf(
                 DAPP_NAME_PARAM to peerMeta.name,
                 DAPP_URL_PARAM to peerMeta.url,
-                CONNECTED_ACCOUNT_ADDRESS_PARAM to connectedAddresses.toAccountAddressesString()
+                CONNECTED_ACCOUNT_ADDRESS_PARAM to connectedAccounts.map {
+                    it.accountAddress
+                }.toAccountAddressesString()
             )
         }
         firebaseAnalytics.logEvent(SESSION_DISCONNECTION_EVENT_KEY, bundle)

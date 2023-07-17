@@ -13,7 +13,6 @@
 package com.algorand.android.modules.walletconnect.client.v1.mapper
 
 import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1RequestIdentifier
-import com.algorand.android.modules.walletconnect.client.v1.utils.WalletConnectClientV1Utils
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.mapper.identifier.WalletConnectRequestIdentifierMapper
 import javax.inject.Inject
@@ -21,7 +20,6 @@ import javax.inject.Inject
 class WalletConnectV1RequestIdentifierMapper @Inject constructor() : WalletConnectRequestIdentifierMapper<Long> {
 
     override fun mapToRequestIdentifier(requestIdentifier: Long): WalletConnect.RequestIdentifier {
-        val versionIdentifier = WalletConnectClientV1Utils.getWalletConnectV1VersionIdentifier()
-        return WalletConnectV1RequestIdentifier(requestIdentifier, versionIdentifier)
+        return WalletConnectV1RequestIdentifier(requestIdentifier)
     }
 }

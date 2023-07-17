@@ -20,7 +20,9 @@ import javax.inject.Named
 
 class WalletConnectSessionSubscriptionManager @Inject constructor(
     @Named(SubscribeWalletConnectV1SessionUseCase.INJECTION_NAME)
-    private val subscribeWalletConnectV1SessionUseCase: SubscribeWalletConnectSessionUseCase
+    private val subscribeWalletConnectV1SessionUseCase: SubscribeWalletConnectSessionUseCase,
+    @Named(SubscribeWalletConnectV1SessionUseCase.INJECTION_NAME)
+    private val subscribeWalletConnectV2SessionUseCase: SubscribeWalletConnectSessionUseCase
 ) {
 
     suspend fun subscribe(sessionDetail: WalletConnect.SessionDetail, clientId: String) {
@@ -32,7 +34,7 @@ class WalletConnectSessionSubscriptionManager @Inject constructor(
     ): SubscribeWalletConnectSessionUseCase {
         return when (versionIdentifier) {
             WalletConnectVersionIdentifier.VERSION_1 -> subscribeWalletConnectV1SessionUseCase
-            WalletConnectVersionIdentifier.VERSION_2 -> TODO()
+            WalletConnectVersionIdentifier.VERSION_2 -> subscribeWalletConnectV2SessionUseCase
         }
     }
 }

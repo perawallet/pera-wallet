@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/registerWatchAccountFragment"
-        android:name="com.algorand.android.modules.registration.watchaccount.ui.RegisterWatchAccountFragment"
+        android:name="com.algorand.android.modules.onboarding.registerwatchaccount.ui.RegisterWatchAccountFragment"
         android:label="RegisterWatchAccountFragment"
         tools:layout="@layout/fragment_register_watch_account">
         <action

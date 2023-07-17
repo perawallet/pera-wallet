@@ -105,4 +105,11 @@
     <string name="two">2</string>
     <string name="three">3</string>
     <string name="four">4</string>
+
+    <string name="account_state_transition">%1$s (%2$s to %3$s)</string>
+
+    <string name="interpunct_and_text">• %1$s</string>
+
+    <string name="wc_v1">WCV1</string>
+    <string name="date_hour_pair_formatted_and_colored"><annotation replacement="date">datePlaceholder</annotation>, <annotation custom="hour_text_color"><annotation replacement="hour">hourReplacement</annotation></annotation></string>
 </resources>

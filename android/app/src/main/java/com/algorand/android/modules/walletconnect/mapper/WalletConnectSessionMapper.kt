@@ -13,6 +13,7 @@
 package com.algorand.android.modules.walletconnect.mapper
 
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectVersionIdentifier
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ class WalletConnectSessionMapper @Inject constructor() {
     fun mapToSession(
         topic: String,
         expiry: WalletConnect.Model.Expiry,
-        namespaces: Map<String, WalletConnect.Namespace.Session>,
+        namespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Session>,
         peerMeta: WalletConnect.PeerMeta,
         versionIdentifier: WalletConnectVersionIdentifier
     ): WalletConnect.Model.Session {

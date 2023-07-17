@@ -13,18 +13,44 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.utils
 
-import com.algorand.android.modules.walletconnect.domain.model.WalletConnectTransactionErrorResponse
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectErrorReason
 import javax.inject.Inject
 
 class WalletConnectV1ErrorCodeProvider @Inject constructor() {
 
-    fun getErrorCode(error: WalletConnectTransactionErrorResponse): Long {
+    fun getErrorCode(error: WalletConnectErrorReason): Long {
         return when (error) {
-            is WalletConnectTransactionErrorResponse.Rejected -> 4001L
-            is WalletConnectTransactionErrorResponse.Unauthorized -> 4100L
-            is WalletConnectTransactionErrorResponse.Unsupported -> 4200L
-            is WalletConnectTransactionErrorResponse.InvalidInput -> 4300L
-            is WalletConnectTransactionErrorResponse.UnknownAsset -> 4400L
+            is WalletConnectErrorReason.AtomicNoNeedToSign -> INVALID_INPUT_ERROR_CODE
+            is WalletConnectErrorReason.FailedGroupingTransactions -> REJECTED_ERROR_CODE
+            is WalletConnectErrorReason.InvalidAsset -> INVALID_INPUT_ERROR_CODE
+            is WalletConnectErrorReason.InvalidPublicKey -> INVALID_INPUT_ERROR_CODE
+            is WalletConnectErrorReason.MaxTransactionLimit -> INVALID_INPUT_ERROR_CODE
+            is WalletConnectErrorReason.MismatchingNodes -> UNAUTHORIZED_ERROR_CODE
+            is WalletConnectErrorReason.MissingSecretKey -> UNAUTHORIZED_ERROR_CODE
+            is WalletConnectErrorReason.MissingSigner -> UNAUTHORIZED_ERROR_CODE
+            is WalletConnectErrorReason.MultisigTransaction -> UNSUPPORTED_ERROR_CODE
+            is WalletConnectErrorReason.PendingTransaction -> REJECTED_ERROR_CODE
+            is WalletConnectErrorReason.RejectedChains -> REJECTED_ERROR_CODE
+            is WalletConnectErrorReason.SessionNotFound -> REJECTED_ERROR_CODE
+            is WalletConnectErrorReason.UnableToParseTransaction -> INVALID_INPUT_ERROR_CODE
+            is WalletConnectErrorReason.UnableToSign -> INVALID_INPUT_ERROR_CODE
+            is WalletConnectErrorReason.UnauthorizedChain -> UNAUTHORIZED_ERROR_CODE
+            is WalletConnectErrorReason.UnauthorizedEvent -> UNAUTHORIZED_ERROR_CODE
+            is WalletConnectErrorReason.UnauthorizedMethod -> UNAUTHORIZED_ERROR_CODE
+            is WalletConnectErrorReason.UnknownTransactionType -> UNSUPPORTED_ERROR_CODE
+            is WalletConnectErrorReason.UnsupportedAccounts -> UNSUPPORTED_ERROR_CODE
+            is WalletConnectErrorReason.UnsupportedChains -> UNSUPPORTED_ERROR_CODE
+            is WalletConnectErrorReason.UnsupportedEvents -> UNSUPPORTED_ERROR_CODE
+            is WalletConnectErrorReason.UnsupportedMethods -> UNSUPPORTED_ERROR_CODE
+            is WalletConnectErrorReason.UnsupportedNamespaceKey -> UNSUPPORTED_ERROR_CODE
+            is WalletConnectErrorReason.UserRejected -> REJECTED_ERROR_CODE
         }
+    }
+
+    companion object {
+        private const val REJECTED_ERROR_CODE = 4100L
+        private const val UNAUTHORIZED_ERROR_CODE = 4100L
+        private const val UNSUPPORTED_ERROR_CODE = 4200L
+        private const val INVALID_INPUT_ERROR_CODE = 4300L
     }
 }

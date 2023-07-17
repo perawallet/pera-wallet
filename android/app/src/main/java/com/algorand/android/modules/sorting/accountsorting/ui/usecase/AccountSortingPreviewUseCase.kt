@@ -14,8 +14,8 @@ package com.algorand.android.modules.sorting.accountsorting.ui.usecase
 
 import com.algorand.android.R
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ButtonConfiguration
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.mapper.BaseSortingListItemMapper
@@ -42,7 +42,8 @@ open class AccountSortingPreviewUseCase @Inject constructor(
     private val getAccountValueUseCase: GetAccountValueUseCase,
     private val getSortedLocalAccountsUseCase: GetSortedLocalAccountsUseCase,
     private val saveLocalAccountsUseCase: SaveLocalAccountsUseCase,
-    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     fun getInitialSortingPreview(): AccountSortingPreview {
@@ -136,7 +137,7 @@ open class AccountSortingPreviewUseCase @Inject constructor(
                 accountItemConfigurationMapper.mapTo(
                     accountAddress = account.address,
                     accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
-                    accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(account.address),
                     accountType = account.type,
                     accountPrimaryValue = accountValue.primaryAccountValue,
                     dragButtonConfiguration = ButtonConfiguration(
@@ -151,7 +152,7 @@ open class AccountSortingPreviewUseCase @Inject constructor(
                     accountItemConfigurationMapper.mapTo(
                         accountAddress = address,
                         accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
-                        accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
+                        accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(address),
                         showWarningIcon = true
                     )
                 }

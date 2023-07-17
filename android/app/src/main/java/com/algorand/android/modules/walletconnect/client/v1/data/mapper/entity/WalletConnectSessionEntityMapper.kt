@@ -13,7 +13,7 @@
 package com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity
 
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionEntity
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDto
 import javax.inject.Inject
 
 class WalletConnectSessionEntityMapper @Inject constructor(
@@ -21,7 +21,7 @@ class WalletConnectSessionEntityMapper @Inject constructor(
     private val sessionMetaEntityMapper: WalletConnectSessionMetaEntityMapper
 ) {
 
-    fun mapToSessionEntity(dto: WalletConnectSessionDTO): WalletConnectSessionEntity {
+    fun mapToSessionEntity(dto: WalletConnectSessionDto): WalletConnectSessionEntity {
         return with(dto) {
             WalletConnectSessionEntity(
                 id = id,

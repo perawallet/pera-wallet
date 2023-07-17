@@ -13,39 +13,39 @@
 package com.algorand.android.modules.walletconnect.client.v1.data.repository
 
 import com.algorand.android.database.WalletConnectDao
-import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionAccountDTOMapper
-import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionByAccountsAddressDTOMapper
-import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionDTOMapper
-import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionWithAccountsAddressesDTOMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionAccountDtoMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionByAccountsAddressDtoMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionDtoMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionWithAccountsAddressesDtoMapper
 import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectSessionAccountEntityMapper
 import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectSessionEntityMapper
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionAccountDTO
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionByAccountsAddressDTO
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDTO
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionWithAccountsAddressesDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionAccountDto
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionByAccountsAddressDto
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDto
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionWithAccountsAddressesDto
 import com.algorand.android.modules.walletconnect.client.v1.domain.repository.WalletConnectRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class WalletConnectV1RepositoryImpl constructor(
     private val walletConnectDao: WalletConnectDao,
-    private val sessionAccountDTOMapper: WalletConnectSessionAccountDTOMapper,
+    private val sessionAccountDtoMapper: WalletConnectSessionAccountDtoMapper,
     private val sessionAccountEntityMapper: WalletConnectSessionAccountEntityMapper,
-    private val sessionDTOMapper: WalletConnectSessionDTOMapper,
+    private val sessionDtoMapper: WalletConnectSessionDtoMapper,
     private val sessionEntityMapper: WalletConnectSessionEntityMapper,
-    private val sessionByAccountsAddressDTOMapper: WalletConnectSessionByAccountsAddressDTOMapper,
-    private val sessionWithAccountsAddressesDTOMapper: WalletConnectSessionWithAccountsAddressesDTOMapper
+    private val sessionByAccountsAddressDtoMapper: WalletConnectSessionByAccountsAddressDtoMapper,
+    private val sessionWithAccountsAddressesDtoMapper: WalletConnectSessionWithAccountsAddressesDtoMapper
 ) : WalletConnectRepository {
 
-    override suspend fun getAllDisconnectedSessions(): List<WalletConnectSessionDTO> {
+    override suspend fun getAllDisconnectedSessions(): List<WalletConnectSessionDto> {
         return walletConnectDao.getAllDisconnectedWCSessions().map {
-            sessionDTOMapper.mapToSessionDTO(it)
+            sessionDtoMapper.mapToSessionDto(it)
         }
     }
 
-    override suspend fun getSessionById(sessionId: Long): WalletConnectSessionDTO? {
+    override suspend fun getSessionById(sessionId: Long): WalletConnectSessionDto? {
         val sessionEntity = walletConnectDao.getSessionById(sessionId) ?: return null
-        return sessionDTOMapper.mapToSessionDTO(sessionEntity)
+        return sessionDtoMapper.mapToSessionDto(sessionEntity)
     }
 
     override suspend fun deleteSessionById(sessionId: Long) {
@@ -61,8 +61,8 @@ class WalletConnectV1RepositoryImpl constructor(
     }
 
     override suspend fun insertConnectedWalletConnectSession(
-        wcSession: WalletConnectSessionDTO,
-        wcSessionAccountList: List<WalletConnectSessionAccountDTO>
+        wcSession: WalletConnectSessionDto,
+        wcSessionAccountList: List<WalletConnectSessionAccountDto>
     ) {
         walletConnectDao.insertWalletConnectSessionAndHistory(
             wcSessionEntity = sessionEntityMapper.mapToSessionEntity(wcSession),
@@ -74,31 +74,31 @@ class WalletConnectV1RepositoryImpl constructor(
         walletConnectDao.setSessionConnected(sessionId)
     }
 
-    override suspend fun getWCSessionList(): List<WalletConnectSessionDTO> {
-        return walletConnectDao.getWCSessionList().map { sessionDTOMapper.mapToSessionDTO(it) }
+    override suspend fun getWCSessionList(): List<WalletConnectSessionDto> {
+        return walletConnectDao.getWCSessionList().map { sessionDtoMapper.mapToSessionDto(it) }
     }
 
     override suspend fun getWCSessionListByAccountAddress(
         accountAddress: String
-    ): List<WalletConnectSessionByAccountsAddressDTO>? {
+    ): List<WalletConnectSessionByAccountsAddressDto>? {
         return walletConnectDao.getWCSessionListByAccountAddress(accountAddress)?.map {
-            sessionByAccountsAddressDTOMapper.mapToSessionByAccountsAddressDTO(it)
+            sessionByAccountsAddressDtoMapper.mapToSessionByAccountsAddressDto(it)
         }
     }
 
     override suspend fun getConnectedAccountsOfSession(
         sessionId: Long
-    ): List<WalletConnectSessionAccountDTO>? {
+    ): List<WalletConnectSessionAccountDto>? {
         return walletConnectDao.getConnectedAccountsOfSession(sessionId)?.map {
-            sessionAccountDTOMapper.mapToSessionAccountDTO(it)
+            sessionAccountDtoMapper.mapToSessionAccountDto(it)
         }
     }
 
     override fun getAllWalletConnectSessionWithAccountAddresses():
-        Flow<List<WalletConnectSessionWithAccountsAddressesDTO>?> {
+        Flow<List<WalletConnectSessionWithAccountsAddressesDto>?> {
         return walletConnectDao.getAllWalletConnectSessionWithAccountAddresses().map { sessionWithAccAddrList ->
             sessionWithAccAddrList?.map { sessionWithAccAddr ->
-                sessionWithAccountsAddressesDTOMapper.mapToSessionWithAccountsAddressesDTO(sessionWithAccAddr)
+                sessionWithAccountsAddressesDtoMapper.mapToSessionWithAccountsAddressesDto(sessionWithAccAddr)
             }
         }
     }
@@ -111,9 +111,9 @@ class WalletConnectV1RepositoryImpl constructor(
         walletConnectDao.setGivenSessionAsSubscribed(sessionId)
     }
 
-    override suspend fun getWalletConnectSessionListOrderedByCreationTime(count: Int): List<WalletConnectSessionDTO> {
+    override suspend fun getWalletConnectSessionListOrderedByCreationTime(count: Int): List<WalletConnectSessionDto> {
         return walletConnectDao.getWalletConnectSessionListOrderedByCreationTime(count)?.map { sessionEntity ->
-            sessionDTOMapper.mapToSessionDTO(sessionEntity)
+            sessionDtoMapper.mapToSessionDto(sessionEntity)
         }.orEmpty()
     }
 

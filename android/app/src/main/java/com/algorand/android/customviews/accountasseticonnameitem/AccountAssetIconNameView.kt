@@ -26,7 +26,7 @@ import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.customviews.accountasseticonnameitem.model.AccountAssetIconNameConfiguration
 import com.algorand.android.databinding.ItemAccountAssetIconNameBinding
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -40,7 +40,7 @@ class AccountAssetIconNameView @JvmOverloads constructor(
 
     fun initWithConfiguration(configuration: AccountAssetIconNameConfiguration) {
         with(configuration) {
-            startAccountIconResource?.let { setStartAccountIconResource(it) }
+            setStartAccountIconResource(accountIconDrawablePreview)
             setStartIconResId?.let { setStartIconResource(it) }
             startSmallIconDrawable?.let { setStartSmallIconDrawable(it) }
             startSmallIconResId?.let { setStartSmallIconDrawableResource(it) }
@@ -56,18 +56,15 @@ class AccountAssetIconNameView @JvmOverloads constructor(
 
     fun getStartIconImageView(): AppCompatImageView = binding.startIconImageView
 
-    private fun setStartAccountIconResource(accountIconResource: AccountIconResource?, forceShow: Boolean = false) {
+    private fun setStartAccountIconResource(accountIconDrawablePreview: AccountIconDrawablePreview) {
         binding.startIconImageView.apply {
-            isVisible = accountIconResource != null || forceShow
-            accountIconResource?.let {
-                setImageDrawable(
-                    AccountIconDrawable.create(
-                        context = context,
-                        accountIconResource = it,
-                        size = context.resources.getDimension(R.dimen.account_icon_size_large).toInt()
-                    )
+            setImageDrawable(
+                AccountIconDrawable.create(
+                    context = context,
+                    accountIconDrawablePreview = accountIconDrawablePreview,
+                    sizeResId = R.dimen.spacing_xxxxlarge
                 )
-            }
+            )
         }
     }
 

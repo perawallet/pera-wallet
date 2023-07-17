@@ -15,6 +15,7 @@ package com.algorand.android.models
 
 import androidx.annotation.StringRes
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
@@ -27,8 +28,7 @@ sealed class LedgerInformationListItem {
     data class AccountItem(
         val accountDisplayName: AccountDisplayName,
         val address: String,
-        val assetCount: Int,
-        val accountIconResource: AccountIconResource,
+        val accountIconDrawablePreview: AccountIconDrawablePreview,
         val portfolioValue: String
     ) : LedgerInformationListItem() {
         override fun areItemsTheSame(other: LedgerInformationListItem): Boolean {
@@ -70,7 +70,7 @@ sealed class LedgerInformationListItem {
     }
 
     data class CanSignedByItem(
-        val accountIconResource: AccountIconResource,
+        val accountIconDrawablePreview: AccountIconDrawablePreview,
         val accountPublicKey: String
     ) : LedgerInformationListItem() {
 

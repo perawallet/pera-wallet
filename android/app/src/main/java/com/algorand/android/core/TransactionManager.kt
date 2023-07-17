@@ -267,10 +267,28 @@ class TransactionManager @Inject constructor(
     private fun TransactionData.signTxnWithCheckingOtherAccounts() {
         when (val authAccountDetail = accountCacheManager.getCacheData(senderAuthAddress)?.account?.detail) {
             is Account.Detail.Standard -> {
-                checkAndCacheSignedTransaction(transactionByteArray?.signTx(authAccountDetail.secretKey))
+                if (authAccountDetail.secretKey.isNotEmpty()) {
+                    checkAndCacheSignedTransaction(transactionByteArray?.signTx(authAccountDetail.secretKey))
+                } else {
+                    postResult(Defined(AnnotatedString(stringResId = R.string.the_signing_account_has)))
+                }
             }
             is Account.Detail.Ledger -> {
                 sendTransactionWithLedger(authAccountDetail)
+            }
+            is Account.Detail.Rekeyed -> {
+                if (authAccountDetail.secretKey?.isNotEmpty() == true) {
+                    checkAndCacheSignedTransaction(transactionByteArray?.signTx(authAccountDetail.secretKey))
+                } else {
+                    postResult(Defined(AnnotatedString(stringResId = R.string.the_signing_account_has)))
+                }
+            }
+            is Account.Detail.RekeyedAuth -> {
+                if (authAccountDetail.secretKey?.isNotEmpty() == true) {
+                    checkAndCacheSignedTransaction(transactionByteArray?.signTx(authAccountDetail.secretKey))
+                } else {
+                    postResult(Defined(AnnotatedString(stringResId = R.string.the_signing_account_has)))
+                }
             }
             else -> {
                 postResult(Defined(AnnotatedString(stringResId = R.string.the_signing_account_has)))

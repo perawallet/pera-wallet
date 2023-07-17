@@ -46,6 +46,7 @@ import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.listenToNavigationResult
+import com.algorand.android.utils.scrollToTop
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -87,6 +88,9 @@ class DiscoverHomeFragment : BaseDiscoverFragment(R.layout.fragment_discover_hom
             }
             reloadPageEvent?.consume()?.run {
                 loadDiscoverHomepage(preview)
+            }
+            scrollToTopEvent?.consume()?.run {
+                binding.searchRecyclerView.scrollToTop()
             }
         }
     }

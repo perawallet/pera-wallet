@@ -19,7 +19,7 @@ import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.customviews.PeraChipGroup
 import com.algorand.android.customviews.PeraChipGroup.PeraChipItem
 import com.algorand.android.databinding.BottomSheetPercentageSelectionBinding
-import com.algorand.android.models.TextButton
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.TextButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.hideKeyboard
@@ -81,8 +81,8 @@ abstract class BasePercentageSelectionBottomSheet : BaseBottomSheet(R.layout.bot
             customPercentageInput.apply {
                 hint = getString(inputFieldHintText)
                 setOnEditorEnterClickListener { onDoneClick() }
-                setOnTextChangeListener { basePercentageSelectionViewModel.onInputUpdated(resources, it) }
                 setImeOptionsDone { onDoneClick() }
+                setOnTextChangeListener { basePercentageSelectionViewModel.onInputUpdated(resources, it) }
             }
             predefinedPercentageChipGroup.setListener(peraCheckGroupListener)
         }

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2022 Pera Wallet, LDA
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
   -->
 
 <resources>
@@ -105,8 +105,7 @@
     <string name="advanced_troubleshooting">Erweiterte Fehlerbehebung</string>
     <string name="connecting_to_ledger">Verbindung mit Ledger-Gerät wird hergestellt …</string>
     <string name="ledger_approval">Ledger-Genehmigung</string>
-    <string name="please_make_sure">Bitte bestätigen Sie die Transaktion auf Ihrem Ledger-Gerät</string>
-    <string name="ledger_info_ledger_second_paragraph">Wenn Sie in dem Tutorial bei dem Schritt angelangt sind, wo Sie aufgefordert werden, die Anwendungen zu wählen, die Sie auf Ihrem Gerät installieren möchten („Select the application(s) you want to install on your device\"), geben Sie „Algorand\" in die Suchleiste ein und installieren Sie die Anwendung.</string>
+    <string name="ledger_info_ledger_second_paragraph">Wenn Sie in dem Tutorial bei dem Schritt angelangt sind, wo Sie aufgefordert werden, die Anwendungen zu wählen, die Sie auf Ihrem Gerät installieren möchten („Select the application(s) you want to install on your device“), geben Sie „Algorand“ in die Suchleiste ein und installieren Sie die Anwendung.</string>
     <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Folgen Sie zunächst dem umfassenden <annotation type="bold"><annotation type="color">Anfänger-</annotation></annotation> Tutorial von Ledger, in dem Sie erfahren, wie Sie Apps auf Ihrem Ledger-Gerät installieren und öffnen.</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">Wenn Sie die <annotation type="bold">Algorand -</annotation>App noch nicht installiert haben und Sie in dem Tutorial bei dem Schritt angelangt sind, wo Sie aufgefordert werden, die Anwendungen zu wählen, die Sie auf Ihrem Gerät installieren möchten („Select the application(s) you want to install on your device\"), geben Sie „Algorand\" in die Suchleiste ein und installieren Sie die Anwendung. </string>
     <string name="error_connection_title">Verbindungsfehler</string>
@@ -162,7 +161,6 @@
     <string name="add_note">Bemerkung hinzufügen</string>
     <string name="try_again_in">Erneut versuchen in</string>
     <string name="rekey_account">Konto-Rekeying</string>
-    <string name="start_process">Prozess starten</string>
     <string name="replace_your_account">Ersetzen Sie Ihr Ledger-Gerät für Ihr Konto durch ein neues Ledger-Gerät</string>
     <string name="replace_your_accounts">Ersetzen Sie die Passphrase Ihres Kontos durch ein Ledger-Gerät.</string>
     <string name="what_to_expect">Was das bedeutet:</string>
@@ -219,7 +217,6 @@
     <string name="can_be_signed_by">Kann signiert werden von</string>
     <string name="can_sign_for_these">Kann für diese Konten signieren</string>
     <string name="select_account">Konto auswählen</string>
-    <string name="choose_the_account">Wählen Sie das Konto, mit dem Sie dieses Konto signieren möchten.</string>
     <string name="a_network_error">Beim Abrufen der Kontodetails ist ein Netzwerkfehler aufgetreten. Bitte starten Sie den Vorgang erneut.</string>
     <string name="it_appears_this">Es scheint, dass dieses Ledger-Gerät zurückgesetzt wurde und das Konto auf dem Gerät nicht mehr mit diesem Konto übereinstimmt. Bitte verknüpfen Sie das Ledger-Gerät erneut über die Homepage.</string>
     <plurals name="asset_count">
@@ -564,6 +561,7 @@
     <string name="transfer">Übertragen</string>
     <string name="send_your_nft">Senden Sie Ihren NFT</string>
     <string name="paste_an_algorand_wallet_address">Algorand-Wallet-Adresse einfügen</string>
+    <string name="ask_recipient_to">Empfänger um Opt-in bitten\n%1$s</string>
     <string name="you_cant_send">Sie können <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> nicht an <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> senden, da diese Wallet noch nicht für dieses Asset optiert hat. <annotation font="dmsans_medium"><annotation custom="learn_more">Erfahren Sie mehr über Opt-in</annotation></annotation></string>
     <string name="information_about_opt">Informationen zum Opt-in</string>
     <string name="to_avoid_spammy">Um Spam-Transaktionen zu vermeiden, erlaubt die Algorand-Blockchain nur das Senden und Empfangen von Transaktionen für Assets, für die zuvor ein Opt-in erteilt wurde.</string>
@@ -595,7 +593,6 @@
     <string name="opted_in_to">Opt-in für</string>
     <string name="show_on">Anzeigen auf</string>
     <string name="you_are_about_to_remove_watch_account">Sie sind dabei, ein Überwachungskonto zu entfernen. Sind Sie sicher, dass Sie fortfahren möchten?</string>
-    <string name="you_are_about_to_remove_main_account">Sie sind dabei, Ihr Hauptkonto zu entfernen. Sind Sie sicher, dass Sie fortfahren möchten?</string>
     <string name="this_watch_account_has_opted">Dieses Überwachungskonto hat sich für dieses NFT entschieden, besitzt es aber nicht.</string>
     <string name="display_opted_in_nfts">Opted-in NFTs anzeigen</string>
     <string name="filter">Filter</string>
@@ -654,7 +651,7 @@
     <string name="address_scanned">Adresse gescannt!</string>
     <string name="rekeyed_auth_account">Rekeyed-Auth-Konto</string>
     <string name="rekeyed_account">Rekeyed-Konto</string>
-    <string name="press_and_hold_to">Drücken und halten Sie, um die Adresse zu kopieren.</string>
+    <string name="press_and_hold_to">Drücken und halten Sie,\num die Adresse zu kopieren.</string>
     <string name="you_can_quickly_copy">Sie können die Kontoadresse schnell kopieren, indem Sie auf das Feld Konto drücken und gedrückt halten</string>
     <string name="matched_accounts">Abgestimmte Konten</string>
     <string name="manually">Manuell</string>
@@ -767,7 +764,7 @@
     <string name="this_account_doesn_t">Dieses Konto hat nicht genügend Guthaben für diese Transaktion.</string>
     <string name="we_couldn_t">Wir konnten den Browser, mit dem Sie die WalletConnect-Sitzung gestartet haben, nicht automatisch erkennen. Bitte wählen Sie ihn aus, um zu %1$s zurückzukehren:</string>
     <string name="select_a_browser">Wählen Sie einen Browser</string>
-    <string name="switch_back_to">Zurück zu <annotation iconReplacement="browserIconResId">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation> wechseln</string>
+    <string name="switch_back_to">Zurück zu <annotation iconReplacement="browser_icon_res_id">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation> wechseln</string>
     <string name="account_connected">Konto verbunden!</string>
     <string name="you_ve_connected">Sie haben Ihr Konto mit %1$s verbunden. Kehren Sie zu Ihrem Webbrowser zurück, um den Vorgang abzuschließen.</string>
     <string name="transaction_signed">Transaktion signiert</string>
@@ -791,7 +788,6 @@
     <string name="later">Später</string>
     <string name="set_custom_slippage">Benutzerdefinierten Slippage einstellen</string>
     <string name="auto">Auto</string>
-    <string name="slippage_tolerance_must_be_between">Die Slippage-Toleranz muss zwischen %1$.2f%% und %2$.0f%% liegen</string>
     <string name="balance_percentage_must_be_between">Der Guthaben-Prozentsatz muss zwischen %1$d%% und %2$d%% liegen</string>
     <string name="set_custom_percentage">Benutzerdefinierten Prozentsatz einstellen</string>
     <string name="balance_percentage">Guthaben-Prozentsatz</string>
@@ -872,7 +868,7 @@ das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
     </plurals>
     <string name="you_cannot_optin">Sie können sich nicht für dieses Konto anmelden: Es handelt sich um ein schreibgeschütztes Überwachungskonto.</string>
     <string name="you_cannot_take">Sie können keine Aktionen für dieses Konto durchführen: Es wurde von diesem Gerät entfernt.</string>
-    <string name="caution_price_impact">Vorsicht! Die Kursauswirkung ist größer als 5%%, was bedeutet, dass die Liquidität dieses Pools gering sein könnte. Bitte vergewissern Sie sich, dass Sie die Konsequenzen verstehen, bevor Sie den Tausch bestätigen.</string>
+    <string name="caution_price_impact">Vorsicht! Die Kursauswirkung ist größer als <annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation>%%, was bedeutet, dass die Liquidität dieses Pools gering sein könnte. Bitte vergewissern Sie sich, dass Sie die Konsequenzen verstehen, bevor Sie den Tausch bestätigen.</string>
     <string name="discover">Entdecken</string>
     <string name="search_for_any_asa_by">Suchen Sie anhand des Namens oder der ID nach einem beliebigen ASA</string>
     <string name="we_are_not_able_to_find">Wir können dieses Asset nicht finden. Bitte versuchen Sie es später.</string>
@@ -885,7 +881,7 @@ das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
         <item quantity="one">%1$d NFT</item>
         <item quantity="other">%1$d NFTs</item>
     </plurals>
-    <string name="this_transaction_is_sending_your">Mit dieser Transaktion wird Ihr gesamtes %1$s-Guthaben gesendet. Damit wird das Opt-out für das %1$s Asset durchgeführt und es wird von Ihrem Konto „%2$s\" entfernt.</string>
+    <string name="this_transaction_is_sending_your">Mit dieser Transaktion wird Ihr gesamtes %1$s-Guthaben gesendet. Damit wird das Opt-out für das %1$s Asset durchgeführt und es wird von Ihrem Konto „%2$s“ entfernt.</string>
     <string name="account_not_found_please_try">Konto nicht gefunden. Bitte versuchen Sie es erneut, indem Sie die richtige Passphrase eingeben.</string>
     <string name="to_opt_out_and_remove">Um das Opt-out für <annotation replacement="asset_name">assetNamePlaceholder</annotation> durchzuführen und es zu entfernen, muss das Kontoguthaben 0 sein. Bitte überweisen Sie den Restbetrag auf ein anderes Konto und versuchen Sie es erneut.</string>
     <string name="nfts">NFTs</string>
@@ -932,4 +928,143 @@ das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
     <string name="this_asset_is">Dieses Asset steht bereits zur Entfernung aus.</string>
     <string name="get_help">Hilfe erhalten</string>
     <string name="couldn_t_retrieve">Kontodetails konnten nicht abgerufen werden. Bitte versuchen Sie es erneut</string>
+    <string name="request_receiver_to">Empfänger zum Opt-In auffordern</string>
+    <string name="algo_balance_is_too_low">Das Algo-Guthaben ist zu niedrig. Das Mindestguthaben sollte  <annotation replacement="min_balance">MIN_BALANCE_PLACEHOLDER</annotation> <annotation replacement="algo_icon">ALGO_ICON_PLACEHOLDER</annotation> sein</string>
+    <string name="accounts_imported">Konten importiert</string>
+    <plurals name="n_accounts_were_imported_from_pera_web">
+        <item quantity="one">%1$d Konto wurde von Pera Web importiert</item>
+        <item quantity="other">%1$d Konten wurden von Pera Web importiert</item>
+    </plurals>
+    <string name="explore_pera_mobile">Pera Mobile entdecken</string>
+    <string name="unimported_accounts">Nicht importierte Konten</string>
+    <plurals name="n_accounts_were_not_imported_because">
+        <item quantity="one">%1$d Konto wurde nicht importiert, da es bereits zuvor importiert wurde.</item>
+        <item quantity="other">%1$d Konten wurden nicht importiert, da es bereits zuvor importiert wurde.</item>
+    </plurals>
+    <string name="your_accounts_could_not_be_imported">Ihre Konten konnten nicht importiert werden. Bitte versuchen Sie es später noch einmal.</string>
+    <string name="import_from_pera_web">Aus Pera Web importieren</string>
+    <string name="i_want_to_import_algorand">Ich möchte Algorand-Konten aus Pera Web importieren</string>
+    <string name="get_your_qr_ready">Machen Sie Ihren QR-Code auf Pera Web bereit</string>
+    <string name="go_to_web_perawallet">Gehen Sie zu „web.perawallet.app“ auf Ihrem Desktop</string>
+    <string name="go_to_settings_transfer_accounts">Gehen Sie zu Einstellungen &gt; Konten übertragen</string>
+    <string name="select_the_accounts_you_want">Wählen Sie die Konten aus, die Sie in Pera Mobile importieren möchten, und erstellen Sie Ihren QR-Code.</string>
+    <string name="tap_start_to_scan">Tippen Sie auf Start, um den QR-Code zu scannen</string>
+    <string name="scan_qr_code_on_web">QR-Code auf\nPera Web scannen</string>
+    <string name="start">Starten</string>
+    <string name="importing_your_accounts">Ihre Konten werden importiert</string>
+    <string name="rekey_to_ledger_account">Rekey auf Ledger-Konto</string>
+    <string name="rekey_to_standard_account">Rekey auf Standardkonto</string>
+    <string name="protect_your_account_by_delegating">Schützen Sie Ihr Konto, indem Sie Signaturen an ein anderes Konto delegieren</string>
+    <string name="future_transactions_can_only">Zukünftige Transaktionen können nur von dem delegierten Konto signiert werden.</string>
+    <string name="this_account_will_no_longer">Dieses Konto wird nicht mehr in der Lage sein, Transaktionen zu signieren.</string>
+    <string name="your_account_s_public_key">Der öffentliche Schlüssel, das Kontoguthaben und die Konfiguration Ihres Kontos sind vom Rekeying nicht betroffen.</string>
+    <string name="account_transfer_is">Die Kontoübertragung ist im Testnet zu Ihrer Sicherheit deaktiviert. Bitte wechseln Sie zum Mainnet, um diese Funktion zu nutzen.</string>
+    <string name="invalid_url">Ungültige URL</string>
+    <string name="high_price_impact_detected">Hohe Preisauswirkung erkannt!</string>
+    <string name="it_appears_that_you_formatted">Anscheinend versuchen Sie, einen Swap mit einer Preisauswirkung von mehr als <annotation replacement="price_impact_percentage"> priceImpactPercentagePlaceholder </annotation>%% zu bestätigen.\n\nUm mehr über die Preisauswirkung zu erfahren, wie sie berechnet wird oder wie sie den Gesamtwert Ihres Swaps beeinflussen kann, besuchen Sie bitte den <annotation custom="faq_url">FAQ-Bereich</annotation> von Tinyman.</string>
+    <string name="the_signing_account_has">Das signierende Konto wurde mittels Rekeying auf ein Konto umgeschrieben, das sich nicht in Ihrer Wallet befindet oder falsch konfiguriert ist. Bitte vergewissern Sie sich, dass das autorisierende Konto zu Ihrer Wallet hinzugefügt wurde. Wenn es ein Ledger-Konto ist, stellen Sie sicher, dass es korrekt verbunden ist.</string>
+    <string name="this_swap_can_not_be">Dieser Swap kann nicht ausgeführt werden, da der Preisaufschlag zu hoch ist. Mehr über den Preisaufschlag und seine Funktionsweise erfahren Sie <annotation custom="faq_url">hier</annotation>.</string>
+    <string name="select_your_backup_file">Wählen Sie Ihre Sicherungsdatei</string>
+    <string name="uploading_three_dots">Wird hochgeladen...</string>
+    <string name="upload_successful">Hochladen erfolgreich</string>
+    <string name="replace_file">Datei austauschen</string>
+    <string name="upload_failed">Hochladen fehlgeschlagen</string>
+    <string name="select_file">Datei auswählen</string>
+    <string name="this_file_type_isn_t_supported">Dieser Dateityp wird nicht unterstützt</string>
+    <string name="algorand_secure_backup">Algorand Secure Backup</string>
+    <string name="i_want_to_restore_my">Ich möchte meine Konten mit einer Algorand Secure Backup-Datei und einem 12-Wörter-Schlüssel wiederherstellen</string>
+    <string name="not_backed_up">Nicht gesichert (%1$d)</string>
+    <string name="algorand_secure_n_backup">Algorand Secure\nBackup</string>
+    <string name="backup_your_accounts_using">Sichern Sie Ihre Konten mit dem Algorand Secure Backup-Protokoll. Sie generieren eine verschlüsselte Textdatei, die Ihre Konten und einen 12-Wort-Schlüssel enthält, mit dem Sie sie in Zukunft entschlüsseln können.</string>
+    <string name="select_your_accounts">Wählen Sie Ihre Konten aus</string>
+    <string name="select_one_some_or_all">Wählen Sie eines, einige oder alle Ihrer Konten aus, die in Ihre Sicherungsdatei aufgenommen werden sollen.</string>
+    <string name="store_your_12_word_key">Speichern Sie Ihren 12-Wörter-Schlüssel</string>
+    <string name="record_or_save_your_12">Notieren oder speichern Sie Ihren 12-Wort-Schlüssel sicher. <annotation font="dmsans_medium"> <annotation custom="learn_more_click">Weitere Informationen</annotation> </annotation></string>
+    <string name="save_your_backup_file">Speichern Sie Ihre Sicherungsdatei</string>
+    <string name="download_your_backup_to">Laden Sie Ihre Sicherungsdatei an einen sicheren Ort auf Ihrem Gerät herunter.</string>
+    <string name="backup_accounts">Sicherungskonto (%1$d)</string>
+    <string name="choose_accounts_n_to_backup">Konten zur Sicherung\nauswählen</string>
+    <string name="we_couldn_t_find_any_accounts">Wir konnten keine Konten finden, die für eine Sicherung geeignet sind.</string>
+    <string name="have_you_stored_your_key">Haben Sie Ihren Schlüssel gespeichert?</string>
+    <string name="store_your_key_somewhere_secure">Bewahren Sie Ihren Schlüssel an einem sicheren Ort auf, z  B. in einem Passwortmanager. Wenn Sie Ihren Schlüssel verlieren, haben Sie keinen Zugriff mehr auf Ihre Sicherungsdatei.</string>
+    <string name="create_backup_file">Sicherungsdatei erstellen</string>
+    <string name="show_key_again">Schlüssel erneut anzeigen</string>
+    <string name="create_new_key">Neuen Schlüssel erstellen</string>
+    <string name="you_are_about_to_reset">Sie sind dabei, Ihren Algorand Secure Backup Key zurückzusetzen. Sie werden einen neuen 12-Wort-Schlüssel generieren, der zum Ver- und Entschlüsseln aller zukünftigen ASB-Dateien verwendet wird, die von diesem Gerät aus erstellt werden.\n\nIhre bisherigen ASB-Dateien bleiben mit Ihrem alten 12-Wort-Schlüssel verschlüsselt. Stellen Sie sicher, dass dieser sicher aufbewahrt wird, bevor Sie fortfahren.</string>
+    <string name="i_understand_proceed">Verstanden und weiter</string>
+    <string name="copy_to_clipboard">In die Zwischenablage kopieren</string>
+    <string name="create_new_12_word_key">Neuen 12-Wort-Schlüssel erstellen</string>
+    <string name="store_your_n_12_word_key">Speichern Sie Ihren\n12-Wort-Schlüssel</string>
+    <string name="i_ve_stored_my_key">Ich habe meinen Schlüssel gespeichert</string>
+    <string name="your_12_word_key_is">Ihr 12-Wort-Schlüssel wird zur Entschlüsselung jeder von Ihnen erstellten Algorand Secure Backup-Datei verwendet.\n\nSpeichern Sie Ihren 12-Wort-Schlüssel sicher.\n<annotation font="dmsans_medium"><annotation custom="url_click">Finden Sie heraus, wie</annotation></annotation> mit Pera Learn.</string>
+    <string name="review_your_n_12_word_key">Überprüfen Sie Ihren\n12-Wort-Schlüssel</string>
+    <string name="you_stored_your_key_during">Sie haben Ihren Schlüssel bei einem früheren Backup gespeichert. Überprüfen Sie ihn jetzt, um sicherzustellen, dass er immer noch sicher gespeichert ist.\n\n<annotation font="dmsans_medium"><annotation custom="url_click">Mehr erfahren</annotation></annotation> mit Pera Learn</string>
+    <string name="key_copied_as_text">Schlüssel als Text kopiert</string>
+    <string name="save_backup_file">Sicherungsdatei speichern</string>
+    <string name="your_backup_file_is_ready">Ihre Sicherungsdatei ist fertig</string>
+    <string name="save_your_file_somewhere_secure">Speichern Sie Ihre Datei an einem sicheren Ort, der nicht mit dem Ort Ihres 12-Wort-Schlüssels identisch ist. <annotation font="dmsans_medium"><annotation custom="url_click">Mehr erfahren</annotation></annotation></string>
+    <string name="an_error_occurred_while_generating">Beim Erstellen Ihres Algorand Secure Backup ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder <annotation font="dmsans_medium"><annotation custom="url_click">kontaktieren Sie den Support</annotation></annotation></string>
+    <string name="backup_file_copied_to">Sicherungsdatei als Text in die Zwischenablage kopiert</string>
+    <string name="can_t_save_backup_file">Sicherungsdatei kann nicht gespeichert werden</string>
+    <string name="please_allow_pera_wallet_to">Bitte erlauben Sie Pera Wallet den Zugriff auf Fotos und Medien auf Ihrem Gerät, um Ihre Datei zu speichern.</string>
+    <string name="have_you_stored_your">Haben Sie Ihre Sicherungsdatei gespeichert?</string>
+    <string name="if_you_lose_your_algorand">Wenn Sie Ihre Algorand Secure Backup-Datei verlieren, können Sie Ihre Konten nicht wiederherstellen.</string>
+    <string name="yes_i_stored_my_file">Ja, ich habe meine Datei gespeichert</string>
+    <string name="show_backup_file_again">Sicherungsdatei erneut anzeigen</string>
+    <string name="select_your_n_backup_file">Wählen Sie Ihre\nSicherungsdatei</string>
+    <string name="to_restore_your_wallet">Um Ihre Wallet wiederherzustellen, wählen Sie Ihre Sicherungsdatei aus oder fügen Sie sie ein.</string>
+    <string name="paste_backup_file_text">Text der Sicherungsdatei einfügen</string>
+    <string name="unable_to_parse_file">Die Sicherungsdatei kann nicht geparst werden: JSON-Formatierungsfehler.</string>
+    <string name="unable_to_parse_key_name">Die Sicherungsdatei kann nicht analysiert werden: <annotation replacement="key_name">keyNamePlaceholder</annotation> existiert nicht</string>
+    <string name="backup_file_was_generated_with">Die Sicherungsdatei wurde mit einer nicht unterstützten Version des Algorand Secure Backup Format erstellt.</string>
+    <string name="unable_to_parse_suite">Die Sicherungsdatei kann nicht geparst werden: Cipher Suite unbekannt</string>
+    <string name="backup_file_successfully_pasted">Sicherungsdatei erfolgreich eingefügt</string>
+    <string name="enter_12_word_key">12-Wort-Schlüssel eingeben</string>
+    <string name="wrong_12_word_key">Falscher 12-Wort-Schlüssel</string>
+    <string name="please_try_again_by_entering">Bitte versuchen Sie es erneut, indem Sie den richtigen 12-Wort-Schlüssel eingeben.</string>
+    <string name="choose_accounts_n_to_restore">Konten zur Wiederherstellung\nauswählen</string>
+    <string name="restore_account">Konto wiederherstellen (%1$d)</string>
+    <string name="nothing_to_paste">Nichts zum Einfügen</string>
+    <string name="nothing_is_copied_to_the">Es wurde nichts in die Zwischenablage kopiert. Stellen Sie sicher, dass Sie Ihre Sicherungsdatei kopiert haben.</string>
+    <plurals name="accounts_restored">
+        <item quantity="one">Konto wiederhergestellt</item>
+        <item quantity="other">Konten wiederhergestellt</item>
+    </plurals>
+    <plurals name="accounts_were_restored">
+        <item quantity="one">1 Konto wurde aus einer Sicherungsdatei wiederhergestellt</item>
+        <item quantity="other">%1$d Konten wurden aus einer Sicherungsdatei wiederhergestellt</item>
+    </plurals>
+    <plurals name="account_was_not_restored_because_exist">
+        <item quantity="one">1 Konto wurde nicht wiederhergestellt, weil es bereits in Ihrer Wallet existiert</item>
+        <item quantity="other">%1$d Konten wurden nicht wiederhergestellt, weil sie bereits in Ihrer Wallet existieren</item>
+    </plurals>
+    <plurals name="account_was_not_restored_because_unsupported">
+        <item quantity="one">1 Konto wurde nicht wiederhergestellt, weil es sich um einen nicht unterstützten Kontotyp handelt</item>
+        <item quantity="other">%1$d Konten wurden nicht wiederhergestellt, weil es sich um einen nicht unterstützten Kontotyp handelt</item>
+    </plurals>
+    <plurals name="account_was_not_restored">
+        <item quantity="one">1 Konto wurde nicht wiederhergestellt. Es ist möglicherweise bereits in Ihrer Wallet vorhanden oder es handelt sich um einen nicht unterstützten Kontotyp</item>
+        <item quantity="other">%1$d Konten wurden nicht wiederhergestellt. Sie sind möglicherweise bereits in Ihrer Wallet vorhanden oder es handelt sich um einen nicht unterstützten Kontotyp</item>
+    </plurals>
+    <string name="buy_sell">Kaufen/Verkaufen</string>
+    <string name="see_all_options_to_buy">Alle Optionen zum Kauf oder Verkauf von Kryptowährungen anzeigen</string>
+    <string name="buy_crypto">Krypto kaufen</string>
+    <string name="sell_crypto">Krypto verkaufen</string>
+    <string name="use_apple_pay_credit_cards">Verwenden Sie Apple Pay, Kreditkarten oder Banküberweisung</string>
+    <string name="buy_algo_with_sardine">ALGO mit Sardine kaufen</string>
+    <string name="use_instant_ach">Nutzen Sie Instant ACH mit Ihrem US-Bankkonto</string>
+    <string name="buy_usdc_with_transak">USDC mit Transak kaufen</string>
+    <string name="use_credit_card_bank_transfer">Verwenden Sie Kreditkarten oder Banküberweisungen aus über 150 Ländern</string>
+    <string name="buy_gift_cards_with_bidali">Geschenkkarten mit Bidali kaufen</string>
+    <string name="you_can_use_your_algo">Sie können Ihr Algo-, USDC- oder USDT-Guthaben verwenden</string>
+    <string name="buy_gift_cards_with_crypto">Geschenkkarten mit Krypto kaufen</string>
+    <string name="buy_gift_cards">Geschenkkarten kaufen</string>
+    <string name="you_can_use_your_algo_or">Sie können Ihr ALGO- oder USDC-Guthaben verwenden, um Geschenkkarten und Handyaufladungen von Tausenden von Marken weltweit zu kaufen!</string>
+    <string name="you_can_not_purchase_bidali">Im TestNet können Sie nicht kaufen. Bitte wechseln Sie von den Einstellungen zurück zum MainNet, um Bidali zu verwenden.</string>
+    <string name="buy_usdc">USDC kaufen</string>
+    <string name="transak_onboards_users_from_fiat">Transak bringt Nutzer von Fiat zu Krypto in über 800 Apps. Unterstützt Kreditkarten, Debitkarten oder Banküberweisungen in über 150 Ländern.</string>
+    <string name="you_can_not_purchase_transak">Im TestNet können Sie nicht kaufen. Bitte wechseln Sie von den Einstellungen zurück zum MainNet, um Transak zu verwenden.</string>
+    <string name="instant_settlement_and_lower">Sofortige Abrechnung und niedrigere Gebühren für Algo mit sofortigen ACH-Überweisungen. Sardine unterstützt auch lokale Bank- und Kartenzahlungen in über 180 Ländern, Apple Pay und GPay.</string>
+    <string name="you_can_not_purchase_sardine">Im TestNet können Sie nicht kaufen. Bitte wechseln Sie von den Einstellungen zurück zum MainNet, um Sardine zu verwenden.</string>
+    <string name="choose_an_account_to_proceed">Wählen Sie ein Konto aus, mit dem Sie fortfahren möchten</string>
 </resources>

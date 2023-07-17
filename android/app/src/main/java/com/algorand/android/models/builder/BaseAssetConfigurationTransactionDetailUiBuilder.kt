@@ -78,8 +78,8 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor(
         return with(txn) {
             TransactionRequestTransactionInfo(
                 fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
-                fromAccountIcon = getFromAccountIconResource(),
-                toAccountIcon = getToAccountIconResource(),
+                fromAccountIconDrawablePreview = getFromAccountIconResource(),
+                toAccountIconDrawablePreview = getToAccountIconResource(),
                 reconfigurationAsset = TransactionRequestAssetInformation(
                     assetId = assetId,
                     fullName = assetName,
@@ -103,8 +103,8 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor(
         return with(txn) {
             TransactionRequestTransactionInfo(
                 fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
-                fromAccountIcon = getFromAccountIconResource(),
-                toAccountIcon = getToAccountIconResource(),
+                fromAccountIconDrawablePreview = getFromAccountIconResource(),
+                toAccountIconDrawablePreview = getToAccountIconResource(),
                 assetName = assetName,
                 assetUnitName = unitName,
                 isAssetUnnamed = assetName == null,
@@ -124,8 +124,8 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor(
         return with(txn) {
             TransactionRequestTransactionInfo(
                 fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
-                fromAccountIcon = getFromAccountIconResource(),
-                toAccountIcon = getToAccountIconResource(),
+                fromAccountIconDrawablePreview = getFromAccountIconResource(),
+                toAccountIconDrawablePreview = getToAccountIconResource(),
                 assetInformation = TransactionRequestAssetInformation(
                     assetId = assetId,
                     fullName = assetName,

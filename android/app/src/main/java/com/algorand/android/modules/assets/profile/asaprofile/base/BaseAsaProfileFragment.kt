@@ -22,7 +22,6 @@ import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentAsaProfileBinding
-import com.algorand.android.models.AccountIconResource.Companion.DEFAULT_ACCOUNT_ICON_RESOURCE
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.assets.action.addition.AddAssetActionBottomSheet
@@ -243,8 +242,8 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
                         setDrawable(
                             start = AccountIconDrawable.create(
                                 context = context,
-                                accountIconResource = accountIconResource ?: DEFAULT_ACCOUNT_ICON_RESOURCE,
-                                size = resources.getDimension(R.dimen.account_icon_size_small).toInt()
+                                accountIconDrawablePreview = accountIconDrawablePreview,
+                                sizeResId = R.dimen.spacing_large
                             )
                         )
                         setOnLongClickListener {

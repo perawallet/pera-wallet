@@ -16,8 +16,7 @@ import android.widget.TextView
 import androidx.fragment.app.viewModels
 import com.algorand.android.MainActivity
 import com.algorand.android.R
-import com.algorand.android.customviews.CustomToolbar
-import com.algorand.android.models.AccountIconResource.Companion.DEFAULT_ACCOUNT_ICON_RESOURCE
+import com.algorand.android.customviews.toolbar.CustomToolbar
 import com.algorand.android.models.AssetActionResult
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.assets.action.base.BaseAssetActionBottomSheet
@@ -89,8 +88,8 @@ class AddAssetActionBottomSheet : BaseAssetActionBottomSheet() {
                 setDrawable(
                     start = AccountIconDrawable.create(
                         context = context,
-                        accountIconResource = accountIconResource ?: DEFAULT_ACCOUNT_ICON_RESOURCE,
-                        size = resources.getDimension(R.dimen.account_icon_size_normal).toInt()
+                        accountIconDrawablePreview = accountIconDrawablePreview,
+                        sizeResId = R.dimen.spacing_xlarge
                     )
                 )
                 setOnLongClickListener { onAccountAddressCopied(publicKey); true }

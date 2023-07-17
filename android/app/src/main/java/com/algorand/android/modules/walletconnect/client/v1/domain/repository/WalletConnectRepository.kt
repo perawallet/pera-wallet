@@ -12,17 +12,17 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.domain.repository
 
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionAccountDTO
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionByAccountsAddressDTO
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDTO
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionWithAccountsAddressesDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionAccountDto
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionByAccountsAddressDto
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDto
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionWithAccountsAddressesDto
 import kotlinx.coroutines.flow.Flow
 
 interface WalletConnectRepository {
 
-    suspend fun getAllDisconnectedSessions(): List<WalletConnectSessionDTO>
+    suspend fun getAllDisconnectedSessions(): List<WalletConnectSessionDto>
 
-    suspend fun getSessionById(sessionId: Long): WalletConnectSessionDTO?
+    suspend fun getSessionById(sessionId: Long): WalletConnectSessionDto?
 
     suspend fun deleteSessionById(sessionId: Long)
 
@@ -31,27 +31,27 @@ interface WalletConnectRepository {
     suspend fun setSessionDisconnected(sessionId: Long)
 
     suspend fun insertConnectedWalletConnectSession(
-        wcSession: WalletConnectSessionDTO,
-        wcSessionAccountList: List<WalletConnectSessionAccountDTO>
+        wcSession: WalletConnectSessionDto,
+        wcSessionAccountList: List<WalletConnectSessionAccountDto>
     )
 
     suspend fun setConnectedSession(sessionId: Long)
 
-    suspend fun getWCSessionList(): List<WalletConnectSessionDTO>
+    suspend fun getWCSessionList(): List<WalletConnectSessionDto>
 
     suspend fun getWCSessionListByAccountAddress(
         accountAddress: String
-    ): List<WalletConnectSessionByAccountsAddressDTO>?
+    ): List<WalletConnectSessionByAccountsAddressDto>?
 
-    suspend fun getConnectedAccountsOfSession(sessionId: Long): List<WalletConnectSessionAccountDTO>?
+    suspend fun getConnectedAccountsOfSession(sessionId: Long): List<WalletConnectSessionAccountDto>?
 
-    fun getAllWalletConnectSessionWithAccountAddresses(): Flow<List<WalletConnectSessionWithAccountsAddressesDTO>?>
+    fun getAllWalletConnectSessionWithAccountAddresses(): Flow<List<WalletConnectSessionWithAccountsAddressesDto>?>
 
     suspend fun deleteWalletConnectAccountBySession(sessionId: Long, accountAddress: String)
 
     suspend fun setGivenSessionAsSubscribed(sessionId: Long)
 
-    suspend fun getWalletConnectSessionListOrderedByCreationTime(count: Int): List<WalletConnectSessionDTO>
+    suspend fun getWalletConnectSessionListOrderedByCreationTime(count: Int): List<WalletConnectSessionDto>
 
     suspend fun getWalletConnectSessionCount(): Int
 

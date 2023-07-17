@@ -25,6 +25,7 @@ import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.Result
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.User
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
 import com.algorand.android.repository.AssetRepository
@@ -54,6 +55,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
     private val assetDataProviderDecider: AssetDrawableProviderDecider, // TODO Remove decider after refactor AssetInfo
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase,
     accountInformationUseCase: AccountInformationUseCase
 ) : BaseSendAccountSelectionUseCase(accountInformationUseCase) {
 
@@ -250,8 +252,14 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         val toAccountPublicKey = accountInformation.address
         val contact = getContactByAddressIfExists(toAccountPublicKey)
         val toAccountCacheData = accountCacheManager.getCacheData(toAccountPublicKey)
-        val targetUser =
-            TargetUser(contact, toAccountPublicKey, toAccountCacheData, nftDomainAddress, nftDomainServiceLogoUrl)
+        val targetUser = TargetUser(
+            contact = contact,
+            publicKey = toAccountPublicKey,
+            account = toAccountCacheData,
+            nftDomainAddress = nftDomainAddress,
+            nftDomainServiceLogoUrl = nftDomainServiceLogoUrl,
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(fromAccountAddress)
+        )
         return Result.Success(targetUser)
     }
 

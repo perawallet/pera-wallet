@@ -13,9 +13,8 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.Account
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.LedgerInformationListItem
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountDisplayName
 import javax.inject.Inject
 
@@ -23,16 +22,14 @@ class LedgerInformationAccountItemMapper @Inject constructor() {
 
     fun mapTo(
         accountAddress: String,
-        accountType: Account.Type?,
-        accountAssetCount: Int,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
         portfolioValue: String,
         accountDisplayName: AccountDisplayName
     ): LedgerInformationListItem.AccountItem {
         return LedgerInformationListItem.AccountItem(
             accountDisplayName = accountDisplayName,
             address = accountAddress,
-            assetCount = accountAssetCount,
-            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(accountType),
+            accountIconDrawablePreview = accountIconDrawablePreview,
             portfolioValue = portfolioValue
         )
     }

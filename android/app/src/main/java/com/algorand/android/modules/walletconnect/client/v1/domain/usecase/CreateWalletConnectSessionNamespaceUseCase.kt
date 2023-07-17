@@ -12,27 +12,54 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.domain.usecase
 
+import com.algorand.android.modules.walletconnect.client.v1.domain.decider.WalletConnectV1BlockchainDecider
+import com.algorand.android.modules.walletconnect.client.v1.domain.decider.WalletConnectV1ChainIdentifierDecider
+import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1ChainIdentifier
 import com.algorand.android.modules.walletconnect.client.v1.utils.WalletConnectClientV1Utils
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
+import com.algorand.android.modules.walletconnect.mapper.WalletConnectConnectedAccountMapper
 import com.algorand.android.modules.walletconnect.mapper.WalletConnectNamespaceMapper
-import com.algorand.android.utils.walletconnect.DEFAULT_CHAIN_ID
 import javax.inject.Inject
 
 class CreateWalletConnectSessionNamespaceUseCase @Inject constructor(
-    private val namespaceMapper: WalletConnectNamespaceMapper
+    private val namespaceMapper: WalletConnectNamespaceMapper,
+    private val blockchainDecider: WalletConnectV1BlockchainDecider,
+    private val connectedAccountMapper: WalletConnectConnectedAccountMapper,
+    private val chainIdentifierDecider: WalletConnectV1ChainIdentifierDecider
 ) {
 
-    operator fun invoke(accountAddresses: List<String>): Map<String, WalletConnect.Namespace.Session> {
+    operator fun invoke(
+        accountAddresses: List<String>,
+        chainId: Long?
+    ): Map<WalletConnectBlockchain, WalletConnect.Namespace.Session> {
+        val blockchain = blockchainDecider.decideBlockchain(chainId)
+        val chainIdList = getChainIdList(chainId)
+        val connectedAccounts = accountAddresses.map { address ->
+            val chainIdentifier = chainIdentifierDecider.decideChainIdentifier(chainId)
+            connectedAccountMapper.mapToConnectedAccount(address, chainIdentifier, blockchain)
+        }
         val sessionNamespace = namespaceMapper.mapToSessionNamespace(
-            accountList = accountAddresses,
+            accountList = connectedAccounts,
             methodList = WalletConnectClientV1Utils.getDefaultSessionMethods(),
             eventList = WalletConnectClientV1Utils.getDefaultSessionEvents(),
+            chainList = chainIdList,
             versionIdentifier = WalletConnectClientV1Utils.getWalletConnectV1VersionIdentifier()
         )
-        return mapOf(DEFAULT_CHAIN_ID_FOR_NAMESPACES to sessionNamespace)
+        return mapOf(blockchain to sessionNamespace)
     }
 
-    companion object {
-        private const val DEFAULT_CHAIN_ID_FOR_NAMESPACES = DEFAULT_CHAIN_ID.toString()
+    private fun getChainIdList(chainId: Long?): List<WalletConnect.ChainIdentifier> {
+        return with(chainIdentifierDecider) {
+            if (chainId == WalletConnectV1ChainIdentifier.MAINNET_BACKWARD_SUPPORTABILITY.id) {
+                listOf(
+                    decideChainIdentifier(WalletConnectV1ChainIdentifier.MAINNET.id),
+                    decideChainIdentifier(WalletConnectV1ChainIdentifier.TESTNET.id),
+                    decideChainIdentifier(WalletConnectV1ChainIdentifier.BETANET.id)
+                )
+            } else {
+                listOf(decideChainIdentifier(chainId))
+            }
+        }
     }
 }

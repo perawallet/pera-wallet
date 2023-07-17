@@ -12,6 +12,7 @@
 
 package com.algorand.android.modules.walletconnect.domain
 
+import android.app.Application
 import android.util.Base64
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -26,10 +27,12 @@ import com.algorand.android.modules.walletconnect.client.v1.session.WalletConnec
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect.RequestIdentifier
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect.SessionIdentifier
-import com.algorand.android.modules.walletconnect.domain.model.WalletConnectTransactionErrorResponse
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectError
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectVersionIdentifier
 import com.algorand.android.modules.walletconnect.subscription.domain.WalletConnectSessionSubscriptionManager
 import com.algorand.android.modules.walletconnect.ui.mapper.WalletConnectPreviewMapper
+import com.algorand.android.modules.walletconnect.ui.mapper.WalletConnectSessionIdentifierMapper
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import com.algorand.android.usecase.AccountCacheStatusUseCase
@@ -43,13 +46,9 @@ import com.algorand.android.utils.launchIO
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.walletconnect.WalletConnectCustomTransactionHandler
 import com.algorand.android.utils.walletconnect.WalletConnectEventLogger
-import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Error
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Success
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlin.math.pow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -62,25 +61,32 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlin.math.pow
 
 @Singleton
-@SuppressWarnings("TooManyFunctions")
+@SuppressWarnings("TooManyFunctions", "LongParameterList")
 class WalletConnectManager @Inject constructor(
     accountCacheStatusUseCase: AccountCacheStatusUseCase,
     private val walletConnectCustomTransactionHandler: WalletConnectCustomTransactionHandler,
-    private val errorProvider: WalletConnectTransactionErrorProvider,
+    private val errorProvider: WalletConnectErrorProvider,
     private val eventLogger: WalletConnectEventLogger,
     private val getActiveNodeChainIdUseCase: GetActiveNodeChainIdUseCase,
     private val applicationStatusObserver: ApplicationStatusObserver,
     private val subscriptionManager: WalletConnectSessionSubscriptionManager,
     private val walletConnectClientManager: WalletConnectClientManager,
-    private val walletConnectPreviewMapper: WalletConnectPreviewMapper
+    private val walletConnectPreviewMapper: WalletConnectPreviewMapper,
+    private val walletConnectSessionIdentifierMapper: WalletConnectSessionIdentifierMapper
 ) : DefaultLifecycleObserver {
 
     val sessionResultFlow: SharedFlow<Event<Resource<WalletConnectSessionProposal>>>
         get() = _sessionResultFlow
     private val _sessionResultFlow = MutableSharedFlow<Event<Resource<WalletConnectSessionProposal>>>()
+
+    val sessionSettleFlow: SharedFlow<Event<WalletConnectSessionIdentifier>>
+        get() = _sessionSettleFlow
+    private val _sessionSettleFlow = MutableSharedFlow<Event<WalletConnectSessionIdentifier>>()
 
     val requestLiveData: LiveData<Event<Resource<WalletConnectTransaction>>?>
         get() = _requestLiveData
@@ -113,19 +119,17 @@ class WalletConnectManager @Inject constructor(
     private var latestRequestIdentifierIsBeingHandled: RequestIdentifier? = null
     private var latestTransactionRequestIdentifier: RequestIdentifier? = null
     private var sessionEvent: Event<WalletConnectSessionProposal>? = null
-    private var latestActiveChainIdentifier: WalletConnect.ChainIdentifier? = null
 
     private val walletConnectClientListener = object : WalletConnectClientManagerListener {
 
         override fun onInvalidSessionUrl(url: String) {
-            coroutineScope?.launch(Dispatchers.IO) {
+            coroutineScope?.launchIO {
                 _sessionResultFlow.emit(Event(Annotated(AnnotatedString(R.string.invalid_url))))
             }
         }
 
         override fun onSessionProposal(proposal: WalletConnect.Session.Proposal) {
             stopSessionConnectionTimer()
-            latestActiveChainIdentifier = proposal.chainIdentifier
             val sessionProposal = walletConnectPreviewMapper.mapToWalletConnectSessionProposal(proposal)
             sessionEvent = Event(sessionProposal)
             handleSessionRequest()
@@ -133,22 +137,24 @@ class WalletConnectManager @Inject constructor(
 
         override fun onSessionUpdate(update: WalletConnect.Session.Update) {
             if (update is WalletConnect.Session.Update.Success) {
-                latestActiveChainIdentifier = update.chainIdentifier
-                coroutineScope?.launch {
-                    updateSession(update.sessionIdentifier, update.accountList, null)
-                }
+                coroutineScope?.launchIO { updateLocalSessionsFlow() }
             }
         }
 
         override fun onSessionDelete(delete: WalletConnect.Session.Delete) {
-            coroutineScope?.launch(Dispatchers.IO) {
+            coroutineScope?.launchIO {
                 updateLocalSessionsFlow()
             }
         }
 
         override fun onSessionSettle(settle: WalletConnect.Session.Settle) {
             if (settle is WalletConnect.Session.Settle.Result) {
-                coroutineScope?.launch(Dispatchers.IO) {
+                coroutineScope?.launchIO {
+                    val sessionIdentifier = walletConnectSessionIdentifierMapper.mapToSessionIdentifier(
+                        settle.session.sessionIdentifier.getIdentifier(),
+                        settle.versionIdentifier
+                    )
+                    _sessionSettleFlow.emit(Event(sessionIdentifier))
                     walletConnectClientManager.clearSessionRetryCount(settle.session.sessionIdentifier)
                     subscriptionManager.subscribe(settle.session, settle.clientId)
                     updateLocalSessionsFlow()
@@ -161,7 +167,7 @@ class WalletConnectManager @Inject constructor(
         }
 
         override fun onSessionRequest(sessionRequest: WalletConnect.Model.SessionRequest) {
-            coroutineScope?.launch {
+            coroutineScope?.launchIO {
                 with(sessionRequest) {
                     if (request.params != null) {
                         handleCustomTransactionRequest(sessionIdentifier, request.requestIdentifier, request.params)
@@ -171,7 +177,7 @@ class WalletConnectManager @Inject constructor(
         }
 
         override fun onConnectionChanged(connectionState: WalletConnect.Model.ConnectionState) {
-            coroutineScope?.launch {
+            coroutineScope?.launchIO {
                 with(connectionState) {
                     if (isConnected) {
                         walletConnectClientManager.clearSessionRetryCount(session.sessionIdentifier)
@@ -191,9 +197,6 @@ class WalletConnectManager @Inject constructor(
 
     init {
         walletConnectClientManager.setListener(walletConnectClientListener)
-        coroutineScope?.launch(Dispatchers.IO) {
-            updateLocalSessionsFlow()
-        }
     }
 
     fun connectToNewSession(url: String) {
@@ -206,35 +209,35 @@ class WalletConnectManager @Inject constructor(
     }
 
     suspend fun approveSession(sessionProposal: WalletConnectSessionProposal, accountAddresses: List<String>) {
-        with(walletConnectClientManager) {
-            walletConnectClientManager.approveSession(
-                sessionProposal,
-                accountAddresses,
-                latestActiveChainIdentifier ?: getDefaultChainIdentifier(sessionProposal)
-            )
-        }
+        val versionIdentifier = sessionProposal.proposalIdentifier.versionIdentifier
+        val proposalNamespace = walletConnectPreviewMapper.mapToNamespaceProposal(
+            sessionProposal.requiredNamespaces,
+            versionIdentifier
+        )
+        walletConnectClientManager.approveSession(sessionProposal, proposalNamespace, accountAddresses)
         eventLogger.logSessionConfirmation(sessionProposal, accountAddresses)
     }
 
-    suspend fun updateSession(
+    private suspend fun updateSession(
         sessionIdentifier: SessionIdentifier,
         accounts: List<String>?,
         removedAccountAddress: String?
     ) {
-        with(walletConnectClientManager) {
-            updateSession(
-                sessionIdentifier,
-                accounts.orEmpty(),
-                latestActiveChainIdentifier ?: getDefaultChainIdentifier(sessionIdentifier.versionIdentifier),
-                removedAccountAddress = removedAccountAddress
-            )
-        }
-        updateLocalSessionsFlow()
+        walletConnectClientManager.updateSession(
+            sessionIdentifier = sessionIdentifier,
+            accountList = accounts.orEmpty(),
+            removedAccountAddress = removedAccountAddress
+        )
     }
 
     suspend fun rejectSession(sessionProposal: WalletConnectSessionProposal) {
-        walletConnectClientManager.rejectSession(sessionProposal, reason = "") // TODO send proper reason after v2
+        walletConnectClientManager.rejectSession(sessionProposal, errorProvider.getUserRejectionError().message)
         eventLogger.logSessionRejection(sessionProposal)
+    }
+
+    suspend fun killSession(sessionIdentifier: WalletConnectSessionIdentifier) {
+        val sessionDetail = getWalletConnectSession(sessionIdentifier) ?: return
+        killSession(sessionDetail)
     }
 
     suspend fun killSession(session: WalletConnect.SessionDetail) {
@@ -251,7 +254,7 @@ class WalletConnectManager @Inject constructor(
     suspend fun rejectRequest(
         sessionIdentifier: WalletConnectSessionIdentifier,
         requestId: Long,
-        errorResponse: WalletConnectTransactionErrorResponse
+        errorResponse: WalletConnectError
     ) {
         _requestResultLiveData.postValue(Event(Resource.Error.Local(errorResponse.message)))
         transaction?.run { eventLogger.logTransactionRequestRejection(this) }
@@ -285,8 +288,56 @@ class WalletConnectManager @Inject constructor(
         }
     }
 
+    suspend fun getWalletConnectSessionsWithPairId(topic: String): List<WalletConnect.SessionDetail> {
+        return walletConnectClientManager.getAllWalletConnectSessions().filter {
+            it.topic == topic
+        }
+    }
+
+    fun isValidWalletConnectUrl(url: String): Boolean {
+        return walletConnectClientManager.isValidWalletConnectUrl(url)
+    }
+
+    suspend fun extendSessionExpirationDate(sessionIdentifier: WalletConnectSessionIdentifier): Result<String> {
+        return walletConnectClientManager.extendSession(sessionIdentifier)
+    }
+
+    suspend fun isSessionExtendable(sessionIdentifier: WalletConnectSessionIdentifier): Boolean? {
+        return walletConnectClientManager.isSessionExtendable(sessionIdentifier)
+    }
+
+    suspend fun hasSessionReachedMaxValidity(sessionIdentifier: WalletConnectSessionIdentifier): Boolean? {
+        return walletConnectClientManager.hasSessionReachedMaxValidity(sessionIdentifier)
+    }
+
+    suspend fun getSessionExpirationDateExtendedTimeStampAsSec(
+        sessionIdentifier: WalletConnectSessionIdentifier
+    ): Long? {
+        return walletConnectClientManager.getSessionExpirationDateExtendedTimeStampAsSec(sessionIdentifier)
+    }
+
+    suspend fun getSessionExpirationDateTimeStampAsSec(sessionIdentifier: SessionIdentifier): Long? {
+        return walletConnectClientManager.getSessionExpirationDateTimeStampAsSec(sessionIdentifier)
+    }
+
+    suspend fun getSessionExpirationDateTimeStampAsSec(sessionIdentifier: WalletConnectSessionIdentifier): Long? {
+        return walletConnectClientManager.getSessionExpirationDateTimeStampAsSec(sessionIdentifier)
+    }
+
+    suspend fun getMaxSessionExpirationDateTimeStampAsSec(sessionIdentifier: WalletConnectSessionIdentifier): Long? {
+        return walletConnectClientManager.getMaxSessionExpirationDateTimeStampAsSec(sessionIdentifier)
+    }
+
+    suspend fun getMaxSessionExpirationDateTimeStampAsSec(sessionIdentifier: SessionIdentifier): Long? {
+        return walletConnectClientManager.getMaxSessionExpirationDateTimeStampAsSec(sessionIdentifier)
+    }
+
+    suspend fun checkSessionStatus(sessionIdentifier: WalletConnectSessionIdentifier): Result<Unit> {
+        return walletConnectClientManager.checkSessionStatus(sessionIdentifier)
+    }
+
     private fun handleSessionRequest() {
-        coroutineScope?.launch(Dispatchers.IO) {
+        coroutineScope?.launchIO {
             accountCacheStatusFlow.filter { it == AccountCacheStatus.DONE }.distinctUntilChanged().collectLatest {
                 sessionEvent?.consume()?.run {
                     checkIfRequestedSessionIdMatchWithActiveNode(
@@ -305,9 +356,8 @@ class WalletConnectManager @Inject constructor(
         onFailed: suspend (Resource.Error) -> Unit
     ) {
         val activeNodeChainId = getActiveNodeChainIdUseCase.getActiveNodeChainId()
-        val defaultChainIdentifier = walletConnectClientManager.getDefaultChainIdentifier(sessionProposal)
-        val safeChainId = latestActiveChainIdentifier ?: defaultChainIdentifier
-        if (activeNodeChainId == safeChainId || defaultChainIdentifier == safeChainId) {
+        val algorandRequestedChainIds = sessionProposal.requiredNamespaces[WalletConnectBlockchain.ALGORAND]?.chains
+        if (algorandRequestedChainIds?.contains(activeNodeChainId) == true) {
             onMatched.invoke(Resource.Success(sessionProposal))
         } else {
             val annotatedString = AnnotatedString(stringResId = R.string.signing_error_network_mismatch)
@@ -316,23 +366,22 @@ class WalletConnectManager @Inject constructor(
     }
 
     fun killAllSessions() {
-        coroutineScope?.launch(Dispatchers.IO) {
+        coroutineScope?.launchIO {
             killAllSessions(walletConnectClientManager.getAllWalletConnectSessions())
             updateLocalSessionsFlow()
         }
     }
 
     fun killAllSessionsByPublicKey(accountAddress: String) {
-        coroutineScope?.launch(Dispatchers.IO) {
+        coroutineScope?.launchIO {
             walletConnectClientManager.getSessionsByAccountAddress(accountAddress).forEach { session ->
-                val connectedAddress = session.namespaces.values.map { it.accounts }.flatten()
+                val connectedAddress = session.namespaces.values.map { it.accounts }.flatten().map { it.accountAddress }
                 if (connectedAddress.singleOrNull() == accountAddress) {
                     killSession(session)
                 } else {
                     updateAccountsOfSession(session.sessionIdentifier, accountAddress, connectedAddress)
                 }
             }
-            updateLocalSessionsFlow()
         }
     }
 
@@ -354,22 +403,21 @@ class WalletConnectManager @Inject constructor(
     }
 
     fun disconnectFromExistingSessions() {
-        coroutineScope?.launch(Dispatchers.IO) {
+        coroutineScope?.launchIO {
             walletConnectClientManager.disconnectFromAllSessions()
         }
     }
 
     fun connectToDisconnectedSessions() {
-        coroutineScope?.launch(Dispatchers.IO) {
+        coroutineScope?.launchIO {
             walletConnectClientManager.connectToDisconnectedSessions()
-            updateLocalSessionsFlow()
         }
     }
 
-    fun initializeClients() {
-        coroutineScope?.launchIO {
-            walletConnectClientManager.initializeClients()
-        }
+    suspend fun initializeClients(application: Application) {
+        walletConnectClientManager.initializeClients(application)
+        initializeCoroutineScope()
+        connectToDisconnectedSessions()
     }
 
     private suspend fun handleCustomTransactionRequest(
@@ -387,7 +435,7 @@ class WalletConnectManager @Inject constructor(
         }
         latestSessionIdentifierIsBeingHandled = sessionIdentifier
         latestRequestIdentifierIsBeingHandled = requestIdentifier
-        requestHandlingJob = coroutineScope?.launch(Dispatchers.IO) {
+        requestHandlingJob = coroutineScope?.launchIO {
             accountCacheStatusFlow.filter { it == AccountCacheStatus.DONE }.distinctUntilChanged().collectLatest {
                 if (latestTransactionRequestIdentifier != requestIdentifier) {
                     latestTransactionRequestIdentifier = requestIdentifier
@@ -426,7 +474,7 @@ class WalletConnectManager @Inject constructor(
         sessionIdentifier: SessionIdentifier?,
         requestIdentifier: RequestIdentifier?
     ) {
-        val rejectReason = errorProvider.rejected.pendingTransaction
+        val rejectReason = errorProvider.getPendingTransactionError()
         if (sessionIdentifier != null && requestIdentifier != null) {
             walletConnectClientManager.rejectRequest(sessionIdentifier, requestIdentifier, rejectReason)
         }
@@ -437,18 +485,19 @@ class WalletConnectManager @Inject constructor(
         requestId: Long?,
         versionIdentifier: WalletConnectVersionIdentifier?
     ) {
-        val rejectReason = errorProvider.rejected.pendingTransaction
+        val rejectReason = errorProvider.getPendingTransactionError()
         if (requestId != null && versionIdentifier != null) {
             walletConnectClientManager.rejectRequest(sessionId, requestId, versionIdentifier, rejectReason)
         }
     }
 
     private fun onSessionFailed(sessionIdentifier: SessionIdentifier?, throwable: Throwable) {
-        coroutineScope?.launch(Dispatchers.IO) {
+        coroutineScope?.launchIO {
             when (throwable.cause ?: throwable) {
                 is InvalidWalletConnectUrlException -> {
                     _sessionResultFlow.emit(Event(Resource.OnLoadingFinished))
                 }
+
                 else -> {
                     reconnectToSessionAfterDelay(sessionIdentifier)
                 }
@@ -484,12 +533,15 @@ class WalletConnectManager @Inject constructor(
 
     private suspend fun calculateReconnectionDelay(sessionIdentifier: SessionIdentifier): Long {
         val sessionRetryCount = walletConnectClientManager.getSessionRetryCount(sessionIdentifier)
+            ?: FALLBACK_SESSION_RETRY_COUNT
         val retryIntervalAsSeconds = SESSION_RECONNECT_BASE_TIME_INTERVAL_AS_SEC.pow(sessionRetryCount)
         return convertSecToMills(retryIntervalAsSeconds.toLong())
     }
 
     private suspend fun increaseSessionRetryCount(sessionIdentifier: SessionIdentifier) {
-        val increasedRetryCount = walletConnectClientManager.getSessionRetryCount(sessionIdentifier).inc()
+        val sessionRetryCount = walletConnectClientManager.getSessionRetryCount(sessionIdentifier)
+            ?: FALLBACK_SESSION_RETRY_COUNT
+        val increasedRetryCount = sessionRetryCount.inc()
         walletConnectClientManager.setSessionRetryCount(sessionIdentifier, increasedRetryCount)
     }
 
@@ -497,11 +549,15 @@ class WalletConnectManager @Inject constructor(
         _localSessionsFlow.value = walletConnectClientManager.getAllWalletConnectSessions()
     }
 
+    private fun initializeCoroutineScope() {
+        if (coroutineScope == null) coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+    }
+
     // region Lifecycle Methods
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
-        coroutineScope = CoroutineScope(Job() + Dispatchers.Main).apply {
-            launch(Dispatchers.IO) { walletConnectClientManager.setAllSessionsDisconnected() }
+        coroutineScope?.launchIO {
+            walletConnectClientManager.setAllSessionsDisconnected()
         }
     }
 
@@ -513,5 +569,6 @@ class WalletConnectManager @Inject constructor(
 
     companion object {
         private const val SESSION_RECONNECT_BASE_TIME_INTERVAL_AS_SEC = 3F
+        private const val FALLBACK_SESSION_RETRY_COUNT = 3
     }
 }

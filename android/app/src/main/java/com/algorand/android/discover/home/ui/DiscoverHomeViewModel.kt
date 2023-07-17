@@ -66,7 +66,14 @@ class DiscoverHomeViewModel @Inject constructor(
     private fun initQueryTextFlow() {
         queryTextFlow
             .debounce(QUERY_DEBOUNCE)
-            .onEach { discoverHomePreviewUseCase.searchAsset(it) }
+            .onEach {
+                discoverHomePreviewUseCase.searchAsset(it)
+                _discoverHomePreviewFlow.emit(
+                    discoverHomePreviewUseCase.getPreviewWithHandleQueryChangeForScrollEvent(
+                        previousPreview = _discoverHomePreviewFlow.value
+                    )
+                )
+            }
             .distinctUntilChanged()
             .launchIn(viewModelScope)
     }

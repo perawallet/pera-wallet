@@ -15,6 +15,7 @@ package com.algorand.android.customviews.accountassetitem
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -26,6 +27,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountAndAssetListBinding
+import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.viewbinding.viewBinding
 
@@ -85,10 +87,19 @@ abstract class BaseAccountAndAssetItemView @JvmOverloads constructor(
             isVisible = drawable != null
             setImageDrawable(drawable)
         }
+        updateStatefulButtonsFlowPaddingIfNeeded()
     }
 
     fun setEndIconResource(@DrawableRes endIconDrawableResId: Int) {
+        binding.endIconImageView.apply {
+            setImageResource(endIconDrawableResId)
+            show()
+        }
         binding.endIconImageView.setImageResource(endIconDrawableResId)
+    }
+
+    fun setEndIconClickListener(onClick: (() -> Unit)?) {
+        binding.endIconImageView.setOnClickListener { onClick?.invoke() }
     }
 
     fun setStartSmallIconDrawable(drawable: Drawable?) {
@@ -163,5 +174,13 @@ abstract class BaseAccountAndAssetItemView @JvmOverloads constructor(
     fun setSecondaryValueTextColor(@ColorRes colorResId: Int) {
         val color = ContextCompat.getColor(context, colorResId)
         binding.secondaryValueTextView.setTextColor(color)
+    }
+
+    protected fun updateStatefulButtonsFlowPaddingIfNeeded() {
+        val hasVisibleStatefulButton = binding.statefulButtonsFlow.referencedIds.any { viewId ->
+            findViewById<View>(viewId).isVisible
+        }
+        val startPadding = if (hasVisibleStatefulButton) resources.getDimensionPixelSize(R.dimen.spacing_small) else 0
+        binding.statefulButtonsFlow.paddingLeft = startPadding
     }
 }

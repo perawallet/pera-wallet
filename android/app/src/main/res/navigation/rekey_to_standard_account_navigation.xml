@@ -16,6 +16,8 @@
     android:id="@+id/rekeyToStandardAccountNavigation"
     app:startDestination="@id/rekeyToStandardAccountInstructionFragment">
 
+    <include app:graph="@navigation/rekeyed_account_rekey_confirmation_navigation" />
+
     <action
         android:id="@+id/action_rekeyToStandardAccountNavigation_pop"
         app:popUpTo="@id/rekeyToStandardAccountNavigation"
@@ -23,9 +25,9 @@
 
     <fragment
         android:id="@+id/rekeyToStandardAccountInstructionFragment"
-        android:name="com.algorand.android.modules.rekey.rekeytostandardaccount.instruction.ui.RekeyToStandardAccountInstructionFragment"
+        android:name="com.algorand.android.modules.rekey.rekeytostandardaccount.instruction.ui.RekeyToStandardAccountIntroductionFragment"
         android:label="RekeyToStandardAccountInstructionFragment"
-        tools:layout="@layout/fragment_rekey_to_standard_account_instruction">
+        tools:layout="@layout/fragment_base_introduction">
         <argument
             android:name="accountAddress"
             app:argType="string" />
@@ -37,7 +39,8 @@
     <fragment
         android:id="@+id/rekeyToStandardAccountSelectionFragment"
         android:name="com.algorand.android.modules.rekey.rekeytostandardaccount.accountselection.ui.RekeyToStandardAccountSelectionFragment"
-        android:label="RekeyToAccountSelectionFragment">
+        android:label="RekeyToAccountSelectionFragment"
+        tools:layout="@layout/fragment_base_single_account_selection">
         <argument
             android:name="accountAddress"
             app:argType="string" />
@@ -49,7 +52,8 @@
     <fragment
         android:id="@+id/rekeyToStandardAccountConfirmationFragment"
         android:name="com.algorand.android.modules.rekey.rekeytostandardaccount.confirmation.ui.RekeyToStandardAccountConfirmationFragment"
-        android:label="RekeyToStandardAccountConfirmationFragment">
+        android:label="RekeyToStandardAccountConfirmationFragment"
+        tools:layout="@layout/fragment_base_rekey_confirmation">
         <argument
             android:name="accountAddress"
             app:argType="string" />
@@ -59,12 +63,23 @@
         <action
             android:id="@+id/action_rekeyToStandardAccountConfirmationFragment_to_rekeyToStandardAccountVerifyInfoFragment"
             app:destination="@id/rekeyToStandardAccountVerifyInfoFragment" />
+        <action
+            android:id="@+id/action_rekeyToStandardAccountConfirmationFragment_to_rekeyed_account_rekey_confirmation_navigation"
+            app:destination="@id/rekeyed_account_rekey_confirmation_navigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
+            <argument
+                android:name="authAccountAddress"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <fragment
         android:id="@+id/rekeyToStandardAccountVerifyInfoFragment"
         android:name="com.algorand.android.modules.rekey.rekeytostandardaccount.resultinfo.ui.RekeyToStandardAccountVerifyInfoFragment"
-        android:label="RekeyToStandardAccountVerifyInfoFragment">
+        android:label="RekeyToStandardAccountVerifyInfoFragment"
+        tools:layout="@layout/fragment_base_info">
         <argument
             android:name="accountAddress"
             app:argType="string" />

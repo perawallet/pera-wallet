@@ -16,11 +16,9 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetWalletConnectConnectionBinding
-import com.algorand.android.models.AnnotatedString
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.adapter.WalletConnectConnectionAdapter
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
@@ -66,15 +64,15 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(R.layout.bottom_sheet
 
     private val sessionApprovalCollector: suspend (Event<WCSessionRequestResult.ApproveRequest>?) -> Unit = {
         it?.consume()?.run {
+            navBack()
             listener?.onSessionRequestResult(this)
-            handleFallbackBrowserNavigation(sessionProposal.fallbackBrowserGroupResponse)
         }
     }
 
     private val sessionCancellationCollector: suspend (Event<WCSessionRequestResult.RejectRequest>?) -> Unit = {
         it?.consume()?.run {
-            listener?.onSessionRequestResult(this)
             navBack()
+            listener?.onSessionRequestResult(this)
         }
     }
 
@@ -133,48 +131,8 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(R.layout.bottom_sheet
         walletConnectConnectionViewModel.onConnectSessionConnect()
     }
 
-    private fun navigateToFallbackBrowserSelectionBottomSheet(fallbackBrowserGroupResponse: String) {
-        nav(
-            WalletConnectConnectionBottomSheetDirections
-                .actionWalletConnectConnectionBottomSheetToWalletConnectConnectedFallbackBrowserSelectionBottomSheet(
-                    browserGroup = fallbackBrowserGroupResponse,
-                    peerMetaName = walletConnectConnectionViewModel.peerMetaName
-                )
-        )
-    }
-
-    private fun showConnectedDappInfoBottomSheet() {
-        val peerMetaName = walletConnectConnectionViewModel.peerMetaName
-        nav(
-            WalletConnectConnectionBottomSheetDirections
-                .actionWalletConnectConnectionBottomSheetToSingleButtonBottomSheetNavigation(
-                    titleAnnotatedString = AnnotatedString(
-                        stringResId = R.string.you_are_connected,
-                        replacementList = listOf("peer_name" to peerMetaName)
-                    ),
-                    descriptionAnnotatedString = AnnotatedString(
-                        stringResId = R.string.please_return_to,
-                        replacementList = listOf("peer_name" to peerMetaName)
-                    ),
-                    drawableResId = R.drawable.ic_check_72dp
-                )
-        )
-    }
-
     private fun onCancelButtonClick() {
         walletConnectConnectionViewModel.onSessionCancelled()
-    }
-
-    private fun handleFallbackBrowserNavigation(fallbackBrowserGroupResponse: String?) {
-        if ((activity as? MainActivity)?.isBasePeraWebViewFragmentActive() == true) {
-            dismiss()
-        } else {
-            fallbackBrowserGroupResponse?.let {
-                navigateToFallbackBrowserSelectionBottomSheet(it)
-            } ?: run {
-                showConnectedDappInfoBottomSheet()
-            }
-        }
     }
 
     fun interface Callback {

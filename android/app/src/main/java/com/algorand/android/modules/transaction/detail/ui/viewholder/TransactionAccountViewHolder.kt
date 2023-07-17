@@ -42,7 +42,7 @@ class TransactionAccountViewHolder(
         with(walletItem) {
             binding.accountView.setAccount(
                 name = displayAddress,
-                accountIconResource = accountIconResource,
+                accountIconDrawablePreview = accountIconDrawablePreview,
                 publicKey = publicKey,
                 enableAddressCopy = false,
                 showTooltip = walletItem.showToolTipView

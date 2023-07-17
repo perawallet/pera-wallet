@@ -15,6 +15,7 @@ package com.algorand.android.mapper
 
 import com.algorand.android.models.AssetTransferPreview
 import com.algorand.android.models.TransactionData
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import java.math.BigDecimal
 import javax.inject.Inject
 
@@ -25,7 +26,8 @@ class AssetTransferPreviewMapper @Inject constructor() {
         exchangePrice: BigDecimal,
         currencySymbol: String,
         note: String?,
-        isNoteEditable: Boolean
+        isNoteEditable: Boolean,
+        accountIconDrawablePreview: AccountIconDrawablePreview
     ): AssetTransferPreview {
         with(transactionData) {
             return AssetTransferPreview(
@@ -37,7 +39,7 @@ class AssetTransferPreviewMapper @Inject constructor() {
                 fee = calculatedFee ?: projectedFee,
                 note = note,
                 isNoteEditable = isNoteEditable,
-                senderAccountType = senderAccountType,
+                accountIconDrawablePreview = accountIconDrawablePreview,
                 senderAccountName = senderAccountName,
                 senderAccountAddress = senderAccountAddress
             )

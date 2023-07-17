@@ -24,7 +24,7 @@ import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemCo
 import com.algorand.android.mapper.AccountPreviewMapper
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.mapper.AccountListItemMapper
 import com.algorand.android.modules.accounts.domain.mapper.PortfolioValueItemMapper
 import com.algorand.android.modules.accounts.domain.model.AccountPreview
@@ -37,6 +37,7 @@ import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.modules.notification.domain.usecase.NotificationStatusUseCase
 import com.algorand.android.modules.parity.domain.model.SelectedCurrencyDetail
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
+import com.algorand.android.modules.peraconnectivitymanager.ui.PeraConnectivityManager
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
 import com.algorand.android.modules.swap.reddot.domain.usecase.GetSwapFeatureRedDotVisibilityUseCase
@@ -46,10 +47,10 @@ import com.algorand.android.modules.tutorialdialog.data.model.Tutorial.ACCOUNT_A
 import com.algorand.android.modules.tutorialdialog.data.model.Tutorial.GIFT_CARDS
 import com.algorand.android.modules.tutorialdialog.data.model.Tutorial.SWAP
 import com.algorand.android.modules.tutorialdialog.domain.usecase.TutorialUseCase
+import com.algorand.android.notification.domain.usecase.GetAskNotificationPermissionEventFlowUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.AssetCacheManagerUseCase
 import com.algorand.android.usecase.NodeSettingsUseCase
-import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.combine
@@ -66,7 +67,6 @@ import kotlinx.coroutines.withContext
 class AccountsPreviewUseCase @Inject constructor(
     private val parityUseCase: ParityUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val assetDetailUseCase: SimpleAssetDetailUseCase,
     private val accountManager: AccountManager,
     private val accountPreviewMapper: AccountPreviewMapper,
     private val accountListItemMapper: AccountListItemMapper,
@@ -84,7 +84,10 @@ class AccountsPreviewUseCase @Inject constructor(
     private val tutorialUseCase: TutorialUseCase,
     private val swapNavigationDestinationHelper: SwapNavigationDestinationHelper,
     private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase,
-    private val assetCacheManagerUseCase: AssetCacheManagerUseCase
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase,
+    private val assetCacheManagerUseCase: AssetCacheManagerUseCase,
+    private val getAskNotificationPermissionEventFlowUseCase: GetAskNotificationPermissionEventFlowUseCase,
+    private val peraConnectivityManager: PeraConnectivityManager
 ) {
 
     suspend fun dismissTutorial(tutorialId: Int) {
@@ -93,18 +96,30 @@ class AccountsPreviewUseCase @Inject constructor(
 
     suspend fun getInitialAccountPreview(): AccountPreview {
         val isTestnetBadgeVisible = nodeSettingsUseCase.isSelectedNodeTestnet()
-        return accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
+        val isDeviceConnectedToInternet = peraConnectivityManager.isConnectedToInternet()
+        return if (isDeviceConnectedToInternet) {
+            accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
+        } else {
+            accountPreviewMapper.getAllAccountsErrorState(
+                accountListItems = createAccountErrorItemList(),
+                errorCode = null,
+                isTestnetBadgeVisible = isTestnetBadgeVisible,
+                errorPortfolioValueItem = portfolioValueItemMapper.mapToPortfolioValuesErrorItem()
+            )
+        }
     }
 
-    suspend fun getAccountsPreview(previousState: AccountPreview): Flow<AccountPreview> {
+    suspend fun getAccountsPreview(initialState: AccountPreview): Flow<AccountPreview> {
+        var lastState: AccountPreview = initialState
         return combine(
             parityUseCase.getSelectedCurrencyDetailCacheFlow(),
             accountDetailUseCase.getAccountDetailCacheFlow(),
             bannersUseCase.getBanner(),
             tutorialUseCase.getTutorial(),
+            getAskNotificationPermissionEventFlowUseCase.invoke(),
             nodeSettingsUseCase.getAllNodeAsFlow(),
-            assetCacheManagerUseCase.getAssetCacheStatusFlow(),
-        ) { selectedCurrencyParityCache, accountDetailCache, banner, tutorial, _, _ ->
+            assetCacheManagerUseCase.getAssetCacheStatusFlow()
+        ) { selectedCurrencyParityCache, accountDetailCache, banner, tutorial, notificationPermissionEvent, _, _ ->
             val isTestnetBadgeVisible = nodeSettingsUseCase.isSelectedNodeTestnet()
             val localAccounts = accountManager.getAccounts()
             if (localAccounts.isEmpty()) {
@@ -116,16 +131,17 @@ class AccountsPreviewUseCase @Inject constructor(
                         accountDetailCache = accountDetailCache,
                         banner = banner,
                         isTestnetBadgeVisible = isTestnetBadgeVisible,
-                        tutorial = tutorial
+                        tutorial = tutorial,
+                        notificationPermissionEvent = notificationPermissionEvent?.data
                     )
                 }
                 is CacheResult.Error -> getAlgoPriceErrorState(
                     selectedCurrencyDetailCache = selectedCurrencyParityCache,
-                    previousState = previousState,
+                    previousState = lastState,
                     isTestnetBadgeVisible = isTestnetBadgeVisible
                 )
                 else -> accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
-            }
+            }.also { lastState = it }
         }
     }
 
@@ -168,7 +184,7 @@ class AccountsPreviewUseCase @Inject constructor(
         if (hasPreviousCachedValue) return previousState
         val accountErrorListItems = createAccountErrorItemList()
         val portfolioValuesError = portfolioValueItemMapper.mapToPortfolioValuesErrorItem()
-        return accountPreviewMapper.getAlgoPriceInitialErrorState(
+        return accountPreviewMapper.getAllAccountsErrorState(
             accountListItems = accountErrorListItems,
             errorCode = selectedCurrencyDetailCache?.code,
             isTestnetBadgeVisible = isTestnetBadgeVisible,
@@ -180,7 +196,8 @@ class AccountsPreviewUseCase @Inject constructor(
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
         banner: BaseBanner?,
         isTestnetBadgeVisible: Boolean,
-        tutorial: Tutorial?
+        tutorial: Tutorial?,
+        notificationPermissionEvent: Event<Unit>?
     ): AccountPreview {
         val areAllAccountsAreCached = accountDetailUseCase.areAllAccountsCached()
         return if (areAllAccountsAreCached) {
@@ -188,7 +205,8 @@ class AccountsPreviewUseCase @Inject constructor(
                 accountDetailCache = accountDetailCache,
                 banner = banner,
                 isTestnetBadgeVisible = isTestnetBadgeVisible,
-                tutorial = tutorial
+                tutorial = tutorial,
+                notificationPermissionEvent = notificationPermissionEvent
             )
         } else {
             accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
@@ -199,7 +217,8 @@ class AccountsPreviewUseCase @Inject constructor(
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
         banner: BaseBanner?,
         isTestnetBadgeVisible: Boolean,
-        tutorial: Tutorial?
+        tutorial: Tutorial?,
+        notificationPermissionEvent: Event<Unit>?
     ): AccountPreview {
         val isThereAnyAssetNeedsToBeCached = accountDetailCache.values.any {
             !it.data?.getAssetHoldingList().isNullOrEmpty()
@@ -213,7 +232,8 @@ class AccountsPreviewUseCase @Inject constructor(
             prepareAccountPreview(
                 banner = banner,
                 isTestnetBadgeVisible = isTestnetBadgeVisible,
-                tutorial = tutorial
+                tutorial = tutorial,
+                notificationPermissionEvent = notificationPermissionEvent
             )
         }
     }
@@ -221,7 +241,8 @@ class AccountsPreviewUseCase @Inject constructor(
     private suspend fun prepareAccountPreview(
         banner: BaseBanner?,
         isTestnetBadgeVisible: Boolean,
-        tutorial: Tutorial?
+        tutorial: Tutorial?,
+        notificationPermissionEvent: Event<Unit>?
     ): AccountPreview {
         return withContext(Dispatchers.Default) {
             var primaryAccountValue = BigDecimal.ZERO
@@ -264,7 +285,8 @@ class AccountsPreviewUseCase @Inject constructor(
                 hasNewNotification = hasNewNotification,
                 onSwapTutorialDisplayEvent = swapTutorialDisplayEvent,
                 onAccountAddressCopyTutorialDisplayEvent = accountAddressCopyDisplayEvent,
-                onGiftCardsTutorialDisplayEvent = giftCardsTutorialDisplayEvent
+                onGiftCardsTutorialDisplayEvent = giftCardsTutorialDisplayEvent,
+                notificationPermissionEvent = notificationPermissionEvent
             )
         }
     }
@@ -315,7 +337,7 @@ class AccountsPreviewUseCase @Inject constructor(
                 accountItemConfigurationMapper.mapTo(
                     accountAddress = account.address,
                     accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
-                    accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(account.address),
                     accountType = account.type,
                     accountPrimaryValueText = accountBalance.primaryAccountValue.formatAsCurrency(
                         symbol = selectedCurrencySymbol,
@@ -335,7 +357,7 @@ class AccountsPreviewUseCase @Inject constructor(
                     accountItemConfigurationMapper.mapTo(
                         accountAddress = address,
                         accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
-                        accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
+                        accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(address),
                         showWarningIcon = true
                     )
                 }
@@ -393,7 +415,7 @@ class AccountsPreviewUseCase @Inject constructor(
                 accountItemConfigurationMapper.mapTo(
                     accountAddress = account.address,
                     accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
-                    accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(account.address),
                     accountType = account.type,
                     showWarningIcon = true
                 )
@@ -403,7 +425,7 @@ class AccountsPreviewUseCase @Inject constructor(
                     accountItemConfigurationMapper.mapTo(
                         accountAddress = address,
                         accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
-                        accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
+                        accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(address),
                         accountType = type,
                         showWarningIcon = true
                     )

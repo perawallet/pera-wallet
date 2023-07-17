@@ -25,8 +25,6 @@
 
     <include app:graph="@navigation/transaction_request_navigation" />
 
-    <include app:graph="@navigation/wallet_connect_transaction_fallback_browser_selection_navigation" />
-
     <action
         android:id="@+id/action_walletConnectRequestNavigation_pop"
         app:popUpTo="@id/walletConnectRequestNavigation"
@@ -69,17 +67,10 @@
             android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectAtomicTransactionsFragment"
             app:destination="@id/walletConnectAtomicTransactionsFragment" />
         <action
-            android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectTransactionFallbackBrowserSelectionNavigation"
-            app:destination="@id/walletConnectTransactionFallbackBrowserSelectionNavigation"
+            android:id="@+id/action_walletConnectTransactionRequestFragment_to_wcTransactionLaunchBackBrowserBottomSheet"
+            app:destination="@id/wcTransactionLaunchBackBrowserBottomSheet"
             app:popUpTo="@id/walletConnectTransactionRequestFragment"
-            app:popUpToInclusive="true">
-            <argument
-                android:name="browserGroup"
-                app:argType="string" />
-            <argument
-                android:name="peerMetaName"
-                app:argType="string" />
-        </action>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <!--  Bottom Sheets  -->
@@ -95,6 +86,15 @@
         <argument
             android:name="peerMeta"
             app:argType="com.algorand.android.models.WalletConnectPeerMeta" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/wcTransactionLaunchBackBrowserBottomSheet"
+        android:name="com.algorand.android.modules.walletconnect.launchback.transaction.ui.WcTransactionLaunchBackBrowserBottomSheet"
+        android:label="WcTransactionLaunchBackBrowserBottomSheet">
+        <argument
+            android:name="sessionIdentifier"
+            app:argType="com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier" />
     </dialog>
 
 </navigation>

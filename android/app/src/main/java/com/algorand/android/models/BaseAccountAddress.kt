@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.toShortenedAddress
 import kotlinx.parcelize.Parcelize
 
@@ -24,7 +25,7 @@ sealed class BaseAccountAddress : Parcelable {
     @Parcelize
     data class AccountAddress(
         override val publicKey: String,
-        val accountIconResource: AccountIconResource?,
+        val accountIconDrawablePreview: AccountIconDrawablePreview,
         private val displayName: String?
     ) : BaseAccountAddress() {
 

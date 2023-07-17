@@ -14,13 +14,14 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountDisplayName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AccountSelection(
     val accountDisplayName: AccountDisplayName?,
-    val accountIconResource: AccountIconResource?,
+    val accountIconDrawablePreview: AccountIconDrawablePreview?,
     val accountAssetCount: Int?,
     val accountAddress: String,
 ) : Parcelable, RecyclerListItem {

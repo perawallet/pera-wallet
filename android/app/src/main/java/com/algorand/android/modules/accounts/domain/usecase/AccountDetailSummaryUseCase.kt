@@ -13,27 +13,51 @@
 package com.algorand.android.modules.accounts.domain.usecase
 
 import com.algorand.android.mapper.AccountSummaryMapper
+import com.algorand.android.models.Account
+import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountDetailSummary
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
+import com.algorand.android.modules.accounts.domain.decider.AccountDetailDecider
+import com.algorand.android.modules.accountstatehelper.domain.usecase.AccountStateHelperUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.usecase.GetLocalAccountsUseCase
 import javax.inject.Inject
 
 class AccountDetailSummaryUseCase @Inject constructor(
-    private val getLocalAccountsUseCase: GetLocalAccountsUseCase,
     private val accountSummaryMapper: AccountSummaryMapper,
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
+    private val accountDetailDecider: AccountDetailDecider,
+    private val accountStateHelperUseCase: AccountStateHelperUseCase
 ) {
 
     fun getAccountDetailSummary(accountAddress: String): AccountDetailSummary {
-        val accountDetail = getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache().firstOrNull {
-            it.address == accountAddress
-        }
+        val account = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data?.account
         return accountSummaryMapper.mapToAccountDetailSummary(
-            canSignTransaction = accountDetailUseCase.canAccountSignTransaction(accountAddress),
             accountDisplayName = getAccountDisplayNameUseCase.invoke(accountAddress),
             accountAddress = accountAddress,
-            accountType = accountDetail?.type
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountAddress),
+            accountTypeResId = accountDetailDecider.decideAccountTypeResId(account),
+            shouldDisplayAccountType = when (account?.type) {
+                Account.Type.LEDGER, Account.Type.WATCH -> false
+                Account.Type.STANDARD -> !accountStateHelperUseCase.hasAccountValidSecretKey(account)
+                Account.Type.REKEYED, Account.Type.REKEYED_AUTH, null -> true
+            }
+        )
+    }
+
+    fun getAccountDetailSummary(accountDetail: AccountDetail?): AccountDetailSummary? {
+        val account = accountDetail?.account ?: return null
+        return accountSummaryMapper.mapToAccountDetailSummary(
+            accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
+            accountAddress = account.address,
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(account.address),
+            accountTypeResId = accountDetailDecider.decideAccountTypeResId(account),
+            shouldDisplayAccountType = when (account.type) {
+                Account.Type.LEDGER, Account.Type.WATCH -> false
+                Account.Type.STANDARD -> !accountStateHelperUseCase.hasAccountValidSecretKey(account)
+                Account.Type.REKEYED, Account.Type.REKEYED_AUTH, null -> true
+            }
         )
     }
 }

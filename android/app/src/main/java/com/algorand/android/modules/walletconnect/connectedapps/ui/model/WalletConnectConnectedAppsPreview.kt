@@ -12,7 +12,6 @@
 
 package com.algorand.android.modules.walletconnect.connectedapps.ui.model
 
-import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
 import com.algorand.android.utils.Event
 
 data class WalletConnectConnectedAppsPreview(

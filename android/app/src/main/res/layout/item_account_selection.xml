@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -12,70 +11,33 @@
   -->
 
 <!-- TODO Missing Shadow -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_xlarge"
-    android:layout_marginVertical="@dimen/spacing_xsmall"
-    android:background="@drawable/bg_passphrase_group_background">
+    android:layout_marginTop="@dimen/spacing_normal"
+    android:background="@drawable/bg_rectangle_radius_12_stroke_1">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/parentLayout"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/selectionIndicatorImageView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/spacing_xlarge">
+        android:layout_marginStart="@dimen/spacing_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_checkbox_selected" />
 
-        <ImageView
-            android:id="@+id/headerIconView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_checkbox_selected" />
+    <com.algorand.android.customviews.accountandassetitem.accountitem.AccountItemView
+        android:id="@+id/accountItemView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/selectionIndicatorImageView"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/nameTextView"
-            style="@style/TextAppearance.Body.Mono"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_large"
-            android:layout_marginTop="@dimen/spacing_normal"
-            app:layout_constraintBottom_toTopOf="@id/assetCountTextView"
-            app:layout_constraintEnd_toStartOf="@id/infoButton"
-            app:layout_constraintStart_toEndOf="@id/headerIconView"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_goneMarginBottom="@dimen/spacing_normal"
-            tools:text="YPIO7...IOCRH" />
-
-        <TextView
-            android:id="@+id/assetCountTextView"
-            style="@style/TextAppearance.Footnote.Description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_large"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/infoButton"
-            app:layout_constraintStart_toEndOf="@+id/headerIconView"
-            app:layout_constraintTop_toBottomOf="@id/nameTextView"
-            tools:text="+1 Asset"
-            tools:visibility="visible" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/infoButton"
-            style="@style/IconButton.Transparent"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            app:icon="@drawable/ic_info"
-            app:iconTint="@color/gray_500"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

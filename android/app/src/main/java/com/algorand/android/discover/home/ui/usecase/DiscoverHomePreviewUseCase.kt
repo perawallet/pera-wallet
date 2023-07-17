@@ -86,17 +86,26 @@ class DiscoverHomePreviewUseCase @Inject constructor(
         reloadPageEvent = Event(Unit)
     )
 
+    fun getPreviewWithHandleQueryChangeForScrollEvent(previousPreview: DiscoverHomePreview) = previousPreview.copy(
+        handleQueryChangeForScrollEvent = Event(Unit)
+    )
+
     fun updateSearchScreenLoadState(
         isListEmpty: Boolean,
         isCurrentStateError: Boolean,
         isLoading: Boolean,
         previousState: DiscoverHomePreview
-    ) = previousState.copy(
-        isListEmpty = isListEmpty &&
-            !isCurrentStateError &&
-            !isLoading &&
-            previousState.isSearchActivated
-    )
+    ): DiscoverHomePreview {
+        val scrollToTopEvent =
+            if (isLoading.not()) previousState.handleQueryChangeForScrollEvent?.consume()?.run { Event(Unit) } else null
+        return previousState.copy(
+            isListEmpty = isListEmpty &&
+                !isCurrentStateError &&
+                !isLoading &&
+                previousState.isSearchActivated,
+            scrollToTopEvent = scrollToTopEvent
+        )
+    }
 
     fun requestSearchVisible(
         isVisible: Boolean,

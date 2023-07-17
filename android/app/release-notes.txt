@@ -1,4 +1,1 @@
-Android - 5 - Offramp
-Android - 2 - Discover V3
-Android - 10 - Bug / Enhancement Sprint 8
-Android - 9 - Algorand Secure Backup
+Android - 16 - Mixed (WC v2, Rekey v3, B/E #9, Hotfix #3)

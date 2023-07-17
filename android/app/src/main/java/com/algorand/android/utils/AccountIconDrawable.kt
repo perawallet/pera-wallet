@@ -14,52 +14,41 @@ package com.algorand.android.utils
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
+import androidx.annotation.DimenRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 
 class AccountIconDrawable(
     private val backgroundColor: Int,
     private val iconTint: Int,
-    private val iconDrawable: Drawable,
+    private val iconDrawable: Drawable?,
     private val size: Int
 ) : ShapeDrawable(OvalShape()) {
 
-    private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = backgroundColor
-        style = Paint.Style.FILL
-    }
-
     private var restoreCount: Int = 0
-
-    private val backgroundRectF = RectF(0f, 0f, size.toFloat(), size.toFloat())
 
     private val iconPadding = size - (size * ICON_PADDING_RATIO_MULTIPLIER).toInt()
 
     init {
         intrinsicWidth = size
         intrinsicHeight = size
+        setTint(backgroundColor)
     }
 
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
         restoreCount = canvas.save()
-        drawBackground(canvas)
         drawAccountIcon(canvas)
         canvas.restoreToCount(restoreCount)
     }
 
-    private fun drawBackground(canvas: Canvas) {
-        canvas.drawOval(backgroundRectF, backgroundPaint)
-    }
-
     private fun drawAccountIcon(canvas: Canvas) {
-        iconDrawable.apply {
+        iconDrawable?.apply {
             setBounds(iconPadding, iconPadding, size - iconPadding, size - iconPadding)
             setTint(iconTint)
             draw(canvas)
@@ -68,6 +57,23 @@ class AccountIconDrawable(
 
     companion object {
         private const val ICON_PADDING_RATIO_MULTIPLIER = .8
+
+        fun create(
+            context: Context,
+            @DimenRes sizeResId: Int,
+            accountIconDrawablePreview: AccountIconDrawablePreview
+        ): AccountIconDrawable {
+            val backgroundColor = ContextCompat.getColor(context, accountIconDrawablePreview.backgroundColorResId)
+            val iconTint = ContextCompat.getColor(context, accountIconDrawablePreview.iconTintResId)
+            val iconDrawable = AppCompatResources.getDrawable(context, accountIconDrawablePreview.iconResId)?.mutate()
+            val size = context.resources.getDimensionPixelSize(sizeResId)
+            return AccountIconDrawable(
+                backgroundColor = backgroundColor,
+                iconTint = iconTint,
+                iconDrawable = iconDrawable,
+                size = size
+            )
+        }
 
         fun create(context: Context, accountIconResource: AccountIconResource, size: Int): AccountIconDrawable? {
             return AccountIconDrawable(

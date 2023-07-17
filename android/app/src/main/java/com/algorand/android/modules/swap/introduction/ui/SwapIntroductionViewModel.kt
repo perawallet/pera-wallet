@@ -17,7 +17,7 @@ import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.swap.introduction.ui.model.SwapIntroductionPreview
 import com.algorand.android.modules.swap.introduction.ui.usecase.SwapIntroductionPreviewUseCase
-import com.algorand.android.utils.getOrElse
+import com.algorand.android.utils.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,24 +30,19 @@ class SwapIntroductionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    private val accountAddress: String? = savedStateHandle.getOrElse(ACCOUNT_ADDRESS_KEY, null)
-    private val fromAssetId = savedStateHandle.getOrElse(
-        FROM_ASSET_ID_KEY,
-        DEFAULT_ASSET_ID_ARG
-    ).takeIf {
-        it != DEFAULT_ASSET_ID_ARG
-    }
+    private val navArgs = SwapIntroductionFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    private val toAssetId = savedStateHandle.getOrElse(
-        TO_ASSET_ID_KEY,
-        DEFAULT_ASSET_ID_ARG
-    ).takeIf {
-        it != DEFAULT_ASSET_ID_ARG
-    }
+    private val accountAddress: String? = navArgs.accountAddress
+    private val fromAssetId = navArgs.fromAssetId.takeIf { it != DEFAULT_ASSET_ID_ARG }
+    private val toAssetId = navArgs.toAssetId.takeIf { it != DEFAULT_ASSET_ID_ARG }
 
     private val _swapIntroductionPreviewFlow = MutableStateFlow<SwapIntroductionPreview?>(null)
     val swapIntroductionPreviewFlow: StateFlow<SwapIntroductionPreview?>
         get() = _swapIntroductionPreviewFlow
+
+    init {
+        setIntroductionPageAsShowed()
+    }
 
     fun onStartSwappingClick() {
         viewModelScope.launch {
@@ -62,10 +57,13 @@ class SwapIntroductionViewModel @Inject constructor(
         }
     }
 
+    private fun setIntroductionPageAsShowed() {
+        viewModelScope.launchIO {
+            swapIntroductionPreviewUseCase.setIntroductionPageAsShowed()
+        }
+    }
+
     companion object {
-        private const val ACCOUNT_ADDRESS_KEY = "accountAddress"
-        private const val FROM_ASSET_ID_KEY = "fromAssetId"
-        private const val TO_ASSET_ID_KEY = "toAssetId"
         private const val DEFAULT_ASSET_ID_ARG = -1L
     }
 }

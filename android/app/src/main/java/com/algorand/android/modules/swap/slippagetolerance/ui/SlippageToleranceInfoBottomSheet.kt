@@ -12,15 +12,25 @@
 
 package com.algorand.android.modules.swap.slippagetolerance.ui
 
+import android.widget.TextView
 import com.algorand.android.R
 import com.algorand.android.modules.informationbottomsheet.ui.BaseInformationBottomSheet
+import com.google.android.material.button.MaterialButton
 
 class SlippageToleranceInfoBottomSheet : BaseInformationBottomSheet() {
-    override val titleTextResId: Int = R.string.slippage_tolerance
-    override val descriptionTextResId: Int = R.string.slippage_is_the_price_difference
-    override val neutralButtonTextResId: Int = R.string.close
 
-    override fun onNeutralButtonClick() {
-        navBack()
+    override fun initTitleTextView(titleTextView: TextView) {
+        titleTextView.setText(R.string.slippage_tolerance)
+    }
+
+    override fun initDescriptionTextView(descriptionTextView: TextView) {
+        descriptionTextView.setText(R.string.slippage_is_the_price_difference)
+    }
+
+    override fun initNeutralButton(neutralButton: MaterialButton) {
+        neutralButton.apply {
+            setText(R.string.close)
+            setOnClickListener { navBack() }
+        }
     }
 }

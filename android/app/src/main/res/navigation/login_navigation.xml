@@ -68,7 +68,7 @@
 
     <fragment
         android:id="@+id/recoverAccountInfoFragment"
-        android:name="com.algorand.android.ui.register.recover.RecoverAccountInfoFragment"
+        android:name="com.algorand.android.modules.onboarding.recoverypassphrase.info.ui.RecoverAccountInfoFragment"
         android:label="fragment_recover_account_info"
         tools:layout="@layout/fragment_base_info">
         <action

@@ -15,7 +15,7 @@ package com.algorand.android.modules.walletconnect.sessions.ui.model
 import com.algorand.android.utils.Event
 
 data class WalletConnectSessionsPreview(
-    val walletConnectSessionList: List<WalletConnectSessionItem>,
+    val baseWalletConnectSessionItemList: List<BaseWalletConnectSessionItem>,
     val isDisconnectAllSessionVisible: Boolean,
     val isEmptyStateVisible: Boolean,
     val onDisconnectAllSessions: Event<Unit>?,

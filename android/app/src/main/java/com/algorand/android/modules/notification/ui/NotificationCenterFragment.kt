@@ -17,13 +17,14 @@ import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentNotificationCenterBinding
 import com.algorand.android.models.AccountDetailTab
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.IconButton
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.IconButton
 import com.algorand.android.models.ScreenState
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.notification.ui.adapter.NotificationAdapter
 import com.algorand.android.modules.notification.ui.model.NotificationCenterPreview
 import com.algorand.android.modules.notification.ui.model.NotificationListItem
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.algorand.android.utils.scrollToTop
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
@@ -179,7 +180,7 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
 
     private fun onNewItemAddedToTop() {
         if (lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)) {
-            binding.notificationsRecyclerView.scrollToPosition(0)
+            binding.notificationsRecyclerView.scrollToTop()
             notificationCenterViewModel.updateLastSeenNotification(
                 notificationListItem = notificationAdapter.snapshot().firstOrNull()
             )

@@ -19,16 +19,18 @@ import com.algorand.android.models.WalletConnectAccount
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
+import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.extensions.mapNotBlank
 import com.algorand.android.utils.generateAddressFromProgram
-import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import javax.inject.Inject
 
 @SuppressWarnings("ReturnCount")
 class AppCallTransactionMapper @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val errorProvider: WalletConnectTransactionErrorProvider
+    private val errorProvider: WalletConnectErrorProvider,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) : BaseWalletConnectTransactionMapper() {
 
     override fun createTransaction(
@@ -80,7 +82,12 @@ class AppCallTransactionMapper @Inject constructor(
                 appId = appId ?: return null,
                 signer = signer,
                 authAddress = accountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(accountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = accountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = accountData?.account?.address.orEmpty()
+                    )
+                ),
                 appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
                 approvalHash = generateAddressFromProgram(approvalHash),
                 stateHash = generateAddressFromProgram(stateHash),
@@ -110,7 +117,12 @@ class AppCallTransactionMapper @Inject constructor(
                 appId = appId ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 authAddress = accountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(accountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = accountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = accountData?.account?.address.orEmpty()
+                    )
+                ),
                 appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
                 approvalHash = generateAddressFromProgram(approvalHash),
                 stateHash = generateAddressFromProgram(stateHash),
@@ -139,7 +151,12 @@ class AppCallTransactionMapper @Inject constructor(
                 appId = appId,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 authAddress = accountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(accountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = accountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = accountData?.account?.address.orEmpty()
+                    )
+                ),
                 appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
                 appGlobalSchema = appGlobalSchema,
                 appLocalSchema = appLocalSchema,
@@ -171,7 +188,12 @@ class AppCallTransactionMapper @Inject constructor(
                 appId = appId ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 authAddress = accountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(accountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = accountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = accountData?.account?.address.orEmpty()
+                    )
+                ),
                 appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
                 approvalHash = generateAddressFromProgram(approvalHash),
                 stateHash = generateAddressFromProgram(stateHash),

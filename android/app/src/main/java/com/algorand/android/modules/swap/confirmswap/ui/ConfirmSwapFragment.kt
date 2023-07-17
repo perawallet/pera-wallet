@@ -23,10 +23,10 @@ import com.algorand.android.core.BaseFragment
 import com.algorand.android.customviews.LedgerLoadingDialog
 import com.algorand.android.customviews.SwapAssetInputView
 import com.algorand.android.databinding.FragmentConfirmSwapBinding
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.swap.confirmswap.domain.model.SwapQuoteTransaction
 import com.algorand.android.modules.swap.confirmswap.ui.model.ConfirmSwapPreview
 import com.algorand.android.modules.swap.confirmswap.ui.model.ConfirmSwapPriceImpactWarningStatus
@@ -248,7 +248,7 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap) {
                 exchangeFeeTextView.text = formattedExchangeFee
                 priceRatioTextView.text = context?.getXmlStyledString(getPriceRatio(resources))
                 initPriceImpactWarningStatus(priceImpactWarningStatus)
-                initToolbarAccountDetail(accountDisplayName, accountIconResource)
+                initToolbarAccountDetail(accountDisplayName, accountIconDrawablePreview)
             }
         }
     }
@@ -275,13 +275,15 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap) {
 
     private fun initToolbarAccountDetail(
         accountDisplayName: AccountDisplayName,
-        accountIconResource: AccountIconResource
+        accountIconDrawablePreview: AccountIconDrawablePreview
     ) {
         getAppToolbar()?.run {
-            val iconSize = resources.getDimensionPixelSize(R.dimen.account_icon_size_xsmall)
-            AccountIconDrawable.create(context, accountIconResource, iconSize)?.run {
-                setSubtitleStartDrawable(this)
-            }
+            val accountIconDrawable = AccountIconDrawable.create(
+                context = context,
+                accountIconDrawablePreview = accountIconDrawablePreview,
+                sizeResId = R.dimen.spacing_normal
+            )
+            setSubtitleStartDrawable(accountIconDrawable)
             changeSubtitle(accountDisplayName.getAccountPrimaryDisplayName())
             setOnTitleLongClickListener { onAccountAddressCopied(accountDisplayName.getRawAccountAddress()) }
         }

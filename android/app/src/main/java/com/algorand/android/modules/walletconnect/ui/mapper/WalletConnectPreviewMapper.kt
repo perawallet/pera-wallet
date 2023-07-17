@@ -13,12 +13,17 @@
 package com.algorand.android.modules.walletconnect.ui.mapper
 
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectProposalNamespace
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectVersionIdentifier
+import com.algorand.android.modules.walletconnect.mapper.WalletConnectProposalNamespaceMapper
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import javax.inject.Inject
 
 class WalletConnectPreviewMapper @Inject constructor(
     private val peerMetaMapper: WalletConnectPeerMetaMapper,
-    private val walletConnectSessionProposalIdentifierMapper: WalletConnectSessionProposalIdentifierMapper
+    private val walletConnectSessionProposalIdentifierMapper: WalletConnectSessionProposalIdentifierMapper,
+    private val proposalNamespaceMapper: WalletConnectProposalNamespaceMapper
 ) {
 
     fun mapToWalletConnectSessionProposal(proposal: WalletConnect.Session.Proposal): WalletConnectSessionProposal {
@@ -30,8 +35,16 @@ class WalletConnectPreviewMapper @Inject constructor(
             WalletConnectSessionProposal(
                 proposalIdentifier = proposalIdentifier,
                 peerMeta = peerMetaMapper.mapToPeerMeta(peerMeta),
-                fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
+                fallbackBrowserGroupResponse = fallbackBrowserGroupResponse,
+                requiredNamespaces = proposalNamespaceMapper.mapToProposalNamespace(requiredNamespaces)
             )
         }
+    }
+
+    fun mapToNamespaceProposal(
+        namespaceMap: Map<WalletConnectBlockchain, WalletConnectProposalNamespace>,
+        versionIdentifier: WalletConnectVersionIdentifier
+    ): Map<WalletConnectBlockchain, WalletConnect.Namespace.Proposal> {
+        return proposalNamespaceMapper.mapToProposalNamespace(namespaceMap, versionIdentifier)
     }
 }

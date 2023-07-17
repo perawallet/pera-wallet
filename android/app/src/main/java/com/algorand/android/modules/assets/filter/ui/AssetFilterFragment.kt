@@ -19,7 +19,7 @@ import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentAssetFilterBinding
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.TextButton
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.TextButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.assets.filter.ui.model.AssetFilterPreview
 import com.algorand.android.utils.Event

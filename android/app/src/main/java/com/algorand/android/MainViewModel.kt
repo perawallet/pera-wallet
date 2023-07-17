@@ -266,12 +266,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun canAccountSignTransaction(accountAddress: String?): Boolean {
-        return accountAddress?.let {
-            accountDetailUseCase.canAccountSignTransaction(accountAddress)
-        } ?: false
-    }
-
     private fun getAssetOperationResult(transaction: SignedTransactionDetail.AssetOperation): AssetOperationResult {
         val assetName = transaction.assetInformation.fullName ?: transaction.assetInformation.shortName
         return when (transaction) {

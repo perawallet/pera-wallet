@@ -33,7 +33,7 @@ class BasePaymentSingleTransactionUiBuilder @Inject constructor(
     override fun buildTransactionShortDetail(txn: BasePaymentTransaction): WalletConnectTransactionShortDetail {
         return with(txn) {
             WalletConnectTransactionShortDetail(
-                accountIconResource = getFromAccountIconResource(),
+                accountIconDrawablePreview = getFromAccountIconResource(),
                 accountName = fromAccount?.name,
                 accountBalance = assetInformation?.amount,
                 assetShortName = assetInformation?.shortName,

@@ -150,3 +150,10 @@
 -keep class org.msgpack.core.buffer.** { *; }
 
 # ---------------- END AlgoSDK -------------------
+
+# ---------------- BEGIN WalletConnect v2 - Sign Client -------------------
+
+-keep class com.walletconnect.** { *; }
+-keep interface com.walletconnect.** { *; }
+
+# ---------------- END WalletConnect v2 - Sign Client -------------------

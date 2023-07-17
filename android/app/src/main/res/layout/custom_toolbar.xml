@@ -140,7 +140,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.13" />
 
-    <com.algorand.android.customviews.ToolbarButtonContainerView
+    <com.algorand.android.customviews.toolbar.buttoncontainer.ToolbarButtonContainerView
         android:id="@+id/buttonContainerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

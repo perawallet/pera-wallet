@@ -14,20 +14,20 @@ package com.algorand.android.modules.informationbottomsheet.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetBaseInformationBinding
 import com.algorand.android.utils.viewbinding.viewBinding
+import com.google.android.material.button.MaterialButton
 
 abstract class BaseInformationBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_base_information) {
 
-    abstract val titleTextResId: Int
-    abstract val descriptionTextResId: Int
-    abstract val neutralButtonTextResId: Int
-
     private val binding by viewBinding(BottomSheetBaseInformationBinding::bind)
 
-    abstract fun onNeutralButtonClick()
+    abstract fun initTitleTextView(titleTextView: TextView)
+    abstract fun initDescriptionTextView(descriptionTextView: TextView)
+    abstract fun initNeutralButton(neutralButton: MaterialButton)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,15 +36,9 @@ abstract class BaseInformationBottomSheet : BaseBottomSheet(R.layout.bottom_shee
 
     private fun initUi() {
         with(binding) {
-            informationTitleTextView.setText(titleTextResId)
-            informationDescriptionTextView.setText(descriptionTextResId)
-            neutralButton.apply {
-                setText(neutralButtonTextResId)
-                setOnClickListener {
-                    onNeutralButtonClick()
-                    dismissAllowingStateLoss()
-                }
-            }
+            initTitleTextView(informationTitleTextView)
+            initDescriptionTextView(informationDescriptionTextView)
+            initNeutralButton(neutralButton)
         }
     }
 }

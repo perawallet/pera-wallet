@@ -88,19 +88,19 @@ sealed class AccountDetailAssetsItem : RecyclerListItem {
         }
     }
 
-    data class QuickActionsItem(
-        val isSwapButtonSelected: Boolean
+    data class QuickActionItemContainer(
+        val quickActionItemList: List<QuickActionItem>
     ) : AccountDetailAssetsItem() {
 
         override val itemType: ItemType
             get() = ItemType.QUICK_ACTIONS
 
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-            return other is QuickActionsItem && isSwapButtonSelected == other.isSwapButtonSelected
+            return other is QuickActionItemContainer && quickActionItemList == other.quickActionItemList
         }
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-            return other is QuickActionsItem && this == other
+            return other is QuickActionItemContainer && this == other
         }
     }
 

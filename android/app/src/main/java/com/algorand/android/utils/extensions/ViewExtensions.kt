@@ -28,11 +28,7 @@ import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.core.view.isVisible
-import com.algorand.android.models.AccountIconResource
-import com.algorand.android.models.GovernorIconResource
-import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.ContactIconDrawable
-import com.algorand.android.utils.GovernorIconDrawable
 import com.algorand.android.utils.browser.BLANK_URL
 import com.algorand.android.utils.loadCircularImage
 import com.google.android.material.button.MaterialButton
@@ -116,18 +112,6 @@ fun TextView.setDrawableTintColor(@ColorRes colorRes: Int) {
             it.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
         }
     }
-}
-
-fun ImageView.setGovernorIconDrawable(governorIconResource: GovernorIconResource, @DimenRes iconSize: Int) {
-    val governorIconSize = resources.getDimension(iconSize).toInt()
-    val accountIconDrawable = GovernorIconDrawable.create(context, governorIconResource, governorIconSize)
-    setImageDrawable(accountIconDrawable)
-}
-
-fun ImageView.setAccountIconDrawable(accountIconResource: AccountIconResource, @DimenRes iconSize: Int) {
-    val accountIconSize = resources.getDimension(iconSize).toInt()
-    val accountIconDrawable = AccountIconDrawable.create(context, accountIconResource, accountIconSize)
-    setImageDrawable(accountIconDrawable)
 }
 
 fun ImageView.setContactIconDrawable(uri: Uri?, @DimenRes iconSize: Int) {

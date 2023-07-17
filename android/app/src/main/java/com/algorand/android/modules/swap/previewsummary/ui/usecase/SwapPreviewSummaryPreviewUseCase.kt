@@ -12,6 +12,7 @@
 
 package com.algorand.android.modules.swap.previewsummary.ui.usecase
 
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.currency.domain.model.Currency
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
@@ -19,7 +20,6 @@ import com.algorand.android.modules.swap.previewsummary.ui.mapper.SwapPreviewSum
 import com.algorand.android.modules.swap.previewsummary.ui.model.SwapPreviewSummaryPreview
 import com.algorand.android.modules.swap.utils.getFormattedMinimumReceivedAmount
 import com.algorand.android.modules.swap.utils.priceratioprovider.SwapPriceRatioProviderMapper
-import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.formatAsPercentage
 import javax.inject.Inject
@@ -28,7 +28,7 @@ class SwapPreviewSummaryPreviewUseCase @Inject constructor(
     private val swapPriceRatioProviderMapper: SwapPriceRatioProviderMapper,
     private val swapPreviewSummaryPreviewMapper: SwapPreviewSummaryPreviewMapper,
     private val accountDisplayNameUseCase: AccountDisplayNameUseCase,
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     fun getInitialPreview(swapQuote: SwapQuote): SwapPreviewSummaryPreview {
@@ -42,7 +42,7 @@ class SwapPreviewSummaryPreviewUseCase @Inject constructor(
                 formattedPeraFee = peraFeeAmount.formatAsCurrency(Currency.ALGO.symbol),
                 formattedTotalFee = totalFee.formatAsCurrency(Currency.ALGO.symbol),
                 accountDisplayName = accountDisplayNameUseCase.invoke(swapQuote.accountAddress),
-                accountIconResource = accountDetailUseCase.getAccountIcon(swapQuote.accountAddress)
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountAddress)
             )
         }
     }

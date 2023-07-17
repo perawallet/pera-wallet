@@ -16,13 +16,14 @@ package com.algorand.android.models
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.algorand.android.R
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class WalletConnectTransactionSummary(
     val accountName: String? = null,
-    val accountIconResource: AccountIconResource? = null,
+    val accountIconDrawablePreview: AccountIconDrawablePreview? = null,
     val accountBalance: BigInteger? = null,
     val assetDecimal: Int? = null,
     val assetShortName: String? = null,

@@ -22,7 +22,6 @@ import com.algorand.android.modules.accountdetail.ui.model.AccountDetailPreview
 import com.algorand.android.modules.accountdetail.ui.usecase.AccountDetailPreviewUseCase
 import com.algorand.android.modules.tracking.accountdetail.AccountDetailFragmentEventTracker
 import com.algorand.android.usecase.AccountDeletionUseCase
-import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.getOrThrow
 import com.algorand.android.utils.launchIO
@@ -32,11 +31,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class AccountDetailViewModel @Inject constructor(
-    private val accountDetailUseCase: AccountDetailUseCase,
     private val accountDeletionUseCase: AccountDeletionUseCase,
     savedStateHandle: SavedStateHandle,
     private val accountDetailFragmentEventTracker: AccountDetailFragmentEventTracker,
@@ -83,7 +82,7 @@ class AccountDetailViewModel @Inject constructor(
 
     fun initAccountDetailSummary() {
         viewModelScope.launchIO {
-            accountDetailUseCase.getAccountSummaryFlow(accountPublicKey).collectLatest { accountDetailSummary ->
+            accountDetailPreviewUseCase.getAccountSummaryFlow(accountPublicKey).collectLatest { accountDetailSummary ->
                 _accountDetailSummaryFlow.emit(accountDetailSummary)
             }
         }
@@ -107,19 +106,42 @@ class AccountDetailViewModel @Inject constructor(
         }
     }
 
-    fun getCanSignTransaction(): Boolean {
-        return accountDetailSummaryFlow.value?.canSignTransaction ?: false
+    fun onSwapClick() {
+        viewModelScope.launchIO {
+            accountDetailFragmentEventTracker.logAccountDetailSwapButtonClickEvent()
+            _accountDetailPreviewFlow.update { preview ->
+                accountDetailPreviewUseCase.updatePreviewWithSwapNavigation(
+                    accountAddress = accountPublicKey,
+                    preview = preview
+                )
+            }
+        }
     }
 
-    fun onSwapClick() {
-        viewModelScope.launch {
-            with(_accountDetailPreviewFlow) {
-                accountDetailFragmentEventTracker.logAccountDetailSwapButtonClickEvent()
-                val newState = accountDetailPreviewUseCase.getSwapNavigationUpdatedPreview(
-                    accountPublicKey, value ?: return@with
-                )
-                emit(newState)
-            }
+    fun onAddAssetClick() {
+        _accountDetailPreviewFlow.update { preview ->
+            accountDetailPreviewUseCase.updatePreviewWithAssetAdditionNavigation(
+                preview = preview,
+                accountAddress = accountPublicKey
+            )
+        }
+    }
+
+    fun onBuySellClick() {
+        _accountDetailPreviewFlow.update { preview ->
+            accountDetailPreviewUseCase.updatePreviewWithOfframpNavigation(
+                preview = preview,
+                accountAddress = accountPublicKey
+            )
+        }
+    }
+
+    fun onSendClick() {
+        _accountDetailPreviewFlow.update { preview ->
+            accountDetailPreviewUseCase.updatePreviewWithSendNavigation(
+                preview = preview,
+                accountAddress = accountPublicKey
+            )
         }
     }
 

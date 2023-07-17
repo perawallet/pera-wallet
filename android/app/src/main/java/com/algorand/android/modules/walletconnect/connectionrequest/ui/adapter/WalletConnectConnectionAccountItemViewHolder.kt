@@ -16,9 +16,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemWalletConnectConnectionAccountBinding
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.models.ui.AccountAssetItemButtonState
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem
 import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AccountIconDrawable
@@ -31,20 +31,19 @@ class WalletConnectConnectionAccountItemViewHolder(
     override fun bind(item: BaseWalletConnectConnectionItem) {
         if (item !is BaseWalletConnectConnectionItem.AccountItem) return
         with(item) {
-            setAccountIcon(accountIconResource)
+            setAccountIcon(accountIconDrawablePreview)
             setAccountTitleText(accountDisplayName)
             setAccountDescriptionText(accountDisplayName)
             setButtonState(buttonState, accountAddress)
         }
     }
 
-    private fun setAccountIcon(accountIconResource: AccountIconResource?) {
+    private fun setAccountIcon(accountIconDrawablePreview: AccountIconDrawablePreview) {
         binding.statefulAccountItemView.apply {
-            val accountIconSize = resources.getDimension(R.dimen.account_icon_size_large).toInt()
             val accountIconDrawable = AccountIconDrawable.create(
                 context = context,
-                accountIconResource = accountIconResource ?: AccountIconResource.DEFAULT_ACCOUNT_ICON_RESOURCE,
-                size = accountIconSize
+                accountIconDrawablePreview = accountIconDrawablePreview,
+                sizeResId = R.dimen.spacing_xxxxlarge
             )
             setStartIconDrawable(accountIconDrawable)
         }

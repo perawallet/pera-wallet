@@ -33,5 +33,6 @@ data class AccountPreview(
     val onAccountAddressCopyTutorialDisplayEvent: Event<Int>? = null,
     val onSwapTutorialDisplayEvent: Event<Int>? = null,
     val swapNavigationDestinationEvent: Event<NavDirections>? = null,
-    val giftCardsNavigationDestinationEvent: Event<NavDirections>? = null
+    val giftCardsNavigationDestinationEvent: Event<NavDirections>? = null,
+    val notificationPermissionEvent: Event<Unit>? = null
 )

@@ -12,9 +12,11 @@
 
 package com.algorand.android.modules.accounts.ui
 
+import android.Manifest
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -36,12 +38,10 @@ import com.algorand.android.modules.tutorialdialog.util.showGiftCardsTutorialDia
 import com.algorand.android.modules.tutorialdialog.util.showSwapFeatureTutorialDialog
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.TestnetBadgeDrawable
-import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegation
 import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegationImpl
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.setDrawableTintColor
-import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -61,6 +61,10 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
 
     private val accountsViewModel: AccountsViewModel by viewModels<AccountsViewModel>()
 
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        // Nothing to do
+    }
+
     private val accountsEmptyState by lazy {
         ScreenState.CustomState(
             icon = R.drawable.ic_wallet,
@@ -68,6 +72,12 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
             description = R.string.you_need_to_create,
             buttonText = R.string.create_new_account
         )
+    }
+
+    private val testnetBadgeDrawable: Drawable? by lazy {
+        context?.run {
+            TestnetBadgeDrawable.toDrawable(this)
+        }
     }
 
     private val accountAdapterListener = object : AccountAdapter.AccountAdapterListener {
@@ -128,12 +138,6 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
         }
     }
 
-    private val testnetBadgeDrawable: Drawable? by lazy {
-        context?.run {
-            TestnetBadgeDrawable.toDrawable(this)
-        }
-    }
-
     private val emptyStateVisibilityCollector: suspend (Boolean?) -> Unit = { isEmptyStateVisible ->
         binding.emptyScreenStateView.isVisible = isEmptyStateVisible == true
         binding.notificationImageButton.isInvisible = isEmptyStateVisible == true
@@ -187,11 +191,16 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
             binding.notificationImageButton.isActivated = isActive
         }
     }
+
     private val swapNavigationDirectionEventCollector: suspend (Event<NavDirections>?) -> Unit = {
         it?.consume()?.run { nav(this) }
     }
     private val giftCardsNavigationDirectionEventCollector: suspend (Event<NavDirections>?) -> Unit = {
         it?.consume()?.run { nav(this) }
+    }
+
+    private val askNotificationPermissionEventCollector: suspend (Event<Unit>?) -> Unit = {
+        it?.consume()?.let { requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) }
     }
 
     private fun showAccountAddressCopyTutorialDialog(tutorialId: Int) {
@@ -322,6 +331,10 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
                 accountPreviewFlow.map { it?.giftCardsNavigationDestinationEvent }.distinctUntilChanged(),
                 giftCardsNavigationDirectionEventCollector
             )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.notificationPermissionEvent }.distinctUntilChanged(),
+                askNotificationPermissionEventCollector
+            )
         }
     }
 
@@ -367,11 +380,6 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
 
     private fun navToSendAlgoNavigation() {
         nav(AccountsFragmentDirections.actionGlobalSendAlgoNavigation(null))
-    }
-
-    private fun copyPublicKeyToClipboard(publicKey: String) {
-        context?.copyToClipboard(publicKey, showToast = false)
-        showTopToast(getString(R.string.address_copied_to_clipboard), publicKey.toShortenedAddress())
     }
 
     companion object {

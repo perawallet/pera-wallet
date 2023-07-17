@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.ListAdapter
 import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem
-import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem.ItemType.ACCOUNTS_TITLE_ITEM
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem.ItemType.ACCOUNT_ITEM
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem.ItemType.DAPP_INFO_ITEM
+import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem.ItemType.EVENT_ITEM
+import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem.ItemType.NETWORK_ITEM
+import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem.ItemType.TITLE_ITEM
 
 class WalletConnectConnectionAdapter(
     private val listener: WalletConnectConnectionAdapterListener
@@ -40,8 +42,10 @@ class WalletConnectConnectionAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<BaseWalletConnectConnectionItem> {
         return when (viewType) {
             DAPP_INFO_ITEM.ordinal -> createDappInfoItemViewHolder(parent)
-            ACCOUNTS_TITLE_ITEM.ordinal -> createAccountsTitleItemViewHolder(parent)
+            TITLE_ITEM.ordinal -> createTitleItemViewHolder(parent)
             ACCOUNT_ITEM.ordinal -> createAccountItemViewHolder(parent)
+            EVENT_ITEM.ordinal -> createEventItemViewHolder(parent)
+            NETWORK_ITEM.ordinal -> createNetworkItemViewHolder(parent)
             else -> throw Exception("$logTag list item is unknown {$viewType}")
         }
     }
@@ -50,14 +54,22 @@ class WalletConnectConnectionAdapter(
         return WalletConnectConnectionDappInfoViewItemHolder.create(parent, dappInfoItemListAdapter)
     }
 
-    private fun createAccountsTitleItemViewHolder(
+    private fun createTitleItemViewHolder(
         parent: ViewGroup
-    ): WalletConnectConnectionAccountsTitleViewItemHolder {
-        return WalletConnectConnectionAccountsTitleViewItemHolder.create(parent)
+    ): WalletConnectConnectionTitleViewItemHolder {
+        return WalletConnectConnectionTitleViewItemHolder.create(parent)
     }
 
     private fun createAccountItemViewHolder(parent: ViewGroup): WalletConnectConnectionAccountItemViewHolder {
         return WalletConnectConnectionAccountItemViewHolder.create(parent, accountItemListener)
+    }
+
+    private fun createEventItemViewHolder(parent: ViewGroup): WalletConnectConnectionEventItemViewHolder {
+        return WalletConnectConnectionEventItemViewHolder.create(parent)
+    }
+
+    private fun createNetworkItemViewHolder(parent: ViewGroup): WalletConnectConnectionNetworkItemViewHolder {
+        return WalletConnectConnectionNetworkItemViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<BaseWalletConnectConnectionItem>, position: Int) {

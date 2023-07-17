@@ -13,7 +13,6 @@
 package com.algorand.android.modules.walletconnect.client.v1.mapper
 
 import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1SessionIdentifier
-import com.algorand.android.modules.walletconnect.client.v1.utils.WalletConnectClientV1Utils
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.mapper.identifier.WalletConnectSessionIdentifierMapper
 import javax.inject.Inject
@@ -21,7 +20,6 @@ import javax.inject.Inject
 class WalletConnectV1SessionIdentifierMapper @Inject constructor() : WalletConnectSessionIdentifierMapper<Long> {
 
     override fun mapToSessionIdentifier(sessionIdentifier: Long): WalletConnect.SessionIdentifier {
-        val versionIdentifier = WalletConnectClientV1Utils.getWalletConnectV1VersionIdentifier()
-        return WalletConnectV1SessionIdentifier(sessionIdentifier, versionIdentifier)
+        return WalletConnectV1SessionIdentifier(sessionIdentifier)
     }
 }

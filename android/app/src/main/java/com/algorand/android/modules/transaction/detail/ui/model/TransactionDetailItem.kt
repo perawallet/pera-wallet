@@ -16,8 +16,8 @@ import android.net.Uri
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import com.algorand.android.R
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.RecyclerListItem
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail
 import com.algorand.android.modules.transaction.detail.domain.model.TransactionSign
 import com.algorand.android.utils.AssetName
@@ -349,7 +349,7 @@ sealed class TransactionDetailItem : RecyclerListItem {
                 override val isAccountAdditionButtonVisible: Boolean,
                 override val isCopyButtonVisible: Boolean,
                 override val showToolTipView: Boolean,
-                val accountIconResource: AccountIconResource
+                val accountIconDrawablePreview: AccountIconDrawablePreview
             ) : AccountItem() {
                 override fun areItemsTheSame(other: RecyclerListItem): Boolean {
                     return other is WalletItem && labelTextRes == other.labelTextRes

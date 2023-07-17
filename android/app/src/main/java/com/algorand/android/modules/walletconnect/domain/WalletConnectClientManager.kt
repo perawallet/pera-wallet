@@ -1,3 +1,4 @@
+@file:Suppress("TooManyFunctions")
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,20 +13,26 @@
 
 package com.algorand.android.modules.walletconnect.domain
 
+import android.app.Application
+import com.algorand.android.modules.walletconnect.client.utils.WalletConnectClientNotFoundException
 import com.algorand.android.modules.walletconnect.client.utils.WalletConnectClientProvider
+import com.algorand.android.modules.walletconnect.domain.decider.WalletConnectProposalIdentifierDecider
 import com.algorand.android.modules.walletconnect.domain.decider.WalletConnectRequestIdentifierDecider
 import com.algorand.android.modules.walletconnect.domain.decider.WalletConnectSessionIdentifierDecider
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
-import com.algorand.android.modules.walletconnect.domain.model.WalletConnectTransactionErrorResponse
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectError
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectVersionIdentifier
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
+import com.algorand.android.utils.walletconnect.WalletConnectSessionRetryCounter
 import javax.inject.Inject
 
 class WalletConnectClientManager @Inject constructor(
     private val walletConnectClientProvider: WalletConnectClientProvider,
     private val sessionIdentifierDecider: WalletConnectSessionIdentifierDecider,
-    private val requestIdentifierDecider: WalletConnectRequestIdentifierDecider
+    private val requestIdentifierDecider: WalletConnectRequestIdentifierDecider,
+    private val proposalIdentifierDecider: WalletConnectProposalIdentifierDecider
 ) {
 
     private var listener: WalletConnectClientManagerListener? = null
@@ -46,6 +53,11 @@ class WalletConnectClientManager @Inject constructor(
         }
     }
 
+    fun isValidWalletConnectUrl(url: String): Boolean {
+        val client = walletConnectClientProvider.getClientForSessionConnectionUrl(url)
+        return client != null
+    }
+
     suspend fun connect(sessionIdentifier: WalletConnect.SessionIdentifier) {
         getClient(sessionIdentifier).connect(sessionIdentifier)
     }
@@ -53,13 +65,11 @@ class WalletConnectClientManager @Inject constructor(
     suspend fun updateSession(
         sessionIdentifier: WalletConnect.SessionIdentifier,
         accountList: List<String>,
-        chainIdentifier: WalletConnect.ChainIdentifier,
         removedAccountAddress: String?
     ) {
         getClient(sessionIdentifier).updateSession(
             sessionIdentifier = sessionIdentifier,
             accountAddresses = accountList,
-            chainIdentifier = chainIdentifier,
             removedAccountAddress = removedAccountAddress
         )
     }
@@ -78,7 +88,7 @@ class WalletConnectClientManager @Inject constructor(
     suspend fun rejectRequest(
         sessionIdentifier: WalletConnect.SessionIdentifier,
         requestIdentifier: WalletConnect.RequestIdentifier,
-        errorResponse: WalletConnectTransactionErrorResponse
+        errorResponse: WalletConnectError
     ) {
         getClient(sessionIdentifier).rejectRequest(sessionIdentifier, requestIdentifier, errorResponse)
     }
@@ -87,7 +97,7 @@ class WalletConnectClientManager @Inject constructor(
         sessionId: String,
         requestId: Long,
         versionIdentifier: WalletConnectVersionIdentifier,
-        errorResponse: WalletConnectTransactionErrorResponse
+        errorResponse: WalletConnectError
     ) {
         val sessionIdentifier = sessionIdentifierDecider.decideSessionIdentifier(sessionId, versionIdentifier)
         val requestIdentifier = requestIdentifierDecider.decideRequestIdentifier(requestId, versionIdentifier)
@@ -115,20 +125,24 @@ class WalletConnectClientManager @Inject constructor(
 
     suspend fun rejectSession(sessionProposal: WalletConnectSessionProposal, reason: String) {
         val sessionIdentifier = with(sessionProposal.proposalIdentifier) {
-            sessionIdentifierDecider.decideSessionIdentifier(proposalIdentifier, versionIdentifier)
+            proposalIdentifierDecider.decideProposalIdentifier(proposalIdentifier, versionIdentifier)
         }
-        getClient(sessionProposal.proposalIdentifier.versionIdentifier).rejectSession(sessionIdentifier, reason)
+        getClient(sessionIdentifier.versionIdentifier).rejectSession(sessionIdentifier, reason)
     }
 
     suspend fun approveSession(
         sessionProposal: WalletConnectSessionProposal,
-        accountAddresses: List<String>,
-        chainIdentifier: WalletConnect.ChainIdentifier
+        requiredNamespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Proposal>,
+        accountAddresses: List<String>
     ) {
-        val sessionIdentifier = with(sessionProposal.proposalIdentifier) {
-            sessionIdentifierDecider.decideSessionIdentifier(proposalIdentifier, versionIdentifier)
+        val proposalIdentifier = with(sessionProposal.proposalIdentifier) {
+            proposalIdentifierDecider.decideProposalIdentifier(proposalIdentifier, versionIdentifier)
         }
-        getClient(sessionIdentifier).approveSession(sessionIdentifier, accountAddresses, chainIdentifier)
+        getClient(sessionProposal.proposalIdentifier.versionIdentifier).approveSession(
+            proposalIdentifier = proposalIdentifier,
+            requiredNamespaces = requiredNamespaces,
+            accountAddresses = accountAddresses
+        )
     }
 
     suspend fun getAllWalletConnectSessions(): List<WalletConnect.SessionDetail> {
@@ -137,24 +151,16 @@ class WalletConnectClientManager @Inject constructor(
         }.flatten()
     }
 
-    fun getDefaultChainIdentifier(versionIdentifier: WalletConnectVersionIdentifier): WalletConnect.ChainIdentifier {
-        return getClient(versionIdentifier).getDefaultChainIdentifier()
-    }
-
-    fun getDefaultChainIdentifier(sessionProposal: WalletConnectSessionProposal): WalletConnect.ChainIdentifier {
-        return getClient(sessionProposal.proposalIdentifier.versionIdentifier).getDefaultChainIdentifier()
-    }
-
     suspend fun clearSessionRetryCount(sessionIdentifier: WalletConnect.SessionIdentifier) {
-        getClient(sessionIdentifier).clearSessionRetryCount(sessionIdentifier)
+        getSessionRetryCounter(sessionIdentifier)?.clearSessionRetryCount(sessionIdentifier)
     }
 
-    suspend fun getSessionRetryCount(sessionIdentifier: WalletConnect.SessionIdentifier): Int {
-        return getClient(sessionIdentifier).getSessionRetryCount(sessionIdentifier)
+    suspend fun getSessionRetryCount(sessionIdentifier: WalletConnect.SessionIdentifier): Int? {
+        return getSessionRetryCounter(sessionIdentifier)?.getSessionRetryCount(sessionIdentifier)
     }
 
     suspend fun setSessionRetryCount(sessionIdentifier: WalletConnect.SessionIdentifier, retryCount: Int) {
-        getClient(sessionIdentifier).setSessionRetryCount(sessionIdentifier, retryCount)
+        getSessionRetryCounter(sessionIdentifier)?.setSessionRetryCount(sessionIdentifier, retryCount)
     }
 
     suspend fun getSessionsByAccountAddress(accountAddress: String): List<WalletConnect.SessionDetail> {
@@ -187,10 +193,90 @@ class WalletConnectClientManager @Inject constructor(
         }
     }
 
-    suspend fun initializeClients() {
+    suspend fun initializeClients(application: Application) {
         walletConnectClientProvider.getClients().forEach { client ->
-            client.initializeClient()
+            client.initializeClient(application)
         }
+    }
+
+    suspend fun extendSession(sessionIdentifier: WalletConnectSessionIdentifier): Result<String> {
+        val client = walletConnectClientProvider.provideClient(
+            versionIdentifier = sessionIdentifier.versionIdentifier
+        ) as? WalletConnectSessionExpirationManager
+        val identifier = with(sessionIdentifier) {
+            sessionIdentifierDecider.decideSessionIdentifier(this.sessionIdentifier, versionIdentifier)
+        }
+        return client?.extendSessionExpirationDate(identifier) ?: Result.failure(WalletConnectClientNotFoundException)
+    }
+
+    suspend fun isSessionExtendable(sessionIdentifier: WalletConnectSessionIdentifier): Boolean? {
+        val client = walletConnectClientProvider.provideClient(
+            versionIdentifier = sessionIdentifier.versionIdentifier
+        ) as? WalletConnectSessionExpirationManager
+        val identifier = with(sessionIdentifier) {
+            sessionIdentifierDecider.decideSessionIdentifier(this.sessionIdentifier, versionIdentifier)
+        }
+        return client?.isSessionExtendable(identifier)
+    }
+
+    suspend fun hasSessionReachedMaxValidity(sessionIdentifier: WalletConnectSessionIdentifier): Boolean? {
+        val client = walletConnectClientProvider.provideClient(
+            versionIdentifier = sessionIdentifier.versionIdentifier
+        ) as? WalletConnectSessionExpirationManager
+        val identifier = with(sessionIdentifier) {
+            sessionIdentifierDecider.decideSessionIdentifier(this.sessionIdentifier, versionIdentifier)
+        }
+        return client?.hasSessionReachedMaxValidity(identifier)
+    }
+
+    suspend fun getSessionExpirationDateExtendedTimeStampAsSec(
+        sessionIdentifier: WalletConnectSessionIdentifier
+    ): Long? {
+        val client = walletConnectClientProvider
+            .provideClient(sessionIdentifier.versionIdentifier) as? WalletConnectSessionExpirationManager
+        val identifier = with(sessionIdentifier) {
+            sessionIdentifierDecider.decideSessionIdentifier(this.sessionIdentifier, versionIdentifier)
+        }
+        return client?.getSessionExpirationDateExtendedTimeStampAsSec(identifier)
+    }
+
+    suspend fun getSessionExpirationDateTimeStampAsSec(sessionIdentifier: WalletConnect.SessionIdentifier): Long? {
+        val client = walletConnectClientProvider
+            .provideClient(sessionIdentifier.versionIdentifier) as? WalletConnectSessionExpirationManager
+        return client?.getSessionExpirationDateExtendedTimeStampAsSec(sessionIdentifier)
+    }
+
+    suspend fun getSessionExpirationDateTimeStampAsSec(sessionIdentifier: WalletConnectSessionIdentifier): Long? {
+        val client = walletConnectClientProvider
+            .provideClient(sessionIdentifier.versionIdentifier) as? WalletConnectSessionExpirationManager
+        val identifier = with(sessionIdentifier) {
+            sessionIdentifierDecider.decideSessionIdentifier(this.sessionIdentifier, versionIdentifier)
+        }
+        return client?.getSessionExpirationDateExtendedTimeStampAsSec(identifier)
+    }
+
+    suspend fun getMaxSessionExpirationDateTimeStampAsSec(sessionIdentifier: WalletConnectSessionIdentifier): Long? {
+        val client = walletConnectClientProvider
+            .provideClient(sessionIdentifier.versionIdentifier) as? WalletConnectSessionExpirationManager
+        val identifier = with(sessionIdentifier) {
+            sessionIdentifierDecider.decideSessionIdentifier(this.sessionIdentifier, versionIdentifier)
+        }
+        return client?.getMaxSessionExpirationDateTimeStampAsSec(identifier)
+    }
+
+    suspend fun getMaxSessionExpirationDateTimeStampAsSec(sessionIdentifier: WalletConnect.SessionIdentifier): Long? {
+        val client = walletConnectClientProvider
+            .provideClient(sessionIdentifier.versionIdentifier) as? WalletConnectSessionExpirationManager
+        return client?.getMaxSessionExpirationDateTimeStampAsSec(sessionIdentifier)
+    }
+
+    suspend fun checkSessionStatus(sessionIdentifier: WalletConnectSessionIdentifier): Result<Unit> {
+        val client = walletConnectClientProvider
+            .provideClient(sessionIdentifier.versionIdentifier) as? WalletConnectSessionServerStatusManager
+        val identifier = with(sessionIdentifier) {
+            sessionIdentifierDecider.decideSessionIdentifier(this.sessionIdentifier, versionIdentifier)
+        }
+        return client?.checkStatus(identifier) ?: Result.failure(WalletConnectClientNotFoundException)
     }
 
     private fun getClient(sessionIdentifier: WalletConnect.SessionIdentifier): WalletConnectClient {
@@ -199,5 +285,13 @@ class WalletConnectClientManager @Inject constructor(
 
     private fun getClient(versionIdentifier: WalletConnectVersionIdentifier): WalletConnectClient {
         return walletConnectClientProvider.provideClient(versionIdentifier)
+    }
+
+    private fun getSessionRetryCounter(
+        sessionIdentifier: WalletConnect.SessionIdentifier
+    ): WalletConnectSessionRetryCounter? {
+        return walletConnectClientProvider.provideClient(
+            sessionIdentifier.versionIdentifier
+        ) as? WalletConnectSessionRetryCounter
     }
 }

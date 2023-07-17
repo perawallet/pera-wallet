@@ -18,7 +18,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail
 import com.algorand.android.modules.transaction.detail.domain.model.TransactionSign
 import com.algorand.android.modules.transaction.detail.ui.model.ApplicationCallAssetInformation
@@ -111,7 +111,7 @@ class TransactionDetailItemMapper @Inject constructor() {
         publicKey: String,
         isAccountAdditionButtonVisible: Boolean,
         isCopyButtonVisible: Boolean,
-        accountIconResource: AccountIconResource,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
         showToolTipView: Boolean
     ): TransactionDetailItem.StandardTransactionItem.AccountItem.WalletItem {
         return TransactionDetailItem.StandardTransactionItem.AccountItem.WalletItem(
@@ -120,7 +120,7 @@ class TransactionDetailItemMapper @Inject constructor() {
             publicKey = publicKey,
             isAccountAdditionButtonVisible = isAccountAdditionButtonVisible,
             isCopyButtonVisible = isCopyButtonVisible,
-            accountIconResource = accountIconResource,
+            accountIconDrawablePreview = accountIconDrawablePreview,
             showToolTipView = showToolTipView
         )
     }

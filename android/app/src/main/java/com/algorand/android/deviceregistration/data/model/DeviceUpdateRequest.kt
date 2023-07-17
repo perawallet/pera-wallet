@@ -16,8 +16,8 @@ import com.google.gson.annotations.SerializedName
 import java.util.Locale
 
 data class DeviceUpdateRequest(
-    @SerializedName("id") val id: String? = null,
-    @SerializedName("push_token") val pushToken: String?,
+    @SerializedName("id") val id: String,
+    @SerializedName("push_token") val pushToken: String,
     @SerializedName("accounts") val accountPublicKeys: List<String>,
     @SerializedName("application") val application: String,
     @SerializedName("platform") val platform: String = "android",

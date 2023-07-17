@@ -247,7 +247,4 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:${libVersions.room}"
     androidTestImplementation "androidx.test:runner:${testLibVersions.runner}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${testLibVersions.espresso}"
-
-    // Debug
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:${debugLibVersions.leakCanary}"
 }

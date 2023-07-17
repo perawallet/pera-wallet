@@ -17,9 +17,10 @@ import com.algorand.android.customviews.TriStatesCheckBox
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
 import com.algorand.android.mapper.AccountDisplayNameMapper
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ScreenState
 import com.algorand.android.models.ui.AccountAssetItemButtonState.CHECKED
+import com.algorand.android.modules.accounticon.ui.mapper.AccountIconDrawablePreviewMapper
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.asb.importbackup.accountselection.ui.mapper.AsbImportAccountSelectionPreviewMapper
 import com.algorand.android.modules.asb.importbackup.accountselection.ui.model.AsbImportAccountSelectionPreview
@@ -38,22 +39,26 @@ import com.algorand.android.utils.toShortenedAddress
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
 
+@SuppressWarnings("LongParameterList")
 class AsbImportAccountSelectionPreviewUseCase @Inject constructor(
     private val asbImportAccountSelectionPreviewMapper: AsbImportAccountSelectionPreviewMapper,
     private val multipleAccountSelectionListItemMapper: MultipleAccountSelectionListItemMapper,
     private val asbAccountImportParser: AsbAccountImportParser,
     private val accountDisplayNameMapper: AccountDisplayNameMapper,
     private val accountAdditionUseCase: AccountAdditionUseCase,
+    private val accountIconDrawablePreviewMapper: AccountIconDrawablePreviewMapper,
     accountDisplayNameUseCase: AccountDisplayNameUseCase,
     getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
     accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
-    accountItemConfigurationMapper: AccountItemConfigurationMapper
+    accountItemConfigurationMapper: AccountItemConfigurationMapper,
+    createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) : BaseMultipleAccountSelectionPreviewUseCase(
     multipleAccountSelectionListItemMapper = multipleAccountSelectionListItemMapper,
     getSortedAccountsByPreferenceUseCase = getSortedAccountsByPreferenceUseCase,
     accountSortPreferenceUseCase = accountSortPreferenceUseCase,
     accountItemConfigurationMapper = accountItemConfigurationMapper,
-    accountDisplayNameUseCase = accountDisplayNameUseCase
+    accountDisplayNameUseCase = accountDisplayNameUseCase,
+    createAccountIconDrawableUseCase = createAccountIconDrawableUseCase
 ) {
     fun getInitialPreview(): AsbImportAccountSelectionPreview {
         val titleItem = createTitleItem(textResId = R.string.choose_accounts_n_to_restore)
@@ -195,10 +200,16 @@ class AsbImportAccountSelectionPreviewUseCase @Inject constructor(
                 nfDomainName = null,
                 type = safeAccountType
             )
-            val accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(safeAccountType)
+            // Since these account are not in our local, we have to create them manually BUT
+            // do not forget that now are supporting only standard accounts in ASB
+            val accountIconDrawablePreview = accountIconDrawablePreviewMapper.mapToAccountIconDrawablePreview(
+                iconResId = R.drawable.ic_wallet,
+                iconTintResId = R.color.wallet_4_icon,
+                backgroundColorResId = R.color.wallet_4
+            )
             multipleAccountSelectionListItemMapper.mapToAccountItem(
                 accountDisplayName = accountDisplayName,
-                accountIconResource = accountIconResource,
+                accountIconDrawablePreview = accountIconDrawablePreview,
                 accountViewButtonState = CHECKED
             )
         }

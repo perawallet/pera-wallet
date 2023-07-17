@@ -16,7 +16,7 @@ import android.content.Context
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.deviceregistration.domain.usecase.FirebasePushTokenUseCase
 import com.algorand.android.modules.walletconnect.client.v1.WalletConnectClientV1Impl
-import com.algorand.android.modules.walletconnect.client.v1.decider.WalletConnectV1ChainIdentifierDecider
+import com.algorand.android.modules.walletconnect.client.v1.domain.decider.WalletConnectV1ChainIdentifierDecider
 import com.algorand.android.modules.walletconnect.client.v1.domain.repository.WalletConnectRepository
 import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.CreateWalletConnectProposalNamespaceUseCase
 import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.CreateWalletConnectSessionNamespaceUseCase
@@ -28,8 +28,9 @@ import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.GetWa
 import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.GetWalletConnectV1SessionCountUseCase
 import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.InsertWalletConnectV1SessionToDBUseCase
 import com.algorand.android.modules.walletconnect.client.v1.mapper.WalletConnectClientV1Mapper
+import com.algorand.android.modules.walletconnect.client.v1.retrycount.WalletConnectV1SessionRetryCounter
 import com.algorand.android.modules.walletconnect.client.v1.session.WalletConnectSessionBuilder
-import com.algorand.android.modules.walletconnect.client.v1.session.WalletConnectSessionCachedDataHandler
+import com.algorand.android.modules.walletconnect.client.v1.session.WalletConnectV1SessionCachedDataHandler
 import com.algorand.android.modules.walletconnect.client.v1.session.mapper.WalletConnectSessionConfigMapper
 import com.algorand.android.modules.walletconnect.client.v1.utils.WalletConnectV1ErrorCodeProvider
 import com.algorand.android.modules.walletconnect.client.v1.utils.WalletConnectV1IdentifierParser
@@ -65,7 +66,7 @@ object WalletConnectV1ClientModule {
         sessionBuilder: WalletConnectSessionBuilder,
         walletConnectMapper: WalletConnectClientV1Mapper,
         errorCodeProvider: WalletConnectV1ErrorCodeProvider,
-        sessionCachedDataHandler: WalletConnectSessionCachedDataHandler,
+        sessionCachedDataHandler: WalletConnectV1SessionCachedDataHandler,
         @Named(WalletConnectRepository.INJECTION_NAME)
         walletConnectRepository: WalletConnectRepository,
         getConnectedAccountsOfWalletConnectSessionUseCase: GetConnectedAccountsOfWalletConnectSessionUseCase,
@@ -78,7 +79,8 @@ object WalletConnectV1ClientModule {
         createWalletConnectProposalNamespaceUseCase: CreateWalletConnectProposalNamespaceUseCase,
         deleteWalletConnectAccountBySessionUseCase: DeleteWalletConnectAccountBySessionUseCase,
         getWalletConnectSessionsOrderedByCreationUseCase: GetWalletConnectSessionsOrderedByCreationUseCase,
-        getWalletConnectV1SessionCountUseCase: GetWalletConnectV1SessionCountUseCase
+        getWalletConnectV1SessionCountUseCase: GetWalletConnectV1SessionCountUseCase,
+        walletConnectV1SessionRetryCounter: WalletConnectV1SessionRetryCounter
     ): WalletConnectClient {
         return WalletConnectClientV1Impl(
             sessionBuilder = sessionBuilder,
@@ -96,7 +98,8 @@ object WalletConnectV1ClientModule {
             createWalletConnectProposalNamespaceUseCase = createWalletConnectProposalNamespaceUseCase,
             deleteWalletConnectAccountBySessionUseCase = deleteWalletConnectAccountBySessionUseCase,
             getWalletConnectSessionsOrderedByCreationUseCase = getWalletConnectSessionsOrderedByCreationUseCase,
-            getWalletConnectV1SessionCountUseCase = getWalletConnectV1SessionCountUseCase
+            getWalletConnectV1SessionCountUseCase = getWalletConnectV1SessionCountUseCase,
+            walletConnectSessionRetryCounter = walletConnectV1SessionRetryCounter
         )
     }
 

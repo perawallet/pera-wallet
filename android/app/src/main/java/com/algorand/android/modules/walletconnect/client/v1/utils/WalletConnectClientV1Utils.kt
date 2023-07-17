@@ -12,6 +12,7 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.utils
 
+import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1ChainIdentifier
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectEvent
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectMethod
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectVersionIdentifier
@@ -20,11 +21,13 @@ import org.walletconnect.Session
 
 object WalletConnectClientV1Utils {
 
-    fun getDefaultSessionEvents(): List<WalletConnectEvent> = listOf()
+    fun getDefaultSessionEvents(): List<WalletConnectEvent> = listOf(WalletConnectEvent.ACCOUNT_CHANGED)
 
-    fun getDefaultSessionMethods(): List<WalletConnectMethod> = listOf()
+    fun getDefaultSessionMethods(): List<WalletConnectMethod> = listOf(WalletConnectMethod.ALGO_SIGN_TXN)
 
     fun getWalletConnectV1VersionIdentifier() = WalletConnectVersionIdentifier.VERSION_1
+
+    fun getDefaultChainIdentifier() = WalletConnectV1ChainIdentifier.MAINNET_BACKWARD_SUPPORTABILITY
 
     fun isValidWalletConnectUrl(url: String): Boolean {
         return url.startsWith(WALLET_CONNECT_URL_PREFIX) && createSessionConfigFromUrl(url) != null

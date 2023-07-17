@@ -15,9 +15,14 @@ package com.algorand.android.usecase
 
 import com.algorand.android.mapper.AssetTransferAmountAssetPreviewMapper
 import com.algorand.android.mapper.AssetTransferAmountPreviewMapper
+import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
+import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.AssetTransferAmountPreview
 import com.algorand.android.models.AssetTransferAmountValidationPreviewResult
+import com.algorand.android.models.TargetUser
+import com.algorand.android.models.TransactionData
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.utils.Event
@@ -36,8 +41,37 @@ class AssetTransferAmountPreviewUseCase @Inject constructor(
     private val currencyUseCase: CurrencyUseCase,
     private val amountTransactionValidationUseCase: AmountTransactionValidationUseCase,
     private val assetTransferAmountAssetPreviewMapper: AssetTransferAmountAssetPreviewMapper,
-    private val accountNameIconUseCase: AccountNameIconUseCase
+    private val accountNameIconUseCase: AccountNameIconUseCase,
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
+
+    fun createSendTransactionData(
+        accountAddress: String,
+        note: String?,
+        selectedAsset: AssetInformation?,
+        amount: BigInteger,
+        assetTransaction: AssetTransaction
+    ): TransactionData.Send? {
+        val accountDetail = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data ?: return null
+        return TransactionData.Send(
+            senderAccountAddress = accountDetail.account.address,
+            senderAccountDetail = accountDetail.account.detail,
+            senderAccountType = accountDetail.account.type,
+            senderAuthAddress = accountDetail.accountInformation.rekeyAdminAddress,
+            senderAccountName = accountDetail.account.name,
+            isSenderRekeyedToAnotherAccount = accountDetail.accountInformation.isRekeyed(),
+            minimumBalance = accountDetail.accountInformation.getMinAlgoBalance().toLong(),
+            amount = amount,
+            assetInformation = selectedAsset ?: return null,
+            note = note,
+            targetUser = TargetUser(
+                contact = assetTransaction.receiverUser,
+                publicKey = assetTransaction.receiverUser?.publicKey.orEmpty(),
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountAddress)
+            )
+        )
+    }
 
     fun getAssetTransferAmountPreview(
         senderAddress: String,
@@ -53,7 +87,9 @@ class AssetTransferAmountPreviewUseCase @Inject constructor(
             displayCurrencySymbol = getDisplayCurrencySymbol(assetId)
         )
         val decimalSeparator = getDecimalSeparator()
-        val (accountName, accountIconResource) = accountNameIconUseCase.getAccountDisplayTextAndIcon(senderAddress)
+        val (accountName, accountIconDrawablePreview) = accountNameIconUseCase.getAccountDisplayTextAndIcon(
+            accountAddress = senderAddress
+        )
         return assetTransferAmountPreviewMapper.mapToSuccessPreview(
             assetTransferAmountAssetPreview = assetTransferAmountAssetPreviewMapper.mapTo(accountAssetData),
             enteredAmountSelectedCurrencyValue = enteredAmountSelectedCurrencyValue,
@@ -61,7 +97,7 @@ class AssetTransferAmountPreviewUseCase @Inject constructor(
             selectedAmount = amount,
             senderAddress = senderAddress,
             accountName = accountName,
-            accountIconResource = accountIconResource
+            accountIconDrawablePreview = accountIconDrawablePreview
         )
     }
 

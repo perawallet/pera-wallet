@@ -14,7 +14,7 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.AccountSelectionListItem
-import com.algorand.android.ui.ledgeraccountselection.SearchType
+import com.algorand.android.modules.baseledgeraccountselection.accountselection.ui.model.SearchType
 import javax.inject.Inject
 
 class LedgerAccountSelectionInstructionItemMapper @Inject constructor() {

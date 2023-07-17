@@ -14,6 +14,7 @@ package com.algorand.android.ui.accountoptions
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
@@ -23,6 +24,7 @@ import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.setFragmentNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,8 +58,8 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
         setupCopyButton()
         setupShowQrButton()
         setupAuthAddressButton()
-        setupRekeyToLedgerAccountOptionButton()
-        setupRekeyToStandardAccountOptionButton()
+        setupUndoRekeyOptionButton()
+        setupRekeyToOptions()
         setupRenameAccountButton()
         setupRemoveAccountButton()
         initObservers()
@@ -74,24 +76,29 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
         )
     }
 
-    private fun setupRekeyToLedgerAccountOptionButton() {
-        val canAccountSignTransaction = accountOptionsViewModel.canAccountSignTransaction()
-        if (canAccountSignTransaction) {
-            binding.rekeyToLedgerAccountButton.apply {
-                show()
-                setOnClickListener { navToRekeyToLedgerAccountFragment() }
-            }
+    private fun setupUndoRekeyOptionButton() {
+        binding.undoRekeyConstraintLayout.apply {
+            setOnClickListener { navToUndoRekeyNavigation() }
+            isVisible = accountOptionsViewModel.isUndoRekeyPossible()
         }
+        val authAccountDisplayName = accountOptionsViewModel.getAuthAccountDisplayName()
+        binding.rekeyedAccountTextView.text = context?.getString(
+            R.string.rekeyed_to_account_name,
+            authAccountDisplayName.getAccountPrimaryDisplayName()
+        )
     }
 
-    private fun setupRekeyToStandardAccountOptionButton() {
-        val canAccountRekeyToStandardAccount = accountOptionsViewModel.canAccountRekeyToStandardAccount()
-        if (canAccountRekeyToStandardAccount) {
-            binding.rekeyToStandardAccountButton.apply {
-                show()
-                setOnClickListener { navToRekeyToStandardAccountFragment() }
-            }
+    private fun setupRekeyToOptions() {
+        val canAccountSignTransaction = accountOptionsViewModel.canAccountSignTransaction()
+        binding.rekeyToLedgerAccountButton.apply {
+            isVisible = canAccountSignTransaction
+            setOnClickListener { navToRekeyToLedgerAccountFragment() }
         }
+        binding.rekeyToStandardAccountButton.apply {
+            isVisible = canAccountSignTransaction
+            setOnClickListener { navToRekeyToStandardAccountFragment() }
+        }
+        binding.rekeyDivider.isVisible = canAccountSignTransaction
     }
 
     private fun setupNotificationOptionButton(isMuted: Boolean) {
@@ -146,11 +153,8 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
     }
 
     private fun navToDisconnectAccountConfirmationBottomSheet() {
-        nav(
-            AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToWarningConfirmationNavigation(
-                accountOptionsViewModel.getRemovingAccountWarningConfirmationModel()
-            )
-        )
+        navBack()
+        setFragmentNavigationResult(ACCOUNT_REMOVE_ACTION_KEY, true)
     }
 
     private fun navToRenameAccountBottomSheet() {
@@ -192,5 +196,13 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
 
     private fun navToViewPassphraseBottomSheet() {
         nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToViewPassphraseNavigation(publicKey))
+    }
+
+    private fun navToUndoRekeyNavigation() {
+        nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRekeyUndoNavigation(publicKey))
+    }
+
+    companion object {
+        const val ACCOUNT_REMOVE_ACTION_KEY = "remove_account_action"
     }
 }

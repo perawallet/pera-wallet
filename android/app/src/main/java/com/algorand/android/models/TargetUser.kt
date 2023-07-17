@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import kotlinx.parcelize.Parcelize
 
 // this user is targetted to be sent.
@@ -22,5 +23,6 @@ data class TargetUser(
     val publicKey: String,
     val account: AccountCacheData? = null,
     val nftDomainAddress: String? = null,
-    val nftDomainServiceLogoUrl: String? = null
+    val nftDomainServiceLogoUrl: String? = null,
+    val accountIconDrawablePreview: AccountIconDrawablePreview?,
 ) : Parcelable

@@ -20,13 +20,13 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectTransactionSummaryViewBinding
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.BaseWalletConnectTransaction
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem
 import com.algorand.android.utils.ALGO_DECIMALS
+import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.extensions.changeTextAppearance
-import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAmount
@@ -55,7 +55,7 @@ class WalletConnectTransactionSummaryCardView(
                 accountBalance,
                 assetDecimal,
                 assetShortName,
-                accountIconResource
+                accountIconDrawablePreview
             )
             setTitleText(transactionAmount, assetDecimal, assetShortName, summaryTitle)
             setCurrencyText(formattedSelectedCurrencyValue)
@@ -107,12 +107,17 @@ class WalletConnectTransactionSummaryCardView(
         accountBalance: BigInteger?,
         assetDecimal: Int?,
         shortName: String?,
-        accountIconResource: AccountIconResource?
+        accountIconDrawablePreview: AccountIconDrawablePreview?
     ) {
         with(binding) {
-            if (accountIconResource != null) {
+            if (accountIconDrawablePreview != null) {
                 transactionAccountTypeImageView.apply {
-                    setAccountIconDrawable(accountIconResource, R.dimen.account_icon_size_small)
+                    val accountIconDrawable = AccountIconDrawable.create(
+                        context = context,
+                        accountIconDrawablePreview = accountIconDrawablePreview,
+                        sizeResId = R.dimen.spacing_large
+                    )
+                    setImageDrawable(accountIconDrawable)
                     show()
                 }
             }

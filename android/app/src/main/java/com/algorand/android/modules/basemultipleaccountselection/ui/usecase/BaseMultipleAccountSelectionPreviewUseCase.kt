@@ -17,10 +17,10 @@ import androidx.annotation.StringRes
 import com.algorand.android.customviews.TriStatesCheckBox
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.ui.AccountAssetItemButtonState.CHECKED
 import com.algorand.android.models.ui.AccountAssetItemButtonState.UNCHECKED
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.basemultipleaccountselection.ui.mapper.MultipleAccountSelectionListItemMapper
 import com.algorand.android.modules.basemultipleaccountselection.ui.model.MultipleAccountSelectionListItem
@@ -32,7 +32,8 @@ open class BaseMultipleAccountSelectionPreviewUseCase constructor(
     private val getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
     private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
     private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
-    private val accountDisplayNameUseCase: AccountDisplayNameUseCase
+    private val accountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     protected fun getSelectedAccountAddressList(
@@ -145,7 +146,7 @@ open class BaseMultipleAccountSelectionPreviewUseCase constructor(
                 accountItemConfigurationMapper.mapTo(
                     accountAddress = account.address,
                     accountDisplayName = accountDisplayNameUseCase.invoke(account.address),
-                    accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(account.address),
                     accountType = account.type,
                     showWarningIcon = true
                 )
@@ -156,15 +157,17 @@ open class BaseMultipleAccountSelectionPreviewUseCase constructor(
                     accountDisplayName = accountDisplayNameUseCase.invoke(address),
                     accountAddress = address,
                     accountType = type,
-                    accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type)
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(address),
                 )
             }
         ).mapNotNull { accountListItem ->
-            multipleAccountSelectionListItemMapper.mapToAccountItem(
-                accountDisplayName = accountListItem.itemConfiguration.accountDisplayName ?: return@mapNotNull null,
-                accountIconResource = accountListItem.itemConfiguration.accountIconResource ?: return@mapNotNull null,
-                accountViewButtonState = CHECKED
-            )
+            with(accountListItem.itemConfiguration) {
+                multipleAccountSelectionListItemMapper.mapToAccountItem(
+                    accountDisplayName = accountDisplayName ?: return@mapNotNull null,
+                    accountIconDrawablePreview = accountIconDrawablePreview ?: return@mapNotNull null,
+                    accountViewButtonState = CHECKED
+                )
+            }
         }
     }
 }

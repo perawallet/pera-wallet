@@ -31,4 +31,12 @@ class WalletConnectV1IdentifierParser @Inject constructor() {
     ): T? {
         return action(requestIdentifier.getIdentifier())
     }
+
+    suspend fun <T> withProposalIdentifier(
+        proposalIdentifier: WalletConnect.Session.ProposalIdentifier,
+        action: suspend (Long) -> T?
+    ): T? {
+        val sessionId = proposalIdentifier.getIdentifier().toLongOrNull() ?: return null
+        return action(sessionId)
+    }
 }

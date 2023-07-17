@@ -16,7 +16,7 @@ import androidx.annotation.StringRes
 import androidx.core.net.toUri
 import com.algorand.android.R
 import com.algorand.android.core.AccountManager
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.transaction.detail.ui.mapper.TransactionDetailItemMapper
 import com.algorand.android.modules.transaction.detail.ui.model.TransactionDetailItem
 import com.algorand.android.repository.ContactRepository
@@ -26,7 +26,8 @@ import javax.inject.Inject
 class GetTransactionDetailAccountUseCase @Inject constructor(
     private val accountManager: AccountManager,
     private val contactRepository: ContactRepository,
-    private val transactionDetailItemMapper: TransactionDetailItemMapper
+    private val transactionDetailItemMapper: TransactionDetailItemMapper,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     suspend fun getTransactionToAccount(publicKey: String): TransactionDetailItem.StandardTransactionItem.AccountItem {
@@ -104,7 +105,7 @@ class GetTransactionDetailAccountUseCase @Inject constructor(
                 publicKey = foundAccount.address,
                 isCopyButtonVisible = true,
                 isAccountAdditionButtonVisible = false,
-                accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(foundAccount.type),
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(publicKey),
                 showToolTipView = showToolTipView
             )
         }

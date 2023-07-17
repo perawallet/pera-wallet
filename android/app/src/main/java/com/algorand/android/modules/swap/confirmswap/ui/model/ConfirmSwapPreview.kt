@@ -14,8 +14,8 @@ package com.algorand.android.modules.swap.confirmswap.ui.model
 
 import android.content.res.Resources
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
 import com.algorand.android.modules.swap.confirmswap.domain.model.SwapQuoteTransaction
 import com.algorand.android.modules.swap.ledger.signwithledger.ui.model.LedgerDialogPayload
@@ -37,7 +37,7 @@ data class ConfirmSwapPreview(
     val swapQuote: SwapQuote,
     val isLoading: Boolean,
     val priceImpactWarningStatus: ConfirmSwapPriceImpactWarningStatus,
-    val accountIconResource: AccountIconResource,
+    val accountIconDrawablePreview: AccountIconDrawablePreview,
     val accountDisplayName: AccountDisplayName,
     val errorEvent: Event<ErrorResource>? = null,
     val slippageToleranceUpdateSuccessEvent: Event<Unit>? = null,

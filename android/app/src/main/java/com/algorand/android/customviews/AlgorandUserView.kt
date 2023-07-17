@@ -24,13 +24,13 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomUserViewBinding
 import com.algorand.android.models.AccountCacheData
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.TooltipConfig
 import com.algorand.android.models.User
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
+import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.enableLongPressToCopyText
 import com.algorand.android.utils.extensions.changeTextAppearance
 import com.algorand.android.utils.extensions.hide
-import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.extensions.setContactIconDrawable
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.loadImage
@@ -107,10 +107,16 @@ class AlgorandUserView @JvmOverloads constructor(
                 setOnClickListener { onAddButtonClick?.invoke(publicKey) }
                 isVisible = showAddButton
             }
-            accountIconImageView.setAccountIconDrawable(
-                accountIconResource = AccountIconResource.PLACEHOLDER,
-                iconSize = R.dimen.account_icon_size_normal
+            val accountIconDrawable = AccountIconDrawable.create(
+                context = context,
+                sizeResId = R.dimen.spacing_xlarge,
+                accountIconDrawablePreview = AccountIconDrawablePreview(
+                    backgroundColorResId = R.color.wallet_placeholder,
+                    iconTintResId = R.color.wallet_placeholder_icon,
+                    iconResId = R.drawable.ic_wallet
+                )
             )
+            accountIconImageView.setImageDrawable(accountIconDrawable)
         }
         if (enableAddressCopy) enableLongPressToCopyText(publicKey)
         if (showTooltip) showCopyTutorial()
@@ -133,7 +139,11 @@ class AlgorandUserView @JvmOverloads constructor(
         }
     }
 
-    fun setAccount(accountCacheData: AccountCacheData?, enableAddressCopy: Boolean = true) {
+    fun setAccount(
+        accountCacheData: AccountCacheData?,
+        accountIconDrawablePreview: AccountIconDrawablePreview?,
+        enableAddressCopy: Boolean = true
+    ) {
         with(binding) {
             mainTextView.apply {
                 maxLines = MAX_LINES_FOR_ACCOUNT
@@ -141,15 +151,16 @@ class AlgorandUserView @JvmOverloads constructor(
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
             if (accountCacheData?.account != null) {
-                val accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(
-                    accountCacheData.account.type
-                )
-                accountIconImageView.apply {
-                    setAccountIconDrawable(
-                        accountIconResource = accountIconResource,
-                        iconSize = R.dimen.account_icon_size_normal
+                if (accountIconDrawablePreview != null) {
+                    val accountIconDrawable = AccountIconDrawable.create(
+                        context,
+                        accountIconDrawablePreview = accountIconDrawablePreview,
+                        sizeResId = R.dimen.spacing_xlarge
                     )
-                    show()
+                    accountIconImageView.apply {
+                        setImageDrawable(accountIconDrawable)
+                        show()
+                    }
                 }
                 if (enableAddressCopy) enableLongPressToCopyText(accountCacheData.account.address)
             }
@@ -159,7 +170,7 @@ class AlgorandUserView @JvmOverloads constructor(
 
     fun setAccount(
         name: String,
-        accountIconResource: AccountIconResource?,
+        accountIconDrawablePreview: AccountIconDrawablePreview?,
         publicKey: String,
         enableAddressCopy: Boolean = true,
         showTooltip: Boolean = false
@@ -170,11 +181,13 @@ class AlgorandUserView @JvmOverloads constructor(
                 text = name
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
-            accountIconResource?.let {
-                accountIconImageView.setAccountIconDrawable(
-                    accountIconResource = it,
-                    iconSize = R.dimen.account_icon_size_normal
+            accountIconDrawablePreview?.let {
+                val accountIconDrawable = AccountIconDrawable.create(
+                    context = context,
+                    accountIconDrawablePreview = it,
+                    sizeResId = R.dimen.spacing_xlarge
                 )
+                accountIconImageView.setImageDrawable(accountIconDrawable)
                 accountIconImageView.show()
             } ?: accountIconImageView.hide()
             addContactButton.hide()

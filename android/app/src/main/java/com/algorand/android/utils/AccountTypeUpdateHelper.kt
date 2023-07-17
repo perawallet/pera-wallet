@@ -42,6 +42,12 @@ class AccountTypeUpdateHelper @Inject constructor(
                     accountManager.changeAccountType(account.address, newType, newDetail)
                     copy(account = account.copy(type = newType, detail = newDetail))
                 }
+                account.type == Account.Type.LEDGER && account.detail is Account.Detail.Ledger && isRekeyed -> {
+                    val newType = Account.Type.REKEYED
+                    val newDetail = Account.Detail.Rekeyed(secretKey = account.getSecretKey())
+                    accountManager.changeAccountType(account.address, newType, newDetail)
+                    copy(account = account.copy(type = newType, detail = newDetail))
+                }
                 else -> this
             }
         }

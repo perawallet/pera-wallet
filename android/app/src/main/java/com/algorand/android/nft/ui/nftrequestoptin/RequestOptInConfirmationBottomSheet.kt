@@ -108,7 +108,7 @@ class RequestOptInConfirmationBottomSheet : BaseDoubleButtonBottomSheet() {
         with(requestOptInConfirmationPreview) {
             setProgressVisibility(isLoadingVisible)
             globalErrorEvent?.consume()?.run {
-                showGlobalError(this)
+                showGlobalError(this, tag = baseActivityTag)
                 navBack()
             }
             requestSendSuccessEvent?.consume()?.run { navBack() }

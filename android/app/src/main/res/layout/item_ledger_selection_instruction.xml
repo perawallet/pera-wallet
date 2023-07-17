@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,32 +15,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="60dp"
-    android:gravity="center_horizontal"
+    android:layout_marginHorizontal="@dimen/spacing_xlarge"
+    android:layout_marginTop="@dimen/spacing_xxxlarge"
+    android:layout_marginBottom="@dimen/spacing_large"
     android:orientation="vertical">
 
     <ImageView
         android:layout_width="48dp"
         android:layout_height="48dp"
-        app:srcCompat="@drawable/ic_wallet_curved" />
+        app:srcCompat="@drawable/ic_wallet" />
 
     <TextView
         android:id="@+id/titleTextView"
-        style="@style/TextAppearance.Body.Large.Sans.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xlarge"
-        android:gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.Body.Large.Sans.Medium"
         tools:text="2 Accounts Found" />
 
     <TextView
         android:id="@+id/descriptionTextView"
-        style="@style/TextAppearance.Description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xxlarge"
         android:layout_marginTop="@dimen/spacing_small"
-        android:gravity="center_horizontal"
-        android:text="@string/this_ledger_device" />
+        android:text="@string/choose_the_account"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        android:textColor="@color/text_gray" />
 
 </LinearLayout>

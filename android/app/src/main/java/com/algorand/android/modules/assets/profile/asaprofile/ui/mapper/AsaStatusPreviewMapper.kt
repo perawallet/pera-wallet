@@ -36,7 +36,7 @@ class AsaStatusPreviewMapper @Inject constructor() {
         statusLabelTextResId: Int,
         actionButtonTextResId: Int,
         peraButtonState: PeraButtonState,
-        accountAddress: BaseAccountAddress.AccountAddress?
+        accountAddress: BaseAccountAddress.AccountAddress
     ): AsaStatusPreview.AdditionStatus {
         return AsaStatusPreview.AdditionStatus(
             statusLabelTextResId = statusLabelTextResId,
@@ -66,7 +66,7 @@ class AsaStatusPreviewMapper @Inject constructor() {
         statusLabelTextResId: Int,
         actionButtonTextResId: Int,
         peraButtonState: PeraButtonState,
-        accountAddress: BaseAccountAddress.AccountAddress?
+        accountAddress: BaseAccountAddress.AccountAddress
     ): AsaStatusPreview.RemovalStatus.CollectibleRemovalStatus {
         return AsaStatusPreview.RemovalStatus.CollectibleRemovalStatus(
             statusLabelTextResId = statusLabelTextResId,

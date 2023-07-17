@@ -15,6 +15,7 @@ package com.algorand.android.modules.webexport.accountconfirmation.ui.usecase
 import com.algorand.android.R
 import com.algorand.android.customviews.accountasseticonnameitem.mapper.AccountAssetIconNameConfigurationMapper
 import com.algorand.android.models.AccountDetail
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.webexport.accountconfirmation.domain.model.ExportBackupResponseDTO
 import com.algorand.android.modules.webexport.accountconfirmation.domain.usecase.WebExportAccountEncryptionUseCase
 import com.algorand.android.modules.webexport.accountconfirmation.ui.mapper.BaseAccountConfirmationListItemMapper
@@ -25,15 +26,16 @@ import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.sendErrorLog
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.flow
 
 class WebExportAccountConfirmationPreviewUseCase @Inject constructor(
     private val webExportAccountConfirmationPreviewMapper: WebExportAccountConfirmationPreviewMapper,
     private val baseAccountConfirmationListItemMapper: BaseAccountConfirmationListItemMapper,
     private val accountAssetIconNameConfigurationMapper: AccountAssetIconNameConfigurationMapper,
     private val webExportAccountEncryptionUseCase: WebExportAccountEncryptionUseCase,
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     fun getInitialPreview(
@@ -82,7 +84,7 @@ class WebExportAccountConfirmationPreviewUseCase @Inject constructor(
                 else -> {
                     sendErrorLog(
                         "Unhandled else case in" +
-                        " WebExportAccountConfirmationPreviewUseCase.exportEncryptedBackup"
+                            " WebExportAccountConfirmationPreviewUseCase.exportEncryptedBackup"
                     )
                 }
             }
@@ -111,7 +113,9 @@ class WebExportAccountConfirmationPreviewUseCase @Inject constructor(
     ): BaseAccountConfirmationListItem.AccountItem {
         return baseAccountConfirmationListItemMapper.mapToAccountItem(
             accountAssetIconNameConfiguration = accountAssetIconNameConfigurationMapper.mapTo(
-                accountDetail
+                accountAddress = accountDetail.account.address,
+                accountName = accountDetail.account.name,
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountDetail.account.address)
             ),
             topMarginResId = R.dimen.spacing_xxsmall,
             accountAddress = accountDetail.account.address

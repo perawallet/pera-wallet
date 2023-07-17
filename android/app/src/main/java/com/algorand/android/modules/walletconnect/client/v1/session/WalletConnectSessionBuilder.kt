@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.session
 
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionMetaDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionMetaDto
 import com.algorand.android.modules.walletconnect.client.v1.session.mapper.WalletConnectSessionConfigMapper
 import com.algorand.android.utils.browser.HTTPS_PROTOCOL
 import com.algorand.android.utils.browser.HTTP_PROTOCOL
@@ -39,7 +39,7 @@ class WalletConnectSessionBuilder @Inject constructor(
     private val walletConnectMapper: WalletConnectSessionConfigMapper
 ) {
 
-    fun createSession(url: String): WalletConnectSessionCachedData? {
+    fun createSession(url: String): WalletConnectV1SessionCachedData? {
         val sessionConfig = createSessionConfigFromUrl(url) ?: return null
         val fallbackBrowserGroupResponse = url.getFallBackBrowserFromWCUrlOrNull()
         return createWCSession(
@@ -50,9 +50,9 @@ class WalletConnectSessionBuilder @Inject constructor(
 
     fun createSession(
         sessionId: Long,
-        sessionMeta: WalletConnectSessionMetaDTO,
+        sessionMeta: WalletConnectSessionMetaDto,
         fallbackBrowserGroupResponse: String?
-    ): WalletConnectSessionCachedData? {
+    ): WalletConnectV1SessionCachedData? {
         val sessionConfig = walletConnectMapper.createSessionConfig(sessionMeta)
         return createWCSession(
             sessionConfig = sessionConfig,
@@ -65,7 +65,7 @@ class WalletConnectSessionBuilder @Inject constructor(
         sessionConfig: Config,
         sessionId: Long? = null,
         fallbackBrowserGroupResponse: String? = null
-    ): WalletConnectSessionCachedData? {
+    ): WalletConnectV1SessionCachedData? {
         val fullyQualifiedConfig = createFullyQualifiedSessionConfig(sessionConfig) ?: return null
 
         if (checkIfWalletConnectConfigHasInvalidBridgeProtocol(fullyQualifiedConfig.bridge)) return null
@@ -80,7 +80,7 @@ class WalletConnectSessionBuilder @Inject constructor(
             init()
         }
 
-        return WalletConnectSessionCachedData.create(
+        return WalletConnectV1SessionCachedData.create(
             session = session,
             sessionConfig = sessionConfig,
             sessionId = sessionId,

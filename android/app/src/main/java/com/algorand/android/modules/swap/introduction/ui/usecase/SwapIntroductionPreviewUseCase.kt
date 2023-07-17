@@ -12,16 +12,19 @@
 
 package com.algorand.android.modules.swap.introduction.ui.usecase
 
+import androidx.navigation.NavDirections
 import com.algorand.android.modules.swap.introduction.domain.usecase.SetSwapFeatureIntroductionPageVisibilityUseCase
 import com.algorand.android.modules.swap.introduction.ui.SwapIntroductionFragmentDirections
 import com.algorand.android.modules.swap.introduction.ui.mapper.SwapIntroductionPreviewMapper
 import com.algorand.android.modules.swap.introduction.ui.model.SwapIntroductionPreview
+import com.algorand.android.modules.swap.utils.SwapNavigationDestinationHelper
 import com.algorand.android.utils.Event
 import javax.inject.Inject
 
 class SwapIntroductionPreviewUseCase @Inject constructor(
     private val setSwapFeatureIntroductionPageVisibilityUseCase: SetSwapFeatureIntroductionPageVisibilityUseCase,
-    private val swapIntroductionPreviewMapper: SwapIntroductionPreviewMapper
+    private val swapIntroductionPreviewMapper: SwapIntroductionPreviewMapper,
+    private val swapNavigationDestinationHelper: SwapNavigationDestinationHelper
 ) {
 
     suspend fun getSwapClickUpdatedPreview(
@@ -31,25 +34,34 @@ class SwapIntroductionPreviewUseCase @Inject constructor(
         defaultFromAssetIdArg: Long,
         defaultToAssetIdArg: Long
     ): SwapIntroductionPreview {
-        setIntroductionPageAsShowed()
-        val navDirectionEvent = if (accountAddress.isNullOrBlank()) {
-            SwapIntroductionFragmentDirections.actionSwapIntroductionFragmentToSwapAccountSelectionNavigation(
-                fromAssetId = fromAssetId ?: defaultFromAssetIdArg,
-                toAssetId = toAssetId ?: defaultToAssetIdArg
-            )
-        } else {
-            SwapIntroductionFragmentDirections.actionSwapIntroductionFragmentToSwapNavigation(
-                accountAddress = accountAddress,
-                fromAssetId = fromAssetId ?: defaultFromAssetIdArg,
-                toAssetId = toAssetId ?: defaultToAssetIdArg
-            )
-        }
+        var swapNavDirection: NavDirections? = null
+        swapNavigationDestinationHelper.getSwapNavigationDestination(
+            accountAddress = accountAddress,
+            onNavToIntroduction = {
+                // Nothing to do
+            },
+            onNavToAccountSelection = {
+                swapNavDirection = SwapIntroductionFragmentDirections
+                    .actionSwapIntroductionFragmentToSwapAccountSelectionNavigation(
+                        fromAssetId = fromAssetId ?: defaultFromAssetIdArg,
+                        toAssetId = toAssetId ?: defaultToAssetIdArg
+                    )
+            },
+            onNavToSwap = { _accountAddress ->
+                swapNavDirection = SwapIntroductionFragmentDirections.actionSwapIntroductionFragmentToSwapNavigation(
+                    accountAddress = _accountAddress,
+                    fromAssetId = fromAssetId ?: defaultFromAssetIdArg,
+                    toAssetId = toAssetId ?: defaultToAssetIdArg
+                )
+            }
+        )
+
         return swapIntroductionPreviewMapper.mapToSwapIntroductionPreview(
-            navigationDirectionEvent = Event(navDirectionEvent)
+            navigationDirectionEvent = swapNavDirection?.let { Event(it) }
         )
     }
 
-    private suspend fun setIntroductionPageAsShowed() {
+    suspend fun setIntroductionPageAsShowed() {
         setSwapFeatureIntroductionPageVisibilityUseCase.setSwapFeatureIntroductionPageVisibility(false)
     }
 }

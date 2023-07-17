@@ -16,6 +16,7 @@ import com.algorand.android.models.BaseAssetTransferTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.ui.mapper.WalletConnectTransactionMapper
 import com.algorand.android.repository.TransactionsRepository
@@ -28,7 +29,7 @@ import javax.inject.Inject
 class WalletConnectCustomTransactionHandler @Inject constructor(
     private val transactionsRepository: TransactionsRepository,
     private val walletConnectTransactionMapper: WalletConnectTransactionMapper,
-    private val errorProvider: WalletConnectTransactionErrorProvider,
+    private val errorProvider: WalletConnectErrorProvider,
     private val accountCacheManager: AccountCacheManager,
     private val walletConnectCustomTransactionAssetDetailHandler: WalletConnectCustomTransactionAssetDetailHandler
 ) {
@@ -45,12 +46,13 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             val wcAlgoTxnRequestList = walletConnectTransactionMapper.parseTransactionPayload(payloadList)
 
             if (wcAlgoTxnRequestList == null) {
-                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.unableToParse))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.getUnableToParseTransactionError()))
                 return
             }
 
             if (wcAlgoTxnRequestList.size > MAX_TRANSACTION_COUNT) {
-                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.maxTransactionLimit))
+                val error = errorProvider.getMaxTransactionLimitError(MAX_TRANSACTION_COUNT)
+                onResult(Error(sessionIdentifier, requestIdentifier, error))
                 return
             }
 
@@ -59,52 +61,47 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             }
 
             if (walletConnectTxnList.size != wcAlgoTxnRequestList.size) {
-                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.unableToParse))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.getUnableToParseTransactionError()))
                 return
             }
 
             if (!checkIfNodesMatchesAndSetTransactionLastRound(walletConnectTxnList)) {
-                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.unauthorized.mismatchingNodes))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.getMismatchingNodesError()))
                 return
             }
 
             setAssetParamsIfNeed(walletConnectTxnList)
 
             if (hasInvalidAssetTransfer(walletConnectTxnList)) {
-                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.invalidAsset))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.getInvalidAssetError()))
                 return
             }
 
             val groupedWalletConnectTxnList = groupWalletConnectTransactions(walletConnectTxnList)
 
             if (groupedWalletConnectTxnList == null) {
-                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.rejected.failedGroupTransaction))
+                val error = errorProvider.getFailedGroupingTransactionsError()
+                onResult(Error(sessionIdentifier, requestIdentifier, error))
                 return
             }
 
             if (!areAllAddressPublicKeysValid(groupedWalletConnectTxnList)) {
-                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.invalidPublicKey))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.getInvalidPublicKeyError()))
                 return
             }
 
             if (hasValidSigner(walletConnectTxnList)) {
-                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.invalidSigner))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.getMissingSignerError()))
                 return
             }
 
             if (!hasAllAtomicAtLeastOneTxnNeedsToBeSigned(groupedWalletConnectTxnList)) {
-                onResult(
-                    Error(
-                        sessionIdentifier,
-                        requestIdentifier,
-                        errorProvider.invalidInput.atomicTxnNoNeedToBeSigned
-                    )
-                )
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.getAtomicNoNeedToSignError()))
                 return
             }
 
             if (!doAppHaveAtLeastOneSignerAccountInTxn(groupedWalletConnectTxnList)) {
-                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.unauthorized.missingSigner))
+                onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.getMissingSignerError()))
                 return
             }
 
@@ -121,7 +118,7 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             )
             onResult(Success(result))
         } catch (exception: Exception) {
-            onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.invalidInput.unableToParse))
+            onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.getUnableToParseTransactionError()))
         } finally {
             walletConnectCustomTransactionAssetDetailHandler.clearAssetCacheMap()
         }

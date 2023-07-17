@@ -93,7 +93,7 @@ class WalletConnectTransactionMapper @Inject constructor(
             dateTimeStamp = session.creationDateTimestamp,
             isConnected = session.isConnected,
             isSubscribed = session.isSubscribed,
-            connectedAccountsAddresses = session.connectedAddresses,
+            connectedAccountsAddresses = session.connectedAccounts.map { it.accountAddress },
             fallbackBrowserGroupResponse = session.fallbackBrowserGroupResponse,
         )
     }

@@ -20,44 +20,13 @@
     tools:ignore="MissingConstraints">
 
     <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/buttonContainerFlow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="buySellButton, swapButton, sendButton,moreButton"
         app:flow_maxElementsWrap="4"
+        app:flow_wrapMode="chain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buySellButton"
-        style="@style/IconButton.Transparent.QuickAction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/buy_sell"
-        app:icon="@drawable/ic_buy_sell" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/swapButton"
-        style="@style/IconButton.Transparent.QuickAction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/swap"
-        app:icon="@drawable/ic_swap_helper_button_bg_ghost" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/sendButton"
-        style="@style/IconButton.Transparent.QuickAction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/send"
-        app:icon="@drawable/ic_send_helper_button_bg_ghost" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/moreButton"
-        style="@style/IconButton.Transparent.QuickAction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/more"
-        app:icon="@drawable/ic_more_helper_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

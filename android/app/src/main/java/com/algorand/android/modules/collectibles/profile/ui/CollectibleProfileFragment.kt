@@ -15,17 +15,16 @@ package com.algorand.android.modules.collectibles.profile.ui
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.view.doOnLayout
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.algorand.android.R
 import com.algorand.android.databinding.LayoutAsaStatusBinding
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
 import com.algorand.android.modules.collectibles.detail.base.ui.BaseCollectibleDetailFragment
 import com.algorand.android.modules.collectibles.profile.ui.model.CollectibleProfilePreview
 import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.openTextShareBottomMenuChooser
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -84,34 +83,32 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
         asaStatusViewStubBinding.statusValueTextView.apply {
             when (asaStatusPreview) {
                 is AsaStatusPreview.AdditionStatus -> {
-                    isVisible = asaStatusPreview.accountName != null
-                    text = asaStatusPreview.accountName?.getDisplayAddress()
+                    show()
+                    text = asaStatusPreview.accountName.getDisplayAddress()
                     setDrawable(
                         start = AccountIconDrawable.create(
                             context = context,
-                            accountIconResource = asaStatusPreview.accountName?.accountIconResource
-                                ?: AccountIconResource.DEFAULT_ACCOUNT_ICON_RESOURCE,
-                            size = resources.getDimension(R.dimen.account_icon_size_small).toInt()
+                            accountIconDrawablePreview = asaStatusPreview.accountName.accountIconDrawablePreview,
+                            sizeResId = R.dimen.spacing_large
                         )
                     )
                     setOnLongClickListener {
-                        onAccountAddressCopied(asaStatusPreview.accountName?.publicKey.orEmpty())
+                        onAccountAddressCopied(asaStatusPreview.accountName.publicKey)
                         true
                     }
                 }
                 is AsaStatusPreview.RemovalStatus.CollectibleRemovalStatus -> {
-                    isVisible = asaStatusPreview.accountName != null
-                    text = asaStatusPreview.accountName?.getDisplayAddress()
+                    show()
+                    text = asaStatusPreview.accountName.getDisplayAddress()
                     setDrawable(
                         start = AccountIconDrawable.create(
                             context = context,
-                            accountIconResource = asaStatusPreview.accountName?.accountIconResource
-                                ?: AccountIconResource.DEFAULT_ACCOUNT_ICON_RESOURCE,
-                            size = resources.getDimension(R.dimen.account_icon_size_small).toInt()
+                            accountIconDrawablePreview = asaStatusPreview.accountName.accountIconDrawablePreview,
+                            sizeResId = R.dimen.spacing_large
                         )
                     )
                     setOnLongClickListener {
-                        onAccountAddressCopied(asaStatusPreview.accountName?.publicKey.orEmpty())
+                        onAccountAddressCopied(asaStatusPreview.accountName.publicKey)
                         true
                     }
                 }

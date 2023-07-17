@@ -22,25 +22,30 @@ import com.algorand.android.R
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.BaseWalletConnectTransaction
+import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.models.builder.WalletConnectTransactionListBuilder
+import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
+import com.algorand.android.ui.wctransactionrequest.ui.model.WalletConnectTransactionRequestPreview
+import com.algorand.android.ui.wctransactionrequest.ui.usecase.WalletConnectTransactionRequestPreviewUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.getOrElse
 import com.algorand.android.utils.preference.getFirstWalletConnectRequestBottomSheetShown
 import com.algorand.android.utils.preference.setFirstWalletConnectRequestBottomSheetShown
 import com.algorand.android.utils.walletconnect.WalletConnectSignManager
-import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class WalletConnectTransactionRequestViewModel @Inject constructor(
     private val walletConnectManager: WalletConnectManager,
-    private val errorProvider: WalletConnectTransactionErrorProvider,
+    private val errorProvider: WalletConnectErrorProvider,
     private val sharedPreferences: SharedPreferences,
     private val walletConnectSignManager: WalletConnectSignManager,
     private val transactionListBuilder: WalletConnectTransactionListBuilder,
@@ -57,13 +62,14 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     val transaction: WalletConnectTransaction?
         get() = walletConnectManager.transaction
 
-    val fallbackBrowserGroupResponse: String
-        get() = transaction?.session?.fallbackBrowserGroupResponse.orEmpty()
+    private val walletConnectSession: WalletConnectSession?
+        get() = transaction?.session
 
-    val peerMetaName: String
-        get() = transaction?.session?.peerMeta?.name.orEmpty()
+    private val shouldSkipConfirmation = savedStateHandle.getOrElse(SHOULD_SKIP_CONFIRMATION_KEY, false)
 
-    val shouldSkipConfirmation = savedStateHandle.getOrElse(SHOULD_SKIP_CONFIRMATION_KEY, false)
+    private val _walletConnectTransactionRequestPreviewFlow = MutableStateFlow(getInitialPreview())
+    val walletConnectTransactionRequestPreviewFlow: StateFlow<WalletConnectTransactionRequestPreview>
+        get() = _walletConnectTransactionRequestPreviewFlow
 
     fun setupWalletConnectSignManager(lifecycle: Lifecycle) {
         walletConnectSignManager.setup(lifecycle)
@@ -75,7 +81,7 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
                 walletConnectManager.rejectRequest(
                     sessionIdentifier = it.session.sessionIdentifier,
                     requestId = it.requestId,
-                    errorResponse = errorProvider.rejected.userRejection
+                    errorResponse = errorProvider.getUserRejectionError()
                 )
             }
         }
@@ -134,6 +140,21 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
         transactionList: List<List<BaseWalletConnectTransaction>>
     ): List<WalletConnectTransactionListItem> {
         return transactionListBuilder.createTransactionItems(transactionList)
+    }
+
+    fun onTransactionConfirmed() {
+        viewModelScope.launch {
+            val preview = walletConnectTransactionRequestPreviewUseCase.updatePreviewWithLaunchBackBrowserNavigation(
+                shouldSkipConfirmation = shouldSkipConfirmation,
+                walletConnectSession = walletConnectSession,
+                preview = _walletConnectTransactionRequestPreviewFlow.value
+            )
+            _walletConnectTransactionRequestPreviewFlow.emit(preview)
+        }
+    }
+
+    private fun getInitialPreview(): WalletConnectTransactionRequestPreview {
+        return walletConnectTransactionRequestPreviewUseCase.getInitialWalletConnectTransactionRequestPreview()
     }
 
     companion object {

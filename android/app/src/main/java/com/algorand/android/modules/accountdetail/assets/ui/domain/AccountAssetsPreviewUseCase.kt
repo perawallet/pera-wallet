@@ -21,9 +21,13 @@ import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.Additio
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingAdditionCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingDeletionCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.DeletionAssetData
+import com.algorand.android.modules.accountdetail.assets.ui.mapper.AccountAssetsPreviewMapper
 import com.algorand.android.modules.accountdetail.assets.ui.mapper.AccountDetailAssetItemMapper
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountAssetsPreview
 import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem
 import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.AccountPortfolioItem
+import com.algorand.android.modules.accountdetail.assets.ui.model.QuickActionItem
+import com.algorand.android.modules.accountstatehelper.domain.usecase.AccountStateHelperUseCase
 import com.algorand.android.modules.assets.filter.domain.usecase.ShouldDisplayNFTInAssetsPreferenceUseCase
 import com.algorand.android.modules.assets.filter.domain.usecase.ShouldDisplayOptedInNFTInAssetsPreferenceUseCase
 import com.algorand.android.modules.assets.filter.domain.usecase.ShouldHideZeroBalanceAssetsPreferenceUseCase
@@ -38,11 +42,11 @@ import com.algorand.android.usecase.GetFormattedAccountMinimumBalanceUseCase
 import com.algorand.android.utils.formatAsAlgoAmount
 import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.isGreaterThan
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 
 @SuppressWarnings("LongParameterList")
 class AccountAssetsPreviewUseCase @Inject constructor(
@@ -56,10 +60,12 @@ class AccountAssetsPreviewUseCase @Inject constructor(
     private val shouldHideZeroBalanceAssetsPreferenceUseCase: ShouldHideZeroBalanceAssetsPreferenceUseCase,
     private val shouldDisplayNFTInAssetsPreferenceUseCase: ShouldDisplayNFTInAssetsPreferenceUseCase,
     private val shouldDisplayOptedInNFTInAssetsPreferenceUseCase: ShouldDisplayOptedInNFTInAssetsPreferenceUseCase,
-    private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase
+    private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase,
+    private val accountStateHelperUseCase: AccountStateHelperUseCase,
+    private val accountAssetsPreviewMapper: AccountAssetsPreviewMapper
 ) {
 
-    fun fetchAccountDetail(accountAddress: String, query: String): Flow<List<AccountDetailAssetsItem>> {
+    fun fetchAccountDetail(accountAddress: String, query: String): Flow<AccountAssetsPreview> {
         return combine(
             accountAssetDataUseCase.getAccountAllAssetDataFlow(accountAddress, true),
             accountCollectibleDataUseCase.getAccountAllCollectibleDataFlow(accountAddress),
@@ -84,26 +90,45 @@ class AccountAssetsPreviewUseCase @Inject constructor(
                     secondaryAccountValue += secondaryNFTsValue
                 }
             )
-            mutableListOf<AccountDetailAssetsItem>().apply {
+            val accountDetail = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data
+            val isWatchAccount = accountDetail?.account?.type == Account.Type.WATCH
+            val accountDetailAssetsItemList = mutableListOf<AccountDetailAssetsItem>().apply {
                 val accountPortfolioItem = createAccountPortfolioItem(primaryAccountValue, secondaryAccountValue)
                 add(accountPortfolioItem)
-                val canAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(accountAddress)
-                if (canAccountSignTransaction) {
-                    val requiredMinimumBalanceItem = createRequiredMinimumBalanceItem(accountAddress)
-                    add(requiredMinimumBalanceItem)
-                    val quickActionsItem = accountDetailAssetItemMapper.mapToQuickActionsItem(
-                        isSwapButtonSelected = getSwapFeatureRedDotVisibilityUseCase.getSwapFeatureRedDotVisibility()
-                    )
-                    add(quickActionsItem)
-                }
-                add(accountDetailAssetItemMapper.mapToTitleItem(R.string.assets, canAccountSignTransaction))
+                val requiredMinimumBalanceItem = createRequiredMinimumBalanceItem(accountAddress)
+                add(requiredMinimumBalanceItem)
+                add(createQuickActionItemList(isWatchAccount))
+                val hasAccountAuthority = accountStateHelperUseCase.hasAccountAuthority(accountAddress)
+                add(accountDetailAssetItemMapper.mapToTitleItem(R.string.assets, hasAccountAuthority))
                 add(accountDetailAssetItemMapper.mapToSearchViewItem(query))
                 addAll(assetItemSortUseCase.sortAssets(assetItemList + collectibleItemList))
                 if (assetItemList.isEmpty() && collectibleItemList.isEmpty()) {
                     add(accountDetailAssetItemMapper.mapToNoAssetFoundViewItem())
                 }
             }
+            accountAssetsPreviewMapper.mapToAccountAssetsPreview(
+                accountDetailAssetsItemList = accountDetailAssetsItemList,
+                isFloatingActionButtonVisible = !isWatchAccount
+            )
         }
+    }
+
+    private suspend fun createQuickActionItemList(
+        isWatchAccount: Boolean
+    ): AccountDetailAssetsItem.QuickActionItemContainer {
+        val quickActionItemList = mutableListOf<QuickActionItem>().apply {
+            if (isWatchAccount) {
+                add(QuickActionItem.CopyAddressButton)
+                add(QuickActionItem.ShowAddressButton)
+            } else {
+                add(QuickActionItem.BuySellButton)
+                val isSwapSelected = getSwapFeatureRedDotVisibilityUseCase.getSwapFeatureRedDotVisibility()
+                add(accountDetailAssetItemMapper.mapToSwapQuickActionItem(isSwapSelected))
+                add(QuickActionItem.SendButton)
+            }
+            add(QuickActionItem.MoreButton)
+        }
+        return accountDetailAssetItemMapper.mapToQuickActionItemContainer(quickActionItemList)
     }
 
     private suspend fun createAssetListItems(
@@ -179,6 +204,7 @@ class AccountAssetsPreviewUseCase @Inject constructor(
             shouldDisplayNFTInAssetsPreference && !shouldDisplayOptedInNFTInAssetsPreference -> {
                 accountNFTData.filter { it is BaseOwnedCollectibleData && it.isOwnedByTheUser }
             }
+
             shouldDisplayNFTInAssetsPreference -> accountNFTData
             else -> emptyList()
         }
@@ -249,16 +275,13 @@ class AccountAssetsPreviewUseCase @Inject constructor(
                         nftListingViewType = nftListingViewType
                     )
                 }
+
                 is PendingAdditionCollectibleData -> mapToPendingAdditionNFTITem(assetData)
                 is PendingDeletionCollectibleData -> mapToPendingRemovalNFTItem(assetData)
                 // TODO: We should use interface instead of using when
                 else -> null
             }
         }
-    }
-
-    fun canAccountSignTransactions(publicKey: String): Boolean {
-        return accountDetailUseCase.canAccountSignTransaction(publicKey)
     }
 
     companion object {

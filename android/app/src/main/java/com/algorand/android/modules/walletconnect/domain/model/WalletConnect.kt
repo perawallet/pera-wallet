@@ -41,14 +41,34 @@ interface WalletConnect {
         val description: String?,
         val icons: List<String>?,
         val redirectUrl: String?
-    )
+    ) {
+        override fun equals(other: Any?): Boolean {
+            if (other !is PeerMeta) return false
+            if (name != other.name) return false
+            if (url != other.url) return false
+            if (description != other.description) return false
+            if (icons != other.icons) return false
+            if (redirectUrl != other.redirectUrl) return false
+            return true
+        }
+
+        @Suppress("MagicNumber")
+        override fun hashCode(): Int {
+            var result = name.hashCode()
+            result = 31 * result + url.hashCode()
+            result = 31 * result + (description?.hashCode() ?: 0)
+            result = 31 * result + (icons?.hashCode() ?: 0)
+            result = 31 * result + (redirectUrl?.hashCode() ?: 0)
+            return result
+        }
+    }
 
     data class SessionDetail(
         val sessionIdentifier: SessionIdentifier,
         val topic: String,
         val peerMeta: PeerMeta,
         val sessionMeta: Session.Meta,
-        val namespaces: Map<String, Namespace.Session>,
+        val namespaces: Map<WalletConnectBlockchain, Namespace.Session>,
         val creationDateTimestamp: Long,
         val isSubscribed: Boolean,
         val fallbackBrowserGroupResponse: String?,
@@ -56,10 +76,7 @@ interface WalletConnect {
         val expiry: Model.Expiry?, // TODO Make this non-nullable after removing WC v1
         override val versionIdentifier: WalletConnectVersionIdentifier
     ) : WalletConnect {
-        val chainId: String?
-            get() = namespaces.keys.firstOrNull()
-
-        val connectedAddresses: List<String>
+        val connectedAccounts: List<WalletConnectConnectedAccount>
             get() = namespaces.firstOrNull()?.accounts.orEmpty()
 
         val peerIconUri: Uri?
@@ -85,8 +102,6 @@ interface WalletConnect {
 
             data class Success(
                 val sessionIdentifier: SessionIdentifier,
-                val chainIdentifier: ChainIdentifier,
-                val accountList: List<String>,
                 override val versionIdentifier: WalletConnectVersionIdentifier
             ) : Update()
 
@@ -104,42 +119,26 @@ interface WalletConnect {
             ) : Settle()
 
             data class Error(
-                val errorMessage: String,
+                val errorMessage: String?,
+                val throwable: Throwable?,
+                val sessionIdentifier: SessionIdentifier?,
                 override val versionIdentifier: WalletConnectVersionIdentifier
             ) : Settle()
         }
 
-        /**
-        Required Namespaces example;
-        eip155 to Proposal(
-        chains=[
-        eip155: 1
-        ],
-        methods=[
-        eth_sendTransaction,
-        personal_sign,
-        eth_sign,
-        eth_signTypedData
-        ],
-        events=[
-        chainChanged,
-        accountChanged
-        ],
-        extensions=null
-        )
-        }
-         */
         data class Proposal(
             val proposalIdentifier: ProposalIdentifier,
             val relayProtocol: String?,
             val relayData: String?,
             val peerMeta: PeerMeta,
-            val namespaces: Namespace.Proposal,
-            val requiredNamespaces: Map<String, Namespace.Proposal>,
-            val chainIdentifier: ChainIdentifier,
+            val requiredNamespaces: Map<WalletConnectBlockchain, Namespace.Proposal>,
             val fallbackBrowserGroupResponse: String?,
             override val versionIdentifier: WalletConnectVersionIdentifier
-        ) : Session()
+        ) : Session() {
+
+            val chainId: ChainIdentifier?
+                get() = requiredNamespaces.firstOrNull()?.chains?.firstOrNull()
+        }
 
         data class Error(
             val sessionIdentifier: SessionIdentifier,
@@ -155,6 +154,10 @@ interface WalletConnect {
                 val topic: String,
                 val version: String
             ) : Meta()
+
+            data class Version2(
+                val topic: String
+            ) : Meta()
         }
 
         interface ProposalIdentifier : WalletConnect {
@@ -166,15 +169,16 @@ interface WalletConnect {
 
         data class Proposal(
             val chains: List<ChainIdentifier>,
-            val methods: List<String>,
-            val events: List<String>,
+            val methods: List<WalletConnectMethod>,
+            val events: List<WalletConnectEvent>,
             override val versionIdentifier: WalletConnectVersionIdentifier
         ) : Namespace()
 
         data class Session(
-            val accounts: List<String>,
-            val methods: List<String>,
-            val events: List<String>,
+            val accounts: List<WalletConnectConnectedAccount>,
+            val methods: List<WalletConnectMethod>,
+            val events: List<WalletConnectEvent>,
+            val chains: List<ChainIdentifier>,
             override val versionIdentifier: WalletConnectVersionIdentifier
         ) : Namespace()
     }
@@ -184,7 +188,7 @@ interface WalletConnect {
         data class Session(
             val topic: String,
             val expiry: Expiry,
-            val namespaces: Map<String, Namespace.Session>,
+            val namespaces: Map<WalletConnectBlockchain, Namespace.Session>,
             val metaData: PeerMeta?,
             override val versionIdentifier: WalletConnectVersionIdentifier
         ) : WalletConnect

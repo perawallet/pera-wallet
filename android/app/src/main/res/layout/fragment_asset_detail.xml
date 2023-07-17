@@ -19,7 +19,7 @@
     android:background="@color/hero_bg"
     app:layoutDescription="@xml/scene_fragment_asset_detail">
 
-    <com.algorand.android.customviews.CustomToolbar
+    <com.algorand.android.customviews.toolbar.CustomToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="@dimen/default_toolbar_height"

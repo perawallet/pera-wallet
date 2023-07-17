@@ -20,9 +20,9 @@ import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.customviews.SwapAssetInputView
 import com.algorand.android.databinding.FragmentAssetSwapBinding
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.swap.assetselection.fromasset.ui.SwapFromAssetSelectionFragment.Companion.SWAP_FROM_ASSET_ID_KEY
 import com.algorand.android.modules.swap.assetselection.toasset.ui.SwapToAssetSelectionFragment.Companion.SWAP_TO_ASSET_ID_KEY
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
@@ -111,8 +111,10 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
         binding.switchAssetsButton.isVisible = isEnabled
     }
 
-    private val accountIconResourceCollector: suspend (AccountIconResource?) -> Unit = { accountIconResource ->
-        setToolbarAccountIcon(accountIconResource)
+    private val accountIconResourceCollector: suspend (
+        AccountIconDrawablePreview
+    ) -> Unit = { accountIconDrawablePreview ->
+        setToolbarAccountIcon(accountIconDrawablePreview)
     }
 
     private val formattedPercentageTextCollector: suspend (String) -> Unit = { formattedPercentageText ->
@@ -191,7 +193,7 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
                     accountDisplayNameCollector
                 )
                 collectLatestOnLifecycle(
-                    map { it.accountIconResource }.distinctUntilChanged(),
+                    map { it.accountIconDrawablePreview }.distinctUntilChanged(),
                     accountIconResourceCollector
                 )
                 collectLatestOnLifecycle(
@@ -312,13 +314,12 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
         }
     }
 
-    private fun setToolbarAccountIcon(accountIconResource: AccountIconResource?) {
-        if (accountIconResource == null) return
-        context?.run {
-            val iconSize = resources.getDimensionPixelSize(R.dimen.account_icon_size_xsmall)
-            AccountIconDrawable.create(this, accountIconResource, iconSize)?.let { drawable ->
-                getAppToolbar()?.setSubtitleStartDrawable(drawable)
-            }
-        }
+    private fun setToolbarAccountIcon(accountIconDrawablePreview: AccountIconDrawablePreview) {
+        val accountIconDrawable = AccountIconDrawable.create(
+            context = binding.root.context,
+            accountIconDrawablePreview = accountIconDrawablePreview,
+            sizeResId = R.dimen.spacing_normal
+        )
+        getAppToolbar()?.setSubtitleStartDrawable(accountIconDrawable)
     }
 }

@@ -18,13 +18,18 @@ import com.algorand.android.core.BaseUseCase
 import com.algorand.android.mapper.WarningConfirmationMapper
 import com.algorand.android.models.Account
 import com.algorand.android.models.WarningConfirmation
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
+import com.algorand.android.modules.accountstatehelper.domain.usecase.AccountStateHelperUseCase
 import com.algorand.android.repository.AccountRepository
+import com.algorand.android.utils.AccountDisplayName
 import javax.inject.Inject
 
 class AccountOptionsUseCase @Inject constructor(
     private val accountRepository: AccountRepository,
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val warningConfirmationMapper: WarningConfirmationMapper
+    private val warningConfirmationMapper: WarningConfirmationMapper,
+    private val accountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val accountStateHelperUseCase: AccountStateHelperUseCase
 ) : BaseUseCase() {
 
     fun isThereAnyAsset(publicKey: String): Boolean {
@@ -50,20 +55,21 @@ class AccountOptionsUseCase @Inject constructor(
     }
 
     fun canAccountSignTransaction(accountAddress: String): Boolean {
-        return accountDetailUseCase.canAccountSignTransaction(accountAddress)
+        return accountStateHelperUseCase.hasAccountAuthority(accountAddress)
     }
 
-    fun canAccountRekeyToStandardAccount(accountAddress: String): Boolean {
-        return accountDetailUseCase.canAccountSignTransaction(accountAddress)
+    fun isUndoRekeyPossible(accountAddress: String): Boolean {
+        return accountDetailUseCase.isAccountRekeyed(accountAddress) && canAccountSignTransaction(accountAddress)
     }
 
     fun getRemovingAccountWarningConfirmationModel(publicKey: String): WarningConfirmation {
         val descriptionRes = when (accountDetailUseCase.getAccountType(publicKey)) {
             Account.Type.STANDARD, Account.Type.LEDGER, Account.Type.REKEYED, Account.Type.REKEYED_AUTH -> {
-                R.string.you_are_about_to_remove_main_account
+                R.string.you_are_about_to_remove_account
             }
+
             Account.Type.WATCH -> R.string.you_are_about_to_remove_watch_account
-            else -> R.string.you_are_about_to_remove_main_account
+            else -> R.string.you_are_about_to_remove_account
         }
         return warningConfirmationMapper.mapToAccountWarningConfirmation(
             drawableRes = R.drawable.ic_trash,
@@ -72,5 +78,10 @@ class AccountOptionsUseCase @Inject constructor(
             positiveButtonTextRes = R.string.remove,
             negativeButtonTextRes = R.string.keep_it
         )
+    }
+
+    fun getAuthAccountDisplayName(accountAddress: String): AccountDisplayName {
+        val authAddress = getAuthAddress(accountAddress).orEmpty()
+        return accountDisplayNameUseCase.invoke(authAddress)
     }
 }

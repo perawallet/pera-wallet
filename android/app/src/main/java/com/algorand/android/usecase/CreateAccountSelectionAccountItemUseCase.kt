@@ -16,8 +16,8 @@ import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemCo
 import com.algorand.android.mapper.AccountSelectionListItemMapper
 import com.algorand.android.mapper.BaseAccountAndAssetListItemMapper
 import com.algorand.android.models.Account.Companion.defaultAccountType
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseAccountSelectionListItem
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import javax.inject.Inject
 
@@ -25,7 +25,8 @@ class CreateAccountSelectionAccountItemUseCase @Inject constructor(
     private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
     private val accountSelectionListItemMapper: AccountSelectionListItemMapper,
     private val baseAccountAndAssetListItemMapper: BaseAccountAndAssetListItemMapper,
-    private val accountDisplayNameUseCase: AccountDisplayNameUseCase
+    private val accountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     fun createAccountSelectionAccountItemFromAccountAddress(
@@ -34,7 +35,7 @@ class CreateAccountSelectionAccountItemUseCase @Inject constructor(
         val accountType = defaultAccountType
         val accountItemConfiguration = accountItemConfigurationMapper.mapTo(
             accountAddress = accountAddress,
-            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(accountType),
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountAddress),
             accountType = accountType,
             accountDisplayName = accountDisplayNameUseCase.invoke(accountAddress)
         )

@@ -12,19 +12,26 @@
 
 package com.algorand.android.modules.rekey.rekeytostandardaccount.confirmation.ui.model
 
-import androidx.annotation.StringRes
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.models.AnnotatedString
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
+import com.algorand.android.modules.rekey.baserekeyconfirmation.ui.model.BaseRekeyConfirmationFields
+import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.Event
 
 data class RekeyToStandardAccountConfirmationPreview(
-    val oldAccountTypeIconResource: AccountIconResource,
-    @StringRes val oldAccountTitleTextResId: Int,
-    val oldAccountDisplayName: String,
-    val newAccountTypeIconResource: AccountIconResource,
-    @StringRes val newAccountTitleTextResId: Int,
-    val newAccountDisplayName: String,
-    val onDisplayCalculatedTransactionFeeEvent: Event<String>?,
-    val isLoading: Boolean,
-    val navToRekeyToStandardAccountVerifyFragmentEvent: Event<Unit>?,
-    val showGlobalErrorEvent: Event<String>?
-)
+    override val isLoading: Boolean,
+    override val titleTextResId: Int,
+    override val descriptionAnnotatedString: AnnotatedString,
+    override val subtitleTextResId: Int,
+    override val rekeyedAccountDisplayName: AccountDisplayName,
+    override val rekeyedAccountIconResource: AccountIconDrawablePreview,
+    override val authAccountDisplayName: AccountDisplayName,
+    override val authAccountIconResource: AccountIconDrawablePreview,
+    override val currentlyRekeyedAccountDisplayName: AccountDisplayName?,
+    override val currentlyRekeyedAccountIconDrawable: AccountIconDrawablePreview?,
+    override val formattedTransactionFee: String?,
+    override val navToRekeyResultInfoFragmentEvent: Event<Unit>?,
+    override val showGlobalErrorEvent: Event<Pair<Int, String>>?,
+    override val navToRekeyedAccountConfirmationBottomSheetEvent: Event<Unit>?,
+    override val onSendTransactionEvent: Event<Unit>?
+) : BaseRekeyConfirmationFields

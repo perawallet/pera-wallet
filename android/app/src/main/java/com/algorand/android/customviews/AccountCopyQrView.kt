@@ -21,9 +21,9 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomAccountCopyQrViewBinding
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
+import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.extensions.hide
-import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.viewbinding.viewBinding
 
 class AccountCopyQrView @JvmOverloads constructor(
@@ -40,13 +40,13 @@ class AccountCopyQrView @JvmOverloads constructor(
         initUi()
     }
 
-    fun setAccountIcon(accountIconResource: AccountIconResource?) {
-        accountIconResource?.let {
-            binding.accountIconImageView.setAccountIconDrawable(
-                it,
-                R.dimen.account_icon_size_normal
-            )
-        }
+    fun setAccountIcon(accountIconDrawablePreview: AccountIconDrawablePreview) {
+        val accountIconDrawable = AccountIconDrawable.create(
+            context = context,
+            accountIconDrawablePreview = accountIconDrawablePreview,
+            sizeResId = R.dimen.spacing_xlarge
+        )
+        binding.accountIconImageView.setImageDrawable(accountIconDrawable)
     }
 
     fun setAccountName(name: String) {

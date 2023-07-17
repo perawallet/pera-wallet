@@ -25,7 +25,7 @@ import com.algorand.android.core.BaseFragment
 import com.algorand.android.customviews.CollectibleMediaPager
 import com.algorand.android.databinding.FragmentCollectibleDetailBinding
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.IconButton
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.IconButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.collectibles.action.optin.CollectibleOptInActionBottomSheet.Companion.OPT_IN_COLLECTIBLE_ACTION_RESULT_KEY
 import com.algorand.android.modules.collectibles.action.optout.CollectibleOptOutConfirmationBottomSheet.Companion.COLLECTIBLE_OPT_OUT_KEY

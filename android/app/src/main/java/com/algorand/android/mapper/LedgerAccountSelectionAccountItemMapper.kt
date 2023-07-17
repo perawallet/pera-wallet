@@ -17,7 +17,9 @@ import androidx.annotation.DrawableRes
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AccountSelectionListItem
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.toShortenedAddress
 import javax.inject.Inject
 
@@ -27,6 +29,8 @@ class LedgerAccountSelectionAccountItemMapper @Inject constructor() {
         accountInformation: AccountInformation,
         accountDetail: Account.Detail,
         accountCacheManager: AccountCacheManager,
+        accountDisplayName: AccountDisplayName,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
         @DrawableRes selectorDrawableRes: Int
     ): AccountSelectionListItem.AccountItem {
         with(accountInformation) {
@@ -38,7 +42,9 @@ class LedgerAccountSelectionAccountItemMapper @Inject constructor() {
                     accountName = address.toShortenedAddress()
                 ),
                 accountInformation = this,
-                selectorDrawableRes = selectorDrawableRes
+                selectorDrawableRes = selectorDrawableRes,
+                accountDisplayName = accountDisplayName,
+                accountIconDrawablePreview = accountIconDrawablePreview
             )
         }
     }

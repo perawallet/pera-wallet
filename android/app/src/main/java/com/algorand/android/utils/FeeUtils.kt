@@ -13,6 +13,7 @@
 package com.algorand.android.utils
 
 import com.algorand.android.models.AccountInformation
+import kotlin.math.max
 
 const val MIN_BALANCE_TO_KEEP_PER_OPTED_IN_APPS = 100000
 private const val MIN_BALANCE_TO_KEEP_PER_OPTED_IN_ASSET = 100000
@@ -21,6 +22,8 @@ private const val MIN_BALANCE_TO_KEEP_PER_APP_TOTAL_SCHEMA_INT = 28500
 private const val MIN_BALANCE_TO_KEEP_PER_APP_TOTAL_SCHEMA_BYTE_SLICE = 50000
 private const val MIN_BALANCE_TO_KEEP_PER_APP_EXTRA_PAGES = 100000
 private const val MIN_BALANCE = 100000
+
+private const val REKEY_BYTE_ARRAY_SIZE = 30
 
 fun calculateMinBalance(accountInformation: AccountInformation, includeMinBalance: Boolean): Long {
     with(accountInformation) {
@@ -38,4 +41,8 @@ fun calculateMinBalance(accountInformation: AccountInformation, includeMinBalanc
             MIN_BALANCE_TO_KEEP_PER_APP_EXTRA_PAGES * extraAppPages +
             if (includeMinBalance) MIN_BALANCE else 0
     }
+}
+
+fun calculateRekeyFee(fee: Long, minFee: Long?): Long {
+    return max(REKEY_BYTE_ARRAY_SIZE * fee, minFee ?: MIN_FEE)
 }

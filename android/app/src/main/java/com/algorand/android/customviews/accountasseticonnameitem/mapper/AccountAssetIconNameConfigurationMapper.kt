@@ -13,20 +13,21 @@
 package com.algorand.android.customviews.accountasseticonnameitem.mapper
 
 import com.algorand.android.customviews.accountasseticonnameitem.model.AccountAssetIconNameConfiguration
-import com.algorand.android.models.AccountDetail
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.toShortenedAddress
 import javax.inject.Inject
 
 class AccountAssetIconNameConfigurationMapper @Inject constructor() {
 
-    fun mapTo(accountDetail: AccountDetail): AccountAssetIconNameConfiguration {
-        with(accountDetail.account) {
-            return AccountAssetIconNameConfiguration(
-                startAccountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
-                title = name,
-                description = address.toShortenedAddress()
-            )
-        }
+    fun mapTo(
+        accountAddress: String,
+        accountName: String,
+        accountIconDrawablePreview: AccountIconDrawablePreview
+    ): AccountAssetIconNameConfiguration {
+        return AccountAssetIconNameConfiguration(
+            accountIconDrawablePreview = accountIconDrawablePreview,
+            title = accountName,
+            description = accountAddress.toShortenedAddress()
+        )
     }
 }

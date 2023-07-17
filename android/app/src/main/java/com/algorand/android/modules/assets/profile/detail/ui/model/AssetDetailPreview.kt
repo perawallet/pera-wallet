@@ -15,8 +15,7 @@ package com.algorand.android.modules.assets.profile.detail.ui.model
 import androidx.navigation.NavDirections
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.discover.home.domain.model.TokenDetailInfo
-import com.algorand.android.models.AccountIconResource
-import com.algorand.android.models.AnnotatedString
+import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.Event
@@ -30,15 +29,15 @@ data class AssetDetailPreview(
     val formattedSecondaryValue: String,
     val isAlgo: Boolean,
     val verificationTierConfiguration: VerificationTierConfiguration,
-    val accountIconResource: AccountIconResource,
+    val accountDetailSummary: AccountDetailSummary?,
     val accountDisplayName: AccountDisplayName,
     val baseAssetDrawableProvider: BaseAssetDrawableProvider,
     val assetPrismUrl: String?,
     val isQuickActionButtonsVisible: Boolean,
     val isSwapButtonSelected: Boolean,
     val isSwapButtonVisible: Boolean,
-    val onShowGlobalErrorEvent: Event<Pair<Int, AnnotatedString>>? = null,
-    val swapNavigationDirectionEvent: Event<NavDirections>? = null,
+    val onShowGlobalErrorEvent: Event<Int>? = null,
+    val onNavigationEvent: Event<NavDirections>? = null,
     val isMarketInformationVisible: Boolean,
     val formattedAssetPrice: String,
     val isChangePercentageVisible: Boolean,

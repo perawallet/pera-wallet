@@ -19,7 +19,7 @@ import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
 import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
-import com.algorand.android.modules.walletconnect.ui.mapper.WalletConnectPreviewMapper
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
@@ -33,8 +33,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class WalletConnectViewModel @Inject constructor(
     private val walletConnectManager: WalletConnectManager,
-    private val walletConnectUrlHandler: WalletConnectUrlHandler,
-    private val walletConnectPreviewMapper: WalletConnectPreviewMapper
+    private val walletConnectUrlHandler: WalletConnectUrlHandler
 ) : BaseViewModel() {
 
     val sessionResultFlow: SharedFlow<Event<Resource<WalletConnectSessionProposal>>>
@@ -48,6 +47,9 @@ class WalletConnectViewModel @Inject constructor(
 
     val localSessionsFlow: Flow<List<WalletConnect.SessionDetail>>
         get() = walletConnectManager.localSessionsFlow
+
+    val sessionSettleFlow: Flow<Event<WalletConnectSessionIdentifier>>
+        get() = walletConnectManager.sessionSettleFlow
 
     fun connectToSessionByUrl(url: String) {
         walletConnectManager.connectToNewSession(url)

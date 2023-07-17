@@ -13,7 +13,7 @@ import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.RegisterIntroPreview
 import com.algorand.android.models.StatusBarConfiguration
-import com.algorand.android.models.TextButton
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.TextButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.browser.openPrivacyPolicyUrl
 import com.algorand.android.utils.browser.openTermsAndServicesUrl

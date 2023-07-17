@@ -18,7 +18,7 @@
     android:paddingHorizontal="@dimen/spacing_xlarge"
     android:paddingVertical="@dimen/spacing_normal">
 
-    <com.algorand.android.customviews.CustomToolbar
+    <com.algorand.android.customviews.toolbar.CustomToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_toolbar_height" />

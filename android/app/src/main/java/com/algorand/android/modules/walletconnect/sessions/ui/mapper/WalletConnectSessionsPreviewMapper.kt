@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.walletconnect.sessions.ui.mapper
 
-import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.sessions.ui.model.BaseWalletConnectSessionItem
 import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionsPreview
 import com.algorand.android.utils.Event
 import javax.inject.Inject
@@ -20,14 +20,14 @@ import javax.inject.Inject
 class WalletConnectSessionsPreviewMapper @Inject constructor() {
 
     fun mapToWalletConnectSessionsPreview(
-        walletConnectSessionList: List<WalletConnectSessionItem>,
+        waseWalletConnectSessionItemList: List<BaseWalletConnectSessionItem>,
         isDisconnectAllSessionVisible: Boolean,
         isEmptyStateVisible: Boolean,
         onDisconnectAllSessions: Event<Unit>? = null,
         onNavigateToScanQr: Event<Unit>? = null
     ): WalletConnectSessionsPreview {
         return WalletConnectSessionsPreview(
-            walletConnectSessionList = walletConnectSessionList,
+            baseWalletConnectSessionItemList = waseWalletConnectSessionItemList,
             isDisconnectAllSessionVisible = isDisconnectAllSessionVisible,
             isEmptyStateVisible = isEmptyStateVisible,
             onDisconnectAllSessions = onDisconnectAllSessions,

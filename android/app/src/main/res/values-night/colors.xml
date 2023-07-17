@@ -237,4 +237,6 @@
     <!-- Notification -->
     <color name="notification_icon_placeholder_tint_color">@color/gray_400</color>
     <color name="notification_icon_placeholder_border_color">@color/gray_800</color>
+
+    <color name="connected_node_testnet_text_color">@color/yellow_600</color>
 </resources>

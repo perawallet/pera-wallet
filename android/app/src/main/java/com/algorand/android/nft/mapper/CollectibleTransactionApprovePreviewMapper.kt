@@ -12,8 +12,8 @@
 
 package com.algorand.android.nft.mapper
 
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ui.CollectibleTransactionApprovePreview
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import javax.inject.Inject
 
 class CollectibleTransactionApprovePreviewMapper @Inject constructor() {
@@ -22,10 +22,10 @@ class CollectibleTransactionApprovePreviewMapper @Inject constructor() {
     fun mapToPreview(
         senderAccountPublicKey: String,
         senderAccountDisplayText: String,
-        senderAccountIconResource: AccountIconResource,
+        senderAccountIconResource: AccountIconDrawablePreview,
         receiverAccountPublicKey: String,
         receiverAccountDisplayText: String,
-        receiverAccountIconResource: AccountIconResource?,
+        receiverAccountIconDrawablePreview: AccountIconDrawablePreview?,
         formattedTransactionFee: String,
         isOptOutGroupVisible: Boolean,
         nftDomainName: String?,
@@ -34,10 +34,10 @@ class CollectibleTransactionApprovePreviewMapper @Inject constructor() {
         return CollectibleTransactionApprovePreview(
             senderAccountPublicKey = senderAccountPublicKey,
             senderAccountDisplayText = senderAccountDisplayText,
-            senderAccountIconResource = senderAccountIconResource,
+            senderAccountIconDrawablePreview = senderAccountIconResource,
             receiverAccountPublicKey = receiverAccountPublicKey,
             receiverAccountDisplayText = receiverAccountDisplayText,
-            receiverAccountIconResource = receiverAccountIconResource,
+            receiverAccountIconResource = receiverAccountIconDrawablePreview,
             formattedTransactionFee = formattedTransactionFee,
             isOptOutGroupVisible = isOptOutGroupVisible,
             nftDomainName = nftDomainName,

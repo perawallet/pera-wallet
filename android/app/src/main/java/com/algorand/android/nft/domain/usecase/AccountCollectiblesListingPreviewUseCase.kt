@@ -15,6 +15,7 @@ package com.algorand.android.nft.domain.usecase
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.BaseAccountAssetData
+import com.algorand.android.modules.accountstatehelper.domain.usecase.AccountStateHelperUseCase
 import com.algorand.android.modules.collectibles.filter.domain.usecase.ClearCollectibleFiltersPreferencesUseCase
 import com.algorand.android.modules.collectibles.filter.domain.usecase.ShouldDisplayOptedInNFTPreferenceUseCase
 import com.algorand.android.modules.collectibles.listingviewtype.domain.model.NFTListingViewType
@@ -44,6 +45,7 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
     private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase,
     private val collectibleItemSortUseCase: CollectibleItemSortUseCase,
     private val getNFTListingViewTypePreferenceUseCase: GetNFTListingViewTypePreferenceUseCase,
+    private val accountStateHelperUseCase: AccountStateHelperUseCase,
     clearCollectibleFiltersPreferencesUseCase: ClearCollectibleFiltersPreferencesUseCase,
     shouldDisplayOptedInNFTPreferenceUseCase: ShouldDisplayOptedInNFTPreferenceUseCase,
     collectibleUtils: CollectibleUtils,
@@ -66,7 +68,7 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
             failedAssetRepository.getFailedAssetCacheFlow(),
             accountCollectibleDataUseCase.getAccountAllCollectibleDataFlow(publicKey)
         ) { accountDetail, failedAssets, accountCollectibleData ->
-            val canAccountSignTransaction = canAccountSignTransaction(accountDetail)
+            val hasAccountAuthority = hasAccountAuthority(accountDetail)
             val nftListingType = getNFTListingViewTypePreferenceUseCase()
             val collectibleListData = prepareCollectiblesListItems(
                 searchKeyword = searchKeyword,
@@ -83,7 +85,7 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
                         ACCOUNT_COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX,
                         createInfoViewItem(
                             displayedCollectibleCount = collectibleListData.displayedCollectibleCount,
-                            isAddButtonVisible = canAccountSignTransaction
+                            isAddButtonVisible = hasAccountAuthority
                         )
                     )
                 }
@@ -94,11 +96,11 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
                 isEmptyStateVisible = isEmptyStateVisible,
                 isErrorVisible = failedAssets.isNotEmpty(),
                 itemList = itemList,
-                isReceiveButtonVisible = isEmptyStateVisible && canAccountSignTransaction,
+                isReceiveButtonVisible = isEmptyStateVisible && hasAccountAuthority,
                 filteredCollectibleCount = collectibleListData.filteredOutCollectibleCount,
                 isClearFilterButtonVisible = isAllCollectiblesFilteredOut,
-                isAccountFabVisible = canAccountSignTransaction,
-                isAddCollectibleFloatingActionButtonVisible = canAccountSignTransaction
+                isAccountFabVisible = hasAccountAuthority,
+                isAddCollectibleFloatingActionButtonVisible = hasAccountAuthority
             )
         }
     }
@@ -138,9 +140,9 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
         )
     }
 
-    private fun canAccountSignTransaction(accountDetail: CacheResult<AccountDetail>?): Boolean {
-        val publicKey = accountDetail?.data?.account?.address ?: return false
-        return accountDetailUseCase.canAccountSignTransaction(publicKey)
+    private fun hasAccountAuthority(accountDetail: CacheResult<AccountDetail>?): Boolean {
+        val accountAddress = accountDetail?.data?.account?.address ?: return false
+        return accountStateHelperUseCase.hasAccountAuthority(accountAddress)
     }
 
     companion object {

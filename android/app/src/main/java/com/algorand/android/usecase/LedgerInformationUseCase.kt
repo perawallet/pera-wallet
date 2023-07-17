@@ -24,6 +24,7 @@ import com.algorand.android.models.AccountBalance
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.models.LedgerInformationListItem
+import com.algorand.android.modules.accounticon.ui.mapper.AccountIconDrawablePreviewMapper
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
@@ -45,7 +46,8 @@ class LedgerInformationUseCase @Inject constructor(
     private val ledgerInformationAssetItemMapper: LedgerInformationAssetItemMapper,
     private val ledgerInformationCanSignByItemMapper: LedgerInformationCanSignByItemMapper,
     private val currencyUseCase: CurrencyUseCase,
-    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val accountIconDrawablePreviewMapper: AccountIconDrawablePreviewMapper
 ) : BaseUseCase() {
 
     suspend fun getLedgerInformationListItem(
@@ -55,10 +57,10 @@ class LedgerInformationUseCase @Inject constructor(
     ): List<LedgerInformationListItem> {
         val accountDetail = AccountDetail(selectedLedgerAccount.account, selectedLedgerAccount.accountInformation)
         return prepareLedgerInformationListItem(
-            accountDetail,
-            selectedLedgerAccount,
-            rekeyedAccountSelectionListItem,
-            authLedgerAccount
+            accountDetail = accountDetail,
+            selectedLedgerAccount = selectedLedgerAccount,
+            rekeyedAccountSelectionListItem = rekeyedAccountSelectionListItem,
+            authLedgerAccount = authLedgerAccount
         )
     }
 
@@ -85,15 +87,19 @@ class LedgerInformationUseCase @Inject constructor(
         accountDetail: AccountDetail,
         portfolioValue: String
     ): List<LedgerInformationListItem> {
+        val isAccountRekeyed = accountDetail.accountInformation.isRekeyed()
         return mutableListOf<LedgerInformationListItem>().apply {
-            add(ledgerInformationTitleItemMapper.mapTo(R.string.ledger_account))
+            add(ledgerInformationTitleItemMapper.mapTo(R.string.account_details))
             add(
                 ledgerInformationAccountItemMapper.mapTo(
                     accountAddress = accountDetail.account.address,
-                    accountType = accountDetail.account.type,
-                    accountAssetCount = accountDetail.accountInformation.assetHoldingMap.count(),
                     portfolioValue = portfolioValue,
-                    accountDisplayName = getAccountDisplayNameUseCase.invoke(accountDetail.account.address)
+                    accountDisplayName = getAccountDisplayNameUseCase.invoke(accountDetail.account.address),
+                    accountIconDrawablePreview = accountIconDrawablePreviewMapper.mapToAccountIconDrawablePreview(
+                        iconTintResId = R.color.wallet_3_icon,
+                        iconResId = if (isAccountRekeyed) R.drawable.ic_rekey_shield else R.drawable.ic_ledger,
+                        backgroundColorResId = R.color.wallet_3
+                    )
                 )
             )
         }
@@ -118,10 +124,19 @@ class LedgerInformationUseCase @Inject constructor(
     private fun createCanSignByItems(
         authLedgerAccount: AccountSelectionListItem.AccountItem?
     ): List<LedgerInformationListItem> {
+        val isAccountRekeyed = authLedgerAccount?.accountInformation?.isRekeyed() == true
         return mutableListOf<LedgerInformationListItem>().apply {
             authLedgerAccount?.run {
                 add(ledgerInformationTitleItemMapper.mapTo(R.string.can_be_signed_by))
-                add(ledgerInformationCanSignByItemMapper.mapTo(this))
+                val ledgerInformationCanSignByItem = ledgerInformationCanSignByItemMapper.mapTo(
+                    accountAddress = account.address,
+                    accountIconDrawablePreview = accountIconDrawablePreviewMapper.mapToAccountIconDrawablePreview(
+                        iconTintResId = R.color.wallet_3_icon,
+                        iconResId = if (isAccountRekeyed) R.drawable.ic_rekey_shield else R.drawable.ic_ledger,
+                        backgroundColorResId = R.color.wallet_3
+                    )
+                )
+                add(ledgerInformationCanSignByItem)
             }
         }
     }
@@ -132,9 +147,21 @@ class LedgerInformationUseCase @Inject constructor(
     ): List<LedgerInformationListItem> {
         return mutableListOf<LedgerInformationListItem>().apply {
             if (selectedLedgerAccount.account.type != Account.Type.REKEYED_AUTH) {
-                rekeyedAccountSelectionListItem?.takeIf { it.isNotEmpty() }?.run {
-                    add(ledgerInformationTitleItemMapper.mapTo(R.string.can_sign_for_these))
-                    forEach { add(ledgerInformationCanSignByItemMapper.mapTo(it)) }
+                if (rekeyedAccountSelectionListItem.isNullOrEmpty()) {
+                    return emptyList()
+                }
+                add(ledgerInformationTitleItemMapper.mapTo(R.string.can_sign_for_these))
+                rekeyedAccountSelectionListItem.forEach {
+                    val isAccountRekeyed = it.accountInformation.isRekeyed()
+                    val ledgerInformationCanSignByItem = ledgerInformationCanSignByItemMapper.mapTo(
+                        accountAddress = it.account.address,
+                        accountIconDrawablePreview = accountIconDrawablePreviewMapper.mapToAccountIconDrawablePreview(
+                            iconTintResId = R.color.wallet_3_icon,
+                            iconResId = if (isAccountRekeyed) R.drawable.ic_rekey_shield else R.drawable.ic_ledger,
+                            backgroundColorResId = R.color.wallet_3
+                        )
+                    )
+                    add(ledgerInformationCanSignByItem)
                 }
             }
         }

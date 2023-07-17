@@ -18,10 +18,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.customviews.AlgorandInputLayout
-import com.algorand.android.customviews.CustomToolbar
+import com.algorand.android.customviews.toolbar.CustomToolbar
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.OperationState
-import com.algorand.android.models.TextButton
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.TextButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.User
 import com.algorand.android.models.WarningConfirmation

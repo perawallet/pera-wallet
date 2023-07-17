@@ -13,13 +13,14 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import java.math.BigDecimal
 import java.math.BigInteger
 
 data class AssetTransferPreview(
     val senderAccountAddress: String,
     val senderAccountName: String,
-    val senderAccountType: Account.Type?,
+    val accountIconDrawablePreview: AccountIconDrawablePreview,
     val amount: BigInteger,
     val assetInformation: AssetInformation,
     val targetUser: TargetUser,

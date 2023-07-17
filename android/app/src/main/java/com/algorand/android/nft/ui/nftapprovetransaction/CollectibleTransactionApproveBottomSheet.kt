@@ -76,13 +76,13 @@ class CollectibleTransactionApproveBottomSheet :
             preview?.let {
                 senderAlgorandUserView.setAccount(
                     name = it.senderAccountDisplayText,
-                    accountIconResource = it.senderAccountIconResource,
+                    accountIconDrawablePreview = it.senderAccountIconDrawablePreview,
                     publicKey = it.senderAccountPublicKey
                 )
                 if (it.nftDomainName.isNullOrBlank()) {
                     toAlgorandUserView.setAccount(
                         name = it.receiverAccountDisplayText,
-                        accountIconResource = it.receiverAccountIconResource,
+                        accountIconDrawablePreview = it.receiverAccountIconResource,
                         publicKey = it.receiverAccountPublicKey
                     )
                 } else {

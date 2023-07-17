@@ -1,20 +1,24 @@
 package com.algorand.android.modules.accountdetail.requiredminimumbalance
 
+import android.widget.TextView
 import com.algorand.android.R
 import com.algorand.android.modules.informationbottomsheet.ui.BaseInformationBottomSheet
+import com.google.android.material.button.MaterialButton
 
 class RequiredMinimumBalanceInformationBottomSheet : BaseInformationBottomSheet() {
 
-    override val titleTextResId: Int
-        get() = R.string.minimum_balance
+    override fun initTitleTextView(titleTextView: TextView) {
+        titleTextView.setText(R.string.minimum_balance)
+    }
 
-    override val descriptionTextResId: Int
-        get() = R.string.minimum_balance_is_the_minimum
+    override fun initDescriptionTextView(descriptionTextView: TextView) {
+        descriptionTextView.setText(R.string.minimum_balance_is_the_minimum)
+    }
 
-    override val neutralButtonTextResId: Int
-        get() = R.string.close
-
-    override fun onNeutralButtonClick() {
-        navBack()
+    override fun initNeutralButton(neutralButton: MaterialButton) {
+        neutralButton.apply {
+            setText(R.string.close)
+            setOnClickListener { navBack() }
+        }
     }
 }

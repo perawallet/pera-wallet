@@ -14,11 +14,14 @@ package com.algorand.android.modules.walletconnect.ui.model
 
 import android.os.Parcelable
 import com.algorand.android.models.WalletConnectPeerMeta
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectProposalNamespace
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class WalletConnectSessionProposal(
     val proposalIdentifier: WalletConnectSessionProposalIdentifier,
     val peerMeta: WalletConnectPeerMeta,
-    val fallbackBrowserGroupResponse: String?
+    val fallbackBrowserGroupResponse: String?,
+    val requiredNamespaces: Map<WalletConnectBlockchain, WalletConnectProposalNamespace>
 ) : Parcelable

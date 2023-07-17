@@ -23,8 +23,6 @@ import com.algorand.android.R
 import com.algorand.android.RekeyToStandardAccountNavigationDirections
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
-import com.algorand.android.utils.getXmlStyledString
-import com.algorand.android.utils.toShortenedAddress
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -58,16 +56,15 @@ class RekeyToStandardAccountVerifyInfoFragment : BaseInfoFragment() {
     }
 
     override fun setDescriptionText(textView: TextView) {
-        val accountAddress = rekeyToStandardAccountVerifyInfoViewModel.accountAddress
-        textView.text = context?.getXmlStyledString(
-            stringResId = R.string.the_account_name,
-            replacementList = listOf("account_name" to accountAddress.toShortenedAddress())
+        textView.text = getString(
+            R.string.the_account_name_was_successfully_rekeyed_formatted,
+            rekeyToStandardAccountVerifyInfoViewModel.accountDisplayName.getAccountPrimaryDisplayName()
         )
     }
 
     override fun setFirstButton(materialButton: MaterialButton) {
         with(materialButton) {
-            text = getString(R.string.go_to_home)
+            text = getString(R.string.done)
             setOnClickListener { popRekeyToStandardAccountNavigationUp() }
         }
     }

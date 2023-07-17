@@ -50,7 +50,6 @@ import com.google.crypto.tink.KeyTemplates
 import com.google.crypto.tink.KeysetHandle
 import com.google.crypto.tink.aead.AeadConfig
 import com.google.crypto.tink.integration.android.AndroidKeysetManager
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -179,13 +178,6 @@ object AppModule {
     @Provides
     fun provideBluetoothManager(@ApplicationContext appContext: Context): BluetoothManager? {
         return ContextCompat.getSystemService<BluetoothManager>(appContext, BluetoothManager::class.java)
-    }
-
-    // TODO Move this into tracking di module
-    @Singleton
-    @Provides
-    fun provideFirebaseAnalytics(@ApplicationContext appContext: Context): FirebaseAnalytics {
-        return FirebaseAnalytics.getInstance(appContext)
     }
 
     @Singleton

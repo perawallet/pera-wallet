@@ -28,11 +28,10 @@ class MultipleAccountSelectionAccountViewHolder(
     override fun bind(item: MultipleAccountSelectionListItem) {
         if (item !is MultipleAccountSelectionListItem.AccountItem) return
         with(binding.multipleAccountSelectionStatefulAccountView) {
-            val accountIconSize = resources.getDimension(R.dimen.account_icon_size_large).toInt()
             val accountIconDrawable = AccountIconDrawable.create(
                 context = context,
-                accountIconResource = item.accountIconResource,
-                size = accountIconSize
+                accountIconDrawablePreview = item.accountIconDrawablePreview,
+                sizeResId = R.dimen.spacing_xxxxlarge
             )
             setStartIconDrawable(accountIconDrawable)
             setButtonState(item.accountViewButtonState)

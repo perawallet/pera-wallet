@@ -31,8 +31,11 @@ class SwapAccountItemViewHolder(
         with(item) {
             binding.accountTextView.apply {
                 text = accountDisplayName.getAccountPrimaryDisplayName()
-                val accountIconSize = resources.getDimension(R.dimen.account_icon_size_normal).toInt()
-                val accountIconDrawable = AccountIconDrawable.create(context, accountIconResource, accountIconSize)
+                val accountIconDrawable = AccountIconDrawable.create(
+                    context = context,
+                    accountIconDrawablePreview = accountIconDrawablePreview,
+                    sizeResId = R.dimen.spacing_xlarge
+                )
                 setDrawable(start = accountIconDrawable)
                 setOnLongClickListener {
                     listener.onAccountNameLongClick(accountDisplayName.getRawAccountAddress()); true

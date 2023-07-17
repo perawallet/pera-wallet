@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.swap.assetswap.ui.mapper
 
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.utils.AccountDisplayName
@@ -25,7 +25,7 @@ class AssetSwapPreviewMapper @Inject constructor() {
     @Suppress("LongParameterList")
     fun mapToAssetSwapPreview(
         accountDisplayName: AccountDisplayName,
-        accountIconResource: AccountIconResource?,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
         fromSelectedAssetDetail: AssetSwapPreview.SelectedAssetDetail,
         toSelectedAssetDetail: AssetSwapPreview.SelectedAssetDetail?,
         isSwapButtonEnabled: Boolean,
@@ -42,7 +42,7 @@ class AssetSwapPreviewMapper @Inject constructor() {
     ): AssetSwapPreview {
         return AssetSwapPreview(
             accountDisplayName = accountDisplayName,
-            accountIconResource = accountIconResource,
+            accountIconDrawablePreview = accountIconDrawablePreview,
             fromSelectedAssetDetail = fromSelectedAssetDetail,
             toSelectedAssetDetail = toSelectedAssetDetail,
             isSwapButtonEnabled = isSwapButtonEnabled,

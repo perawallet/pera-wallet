@@ -13,12 +13,14 @@
 package com.algorand.android.modules.walletconnect.domain.decider
 
 import com.algorand.android.modules.walletconnect.client.v1.mapper.WalletConnectV1SessionIdentifierMapper
+import com.algorand.android.modules.walletconnect.client.v2.mapper.WalletConnectV2SessionIdentifierMapper
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectVersionIdentifier
 import javax.inject.Inject
 
 class WalletConnectSessionIdentifierDecider @Inject constructor(
-    private val walletConnectV1SessionIdentifierMapper: WalletConnectV1SessionIdentifierMapper
+    private val walletConnectV1SessionIdentifierMapper: WalletConnectV1SessionIdentifierMapper,
+    private val walletConnectV2SessionIdentifierMapper: WalletConnectV2SessionIdentifierMapper
 ) {
 
     fun decideSessionIdentifier(
@@ -29,7 +31,9 @@ class WalletConnectSessionIdentifierDecider @Inject constructor(
             WalletConnectVersionIdentifier.VERSION_1 -> {
                 walletConnectV1SessionIdentifierMapper.mapToSessionIdentifier(sessionId.toLong())
             }
-            WalletConnectVersionIdentifier.VERSION_2 -> TODO("Not yet implemented")
+            WalletConnectVersionIdentifier.VERSION_2 -> {
+                walletConnectV2SessionIdentifierMapper.mapToSessionIdentifier(sessionId)
+            }
         }
     }
 }

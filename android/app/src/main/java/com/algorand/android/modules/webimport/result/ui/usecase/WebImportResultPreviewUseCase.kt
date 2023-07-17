@@ -15,6 +15,7 @@ package com.algorand.android.modules.webimport.result.ui.usecase
 import com.algorand.android.R
 import com.algorand.android.customviews.accountasseticonnameitem.mapper.AccountAssetIconNameConfigurationMapper
 import com.algorand.android.models.AccountDetail
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.webimport.result.ui.mapper.BaseImportResultListItemMapper
 import com.algorand.android.modules.webimport.result.ui.mapper.WebImportResultPreviewMapper
 import com.algorand.android.modules.webimport.result.ui.model.BaseAccountResultListItem
@@ -26,7 +27,8 @@ class WebImportResultPreviewUseCase @Inject constructor(
     private val webImportResultPreviewMapper: WebImportResultPreviewMapper,
     private val baseImportResultListItemMapper: BaseImportResultListItemMapper,
     private val accountAssetIconNameConfigurationMapper: AccountAssetIconNameConfigurationMapper,
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     fun getInitialPreview(
@@ -109,7 +111,9 @@ class WebImportResultPreviewUseCase @Inject constructor(
     ): BaseAccountResultListItem.AccountItem {
         return baseImportResultListItemMapper.mapToAccountItem(
             accountAssetIconNameConfiguration = accountAssetIconNameConfigurationMapper.mapTo(
-                accountDetail
+                accountAddress = accountDetail.account.address,
+                accountName = accountDetail.account.name,
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountDetail.account.address)
             ),
             accountAddress = accountDetail.account.address
         )

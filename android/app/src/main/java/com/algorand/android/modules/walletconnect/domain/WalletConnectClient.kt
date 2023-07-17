@@ -12,12 +12,14 @@
 
 package com.algorand.android.modules.walletconnect.domain
 
+import android.app.Application
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect.ChainIdentifier
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect.RequestIdentifier
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect.SessionIdentifier
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectClientListener
-import com.algorand.android.modules.walletconnect.domain.model.WalletConnectTransactionErrorResponse
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectError
 
 interface WalletConnectClient {
 
@@ -28,25 +30,24 @@ interface WalletConnectClient {
 
     // Session callbacks
     suspend fun approveSession(
-        sessionIdentifier: SessionIdentifier,
-        accountAddresses: List<String>,
-        chainIdentifier: ChainIdentifier
+        proposalIdentifier: WalletConnect.Session.ProposalIdentifier,
+        requiredNamespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Proposal>,
+        accountAddresses: List<String>
     )
 
     suspend fun updateSession(
         sessionIdentifier: SessionIdentifier,
         accountAddresses: List<String>,
-        chainIdentifier: ChainIdentifier,
         removedAccountAddress: String?
     )
 
-    suspend fun rejectSession(sessionIdentifier: SessionIdentifier, reason: String)
+    suspend fun rejectSession(proposalIdentifier: WalletConnect.Session.ProposalIdentifier, reason: String)
 
     // Request callbacks
     suspend fun rejectRequest(
         sessionIdentifier: SessionIdentifier,
         requestIdentifier: RequestIdentifier,
-        errorResponse: WalletConnectTransactionErrorResponse
+        errorResponse: WalletConnectError
     )
 
     suspend fun approveRequest(
@@ -67,13 +68,8 @@ interface WalletConnectClient {
     suspend fun getDisconnectedWalletConnectSessions(): List<WalletConnect.SessionDetail>
     suspend fun setAllSessionsDisconnected()
 
-    suspend fun getSessionRetryCount(sessionIdentifier: SessionIdentifier): Int
-    suspend fun setSessionRetryCount(sessionIdentifier: SessionIdentifier, retryCount: Int)
-    suspend fun clearSessionRetryCount(sessionIdentifier: SessionIdentifier)
+    suspend fun disconnectFromAllSessions()
+    suspend fun connectToDisconnectedSessions()
 
-    suspend fun disconnectFromAllSessions() {}
-    suspend fun connectToDisconnectedSessions() {}
-
-    // TODO: Implement this whenever merge wc-v1 into wc-v2
-    suspend fun initializeClient() {}
+    suspend fun initializeClient(application: Application)
 }

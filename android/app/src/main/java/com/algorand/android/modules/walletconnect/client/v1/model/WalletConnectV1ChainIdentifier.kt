@@ -16,5 +16,6 @@ package com.algorand.android.modules.walletconnect.client.v1.model
 enum class WalletConnectV1ChainIdentifier(val id: Long) {
     MAINNET(416001L),
     TESTNET(416002L),
-    BETANET(416003L)
+    BETANET(416003L),
+    MAINNET_BACKWARD_SUPPORTABILITY(4160L)
 }

@@ -13,11 +13,13 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
+
 data class TransactionRequestSenderInfo(
     val fromDisplayedAddress: BaseWalletConnectDisplayedAddress? = null,
     val toDisplayedAddress: BaseWalletConnectDisplayedAddress? = null,
-    val fromAccountIcon: AccountIconResource? = null,
-    val toAccountIcon: AccountIconResource? = null,
+    val fromAccountIconDrawablePreview: AccountIconDrawablePreview? = null,
+    val toAccountIconDrawablePreview: AccountIconDrawablePreview? = null,
     val rekeyToAccountAddress: String? = null,
     val assetInformation: TransactionRequestAssetInformation? = null,
     val appId: Long? = null,

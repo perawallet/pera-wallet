@@ -31,7 +31,7 @@ sealed class AsaStatusPreview {
         override val statusLabelTextResId: Int,
         override val peraButtonState: PeraButtonState,
         override val actionButtonTextResId: Int,
-        val accountName: BaseAccountAddress.AccountAddress?
+        val accountName: BaseAccountAddress.AccountAddress
     ) : AsaStatusPreview()
 
     sealed class RemovalStatus : AsaStatusPreview() {
@@ -48,7 +48,7 @@ sealed class AsaStatusPreview {
             override val statusLabelTextResId: Int,
             override val peraButtonState: PeraButtonState,
             override val actionButtonTextResId: Int,
-            val accountName: BaseAccountAddress.AccountAddress?
+            val accountName: BaseAccountAddress.AccountAddress
         ) : RemovalStatus()
     }
 

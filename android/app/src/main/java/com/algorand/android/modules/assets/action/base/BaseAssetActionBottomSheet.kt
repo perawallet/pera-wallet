@@ -22,7 +22,7 @@ import androidx.lifecycle.Observer
 import com.algorand.android.R
 import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.core.BaseBottomSheet
-import com.algorand.android.customviews.CustomToolbar
+import com.algorand.android.customviews.toolbar.CustomToolbar
 import com.algorand.android.databinding.BottomSheetAssetActionBinding
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.utils.Resource

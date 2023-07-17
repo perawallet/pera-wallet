@@ -15,6 +15,7 @@ package com.algorand.android.modules.walletconnect.client.v1.domain.usecase
 import com.algorand.android.modules.walletconnect.client.v1.domain.repository.WalletConnectRepository
 import com.algorand.android.modules.walletconnect.client.v1.mapper.WalletConnectSessionMetaMapper
 import com.algorand.android.modules.walletconnect.client.v1.mapper.WalletConnectV1SessionIdentifierMapper
+import com.algorand.android.modules.walletconnect.client.v1.session.WalletConnectV1SessionCachedDataHandler
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.mapper.WalletConnectPeerMetaMapper
 import com.algorand.android.modules.walletconnect.mapper.WalletConnectSessionDetailMapper
@@ -28,25 +29,30 @@ class GetWalletConnectSessionByIdUseCase @Inject constructor(
     private val walletConnectRepository: WalletConnectRepository,
     private val sessionIdentifierMapper: WalletConnectV1SessionIdentifierMapper,
     private val createWalletConnectSessionNamespaceUseCase: CreateWalletConnectSessionNamespaceUseCase,
-    private val sessionMetaMapper: WalletConnectSessionMetaMapper
+    private val sessionMetaMapper: WalletConnectSessionMetaMapper,
+    private val sessionCachedDataHandler: WalletConnectV1SessionCachedDataHandler
 ) {
 
     suspend operator fun invoke(sessionId: Long): WalletConnect.SessionDetail? {
-        return walletConnectRepository.getSessionById(sessionId)?.run {
-            val connectedAccounts = walletConnectRepository.getConnectedAccountsOfSession(id)?.map {
+        return walletConnectRepository.getSessionById(sessionId)?.let { wcSessionDto ->
+            val connectedAccounts = walletConnectRepository.getConnectedAccountsOfSession(wcSessionDto.id)?.map {
                 it.connectedAccountsAddress
             }.orEmpty()
+            val wcSession = sessionCachedDataHandler.getSessionById(wcSessionDto.id)
             sessionDetailMapper.mapToSessionDetail(
                 sessionIdentifier = sessionIdentifierMapper.mapToSessionIdentifier(sessionId),
-                topic = wcSession.topic,
-                peerMeta = peerMetaMapper.mapToPeerMeta(peerMeta),
-                namespaces = createWalletConnectSessionNamespaceUseCase(connectedAccounts),
-                creationDateTimestamp = dateTimeStamp,
-                isSubscribed = isSubscribed,
-                isConnected = isConnected,
-                fallbackBrowserGroupResponse = fallbackBrowserGroupResponse,
+                topic = wcSessionDto.wcSession.topic,
+                peerMeta = peerMetaMapper.mapToPeerMeta(wcSessionDto.peerMeta),
+                namespaces = createWalletConnectSessionNamespaceUseCase.invoke(
+                    accountAddresses = connectedAccounts,
+                    chainId = wcSession?.chainId
+                ),
+                creationDateTimestamp = wcSessionDto.dateTimeStamp,
+                isSubscribed = wcSessionDto.isSubscribed,
+                isConnected = wcSessionDto.isConnected,
+                fallbackBrowserGroupResponse = wcSessionDto.fallbackBrowserGroupResponse,
                 expiry = null,
-                sessionMeta = sessionMetaMapper.mapToSessionMeta(wcSession)
+                sessionMeta = sessionMetaMapper.mapToSessionMeta(wcSessionDto.wcSession)
             )
         }
     }

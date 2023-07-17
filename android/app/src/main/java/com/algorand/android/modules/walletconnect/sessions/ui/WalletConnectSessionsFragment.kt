@@ -20,14 +20,17 @@ import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentWalletConnectSessionsBinding
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.IconButton
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.IconButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.WarningConfirmation
-import com.algorand.android.modules.walletconnect.sessions.ui.adapter.WalletConnectSessionAdapter
-import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.sessions.ui.adapter.WalletConnectSessionItemAdapter
+import com.algorand.android.modules.walletconnect.sessions.ui.model.BaseWalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.sessions.ui.model.BaseWalletConnectSessionItem.Companion.excludedItemFromDivider
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.ExcludedViewTypesDividerItemDecoration
+import com.algorand.android.utils.addCustomDivider
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
@@ -51,8 +54,10 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
 
     private val walletConnectSessionsViewModel by viewModels<WalletConnectSessionsViewModel>()
 
-    private val walletConnectSessionsCollector: suspend (List<WalletConnectSessionItem>?) -> Unit = { sessionList ->
-        walletConnectSessionAdapter.submitList(sessionList)
+    private val walletConnectSessionsCollector: suspend (
+        List<BaseWalletConnectSessionItem>?
+    ) -> Unit = { baseWalletConnectSessionList ->
+        walletConnectSessionItemAdapter.submitList(baseWalletConnectSessionList)
     }
 
     private val disconnectAllButtonVisibilityCollector: suspend (Boolean?) -> Unit = { isVisible ->
@@ -71,18 +76,13 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
         event?.consume()?.run { navToQrScannerFragment() }
     }
 
-    private val walletConnectSessionAdapterListener =
-        object : WalletConnectSessionAdapter.WalletConnectSessionAdapterListener {
-            override fun onDisconnectClick(sessionIdentifier: WalletConnectSessionIdentifier) {
-                walletConnectSessionsViewModel.killWalletConnectSession(sessionIdentifier)
-            }
+    private val walletConnectSessionItemAdapterListener = WalletConnectSessionItemAdapter.Listener { identifier ->
+        navToSessionDetailFragment(identifier)
+    }
 
-            override fun onSessionClick(sessionIdentifier: WalletConnectSessionIdentifier) {
-                walletConnectSessionsViewModel.connectToExistingSession(sessionIdentifier)
-            }
-        }
-
-    private val walletConnectSessionAdapter = WalletConnectSessionAdapter(walletConnectSessionAdapterListener)
+    private val walletConnectSessionItemAdapter = WalletConnectSessionItemAdapter(
+        listener = walletConnectSessionItemAdapterListener
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -94,7 +94,7 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
     private fun initObserver() {
         with(walletConnectSessionsViewModel.walletConnectSessionsPreviewFlow) {
             collectLatestOnLifecycle(
-                flow = map { it?.walletConnectSessionList }.distinctUntilChanged(),
+                flow = map { it?.baseWalletConnectSessionItemList }.distinctUntilChanged(),
                 collection = walletConnectSessionsCollector
             )
             collectLatestOnLifecycle(
@@ -122,7 +122,14 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
                 scanQrButton.setOnClickListener { onScanQrClick() }
                 disconnectAllSessionsButton.setOnClickListener { onDisconnectFromAllSessionsClick() }
             }
-            sessionRecyclerView.adapter = walletConnectSessionAdapter
+            sessionRecyclerView.apply {
+                adapter = walletConnectSessionItemAdapter
+                addCustomDivider(
+                    drawableResId = R.drawable.horizontal_divider_80_24dp,
+                    showLast = false,
+                    divider = ExcludedViewTypesDividerItemDecoration(excludedItemFromDivider)
+                )
+            }
             initAddMoreSessionsButton()
         }
     }
@@ -150,6 +157,13 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
             WalletConnectSessionsFragmentDirections.actionWalletConnectSessionsFragmentToWarningConfirmationNavigation(
                 warningConfirmation
             )
+        )
+    }
+
+    private fun navToSessionDetailFragment(identifier: WalletConnectSessionIdentifier) {
+        nav(
+            WalletConnectSessionsFragmentDirections
+                .actionWalletConnectSessionsFragmentToWalletConnectSessionDetailFragment(identifier)
         )
     }
 

@@ -13,9 +13,9 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import com.algorand.android.modules.walletconnect.domain.model.WalletConnectTransactionErrorResponse
+import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectError
 import com.algorand.android.utils.isValidAddress
-import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import kotlinx.parcelize.Parcelize
 
 sealed class WalletConnectSigner : Parcelable {
@@ -29,42 +29,42 @@ sealed class WalletConnectSigner : Parcelable {
         fun create(
             transactionRequest: WCAlgoTransactionRequest,
             senderAddress: WalletConnectAddress,
-            errorProvider: WalletConnectTransactionErrorProvider
+            errorProvider: WalletConnectErrorProvider
         ): WalletConnectSigner {
             return with(transactionRequest) {
                 when {
-                    hasMultisig -> Multisig(errorProvider.unsupported.multisigTransaction)
-                    hasMultipleSigner -> Unsignable(errorProvider.unsupported.unknownTransactionType)
+                    hasMultisig -> Multisig(errorProvider.getMultisigTransactionError())
+                    hasMultipleSigner -> Unsignable(errorProvider.getUnknownTransactionType())
                     isDisplayOnly -> DisplayOnly
                     firstSignerAddress != null && authAccountAddress != null -> {
                         return if (authAccountAddress == firstSignerAddress) {
                             returnInvalidInputIfAddressIsInvalid(
                                 Rekeyed(WalletConnectAddress(authAccountAddress, authAccountAddress)),
-                                errorProvider.invalidInput.invalidPublicKey
+                                errorProvider.getInvalidPublicKeyError()
                             )
                         } else {
-                            Unsignable(errorProvider.invalidInput.unableToSign)
+                            Unsignable(errorProvider.getUnableToSignError())
                         }
                     }
                     firstSignerAddress != null -> {
                         return if (senderAddress.decodedAddress == firstSignerAddress) {
                             returnInvalidInputIfAddressIsInvalid(
                                 Sender(senderAddress),
-                                errorProvider.invalidInput.invalidPublicKey
+                                errorProvider.getInvalidPublicKeyError()
                             )
                         } else {
-                            Unsignable(errorProvider.invalidInput.unableToSign)
+                            Unsignable(errorProvider.getUnableToSignError())
                         }
                     }
                     authAccountAddress != null -> {
                         returnInvalidInputIfAddressIsInvalid(
                             Rekeyed(WalletConnectAddress(authAccountAddress, authAccountAddress)),
-                            errorProvider.invalidInput.invalidPublicKey
+                            errorProvider.getInvalidPublicKeyError()
                         )
                     }
                     else -> returnInvalidInputIfAddressIsInvalid(
                         Sender(senderAddress),
-                        errorProvider.invalidInput.invalidPublicKey
+                        errorProvider.getInvalidPublicKeyError()
                     )
                 }
             }
@@ -72,9 +72,9 @@ sealed class WalletConnectSigner : Parcelable {
 
         private fun returnInvalidInputIfAddressIsInvalid(
             signer: WalletConnectSigner,
-            errorResponse: WalletConnectTransactionErrorResponse
+            error: WalletConnectError
         ): WalletConnectSigner {
-            return signer.takeIf { it.address?.decodedAddress?.isValidAddress() == true } ?: Unsignable(errorResponse)
+            return signer.takeIf { it.address?.decodedAddress?.isValidAddress() == true } ?: Unsignable(error)
         }
     }
 
@@ -91,13 +91,13 @@ sealed class WalletConnectSigner : Parcelable {
     }
 
     @Parcelize
-    data class Unsignable(val errorResponse: WalletConnectTransactionErrorResponse) : WalletConnectSigner() {
+    data class Unsignable(val error: WalletConnectError) : WalletConnectSigner() {
         override val isValidSigner: Boolean
             get() = false
     }
 
     @Parcelize
-    data class Multisig(val errorResponse: WalletConnectTransactionErrorResponse) : WalletConnectSigner() {
+    data class Multisig(val error: WalletConnectError) : WalletConnectSigner() {
         override val isValidSigner: Boolean
             get() = false
     }

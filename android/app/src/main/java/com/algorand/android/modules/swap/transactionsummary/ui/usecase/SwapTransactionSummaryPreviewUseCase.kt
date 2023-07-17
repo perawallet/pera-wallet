@@ -13,7 +13,7 @@
 package com.algorand.android.modules.swap.transactionsummary.ui.usecase
 
 import android.content.res.Resources
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.currency.domain.model.Currency
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
@@ -41,7 +41,8 @@ class SwapTransactionSummaryPreviewUseCase @Inject constructor(
     private val swapTransactionSummaryPreviewMapper: SwapTransactionSummaryPreviewMapper,
     private val baseSwapTransactionSummaryItemMapper: BaseSwapTransactionSummaryItemMapper,
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     fun getSwapSummaryPreview(
@@ -97,10 +98,9 @@ class SwapTransactionSummaryPreviewUseCase @Inject constructor(
         val accountDetail = accountDetailUseCase.getCachedAccountDetail(swapQuote.accountAddress)?.data
         val safeAccountAddress = accountDetail?.account?.address ?: swapQuote.accountAddress
         val accountDisplayName = getAccountDisplayNameUseCase.invoke(safeAccountAddress)
-        val accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(accountDetail?.account?.type)
         return baseSwapTransactionSummaryItemMapper.mapToSwapAccountItem(
             accountDisplayName = accountDisplayName,
-            accountIconResource = accountIconResource
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(swapQuote.accountAddress)
         )
     }
 

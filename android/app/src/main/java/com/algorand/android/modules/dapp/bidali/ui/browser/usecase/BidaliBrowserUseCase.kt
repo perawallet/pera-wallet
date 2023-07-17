@@ -17,6 +17,7 @@ import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.TransactionData
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.dapp.bidali.domain.mapper.BidaliAssetMapper
 import com.algorand.android.modules.dapp.bidali.domain.model.BidaliPaymentRequestDTO
 import com.algorand.android.modules.dapp.bidali.domain.model.MainnetBidaliSupportedCurrency
@@ -40,7 +41,8 @@ class BidaliBrowserUseCase @Inject constructor(
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val bidaliAssetMapper: BidaliAssetMapper,
     private val assetDrawableProviderDecider: AssetDrawableProviderDecider,
-    private val isOnMainnetUseCase: IsOnMainnetUseCase
+    private val isOnMainnetUseCase: IsOnMainnetUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     fun generateBidaliJavascript(accountAddress: String): String {
@@ -82,7 +84,10 @@ class BidaliBrowserUseCase @Inject constructor(
             amount = amountAsBigInteger,
             assetInformation = selectedAsset,
             xnote = paymentRequest.extraId,
-            targetUser = TargetUser(publicKey = paymentRequest.address)
+            targetUser = TargetUser(
+                publicKey = paymentRequest.address,
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountAddress)
+            )
         )
     }
 

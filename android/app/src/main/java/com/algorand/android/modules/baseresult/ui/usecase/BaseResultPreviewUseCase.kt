@@ -17,9 +17,9 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import com.algorand.android.core.BaseUseCase
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.PluralAnnotatedString
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.baseresult.ui.mapper.ResultListItemMapper
 import com.algorand.android.modules.baseresult.ui.model.ResultListItem
 import com.algorand.android.utils.AccountDisplayName
@@ -118,11 +118,11 @@ open class BaseResultPreviewUseCase constructor(
 
     protected fun createAccountItem(
         accountDisplayName: AccountDisplayName,
-        accountIconResource: AccountIconResource,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
     ): ResultListItem.AccountItem {
         return resultListItemMapper.mapToAccountItem(
             accountDisplayName = accountDisplayName,
-            accountIconResource = accountIconResource
+            accountIconDrawablePreview = accountIconDrawablePreview
         )
     }
 }

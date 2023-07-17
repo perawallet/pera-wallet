@@ -13,22 +13,38 @@
 package com.algorand.android.modules.rekey.rekeytostandardaccount.instruction.ui.usecase
 
 import com.algorand.android.R
-import com.algorand.android.modules.rekey.rekeytostandardaccount.instruction.ui.mapper.RekeyToStandardAccountInstructionPreviewMapper
-import com.algorand.android.modules.rekey.rekeytostandardaccount.instruction.ui.model.RekeyToStandardAccountInstructionPreview
+import com.algorand.android.models.AnnotatedString
+import com.algorand.android.modules.rekey.rekeytostandardaccount.instruction.ui.decider.RekeyToStandardAccountIntroductionPreviewDecider
+import com.algorand.android.modules.rekey.rekeytostandardaccount.instruction.ui.mapper.RekeyToStandardAccountIntroductionPreviewMapper
+import com.algorand.android.modules.rekey.rekeytostandardaccount.instruction.ui.model.RekeyToStandardAccountIntroductionPreview
+import com.algorand.android.usecase.AccountDetailUseCase
 import javax.inject.Inject
 
 class RekeyToStandardAccountInstructionPreviewUseCase @Inject constructor(
-    private val rekeyToStandardAccountInstructionPreviewMapper: RekeyToStandardAccountInstructionPreviewMapper
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val rekeyToStandardAccountIntroductionPreviewMapper: RekeyToStandardAccountIntroductionPreviewMapper,
+    private val rekeyToStandardAccountIntroductionPreviewDecider: RekeyToStandardAccountIntroductionPreviewDecider
 ) {
 
-    fun getInitialRekeyToStandardAccountInstructionPreview(): RekeyToStandardAccountInstructionPreview {
-        return rekeyToStandardAccountInstructionPreviewMapper.mapToRekeyToStandardAccountInstructionPreview(
-            titleTextResId = R.string.rekey_account,
-            descriptionTextResId = R.string.protect_your_account_by_delegating,
-            firstDescriptionTextResId = R.string.future_transactions_can_only,
-            secondDescriptionTextRestId = R.string.this_account_will_no_longer,
-            thirdDescriptionTextResId = R.string.your_account_s_public_key,
-            actionButtonTextResId = R.string.start_process
+    fun getInitialRekeyToStandardAccountInstructionPreview(
+        accountAddress: String
+    ): RekeyToStandardAccountIntroductionPreview {
+        val accountDetail = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data
+        val accountType = accountDetail?.account?.type
+        val bannerDrawableResId = rekeyToStandardAccountIntroductionPreviewDecider.decideBannerDrawableResId(
+            accountType = accountType
+        )
+        val descriptionAnnotatedString = rekeyToStandardAccountIntroductionPreviewDecider
+            .decideDescriptionAnnotatedString(accountType = accountType)
+        val expectationListItems = rekeyToStandardAccountIntroductionPreviewDecider.decideExpectationListItems(
+            accountType = accountType
+        )
+        return rekeyToStandardAccountIntroductionPreviewMapper.mapToRekeyToStandardAccountInstructionPreview(
+            bannerDrawableResId = bannerDrawableResId,
+            titleAnnotatedString = AnnotatedString(stringResId = R.string.rekey_to_standard_account_lower_case),
+            descriptionAnnotatedString = descriptionAnnotatedString,
+            expectationListItems = expectationListItems,
+            actionButtonAnnotatedString = AnnotatedString(stringResId = R.string.start_process)
         )
     }
 }

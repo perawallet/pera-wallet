@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2022 Pera Wallet, LDA
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
   -->
 
 <resources>
@@ -105,7 +105,6 @@
     <string name="advanced_troubleshooting">고급 문제 해결</string>
     <string name="connecting_to_ledger">Ledger에 연결 중…</string>
     <string name="ledger_approval">Ledger 승인</string>
-    <string name="please_make_sure">Ledger 기기 <annotation replacement="ledger_name">ledgerNamePlaceholder</annotation>에서 트랜잭션을 확인해 주세요</string>
     <string name="ledger_info_ledger_second_paragraph">튜토리얼에서 \"기기에 설치하고자 하는 애플리케이션 선택(select the application(s) you want to install on your device)\" 단계까지 진행하셨다면 검색창에 알고랜드(Algorand)를 입력하고 설치해 주세요.</string>
     <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Ledger의 종합적인 <annotation type="bold"><annotation type="color">시작하기</annotation></annotation> 튜토리얼부터 따라서 시작해보세요. Ledger 기기에서 앱을 설치하고 실행하는 방법을 안내해 드립니다.</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">아직 Ledger 기기에 <annotation type="bold">알고랜드</annotation> 앱을 설치하지 않으신 경우, 튜토리얼에서 \"기기에 설치하고자 하는 애플리케이션 선택(select the application(s) you want to install on your device)\" 단계까지 진행하시고 검색창에 알고랜드(Algorand)를 입력해 설치해 주세요.</string>
@@ -162,7 +161,6 @@
     <string name="add_note">참조 추가</string>
     <string name="try_again_in">다시 시도해 주세요. 대기 시간:</string>
     <string name="rekey_account">계정 키 재지정</string>
-    <string name="start_process">절차 시작</string>
     <string name="replace_your_account">내 계정의 Ledger를 새 Ledger 기기로 교체합니다</string>
     <string name="replace_your_accounts">내 계정의 비밀문구를 새 Ledger 기기로 교체합니다</string>
     <string name="what_to_expect">예상되는 결과:</string>
@@ -215,7 +213,6 @@
     <string name="can_be_signed_by">다음에서 서명 가능:</string>
     <string name="can_sign_for_these">해당 계정으로 서명 가능합니다</string>
     <string name="select_account">계정 선택</string>
-    <string name="choose_the_account">본 계정에 서명 시 사용할 계정을 선택하십시오</string>
     <string name="a_network_error">계정 정보를 불러오던 중 네트워크 오류가 발생했습니다. 절차를 다시 시작하십시오.</string>
     <string name="it_appears_this">본 Ledger 기기가 초기화되어, 본 계정과 기기에 저장된 계정이 일치하지 않는 것 같습니다. 홈페이지에서 Ledger를 다시 페어링해주십시오.</string>
     <plurals name="asset_count">
@@ -556,6 +553,7 @@
     <string name="transfer">전송</string>
     <string name="send_your_nft">NFT 보내기</string>
     <string name="paste_an_algorand_wallet_address">알고랜드 지갑 주소 붙여넣기</string>
+    <string name="ask_recipient_to">받는 분께\n%1$s 옵트인 요청</string>
     <string name="you_cant_send"><annotation replacement="nft_name">NFTNamePlaceHolder</annotation>을(를) <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> 주소로 보낼 수 없습니다. 이 지갑은 아직 해당 자산을 옵트인 설정하지 않았습니다. <annotation font="dmsans_medium"><annotation custom="learn_more">옵트인에 대해 자세히 알아보세요</annotation></annotation></string>
     <string name="information_about_opt">옵트인 정보</string>
     <string name="to_avoid_spammy">스팸 트랜잭션을 방지하기 위해, 알고랜드 블록체인은 이전에 옵트인한 자산에 대해서만 트랜잭션을 보내고 받도록 허용합니다.</string>
@@ -587,7 +585,6 @@
     <string name="opted_in_to">다음을 옵트인:</string>
     <string name="show_on">보기:</string>
     <string name="you_are_about_to_remove_watch_account">읽기 전용 계정을 삭제하려고 하십니다. 정말로 계정을 삭제하시겠습니까?</string>
-    <string name="you_are_about_to_remove_main_account">메인 계정을 삭제하려고 하십니다. 정말로 계정을 삭제하시겠습니까?</string>
     <string name="this_watch_account_has_opted">본 읽기 전용 계정에서 이 NFT를 옵트인했지만 소유하지는 않습니다.</string>
     <string name="display_opted_in_nfts">옵트인 NFT 표시</string>
     <string name="filter">필터</string>
@@ -617,7 +614,7 @@
     <string name="receive_opt_out">받기(옵트아웃)</string>
     <string name="enter_your_six_digit_pin">6자리 PIN 번호를\n입력하세요</string>
     <string name="refused_ledger_transaction">Ledger 트랜잭션 거부</string>
-    <string name="the_opt_out_request_has">Ledger 장치에서 옵트아웃 요청을 거부했습니다. 다시 시도해 주세요.</string>
+    <string name="the_opt_out_request_has">Ledger 기기에서 옵트아웃 요청을 거부했습니다. 다시 시도해 주세요.</string>
     <string name="home">홈</string>
     <string name="price">가격</string>
     <string name="alphabetically_a_to_z">알파벳순: A에서 Z로</string>
@@ -755,7 +752,7 @@
     <string name="this_account_doesn_t">계정에 트랜잭션을 수행할 잔액이 부족합니다.</string>
     <string name="we_couldn_t">WalletConnect 세션을 시작한 브라우저를 자동으로 감지할 수 없습니다. %1$s(으)로 돌아가려면 선택하세요.</string>
     <string name="select_a_browser">브라우저 선택</string>
-    <string name="switch_back_to"><annotation iconReplacement="browserIconResId">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation>(으)로 돌아가기</string>
+    <string name="switch_back_to"><annotation iconReplacement="browser_icon_res_id">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation>(으)로 돌아가기</string>
     <string name="account_connected">계정 연결 완료!</string>
     <string name="you_ve_connected">계정을 %1$s에 연결했습니다. 작업을 완료하려면 웹 브라우저로 돌아가세요.</string>
     <string name="transaction_signed">트랜잭션 서명 완료!</string>
@@ -779,7 +776,6 @@
     <string name="later">나중에 하기</string>
     <string name="set_custom_slippage">사용자 지정 슬리피지 설정</string>
     <string name="auto">자동</string>
-    <string name="slippage_tolerance_must_be_between">슬리피지 허용값은 %1$.2f%% - %2$.0f%% 사이여야 합니다.</string>
     <string name="balance_percentage_must_be_between">잔액 백분율은 %1$d%% - %2$d%% 사이여야 합니다.</string>
     <string name="set_custom_percentage">사용자 지정 백분율 설정</string>
     <string name="balance_percentage">잔액 백분율</string>
@@ -856,7 +852,7 @@
     </plurals>
     <string name="you_cannot_optin">이 계정에 옵트인할 수 없습니다. 읽기 전용 계정입니다.</string>
     <string name="you_cannot_take">이 계정에 대해 조치를 취할 수 없습니다. 계정이 기기에서 삭제되었습니다.</string>
-    <string name="caution_price_impact">주의! 가격 영향이 5%%보다 큽니다. 풀의 유동성이 낮을 수 있다는 점에 유의하세요. 스왑을 진행하기 전에 결과를 이해했는지 확인하시기 바랍니다.</string>
+    <string name="caution_price_impact">주의! 가격 영향이 <annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation>%%보다 큽니다. 풀의 유동성이 낮을 수 있다는 점에 유의하세요. 스왑을 진행하기 전에 결과를 이해했는지 확인하시기 바랍니다.</string>
     <string name="discover">알아보기</string>
     <string name="search_for_any_asa_by">전체 ASA에서 이름이나 ID로 검색</string>
     <string name="we_are_not_able_to_find">자산을 찾을 수 없습니다. 잠시 후 다시 시도해 주세요.</string>
@@ -914,4 +910,136 @@
     <string name="this_asset_is">이미 삭제 대기 중인 자산입니다.</string>
     <string name="get_help">지원 요청</string>
     <string name="couldn_t_retrieve">계정 정보를 불러올 수 없습니다, 다시 시도해 주세요</string>
+    <string name="request_receiver_to">받는 분께 옵트인 요청</string>
+    <string name="algo_balance_is_too_low">알고 잔액이 너무 낮습니다. 최소 잔액은 <annotation replacement="algo_icon">ALGO_ICON_PLACEHOLDER</annotation> <annotation replacement="min_balance">MIN_BALANCE_PLACEHOLDER</annotation>이어야 합니다.</string>
+    <string name="accounts_imported">계정 가져오기 완료</string>
+    <plurals name="n_accounts_were_imported_from_pera_web">
+        <item quantity="other">계정 %1$d개를 Pera Web에서 가져왔습니다.</item>
+    </plurals>
+    <string name="explore_pera_mobile">Pera Mobile 둘러보기</string>
+    <string name="unimported_accounts">가져오기하지 않은 계정</string>
+    <plurals name="n_accounts_were_not_imported_because">
+        <item quantity="other">계정 %1$d개는 이전에 가져온 적이 있으므로 가져오지 못했습니다.</item>
+    </plurals>
+    <string name="your_accounts_could_not_be_imported">계정을 가져올 수 없습니다. 나중에 다시 시도해 주세요.</string>
+    <string name="import_from_pera_web">Pera Web에서 가져오기</string>
+    <string name="i_want_to_import_algorand">Pera Web에서 알고랜드 계정을 가져오고 싶습니다</string>
+    <string name="get_your_qr_ready">Pera Web에서 QR을 준비하세요</string>
+    <string name="go_to_web_perawallet">데스크톱에서 \"web.perawallet.app\"으로 이동하세요</string>
+    <string name="go_to_settings_transfer_accounts">설정 &gt; 계정 이전으로 이동하세요</string>
+    <string name="select_the_accounts_you_want">Pera Mobile로 가져올 계정을 선택하고 QR을 생성하세요.</string>
+    <string name="tap_start_to_scan">시작을 탭하고 QR을 스캔하세요</string>
+    <string name="scan_qr_code_on_web">Pera Web에서\nQR 코드 스캔</string>
+    <string name="start">시작</string>
+    <string name="importing_your_accounts">계정 가져오기</string>
+    <string name="rekey_to_ledger_account">Ledger 계정으로 키 재지정</string>
+    <string name="rekey_to_standard_account">표준 계정으로 키 재지정</string>
+    <string name="protect_your_account_by_delegating">서명을 다른 계정으로 위임해 계정을 보호하세요.</string>
+    <string name="future_transactions_can_only">향후 트랜잭션은 위임받은 계정에서만 서명할 수 있습니다.</string>
+    <string name="this_account_will_no_longer">이 계정에서는 더 이상 거래에 서명할 수 없게 됩니다.</string>
+    <string name="your_account_s_public_key">계정의 공개 키, 잔액, 설정은 그대로 유지됩니다.</string>
+    <string name="account_transfer_is">보안상의 이유로 테스트넷에서는 계정을 이전할 수 없습니다. 이전 기능을 사용하려면 메인넷으로 전환하십시오.</string>
+    <string name="invalid_url">유효하지 않은 URL</string>
+    <string name="high_price_impact_detected">가격 영향이 큽니다!</string>
+    <string name="it_appears_that_you_formatted">가격 영향이 <annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation> %%보다 큰 스왑을 진행하시려는 것 같습니다.\n\n가격 영향, 계산 방법 또는 스왑의 전체 가치에 미치는 영향에 대해 자세히 알아보려면 Tinyman의 <annotation custom="faq_url">FAQ 섹션</annotation>을 참조하세요.</string>
+    <string name="the_signing_account_has">서명 계정이 지갑에 없거나, 잘못 구성된 계정으로 키가 재지정되었습니다. 승인 계정이 지갑에 추가되었는지, Ledger 계정인 경우 올바르게 연결되었는지 확인하세요.</string>
+    <string name="this_swap_can_not_be">가격 영향이 너무 커서 스왑을 실행할 수 없습니다. 가격 영향이 무엇이며 어떻게 작동하는지를 알아보려면 <annotation custom="faq_url">여기를 참조하세요</annotation>.</string>
+    <string name="select_your_backup_file">백업 파일을 선택하세요</string>
+    <string name="uploading_three_dots">업로드 중...</string>
+    <string name="upload_successful">업로드 성공</string>
+    <string name="replace_file">파일 바꾸기</string>
+    <string name="upload_failed">업로드 실패</string>
+    <string name="select_file">파일 선택</string>
+    <string name="this_file_type_isn_t_supported">지원되지 않는 파일입니다</string>
+    <string name="algorand_secure_backup">알고랜드 안전 백업</string>
+    <string name="i_want_to_restore_my">알고랜드 안전 백업 파일과 12단어 키로 계정을 복원하려고 합니다</string>
+    <string name="not_backed_up">백업하지 않음(%1$d)</string>
+    <string name="algorand_secure_n_backup">알고랜드\n안전 백업</string>
+    <string name="backup_your_accounts_using">알고랜드 안전 백업 프로토콜을 사용하여 계정을 백업하세요. 계정을 나타내는 암호화 텍스트 파일과 향후 암호 해독에 사용되는 12단어 키를 생성하게 됩니다.</string>
+    <string name="select_your_accounts">계정 선택</string>
+    <string name="select_one_some_or_all">백업 파일에 포함할 계정 하나, 일부 또는 전체를 선택하세요.</string>
+    <string name="store_your_12_word_key">12단어 키 저장</string>
+    <string name="record_or_save_your_12">12단어 키를 안전하게 기록하거나 저장하세요. <annotation font="dmsans_medium"><annotation custom="learn_more_click">더 알아보기</annotation></annotation></string>
+    <string name="save_your_backup_file">백업 파일을 저장하세요</string>
+    <string name="download_your_backup_to">기기의 안전한 위치에 백업을 다운로드하세요.</string>
+    <string name="backup_accounts">계정 백업(%1$d)</string>
+    <string name="choose_accounts_n_to_backup">백업할\n계정 선택</string>
+    <string name="we_couldn_t_find_any_accounts">백업에 해당하는 계정을 찾을 수 없습니다.</string>
+    <string name="have_you_stored_your_key">키를 저장하셨나요?</string>
+    <string name="store_your_key_somewhere_secure">키를 패스워드 매니저 등 안전한 곳에 저장하세요. 키를 분실하는 경우 백업 파일에 영구적으로 접근할 수 없습니다.</string>
+    <string name="create_backup_file">백업 파일 만들기</string>
+    <string name="show_key_again">키를 다시 표시하기</string>
+    <string name="create_new_key">새 키 만들기</string>
+    <string name="you_are_about_to_reset">알고랜드 안전 백업 키를 초기화하려고 합니다. 기기에서 생성되는 향후 모든 ASB 파일을 암호화하고 해독하는 데 사용할 새 12단어 키를 생성합니다.\n\n이전 ASB 파일은 이전 12단어 키로 암호화된 상태로 유지됩니다. 계속하기 전에 파일이 안전하게 저장되었는지 확인하십시오.</string>
+    <string name="i_understand_proceed">알겠습니다, 진행합니다</string>
+    <string name="copy_to_clipboard">클립보드로 복사</string>
+    <string name="create_new_12_word_key">새 12단어 키 만들기</string>
+    <string name="store_your_n_12_word_key">12단어의\n키 저장</string>
+    <string name="i_ve_stored_my_key">키를 저장했습니다</string>
+    <string name="your_12_word_key_is">12단어 키는 사용자가 생성한 모든 알고랜드 안전 백업 파일을 해독하는 데 사용됩니다.\n\n12단어 키를 안전하게 보관하세요.\nPera Learn에서 <annotation font="dmsans_medium"><annotation custom="url_click">방법을 알아보세요</annotation></annotation>.</string>
+    <string name="review_your_n_12_word_key">12단어의\n키 확인</string>
+    <string name="you_stored_your_key_during">이전 백업 중에 키를 저장했습니다. 현재도 키가 안전하게 저장되어 있는지 확인하십시오.\n\nPera Learn에서 <annotation font="dmsans_medium"><annotation custom="url_click">자세히 알아보기</annotation></annotation></string>
+    <string name="key_copied_as_text">키를 텍스트로 복사 완료</string>
+    <string name="save_backup_file">백업 파일 저장</string>
+    <string name="your_backup_file_is_ready">백업 파일 준비 완료</string>
+    <string name="save_your_file_somewhere_secure">12단어 키와 다른 위치에 파일을 안전하게 저장하세요. <annotation font="dmsans_medium"><annotation custom="url_click">자세히 알아보기</annotation></annotation></string>
+    <string name="an_error_occurred_while_generating">알고랜드 안전 백업 생성 중 오류가 발생했습니다. 다시 시도하거나, <annotation font="dmsans_medium"><annotation custom="url_click">고객지원팀에 문의해주세요</annotation></annotation></string>
+    <string name="backup_file_copied_to">백업 파일 텍스트를 클립보드로 복사 완료</string>
+    <string name="can_t_save_backup_file">백업 파일을 저장할 수 없습니다</string>
+    <string name="please_allow_pera_wallet_to">파일을 저장하려면 Pera Wallet이 기기의 사진과 미디어에 액세스할 수 있도록 허용해주세요.</string>
+    <string name="have_you_stored_your">백업 파일을 저장하셨나요?</string>
+    <string name="if_you_lose_your_algorand">알고랜드 안전 백업 파일을 분실하면 계정을 복원할 수 없습니다.</string>
+    <string name="yes_i_stored_my_file">네, 키를 저장했습니다</string>
+    <string name="show_backup_file_again">백업 파일을 다시 표시하기</string>
+    <string name="select_your_n_backup_file">백업 파일\n선택</string>
+    <string name="to_restore_your_wallet">지갑을 복원하려면 백업 파일을 선택하거나 붙여넣으십시오.</string>
+    <string name="paste_backup_file_text">백업 파일 텍스트 붙여넣기</string>
+    <string name="unable_to_parse_file">백업 파일 파싱 실패: JSON 형식 오류</string>
+    <string name="unable_to_parse_key_name">백업 파일 파싱 실패: <annotation replacement="key_name">keyNamePlaceholder</annotation> 없음</string>
+    <string name="backup_file_was_generated_with">지원되지 않는 버전의 알고랜드 안전 백업 형식으로 백업 파일이 생성되었습니다.</string>
+    <string name="unable_to_parse_suite">백업 파일 파싱 실패: 암호화 스위트(Cipher Suite) 알 수 없음</string>
+    <string name="backup_file_successfully_pasted">백업 파일 붙여넣기 완료</string>
+    <string name="enter_12_word_key">12단어 키 입력</string>
+    <string name="wrong_12_word_key">잘못된 12단어 키</string>
+    <string name="please_try_again_by_entering">올바른 12단어 키를 입력하여 다시 시도해주세요.</string>
+    <string name="choose_accounts_n_to_restore">복원할\n계정 선택</string>
+    <string name="restore_account">계정 복원(%1$d)</string>
+    <string name="nothing_to_paste">붙여넣을 항목 없음</string>
+    <string name="nothing_is_copied_to_the">클립보드에 복사된 내용이 없습니다. 백업 파일을 복사했는지 확인하십시오.</string>
+    <plurals name="accounts_restored">
+        <item quantity="other">계정 복원 완료</item>
+    </plurals>
+    <plurals name="accounts_were_restored">
+        <item quantity="other">백업 파일에서 계정 %1$d개가 복원되었습니다.</item>
+    </plurals>
+    <plurals name="account_was_not_restored_because_exist">
+        <item quantity="other">계정 %1$d개가 복원되지 않았습니다. 이미 지갑에 존재하는 계정입니다.</item>
+    </plurals>
+    <plurals name="account_was_not_restored_because_unsupported">
+        <item quantity="other">계정 %1$d개가 복원되지 않았습니다. 지원되지 않는 계정 유형입니다.</item>
+    </plurals>
+    <plurals name="account_was_not_restored">
+        <item quantity="other">계정 %1$d개가 복원되지 않았습니다. 이미 지갑에 존재하거나, 지원되지 않는 계정 유형일 수 있습니다.</item>
+    </plurals>
+    <string name="buy_sell">구매 / 판매</string>
+    <string name="see_all_options_to_buy">모든 암호화폐 매매 옵션을 살펴보세요</string>
+    <string name="buy_crypto">암호화폐 구매</string>
+    <string name="sell_crypto">암호화폐 판매</string>
+    <string name="use_apple_pay_credit_cards">Apple Pay, 신용카드 또는 은행 계좌 이체를 사용하세요</string>
+    <string name="buy_algo_with_sardine">Sardine으로 알고 구매하기</string>
+    <string name="use_instant_ach">미국 은행 계좌로 즉시 송금 ACH를 사용하세요</string>
+    <string name="buy_usdc_with_transak">Transak으로 USDC 구매하기</string>
+    <string name="use_credit_card_bank_transfer">150여 개국에서 신용카드 또는 은행 계좌 이체를 사용하세요</string>
+    <string name="buy_gift_cards_with_bidali">Bidali로 기프트 카드 구매하기</string>
+    <string name="you_can_use_your_algo">알고, USDC, USDt 잔액을 사용할 수 있습니다.</string>
+    <string name="buy_gift_cards_with_crypto">암호화폐로 기프트 카드 구매하기</string>
+    <string name="buy_gift_cards">기프트 카드 구매하기</string>
+    <string name="you_can_use_your_algo_or">알고, USDC 잔액을 사용하여 전 세계 수천 개의 브랜드에서 기프트 카드를 구매하거나 모바일 기기를 충전할 수 있습니다!</string>
+    <string name="you_can_not_purchase_bidali">테스트넷에서는 구매할 수 없습니다. Bidali를 사용하려면 설정에서 메인넷으로 다시 전환하십시오.</string>
+    <string name="buy_usdc">USDC 구매</string>
+    <string name="transak_onboards_users_from_fiat">Transak을 통해 800개가 넘는 앱에서 법정화폐로 암호화폐를 이용할 수 있습니다. 150개 이상의 국가에서 신용카드, 직불카드 또는 은행 송금을 지원합니다.</string>
+    <string name="you_can_not_purchase_transak">테스트넷에서는 구매할 수 없습니다. Transak을 사용하려면 설정에서 메인넷으로 다시 전환하십시오.</string>
+    <string name="instant_settlement_and_lower">ACH 즉시 송금을 사용하여 알고 트랜잭션을 즉시 확정하고 저렴한 수수료 혜택을 누리세요. Sardine은 180여 개국에서 Apple Pay 및 GPay, 현지 은행 및 카드 결제를 지원합니다.</string>
+    <string name="you_can_not_purchase_sardine">테스트넷에서는 구매할 수 없습니다. Sardine을 사용하려면 설정에서 메인넷으로 다시 전환하십시오.</string>
+    <string name="choose_an_account_to_proceed">진행할 계정 선택</string>
 </resources>

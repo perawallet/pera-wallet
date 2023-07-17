@@ -15,9 +15,9 @@ package com.algorand.android.modules.basemultipleaccountselection.ui.mapper
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import com.algorand.android.customviews.TriStatesCheckBox
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.ui.AccountAssetItemButtonState
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.basemultipleaccountselection.ui.model.MultipleAccountSelectionListItem
 import com.algorand.android.utils.AccountDisplayName
 import javax.inject.Inject
@@ -54,12 +54,12 @@ class MultipleAccountSelectionListItemMapper @Inject constructor() {
 
     fun mapToAccountItem(
         accountDisplayName: AccountDisplayName,
-        accountIconResource: AccountIconResource,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
         accountViewButtonState: AccountAssetItemButtonState
     ): MultipleAccountSelectionListItem.AccountItem {
         return MultipleAccountSelectionListItem.AccountItem(
             accountDisplayName = accountDisplayName,
-            accountIconResource = accountIconResource,
+            accountIconDrawablePreview = accountIconDrawablePreview,
             accountViewButtonState = accountViewButtonState
         )
     }

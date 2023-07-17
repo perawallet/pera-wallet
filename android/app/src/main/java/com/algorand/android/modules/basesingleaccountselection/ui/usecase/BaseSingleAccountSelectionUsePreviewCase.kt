@@ -15,7 +15,9 @@ package com.algorand.android.modules.basesingleaccountselection.ui.usecase
 import com.algorand.android.core.AccountManager
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.models.AnnotatedString
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
 import com.algorand.android.modules.basesingleaccountselection.ui.mapper.SingleAccountSelectionListItemMapper
@@ -31,6 +33,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 
+@SuppressWarnings("LongParameterList")
 open class BaseSingleAccountSelectionUsePreviewCase constructor(
     private val singleAccountSelectionListItemMapper: SingleAccountSelectionListItemMapper,
     private val getSortedLocalAccountsUseCase: GetSortedLocalAccountsUseCase,
@@ -40,7 +43,8 @@ open class BaseSingleAccountSelectionUsePreviewCase constructor(
     private val currencyUseCase: CurrencyUseCase,
     private val accountManager: AccountManager,
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase
+    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     protected fun getSortedCachedAccountDetailFlow(): Flow<List<AccountDetail>> {
@@ -68,9 +72,6 @@ open class BaseSingleAccountSelectionUsePreviewCase constructor(
         val secondaryCurrencySymbol = parityUseCase.getSecondaryCurrencySymbol()
         val isPrimaryCurrencyAlgo = currencyUseCase.isPrimaryCurrencyAlgo()
         val accountDisplayName = accountDisplayNameUseCase.invoke(accountDetail.account.address)
-        val accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(
-            accountType = accountDetail.account.type
-        )
         val accountValue = getAccountValueUseCase.getAccountValue(accountDetail)
         val accountFormattedPrimaryValue = accountValue.primaryAccountValue.formatAsCurrency(
             symbol = selectedCurrencySymbol,
@@ -84,7 +85,7 @@ open class BaseSingleAccountSelectionUsePreviewCase constructor(
         )
         return createAccountItem(
             accountDisplayName = accountDisplayName,
-            accountIconResource = accountIconResource,
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountDetail.account.address),
             accountFormattedPrimaryValue = accountFormattedPrimaryValue,
             accountFormattedSecondaryValue = accountFormattedSecondaryValue
         )
@@ -92,16 +93,26 @@ open class BaseSingleAccountSelectionUsePreviewCase constructor(
 
     protected fun createAccountItem(
         accountDisplayName: AccountDisplayName,
-        accountIconResource: AccountIconResource,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
         accountFormattedPrimaryValue: String?,
         accountFormattedSecondaryValue: String?
     ): SingleAccountSelectionListItem.AccountItem {
         return singleAccountSelectionListItemMapper.mapToAccountItem(
             accountDisplayName = accountDisplayName,
-            accountIconResource = accountIconResource,
+            accountIconDrawablePreview = accountIconDrawablePreview,
             accountFormattedPrimaryValue = accountFormattedPrimaryValue,
             accountFormattedSecondaryValue = accountFormattedSecondaryValue
         )
+    }
+
+    protected fun createTitleItem(textResId: Int): SingleAccountSelectionListItem.TitleItem {
+        return singleAccountSelectionListItemMapper.mapToTitleItem(textResId)
+    }
+
+    protected fun createDescriptionItem(
+        descriptionAnnotatedString: AnnotatedString
+    ): SingleAccountSelectionListItem.DescriptionItem {
+        return singleAccountSelectionListItemMapper.mapToDescriptionItem(descriptionAnnotatedString)
     }
 
     protected fun getAccountsFlow(): StateFlow<List<Account>> {

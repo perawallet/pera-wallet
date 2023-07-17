@@ -13,6 +13,7 @@
 package com.algorand.android.modules.swap.assetswap.ui.usecase
 
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDetailSummaryUseCase
 import com.algorand.android.modules.currency.domain.usecase.DisplayedCurrencyUseCase
 import com.algorand.android.modules.swap.assetswap.ui.mapper.AssetSwapPreviewMapper
@@ -33,7 +34,8 @@ class AssetSwapInitialPreviewUseCase @Inject constructor(
     private val assetSwapPreviewMapper: AssetSwapPreviewMapper,
     private val checkUserHasAssetBalanceUseCase: CheckUserHasAssetBalanceUseCase,
     private val swapAppxValueParityHelper: SwapAppxValueParityHelper,
-    private val displayedCurrencyUseCase: DisplayedCurrencyUseCase
+    private val displayedCurrencyUseCase: DisplayedCurrencyUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     fun getAssetSwapPreviewInitializationState(
@@ -54,7 +56,7 @@ class AssetSwapInitialPreviewUseCase @Inject constructor(
         // TODO update isSwitchAssetsButtonEnabled when we merge tinyman-swap-2
         return assetSwapPreviewMapper.mapToAssetSwapPreview(
             accountDisplayName = accountDetailSummary.accountDisplayName,
-            accountIconResource = accountDetailSummary.accountIconResource,
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountAddress),
             fromSelectedAssetDetail = fromAssetDetail,
             toSelectedAssetDetail = toAssetDetail,
             isSwapButtonEnabled = false,

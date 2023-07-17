@@ -247,6 +247,18 @@ private fun replaceAnnotatedStringsWithTheirReplacements(
                 when (annotation.value) {
                     "bold" -> StyleSpan(BOLD)
                     "underline" -> UnderlineSpan()
+                    // a string resource supports only one `color` annotation
+                    "color" -> {
+                        val colorResId = customAnnotations.find { (key, _) -> key == annotation.value }?.second
+                        ForegroundColorSpan(ContextCompat.getColor(context, colorResId.toString().toInt()))
+                    }
+
+                    "text_size" -> {
+                        // a string resource supports only one `text_size` annotation
+                        val textSizeResId = customAnnotations.find { (key, _) -> key == annotation.value }?.second
+                        AbsoluteSizeSpan(context.resources.getDimensionPixelSize(textSizeResId.toString().toInt()))
+                    }
+
                     else -> null
                 }?.let { span ->
                     spannableString.applySpan(span, annotation)

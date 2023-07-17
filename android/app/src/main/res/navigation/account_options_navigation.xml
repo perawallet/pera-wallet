@@ -16,15 +16,15 @@
     android:id="@+id/accountOptionsNavigation"
     app:startDestination="@id/accountOptionsBottomSheet">
 
-    <include app:graph="@navigation/rekey_ledger_navigation" />
+    <include app:graph="@navigation/rekey_to_ledger_account_navigation" />
 
     <include app:graph="@navigation/rekey_to_standard_account_navigation" />
+
+    <include app:graph="@navigation/rekey_undo_navigation" />
 
     <include app:graph="@navigation/view_passphrase_navigation" />
 
     <include app:graph="@navigation/rename_account_navigation" />
-
-    <include app:graph="@navigation/warning_confirmation_navigation" />
 
     <include app:graph="@navigation/show_qr_navigation" />
 
@@ -63,7 +63,7 @@
             app:popUpTo="@id/accountOptionsBottomSheet"
             app:popUpToInclusive="true">
             <argument
-                android:name="rekeyAddress"
+                android:name="accountAddress"
                 app:argType="string" />
         </action>
         <action
@@ -79,17 +79,19 @@
                 app:argType="string" />
         </action>
         <action
-            android:id="@+id/action_accountOptionsBottomSheet_to_warningConfirmationNavigation"
-            app:destination="@id/warningConfirmationNavigation"
+            android:id="@+id/action_accountOptionsBottomSheet_to_rekeyToStandardAccountNavigation"
+            app:destination="@id/rekeyToStandardAccountNavigation"
             app:popUpTo="@id/accountOptionsBottomSheet"
             app:popUpToInclusive="true">
             <argument
-                android:name="warningConfirmation"
-                app:argType="com.algorand.android.models.WarningConfirmation" />
+                android:name="accountAddress"
+                app:argType="string" />
         </action>
         <action
-            android:id="@+id/action_accountOptionsBottomSheet_to_rekeyToStandardAccountNavigation"
-            app:destination="@id/rekeyToStandardAccountNavigation">
+            android:id="@+id/action_accountOptionsBottomSheet_to_rekeyUndoNavigation"
+            app:destination="@id/rekeyUndoNavigation"
+            app:popUpTo="@id/accountOptionsBottomSheet"
+            app:popUpToInclusive="true">
             <argument
                 android:name="accountAddress"
                 app:argType="string" />

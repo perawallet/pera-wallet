@@ -12,6 +12,7 @@
 
 package com.algorand.android.modules.assets.addition.base.ui
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.PagingData
 import com.algorand.android.assetsearch.domain.pagination.AssetSearchPagerBuilder
@@ -19,8 +20,13 @@ import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
 import com.algorand.android.modules.assets.addition.base.ui.domain.BaseAddAssetPreviewUseCase
+import com.algorand.android.modules.assets.addition.base.ui.model.BaseAddAssetPreview
 import com.algorand.android.modules.assets.addition.ui.model.AssetAdditionType
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 abstract class BaseAddAssetViewModel(
     private val baseAddAssetPreviewUseCase: BaseAddAssetPreviewUseCase
@@ -29,6 +35,11 @@ abstract class BaseAddAssetViewModel(
     protected abstract val searchPaginationFlow: Flow<PagingData<BaseAssetSearchListItem>>
 
     protected val assetSearchPagerBuilder = AssetSearchPagerBuilder.create()
+
+    private val _baseAddAssetPreviewFlow =
+        MutableStateFlow(baseAddAssetPreviewUseCase.createInitialBaseAddAssetPreview())
+    val baseAddAssetPreviewFlow: StateFlow<BaseAddAssetPreview>
+        get() = _baseAddAssetPreviewFlow
 
     val assetSearchPaginationFlow
         get() = searchPaginationFlow
@@ -45,6 +56,25 @@ abstract class BaseAddAssetViewModel(
             isLastStateError = isLastStateError,
             assetAdditionType = assetAdditionType
         )
+    }
+
+    fun updateBaseAddAssetPreviewWithHandleQueryChangeForScrollEvent() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _baseAddAssetPreviewFlow.emit(
+                baseAddAssetPreviewUseCase.getPreviewWithHandleQueryChangeForScrollEvent(_baseAddAssetPreviewFlow.value)
+            )
+        }
+    }
+
+    fun updateBaseAddAssetPreviewWithLoadState(combinedLoadStates: CombinedLoadStates) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _baseAddAssetPreviewFlow.emit(
+                baseAddAssetPreviewUseCase.createBaseAddAssetPreviewWithLoadState(
+                    combinedLoadStates = combinedLoadStates,
+                    previousPreview = _baseAddAssetPreviewFlow.value
+                )
+            )
+        }
     }
 
     companion object {

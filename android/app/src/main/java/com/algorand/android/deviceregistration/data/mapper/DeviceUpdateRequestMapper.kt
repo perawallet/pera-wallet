@@ -21,7 +21,7 @@ class DeviceUpdateRequestMapper @Inject constructor() {
     fun mapToDeviceUpdateRequest(deviceUpdateDTO: DeviceUpdateDTO): DeviceUpdateRequest {
         return DeviceUpdateRequest(
             id = deviceUpdateDTO.deviceId,
-            pushToken = deviceUpdateDTO.pushToken,
+            pushToken = deviceUpdateDTO.pushToken.orEmpty(),
             accountPublicKeys = deviceUpdateDTO.accountPublicKeys,
             application = deviceUpdateDTO.application,
             platform = deviceUpdateDTO.platform,

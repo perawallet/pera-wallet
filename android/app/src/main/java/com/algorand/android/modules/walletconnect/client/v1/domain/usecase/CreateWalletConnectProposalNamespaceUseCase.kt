@@ -12,29 +12,46 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.domain.usecase
 
-import com.algorand.android.modules.walletconnect.client.v1.decider.WalletConnectV1ChainIdentifierDecider
-import com.algorand.android.modules.walletconnect.client.v1.mapper.WalletConnectV1SessionIdentifierMapper
+import com.algorand.android.modules.walletconnect.client.v1.domain.decider.WalletConnectV1BlockchainDecider
+import com.algorand.android.modules.walletconnect.client.v1.domain.decider.WalletConnectV1ChainIdentifierDecider
+import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1ChainIdentifier
+import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1ChainIdentifier.BETANET
+import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1ChainIdentifier.MAINNET
+import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1ChainIdentifier.TESTNET
 import com.algorand.android.modules.walletconnect.client.v1.utils.WalletConnectClientV1Utils
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
 import com.algorand.android.modules.walletconnect.mapper.WalletConnectNamespaceMapper
 import javax.inject.Inject
 
 class CreateWalletConnectProposalNamespaceUseCase @Inject constructor(
     private val namespaceMapper: WalletConnectNamespaceMapper,
     private val chainIdentifierDecider: WalletConnectV1ChainIdentifierDecider,
-    private val sessionIdentifierMapper: WalletConnectV1SessionIdentifierMapper
+    private val blockchainDecider: WalletConnectV1BlockchainDecider
 ) {
 
-    operator fun invoke(
-        sessionId: Long,
-        chainId: Long?,
-    ): WalletConnect.Namespace.Proposal {
-        val sessionIdentifier = sessionIdentifierMapper.mapToSessionIdentifier(sessionId)
-        return namespaceMapper.mapToProposalNamespace(
-            chainIdList = listOf(chainIdentifierDecider.decideChainIdentifier(chainId)),
+    operator fun invoke(chainId: Long?): Map<WalletConnectBlockchain, WalletConnect.Namespace.Proposal> {
+        val blockchain = blockchainDecider.decideBlockchain(chainId)
+        val namespace = namespaceMapper.mapToProposalNamespace(
+            chainIdList = getChainIdList(chainId),
             methodList = WalletConnectClientV1Utils.getDefaultSessionMethods(),
             eventList = WalletConnectClientV1Utils.getDefaultSessionEvents(),
-            versionIdentifier = sessionIdentifier.versionIdentifier
+            versionIdentifier = WalletConnectClientV1Utils.getWalletConnectV1VersionIdentifier()
         )
+        return mapOf(blockchain to namespace)
+    }
+
+    private fun getChainIdList(chainId: Long?): List<WalletConnect.ChainIdentifier> {
+        return with(chainIdentifierDecider) {
+            if (chainId == WalletConnectV1ChainIdentifier.MAINNET_BACKWARD_SUPPORTABILITY.id) {
+                listOf(
+                    decideChainIdentifier(MAINNET.id),
+                    decideChainIdentifier(TESTNET.id),
+                    decideChainIdentifier(BETANET.id)
+                )
+            } else {
+                listOf(decideChainIdentifier(chainId))
+            }
+        }
     }
 }

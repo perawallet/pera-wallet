@@ -19,7 +19,6 @@ import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.DialogLedgerLoadingBinding
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.extensions.wrapWithBrackets
-import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
 
 // TODO find a way to put into home_navigation
@@ -83,10 +82,7 @@ class LedgerLoadingDialog : BaseBottomSheet(
 
     private fun initDescriptionText() {
         val ledgerName = arguments?.getString(LEDGER_NAME_KEY)?.wrapWithBrackets().orEmpty()
-        binding.descriptionTextView.text = context?.getXmlStyledString(
-            stringResId = R.string.please_make_sure,
-            replacementList = listOf("ledger_name" to ledgerName)
-        )
+        binding.descriptionTextView.text = getString(R.string.please_review_and_sign_formatted, ledgerName)
     }
 
     private fun initCancelButton() {

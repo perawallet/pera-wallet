@@ -1,3 +1,15 @@
+/*
+ * Copyright 2022 Pera Wallet, LDA
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License
+ */
+
 // TODO: We should remove this after function count decrease under 25
 @file:Suppress("TooManyFunctions", "MaxLineLength")
 /*
@@ -38,11 +50,12 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.TransactionRequestAction
 import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.ui.common.walletconnect.WalletConnectAppPreviewCardView
-import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequestFragmentDirections.Companion.actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionFallbackBrowserSelectionNavigation
 import com.algorand.android.utils.BaseDoubleButtonBottomSheet.Companion.RESULT_KEY
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.isBluetoothEnabled
@@ -54,6 +67,7 @@ import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import com.algorand.android.utils.walletconnect.isFutureTransaction
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class WalletConnectTransactionRequestFragment :
@@ -76,7 +90,7 @@ class WalletConnectTransactionRequestFragment :
 
     private val requestResultObserver = Observer<Event<Resource<AnnotatedString>>> {
         it.consume()?.use(
-            onSuccess = { handleSuccessfulTransaction() },
+            onSuccess = { transactionRequestViewModel.onTransactionConfirmed() },
             onFailed = { navBack() }
         )
     }
@@ -107,6 +121,23 @@ class WalletConnectTransactionRequestFragment :
         if (shouldStopResources) {
             transactionRequestViewModel.stopAllResources()
         }
+    }
+
+    private val navToLaunchBackNavigationEventCollector: suspend (
+        Event<WalletConnectSessionIdentifier>?
+    ) -> Unit = { event ->
+        event?.consume()?.run {
+            nav(
+                WalletConnectTransactionRequestFragmentDirections
+                    .actionWalletConnectTransactionRequestFragmentToWcTransactionLaunchBackBrowserBottomSheet(this)
+            )
+        }
+    }
+
+    private val navBackEventCollector: suspend (
+        Event<Unit>?
+    ) -> Unit = { event ->
+        event?.consume()?.let { navBack() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -171,6 +202,16 @@ class WalletConnectTransactionRequestFragment :
         with(transactionRequestViewModel) {
             requestResultLiveData.observe(viewLifecycleOwner, requestResultObserver)
             signResultLiveData.observe(viewLifecycleOwner, signResultObserver)
+            with(walletConnectTransactionRequestPreviewFlow) {
+                collectLatestOnLifecycle(
+                    flow = map { it.navBackEvent },
+                    collection = navBackEventCollector
+                )
+                collectLatestOnLifecycle(
+                    flow = map { it.navToLaunchBackNavigationEvent },
+                    collection = navToLaunchBackNavigationEventCollector
+                )
+            }
         }
     }
 
@@ -355,18 +396,5 @@ class WalletConnectTransactionRequestFragment :
 
     override fun motionTransitionToEnd() {
         binding.transactionRequestMotionLayout.transitionToEnd()
-    }
-
-    private fun handleSuccessfulTransaction() {
-        if (transactionRequestViewModel.shouldSkipConfirmation) {
-            navBack()
-        } else {
-            nav(
-                actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionFallbackBrowserSelectionNavigation(
-                        browserGroup = transactionRequestViewModel.fallbackBrowserGroupResponse,
-                        peerMetaName = transactionRequestViewModel.peerMetaName
-                    )
-            )
-        }
     }
 }

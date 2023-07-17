@@ -20,6 +20,7 @@ import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.AssetTransferAmountPreview
+import com.algorand.android.models.TransactionData
 import com.algorand.android.usecase.AssetTransferAmountPreviewUseCase
 import com.algorand.android.usecase.AssetTransferAmountUseCase
 import com.algorand.android.utils.Event
@@ -111,6 +112,18 @@ class AssetTransferAmountViewModel @Inject constructor(
         assetTransaction = assetTransaction.copy(
             note = transactionNote,
             xnote = lockedNote
+        )
+    }
+
+    fun createSendTransactionData(
+        amount: BigInteger
+    ): TransactionData.Send? {
+        return assetTransferAmountPreviewUseCase.createSendTransactionData(
+            accountAddress = assetTransaction.senderAddress,
+            note = assetTransaction.xnote ?: assetTransaction.note,
+            selectedAsset = getAssetInformation(),
+            amount = amount,
+            assetTransaction = assetTransaction
         )
     }
 

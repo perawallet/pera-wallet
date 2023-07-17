@@ -16,10 +16,10 @@ import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 
 data class AccountAssetIconNameConfiguration(
-    val startAccountIconResource: AccountIconResource? = null,
+    val accountIconDrawablePreview: AccountIconDrawablePreview,
     @DrawableRes val setStartIconResId: Int? = null,
     val startSmallIconDrawable: Drawable? = null,
     @DrawableRes val startSmallIconResId: Int? = null,

@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountOptionBinding
 import com.algorand.android.models.AccountSelection
-import com.algorand.android.utils.extensions.setAccountIconDrawable
+import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.extensions.setTextAndVisibility
 
 class AccountSelectionViewHolder(
@@ -31,8 +31,13 @@ class AccountSelectionViewHolder(
         with(binding) {
             with(accountSelection) {
                 nameTextView.text = accountDisplayName?.getAccountPrimaryDisplayName()
-                if (accountIconResource != null) {
-                    typeImageView.setAccountIconDrawable(accountIconResource, R.dimen.account_icon_size_large)
+                if (accountIconDrawablePreview != null) {
+                    val accountIconDrawable = AccountIconDrawable.create(
+                        context = typeImageView.context,
+                        accountIconDrawablePreview = accountIconDrawablePreview,
+                        sizeResId = R.dimen.spacing_xxxxlarge
+                    )
+                    typeImageView.setImageDrawable(accountIconDrawable)
                 }
                 checkImageView.isVisible = accountAddress == defaultSelectedAccountAddress
                 setupAssetCount(accountAssetCount ?: 0)

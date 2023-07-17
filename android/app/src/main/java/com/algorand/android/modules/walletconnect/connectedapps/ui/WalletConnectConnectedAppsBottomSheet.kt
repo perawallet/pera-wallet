@@ -18,8 +18,8 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetWalletConnectConnectedAppsBinding
-import com.algorand.android.modules.walletconnect.sessions.ui.adapter.WalletConnectSessionAdapter
-import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.connectedapps.ui.adapter.WalletConnectSessionAdapter
+import com.algorand.android.modules.walletconnect.connectedapps.ui.model.WalletConnectSessionItem
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle

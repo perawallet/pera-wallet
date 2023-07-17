@@ -31,10 +31,11 @@ import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
 import com.algorand.android.models.TransactionManagerResult
-import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.modules.accountstatehelper.domain.usecase.AccountStateHelperUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LOCATION_PERMISSION_REQUEST_CODE
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.emptyString
 import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.isBluetoothEnabled
 import com.algorand.android.utils.sendErrorLog
@@ -51,7 +52,7 @@ abstract class TransactionBaseFragment(
     lateinit var transactionManager: TransactionManager
 
     @Inject
-    lateinit var accountDetailUseCase: AccountDetailUseCase
+    lateinit var accountStateHelperUseCase: AccountStateHelperUseCase
 
     // TODO: 13.06.2022 Remove bleWaitingTransactionData and use a list instance for both txn type
     private var bleWaitingTransactionData: TransactionData? = null
@@ -172,12 +173,11 @@ abstract class TransactionBaseFragment(
             }
         }
 
-        val canSenderAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(
-            publicKey = transactionData.senderAccountAddress
-        )
-        if (canSenderAccountSignTransaction) {
+        val hasAccountAuthority = accountStateHelperUseCase.hasAccountAuthority(transactionData.senderAccountAddress)
+        if (hasAccountAuthority) {
             transactionManager.initSigningTransactions(false, transactionData)
         } else {
+            showGlobalError(title = getString(R.string.this_action_is_not_available), errorMessage = emptyString())
             sendErrorLog("${this::class.simpleName} Not eligible accounts tried to sign transaction")
         }
     }

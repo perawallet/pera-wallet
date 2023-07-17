@@ -24,8 +24,7 @@ import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate
 import com.algorand.android.migration.MigrationManager
 import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
 import com.algorand.android.modules.firebase.token.FirebaseTokenManager
-import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
-import com.algorand.android.modules.walletconnect.domain.WalletConnectSessionsStatusManager
+import com.algorand.android.modules.pendingintentkeeper.ui.PendingIntentKeeper
 import com.algorand.android.utils.coremanager.ApplicationStatusObserver
 import com.algorand.android.utils.preference.getSavedThemePreference
 import dagger.hilt.android.HiltAndroidApp
@@ -51,13 +50,13 @@ open class PeraApp : Application() {
     lateinit var autoLockManager: AutoLockManager
 
     @Inject
-    lateinit var walletConnectManager: WalletConnectManager
+    lateinit var walletConnectInitializer: WalletConnectInitializer
 
     @Inject
     lateinit var applicationStatusObserver: ApplicationStatusObserver
 
     @Inject
-    lateinit var walletConnectSessionsStatusManager: WalletConnectSessionsStatusManager
+    lateinit var pendingIntentKeeper: PendingIntentKeeper
 
     private val localizationDelegate = LocalizationApplicationDelegate()
 
@@ -74,22 +73,22 @@ open class PeraApp : Application() {
         AppCompatDelegate.setDefaultNightMode(sharedPref.getSavedThemePreference().convertToSystemAbbr())
         accountManager.initAccounts()
 
-        bindLifecycleAwareComponents()
+        walletConnectInitializer.initialize(this, ProcessLifecycleOwner.get().lifecycle)
+        bindApplicationLifecycleAwareComponents()
         bindActivityLifecycleAwareComponents()
     }
 
-    private fun bindLifecycleAwareComponents() {
+    private fun bindApplicationLifecycleAwareComponents() {
         with(ProcessLifecycleOwner.get().lifecycle) {
             addObserver(autoLockManager)
-            addObserver(walletConnectManager)
             addObserver(applicationStatusObserver)
             addObserver(firebaseTokenManager)
+            addObserver(pendingIntentKeeper)
         }
     }
 
     private fun bindActivityLifecycleAwareComponents() {
         registerActivityLifecycleCallbacks(autoLockManager)
-        registerActivityLifecycleCallbacks(walletConnectSessionsStatusManager)
     }
 
     // https://issuetracker.google.com/issues/141726323

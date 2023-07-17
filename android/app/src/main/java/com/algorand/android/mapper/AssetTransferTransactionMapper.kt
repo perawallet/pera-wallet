@@ -21,12 +21,13 @@ import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
+import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetBaseOwnedAssetDataUseCase
 import com.algorand.android.utils.extensions.mapNotBlank
 import com.algorand.android.utils.extensions.mapNotNull
 import com.algorand.android.utils.multiplyOrZero
-import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import java.math.BigInteger
 import java.math.BigInteger.ZERO
 import javax.inject.Inject
@@ -34,10 +35,11 @@ import javax.inject.Inject
 // TODO: 19.01.2022 Mappers shouldn't inject use case
 @SuppressWarnings("ReturnCount")
 class AssetTransferTransactionMapper @Inject constructor(
-    private val errorProvider: WalletConnectTransactionErrorProvider,
+    private val errorProvider: WalletConnectErrorProvider,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase,
-    private val walletConnectAssetInformationMapper: WalletConnectAssetInformationMapper
+    private val walletConnectAssetInformationMapper: WalletConnectAssetInformationMapper,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) : BaseWalletConnectTransactionMapper() {
 
     override fun createTransaction(
@@ -98,7 +100,12 @@ class AssetTransferTransactionMapper @Inject constructor(
                 signer = signer,
                 assetAmount = amount,
                 authAddress = accountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(accountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = accountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = accountData?.account?.address.orEmpty()
+                    )
+                ),
                 assetInformation = assetInformation,
                 groupId = groupId,
                 warningCount = 1.takeIf { isLocalAccountSigner }
@@ -138,7 +145,12 @@ class AssetTransferTransactionMapper @Inject constructor(
                 signer = signer,
                 assetAmount = amount,
                 authAddress = accountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(accountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = accountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = accountData?.account?.address.orEmpty()
+                    )
+                ),
                 assetInformation = assetInformation,
                 groupId = groupId,
                 warningCount = 1.takeIf { isLocalAccountSigner }
@@ -178,7 +190,12 @@ class AssetTransferTransactionMapper @Inject constructor(
                 signer = signer,
                 assetAmount = amount,
                 authAddress = accountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(accountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = accountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = accountData?.account?.address.orEmpty()
+                    )
+                ),
                 assetInformation = assetInformation,
                 closeAddress = createWalletConnectAddress(assetCloseToAddress) ?: return null,
                 groupId = groupId,
@@ -218,8 +235,18 @@ class AssetTransferTransactionMapper @Inject constructor(
                 assetAmount = amount,
                 signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
                 authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(senderAccountData?.account),
-                toAccount = WalletConnectAccount.create(receiverAccountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = senderAccountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = senderAccountData?.account?.address.orEmpty()
+                    )
+                ),
+                toAccount = WalletConnectAccount.create(
+                    account = receiverAccountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = receiverAccountData?.account?.address.orEmpty()
+                    )
+                ),
                 assetInformation = assetInformation,
                 groupId = groupId
             )
@@ -257,8 +284,18 @@ class AssetTransferTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
                 authAddress = fromAccountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(fromAccountData?.account),
-                toAccount = WalletConnectAccount.create(toAccountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = fromAccountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = fromAccountData?.account?.address.orEmpty()
+                    )
+                ),
+                toAccount = WalletConnectAccount.create(
+                    account = toAccountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = toAccountData?.account?.address.orEmpty()
+                    )
+                ),
                 assetInformation = assetInformation,
                 groupId = groupId
             )

@@ -12,8 +12,8 @@
 
 package com.algorand.android.modules.swap.confirmswap.ui.mapper
 
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
 import com.algorand.android.modules.swap.confirmswap.ui.mapper.decider.ConfirmSwapPriceImpactWarningStatusDecider
 import com.algorand.android.modules.swap.confirmswap.ui.model.ConfirmSwapPreview
@@ -40,7 +40,7 @@ class ConfirmSwapPreviewMapper @Inject constructor(
         priceImpact: Float,
         formattedExchangeFee: String,
         formattedPeraFee: String,
-        accountIconResource: AccountIconResource,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
         accountDisplayName: AccountDisplayName,
         errorEvent: Event<ErrorResource>?,
         slippageToleranceUpdateSuccessEvent: Event<Unit>?
@@ -57,7 +57,7 @@ class ConfirmSwapPreviewMapper @Inject constructor(
             swapQuote = swapQuote,
             isLoading = isLoading,
             priceImpactWarningStatus = confirmSwapPriceImpactWarningStatusDecider.decideWarningStatus(priceImpact),
-            accountIconResource = accountIconResource,
+            accountIconDrawablePreview = accountIconDrawablePreview,
             accountDisplayName = accountDisplayName,
             errorEvent = errorEvent,
             slippageToleranceUpdateSuccessEvent = slippageToleranceUpdateSuccessEvent

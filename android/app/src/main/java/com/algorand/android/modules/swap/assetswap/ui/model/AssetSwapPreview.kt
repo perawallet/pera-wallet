@@ -13,7 +13,7 @@
 package com.algorand.android.modules.swap.assetswap.ui.model
 
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
 import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AssetName
@@ -24,7 +24,7 @@ import com.algorand.android.utils.formatAmount
 
 data class AssetSwapPreview(
     val accountDisplayName: AccountDisplayName,
-    val accountIconResource: AccountIconResource?,
+    val accountIconDrawablePreview: AccountIconDrawablePreview,
     val fromSelectedAssetDetail: SelectedAssetDetail,
     val toSelectedAssetDetail: SelectedAssetDetail?,
     val isSwapButtonEnabled: Boolean,

@@ -12,24 +12,28 @@
 
 package com.algorand.android.modules.walletconnect.connectionrequest.ui.usecase
 
+import com.algorand.android.R
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseAccountAndAssetListItem
-import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.ui.AccountAssetItemButtonState.CHECKED
 import com.algorand.android.models.ui.AccountAssetItemButtonState.UNCHECKED
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.mapper.BaseWalletConnectConnectionItemMapper
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.mapper.WCSessionRequestResultMapper
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.mapper.WalletConnectConnectionPreviewMapper
+import com.algorand.android.modules.walletconnect.connectionrequest.ui.mapper.WalletConnectNetworkItemMapper
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WalletConnectConnectionPreview
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
+import com.algorand.android.utils.Event
 import javax.inject.Inject
 
+@SuppressWarnings("LongParameterList")
 class WalletConnectConnectionPreviewUseCase @Inject constructor(
     private val getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
     private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
@@ -37,11 +41,13 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
     private val baseWalletConnectConnectionItemMapper: BaseWalletConnectConnectionItemMapper,
     private val walletConnectConnectionPreviewMapper: WalletConnectConnectionPreviewMapper,
     private val wCSessionRequestResultMapper: WCSessionRequestResultMapper,
-    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val walletConnectNetworkItemMapper: WalletConnectNetworkItemMapper,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     suspend fun getWalletConnectConnectionPreview(
-        walletConnectPeerMeta: WalletConnectPeerMeta
+        sessionProposal: WalletConnectSessionProposal
     ): WalletConnectConnectionPreview {
         val sortedAccountList = createSortedAccountList()
         val isThereOnlyOneAccount = sortedAccountList.count() == 1
@@ -50,7 +56,9 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
         val accountItems = sortedAccountList.map { accountListItem ->
             baseWalletConnectConnectionItemMapper.mapToAccountItem(
                 accountAddress = accountListItem.itemConfiguration.accountAddress,
-                accountIconResource = accountListItem.itemConfiguration.accountIconResource,
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                    accountAddress = accountListItem.itemConfiguration.accountAddress
+                ),
                 accountDisplayName = accountListItem.itemConfiguration.accountDisplayName,
                 buttonState = preSelectedButtonState,
                 isChecked = isThereOnlyOneAccount
@@ -58,17 +66,45 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
         }
 
         val dAppInfoItem = baseWalletConnectConnectionItemMapper.mapToDappInfoItem(
-            name = walletConnectPeerMeta.name,
-            url = walletConnectPeerMeta.url,
-            peerIconUri = walletConnectPeerMeta.peerIconUri.toString()
+            name = sessionProposal.peerMeta.name,
+            url = sessionProposal.peerMeta.url,
+            peerIconUri = sessionProposal.peerMeta.peerIconUri.toString()
         )
 
-        val accountsTitleItem = baseWalletConnectConnectionItemMapper.mapToAccountsTitleItem(
-            accountCount = accountItems.count()
+        val accountsTitleItem = baseWalletConnectConnectionItemMapper.mapToTitleItem(
+            memberCount = accountItems.count(),
+            titleTextResId = R.plurals.select_accounts
+        )
+        val algorandNamepace = sessionProposal.requiredNamespaces[WalletConnectBlockchain.ALGORAND]
+        val eventList = algorandNamepace?.events?.map { it.value }.orEmpty()
+        val networkList = algorandNamepace?.chains?.map {
+            walletConnectNetworkItemMapper.mapToWalletConnectConnectionNetworkItem(it)
+        }.orEmpty()
+
+        val networkCount = networkList.count()
+        val networkItem = baseWalletConnectConnectionItemMapper.mapToWalletConnectConnectionNetworkItem(
+            networkCount = networkCount,
+            walletConnectConnectionNetworkList = networkList
+        )
+
+        val eventCount = eventList.count()
+        val eventItem = baseWalletConnectConnectionItemMapper.mapToEventItem(
+            eventCount = eventCount,
+            eventList = eventList
+        )
+
+        val requestedPermissionTitle = baseWalletConnectConnectionItemMapper.mapToTitleItem(
+            titleTextResId = R.plurals.requested_permission,
+            memberCount = eventCount + networkCount
         )
 
         val baseWalletConnectConnectionItems = mutableListOf<BaseWalletConnectConnectionItem>().apply {
             add(dAppInfoItem)
+            if (networkList.isNotEmpty() || eventList.isNotEmpty()) {
+                add(requestedPermissionTitle)
+            }
+            if (networkList.isNotEmpty()) add(networkItem)
+            if (eventList.isNotEmpty()) add(eventItem)
             add(accountsTitleItem)
             addAll(accountItems)
         }
@@ -87,7 +123,7 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
                     accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
                     accountAddress = account.address,
                     accountType = account.type,
-                    accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type)
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(account.address)
                 )
             },
             onFailedAccountConfiguration = {
@@ -96,7 +132,7 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
                         accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
                         accountAddress = address,
                         accountType = type,
-                        accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type)
+                        accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(address)
                     )
                 }
             }
@@ -109,7 +145,9 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
     ): WalletConnectConnectionPreview {
         val baseWalletConnectConnectionItems = preview.baseWalletConnectConnectionItems.map {
             when (it) {
-                is BaseWalletConnectConnectionItem.AccountsTitleItem,
+                is BaseWalletConnectConnectionItem.TitleItem,
+                is BaseWalletConnectConnectionItem.EventItem,
+                is BaseWalletConnectConnectionItem.NetworkItem,
                 is BaseWalletConnectConnectionItem.DappInfoItem -> it
                 is BaseWalletConnectConnectionItem.AccountItem -> updateSelectedItemButtonState(it, accountAddress)
             }
@@ -137,18 +175,28 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
     }
 
     fun getApprovedWalletConnectSessionResult(
-        accountAddresses: List<String>,
+        preview: WalletConnectConnectionPreview?,
         sessionProposal: WalletConnectSessionProposal
-    ): WCSessionRequestResult.ApproveRequest {
-        return wCSessionRequestResultMapper.mapToApproveRequest(
-            accountAddresses = accountAddresses,
+    ): WalletConnectConnectionPreview? {
+        val selectedAccounts = getSelectedAccountFromPreview(preview)
+        val approveRequest = wCSessionRequestResultMapper.mapToApproveRequest(
+            accountAddresses = selectedAccounts,
             sessionProposal = sessionProposal
         )
+        return preview?.copy(approveWalletConnectSessionRequest = Event(approveRequest))
     }
 
     fun getRejectedWalletConnectSessionResult(
         sessionProposal: WalletConnectSessionProposal
     ): WCSessionRequestResult.RejectRequest {
         return wCSessionRequestResultMapper.mapToRejectRequest(sessionProposal = sessionProposal)
+    }
+
+    private fun getSelectedAccountFromPreview(preview: WalletConnectConnectionPreview?): List<String> {
+        return preview?.baseWalletConnectConnectionItems
+            ?.filterIsInstance<BaseWalletConnectConnectionItem.AccountItem>()
+            ?.filter { it.isChecked }
+            ?.map { it.accountAddress }
+            .orEmpty()
     }
 }

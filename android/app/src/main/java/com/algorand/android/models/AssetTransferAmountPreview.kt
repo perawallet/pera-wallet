@@ -13,6 +13,7 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.Event
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -30,5 +31,5 @@ data class AssetTransferAmountPreview(
     val minimumBalanceIsViolatedResultEvent: Event<String?>? = null,
     val assetNotFoundErrorEvent: Event<Unit>? = null,
     val accountName: String? = null,
-    val accountIconResource: AccountIconResource? = null
+    val accountIconDrawablePreview: AccountIconDrawablePreview? = null
 )

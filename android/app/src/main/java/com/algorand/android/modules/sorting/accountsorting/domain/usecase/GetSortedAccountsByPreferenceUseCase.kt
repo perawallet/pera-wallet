@@ -18,6 +18,7 @@ import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.BaseAccountAndAssetListItem
+import com.algorand.android.modules.accountstatehelper.domain.usecase.AccountStateHelperUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.model.AccountSortingType
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetSortedLocalAccountsUseCase
@@ -28,6 +29,7 @@ class GetSortedAccountsByPreferenceUseCase @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
     private val getSortedLocalAccountsUseCase: GetSortedLocalAccountsUseCase,
     private val baseAccountAndAssetListItemMapper: BaseAccountAndAssetListItemMapper,
+    private val accountStateHelperUseCase: AccountStateHelperUseCase
 ) {
 
     fun getSortedAccountListItems(
@@ -96,7 +98,7 @@ class GetSortedAccountsByPreferenceUseCase @Inject constructor(
         val localAccounts = getSortedLocalAccountsUseCase.getSortedLocalAccounts()
         val accountListItems = localAccounts.mapIndexedNotNull { index, account ->
             val isAccountTypeValid = isAccountTypeValid(excludedAccountTypes, account.type)
-            if (isAccountTypeValid && accountDetailUseCase.canAccountSignTransaction(account.address)) {
+            if (isAccountTypeValid && accountStateHelperUseCase.hasAccountAuthority(account.address)) {
                 val accountDetail = accountDetailUseCase.getCachedAccountDetail(account.address)?.data
                 val accountItemConfiguration = configureListItem(
                     accountDetail = accountDetail,
@@ -122,7 +124,7 @@ class GetSortedAccountsByPreferenceUseCase @Inject constructor(
         val localAccounts = getSortedLocalAccountsUseCase.getSortedLocalAccounts()
         val accountListItems = localAccounts.mapIndexedNotNull { index, account ->
             val isAccountTypeValid = isAccountTypeValid(excludedAccountTypes, account.type)
-            if (isAccountTypeValid && accountDetailUseCase.canAccountSignTransaction(account.address)) {
+            if (isAccountTypeValid && accountStateHelperUseCase.hasAccountAuthority(account.address)) {
                 val accountDetail = accountDetailUseCase.getCachedAccountDetail(account.address)?.data
                 val assetIdValid = isAssetIdValid(accountDetail, accountFilterAssetId)
                 if (assetIdValid) {

@@ -22,7 +22,7 @@ import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentContactInfoBinding
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.IconButton
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.IconButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.extensions.setContactIconDrawable
 import com.algorand.android.utils.hideKeyboard

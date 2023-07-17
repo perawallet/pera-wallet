@@ -14,8 +14,8 @@ package com.algorand.android.customviews.accountandassetitem.mapper
 
 import com.algorand.android.customviews.accountandassetitem.model.BaseItemConfiguration
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ButtonConfiguration
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountDisplayName
 import java.math.BigDecimal
 import javax.inject.Inject
@@ -26,7 +26,7 @@ class AccountItemConfigurationMapper @Inject constructor() {
     fun mapTo(
         accountAddress: String,
         accountDisplayName: AccountDisplayName,
-        accountIconResource: AccountIconResource? = null,
+        accountIconDrawablePreview: AccountIconDrawablePreview? = null,
         accountType: Account.Type? = null,
         accountPrimaryValueText: String? = null,
         accountSecondaryValueText: String? = null,
@@ -38,7 +38,7 @@ class AccountItemConfigurationMapper @Inject constructor() {
     ): BaseItemConfiguration.AccountItemConfiguration {
         return BaseItemConfiguration.AccountItemConfiguration(
             accountAddress = accountAddress,
-            accountIconResource = accountIconResource,
+            accountIconDrawablePreview = accountIconDrawablePreview,
             accountDisplayName = accountDisplayName,
             primaryValueText = accountPrimaryValueText,
             secondaryValueText = accountSecondaryValueText,

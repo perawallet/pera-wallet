@@ -45,7 +45,7 @@ ext {
             javaWebSocket   : '1.5.3',
             khex            : '1.1.2',
             moshi           : '1.14.0',
-            walletConnectBom: '1.3.0',
+            walletConnectBom: '1.6.1',
             exoPlayer       : '2.18.1',
             firebaseBom     : '30.4.0',
             algoSdk         : '1.19.0'
@@ -54,10 +54,6 @@ ext {
     discoverVersions = [
             staging: 4,
             prod   : 4
-    ]
-
-    debugLibVersions = [
-            leakCanary: '2.9.1'
     ]
 
     testLibVersions = [

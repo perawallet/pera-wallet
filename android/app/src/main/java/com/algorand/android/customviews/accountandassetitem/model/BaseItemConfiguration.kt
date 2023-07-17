@@ -14,9 +14,9 @@ package com.algorand.android.customviews.accountandassetitem.model
 
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ButtonConfiguration
 import com.algorand.android.models.GovernorIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
@@ -45,7 +45,7 @@ sealed class BaseItemConfiguration {
         override val secondaryValue: BigDecimal? = null,
         val showWarning: Boolean? = null,
         val accountAddress: String,
-        val accountIconResource: AccountIconResource? = null,
+        val accountIconDrawablePreview: AccountIconDrawablePreview? = null,
         val governorIconResource: GovernorIconResource? = null,
         val accountDisplayName: AccountDisplayName? = null,
         val accountType: Account.Type? = null,

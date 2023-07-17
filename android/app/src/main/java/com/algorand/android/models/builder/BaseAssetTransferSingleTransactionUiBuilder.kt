@@ -35,7 +35,7 @@ class BaseAssetTransferSingleTransactionUiBuilder @Inject constructor(
     override fun buildTransactionShortDetail(txn: BaseAssetTransferTransaction): WalletConnectTransactionShortDetail {
         return with(txn) {
             WalletConnectTransactionShortDetail(
-                accountIconResource = getFromAccountIconResource(),
+                accountIconDrawablePreview = getFromAccountIconResource(),
                 accountName = fromAccount?.name,
                 accountBalance = assetBalance,
                 warningCount = warningCount,

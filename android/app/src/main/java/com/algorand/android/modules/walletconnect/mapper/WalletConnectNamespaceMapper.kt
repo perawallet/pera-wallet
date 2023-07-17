@@ -13,6 +13,7 @@
 package com.algorand.android.modules.walletconnect.mapper
 
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectConnectedAccount
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectEvent
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectMethod
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnectVersionIdentifier
@@ -21,15 +22,17 @@ import javax.inject.Inject
 class WalletConnectNamespaceMapper @Inject constructor() {
 
     fun mapToSessionNamespace(
-        accountList: List<String>,
+        accountList: List<WalletConnectConnectedAccount>,
         methodList: List<WalletConnectMethod>,
         eventList: List<WalletConnectEvent>,
+        chainList: List<WalletConnect.ChainIdentifier>,
         versionIdentifier: WalletConnectVersionIdentifier
     ): WalletConnect.Namespace.Session {
         return WalletConnect.Namespace.Session(
             accounts = accountList,
-            methods = methodList.map { it.value },
-            events = eventList.map { it.value },
+            methods = methodList,
+            events = eventList,
+            chains = chainList,
             versionIdentifier = versionIdentifier
         )
     }
@@ -42,8 +45,8 @@ class WalletConnectNamespaceMapper @Inject constructor() {
     ): WalletConnect.Namespace.Proposal {
         return WalletConnect.Namespace.Proposal(
             chains = chainIdList,
-            methods = methodList.map { it.value },
-            events = eventList.map { it.value },
+            methods = methodList,
+            events = eventList,
             versionIdentifier = versionIdentifier
         )
     }

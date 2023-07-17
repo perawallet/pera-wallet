@@ -12,8 +12,8 @@
 
 package com.algorand.android.modules.swap.previewsummary.ui.mapper
 
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.swap.previewsummary.ui.model.SwapPreviewSummaryPreview
 import com.algorand.android.modules.swap.utils.priceratioprovider.SwapPriceRatioProvider
 import com.algorand.android.utils.AccountDisplayName
@@ -29,7 +29,7 @@ class SwapPreviewSummaryPreviewMapper @Inject constructor() {
         formattedPeraFee: String,
         formattedTotalFee: String,
         accountDisplayName: AccountDisplayName,
-        accountIconResource: AccountIconResource,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
         priceRatioProvider: SwapPriceRatioProvider
     ): SwapPreviewSummaryPreview {
         return SwapPreviewSummaryPreview(
@@ -40,7 +40,7 @@ class SwapPreviewSummaryPreviewMapper @Inject constructor() {
             formattedPeraFee = formattedPeraFee,
             formattedTotalFee = formattedTotalFee,
             accountDisplayName = accountDisplayName,
-            accountIconResource = accountIconResource,
+            accountIconDrawablePreview = accountIconDrawablePreview,
             priceRatioProvider = priceRatioProvider
         )
     }

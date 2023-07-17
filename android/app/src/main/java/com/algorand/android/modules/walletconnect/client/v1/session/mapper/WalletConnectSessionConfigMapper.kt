@@ -12,13 +12,13 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.session.mapper
 
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionMetaDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionMetaDto
 import javax.inject.Inject
 import org.walletconnect.Session
 
 class WalletConnectSessionConfigMapper @Inject constructor() {
 
-    fun createSessionConfig(sessionMeta: WalletConnectSessionMetaDTO): Session.Config {
+    fun createSessionConfig(sessionMeta: WalletConnectSessionMetaDto): Session.Config {
         return with(sessionMeta) {
             Session.Config(
                 handshakeTopic = topic,

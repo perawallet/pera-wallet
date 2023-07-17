@@ -19,6 +19,7 @@ import com.algorand.android.modules.accounts.domain.usecase.AccountsPreviewUseCa
 import com.algorand.android.modules.tracking.accounts.AccountsEventTracker
 import com.algorand.android.usecase.IsAccountLimitExceedUseCase
 import com.algorand.android.utils.coremanager.ParityManager
+import com.algorand.android.utils.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -55,7 +56,7 @@ class AccountsViewModel @Inject constructor(
     }
 
     private fun initializeAccountPreviewFlow() {
-        viewModelScope.launch {
+        viewModelScope.launchIO {
             val initialAccountPreview = accountsPreviewUseCase.getInitialAccountPreview()
             _accountPreviewFlow.emit(initialAccountPreview)
             accountsPreviewUseCase.getAccountsPreview(initialAccountPreview).collectLatest {

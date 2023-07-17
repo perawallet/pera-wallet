@@ -63,6 +63,7 @@ class ReceiveCollectibleFragment : BaseAddAssetFragment(R.layout.fragment_receiv
 
     override val baseAddAssetFragmentListener = BaseAddAssetFragmentListener {
         receiveCollectibleViewModel.updateQuery(it)
+        receiveCollectibleViewModel.updateBaseAddAssetPreviewWithHandleQueryChangeForScrollEvent()
     }
 
     private val toolbarConfiguration = ToolbarConfiguration(

@@ -95,8 +95,8 @@
         app:destination="@id/confirmationBottomSheet" />
 
     <action
-        android:id="@+id/action_global_ledgerInformationBottomSheet"
-        app:destination="@id/ledgerInformationBottomSheet" />
+        android:id="@+id/action_global_ledgerAccountInformationBottomSheet"
+        app:destination="@id/ledgerAccountInformationBottomSheet" />
 
     <action
         android:id="@+id/action_global_singleButtonBottomSheet"
@@ -152,7 +152,7 @@
 
     <fragment
         android:id="@+id/howDoesLedgerWorkFragment"
-        android:name="com.algorand.android.ui.ledgersearch.instructions.HowDoesLedgerWorkFragment"
+        android:name="com.algorand.android.modules.baseledgersearch.instruction.howdoesledgerwork.ui.HowDoesLedgerWorkFragment"
         android:label="HowDoesLedgerWorkFragment"
         tools:layout="@layout/layout_ledger_instructions">
         <action
@@ -168,7 +168,7 @@
 
     <fragment
         android:id="@+id/ledgerTroubleshootFragment"
-        android:name="com.algorand.android.ui.ledgersearch.instructions.LedgerTroubleshootFragment"
+        android:name="com.algorand.android.modules.baseledgersearch.instruction.ledgertroubleshoot.ui.LedgerTroubleshootFragment"
         android:label="LedgerTroubleshootFragment"
         tools:layout="@layout/layout_ledger_instructions">
         <action
@@ -181,9 +181,10 @@
             android:id="@+id/action_ledgerTroubleshootFragment_to_installAlgorandOntoLedgerBottomSheet"
             app:destination="@id/installAlgorandOntoLedgerBottomSheet" />
     </fragment>
-    <dialog
-        android:id="@+id/ledgerInformationBottomSheet"
-        android:name="com.algorand.android.ui.ledgersearch.ledgerinformation.LedgerInformationBottomSheet"
+
+    <fragment
+        android:id="@+id/ledgerAccountInformationBottomSheet"
+        android:name="com.algorand.android.modules.baseledgeraccountselection.accountinformation.ui.LedgerAccountInformationBottomSheet"
         android:label="LedgerInformationFragment"
         tools:layout="@layout/bottom_sheet_ledger_information">
         <argument
@@ -197,23 +198,23 @@
             android:name="rekeyedAccountSelectionListItem"
             app:argType="com.algorand.android.models.AccountSelectionListItem$AccountItem[]"
             app:nullable="true" />
-    </dialog>
+    </fragment>
 
     <dialog
         android:id="@+id/enableLedgerBluetoothBottomSheet"
-        android:name="com.algorand.android.ui.ledgersearch.pairinginfo.EnableLedgerBluetoothBottomSheet"
+        android:name="com.algorand.android.modules.baseledgersearch.instruction.step.enableledger.ui.EnableLedgerBluetoothBottomSheet"
         android:label="EnableLedgerBluetoothInfoBottomSheet"
         tools:layout="@layout/bottom_sheet_ledger_pair_info" />
 
     <dialog
         android:id="@+id/installAlgorandOntoLedgerBottomSheet"
-        android:name="com.algorand.android.ui.ledgersearch.pairinginfo.InstallAlgorandOntoLedgerBottomSheet"
+        android:name="com.algorand.android.modules.baseledgersearch.instruction.step.installalgorand.ui.InstallAlgorandOntoLedgerBottomSheet"
         android:label="InstallAlgorandOntoLedgerInfoBottomSheet"
         tools:layout="@layout/bottom_sheet_ledger_pair_info" />
 
     <dialog
         android:id="@+id/openAppOnLedgerBottomSheet"
-        android:name="com.algorand.android.ui.ledgersearch.pairinginfo.OpenAppOnLedgerBottomSheet"
+        android:name="com.algorand.android.modules.baseledgersearch.instruction.step.openapp.ui.OpenAppOnLedgerBottomSheet"
         android:label="OpenAppOnLedgerInfoBottomSheet"
         tools:layout="@layout/bottom_sheet_ledger_pair_info" />
     <dialog

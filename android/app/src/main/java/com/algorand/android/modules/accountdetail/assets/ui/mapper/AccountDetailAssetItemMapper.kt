@@ -18,6 +18,7 @@ import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData
 import com.algorand.android.modules.accountdetail.assets.ui.decider.NFTIndicatorDrawableDecider
 import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem
+import com.algorand.android.modules.accountdetail.assets.ui.model.QuickActionItem
 import com.algorand.android.modules.collectibles.listingviewtype.domain.model.NFTListingViewType
 import com.algorand.android.modules.collectibles.util.deciders.NFTAmountFormatDecider
 import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
@@ -82,8 +83,14 @@ class AccountDetailAssetItemMapper @Inject constructor(
         )
     }
 
-    fun mapToQuickActionsItem(isSwapButtonSelected: Boolean): AccountDetailAssetsItem.QuickActionsItem {
-        return AccountDetailAssetsItem.QuickActionsItem(isSwapButtonSelected = isSwapButtonSelected)
+    fun mapToSwapQuickActionItem(isSelected: Boolean): QuickActionItem.SwapButton {
+        return QuickActionItem.SwapButton(isSelected)
+    }
+
+    fun mapToQuickActionItemContainer(
+        quickActionItemList: List<QuickActionItem>
+    ): AccountDetailAssetsItem.QuickActionItemContainer {
+        return AccountDetailAssetsItem.QuickActionItemContainer(quickActionItemList)
     }
 
     fun mapToSearchViewItem(query: String): AccountDetailAssetsItem.SearchViewItem {

@@ -11,25 +11,27 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="@dimen/spacing_xlarge">
+    android:paddingHorizontal="@dimen/spacing_xlarge">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/appIconImageView"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:background="@drawable/bg_wallet_connect_connection_icon_round"
-        android:padding="1dp" />
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        app:shapeAppearance="@style/CircleImageShapeAppearance"
+        tools:srcCompat="@drawable/ic_pera" />
 
     <TextView
         android:id="@+id/descriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.Body.Large.Sans"
         tools:text="@tools:sample/lorem[24]" />
@@ -38,11 +40,11 @@
         android:id="@+id/appUrlTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_normal"
-        android:drawablePadding="@dimen/spacing_xxsmall"
-        android:gravity="center"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:drawablePadding="@dimen/spacing_xsmall"
         android:textAppearance="@style/TextAppearance.Body.Sans.Bold"
-        android:textColor="@color/link_primary"
+        android:textColor="@color/positive"
+        app:drawableStartCompat="@drawable/ic_asa_trusted"
         tools:text="@tools:sample/lorem[3]" />
 
 </LinearLayout>

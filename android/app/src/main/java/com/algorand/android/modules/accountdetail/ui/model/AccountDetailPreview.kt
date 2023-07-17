@@ -16,6 +16,7 @@ import androidx.navigation.NavDirections
 import com.algorand.android.utils.Event
 
 data class AccountDetailPreview(
-    val swapNavigationDirectionEvent: Event<NavDirections>? = null,
-    val copyAssetIDToClipboardEvent: Event<Long>? = null
+    val copyAssetIDToClipboardEvent: Event<Long>?,
+    val showGlobalErrorEvent: Event<Int>?,
+    val onNavigationEvent: Event<NavDirections>?
 )

@@ -27,10 +27,8 @@ import com.algorand.android.databinding.FragmentAssetTransferAmountBinding
 import com.algorand.android.models.AmountInput
 import com.algorand.android.models.AssetTransferAmountPreview
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.IconButton
-import com.algorand.android.models.TargetUser
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.IconButton
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.common.warningconfirmation.BaseMaximumBalanceWarningBottomSheet
 import com.algorand.android.ui.send.shared.AddNoteBottomSheet
 import com.algorand.android.utils.ALGO_SHORT_NAME
@@ -173,9 +171,12 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
     private fun updateToolbarWithPreview(preview: AssetTransferAmountPreview) {
         getAppToolbar()?.apply {
             preview.accountName?.let { changeSubtitle(it) }
-            preview.accountIconResource?.let {
-                val iconSize = resources.getDimensionPixelSize(R.dimen.account_icon_size_xsmall)
-                AccountIconDrawable.create(context, it, iconSize)?.let { setSubtitleStartDrawable(it) }
+            preview.accountIconDrawablePreview?.let { safeAccountIconDrawablePreview ->
+                AccountIconDrawable.create(
+                    context = context,
+                    accountIconDrawablePreview = safeAccountIconDrawablePreview,
+                    sizeResId = R.dimen.spacing_normal
+                ).let { setSubtitleStartDrawable(it) }
             }
             preview.assetPreview?.let {
                 changeTitle(getString(R.string.send_format, it.shortName.getName()))
@@ -321,30 +322,10 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
     private fun handleNextNavigation(amount: BigInteger) {
         val assetTransaction = assetTransferAmountViewModel.assetTransaction
         if (assetTransaction.receiverUser != null) {
-            val targetUser = TargetUser(
-                contact = assetTransaction.receiverUser,
-                publicKey = assetTransaction.receiverUser.publicKey
-            )
-            val selectedAccountCacheData = assetTransferAmountViewModel.getAccountCachedData() ?: return
-            val selectedAsset = assetTransferAmountViewModel.getAssetInformation() ?: return
-            val note = assetTransaction.xnote ?: assetTransaction.note
+            val transactionData = assetTransferAmountViewModel.createSendTransactionData(amount) ?: return
             nav(
                 AssetTransferAmountFragmentDirections
-                    .actionAssetTransferAmountFragmentToAssetTransferPreviewFragment(
-                        TransactionData.Send(
-                            senderAccountAddress = selectedAccountCacheData.account.address,
-                            senderAccountDetail = selectedAccountCacheData.account.detail,
-                            senderAccountType = selectedAccountCacheData.account.type,
-                            senderAuthAddress = selectedAccountCacheData.authAddress,
-                            senderAccountName = selectedAccountCacheData.account.name,
-                            isSenderRekeyedToAnotherAccount = selectedAccountCacheData.isRekeyedToAnotherAccount(),
-                            minimumBalance = selectedAccountCacheData.getMinBalance(),
-                            amount = amount,
-                            assetInformation = selectedAsset,
-                            note = note,
-                            targetUser = targetUser
-                        )
-                    )
+                    .actionAssetTransferAmountFragmentToAssetTransferPreviewFragment(transactionData)
             )
         } else {
             nav(

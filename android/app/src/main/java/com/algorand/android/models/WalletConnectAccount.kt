@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -20,15 +21,14 @@ data class WalletConnectAccount constructor(
     val address: String,
     var name: String = "",
     val type: Account.Type? = null,
-    val accountIconResource: AccountIconResource
+    val accountIconDrawablePreview: AccountIconDrawablePreview
 ) : Parcelable {
 
     companion object {
-        fun create(account: Account?): WalletConnectAccount? {
+        fun create(account: Account?, accountIconDrawablePreview: AccountIconDrawablePreview): WalletConnectAccount? {
             with(account) {
                 if (this == null) return null
-                val accountIcon = AccountIconResource.getAccountIconResourceByAccountType(account?.type)
-                return WalletConnectAccount(address, name, type, accountIcon)
+                return WalletConnectAccount(address, name, type, accountIconDrawablePreview)
             }
         }
     }

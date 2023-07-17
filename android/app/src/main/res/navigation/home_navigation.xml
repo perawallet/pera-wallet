@@ -36,6 +36,8 @@
 
     <include app:graph="@navigation/account_options_navigation" />
 
+    <include app:graph="@navigation/account_status_detail_navigation" />
+
     <include app:graph="@navigation/show_qr_navigation" />
 
     <include app:graph="@navigation/view_passphrase_navigation" />
@@ -98,6 +100,8 @@
 
     <include app:graph="@navigation/asb_creation_navigation" />
 
+    <include app:graph="@navigation/remove_account_confirmation_navigation" />
+
     <action
         android:id="@+id/action_global_showQrNavigation"
         app:destination="@id/showQrNavigation">
@@ -137,12 +141,16 @@
         android:id="@+id/action_global_walletConnectConnectionNavigation"
         app:destination="@id/walletConnectConnectionNavigation">
         <argument
-            android:name="shouldSkipConfirmation"
-            android:defaultValue="false"
-            app:argType="boolean" />
-        <argument
             android:name="sessionProposal"
             app:argType="com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal" />
+    </action>
+
+    <action
+        android:id="@+id/action_global_wcConnectionLaunchBackBrowserBottomSheet"
+        app:destination="@id/wCConnectionLaunchBackBrowserBottomSheet">
+        <argument
+            android:name="sessionIdentifier"
+            app:argType="com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier" />
     </action>
 
     <action
@@ -751,7 +759,25 @@
                 android:name="warningConfirmation"
                 app:argType="com.algorand.android.models.WarningConfirmation" />
         </action>
+        <action
+            android:id="@+id/action_walletConnectSessionsFragment_to_walletConnectSessionDetailFragment"
+            app:destination="@id/walletConnectSessionDetailFragment" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/walletConnectSessionDetailFragment"
+        android:name="com.algorand.android.modules.walletconnect.sessiondetail.ui.WalletConnectSessionDetailFragment"
+        android:label="WalletConnectSessionDetailFragment"
+        tools:layout="@layout/fragment_wallet_connect_session_detail">
+        <argument
+            android:name="sessionIdentifier"
+            app:argType="com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier" />
+        <action
+            android:id="@+id/action_walletConnectSessionDetailFragment_to_WCSessionValidityExtensionBottomSheet"
+            app:destination="@id/WCSessionValidityExtensionBottomSheet" />
+        <action
+            android:id="@+id/action_walletConnectSessionDetailFragment_to_walletConnectAdvancedPermissionsInfoBottomSheet"
+            app:destination="@id/walletConnectAdvancedPermissionsInfoBottomSheet" />
     </fragment>
 
     <fragment
@@ -875,6 +901,23 @@
         <action
             android:id="@+id/action_accountDetailFragment_to_manageAccountNFTsBottomSheet"
             app:destination="@id/manageAccountNFTsBottomSheet" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_accountStatusDetailNavigation"
+            app:destination="@id/accountStatusDetailNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_accountDetailFragment_to_removeAccountConfirmationNavigation"
+            app:destination="@id/removeAccountConfirmationNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_accountDetailFragment_to_haveYouBackedUpAccountConfirmationBottomSheet"
+            app:destination="@id/haveYouBackedUpAccountConfirmationBottomSheet" />
     </fragment>
 
     <fragment
@@ -1164,11 +1207,11 @@
                 app:argType="string" />
         </action>
         <action
-            android:id="@+id/action_accountErrorOptionsBottomSheet_to_warningConfirmationNavigation"
-            app:destination="@id/warningConfirmationNavigation">
+            android:id="@+id/action_accountErrorOptionsBottomSheet_to_removeAccountConfirmationNavigation"
+            app:destination="@id/removeAccountConfirmationNavigation">
             <argument
-                android:name="warningConfirmation"
-                app:argType="com.algorand.android.models.WarningConfirmation" />
+                android:name="accountAddress"
+                app:argType="string" />
         </action>
     </dialog>
 
@@ -1217,16 +1260,12 @@
         tools:layout="@layout/fragment_base_password" />
     <dialog
         android:id="@+id/manageAssetsBottomSheet"
-        android:name="com.algorand.android.modules.assets.manage.ManageAssetsBottomSheet"
+        android:name="com.algorand.android.modules.assets.manage.ui.ManageAssetsBottomSheet"
         android:label="ManageAssetsBottomSheet"
         tools:layout="@layout/bottom_sheet_manage_assets">
-
         <argument
-            android:name="publicKey"
+            android:name="accountAddress"
             app:argType="string" />
-        <argument
-            android:name="canSignTransaction"
-            app:argType="boolean" />
         <action
             android:id="@+id/action_manageAssetsBottomSheet_to_removeAssetsFragment"
             app:destination="@id/removeAssetsFragment" />
@@ -1266,7 +1305,7 @@
 
     <dialog
         android:id="@+id/accountQuickActionsBottomSheet"
-        android:name="com.algorand.android.modules.accountdetail.ui.AccountQuickActionsBottomSheet"
+        android:name="com.algorand.android.modules.accountdetail.quickaction.AccountQuickActionsBottomSheet"
         android:label="AccountQuickActionsBottomSheet"
         tools:layout="@layout/bottom_sheet_account_quick_actions">
         <action
@@ -1357,6 +1396,32 @@
             android:id="@+id/action_manageAccountNFTsBottomSheet_to_accountNFTFilterFragment"
             app:destination="@id/accountNFTFilterFragment" />
     </dialog>
+    <dialog
+        android:id="@+id/WCSessionValidityExtensionBottomSheet"
+        android:name="com.algorand.android.modules.walletconnect.validityextend.ui.WCSessionValidityExtensionBottomSheet"
+        android:label="WCSessionValidityExtensionBottomSheet"
+        tools:layout="@layout/bottom_sheet_double_button">
+        <argument
+            android:name="formattedMaxExtendableExpirationDate"
+            app:argType="string" />
+        <argument
+            android:name="formattedExtendedSessionValidityDate"
+            app:argType="string" />
+    </dialog>
+    <dialog
+        android:id="@+id/walletConnectAdvancedPermissionsInfoBottomSheet"
+        android:name="com.algorand.android.modules.walletconnect.advancedpermissionsinfo.WalletConnectAdvancedPermissionsInfoBottomSheet"
+        android:label="WalletConnectAdvancedPermissionsInfoBottomSheet"
+        tools:layout="@layout/bottom_sheet_base_information" />
+
+    <dialog
+        android:id="@+id/wCConnectionLaunchBackBrowserBottomSheet"
+        android:name="com.algorand.android.modules.walletconnect.launchback.connection.ui.WCConnectionLaunchBackBrowserBottomSheet"
+        android:label="WCConnectionLaunchBackBrowserBottomSheet">
+        <argument
+            android:name="sessionIdentifier"
+            app:argType="com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier" />
+    </dialog>
 
     <dialog
         android:id="@+id/buySellActionsBottomSheet"
@@ -1374,7 +1439,7 @@
             <argument
                 android:name="walletAddress"
                 app:argType="string"
-                app:nullable="true"/>
+                app:nullable="true" />
         </action>
         <action
             android:id="@+id/action_buySellActionsBottomSheet_to_bidaliNavigation"
@@ -1382,7 +1447,7 @@
             <argument
                 android:name="accountAddress"
                 app:argType="string"
-                app:nullable="true"/>
+                app:nullable="true" />
         </action>
         <action
             android:id="@+id/action_buySellActionsBottomSheet_to_transakNavigation"
@@ -1390,7 +1455,7 @@
             <argument
                 android:name="accountAddress"
                 app:argType="string"
-                app:nullable="true"/>
+                app:nullable="true" />
         </action>
         <action
             android:id="@+id/action_buySellActionsBottomSheet_to_sardineNavigation"
@@ -1398,8 +1463,14 @@
             <argument
                 android:name="accountAddress"
                 app:argType="string"
-                app:nullable="true"/>
+                app:nullable="true" />
         </action>
     </dialog>
+
+    <dialog
+        android:id="@+id/haveYouBackedUpAccountConfirmationBottomSheet"
+        android:name="com.algorand.android.modules.accountdetail.haveyoubackedupconfirmation.ui.HaveYouBackedUpAccountConfirmationBottomSheet"
+        android:label="HaveYouBackedUpAccountConfirmationBottomSheet"
+        tools:layout="@layout/bottom_sheet_double_button" />
 
 </navigation>

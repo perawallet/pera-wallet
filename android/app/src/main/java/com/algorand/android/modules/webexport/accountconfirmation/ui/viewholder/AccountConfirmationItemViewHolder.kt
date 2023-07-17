@@ -18,7 +18,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountBinding
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.webexport.accountconfirmation.ui.model.BaseAccountConfirmationListItem
 import com.algorand.android.utils.AccountIconDrawable
 
@@ -26,14 +26,12 @@ class AccountConfirmationItemViewHolder(
     private val binding: ItemAccountBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private fun setAccountStartIconDrawable(accountIconResource: AccountIconResource?) {
+    private fun setAccountStartIconDrawable(accountIconDrawablePreview: AccountIconDrawablePreview) {
         with(binding.accountItemView) {
-            val accountIconSize = resources.getDimension(R.dimen.account_icon_size_large).toInt()
             val accountIconDrawable = AccountIconDrawable.create(
                 context = context,
-                accountIconResource = accountIconResource
-                    ?: AccountIconResource.DEFAULT_ACCOUNT_ICON_RESOURCE,
-                size = accountIconSize
+                accountIconDrawablePreview = accountIconDrawablePreview,
+                sizeResId = R.dimen.spacing_xxxxlarge
             )
             setStartIconDrawable(accountIconDrawable)
         }
@@ -49,7 +47,7 @@ class AccountConfirmationItemViewHolder(
 
     fun bind(item: BaseAccountConfirmationListItem.AccountItem) {
         with(item.accountAssetIconNameConfiguration) {
-            setAccountStartIconDrawable(startAccountIconResource)
+            setAccountStartIconDrawable(accountIconDrawablePreview)
             setAccountTitleText(title)
             setAccountDescriptionText(description)
         }

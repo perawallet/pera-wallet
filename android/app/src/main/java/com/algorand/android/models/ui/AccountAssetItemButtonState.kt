@@ -15,6 +15,7 @@ package com.algorand.android.models.ui
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.algorand.android.R
 
 enum class AccountAssetItemButtonState(
@@ -24,6 +25,7 @@ enum class AccountAssetItemButtonState(
     @DrawableRes val iconDrawableResId: Int?,
     @DimenRes val actionButtonSizeDimenResId: Int?,
     @DimenRes val actionButtonIconSizeDimenResId: Int?,
+    @StringRes val actionButtonTextResId: Int?,
     val isEnabled: Boolean
 ) {
     PROGRESS(
@@ -33,6 +35,7 @@ enum class AccountAssetItemButtonState(
         iconDrawableResId = null,
         actionButtonSizeDimenResId = null,
         actionButtonIconSizeDimenResId = null,
+        actionButtonTextResId = null,
         isEnabled = false
     ),
     ADDITION(
@@ -42,6 +45,7 @@ enum class AccountAssetItemButtonState(
         iconDrawableResId = R.drawable.ic_plus,
         actionButtonSizeDimenResId = R.dimen.action_button_large,
         actionButtonIconSizeDimenResId = R.dimen.action_button_small,
+        actionButtonTextResId = null,
         isEnabled = true
     ),
     REMOVAL(
@@ -51,6 +55,7 @@ enum class AccountAssetItemButtonState(
         iconDrawableResId = R.drawable.ic_trash,
         actionButtonSizeDimenResId = R.dimen.action_button_large,
         actionButtonIconSizeDimenResId = R.dimen.action_button_small,
+        actionButtonTextResId = null,
         isEnabled = true
     ),
     CONFIRMATION(
@@ -60,6 +65,7 @@ enum class AccountAssetItemButtonState(
         iconDrawableResId = R.drawable.ic_check,
         actionButtonSizeDimenResId = R.dimen.action_button_large,
         actionButtonIconSizeDimenResId = R.dimen.action_button_small,
+        actionButtonTextResId = null,
         isEnabled = false
     ),
     DRAGGABLE(
@@ -69,6 +75,7 @@ enum class AccountAssetItemButtonState(
         iconDrawableResId = R.drawable.ic_drag_drop,
         actionButtonSizeDimenResId = R.dimen.action_button_xlarge,
         actionButtonIconSizeDimenResId = R.dimen.action_button_large,
+        actionButtonTextResId = null,
         isEnabled = true
     ),
     CHECKED(
@@ -78,6 +85,7 @@ enum class AccountAssetItemButtonState(
         iconDrawableResId = R.drawable.ic_check,
         actionButtonSizeDimenResId = R.dimen.action_button_normal,
         actionButtonIconSizeDimenResId = R.dimen.action_button_small,
+        actionButtonTextResId = null,
         isEnabled = true
     ),
     UNCHECKED(
@@ -87,6 +95,39 @@ enum class AccountAssetItemButtonState(
         iconDrawableResId = null,
         actionButtonSizeDimenResId = R.dimen.action_button_normal,
         actionButtonIconSizeDimenResId = R.dimen.action_button_small,
+        actionButtonTextResId = null,
+        isEnabled = true
+    ),
+    COPY(
+        backgroundColorResId = R.color.transparent,
+        strokeColorResId = R.color.transparent,
+        iconTintColorResId = R.color.text_gray_lighter,
+        iconDrawableResId = R.drawable.ic_copy,
+        actionButtonSizeDimenResId = R.dimen.action_button_large,
+        actionButtonIconSizeDimenResId = R.dimen.action_button_normal,
+        actionButtonTextResId = null,
+        isEnabled = true
+    ),
+    WARNING(
+        backgroundColorResId = R.color.transparent,
+        strokeColorResId = R.color.transparent,
+        iconTintColorResId = R.color.negative,
+        iconDrawableResId = R.drawable.ic_info,
+        actionButtonSizeDimenResId = R.dimen.action_button_normal,
+        actionButtonIconSizeDimenResId = R.dimen.action_button_small,
+        actionButtonTextResId = null,
+        isEnabled = false
+    ),
+
+    // TODO: find a way to make this type generic such as TEXT
+    UNDO_REKEY(
+        backgroundColorResId = R.color.transparent,
+        strokeColorResId = R.color.transparent,
+        iconTintColorResId = null,
+        iconDrawableResId = null,
+        actionButtonSizeDimenResId = null,
+        actionButtonIconSizeDimenResId = null,
+        actionButtonTextResId = R.string.undo_rekey,
         isEnabled = true
     )
 }

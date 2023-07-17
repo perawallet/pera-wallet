@@ -31,11 +31,15 @@ class WalletConnectSessionSettleMapper @Inject constructor() {
 
     fun mapToSessionSettleError(
         errorMessage: String,
-        versionIdentifier: WalletConnectVersionIdentifier
+        versionIdentifier: WalletConnectVersionIdentifier,
+        throwable: Throwable?,
+        sessionIdentifier: WalletConnect.SessionIdentifier?
     ): WalletConnect.Session.Settle.Error {
         return WalletConnect.Session.Settle.Error(
             errorMessage = errorMessage,
-            versionIdentifier = versionIdentifier
+            versionIdentifier = versionIdentifier,
+            throwable = throwable,
+            sessionIdentifier = sessionIdentifier
         )
     }
 }

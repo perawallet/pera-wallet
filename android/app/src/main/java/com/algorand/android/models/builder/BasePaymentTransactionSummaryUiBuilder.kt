@@ -26,7 +26,7 @@ class BasePaymentTransactionSummaryUiBuilder @Inject constructor() :
         return with(txn) {
             WalletConnectTransactionSummary(
                 accountName = fromAccount?.name,
-                accountIconResource = getFromAccountIconResource(),
+                accountIconDrawablePreview = getFromAccountIconResource(),
                 accountBalance = assetInformation?.amount,
                 assetShortName = ALGO_SHORT_NAME,
                 assetDecimal = ALGO_DECIMALS,

@@ -14,10 +14,12 @@ package com.algorand.android.modules.rekey.rekeytostandardaccount.confirmation.u
 
 import com.algorand.android.R
 import com.algorand.android.models.Account
-import com.algorand.android.models.Account.Type.STANDARD
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
+import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
+import com.algorand.android.modules.rekey.domain.usecase.SendSignedTransactionUseCase
+import com.algorand.android.modules.rekey.rekeytostandardaccount.confirmation.ui.decider.RekeyToStandardAccountPreviewDecider
 import com.algorand.android.modules.rekey.rekeytostandardaccount.confirmation.ui.mapper.RekeyToStandardAccountConfirmationPreviewMapper
 import com.algorand.android.modules.rekey.rekeytostandardaccount.confirmation.ui.model.RekeyToStandardAccountConfirmationPreview
 import com.algorand.android.repository.TransactionsRepository
@@ -26,47 +28,47 @@ import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.MIN_FEE
 import com.algorand.android.utils.analytics.CreationType
+import com.algorand.android.utils.calculateRekeyFee
+import com.algorand.android.utils.emptyString
+import com.algorand.android.utils.formatAsAlgoAmount
 import com.algorand.android.utils.formatAsAlgoString
-import com.algorand.android.utils.toShortenedAddress
-import javax.inject.Inject
-import kotlin.math.max
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 class RekeyToStandardAccountConfirmationPreviewUseCase @Inject constructor(
     private val rekeyToStandardAccountConfirmationPreviewMapper: RekeyToStandardAccountConfirmationPreviewMapper,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val transactionsRepository: TransactionsRepository,
     private val accountAdditionUseCase: AccountAdditionUseCase,
+    private val sendSignedTransactionUseCase: SendSignedTransactionUseCase,
+    private val accountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase,
+    private val rekeyToStandardAccountPreviewDecider: RekeyToStandardAccountPreviewDecider
 ) {
 
-    suspend fun sendRekeyToStandardAccountTransaction(
+    fun sendRekeyToStandardAccountTransaction(
         preview: RekeyToStandardAccountConfirmationPreview,
         transactionDetail: SignedTransactionDetail.RekeyToStandardAccountOperation
     ) = flow {
         emit(preview.copy(isLoading = true))
-        transactionsRepository.sendSignedTransaction(transactionDetail.signedTransactionData).use(
+        sendSignedTransactionUseCase.invoke(transactionDetail).useSuspended(
             onSuccess = {
                 val rekeyedAccount = createAccountRegardingByRekeyType(
                     accountAddress = transactionDetail.accountAddress,
-                    rekeyAdminAddress = transactionDetail.rekeyAdminAddress,
                     accountName = transactionDetail.accountName
                 )
+                accountAdditionUseCase.addNewAccount(tempAccount = rekeyedAccount, creationType = CreationType.REKEYED)
                 emit(
                     preview.copy(
                         isLoading = false,
-                        navToRekeyToStandardAccountVerifyFragmentEvent = Event(Unit)
+                        navToRekeyResultInfoFragmentEvent = Event(Unit)
                     )
                 )
-                // TODO: There is a bug which solved in per-3138.
-                //  For the further context, you can take a look at PR description
-                //  https://github.com/Hipo/algorand-android/pull/1897
-                accountAdditionUseCase.addNewAccount(
-                    tempAccount = rekeyedAccount,
-                    creationType = CreationType.REKEYED
-                )
             },
-            onFailed = { exception, _ ->
-                emit(preview.copy(showGlobalErrorEvent = Event(exception.message.orEmpty()), isLoading = false))
+            onFailed = {
+                val title = R.string.error
+                val description = it.exception?.message.orEmpty()
+                emit(preview.copy(showGlobalErrorEvent = Event(title to description), isLoading = false))
             }
         )
     }
@@ -93,43 +95,48 @@ class RekeyToStandardAccountConfirmationPreviewUseCase @Inject constructor(
         authAccountAddress: String
     ): RekeyToStandardAccountConfirmationPreview {
         val accountDetail = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data
-        val accountType = accountDetail?.account?.type
-        val authAccountDetail = accountDetailUseCase.getCachedAccountDetail(authAccountAddress)?.data
-        val authAccountType = authAccountDetail?.account?.type
+        val accountDisplayName = accountDisplayNameUseCase.invoke(accountAddress)
 
-        val oldAccountTypeIconResource = AccountIconResource.getAccountIconResourceByAccountType(accountType)
-        val oldAccountTitleTextResId = if (accountType == STANDARD) R.string.passphrase else R.string.old_ledger
-        val oldAccountDisplayName = if (accountType == STANDARD) {
-            HIDDEN_PASSWORD
+        val authAccountDisplayName = accountDisplayNameUseCase.invoke(authAccountAddress)
+
+        val currentlyRekeyedAccountDisplayName = if (accountDetail?.accountInformation?.isRekeyed() == true) {
+            accountDisplayNameUseCase.invoke(accountDetail.accountInformation.rekeyAdminAddress.orEmpty())
         } else {
-            accountDetail?.accountInformation?.rekeyAdminAddress.toShortenedAddress()
+            null
+        }
+        val currentlyRekeyAccountIconDrawable = if (accountDetail?.accountInformation?.isRekeyed() == true) {
+            createAccountIconDrawableUseCase.invoke(accountDetail.accountInformation.rekeyAdminAddress.orEmpty())
+        } else {
+            null
         }
 
-        val newAccountTypeIconResource = AccountIconResource.getAccountIconResourceByAccountType(authAccountType)
-        val newAccountTitleTextResId = R.string.auth_account_address
-        val newAccountDisplayName = authAccountAddress.toShortenedAddress()
-
         return rekeyToStandardAccountConfirmationPreviewMapper.mapToRekeyToStandardAccountConfirmationPreview(
-            oldAccountTypeIconResource = oldAccountTypeIconResource,
-            oldAccountTitleTextResId = oldAccountTitleTextResId,
-            oldAccountDisplayName = oldAccountDisplayName,
-            newAccountTypeIconResource = newAccountTypeIconResource,
-            newAccountTitleTextResId = newAccountTitleTextResId,
-            newAccountDisplayName = newAccountDisplayName,
-            isLoading = false
+            isLoading = false,
+            descriptionAnnotatedString = rekeyToStandardAccountPreviewDecider.decideDescriptionAnnotatedString(
+                accountDetail = accountDetail
+            ),
+            rekeyedAccountDisplayName = accountDisplayName,
+            rekeyedAccountIconResource = createAccountIconDrawableUseCase.invoke(accountAddress),
+            authAccountDisplayName = authAccountDisplayName,
+            authAccountIconResource = createAccountIconDrawableUseCase.invoke(authAccountAddress),
+            currentlyRekeyedAccountDisplayName = currentlyRekeyedAccountDisplayName,
+            currentlyRekeyedAccountIconDrawable = currentlyRekeyAccountIconDrawable,
+            formattedTransactionFee = emptyString(),
+            titleTextResId = R.string.confirm_rekeying,
+            subtitleTextResId = R.string.summary_of_rekey
         )
     }
 
     suspend fun updatePreviewWithTransactionFee(preview: RekeyToStandardAccountConfirmationPreview) = flow {
         transactionsRepository.getTransactionParams().use(
             onSuccess = { params ->
-                val calculatedFee = max(REKEY_BYTE_ARRAY_SIZE * params.fee, params.minFee ?: MIN_FEE)
-                val formattedFee = calculatedFee.formatAsAlgoString()
-                emit(preview.copy(onDisplayCalculatedTransactionFeeEvent = Event(formattedFee)))
+                val calculatedFee = calculateRekeyFee(params.fee, params.minFee)
+                val formattedFee = calculatedFee.formatAsAlgoString().formatAsAlgoAmount()
+                emit(preview.copy(formattedTransactionFee = formattedFee))
             },
             onFailed = { _, _ ->
-                val formattedFee = MIN_FEE.formatAsAlgoString()
-                emit(preview.copy(onDisplayCalculatedTransactionFeeEvent = Event(formattedFee)))
+                val formattedFee = MIN_FEE.formatAsAlgoString().formatAsAlgoAmount()
+                emit(preview.copy(formattedTransactionFee = formattedFee))
             }
         )
     }
@@ -146,30 +153,28 @@ class RekeyToStandardAccountConfirmationPreviewUseCase @Inject constructor(
         return preview.copy(isLoading = false)
     }
 
-    private fun createAccountRegardingByRekeyType(
+    fun updatePreviewWithRekeyConfirmationClick(
         accountAddress: String,
-        rekeyAdminAddress: String,
-        accountName: String
-    ): Account {
+        preview: RekeyToStandardAccountConfirmationPreview
+    ): RekeyToStandardAccountConfirmationPreview {
+        val accountDetail = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data ?: return preview
+        return if (accountDetail.accountInformation.isRekeyed()) {
+            preview.copy(navToRekeyedAccountConfirmationBottomSheetEvent = Event(Unit))
+        } else {
+            preview.copy(onSendTransactionEvent = Event(Unit))
+        }
+    }
+
+    private fun createAccountRegardingByRekeyType(accountAddress: String, accountName: String): Account {
         val accountSecretKey = accountDetailUseCase.getCachedAccountDetail(accountAddress)
             ?.data
             ?.account
             ?.getSecretKey()
-        val isReverseRekey = accountAddress == rekeyAdminAddress
-        val detail = if (isReverseRekey) {
-            Account.Detail.Standard(accountSecretKey ?: byteArrayOf())
-        } else {
-            Account.Detail.Rekeyed(accountSecretKey)
-        }
+        val detail = Account.Detail.Rekeyed(accountSecretKey)
         return Account.create(
             publicKey = accountAddress,
             detail = detail,
             accountName = accountName
         )
-    }
-
-    companion object {
-        private const val HIDDEN_PASSWORD = "*************"
-        private const val REKEY_BYTE_ARRAY_SIZE = 30
     }
 }

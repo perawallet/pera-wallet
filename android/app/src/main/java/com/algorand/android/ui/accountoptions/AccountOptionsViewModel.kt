@@ -20,6 +20,7 @@ import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.usecase.AccountDeletionUseCase
 import com.algorand.android.usecase.AccountOptionsUseCase
+import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -97,8 +98,12 @@ class AccountOptionsViewModel @Inject constructor(
         return accountOptionsUseCase.canAccountSignTransaction(publicKey)
     }
 
-    fun canAccountRekeyToStandardAccount(): Boolean {
-        return accountOptionsUseCase.canAccountRekeyToStandardAccount(publicKey)
+    fun getAuthAccountDisplayName(): AccountDisplayName {
+        return accountOptionsUseCase.getAuthAccountDisplayName(publicKey)
+    }
+
+    fun isUndoRekeyPossible(): Boolean {
+        return accountOptionsUseCase.isUndoRekeyPossible(publicKey)
     }
 
     companion object {

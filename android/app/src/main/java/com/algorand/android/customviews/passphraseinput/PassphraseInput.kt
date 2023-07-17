@@ -44,11 +44,12 @@ class PassphraseInput @JvmOverloads constructor(
     var order: Int? = null
         private set
 
+    // TODO: This delegate is called multiple times even though text is changed once. Refactor for efficiency 
     private var inputText: String? by Delegates.observable(null) { _, oldValue, newValue ->
         if (oldValue != newValue && newValue != null) {
             with(binding.passphraseInputEditText) {
                 setText(newValue)
-                setSelection(newValue.length)
+                setSelection(length())
             }
         }
     }

@@ -14,16 +14,16 @@ package com.algorand.android.modules.rekey.rekeytostandardaccount.accountselecti
 
 import com.algorand.android.R
 import com.algorand.android.core.AccountManager
-import com.algorand.android.models.Account.Type.LEDGER
-import com.algorand.android.models.Account.Type.REKEYED
-import com.algorand.android.models.Account.Type.REKEYED_AUTH
-import com.algorand.android.models.Account.Type.STANDARD
-import com.algorand.android.models.Account.Type.WATCH
+import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
+import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.ScreenState
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
+import com.algorand.android.modules.accountstatehelper.domain.usecase.AccountStateHelperUseCase
 import com.algorand.android.modules.basesingleaccountselection.ui.mapper.SingleAccountSelectionListItemMapper
+import com.algorand.android.modules.basesingleaccountselection.ui.model.SingleAccountSelectionListItem
 import com.algorand.android.modules.basesingleaccountselection.ui.usecase.BaseSingleAccountSelectionUsePreviewCase
 import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
@@ -33,14 +33,15 @@ import com.algorand.android.modules.sorting.accountsorting.domain.usecase.Accoun
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetSortedLocalAccountsUseCase
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 
 @SuppressWarnings("LongParameterList")
 class RekeyToStandardAccountSelectionPreviewUseCase @Inject constructor(
     private val rekeyToStandardAccountSelectionPreviewMapper: RekeyToStandardAccountSelectionPreviewMapper,
-    private val accountDetailUseCase: AccountDetailUseCase,
+    private val accountStateHelperUseCase: AccountStateHelperUseCase,
+    accountDetailUseCase: AccountDetailUseCase,
     getAccountValueUseCase: GetAccountValueUseCase,
     accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
     accountDisplayNameUseCase: AccountDisplayNameUseCase,
@@ -48,7 +49,8 @@ class RekeyToStandardAccountSelectionPreviewUseCase @Inject constructor(
     currencyUseCase: CurrencyUseCase,
     singleAccountSelectionListItemMapper: SingleAccountSelectionListItemMapper,
     getSortedLocalAccountsUseCase: GetSortedLocalAccountsUseCase,
-    accountManager: AccountManager
+    accountManager: AccountManager,
+    createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) : BaseSingleAccountSelectionUsePreviewCase(
     singleAccountSelectionListItemMapper = singleAccountSelectionListItemMapper,
     getSortedLocalAccountsUseCase = getSortedLocalAccountsUseCase,
@@ -58,7 +60,8 @@ class RekeyToStandardAccountSelectionPreviewUseCase @Inject constructor(
     currencyUseCase = currencyUseCase,
     accountManager = accountManager,
     accountSortPreferenceUseCase = accountSortPreferenceUseCase,
-    accountDetailUseCase = accountDetailUseCase
+    accountDetailUseCase = accountDetailUseCase,
+    createAccountIconDrawableUseCase = createAccountIconDrawableUseCase
 ) {
 
     fun getInitialRekeyToAccountSingleAccountSelectionPreview(): RekeyToStandardAccountSelectionPreview {
@@ -69,47 +72,42 @@ class RekeyToStandardAccountSelectionPreviewUseCase @Inject constructor(
         )
     }
 
-    fun getRekeyToAccountSingleAccountSelectionPreviewFlow(
-        accountAddress: String
-    ): Flow<RekeyToStandardAccountSelectionPreview> {
-        val cachedAccountDetailFlow = getSortedCachedAccountDetailFlow().map { accountsDetails ->
+    fun getRekeyToAccountSingleAccountSelectionPreviewFlow(accountAddress: String) = channelFlow {
+        getSortedCachedAccountDetailFlow().map { accountsDetails ->
             accountsDetails.mapNotNull { accountDetail ->
-                val validAccountDetail = filterAccountDetailsByRequirements(
-                    accountAddress = accountAddress,
-                    accountDetail = accountDetail
-                ) ?: return@mapNotNull null
-                createAccountItemListFromAccountDetail(validAccountDetail)
+                val isAccountEligibleToRekey = isAccountEligibleToRekey(accountDetail, accountAddress)
+                if (!isAccountEligibleToRekey) return@mapNotNull null
+                createAccountItemListFromAccountDetail(accountDetail)
             }
-        }
-        val localAccountsFlow = getAccountsFlow()
-
-        return combine(cachedAccountDetailFlow, localAccountsFlow) { cachedAccountsDetail, _ ->
-            val screenState = if (cachedAccountsDetail.isEmpty()) {
+        }.collectLatest { singleAccountItems ->
+            val screenState = if (singleAccountItems.isEmpty()) {
                 ScreenState.CustomState(title = R.string.no_account_found)
             } else {
                 null
             }
-            rekeyToStandardAccountSelectionPreviewMapper.mapToRekeyToStandardAccountSelectionPreview(
+            val titleItem = createTitleItem(textResId = R.string.select_account)
+            val descriptionItem = createDescriptionItem(
+                descriptionAnnotatedString = AnnotatedString(stringResId = R.string.choose_the_account)
+            )
+            val singleAccountSelectionListItems = mutableListOf<SingleAccountSelectionListItem>().apply {
+                add(titleItem)
+                add(descriptionItem)
+                addAll(singleAccountItems)
+            }
+            val preview = rekeyToStandardAccountSelectionPreviewMapper.mapToRekeyToStandardAccountSelectionPreview(
                 screenState = screenState,
-                singleAccountSelectionListItems = cachedAccountsDetail,
+                singleAccountSelectionListItems = singleAccountSelectionListItems,
                 isLoading = false
             )
+            send(preview)
         }
     }
 
-    private fun filterAccountDetailsByRequirements(
-        accountAddress: String,
-        accountDetail: AccountDetail
-    ): AccountDetail? {
-        val account = accountDetail.account
-        return when (account.type) {
-            STANDARD -> accountDetail
-            LEDGER, WATCH, null -> null
-            REKEYED, REKEYED_AUTH -> {
-                val canAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(account.address)
-                val isSelectedAccount = accountAddress == account.address
-                accountDetail.takeIf { isSelectedAccount && canAccountSignTransaction }
-            }
+    private fun isAccountEligibleToRekey(accountDetail: AccountDetail, accountAddress: String): Boolean {
+        return with(accountDetail.account) {
+            type == Account.Type.STANDARD &&
+                address != accountAddress &&
+                accountStateHelperUseCase.hasAccountValidSecretKey(this)
         }
     }
 }

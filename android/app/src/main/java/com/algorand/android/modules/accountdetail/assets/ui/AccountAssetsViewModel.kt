@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.modules.accountdetail.assets.ui.AccountAssetsFragment.Companion.ADDRESS_KEY
 import com.algorand.android.modules.accountdetail.assets.ui.domain.AccountAssetsPreviewUseCase
-import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountAssetsPreview
 import com.algorand.android.modules.tracking.accountdetail.accountassets.AccountAssetsFragmentEventTracker
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,8 +42,8 @@ class AccountAssetsViewModel @Inject constructor(
 
     private val accountAddress: String = savedStateHandle.getOrThrow(ADDRESS_KEY)
 
-    val accountAssetsFlow: StateFlow<List<AccountDetailAssetsItem>?> get() = _accountAssetsFlow
-    private val _accountAssetsFlow = MutableStateFlow<List<AccountDetailAssetsItem>?>(null)
+    val accountAssetsFlow: StateFlow<AccountAssetsPreview?> get() = _accountAssetsFlow
+    private val _accountAssetsFlow = MutableStateFlow<AccountAssetsPreview?>(null)
 
     private val searchQueryFlow = MutableStateFlow("")
 
@@ -51,7 +51,6 @@ class AccountAssetsViewModel @Inject constructor(
 
     fun initAccountAssetsFlow() {
         searchQueryFlowJob?.cancel()
-
         searchQueryFlowJob = viewModelScope.launch(Dispatchers.IO) {
             searchQueryFlow
                 .debounce(QUERY_DEBOUNCE)
@@ -82,10 +81,6 @@ class AccountAssetsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             accountAssetsFragmentEventTracker.logAccountAssetsBuyAlgoTapEvent()
         }
-    }
-
-    fun canAccountSignTransactions(): Boolean {
-        return accountAssetsPreviewUseCase.canAccountSignTransactions(accountAddress)
     }
 
     companion object {

@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.domain.usecase
 
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDto
 import com.algorand.android.modules.walletconnect.client.v1.domain.repository.WalletConnectRepository
 import javax.inject.Inject
 import javax.inject.Named
@@ -22,7 +22,7 @@ class GetWalletConnectSessionsOrderedByCreationUseCase @Inject constructor(
     private val walletConnectRepository: WalletConnectRepository
 ) {
 
-    suspend operator fun invoke(count: Int): List<WalletConnectSessionDTO> {
+    suspend operator fun invoke(count: Int): List<WalletConnectSessionDto> {
         return walletConnectRepository.getWalletConnectSessionListOrderedByCreationTime(count)
     }
 }

@@ -13,12 +13,12 @@
 package com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity
 
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionAccountEntity
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionAccountDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionAccountDto
 import javax.inject.Inject
 
 class WalletConnectSessionAccountEntityMapper @Inject constructor() {
 
-    fun mapToSessionAccountEntity(dto: WalletConnectSessionAccountDTO): WalletConnectSessionAccountEntity {
+    fun mapToSessionAccountEntity(dto: WalletConnectSessionAccountDto): WalletConnectSessionAccountEntity {
         return with(dto) {
             WalletConnectSessionAccountEntity(
                 sessionId = sessionId,

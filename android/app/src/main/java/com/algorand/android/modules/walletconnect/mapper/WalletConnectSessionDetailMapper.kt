@@ -12,20 +12,21 @@
 
 package com.algorand.android.modules.walletconnect.mapper
 
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDto
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
 import javax.inject.Inject
 
 class WalletConnectSessionDetailMapper @Inject constructor(
     private val peerMetaMapper: WalletConnectPeerMetaMapper,
 ) {
 
-    @SuppressWarnings("LongParameterList")
+    @Suppress("LongParameterList")
     fun mapToSessionDetail(
         sessionIdentifier: WalletConnect.SessionIdentifier,
         topic: String,
         peerMeta: WalletConnect.PeerMeta,
-        namespaces: Map<String, WalletConnect.Namespace.Session>,
+        namespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Session>,
         creationDateTimestamp: Long,
         isSubscribed: Boolean,
         isConnected: Boolean,
@@ -50,8 +51,8 @@ class WalletConnectSessionDetailMapper @Inject constructor(
 
     fun mapToSessionDetail(
         sessionIdentifier: WalletConnect.SessionIdentifier,
-        dto: WalletConnectSessionDTO,
-        namespaces: Map<String, WalletConnect.Namespace.Session>,
+        dto: WalletConnectSessionDto,
+        namespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Session>,
         expiry: WalletConnect.Model.Expiry?,
         isConnected: Boolean,
         sessionMeta: WalletConnect.Session.Meta

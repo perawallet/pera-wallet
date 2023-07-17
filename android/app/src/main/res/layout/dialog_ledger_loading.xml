@@ -84,7 +84,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
-        tools:text="@string/please_make_sure" />
+        tools:text="@tools:sample/lorem[20]" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelButton"
@@ -93,11 +93,21 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_xxxlarge"
-        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-        android:text="@string/cancel_approval"
+        android:text="@string/close"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        android:gravity="center"
+        android:text="@string/verification_will_continue_on_ledger"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/text_gray" />
 
 </LinearLayout>

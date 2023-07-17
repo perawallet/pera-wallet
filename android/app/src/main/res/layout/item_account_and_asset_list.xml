@@ -116,7 +116,6 @@
         android:id="@+id/primaryValueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacing_small"
         android:ellipsize="end"
         android:maxLines="1"
         android:paddingStart="@dimen/spacing_normal"
@@ -124,12 +123,11 @@
         android:visibility="gone"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/secondaryValueTextView"
-        app:layout_constraintEnd_toStartOf="@id/actionButton"
+        app:layout_constraintEnd_toStartOf="@id/statefulButtonsFlow"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toEndOf="@id/startGuideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_goneMarginEnd="0dp"
         tools:text="@tools:sample/lorem[2]"
         tools:visibility="visible" />
 
@@ -137,7 +135,6 @@
         android:id="@+id/secondaryValueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacing_small"
         android:maxLines="1"
         android:paddingStart="@dimen/spacing_normal"
         android:textAppearance="@style/TextAppearance.Footnote.Sans"
@@ -145,28 +142,47 @@
         android:visibility="gone"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/actionButton"
+        app:layout_constraintEnd_toStartOf="@id/statefulButtonsFlow"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toEndOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/primaryValueTextView"
-        app:layout_goneMarginEnd="0dp"
         tools:text="@tools:sample/lorem[1]"
         tools:visibility="visible" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/statefulButtonsFlow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="actionButton, actionTextButton, progressBar, endIconImageView"
+        app:flow_horizontalGap="@dimen/spacing_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/actionButton"
         style="@style/Button.Transparent.Icon"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_marginEnd="@dimen/spacing_small"
         android:gravity="center"
         android:visibility="gone"
         app:cornerRadius="@dimen/action_button_corner_radius"
+        tools:icon="@drawable/ic_check"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/actionTextButton"
+        style="@style/Button.Text.Link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:gravity="center"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/progressBar"
+        app:layout_constraintEnd_toStartOf="@id/actionButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_goneMarginEnd="0dp"
-        tools:icon="@drawable/ic_check"
+        tools:text="@tools:sample/lorem[0]"
         tools:visibility="visible" />
 
     <ProgressBar
@@ -174,24 +190,17 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_gravity="center"
-        android:layout_marginEnd="@dimen/spacing_small"
         android:background="@drawable/bg_progress_button"
         android:padding="8dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/endIconImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginEnd="0dp"
         tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/endIconImageView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="6dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/ic_error"
         tools:tint="@color/negative"
         tools:visibility="visible" />

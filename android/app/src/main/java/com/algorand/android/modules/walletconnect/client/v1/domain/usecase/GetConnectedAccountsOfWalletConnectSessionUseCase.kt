@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.domain.usecase
 
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionAccountDTO
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionAccountDto
 import com.algorand.android.modules.walletconnect.client.v1.domain.repository.WalletConnectRepository
 import javax.inject.Inject
 import javax.inject.Named
@@ -22,7 +22,7 @@ class GetConnectedAccountsOfWalletConnectSessionUseCase @Inject constructor(
     private val walletConnectRepository: WalletConnectRepository
 ) {
 
-    suspend operator fun invoke(sessionId: Long): List<WalletConnectSessionAccountDTO> {
+    suspend operator fun invoke(sessionId: Long): List<WalletConnectSessionAccountDto> {
         return walletConnectRepository.getConnectedAccountsOfSession(sessionId).orEmpty()
     }
 }

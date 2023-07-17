@@ -13,7 +13,7 @@
 package com.algorand.android.modules.walletconnect.connectedapps.ui.mapper
 
 import com.algorand.android.modules.walletconnect.connectedapps.ui.model.WalletConnectConnectedAppsPreview
-import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.connectedapps.ui.model.WalletConnectSessionItem
 import com.algorand.android.utils.Event
 import javax.inject.Inject
 

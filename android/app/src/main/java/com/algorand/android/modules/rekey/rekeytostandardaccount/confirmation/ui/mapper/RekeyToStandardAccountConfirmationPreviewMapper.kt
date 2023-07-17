@@ -12,8 +12,10 @@
 
 package com.algorand.android.modules.rekey.rekeytostandardaccount.confirmation.ui.mapper
 
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.models.AnnotatedString
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.rekey.rekeytostandardaccount.confirmation.ui.model.RekeyToStandardAccountConfirmationPreview
+import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.Event
 import javax.inject.Inject
 
@@ -21,28 +23,38 @@ class RekeyToStandardAccountConfirmationPreviewMapper @Inject constructor() {
 
     @SuppressWarnings("LongParameterList")
     fun mapToRekeyToStandardAccountConfirmationPreview(
-        oldAccountTypeIconResource: AccountIconResource,
-        oldAccountTitleTextResId: Int,
-        oldAccountDisplayName: String,
-        newAccountTypeIconResource: AccountIconResource,
-        newAccountTitleTextResId: Int,
-        newAccountDisplayName: String,
         isLoading: Boolean,
-        onDisplayCalculatedTransactionFeeEvent: Event<String>? = null,
-        popRekeyToStandardAccountNavigationUpEvent: Event<Unit>? = null,
-        showGlobalError: Event<String>? = null
+        titleTextResId: Int,
+        descriptionAnnotatedString: AnnotatedString,
+        subtitleTextResId: Int,
+        rekeyedAccountDisplayName: AccountDisplayName,
+        rekeyedAccountIconResource: AccountIconDrawablePreview,
+        authAccountDisplayName: AccountDisplayName,
+        authAccountIconResource: AccountIconDrawablePreview,
+        currentlyRekeyedAccountDisplayName: AccountDisplayName?,
+        currentlyRekeyedAccountIconDrawable: AccountIconDrawablePreview?,
+        formattedTransactionFee: String?,
+        navToRekeyResultInfoFragmentEvent: Event<Unit>? = null,
+        showGlobalErrorEvent: Event<Pair<Int, String>>? = null,
+        navToRekeyedAccountConfirmationBottomSheetEvent: Event<Unit>? = null,
+        onSendTransactionEvent: Event<Unit>? = null
     ): RekeyToStandardAccountConfirmationPreview {
         return RekeyToStandardAccountConfirmationPreview(
-            oldAccountTypeIconResource = oldAccountTypeIconResource,
-            oldAccountTitleTextResId = oldAccountTitleTextResId,
-            oldAccountDisplayName = oldAccountDisplayName,
-            newAccountTypeIconResource = newAccountTypeIconResource,
-            newAccountTitleTextResId = newAccountTitleTextResId,
-            newAccountDisplayName = newAccountDisplayName,
-            onDisplayCalculatedTransactionFeeEvent = onDisplayCalculatedTransactionFeeEvent,
             isLoading = isLoading,
-            navToRekeyToStandardAccountVerifyFragmentEvent = popRekeyToStandardAccountNavigationUpEvent,
-            showGlobalErrorEvent = showGlobalError
+            titleTextResId = titleTextResId,
+            descriptionAnnotatedString = descriptionAnnotatedString,
+            subtitleTextResId = subtitleTextResId,
+            rekeyedAccountDisplayName = rekeyedAccountDisplayName,
+            rekeyedAccountIconResource = rekeyedAccountIconResource,
+            authAccountDisplayName = authAccountDisplayName,
+            authAccountIconResource = authAccountIconResource,
+            currentlyRekeyedAccountDisplayName = currentlyRekeyedAccountDisplayName,
+            currentlyRekeyedAccountIconDrawable = currentlyRekeyedAccountIconDrawable,
+            formattedTransactionFee = formattedTransactionFee,
+            navToRekeyResultInfoFragmentEvent = navToRekeyResultInfoFragmentEvent,
+            showGlobalErrorEvent = showGlobalErrorEvent,
+            navToRekeyedAccountConfirmationBottomSheetEvent = navToRekeyedAccountConfirmationBottomSheetEvent,
+            onSendTransactionEvent = onSendTransactionEvent
         )
     }
 }

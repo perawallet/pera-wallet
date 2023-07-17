@@ -14,8 +14,8 @@ package com.algorand.android.usecase
 
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
 import com.algorand.android.mapper.AccountSelectionMapper
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AccountSelection
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
@@ -31,7 +31,8 @@ class AccountSelectionUseCase @Inject constructor(
     private val getAccountValueUseCase: GetAccountValueUseCase,
     private val parityUseCase: ParityUseCase,
     private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
-    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     suspend fun getAccountFilteredByAssetId(assetId: Long): List<AccountSelection> {
@@ -46,7 +47,7 @@ class AccountSelectionUseCase @Inject constructor(
                         accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
                         accountAddress = account.address,
                         accountType = account.type,
-                        accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+                        accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(account.address),
                         accountPrimaryValue = accountValue.primaryAccountValue,
                         accountPrimaryValueText = accountValue.primaryAccountValue.formatAsCurrency(
                             symbol = selectedCurrencySymbol,
@@ -62,7 +63,7 @@ class AccountSelectionUseCase @Inject constructor(
                             accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
                             accountAddress = address,
                             accountType = type,
-                            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
+                            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(address),
                             showWarningIcon = true
                         )
                     }
@@ -71,7 +72,7 @@ class AccountSelectionUseCase @Inject constructor(
         return sortedAccountListItems.map { accountListItem ->
             accountSelectionMapper.mapToAccountSelection(
                 accountDisplayName = accountListItem.itemConfiguration.accountDisplayName,
-                accountIconResource = accountListItem.itemConfiguration.accountIconResource,
+                accountIconDrawablePreview = accountListItem.itemConfiguration.accountIconDrawablePreview,
                 accountAddress = accountListItem.itemConfiguration.accountAddress,
                 accountAssetCount = accountListItem.itemConfiguration.accountAssetCount
             )

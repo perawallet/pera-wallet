@@ -26,10 +26,12 @@ import com.algorand.android.customviews.ScreenStateView
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
+import com.algorand.android.modules.assets.addition.base.ui.model.BaseAddAssetPreview
 import com.algorand.android.modules.assets.addition.ui.adapter.AssetSearchAdapter
 import com.algorand.android.modules.assets.addition.ui.model.AssetAdditionType
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.hideKeyboard
+import com.algorand.android.utils.scrollToTop
 
 abstract class BaseAddAssetFragment(@LayoutRes layoutResId: Int) : BaseFragment(layoutResId) {
 
@@ -75,6 +77,13 @@ abstract class BaseAddAssetFragment(@LayoutRes layoutResId: Int) : BaseFragment(
                 combinedLoadStates
             )
         )
+        baseAddAssetViewModel.updateBaseAddAssetPreviewWithLoadState(combinedLoadStates)
+    }
+
+    private val baseAddAssetPreviewFlowCollector: suspend (BaseAddAssetPreview) -> Unit = { preview ->
+        preview.scrollToTopEvent?.consume()?.run {
+            assetsRecyclerView.scrollToTop()
+        }
     }
 
     protected open val baseAddAssetFragmentListener: BaseAddAssetFragmentListener? = null
@@ -90,9 +99,13 @@ abstract class BaseAddAssetFragment(@LayoutRes layoutResId: Int) : BaseFragment(
     }
 
     protected fun initObservers() {
-        viewLifecycleOwner.collectLatestOnLifecycle(
-            baseAddAssetViewModel.assetSearchPaginationFlow,
-            assetSearchPaginationCollector
+        collectLatestOnLifecycle(
+            flow = baseAddAssetViewModel.assetSearchPaginationFlow,
+            collection = assetSearchPaginationCollector
+        )
+        collectLatestOnLifecycle(
+            flow = baseAddAssetViewModel.baseAddAssetPreviewFlow,
+            collection = baseAddAssetPreviewFlowCollector
         )
     }
 

@@ -22,7 +22,7 @@ import com.algorand.android.databinding.FragmentBidaliBrowserBinding
 import com.algorand.android.discover.common.ui.model.PeraWebViewClient
 import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.IconButton
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.IconButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.dapp.bidali.domain.BidaliWebInterface
 import com.algorand.android.modules.dapp.bidali.ui.browser.model.BidaliBrowserPreview

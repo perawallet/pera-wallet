@@ -29,6 +29,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.marginBottom
 import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
+import com.algorand.android.customviews.alertview.ui.model.AlertViewAnimatorListener
 import com.algorand.android.databinding.CustomAlertViewBinding
 import com.algorand.android.models.AlertMetadata
 import com.algorand.android.utils.getDisplaySize

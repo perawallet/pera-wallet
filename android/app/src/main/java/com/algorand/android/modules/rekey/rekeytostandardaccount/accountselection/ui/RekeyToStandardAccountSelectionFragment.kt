@@ -25,8 +25,7 @@ class RekeyToStandardAccountSelectionFragment : BaseSingleAccountSelectionFragme
 
     override val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_left_arrow,
-        startIconClick = ::navBack,
-        titleResId = R.string.select_account
+        startIconClick = ::navBack
     )
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 

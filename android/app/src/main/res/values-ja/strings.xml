@@ -105,7 +105,6 @@
     <string name="advanced_troubleshooting">高度なトラブルシューティング</string>
     <string name="connecting_to_ledger">Ledgerに接続しています…</string>
     <string name="ledger_approval">Ledgerの承認</string>
-    <string name="please_make_sure">Ledgerデバイスでトランザクションを確認してください</string>
     <string name="ledger_info_ledger_second_paragraph">チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーにAlgorandと入力してインストールしてください。</string>
     <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">まず、Ledgerの包括的な<annotation type="bold"><annotation type="color">Getting Started</annotation></annotation>チュートリアルに従ってください。このチュートリアルでは、Ledgerデバイスにアプリケーションをインストールして開く方法を説明しています。</annotation>
   </string>
@@ -163,7 +162,6 @@
     <string name="add_note">メモを追加</string>
     <string name="try_again_in">やり直してください</string>
     <string name="rekey_account">アカウントの再キー化</string>
-    <string name="start_process">プロセスの開始</string>
     <string name="replace_your_account">アカウント元帳を新しいLedgerデバイスと置き換えます</string>
     <string name="replace_your_accounts">アカウントのパスフレーズをLedgerデバイスに置き換える。</string>
     <string name="what_to_expect">予想される状況:</string>
@@ -216,7 +214,6 @@
     <string name="can_be_signed_by">署名できるのは</string>
     <string name="can_sign_for_these">これらのアカウントに署名できます</string>
     <string name="select_account">アカウントの選択</string>
-    <string name="choose_the_account">このアカウントへの署名に使用するアカウントを選択します。</string>
     <string name="a_network_error">アカウントの詳細を取得中にネットワークエラーが発生しました。プロセスを再開してください。</string>
     <string name="it_appears_this">このLedgerデバイスがリセットされ、デバイス上のアカウントとこのアカウントが一致しないようです。再度、ホームページからLedgerのペアリングを行ってください。</string>
     <plurals name="asset_count">
@@ -557,6 +554,7 @@
     <string name="transfer">転送</string>
     <string name="send_your_nft">NFTを送信する</string>
     <string name="paste_an_algorand_wallet_address">Algorandウォレットアドレスを貼り付ける</string>
+    <string name="ask_recipient_to">受信者に%1$sのオプトインをリクエストする</string>
     <string name="you_cant_send">このウォレットはまだこの資産をオプトインしていないため、<annotation replacement="nft_name">NFTNamePlaceHolder</annotation>を<annotation replacement="wallet_address">walletAddressPlaceholder</annotation>に送信できません。<annotation font="dmsans_medium"><annotation custom="learn_more">オプトインについて詳しく知る</annotation></annotation></string>
     <string name="information_about_opt">オプトインに関する情報</string>
     <string name="to_avoid_spammy">スパム的なトランザクションを避けるため、Algorand Blockchainでは事前にオプトインされた資産のみ、トランザクションの送受信が可能です。</string>
@@ -588,7 +586,6 @@
     <string name="opted_in_to">オプトイン先</string>
     <string name="show_on">表示する</string>
     <string name="you_are_about_to_remove_watch_account">ウォッチアカウントを削除しようとしています。この選択を続行してよろしいですか？</string>
-    <string name="you_are_about_to_remove_main_account">メインアカウントを削除しようとしています。この選択を続行してよろしいですか？</string>
     <string name="this_watch_account_has_opted">このウォッチアカウントはこのNFTをオプトインしていますが、所有していません。</string>
     <string name="display_opted_in_nfts">オプトイン済NFTの表示</string>
     <string name="filter">フィルタリング</string>
@@ -647,7 +644,7 @@
     <string name="address_scanned">アドレスをスキャンしました</string>
     <string name="rekeyed_auth_account">再キー済認証アカウント</string>
     <string name="rekeyed_account">再キー済アカウント</string>
-    <string name="press_and_hold_to">長押しして\n\"アドレスをコピー\"</string>
+    <string name="press_and_hold_to">長押しして\"アドレスをコピー\"</string>
     <string name="you_can_quickly_copy">アカウントボックスを長押しすることで、アカウントアドレスを素早くコピーできます</string>
     <string name="matched_accounts">一致したアカウント</string>
     <string name="manually">手動で</string>
@@ -756,7 +753,7 @@
     <string name="this_account_doesn_t">このアカウントには、この取引に必要な残高がありません。</string>
     <string name="we_couldn_t">WalletConnectセッションを開始したブラウザを自動的に検出できませんでした。選択して%1$sに戻ってください。</string>
     <string name="select_a_browser">ブラウザを選択</string>
-    <string name="switch_back_to"><annotation iconReplacement="browserIconResId">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation>に戻る</string>
+    <string name="switch_back_to"><annotation iconReplacement="browser_icon_res_id">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation>に戻る</string>
     <string name="account_connected">アカウントが接続されました！</string>
     <string name="you_ve_connected">お客様のアカウントを%1$sに接続しました。操作を終了するには、ウェブブラウザに戻ってください。</string>
     <string name="transaction_signed">トランザクションに署名されました！</string>
@@ -780,7 +777,6 @@
     <string name="later">後で</string>
     <string name="set_custom_slippage">カスタムスリッページを設定する</string>
     <string name="auto">自動</string>
-    <string name="slippage_tolerance_must_be_between">スリッページ許容範囲は%1$.2f%%から%2$.0f%%の間でなければなりません</string>
     <string name="balance_percentage_must_be_between">残高パーセンテージは%1$d%%と%2$d%%の間でなければなりません。</string>
     <string name="set_custom_percentage">カスタムパーセンテージを設定する</string>
     <string name="balance_percentage">残高パーセンテージ</string>
@@ -857,7 +853,7 @@
     </plurals>
     <string name="you_cannot_optin">このアカウントはオプトインできません。このアカウントは読み取り専用のウォッチアカウントです。</string>
     <string name="you_cannot_take">このアカウントに対してアクションを起こすことはできません。このアカウントはこのデバイスから削除されました。</string>
-    <string name="caution_price_impact">注意！価格への影響が5%％以上あるため、このプールでは流動性が低くなる可能性があります。スワップを確定する前に、その影響をご確認ください。</string>
+    <string name="caution_price_impact">注意！価格への影響が<annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation>％%以上あるため、このプールでは流動性が低くなる可能性があります。スワップを確定する前に、その影響をご確認ください。</string>
     <string name="discover">見つける</string>
     <string name="search_for_any_asa_by">名前またはIDでASAを検索する</string>
     <string name="we_are_not_able_to_find">この資産を見つけることができません。後でもう一度お試しください。</string>
@@ -915,4 +911,136 @@
     <string name="this_asset_is">この資産はすでに削除待ちです。</string>
     <string name="get_help">ヘルプ</string>
     <string name="couldn_t_retrieve">アカウント情報を取得できませんでした。もう一度やり直してください。</string>
+    <string name="request_receiver_to">受信者にオプトインをリクエストする</string>
+    <string name="algo_balance_is_too_low">Algoの残高が少なすぎます。最小残高は<annotation replacement="algo_icon">ALGO_ICON_PLACEHOLDER</annotation> <annotation replacement="min_balance">MIN_BALANCE_PLACEHOLDER</annotation>必要です。</string>
+    <string name="accounts_imported">インポートされたアカウント</string>
+    <plurals name="n_accounts_were_imported_from_pera_web">
+        <item quantity="other">%1$dのアカウントがPera Webからインポートされました</item>
+    </plurals>
+    <string name="explore_pera_mobile">Pera Mobileについて調べる</string>
+    <string name="unimported_accounts">インポートしていないアカウント</string>
+    <plurals name="n_accounts_were_not_imported_because">
+        <item quantity="other">%1$dのアカウントは以前にインポートされていたため、インポートされませんでした。</item>
+    </plurals>
+    <string name="your_accounts_could_not_be_imported">アカウントをインポートできませんでした。後でもう一度やり直してください。</string>
+    <string name="import_from_pera_web">Pera Webからインポート</string>
+    <string name="i_want_to_import_algorand">Pera WebからAlgorandアカウントをインポートしたい</string>
+    <string name="get_your_qr_ready">Pera WebでQRコードを準備する</string>
+    <string name="go_to_web_perawallet">デスクトップの \"web.perawallet.app\" に移動します</string>
+    <string name="go_to_settings_transfer_accounts">設定 &gt; アカウントの移行 に移動します</string>
+    <string name="select_the_accounts_you_want">Pera Mobileにインポートするアカウントを選択し、QRコードを生成します</string>
+    <string name="tap_start_to_scan">開始をタップしてQRコードをスキャンします</string>
+    <string name="scan_qr_code_on_web">Pera WebでQRコードを読み取る</string>
+    <string name="start">開始</string>
+    <string name="importing_your_accounts">アカウントのインポート中</string>
+    <string name="rekey_to_ledger_account">Ledgerアカウントへの再キー化</string>
+    <string name="rekey_to_standard_account">標準アカウントへの再キー化</string>
+    <string name="protect_your_account_by_delegating">署名を別のアカウントに委任することで、アカウントを保護できます。</string>
+    <string name="future_transactions_can_only">今後のトランザクションは、委任されたアカウントによってのみ署名できます。</string>
+    <string name="this_account_will_no_longer">このアカウントでは、トランザクションに署名することはできなくなります。</string>
+    <string name="your_account_s_public_key">お客様のアカウントの公開鍵、残高、設定は変更されません。</string>
+    <string name="account_transfer_is">セキュリティを確保するため、Testnetでのアカウント転送は無効になっています。この機能を利用するには、Mainnetに切り替えてください。</string>
+    <string name="invalid_url">無効なURL</string>
+    <string name="high_price_impact_detected">高い価格への影響が検出されました！</string>
+    <string name="it_appears_that_you_formatted">価格への影響が<annotation replacement="price_impact_percentage"> priceImpactPercentagePlaceholder </annotation>%％を超えるスワップを確認しようとしているようです。 \n\n価格への影響、その計算方法、またはスワップの全体的な価値への影響についての詳細は、Tinymanの<annotation custom="faq_url">FAQセクション</annotation>をご覧ください。</string>
+    <string name="the_signing_account_has">署名するアカウントがウォレットに無いアカウントで再キー化されたか、設定が間違っています。認証アカウントがウォレットに追加されていることをご確認ください。Ledgerアカウントをお使いの場合は、正しく接続されていることをご確認ください。</string>
+    <string name="this_swap_can_not_be">価格への影響が大きすぎるため、このスワップは実行できません。価格への影響とその仕組みについての詳細は、<annotation custom="faq_url">こちら</annotation>をご覧ください。</string>
+    <string name="select_your_backup_file">バックアップファイルを選択</string>
+    <string name="uploading_three_dots">アップロード中…</string>
+    <string name="upload_successful">アップロード成功</string>
+    <string name="replace_file">ファイルの置換</string>
+    <string name="upload_failed">アップロード失敗</string>
+    <string name="select_file">ファイルを選択</string>
+    <string name="this_file_type_isn_t_supported">このファイルの種類はサポートされていません</string>
+    <string name="algorand_secure_backup">Algorandセキュアバックアップ</string>
+    <string name="i_want_to_restore_my">12単語のパスフレーズを使って、Algorandアカウントを復元したい</string>
+    <string name="not_backed_up">未バックアップ（%1$d）</string>
+    <string name="algorand_secure_n_backup">Algorandセキュアバックアップ</string>
+    <string name="backup_your_accounts_using">Algorandセキュアバックアッププロトコルを使用して、アカウントをバックアップします。あなたのアカウントを表す暗号化テキストファイルと、将来的にそれらの解読に使用する12単語のキーを生成します。</string>
+    <string name="select_your_accounts">アカウントの選択</string>
+    <string name="select_one_some_or_all">バックアップファイルに含めるアカウントを1つ、複数、またはすべて選択してください。</string>
+    <string name="store_your_12_word_key">12単語のキーを保管する</string>
+    <string name="record_or_save_your_12">12単語のキーを安全に記録または保管します。<annotation font="dmsans_medium"><annotation custom="learn_more_click">詳細を見る</annotation></annotation></string>
+    <string name="save_your_backup_file">バックアップファイルを保存する</string>
+    <string name="download_your_backup_to">バックアップをお使いのデバイスの安全な場所にダウンロードします。</string>
+    <string name="backup_accounts">アカウントのバックアップ（%1$d）</string>
+    <string name="choose_accounts_n_to_backup">バックアップするアカウントを選択</string>
+    <string name="we_couldn_t_find_any_accounts">バックアップの対象となるアカウントが見つかりませんでした。</string>
+    <string name="have_you_stored_your_key">キーを復元しましたか？</string>
+    <string name="store_your_key_somewhere_secure">キーはパスワードマネージャーなど、安全な場所に保管してください。キーを紛失すると、バックアップファイルに永久にアクセスできなくなります。</string>
+    <string name="create_backup_file">バックアップファイルを作成する</string>
+    <string name="show_key_again">キーを再表示する</string>
+    <string name="create_new_key">新しいキーを作成する</string>
+    <string name="you_are_about_to_reset">Algorandセキュアバックアップキーをリセットします。このデバイスから作成されるすべてのASBファイルの暗号化および復号化に使用される新しい12単語のキーが生成されます。このキーが安全に保管されていることを確認してから、次に進んでください。</string>
+    <string name="i_understand_proceed">了解しました、次へ進みます</string>
+    <string name="copy_to_clipboard">クリップボードにコピーする</string>
+    <string name="create_new_12_word_key">新しい12単語のキーを作成する</string>
+    <string name="store_your_n_12_word_key">12単語のキーを保管する</string>
+    <string name="i_ve_stored_my_key">キーを保存しました</string>
+    <string name="your_12_word_key_is">12単語のキーは、お客様が作成したAlgorandセキュアバックアップファイルの復号化に使用されます。12単語のキーは安全に保管してください。Pera Learnで<annotation font="dmsans_medium"><annotation custom="url_click">詳細を見る</annotation></annotation>。</string>
+    <string name="review_your_n_12_word_key">12単語のキーを確認する</string>
+    <string name="you_stored_your_key_during">前回のバックアップ時にキーが保存されています。安全に保管されていることをご確認ください。Pera Learnで<annotation font="dmsans_medium"><annotation custom="url_click">詳細を見る</annotation></annotation></string>
+    <string name="key_copied_as_text">キーがテキストとしてコピーされました</string>
+    <string name="save_backup_file">バックアップファイルを保存</string>
+    <string name="your_backup_file_is_ready">バックアップファイルの準備が出来ました</string>
+    <string name="save_your_file_somewhere_secure">12単語のキーとは異なる、安全な場所にファイルを保存してください。<annotation font="dmsans_medium"><annotation custom="url_click">詳細を見る</annotation></annotation></string>
+    <string name="an_error_occurred_while_generating">Algorandセキュアバックアップの生成中にエラーが発生しました。再度お試しいただくか、 <annotation font="dmsans_medium"><annotation custom="url_click">サポートにお問い合わせください</annotation></annotation></string>
+    <string name="backup_file_copied_to">バックアップファイルがテキストとしてクリップボードにコピーされました</string>
+    <string name="can_t_save_backup_file">バックアップファイルを保存できません</string>
+    <string name="please_allow_pera_wallet_to">ファイルを保存するには、Pera Wallet がデバイス上の写真やメディアにアクセスできるようにしてください。</string>
+    <string name="have_you_stored_your">バックアップファイルを保存しましたか？</string>
+    <string name="if_you_lose_your_algorand">Algorandセキュアバックアップファイルを紛失した場合、アカウントを復元することはできません。</string>
+    <string name="yes_i_stored_my_file">はい、ファイルを保存しました</string>
+    <string name="show_backup_file_again">バックアップファイルを再度表示する</string>
+    <string name="select_your_n_backup_file">バックアップファイルを選択してください</string>
+    <string name="to_restore_your_wallet">ウォレットを復元するには、バックアップファイルを選択または貼り付けてください。</string>
+    <string name="paste_backup_file_text">バックアップファイルのテキストを貼り付ける</string>
+    <string name="unable_to_parse_file">バックアップファイルを解析できません：JSON形式エラーです。</string>
+    <string name="unable_to_parse_key_name">バックアップファイルの解析ができません：<annotation replacement="key_name">keyNamePlaceholder</annotation>が存在しません</string>
+    <string name="backup_file_was_generated_with">バックアップファイルは、サポートされていないバージョンのAlgorandセキュアバックアップ形式で生成されました。</string>
+    <string name="unable_to_parse_suite">バックアップファイルを解析できません：不明な暗号スイートです</string>
+    <string name="backup_file_successfully_pasted">バックアップファイルが正常にペーストされました</string>
+    <string name="enter_12_word_key">12単語のキーを入力してください</string>
+    <string name="wrong_12_word_key">12単語のキーが間違っています</string>
+    <string name="please_try_again_by_entering">正しい12単語のキーを入力して、もう一度お試しください。</string>
+    <string name="choose_accounts_n_to_restore">復元するアカウントを選択してください</string>
+    <string name="restore_account">アカウントの復元（%1$d）</string>
+    <string name="nothing_to_paste">ペーストするものがありません</string>
+    <string name="nothing_is_copied_to_the">クリップボードには何もコピーされていません。バックアップファイルをコピーしたことをご確認ください。</string>
+    <plurals name="accounts_restored">
+        <item quantity="other">アカウントが復元されました</item>
+    </plurals>
+    <plurals name="accounts_were_restored">
+        <item quantity="other">バックアップファイルから%1$dのアカウントが復元されました。</item>
+    </plurals>
+    <plurals name="account_was_not_restored_because_exist">
+        <item quantity="other">ウォレットに既に存在するため、%1$dのアカウントを復元できませんでした。</item>
+    </plurals>
+    <plurals name="account_was_not_restored_because_unsupported">
+        <item quantity="other">サポートされていない種類のアカウントのため、%1$dのアカウントを復元できませんでした。</item>
+    </plurals>
+    <plurals name="account_was_not_restored">
+        <item quantity="other">%1$dのアカウントを復元できませんでした。ウォレットに既に存在するか、サポートされていない種類のアカウントである可能性があります。</item>
+    </plurals>
+    <string name="buy_sell">購入 / 売却</string>
+    <string name="see_all_options_to_buy">仮想通貨売買に関するすべてのオプションを見る</string>
+    <string name="buy_crypto">仮想通貨の購入</string>
+    <string name="sell_crypto">仮想通貨の売却</string>
+    <string name="use_apple_pay_credit_cards">Apple Pay、クレジットカード、銀行振込を使用する</string>
+    <string name="buy_algo_with_sardine">SardineでALGOを購入する</string>
+    <string name="use_instant_ach">米国の銀行口座でInstant ACHを使用する</string>
+    <string name="buy_usdc_with_transak">TransakでのUSDCの購入</string>
+    <string name="use_credit_card_bank_transfer">クレジットカードや150カ国以上での銀行振込を使用可能</string>
+    <string name="buy_gift_cards_with_bidali">Bidaliでギフトカードを購入する</string>
+    <string name="you_can_use_your_algo">Algo、USDC、USDt残高を使用可能です</string>
+    <string name="buy_gift_cards_with_crypto">仮想通貨でギフトカードを購入する</string>
+    <string name="buy_gift_cards">ギフトカードを購入する</string>
+    <string name="you_can_use_your_algo_or">ALGOやUSDCの残高を使って、世界中の数多くのブランドのギフトカードやモバイルトップアップを購入することができます！</string>
+    <string name="you_can_not_purchase_bidali">TestNetでは購入できません。Bidaliをご利用になるには、設定からMainNetに切り替えてください。</string>
+    <string name="buy_usdc">USDCを購入する</string>
+    <string name="transak_onboards_users_from_fiat">Transak は、800以上のアプリで法定通貨と仮想通貨の交換をサポートします。 150か国以上でクレジットカード、デビットカード、銀行振込を利用可能です。</string>
+    <string name="you_can_not_purchase_transak">TestNetでは購入できません。Transakをご利用になるには、設定からMainNetに切り替えてください。</string>
+    <string name="instant_settlement_and_lower">Instant ACH送金を使用したAlgoの即時決済を低料金で行えます。Sardineは、180か国以上の地元銀行でのカード決済、Apple PayやGPayに対応しています。</string>
+    <string name="you_can_not_purchase_sardine">TestNetでは購入できません。Sardineをご利用になるには、設定からMainNetに切り替えてください。</string>
+    <string name="choose_an_account_to_proceed">手続きを行うアカウントを選択してください</string>
 </resources>

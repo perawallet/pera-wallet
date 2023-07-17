@@ -28,11 +28,10 @@ class SingleAccountSelectionAccountItemViewHolder(
     override fun bind(item: SingleAccountSelectionListItem) {
         if (item !is SingleAccountSelectionListItem.AccountItem) return
         with(binding.accountItemView) {
-            val accountIconSize = resources.getDimension(R.dimen.account_icon_size_large).toInt()
             val accountIconDrawable = AccountIconDrawable.create(
                 context = context,
-                accountIconResource = item.accountIconResource,
-                size = accountIconSize
+                accountIconDrawablePreview = item.accountIconDrawablePreview,
+                sizeResId = R.dimen.spacing_xxxxlarge
             )
             setStartIconDrawable(accountIconDrawable)
             with(item.accountDisplayName) {

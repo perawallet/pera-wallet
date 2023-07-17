@@ -91,7 +91,7 @@ class ConfirmSwapPreviewUseCase @Inject constructor(
                 priceImpact = swapQuote.priceImpact,
                 errorEvent = null,
                 slippageToleranceUpdateSuccessEvent = null,
-                accountIconResource = accountDetailSummary.accountIconResource,
+                accountIconDrawablePreview = accountDetailSummary.accountIconDrawablePreview,
                 accountDisplayName = accountDetailSummary.accountDisplayName
             )
         }

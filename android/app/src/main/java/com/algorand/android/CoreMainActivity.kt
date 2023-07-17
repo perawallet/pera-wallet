@@ -21,21 +21,19 @@ import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseActivity
-import com.algorand.android.customviews.CustomToolbar
-import com.algorand.android.customviews.alertview.ui.AlertDialogQueueManager
+import com.algorand.android.customviews.toolbar.CustomToolbar
 import com.algorand.android.database.ContactDao
 import com.algorand.android.databinding.ActivityMainBinding
 import com.algorand.android.models.Node
-import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.network.IndexerInterceptor
+import com.algorand.android.notification.NotificationPermissionManager
 import com.algorand.android.notification.PeraNotificationManager
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.BETANET_NETWORK_SLUG
@@ -54,7 +52,6 @@ import com.algorand.android.utils.showLightStatusBarIcons
 import com.algorand.android.utils.viewbinding.viewBinding
 import javax.inject.Inject
 import kotlin.properties.Delegates
-import kotlinx.coroutines.launch
 
 abstract class CoreMainActivity : BaseActivity() {
 
@@ -86,7 +83,7 @@ abstract class CoreMainActivity : BaseActivity() {
     lateinit var localAccountsNameServiceManager: LocalAccountsNameServiceManager
 
     @Inject
-    lateinit var alertDialogQueueManager: AlertDialogQueueManager
+    lateinit var notificationPermissionManager: NotificationPermissionManager
 
     @Inject
     lateinit var accountDetailUseCase: AccountDetailUseCase
@@ -138,6 +135,7 @@ abstract class CoreMainActivity : BaseActivity() {
             addObserver(accountDetailCacheManager)
             addObserver(assetCacheManager)
             addObserver(localAccountsNameServiceManager)
+            addObserver(notificationPermissionManager)
         }
     }
 
@@ -224,48 +222,6 @@ abstract class CoreMainActivity : BaseActivity() {
 
     fun getToolbar(): CustomToolbar {
         return binding.toolbar
-    }
-
-    fun showGlobalError(
-        errorMessage: CharSequence?,
-        title: String? = null,
-        tag: String = activityTag
-    ) {
-        val safeTitle = title ?: getString(R.string.error_default_title)
-        val safeErrorMessage = errorMessage?.toString() ?: getString(R.string.unknown_error)
-        alertDialogQueueManager.addAlertError(
-            title = safeTitle,
-            description = safeErrorMessage,
-            tag = tag
-        )
-    }
-
-    fun showForegroundNotification(
-        notificationMetadata: NotificationMetadata,
-        tag: String = activityTag
-    ) {
-        lifecycleScope.launch {
-            alertDialogQueueManager.addAlertNotification(
-                notificationMetadata = notificationMetadata,
-                tag = tag
-            )
-        }
-    }
-
-    fun showAlertSuccess(
-        title: String,
-        successMessage: String?,
-        tag: String
-    ) {
-        alertDialogQueueManager.addAlertSuccess(
-            title = title,
-            description = successMessage,
-            tag = tag
-        )
-    }
-
-    fun removeAlertsWithTag(tag: String) {
-        alertDialogQueueManager.removeAlertsWithTag(tag)
     }
 
     fun showProgress() {

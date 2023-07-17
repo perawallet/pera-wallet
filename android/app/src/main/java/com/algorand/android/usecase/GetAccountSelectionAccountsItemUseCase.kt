@@ -17,8 +17,8 @@ import com.algorand.android.customviews.accountandassetitem.model.BaseItemConfig
 import com.algorand.android.mapper.AccountSelectionListItemMapper
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseAccountSelectionListItem
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
@@ -34,7 +34,8 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
     private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
     private val getAccountValueUseCase: GetAccountValueUseCase,
     private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
-    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase
+    private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     // TODO: 11.03.2022 Use flow here to get realtime updates
@@ -130,7 +131,7 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
         return accountItemConfigurationMapper.mapTo(
             accountAddress = account.address,
             accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
-            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(account.address),
             accountPrimaryValueText = accountPrimaryValueText,
             accountPrimaryValue = primaryAccountValue,
             accountType = account.type
@@ -144,7 +145,7 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
             accountItemConfigurationMapper.mapTo(
                 accountAddress = address,
                 accountDisplayName = getAccountDisplayNameUseCase.invoke(address),
-                accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(address),
                 showWarningIcon = true,
                 accountType = type
             )

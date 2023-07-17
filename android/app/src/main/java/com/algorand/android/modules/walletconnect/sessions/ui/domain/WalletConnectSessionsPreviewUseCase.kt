@@ -13,15 +13,15 @@
 package com.algorand.android.modules.walletconnect.sessions.ui.domain
 
 import androidx.core.net.toUri
-import com.algorand.android.R
+import com.algorand.android.modules.walletconnect.connectedapps.ui.mapper.WalletConnectSessionItemMapper
 import com.algorand.android.modules.walletconnect.domain.ConnectToExistingSessionUseCase
 import com.algorand.android.modules.walletconnect.domain.KillAllWalletConnectSessionsUseCase
 import com.algorand.android.modules.walletconnect.domain.KillWalletConnectSessionUseCase
 import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
-import com.algorand.android.modules.walletconnect.sessions.ui.mapper.WalletConnectSessionItemMapper
+import com.algorand.android.modules.walletconnect.sessions.ui.mapper.BaseWalletConnectSessionItemMapper
 import com.algorand.android.modules.walletconnect.sessions.ui.mapper.WalletConnectSessionsPreviewMapper
-import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionItem
+import com.algorand.android.modules.walletconnect.sessions.ui.model.BaseWalletConnectSessionItem
 import com.algorand.android.modules.walletconnect.sessions.ui.model.WalletConnectSessionsPreview
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.usecase.AccountDetailUseCase
@@ -38,7 +38,8 @@ class WalletConnectSessionsPreviewUseCase @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
     private val walletConnectSessionsPreviewMapper: WalletConnectSessionsPreviewMapper,
     private val walletConnectSessionItemMapper: WalletConnectSessionItemMapper,
-    private val walletConnectManager: WalletConnectManager
+    private val walletConnectManager: WalletConnectManager,
+    private val baseWalletConnectSessionItemMapper: BaseWalletConnectSessionItemMapper
 ) {
 
     suspend fun killWalletConnectSession(sessionIdentifier: WalletConnectSessionIdentifier) {
@@ -57,7 +58,7 @@ class WalletConnectSessionsPreviewUseCase @Inject constructor(
         return walletConnectManager.localSessionsFlow.map {
             val walletConnectSessionList = createWalletConnectSessionList(it)
             walletConnectSessionsPreviewMapper.mapToWalletConnectSessionsPreview(
-                walletConnectSessionList = walletConnectSessionList,
+                waseWalletConnectSessionItemList = walletConnectSessionList,
                 isDisconnectAllSessionVisible = walletConnectSessionList.isNotEmpty(),
                 isEmptyStateVisible = walletConnectSessionList.isEmpty()
             )
@@ -66,34 +67,19 @@ class WalletConnectSessionsPreviewUseCase @Inject constructor(
 
     private fun createWalletConnectSessionList(
         walletConnectSessions: List<WalletConnect.SessionDetail>,
-    ): List<WalletConnectSessionItem> {
+    ): List<BaseWalletConnectSessionItem> {
         return walletConnectSessions.map { walletConnectSession ->
-            with(walletConnectSession) {
-                walletConnectSessionItemMapper.mapToWalletConnectSessionItem(
-                    sessionIdentifier = sessionIdentifier,
-                    dAppLogoUrl = peerMeta.icons?.firstOrNull()?.toUri(),
-                    dAppName = peerMeta.name,
-                    dAppDescription = peerMeta.description,
-                    connectionDate = getZonedDateTimeFromSec(creationDateTimestamp)?.formatAsDateAndTime(),
-                    connectedAccountItems = createConnectedAccountItems(connectedAddresses, isConnected),
-                    isConnected = isConnected,
-                    isShowingDetails = true
-                )
-            }
-        }
-    }
-
-    private fun createConnectedAccountItems(
-        connectedAccounts: List<String>,
-        isConnected: Boolean
-    ): List<WalletConnectSessionItem.ConnectedSessionAccountItem> {
-        val backgroundResource = if (isConnected) R.drawable.bg_connected_session_indicator else null
-        val textColor = if (isConnected) R.color.link_primary else R.color.gray_400
-        return connectedAccounts.map {
-            walletConnectSessionItemMapper.mapToConnectedSessionAccountItem(
-                backgroundResource = backgroundResource,
-                textColor = textColor,
-                displayName = accountDetailUseCase.getAccountName(it)
+            baseWalletConnectSessionItemMapper.mapToWalletConnectSessionItem(
+                sessionIdentifier = walletConnectSession.sessionIdentifier,
+                dAppIconUrl = walletConnectSession.peerMeta.icons?.firstOrNull()?.toUri(),
+                dAppName = walletConnectSession.peerMeta.name,
+                formattedConnectionDate = getZonedDateTimeFromSec(
+                    sec = walletConnectSession.creationDateTimestamp
+                ).formatAsDateAndTime(),
+                formattedExpirationDate = walletConnectSession.expiry?.seconds?.let { expirationDate ->
+                    getZonedDateTimeFromSec(expirationDate).formatAsDateAndTime()
+                },
+                isConnected = walletConnectSession.isConnected
             )
         }
     }

@@ -13,9 +13,9 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AssetTransferAmountAssetPreview
 import com.algorand.android.models.AssetTransferAmountPreview
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.Event
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -31,7 +31,7 @@ class AssetTransferAmountPreviewMapper @Inject constructor() {
         selectedAmount: BigDecimal?,
         senderAddress: String,
         accountName: String,
-        accountIconResource: AccountIconResource,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
         onMaxAmountEvent: Event<Unit>? = null,
         amountIsValidEvent: Event<BigInteger?>? = null,
         amountIsMoreThanBalanceEvent: Event<Unit>? = null,
@@ -52,7 +52,7 @@ class AssetTransferAmountPreviewMapper @Inject constructor() {
             minimumBalanceIsViolatedResultEvent = minimumBalanceIsViolatedResultEvent,
             assetNotFoundErrorEvent = assetNotFoundErrorEvent,
             accountName = accountName,
-            accountIconResource = accountIconResource
+            accountIconDrawablePreview = accountIconDrawablePreview
         )
     }
 

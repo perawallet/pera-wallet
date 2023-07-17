@@ -12,11 +12,12 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.mapper
 
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDTO
-import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionMetaDTO
-import com.algorand.android.modules.walletconnect.client.v1.session.WalletConnectSessionCachedData
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDto
+import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionMetaDto
+import com.algorand.android.modules.walletconnect.client.v1.session.WalletConnectV1SessionCachedData
 import com.algorand.android.modules.walletconnect.client.v1.utils.WalletConnectClientV1Utils.getWalletConnectV1VersionIdentifier
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
 import com.algorand.android.modules.walletconnect.mapper.WalletConnectConnectionStateMapper
 import com.algorand.android.modules.walletconnect.mapper.WalletConnectErrorMapper
 import com.algorand.android.modules.walletconnect.mapper.WalletConnectPeerMetaMapper
@@ -52,30 +53,20 @@ class WalletConnectClientV1Mapper @Inject constructor(
         sessionId: Long,
         call: Session.MethodCall.SessionRequest,
         fallbackBrowserGroupResponse: String?,
-        namespaces: WalletConnect.Namespace.Proposal
+        namespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Proposal>
     ): WalletConnect.Session.Proposal {
         return sessionProposalMapper.mapToProposal(
             proposalIdentifier = proposalIdentifierMapper.mapToProposalIdentifier(sessionId),
             relayProtocol = null,
             relayData = null,
             peerMeta = peerMetaMapper.mapToPeerMeta(call.peer.meta),
-            namespaces = namespaces,
-            requiredNamespaces = emptyMap(), // TODO
-            chainIdentifier = WalletConnect.ChainIdentifier.MAINNET,
+            requiredNamespaces = namespaces,
             fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
         )
     }
 
-    fun mapToSessionUpdateSuccess(
-        sessionId: Long,
-        chainId: WalletConnect.ChainIdentifier,
-        accountList: List<String>
-    ): WalletConnect.Session.Update {
-        return sessionUpdateMapper.mapToSessionUpdateSuccess(
-            sessionIdentifier = sessionIdentifierMapper.mapToSessionIdentifier(sessionId),
-            chainIdentifier = chainId,
-            accountList = accountList
-        )
+    fun mapToSessionUpdateSuccess(sessionId: Long): WalletConnect.Session.Update {
+        return sessionUpdateMapper.mapToSessionUpdateSuccess(sessionIdentifierMapper.mapToSessionIdentifier(sessionId))
     }
 
     fun mapToSessionRequest(
@@ -116,8 +107,8 @@ class WalletConnectClientV1Mapper @Inject constructor(
     }
 
     fun mapToSettleSuccess(
-        cachedData: WalletConnectSessionCachedData,
-        namespaces: Map<String, WalletConnect.Namespace.Session>,
+        cachedData: WalletConnectV1SessionCachedData,
+        namespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Session>,
         creationDateTimestamp: Long,
         isSubscribed: Boolean,
         isConnected: Boolean,
@@ -152,33 +143,33 @@ class WalletConnectClientV1Mapper @Inject constructor(
     }
 
     fun mapToSessionDetail(
-        walletConnectSessionDTO: WalletConnectSessionDTO,
-        namespaces: Map<String, WalletConnect.Namespace.Session>
+        walletConnectSessionDto: WalletConnectSessionDto,
+        namespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Session>
     ): WalletConnect.SessionDetail {
-        val sessionIdentifier = sessionIdentifierMapper.mapToSessionIdentifier(walletConnectSessionDTO.id)
+        val sessionIdentifier = sessionIdentifierMapper.mapToSessionIdentifier(walletConnectSessionDto.id)
         return sessionDetailMapper.mapToSessionDetail(
             sessionIdentifier = sessionIdentifier,
-            topic = walletConnectSessionDTO.wcSession.topic,
-            peerMeta = with(walletConnectSessionDTO.peerMeta) {
+            topic = walletConnectSessionDto.wcSession.topic,
+            peerMeta = with(walletConnectSessionDto.peerMeta) {
                 peerMetaMapper.mapToPeerMeta(name, url, description, icons, null)
             },
-            isConnected = walletConnectSessionDTO.isConnected,
+            isConnected = walletConnectSessionDto.isConnected,
             namespaces = namespaces,
-            creationDateTimestamp = walletConnectSessionDTO.dateTimeStamp,
-            isSubscribed = walletConnectSessionDTO.isSubscribed,
-            fallbackBrowserGroupResponse = walletConnectSessionDTO.fallbackBrowserGroupResponse,
+            creationDateTimestamp = walletConnectSessionDto.dateTimeStamp,
+            isSubscribed = walletConnectSessionDto.isSubscribed,
+            fallbackBrowserGroupResponse = walletConnectSessionDto.fallbackBrowserGroupResponse,
             expiry = null,
-            sessionMeta = sessionMetaMapper.mapToSessionMeta(walletConnectSessionDTO.wcSession)
+            sessionMeta = sessionMetaMapper.mapToSessionMeta(walletConnectSessionDto.wcSession)
         )
     }
 
     fun mapToSessionDetail(
-        entity: WalletConnectSessionDTO,
+        entity: WalletConnectSessionDto,
         creationDateTimestamp: Long,
         isSubscribed: Boolean,
         fallbackBrowserGroupResponse: String?,
-        namespaces: Map<String, WalletConnect.Namespace.Session>,
-        sessionMeta: WalletConnectSessionMetaDTO
+        namespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Session>,
+        sessionMeta: WalletConnectSessionMetaDto
     ): WalletConnect.SessionDetail {
         val sessionIdentifier = sessionIdentifierMapper.mapToSessionIdentifier(entity.id)
         val peerMeta = peerMetaMapper.mapToPeerMeta(entity.peerMeta)

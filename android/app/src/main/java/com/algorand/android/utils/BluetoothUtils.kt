@@ -24,7 +24,7 @@ import androidx.core.location.LocationManagerCompat
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.core.TransactionBaseFragment
-import com.algorand.android.ui.common.BaseLedgerSearchFragment
+import com.algorand.android.modules.baseledgersearch.ledgersearch.ui.BaseLedgerSearchFragment
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequestFragment
 
 fun BaseFragment.isBluetoothEnabled(resultLauncher: ActivityResultLauncher<Intent>): Boolean {

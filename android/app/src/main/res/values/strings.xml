@@ -109,7 +109,6 @@
     <string name="advanced_troubleshooting">Advanced Troubleshooting</string>
     <string name="connecting_to_ledger">Connecting to Ledger…</string>
     <string name="ledger_approval">Ledger Approval</string>
-    <string name="please_make_sure">Please make sure to confirm the transaction on your Ledger device <annotation replacement="ledger_name">ledgerNamePlaceholder</annotation> </string>
     <string name="ledger_info_power_first_paragraph">
     <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">For general usage of your Ledger\'s Bluetooth feature, please refer to Ledger\'s official <annotation type="bold"><annotation type="color">Bluetooth Connection Guide.</annotation></annotation></annotation>
   </string>
@@ -119,9 +118,9 @@
     <string name="ledger_info_ledger_first_paragraph">
     <annotation url="https://www.ledger.com/start">Begin by following Ledger\'s comprehensive <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> tutorial.</annotation>
   </string>
-    <string name="ledger_info_ledger_second_paragraph">When the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.</string>
+    <string name="ledger_info_ledger_second_paragraph">When the tutorial gets to the point where it directs you to \"select the application(s) you want to install on your device,\" type Algorand in the search bar and install.</string>
     <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Continue with Ledger\'s <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> tutorial, which will direct you how to install and open apps on your ledger device.</annotation></string>
-    <string name="ledger_info_algorand_second_paragraph">If you haven\'t already installed the <annotation type="bold">Algorand</annotation> app on your Ledger device, when the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type Algorand in the search bar and install.</string>
+    <string name="ledger_info_algorand_second_paragraph">If you haven\'t already installed the <annotation type="bold">Algorand</annotation> app on your Ledger device, when the tutorial gets to the point where it directs you to \"Select the application(s) you want to install on your device,\" type Algorand in the search bar and install.</string>
     <string name="error_connection_title">Connection Error</string>
     <string name="error_connection_message">Could not connect to the Ledger device. Make sure the device is unlocked, nearby and has bluetooth enabled.</string>
     <string name="error_app_closed_title">Ledger Connection Error</string>
@@ -179,7 +178,6 @@
     <string name="add_note">Add Note</string>
     <string name="try_again_in">Try again in</string>
     <string name="rekey_account">Rekey Account</string>
-    <string name="start_process">Start Process</string>
     <string name="replace_your_account">Replace your account ledger with a new Ledger Device</string>
     <string name="replace_your_accounts">Replace your account\'s passphrase with a Ledger Device.</string>
     <string name="what_to_expect">What to expect</string>
@@ -244,7 +242,6 @@
     <string name="can_sign_for_these">Can sign for these accounts</string>
     <string name="select_account">Select Account</string>
     <string name="select_the_receiver_account">Select the receiver account</string>
-    <string name="choose_the_account">Choose the account you want to use for signing this account.</string>
     <string name="a_network_error">A network error occurred while fetching account details. Please restart the process.</string>
     <string name="it_appears_this">It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.</string>
     <plurals name="asset_count">
@@ -348,7 +345,7 @@
     <string name="application_id">Application ID</string>
     <string name="this_transaction_will_transfer">This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.</string>
     <string name="this_transaction_is_sending">This transaction is sending your full Algo balance.</string>
-    <string name="this_transaction_is_sending_your">This transaction is sending your full %1$s balance. It will opt-out and remove the %1$s asset from your account “%2$s”.</string>
+    <string name="this_transaction_is_sending_your">This transaction is sending your full %1$s balance. It will opt-out and remove the %1$s asset from your account \"%2$s\".</string>
     <string name="this_transaction_fee_is_higher">This transaction fee is higher than the usual fee of 0.001 Algo.</string>
     <string name="wallet_connect_is_not_reachable">WalletConnect is not reachable at the moment. Please try again later.</string>
     <string name="connected_with_formatted">Connected with %1$s</string>
@@ -555,8 +552,6 @@
     <string name="you_are_about_to_delete">You are about to delete all data in the wallet, including your stored accounts. Make sure to have your account passphrases stored elsewhere before confirming. You will not be able to restore your accounts otherwise.\n\nAre you sure you would like to proceed?</string>
     <string name="your_data_has_been">Your data has been deleted successfully</string>
     <string name="create_an_account">Create an Account</string>
-    <string name="you_are_connected">You are Connected to <annotation replacement="peer_name">peerNamePlaceholder</annotation></string>
-    <string name="please_return_to">Please return to <annotation replacement="peer_name">peerNamePlaceholder</annotation> to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.</string>
 
 
     <string name="once_pairing_is_confirmed">Once pairing is confirmed on both Ledger and this device, open the Algorand Ledger app.</string>
@@ -669,7 +664,7 @@
     <string name="show_on">Show on</string>
     <string name="no_nft_found">No NFT Found</string>
     <string name="you_are_about_to_remove_watch_account">You are about to remove a watch account. Are you sure you want to proceed with this choice?</string>
-    <string name="you_are_about_to_remove_main_account">You are about to remove your main account, are you sure you want to proceed with this choice?</string>
+    <string name="you_are_about_to_remove_account">You are about to remove your account. Are you sure you want to proceed?</string>
     <string name="this_watch_account_has_opted">This watch account has opted-in for this NFT, however doesn\'t own it.</string>
     <string name="you_are_not_the_owner">You are not the owner of this NFT yet, however you opted-in for it. You can now transfer it to your account.</string>
     <string name="display_opted_in_nfts">Display opted-in NFTs</string>
@@ -688,7 +683,7 @@
     <string name="search">Search</string>
     <string name="pin_code_did_not_match">PIN code did not match. Try Again</string>
     <string name="no_transactions">No transactions</string>
-    <string name="there_are_no">There are no transactions to be displayed for selected period</string>
+    <string name="there_are_no">There are no transactions to be displayed for the selected period</string>
     <string name="filter_by_date">Filter by Date</string>
     <string name="asset_history_not_available">Asset history not available</string>
     <string name="the_history_for_this_spesific">The history for this specific asset is not available.</string>
@@ -726,7 +721,7 @@
 
     <string name="rekeyed_auth_account">Rekeyed Auth Account</string>
     <string name="rekeyed_account">Rekeyed Account</string>
-    <string name="press_and_hold_to">Press and hold to\n“Copy Address”</string>
+    <string name="press_and_hold_to">Press and hold to\n\"Copy Address\"</string>
     <string name="you_can_quickly_copy">You can quickly copy the account address by pressing and holding on Account box</string>
     <string name="matched_accounts">Matched Accounts</string>
     <string name="manage_nfts">Manage NFTs</string>
@@ -869,7 +864,6 @@
 
     <string name="set_custom_slippage">Set custom slippage</string>
     <string name="auto">Auto</string>
-    <string name="slippage_tolerance_must_be_between">Slippage tolerance must be between %1$.2f%% and %2$.0f%%</string>
     <string name="balance_percentage_must_be_between">Balance percentage must be between %1$d%% and %2$d%%</string>
     <string name="set_custom_percentage">Set custom percentage</string>
     <string name="balance_percentage">Balance Percentage</string>
@@ -932,7 +926,7 @@
 
     <string name="we_couldn_t">We couldn\'t automatically detect the browser you started the WalletConnect session from. Please select it to go back to %1$s:</string>
     <string name="select_a_browser">Select a Browser</string>
-    <string name="switch_back_to">Switch back to <annotation iconReplacement="browserIconResId">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation></string>
+    <string name="switch_back_to">Switch back to <annotation iconReplacement="browser_icon_res_id">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation></string>
     <string name="account_connected">Account connected!</string>
     <string name="you_ve_connected">You\'ve connected your account to %1$s. Return to your web browser to finish the operation.</string>
     <string name="transaction_signed">Transaction signed!</string>
@@ -1048,7 +1042,7 @@
     <string name="i_want_to_import_algorand">I want to import Algorand accounts from Pera Web</string>
 
     <string name="get_your_qr_ready">Get your QR ready on Pera Web</string>
-    <string name="go_to_web_perawallet">Go to “web.perawallet.app” on your desktop</string>
+    <string name="go_to_web_perawallet">Go to \"web.perawallet.app\" on your desktop</string>
     <string name="go_to_settings_transfer_accounts">Go to Settings > Transfer Accounts</string>
     <string name="select_the_accounts_you_want">Select the accounts you want to import to Pera Mobile and generate your QR</string>
     <string name="tap_start_to_scan">Tap Start to scan the QR</string>
@@ -1061,7 +1055,9 @@
 
     <string name="couldn_t_retrieve">Couldn\'t retrieve account details, please try again</string>
     <string name="rekey_to_ledger_account">Rekey to Ledger Account</string>
+    <string name="rekey_to_ledger_account_lower_case">Rekey to Ledger account</string>
     <string name="rekey_to_standard_account">Rekey to Standard Account</string>
+    <string name="rekey_to_standard_account_lower_case">Rekey to standard account</string>
     <string name="protect_your_account_by_delegating">Protect your account by delegating signatures to another account</string>
     <string name="future_transactions_can_only">Future transactions can only be signed by the delegated account.</string>
     <string name="this_account_will_no_longer">This account will no longer be able to sign transactions.</string>
@@ -1075,6 +1071,83 @@
     <string name="the_signing_account_has">The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.</string>
     <string name="caution_price_impact">Caution! Price impact is greater than <annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation>%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.</string>
     <string name="this_swap_can_not_be">This swap cannot be executed because the price impact is too large. Find out more about price impact and how it works <annotation custom="faq_url">here</annotation>.</string>
+
+    <plurals name="requested_permission">
+        <item quantity="one">Requested permissions</item>
+        <item quantity="other">Requested permissions</item>
+    </plurals>
+
+    <plurals name="networks">
+        <item quantity="one">Network</item>
+        <item quantity="other">Networks</item>
+    </plurals>
+
+    <plurals name="walletconnect_events">
+        <item quantity="one">WalletConnect event</item>
+        <item quantity="other">WalletConnect events</item>
+    </plurals>
+    <string name="walletconnect_advanced_permissions">WalletConnect Advanced Permissions</string>
+    <string name="walletconnect_is_a_communications_protocol">WalletConnect is a communications protocol for web3, enabling wallets and dApps to securely connect and interact. With each new version, WalletConnect introduces new ways to handle, sign and/or display transaction requests coming from third party projects.</string>
+    <string name="extend">Extend</string>
+
+    <string name="extend_validity_to_date">Extend validity to <annotation replacement="extended_session_validity_date">extendedSessionValidityDatePlaceholder</annotation></string>
+    <string name="you_can_extend_the_expiration">You can extend the expiration date of this session by 1 more week, but not beyond <annotation font="dmsans_medium"><annotation replacement="max_extendable_session_validity_date">maxExtendableSessionValidityDatePlaceholder</annotation></annotation>.</string>
+    <string name="this_session_is_using">This session is using WalletConnect V1</string>
+    <string name="connection_date">Connection date</string>
+    <string name="expiration_date">Expiration date</string>
+    <string name="connected_with">Connected with</string>
+    <string name="advanced_permissions">Advanced permissions</string>
+    <string name="supported_methods">Supported methods</string>
+    <string name="supported_events">Supported events</string>
+    <string name="extend_session_validity">Extend session validity</string>
+    <string name="session_extended_successfully">Session extended successfully</string>
+    <string name="session_disconnected_successfully">Session disconnected successfully</string>
+    <string name="session_status">Session status</string>
+    <string name="pinging">Pinging…</string>
+    <string name="active">Active</string>
+    <string name="failed">Failed</string>
+    <string name="check_status">Check status</string>
+
+    <string name="we_couldn_t_automatically_detect">We couldn\'t automatically detect the browser you started the WalletConnect session from. Please select it to go back to <annotation replacement="peer_name">peer_name_placeholder</annotation> and finish your operation:</string>
+    <string name="you_are_connected">You are Connected to <annotation replacement="peer_name">peerNamePlaceholder</annotation></string>
+    <string name="this_session_is_valid_until"><annotation type="color">This session is valid until:</annotation>\n<annotation font="dmsans_medium"><annotation replacement="session_expiry_date">sessionExpiryDate</annotation></annotation></string>
+
+    <string name="please_return_to">Please return to <annotation replacement="peer_name">peerNamePlaceholder</annotation> to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.</string>
+
+    <string name="its_validity_will_be_automatically">Its validity will be automatically extended, whenever used, until <annotation font="dmsans_medium"><annotation replacement="session_expiry_date">sessionExpiryDate</annotation></annotation>. If needed, you can manually extend inactive sessions validity from the dedicated Settings page. Sessions will be automatically deleted, once expired.\n\nPlease return to <annotation replacement="peer_name">peerMetaNamePlaceholder</annotation> to complete your operation.</string>
+    <string name="its_validity_will_be_automatically_extended">Its validity will be automatically extended, whenever used, until <annotation font="dmsans_medium"><annotation replacement="session_expiry_date">sessionExpiryDate</annotation></annotation>. If needed, you can manually extend inactive sessions validity from the dedicated Settings page. Sessions will be automatically deleted, once expired.\n\nPlease select your browser to return to  <annotation replacement="peer_name">peerMetaNamePlaceholder</annotation> and complete your operation:</string>
+    <string name="the_transaction_has_been_signed_and_sent">The transaction has been signed and sent to <annotation replacement="peer_name">peer_name_placeholder</annotation>. Please visit <annotation replacement="peer_name">peer_name_placeholder</annotation> for the remaining process.\n\nThis WalletConnect session is approaching its maximal validity, which cannot be extended beyond: <annotation replacement="max_extendable_session_expiry_date">maxExtendableSessionExpiryDatePlaceholder</annotation>\n\nAfter this date, the session will be automatically disconnected and you\'ll have to reconnect again.</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="connected_on_date">Connected on <annotation replacement="connection_date">connectionDatePlaceholder</annotation></string>
+    <string name="expires_on_date">Expires on <annotation replacement="expiration_date">expirationDatePlaceholder</annotation></string>
+
+    <!-- region WalletConnect Error Messages -->
+    <string name="transaction_request_rejected_user">Transaction request rejected: the user has rejected the transaction request.</string>
+    <string name="missing_transactions_this_transaction">Missing transaction(s): this transaction request is missing one or more transactions. For your own safety, Pera Wallet won\'t allow you to sign requests that do not display the complete transaction group. To rectify this issue, please contact the dApp.</string>
+    <string name="transaction_request_pending_user">Transaction request pending: the user currently has another transaction request in progress.</string>
+    <string name="network_mismatch_error_this">Network mismatch error: this dApp and Pera Wallet are currently operating on different networks. Please make sure that they both run on either Mainnet or Testnet.</string>
+    <string name="missing_private_keys_pera">Missing private key(s): Pera Wallet is missing one or more private keys, needed to sign the transaction request.</string>
+    <string name="unsupported_transaction_type_this">Unsupported transaction type: this transaction request contains one or more unsupported transaction types.</string>
+    <string name="multisig_required_this_transaction">Multi-sig required: this transaction request requires a multisig type signature, currently unsupported by Pera Wallet.</string>
+    <string name="transaction_limit_this_transaction">Transaction limit: this transaction request contains %1$d transactions, exceeding Pera Wallet transactions limit.</string>
+    <string name="invalid_request_format_pera">Invalid request format: Pera Wallet is unable to parse the transaction request.</string>
+    <string name="invalid_public_key_transaction">Invalid public key(s): the transaction request contains one or more invalid account addresses.</string>
+    <string name="invalid_asset_id_transaction">Invalid asset ID: the transaction request contains one or more invalid asset ID.</string>
+    <string name="invalid_input_pera_wallet">Invalid input: Pera Wallet is unable to sign the transaction request.</string>
+    <string name="transaction_group_is_missing">Transaction group is missing signer account(s): Pera Wallet is missing the necessary accounts to sign one or more transaction groups in the transaction request.</string>
+    <string name="missing_signer_account_pera">Missing signer account(s): Pera Wallet is missing one or more accounts needed to sign the transaction request.</string>
+    <string name="unauthorized_wc_method_connected">Unauthorized WC_Method: the connected session does not have permission to sign transaction requests with Method type: %1$s.</string>
+    <string name="unauthorized_wc_event_connected">Unauthorized WC_Event: the connected session does not have permission to sign transaction requests with Event type: %1$s.</string>
+    <string name="unauthorized_wc_chain_connected">Unauthorized WC_Chain: the connected session does not have permission to sign transaction requests in: %1$s.</string>
+    <string name="user_rejected_chain_this">User_Rejected_Chain: this dApp is trying to connect to your account on %1$s, but Pera Wallet is set on %2$s.</string>
+    <string name="unsupported_blockchain_pera_wallet">Unsupported Blockchain: Pera Wallet currently supports only the Algorand blockchain.</string>
+    <string name="unsupported_wc_method_pera">Unsupported WC_Method: Pera Wallet currently does not support one or more of the WalletConnect Methods requested by this dApp.</string>
+    <string name="unsupported_wc_events_pera">Unsupported WC_Events: Pera Wallet currently does not support one or more of the WalletConnect Events requested by this dApp.</string>
+    <string name="pera_wallet_could_not_locate">Pera Wallet couldn\'t locate the WalletConnect session used by this dApp. Please disconnect and try again.</string>
+    <string name="connection_failed_upper_case">Connection Failed</string>
+    <string name="confirmation_failed">Confirmation Failed</string>
+    <string name="wc_session_not_found">WC session not found</string>
+    <!-- endregion -->
 
     <string name="select_your_backup_file">Select your backup file</string>
     <string name="uploading_three_dots">Uploading…</string>
@@ -1188,4 +1261,90 @@
     <string name="instant_settlement_and_lower">Instant settlement and lower fees for Algo using Instant ACH transfers. Sardine also supports local bank and card payments across 180+ countries, Apple Pay and GPay.</string>
     <string name="you_can_not_purchase_sardine">You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Sardine.</string>
     <string name="choose_an_account_to_proceed">Choose an account to proceed with</string>
+    <string name="use_another_account_s_private">Use another account\'s private key to sign transactions for this account. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="remove_a_ledger_device_from">Remove a Ledger device from your account. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="rekey_your_account_to">Rekey your account to a different standard account. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="future_transactions_can_only_be">Future transactions can only be signed by the new delegated account.</string>
+    <string name="your_ledger_device_will_no_longer">Your ledger device will no longer be required to sign transactions. This removes a layer of security.</string>
+    <string name="future_transactions_will_be_signed">Future transactions will be signed by the new standard account.</string>
+    <string name="this_account_will_continue">This account will continue to be unable to sign transactions for itself.</string>
+    <string name="summary_of_rekey">Summary of rekey</string>
+    <string name="confirm">Confirm</string>
+    <string name="currently_rekeyed">Currently Rekeyed</string>
+    <string name="you_are_about_to_rekey">You are about to rekey this account. It will no longer be able to sign transactions for itself. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="you_are_about_to_rekey_this">You are about to rekey this account to another authorized address. The new address will be able to sign transactions on its behalf. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="process_will_continue_in_the_background">Process will continue in the background.</string>
+    <string name="your_previous_rekey_will">Your previous rekey will be replaced</string>
+    <string name="account_address_will_no_longer_be_auth"><annotation replacement="account_address">accountNamePlaceholder</annotation> will no longer be authorized to sign transactions for <annotation replacement="auth_account_address">authAccountNamePlaceholder</annotation>. Ensure you understand the implications of this before continuing. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="change_the_ledger_account_signing">Change the ledger account signing for your wallet. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="back_your_standard_account_with">Back your standard account with a Ledger device for extra security. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="rekey_your_account_to_a_different_account">Rekey your account to a different account that is backed by a Ledger device. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="future_transactions_will_be_signed_by">Future transactions will be signed by the new account.</string>
+    <string name="ff_you_already_have_a_ledger">If you already have a Ledger device keyed to this account, your old Ledger will no longer be connected to it.</string>
+    <string name="please_make_sure_that_your_ledger">Please make sure that your Ledger device is unlocked with Bluetooth enabled. On your Ledger, launch the Algorand app to see it in the list:</string>
+    <string name="account_type">Account type</string>
+
+    <string name="standard">Standard</string>
+    <string name="ledger">Ledger</string>
+    <string name="watch">Watch</string>
+    <string name="rekeyed">Rekeyed</string>
+    <string name="no_auth">No Auth</string>
+    <string name="unknown">Unknown*</string>
+
+    <string name="account_type_account">%1$s account</string>
+
+    <string name="rekeyed_to">Rekeyed to</string>
+    <string name="your_account_is_a_standard">Your account is a standard Algorand account. It has not been rekeyed and it is not associated with a Ledger device. It was added to your wallet with its keys. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="your_account_is_a_Ledger">Your account is a Ledger account. It was added to your wallet directly from the hardware device. All transactions for this account must be confirmed on your Ledger. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="this_account_was_not">This account was not added to your wallet with its keys. It is read-only and cannot interact with other accounts or authorize transactions.</string>
+    <string name="your_account_doesn_t">Your account doesn’t have any Auth information. You can\'t send assets or sign transactions. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="your_account_is_rekeyed">Your account is rekeyed to an Algorand account that is not in your wallet. You can\'t send assets or sign transactions. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="your_account_is_rekeyed_to">Your account is rekeyed to another standard Algorand account. Transactions for this account will be authorized by the other account. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="your_account_is_rekeyed_to_an">Your account is rekeyed to an Algorand account that is not in your wallet. You can\'t send assets or sign transactions. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="your_account_is_rekeyed_to_another">Your account is rekeyed to another standard Algorand account. Transactions for this account will be authorized by the other account. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="no_record_of_original_account">* No record of original account type found\n\nYour account is rekeyed to another standard Algorand account. Transactions for this account will be authorized by the other account. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="your_account_is_rekeyed_to_an_account_on">Your account is rekeyed to an account on a Ledger hardware device. Transactions for this account must be authorized on the Ledger device. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="no_record_of_original_account_type">* No record of original account type found\n\nYour account is rekeyed to an account on a Ledger hardware device. Transactions for this account must be authorized on the Ledger device. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="you_are_about_to_undo_this">You are about to undo this account\'s rekey operation. You will rekey the account back to itself using its authorized address. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+
+    <string name="undo_rekey">Undo rekey</string>
+    <string name="show_address">Show Address</string>
+    <string name="rekeyed_to_account_name">Rekeyed to %1$s</string>
+    <string name="rekey_successfully_undone">Rekey successfully undone</string>
+    <string name="the_account_has_been_reverted">The account %1$s has been reverted to its original state</string>
+    <string name="your_previous_rekey_will_be_undone">Your previous rekey will be undone</string>
+    <string name="auth_account_will_no_longer_be"><annotation replacement="auth_account_address">authAccountAddressPlaceholder</annotation> will no longer be authorized to sign transactions for <annotation replacement="account_address">accountAddressPlaceholder</annotation>. Ensure you understand the implications of this before continuing. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
+    <string name="this_action_is_not_available">This action is not available for this account type</string>
+    <string name="fetching_rekeyed_accounts">Fetching rekeyed accounts…</string>
+    <string name="add_rekeyed_accounts">Add rekeyed accounts</string>
+    <string name="skip_for_now">Skip for now</string>
+    <string name="account_details">Account details</string>
+
+    <plurals name="rekeyed_accounts_found">
+        <item quantity="one">Rekeyed account found</item>
+        <item quantity="other">%1$d rekeyed accounts found</item>
+    </plurals>
+
+    <plurals name="you_have_rekeyed_accounts">
+        <item quantity="one">A rekeyed account is attached to this account address. This means you can sign the transactions of the rekeyed account with the account you just added.</item>
+        <item quantity="other">You have %1$d rekeyed accounts. This means that you can sign the transactions of the rekeyed accounts with the account you just added.\n\nSelect the rekeyed accounts you want to add to your wallet:</item>
+    </plurals>
+
+    <string name="the_account_name_was_successfully_rekeyed_formatted">The account %1$s was successfully rekeyed.</string>
+    <string name="start_process">Start process</string>
+    <string name="choose_the_account">Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account.</string>
+    <plurals name="you_can_t_remove_this_account">
+        <item quantity="one">You can\'t remove this account before removing its %1$d rekeyed account</item>
+        <item quantity="other">You can\'t remove this account before removing its %1$d rekeyed accounts</item>
+    </plurals>
+    <string name="choose_accounts_to_add">Choose accounts to add</string>
+    <string name="have_you_backed_up_your">Have you backed up your account?</string>
+    <string name="if_you_don_t_have">If you don\'t have a copy of this account\'s passphrase or the account is not backed up with a Ledger device or managed by an Auth Account, access to this account and its funds will be lost forever.</string>
+    <string name="yes_continue">Yes, continue</string>
+    <string name="no_keep_account">No, keep account</string>
+    <string name="please_review_and_sign_formatted">Please review and sign the transaction on your Ledger device %1$s.</string>
+    <string name="verification_will_continue_on_ledger">Verification will continue on Ledger. To cancel verification, cancel from Ledger</string>
+
+    <string name="percentage_must_be_between">Percentage must be between %1$.2f%% and %2$.0f%%</string>
+    <string name="failed_to_fetch_rekeyed">Failed to fetch rekeyed accounts</string>
 </resources>

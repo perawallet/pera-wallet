@@ -18,15 +18,9 @@ import javax.inject.Inject
 
 class WalletConnectSessionUpdateMapper @Inject constructor() {
 
-    fun mapToSessionUpdateSuccess(
-        sessionIdentifier: WalletConnect.SessionIdentifier,
-        chainIdentifier: WalletConnect.ChainIdentifier,
-        accountList: List<String>
-    ): WalletConnect.Session.Update {
+    fun mapToSessionUpdateSuccess(sessionIdentifier: WalletConnect.SessionIdentifier): WalletConnect.Session.Update {
         return WalletConnect.Session.Update.Success(
             sessionIdentifier = sessionIdentifier,
-            chainIdentifier = chainIdentifier,
-            accountList = accountList,
             versionIdentifier = sessionIdentifier.versionIdentifier
         )
     }

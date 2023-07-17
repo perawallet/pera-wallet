@@ -23,9 +23,7 @@ import com.algorand.android.databinding.FragmentSenderAccountSelectionBinding
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.SenderAccountSelectionPreview
-import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.accountselection.AccountSelectionAdapter
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -94,32 +92,11 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
                     .actionSenderAccountSelectionFragmentToReceiverAccountSelectionFragment(assetTransaction)
             }
             else -> {
-                val selectedAccountCacheData = senderAccountSelectionViewModel
-                    .getAccountCachedData(accountInformation.address) ?: return
-                val selectedAsset = senderAccountSelectionViewModel
-                    .getAssetInformation(accountInformation.address) ?: return
-                val targetUser = TargetUser(
-                    assetTransaction.receiverUser,
-                    assetTransaction.receiverUser.publicKey,
-                    selectedAccountCacheData
-                )
-                val note = assetTransaction.xnote ?: assetTransaction.note
+                val transactionData = senderAccountSelectionViewModel.createSendTransactionData(
+                    amount = assetTransaction.amount
+                ) ?: return
                 SenderAccountSelectionFragmentDirections
-                    .actionSenderAccountSelectionFragmentToAssetTransferPreviewFragment(
-                        TransactionData.Send(
-                            senderAccountAddress = selectedAccountCacheData.account.address,
-                            senderAccountDetail = selectedAccountCacheData.account.detail,
-                            senderAccountType = selectedAccountCacheData.account.type,
-                            senderAuthAddress = selectedAccountCacheData.authAddress,
-                            senderAccountName = selectedAccountCacheData.account.name,
-                            isSenderRekeyedToAnotherAccount = selectedAccountCacheData.isRekeyedToAnotherAccount(),
-                            minimumBalance = selectedAccountCacheData.getMinBalance(),
-                            amount = assetTransaction.amount,
-                            assetInformation = selectedAsset,
-                            note = note,
-                            targetUser = targetUser
-                        )
-                    )
+                    .actionSenderAccountSelectionFragmentToAssetTransferPreviewFragment(transactionData)
             }
         }.apply { nav(this) }
     }

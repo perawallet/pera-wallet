@@ -21,10 +21,12 @@ import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.SenderAccountSelectionPreview
+import com.algorand.android.models.TransactionData
 import com.algorand.android.usecase.SenderAccountSelectionPreviewUseCase
 import com.algorand.android.usecase.SenderAccountSelectionUseCase
 import com.algorand.android.utils.getOrElse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.math.BigInteger
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -90,12 +92,25 @@ class SenderAccountSelectionViewModel @Inject constructor(
         return senderAccountSelectionUseCase.shouldShowTransactionTips()
     }
 
-    fun getAssetInformation(senderAddress: String): AssetInformation? {
-        return senderAccountSelectionUseCase.getAssetInformation(senderAddress, assetTransaction.assetId)
+    fun getAssetInformation(): AssetInformation? {
+        return senderAccountSelectionUseCase.getAssetInformation(
+            publicKey = assetTransaction.senderAddress,
+            assetId = assetTransaction.assetId
+        )
     }
 
     fun getAccountCachedData(senderAddress: String): AccountCacheData? {
         return senderAccountSelectionUseCase.getAccountInformation(senderAddress)
+    }
+
+    fun createSendTransactionData(amount: BigInteger): TransactionData.Send? {
+        return senderAccountSelectionPreviewUseCase.createSendTransactionData(
+            accountAddress = assetTransaction.senderAddress,
+            note = assetTransaction.xnote ?: assetTransaction.note,
+            selectedAsset = getAssetInformation(),
+            amount = amount,
+            assetTransaction = assetTransaction
+        )
     }
 
     companion object {

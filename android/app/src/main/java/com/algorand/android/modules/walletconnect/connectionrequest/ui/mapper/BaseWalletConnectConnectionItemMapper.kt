@@ -12,9 +12,11 @@
 
 package com.algorand.android.modules.walletconnect.connectionrequest.ui.mapper
 
-import com.algorand.android.models.AccountIconResource
+import androidx.annotation.PluralsRes
 import com.algorand.android.models.ui.AccountAssetItemButtonState
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.BaseWalletConnectConnectionItem
+import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WalletConnectConnectionNetworkItem
 import com.algorand.android.utils.AccountDisplayName
 import javax.inject.Inject
 
@@ -32,23 +34,49 @@ class BaseWalletConnectConnectionItemMapper @Inject constructor() {
         )
     }
 
-    fun mapToAccountsTitleItem(accountCount: Int): BaseWalletConnectConnectionItem.AccountsTitleItem {
-        return BaseWalletConnectConnectionItem.AccountsTitleItem(accountCount = accountCount)
+    fun mapToTitleItem(
+        @PluralsRes titleTextResId: Int,
+        memberCount: Int
+    ): BaseWalletConnectConnectionItem.TitleItem {
+        return BaseWalletConnectConnectionItem.TitleItem(
+            titleTextResId = titleTextResId,
+            memberCount = memberCount
+        )
     }
 
     fun mapToAccountItem(
         accountAddress: String,
-        accountIconResource: AccountIconResource?,
+        accountIconDrawablePreview: AccountIconDrawablePreview,
         accountDisplayName: AccountDisplayName?,
         buttonState: AccountAssetItemButtonState,
         isChecked: Boolean
     ): BaseWalletConnectConnectionItem.AccountItem {
         return BaseWalletConnectConnectionItem.AccountItem(
             accountAddress = accountAddress,
-            accountIconResource = accountIconResource,
+            accountIconDrawablePreview = accountIconDrawablePreview,
             accountDisplayName = accountDisplayName,
             buttonState = buttonState,
             isChecked = isChecked
+        )
+    }
+
+    fun mapToWalletConnectConnectionNetworkItem(
+        networkCount: Int,
+        walletConnectConnectionNetworkList: List<WalletConnectConnectionNetworkItem>,
+    ): BaseWalletConnectConnectionItem.NetworkItem {
+        return BaseWalletConnectConnectionItem.NetworkItem(
+            networkCount = networkCount,
+            networkList = walletConnectConnectionNetworkList
+        )
+    }
+
+    fun mapToEventItem(
+        eventCount: Int,
+        eventList: List<String>
+    ): BaseWalletConnectConnectionItem.EventItem {
+        return BaseWalletConnectConnectionItem.EventItem(
+            eventCount = eventCount,
+            eventList = eventList
         )
     }
 }

@@ -77,6 +77,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/showQrButton"
+            style="@style/Button.Text.Options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/show_address"
+            app:icon="@drawable/ic_qr" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/authAddressButton"
             style="@style/Button.Text.Options"
             android:layout_width="match_parent"
@@ -87,14 +95,6 @@
             tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/showQrButton"
-            style="@style/Button.Text.Options"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/show_qr_code"
-            app:icon="@drawable/ic_qr" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/viewPassphraseButton"
             style="@style/Button.Text.Options"
             android:layout_width="match_parent"
@@ -103,6 +103,61 @@
             android:visibility="gone"
             app:icon="@drawable/ic_key"
             tools:visibility="visible" />
+
+        <View
+            android:id="@+id/rekeyDivider"
+            style="@style/Divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="@dimen/spacing_large" />
+
+        <!-- TODO Create UI component for these kind of list items -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/undoRekeyConstraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:paddingVertical="@dimen/spacing_small">
+
+            <ImageView
+                android:id="@+id/undoRekeyIconImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_rekey" />
+
+            <TextView
+                android:id="@+id/undoRekeyLabelTextView"
+                style="@style/TextAppearance.Body.Sans.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:text="@string/undo_rekey"
+                app:layout_constraintBottom_toTopOf="@id/rekeyedAccountTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/undoRekeyIconImageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/rekeyedAccountTextView"
+                style="@style/TextAppearance.Caption.Mono.Description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_xxxsmall"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/undoRekeyIconImageView"
+                app:layout_constraintTop_toBottomOf="@id/undoRekeyLabelTextView"
+                tools:text="@tools:sample/lorem/random[10]" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/rekeyToLedgerAccountButton"

@@ -13,10 +13,16 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.mapper.SenderAccountSelectionPreviewMapper
+import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.Result
 import com.algorand.android.models.SenderAccountSelectionPreview
+import com.algorand.android.models.TargetUser
+import com.algorand.android.models.TransactionData
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.utils.Event
+import java.math.BigInteger
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -25,8 +31,38 @@ import kotlinx.coroutines.flow.flow
 class SenderAccountSelectionPreviewUseCase @Inject constructor(
     private val accountSelectionListUseCase: AccountSelectionListUseCase,
     private val senderAccountSelectionPreviewMapper: SenderAccountSelectionPreviewMapper,
-    private val senderAccountSelectionUseCase: SenderAccountSelectionUseCase
+    private val senderAccountSelectionUseCase: SenderAccountSelectionUseCase,
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
+
+    fun createSendTransactionData(
+        accountAddress: String,
+        note: String?,
+        selectedAsset: AssetInformation?,
+        amount: BigInteger,
+        assetTransaction: AssetTransaction
+    ): TransactionData.Send? {
+        val accountDetail = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data ?: return null
+        return TransactionData.Send(
+            senderAccountAddress = accountDetail.account.address,
+            senderAccountDetail = accountDetail.account.detail,
+            senderAccountType = accountDetail.account.type,
+            senderAuthAddress = accountDetail.accountInformation.rekeyAdminAddress,
+            senderAccountName = accountDetail.account.name,
+            isSenderRekeyedToAnotherAccount = accountDetail.accountInformation.isRekeyed(),
+            minimumBalance = accountDetail.accountInformation.getMinAlgoBalance().toLong(),
+            amount = amount,
+            assetInformation = selectedAsset ?: return null,
+            note = note,
+            targetUser = TargetUser(
+                contact = assetTransaction.receiverUser,
+                publicKey = assetTransaction.receiverUser?.publicKey.orEmpty(),
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountAddress)
+            )
+        )
+    }
+
     fun getInitialPreview(): SenderAccountSelectionPreview {
         return senderAccountSelectionPreviewMapper.mapToInitialPreview()
     }
@@ -63,7 +99,7 @@ class SenderAccountSelectionPreviewUseCase @Inject constructor(
         val loadingFinishedPreview = preview.copy(isLoading = false)
         when (
             val result =
-            senderAccountSelectionUseCase.fetchAccountInformation(fromAccountAddress, viewModelScope)
+                senderAccountSelectionUseCase.fetchAccountInformation(fromAccountAddress, viewModelScope)
         ) {
             is Result.Error -> emit(loadingFinishedPreview.copy(fromAccountInformationErrorEvent = Event(result)))
             is Result.Success ->

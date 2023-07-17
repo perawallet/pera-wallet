@@ -12,6 +12,7 @@
 
 package com.algorand.android.modules.swap.assetswap.ui.usecase
 
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDetailSummaryUseCase
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
 import com.algorand.android.modules.swap.assetswap.domain.usecase.GetSwapQuoteUseCase
@@ -33,7 +34,8 @@ class AssetSwapCreateQuotePreviewUseCase @Inject constructor(
     private val assetSwapPreviewAssetDetailUseCase: AssetSwapPreviewAssetDetailUseCase,
     private val selectedAssetAmountDetailMapper: SelectedAssetAmountDetailMapper,
     private val accountDetailSummaryUseCase: AccountDetailSummaryUseCase,
-    private val assetSwapSwitchButtonStatusUseCase: AssetSwapSwitchButtonStatusUseCase
+    private val assetSwapSwitchButtonStatusUseCase: AssetSwapSwitchButtonStatusUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     @Suppress("LongParameterList", "LongMethod")
@@ -63,7 +65,7 @@ class AssetSwapCreateQuotePreviewUseCase @Inject constructor(
                     val accountDetailSummary = accountDetailSummaryUseCase.getAccountDetailSummary(accountAddress)
                     assetSwapPreview = assetSwapPreviewMapper.mapToAssetSwapPreview(
                         accountDisplayName = accountDetailSummary.accountDisplayName,
-                        accountIconResource = accountDetailSummary.accountIconResource,
+                        accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountAddress),
                         fromSelectedAssetDetail = assetSwapPreviewAssetDetailUseCase
                             .createSelectedAssetDetailFromSwapQuoteAssetDetail(
                                 accountAddress = accountAddress,

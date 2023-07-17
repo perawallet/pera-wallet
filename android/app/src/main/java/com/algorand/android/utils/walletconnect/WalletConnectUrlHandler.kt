@@ -15,14 +15,18 @@ package com.algorand.android.utils.walletconnect
 import com.algorand.android.R
 import com.algorand.android.models.Account.Type.WATCH
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
+import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
 import com.algorand.android.utils.AccountCacheManager
 import javax.inject.Inject
 
-class WalletConnectUrlHandler @Inject constructor(private val accountCacheManager: AccountCacheManager) {
+class WalletConnectUrlHandler @Inject constructor(
+    private val walletConnectManager: WalletConnectManager,
+    private val accountCacheManager: AccountCacheManager
+) {
 
     fun checkWalletConnectUrl(url: String, listener: Listener) {
         if (hasValidAccountForWalletConnect()) {
-            if (!isValidWalletConnectUrl(url)) {
+            if (!walletConnectManager.isValidWalletConnectUrl(url)) {
                 listener.onInvalidWalletConnectUrl(R.string.could_not_create_wallet_connect)
                 return
             }

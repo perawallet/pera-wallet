@@ -17,6 +17,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.widget.ProgressBar
 import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -24,6 +25,7 @@ import androidx.core.view.updateLayoutParams
 import com.algorand.android.R
 import com.algorand.android.models.ui.AccountAssetItemButtonState
 import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.extensions.show
 import com.google.android.material.button.MaterialButton
 
@@ -35,12 +37,31 @@ class StatefulButtonAccountAssetItemView(
     private val actionButton: MaterialButton
         get() = binding.actionButton
 
+    private val actionTextButton: MaterialButton
+        get() = binding.actionTextButton
+
+    private val progressBar: ProgressBar
+        get() = binding.progressBar
+
     fun setButtonState(state: AccountAssetItemButtonState) {
-        with(binding) {
-            if (state == AccountAssetItemButtonState.PROGRESS) {
+        when (state) {
+            AccountAssetItemButtonState.PROGRESS -> {
                 actionButton.hide()
                 progressBar.show()
-            } else {
+            }
+            AccountAssetItemButtonState.UNDO_REKEY -> {
+                actionButton.hide()
+                actionButton.hide()
+                actionTextButton.setTextAndVisibility(state.actionButtonTextResId)
+            }
+            AccountAssetItemButtonState.ADDITION,
+            AccountAssetItemButtonState.REMOVAL,
+            AccountAssetItemButtonState.CONFIRMATION,
+            AccountAssetItemButtonState.DRAGGABLE,
+            AccountAssetItemButtonState.CHECKED,
+            AccountAssetItemButtonState.UNCHECKED,
+            AccountAssetItemButtonState.COPY,
+            AccountAssetItemButtonState.WARNING -> {
                 progressBar.hide()
                 setButtonBackgroundColor(state.backgroundColorResId)
                 setButtonStroke(state.strokeColorResId)
@@ -50,6 +71,7 @@ class StatefulButtonAccountAssetItemView(
                 actionButton.show()
             }
         }
+        updateStatefulButtonsFlowPaddingIfNeeded()
     }
 
     fun setActionButtonClickListener(onClick: (() -> Unit)?) {
@@ -68,6 +90,10 @@ class StatefulButtonAccountAssetItemView(
             }
             false
         }
+    }
+
+    fun setActionTextButtonClickListener(onClick: (() -> Unit)?) {
+        actionTextButton.setOnClickListener { onClick?.invoke() }
     }
 
     private fun setButtonEnable(isEnable: Boolean) {

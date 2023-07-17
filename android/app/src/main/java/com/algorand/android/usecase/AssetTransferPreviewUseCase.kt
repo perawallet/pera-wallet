@@ -17,6 +17,7 @@ import com.algorand.android.mapper.AssetTransferPreviewMapper
 import com.algorand.android.models.AssetTransferPreview
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.utils.DataResource
 import javax.inject.Inject
@@ -25,7 +26,8 @@ import kotlinx.coroutines.flow.Flow
 class AssetTransferPreviewUseCase @Inject constructor(
     private val assetTransferPreviewMapper: AssetTransferPreviewMapper,
     private val parityUseCase: ParityUseCase,
-    private val sendSignedTransactionUseCase: SendSignedTransactionUseCase
+    private val sendSignedTransactionUseCase: SendSignedTransactionUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     fun getAssetTransferPreview(
@@ -37,7 +39,8 @@ class AssetTransferPreviewUseCase @Inject constructor(
             exchangePrice = exchangePrice,
             currencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName(),
             note = transactionData.xnote ?: transactionData.note,
-            isNoteEditable = transactionData.xnote == null
+            isNoteEditable = transactionData.xnote == null,
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(transactionData.senderAccountName)
         )
     }
 

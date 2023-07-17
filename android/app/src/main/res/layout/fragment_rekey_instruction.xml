@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/bottom_padding_for_screen_with_floating_button"
-            tools:context=".ui.rekey.RekeyInstructionFragment">
+            tools:context=".modules.rekey.rekeytoledgeraccount.instruction.ui.RekeyToLedgerAccountIntroductionFragment">
 
             <TextView
                 android:id="@+id/titleTextView"

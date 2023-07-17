@@ -15,8 +15,8 @@ package com.algorand.android.modules.asb.importbackup.accountrestoreresult.ui.us
 import com.algorand.android.R
 import com.algorand.android.core.AccountManager
 import com.algorand.android.mapper.AccountDisplayNameMapper
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.PluralAnnotatedString
+import com.algorand.android.modules.accounticon.ui.mapper.AccountIconDrawablePreviewMapper
 import com.algorand.android.modules.asb.importbackup.accountrestoreresult.ui.mapper.AsbAccountRestoreResultPreviewMapper
 import com.algorand.android.modules.asb.importbackup.accountrestoreresult.ui.model.AsbAccountRestoreResultPreview
 import com.algorand.android.modules.asb.importbackup.accountselection.ui.model.AsbAccountImportResult
@@ -30,6 +30,7 @@ class AsbAccountRestoreResultPreviewUseCase @Inject constructor(
     private val asbAccountRestoreResultPreviewMapper: AsbAccountRestoreResultPreviewMapper,
     private val accountManager: AccountManager,
     private val accountDisplayNameMapper: AccountDisplayNameMapper,
+    private val accountIconDrawablePreviewMapper: AccountIconDrawablePreviewMapper,
     resultListItemMapper: ResultListItemMapper
 ) : BaseResultPreviewUseCase(resultListItemMapper) {
 
@@ -64,11 +65,16 @@ class AsbAccountRestoreResultPreviewUseCase @Inject constructor(
                 nfDomainName = null,
                 type = account?.type
             )
+            // Since these account are not in our local, we have to create them manually BUT
+            // do not forget that now are supporting only standard accounts in ASB
+            val accountIconDrawablePreview = accountIconDrawablePreviewMapper.mapToAccountIconDrawablePreview(
+                iconResId = R.drawable.ic_wallet,
+                iconTintResId = R.color.wallet_4_icon,
+                backgroundColorResId = R.color.wallet_4
+            )
             createAccountItem(
                 accountDisplayName = accountDisplayName,
-                accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(
-                    accountType = account?.type
-                )
+                accountIconDrawablePreview = accountIconDrawablePreview
             )
         }
         val resultItemList = mutableListOf<ResultListItem>().apply {

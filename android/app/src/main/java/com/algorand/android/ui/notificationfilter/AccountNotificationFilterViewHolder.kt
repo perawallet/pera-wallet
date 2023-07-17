@@ -17,7 +17,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountNotificationFilterBinding
-import com.algorand.android.utils.extensions.setAccountIconDrawable
+import com.algorand.android.utils.AccountIconDrawable
 
 class AccountNotificationFilterViewHolder(
     private val binding: ItemAccountNotificationFilterBinding,
@@ -31,11 +31,13 @@ class AccountNotificationFilterViewHolder(
                     .accountDisplayName
                     ?.getAccountPrimaryDisplayName()
 
-                if (accountListItem.itemConfiguration.accountIconResource != null) {
-                    typeImageView.setAccountIconDrawable(
-                        accountIconResource = accountListItem.itemConfiguration.accountIconResource,
-                        iconSize = R.dimen.account_icon_size_large
+                if (accountListItem.itemConfiguration.accountIconDrawablePreview != null) {
+                    val accountIconDrawable = AccountIconDrawable.create(
+                        context = binding.root.context,
+                        accountIconDrawablePreview = accountListItem.itemConfiguration.accountIconDrawablePreview,
+                        sizeResId = R.dimen.spacing_xxxxlarge
                     )
+                    typeImageView.setImageDrawable(accountIconDrawable)
                 }
 
                 filterSwitch.setOnCheckedChangeListener(null)

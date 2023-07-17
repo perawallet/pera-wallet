@@ -22,12 +22,13 @@ import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
+import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetBaseOwnedAssetDataUseCase
 import com.algorand.android.utils.extensions.mapNotBlank
 import com.algorand.android.utils.extensions.mapNotNull
 import com.algorand.android.utils.multiplyOrZero
-import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import java.math.BigInteger
 import javax.inject.Inject
 
@@ -35,9 +36,10 @@ import javax.inject.Inject
 @SuppressWarnings("ReturnCount")
 class PaymentTransactionMapper @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val errorProvider: WalletConnectTransactionErrorProvider,
+    private val errorProvider: WalletConnectErrorProvider,
     private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase,
-    private val walletConnectAssetInformationMapper: WalletConnectAssetInformationMapper
+    private val walletConnectAssetInformationMapper: WalletConnectAssetInformationMapper,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) : BaseWalletConnectTransactionMapper() {
 
     override fun createTransaction(
@@ -92,7 +94,12 @@ class PaymentTransactionMapper @Inject constructor(
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 signer = signer,
                 authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(senderAccountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = senderAccountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = senderAccountData?.account?.address.orEmpty()
+                    )
+                ),
                 assetInformation = walletConnectAssetInformation,
                 groupId = groupId,
                 warningCount = 2.takeIf { isLocalAccountSigner }
@@ -130,7 +137,12 @@ class PaymentTransactionMapper @Inject constructor(
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 signer = signer,
                 authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(senderAccountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = senderAccountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = senderAccountData?.account?.address.orEmpty()
+                    )
+                ),
                 assetInformation = walletConnectAssetInformation,
                 groupId = groupId,
                 warningCount = 1.takeIf { isLocalAccountSigner }
@@ -168,7 +180,12 @@ class PaymentTransactionMapper @Inject constructor(
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 signer = signer,
                 authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(senderAccountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = senderAccountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = senderAccountData?.account?.address.orEmpty()
+                    )
+                ),
                 assetInformation = walletConnectAssetInformation,
                 groupId = groupId,
                 warningCount = 1.takeIf { isLocalAccountSigner }
@@ -205,8 +222,18 @@ class PaymentTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
                 authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(senderAccountData?.account),
-                toAccount = WalletConnectAccount.create(receiverAccountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = senderAccountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = senderAccountData?.account?.address.orEmpty()
+                    )
+                ),
+                toAccount = WalletConnectAccount.create(
+                    account = receiverAccountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = receiverAccountData?.account?.address.orEmpty()
+                    )
+                ),
                 assetInformation = walletConnectAssetInformation,
                 groupId = groupId
             )

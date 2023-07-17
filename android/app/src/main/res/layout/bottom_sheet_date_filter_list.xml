@@ -22,7 +22,7 @@
         style="@style/BottomSheetModalityLine"
         android:layout_marginVertical="@dimen/spacing_small" />
 
-    <com.algorand.android.customviews.CustomToolbar
+    <com.algorand.android.customviews.toolbar.CustomToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_toolbar_height" />

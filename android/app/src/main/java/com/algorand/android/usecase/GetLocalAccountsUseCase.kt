@@ -14,12 +14,14 @@ package com.algorand.android.usecase
 
 import com.algorand.android.core.AccountManager
 import com.algorand.android.models.Account
+import com.algorand.android.modules.accountstatehelper.domain.usecase.AccountStateHelperUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class GetLocalAccountsUseCase @Inject constructor(
     private val accountManager: AccountManager,
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val accountStateHelperUseCase: AccountStateHelperUseCase
 ) {
     fun getLocalAccountsFromAccountManagerCache(): List<Account> {
         return accountManager.getAccounts()
@@ -31,7 +33,7 @@ class GetLocalAccountsUseCase @Inject constructor(
 
     fun getLocalAccountsThatCanSignTransaction(): List<Account> {
         return accountManager.accounts.value.filter {
-            accountDetailUseCase.canAccountSignTransaction(it.address)
+            accountStateHelperUseCase.hasAccountAuthority(it.address)
         }
     }
 }

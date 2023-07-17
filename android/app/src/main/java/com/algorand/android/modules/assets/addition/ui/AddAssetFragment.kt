@@ -21,7 +21,7 @@ import com.algorand.android.customviews.ScreenStateView
 import com.algorand.android.databinding.FragmentAddAssetBinding
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.IconButton
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.IconButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetFragment
 import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel
@@ -72,7 +72,10 @@ class AddAssetFragment : BaseAddAssetFragment(R.layout.fragment_add_asset) {
     override fun initUi() {
         setupToolbar()
         with(binding) {
-            searchBar.setOnTextChanged { addAssetViewModel.updateQuery(it) }
+            searchBar.setOnTextChanged {
+                addAssetViewModel.updateQuery(it)
+                addAssetViewModel.updateBaseAddAssetPreviewWithHandleQueryChangeForScrollEvent()
+            }
             screenStateView.setOnNeutralButtonClickListener { addAssetViewModel.refreshTransactionHistory() }
             assetsRecyclerView.adapter = assetSearchAdapter
             assetsRecyclerView.addCustomDivider(

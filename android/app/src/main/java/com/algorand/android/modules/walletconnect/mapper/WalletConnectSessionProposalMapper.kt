@@ -13,6 +13,7 @@
 package com.algorand.android.modules.walletconnect.mapper
 
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
+import com.algorand.android.modules.walletconnect.domain.model.WalletConnectBlockchain
 import javax.inject.Inject
 
 class WalletConnectSessionProposalMapper @Inject constructor() {
@@ -22,9 +23,7 @@ class WalletConnectSessionProposalMapper @Inject constructor() {
         relayProtocol: String?,
         relayData: String?,
         peerMeta: WalletConnect.PeerMeta,
-        namespaces: WalletConnect.Namespace.Proposal,
-        requiredNamespaces: Map<String, WalletConnect.Namespace.Proposal>,
-        chainIdentifier: WalletConnect.ChainIdentifier,
+        requiredNamespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Proposal>,
         fallbackBrowserGroupResponse: String?
     ): WalletConnect.Session.Proposal {
         return WalletConnect.Session.Proposal(
@@ -32,9 +31,7 @@ class WalletConnectSessionProposalMapper @Inject constructor() {
             relayProtocol = relayProtocol,
             relayData = relayData,
             peerMeta = peerMeta,
-            namespaces = namespaces,
             requiredNamespaces = requiredNamespaces,
-            chainIdentifier = chainIdentifier,
             versionIdentifier = proposalIdentifier.versionIdentifier,
             fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
         )

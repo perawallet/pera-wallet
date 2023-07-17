@@ -20,6 +20,7 @@ import com.algorand.android.customviews.TriStatesCheckBox.CheckBoxState.PARTIAL_
 import com.algorand.android.customviews.TriStatesCheckBox.CheckBoxState.UNCHECKED
 import com.algorand.android.customviews.accountasseticonnameitem.mapper.AccountAssetIconNameConfigurationMapper
 import com.algorand.android.models.AccountDetail
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.webexport.accountselection.ui.mapper.BaseAccountMultipleSelectionListItemMapper
 import com.algorand.android.modules.webexport.accountselection.ui.mapper.WebExportAccountSelectionPreviewMapper
 import com.algorand.android.modules.webexport.accountselection.ui.model.BaseAccountMultipleSelectionListItem
@@ -36,7 +37,8 @@ class WebExportAccountSelectionPreviewUseCase @Inject constructor(
     private val baseAccountMultipleSelectionListItemMapper: BaseAccountMultipleSelectionListItemMapper,
     private val accountAssetIconNameConfigurationMapper: AccountAssetIconNameConfigurationMapper,
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val getIsActiveNodeTestnetUseCase: GetIsActiveNodeTestnetUseCase
+    private val getIsActiveNodeTestnetUseCase: GetIsActiveNodeTestnetUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     fun getInitialPreview(): WebExportAccountSelectionPreview {
@@ -122,7 +124,11 @@ class WebExportAccountSelectionPreviewUseCase @Inject constructor(
         @DimenRes topMarginResId: Int
     ): AccountItem {
         return baseAccountMultipleSelectionListItemMapper.mapToAccountItem(
-            accountAssetIconNameConfiguration = accountAssetIconNameConfigurationMapper.mapTo(accountDetail),
+            accountAssetIconNameConfiguration = accountAssetIconNameConfigurationMapper.mapTo(
+                accountAddress = accountDetail.account.address,
+                accountName = accountDetail.account.name,
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountDetail.account.address)
+            ),
             topMarginResId = topMarginResId,
             isChecked = isChecked,
             accountAddress = accountDetail.account.address

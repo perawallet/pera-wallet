@@ -12,8 +12,8 @@
 
 package com.algorand.android.modules.swap.transactionsummary.ui.model
 
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.RecyclerListItem
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountDisplayName
 
 sealed class BaseSwapTransactionSummaryItem : RecyclerListItem {
@@ -44,7 +44,7 @@ sealed class BaseSwapTransactionSummaryItem : RecyclerListItem {
 
     data class SwapAccountItemTransaction(
         val accountDisplayName: AccountDisplayName,
-        val accountIconResource: AccountIconResource
+        val accountIconDrawablePreview: AccountIconDrawablePreview
     ) : BaseSwapTransactionSummaryItem() {
         override val itemType = ItemType.SWAP_ACCOUNT_ITEM
     }

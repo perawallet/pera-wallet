@@ -24,14 +24,13 @@ import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentTransferAssetPreviewBinding
-import com.algorand.android.models.Account
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransferPreview
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.ui.send.shared.AddNoteBottomSheet
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
@@ -166,7 +165,7 @@ class AssetTransferPreviewFragment : TransactionBaseFragment(R.layout.fragment_t
             setConfirmTransferButton()
             setCurrencyViews(assetInformation, exchangePrice, currencySymbol, amount)
             setAssetViews(assetInformation, amount)
-            setAccountViews(targetUser, senderAccountAddress, senderAccountName, senderAccountType)
+            setAccountViews(targetUser, senderAccountAddress, senderAccountName, accountIconDrawablePreview)
             setFee(fee)
             setTransactionNote(note, isNoteEditable)
         }
@@ -212,12 +211,12 @@ class AssetTransferPreviewFragment : TransactionBaseFragment(R.layout.fragment_t
         targetUser: TargetUser,
         senderAccountAddress: String,
         senderAccountName: String,
-        senderAccountType: Account.Type?
+        accountIconDrawablePreview: AccountIconDrawablePreview
     ) {
         with(binding) {
             accountUserView.setAccount(
                 name = senderAccountName,
-                accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(senderAccountType),
+                accountIconDrawablePreview = accountIconDrawablePreview,
                 publicKey = senderAccountAddress
             )
             toUserView.setOnAddButtonClickListener(::onAddButtonClicked)
@@ -226,7 +225,12 @@ class AssetTransferPreviewFragment : TransactionBaseFragment(R.layout.fragment_t
                     toUserView.setNftDomainAddress(targetUser.nftDomainAddress, targetUser.nftDomainServiceLogoUrl)
                 }
                 targetUser.contact != null -> toUserView.setContact(targetUser.contact)
-                targetUser.account != null -> toUserView.setAccount(targetUser.account)
+                targetUser.account != null -> {
+                    toUserView.setAccount(
+                        targetUser.account,
+                        targetUser.accountIconDrawablePreview
+                    )
+                }
                 else -> toUserView.setAddress(targetUser.publicKey, targetUser.publicKey)
             }
         }

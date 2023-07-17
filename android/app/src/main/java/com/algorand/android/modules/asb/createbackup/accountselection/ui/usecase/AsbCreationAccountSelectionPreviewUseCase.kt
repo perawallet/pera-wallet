@@ -17,6 +17,7 @@ import com.algorand.android.customviews.TriStatesCheckBox
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
 import com.algorand.android.models.ScreenState
 import com.algorand.android.models.ui.AccountAssetItemButtonState.CHECKED
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.asb.createbackup.accountselection.ui.mapper.AsbCreationAccountSelectionPreviewMapper
 import com.algorand.android.modules.asb.createbackup.accountselection.ui.model.AsbCreationAccountSelectionPreview
@@ -35,13 +36,15 @@ class AsbCreationAccountSelectionPreviewUseCase @Inject constructor(
     getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
     accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
     accountItemConfigurationMapper: AccountItemConfigurationMapper,
-    accountDisplayNameUseCase: AccountDisplayNameUseCase
+    accountDisplayNameUseCase: AccountDisplayNameUseCase,
+    createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) : BaseMultipleAccountSelectionPreviewUseCase(
     multipleAccountSelectionListItemMapper = multipleAccountSelectionListItemMapper,
     getSortedAccountsByPreferenceUseCase = getSortedAccountsByPreferenceUseCase,
     accountSortPreferenceUseCase = accountSortPreferenceUseCase,
     accountItemConfigurationMapper = accountItemConfigurationMapper,
-    accountDisplayNameUseCase = accountDisplayNameUseCase
+    accountDisplayNameUseCase = accountDisplayNameUseCase,
+    createAccountIconDrawableUseCase = createAccountIconDrawableUseCase
 ) {
 
     fun getInitialPreview(): AsbCreationAccountSelectionPreview {

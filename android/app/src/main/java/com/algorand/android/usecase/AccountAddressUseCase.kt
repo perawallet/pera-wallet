@@ -15,16 +15,27 @@ package com.algorand.android.usecase
 import com.algorand.android.core.AccountManager
 import com.algorand.android.mapper.AccountAddressMapper
 import com.algorand.android.models.BaseAccountAddress
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import javax.inject.Inject
 
 class AccountAddressUseCase @Inject constructor(
     private val accountManager: AccountManager,
-    private val accountAddressMapper: AccountAddressMapper
+    private val accountAddressMapper: AccountAddressMapper,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) {
 
     fun createAccountAddress(publicKey: String): BaseAccountAddress.AccountAddress {
-        return accountManager.getAccount(publicKey)
-            ?.run { accountAddressMapper.createAccountAddress(this) }
-            ?: accountAddressMapper.createAccountAddress(publicKey)
+        val account = accountManager.getAccount(publicKey)
+        return if (account == null) {
+            accountAddressMapper.createAccountAddress(
+                publicKey = publicKey,
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(publicKey)
+            )
+        } else {
+            accountAddressMapper.createAccountAddress(
+                account = account,
+                accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(publicKey)
+            )
+        }
     }
 }

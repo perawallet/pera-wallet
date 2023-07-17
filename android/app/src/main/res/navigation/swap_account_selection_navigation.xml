@@ -29,7 +29,7 @@
         <action
             android:id="@+id/action_swapAccountSelectionFragment_to_swapNavigation"
             app:destination="@id/swapNavigation"
-            app:popUpTo="@id/swapAccountSelectionNavigation"
+            app:popUpTo="@id/swapAccountSelectionFragment"
             app:popUpToInclusive="true">
 
             <argument

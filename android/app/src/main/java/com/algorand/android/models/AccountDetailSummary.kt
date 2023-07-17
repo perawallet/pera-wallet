@@ -13,11 +13,13 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountDisplayName
 
 data class AccountDetailSummary(
-    val accountIconResource: AccountIconResource,
+    val accountIconDrawablePreview: AccountIconDrawablePreview,
     val accountDisplayName: AccountDisplayName,
     val publicKey: String,
-    val canSignTransaction: Boolean
+    val accountTypeResId: Int,
+    val shouldDisplayAccountType: Boolean
 )

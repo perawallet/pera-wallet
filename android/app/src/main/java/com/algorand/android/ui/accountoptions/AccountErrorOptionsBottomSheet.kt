@@ -16,10 +16,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
-import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet
+import com.algorand.android.modules.accountdetail.removeaccount.ui.RemoveAccountConfirmationBottomSheet.Companion.ACCOUNT_REMOVE_CONFIRMATION_KEY
 import com.algorand.android.utils.extensions.show
-import com.algorand.android.utils.startSavedStateListener
-import com.algorand.android.utils.useSavedStateValue
+import com.algorand.android.utils.useFragmentResultListenerValue
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -53,12 +52,10 @@ class AccountErrorOptionsBottomSheet : BaseAccountOptionsBottomSheet() {
     }
 
     private fun initSavedStateListener() {
-        startSavedStateListener(R.id.accountErrorOptionsBottomSheet) {
-            useSavedStateValue<Boolean>(WarningConfirmationBottomSheet.WARNING_CONFIRMATION_KEY) { isConfirmed ->
-                if (isConfirmed) {
-                    accountOptionsViewModel.removeAccount(publicKey)
-                    navBack()
-                }
+        useFragmentResultListenerValue<Boolean>(ACCOUNT_REMOVE_CONFIRMATION_KEY) { isConfirmed ->
+            if (isConfirmed) {
+                accountOptionsViewModel.removeAccount(publicKey)
+                navBack()
             }
         }
     }
@@ -80,8 +77,8 @@ class AccountErrorOptionsBottomSheet : BaseAccountOptionsBottomSheet() {
     private fun navToDisconnectAccountConfirmationBottomSheet() {
         nav(
             AccountErrorOptionsBottomSheetDirections
-                .actionAccountErrorOptionsBottomSheetToWarningConfirmationNavigation(
-                    accountOptionsViewModel.getRemovingAccountWarningConfirmationModel()
+                .actionAccountErrorOptionsBottomSheetToRemoveAccountConfirmationNavigation(
+                    accountAddress = publicKey
                 )
         )
     }

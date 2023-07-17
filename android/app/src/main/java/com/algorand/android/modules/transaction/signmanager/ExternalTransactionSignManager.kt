@@ -277,7 +277,11 @@ open class ExternalTransactionSignManager<TRANSACTION : ExternalTransaction> @In
                 ?.detail
         ) {
             is Standard -> {
-                signTransactionWithSecretKey(this, authAccountDetail.secretKey)
+                if (authAccountDetail.secretKey.isNotEmpty()) {
+                    signTransactionWithSecretKey(this, authAccountDetail.secretKey)
+                } else {
+                    externalTransactionQueuingHelper.cacheDequeuedItem(null)
+                }
             }
             is Ledger -> {
                 sendTransactionWithLedger(
@@ -285,6 +289,20 @@ open class ExternalTransactionSignManager<TRANSACTION : ExternalTransaction> @In
                     currentTransactionIndex = currentTransactionIndex,
                     totalTransactionCount = totalTransactionCount
                 )
+            }
+            is Account.Detail.Rekeyed -> {
+                if (authAccountDetail.secretKey?.isNotEmpty() == true) {
+                    signTransactionWithSecretKey(this, authAccountDetail.secretKey)
+                } else {
+                    externalTransactionQueuingHelper.cacheDequeuedItem(null)
+                }
+            }
+            is RekeyedAuth -> {
+                if (authAccountDetail.secretKey?.isNotEmpty() == true) {
+                    signTransactionWithSecretKey(this, authAccountDetail.secretKey)
+                } else {
+                    externalTransactionQueuingHelper.cacheDequeuedItem(null)
+                }
             }
             else -> externalTransactionQueuingHelper.cacheDequeuedItem(null)
         }

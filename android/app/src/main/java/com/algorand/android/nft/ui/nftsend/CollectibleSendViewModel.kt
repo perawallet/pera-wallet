@@ -19,6 +19,7 @@ import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.TransactionData
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.nft.domain.usecase.CollectibleSendPreviewUseCase
 import com.algorand.android.nft.ui.model.CollectibleSendPreview
 import com.algorand.android.utils.AccountCacheManager
@@ -35,6 +36,7 @@ import kotlinx.coroutines.launch
 class CollectibleSendViewModel @Inject constructor(
     private val collectibleSendPreviewUseCase: CollectibleSendPreviewUseCase,
     private val accountCacheManager: AccountCacheManager,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -90,7 +92,10 @@ class CollectibleSendViewModel @Inject constructor(
     // TODO Transaction signing & sending flow needs to be refactored
     fun createSendTransactionData(): TransactionData.Send? {
         val senderAccountCacheData = accountCacheManager.getCacheData(accountAddress) ?: return null
-        val targetUser = TargetUser(publicKey = selectedAccountAddressFlow.value)
+        val targetUser = TargetUser(
+            publicKey = selectedAccountAddressFlow.value,
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountAddress)
+        )
         return TransactionData.Send(
             amount = BigInteger.ONE,
             assetInformation = AssetInformation(
@@ -110,7 +115,10 @@ class CollectibleSendViewModel @Inject constructor(
 
     fun createSendAndRemoveAssetTransactionData(): TransactionData.SendAndRemoveAsset? {
         val senderAccountCacheData = accountCacheManager.getCacheData(accountAddress) ?: return null
-        val targetUser = TargetUser(publicKey = selectedAccountAddressFlow.value)
+        val targetUser = TargetUser(
+            publicKey = selectedAccountAddressFlow.value,
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(accountAddress)
+        )
         return TransactionData.SendAndRemoveAsset(
             amount = BigInteger.ONE,
             assetInformation = AssetInformation(

@@ -59,3 +59,7 @@ fun RecyclerView.addItemVisibilityChangeListener(
         }
     })
 }
+
+fun RecyclerView.scrollToTop() {
+    this.scrollToPosition(0)
+}

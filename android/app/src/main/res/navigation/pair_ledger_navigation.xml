@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/verifyLedgerAddressFragment"
-        android:name="com.algorand.android.ui.register.ledger.verify.VerifyLedgerAddressFragment"
+        android:name="com.algorand.android.modules.onboarding.pairledger.verifyselectedaccount.ui.VerifyLedgerAddressFragment"
         android:label="VerifyLedgerAddressFragment"
         tools:layout="@layout/fragment_verify_ledger_address">
         <action
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/registerLedgerSearchFragment"
-        android:name="com.algorand.android.ui.ledgersearch.RegisterLedgerSearchFragment"
+        android:name="com.algorand.android.modules.onboarding.pairledger.search.ui.RegisterLedgerSearchFragment"
         android:label="RegisterLedgerSearchFragment"
         tools:layout="@layout/fragment_ledger_search">
         <action
@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/registerLedgerAccountSelectionFragment"
-        android:name="com.algorand.android.ui.register.ledger.RegisterLedgerAccountSelectionFragment"
+        android:name="com.algorand.android.modules.onboarding.pairledger.accountselection.ui.RegisterLedgerAccountSelectionFragment"
         android:label="RegisterLedgerAccountSelectionFragment"
         tools:layout="@layout/fragment_ledger_account_selection">
         <argument
@@ -63,7 +63,7 @@
 
     <fragment
         android:id="@+id/ledgerInstructionFragment"
-        android:name="com.algorand.android.ui.register.ledger.LedgerInstructionFragment"
+        android:name="com.algorand.android.modules.onboarding.pairledger.instruction.ui.LedgerInstructionFragment"
         android:label="LedgerInstructionFragment"
         tools:layout="@layout/fragment_ledger_instruction">
         <action
@@ -73,7 +73,7 @@
 
     <fragment
         android:id="@+id/verifyLedgerInfoFragment"
-        android:name="com.algorand.android.ui.register.ledger.verify.VerifyLedgerInfoFragment"
+        android:name="com.algorand.android.modules.onboarding.pairledger.resultinfo.VerifyLedgerInfoFragment"
         android:label="VerifyLedgerInfoFragment"
         tools:layout="@layout/fragment_base_info">
         <argument
@@ -88,7 +88,7 @@
 
     <dialog
         android:id="@+id/ledgerPairInstructionsBottomSheet"
-        android:name="com.algorand.android.ui.ledgersearch.LedgerPairInstructionsBottomSheet"
+        android:name="com.algorand.android.modules.baseledgersearch.pairinginstruction.ui.LedgerPairInstructionsBottomSheet"
         android:label="LedgerPairInstructionsBottomSheet"
         tools:layout="@layout/bottom_sheet_ledger_pair_instructions">
         <argument

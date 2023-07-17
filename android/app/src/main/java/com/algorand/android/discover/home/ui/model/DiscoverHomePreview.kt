@@ -29,5 +29,7 @@ data class DiscoverHomePreview(
     val tokenDetailScreenRequestEvent: Event<TokenDetailInfo>?,
     val dappViewerScreenRequestEvent: Event<Pair<DappInfo, Array<DappFavoriteElement>>>?,
     val urlElementRequestEvent: Event<UrlElement>?,
-    val reloadPageEvent: Event<Unit>? = null
+    val reloadPageEvent: Event<Unit>? = null,
+    val handleQueryChangeForScrollEvent: Event<Unit>? = null,
+    val scrollToTopEvent: Event<Unit>? = null
 )

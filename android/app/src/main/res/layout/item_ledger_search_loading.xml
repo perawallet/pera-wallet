@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,11 +14,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="56dp"
-    android:layout_marginBottom="52dp"
-    android:gravity="center_horizontal"
+    android:layout_marginHorizontal="@dimen/spacing_xlarge"
+    android:layout_marginTop="@dimen/spacing_xxxlarge"
+    android:layout_marginBottom="@dimen/spacing_large"
     android:orientation="vertical">
 
+    <!-- TODO Lottie animation will be replaced with the new one -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loadingAnimationLottieView"
         android:layout_width="164dp"
@@ -32,20 +32,18 @@
         app:lottie_rawRes="@raw/bluetooth_loading_animation" />
 
     <TextView
-        style="@style/TextAppearance.Body.Large.Sans.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xlarge"
-        android:gravity="center"
-        android:text="@string/looking_for_devices" />
+        android:text="@string/looking_for_devices"
+        android:textAppearance="@style/TextAppearance.Body.Large.Sans.Medium" />
 
     <TextView
-        style="@style/TextAppearance.Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="60dp"
         android:layout_marginTop="@dimen/spacing_small"
-        android:gravity="center"
-        android:text="@string/please_make_sure_your_ledger_is" />
+        android:text="@string/please_make_sure_that_your_ledger"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        android:textColor="@color/text_gray" />
 
 </LinearLayout>

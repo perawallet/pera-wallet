@@ -49,7 +49,7 @@ class AccountPreviewMapper @Inject constructor(
         )
     }
 
-    fun getAlgoPriceInitialErrorState(
+    fun getAllAccountsErrorState(
         accountListItems: List<BaseAccountListItem>,
         errorCode: Int?,
         isTestnetBadgeVisible: Boolean,
@@ -77,7 +77,8 @@ class AccountPreviewMapper @Inject constructor(
         hasNewNotification: Boolean,
         onSwapTutorialDisplayEvent: Event<Int>? = null,
         onAccountAddressCopyTutorialDisplayEvent: Event<Int>? = null,
-        onGiftCardsTutorialDisplayEvent: Event<Int>? = null
+        onGiftCardsTutorialDisplayEvent: Event<Int>? = null,
+        notificationPermissionEvent: Event<Unit>?
     ): AccountPreview {
         return AccountPreview(
             isEmptyStateVisible = false,
@@ -92,7 +93,8 @@ class AccountPreviewMapper @Inject constructor(
             hasNewNotification = hasNewNotification,
             onSwapTutorialDisplayEvent = onSwapTutorialDisplayEvent,
             onAccountAddressCopyTutorialDisplayEvent = onAccountAddressCopyTutorialDisplayEvent,
-            onGiftCardsTutorialDisplayEvent = onGiftCardsTutorialDisplayEvent
+            onGiftCardsTutorialDisplayEvent = onGiftCardsTutorialDisplayEvent,
+            notificationPermissionEvent = notificationPermissionEvent
         )
     }
 }

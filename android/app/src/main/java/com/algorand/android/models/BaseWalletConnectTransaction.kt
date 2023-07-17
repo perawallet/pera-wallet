@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.decodeBase64
 import com.algorand.android.utils.isRekeyedToAnotherAccount
@@ -43,17 +44,12 @@ abstract class BaseWalletConnectTransaction : Parcelable {
         return isRekeyedToAnotherAccount(authAddress, fromAccount?.address)
     }
 
-    fun getFromAccountIconResource(): AccountIconResource? {
-        return fromAccount?.accountIconResource
+    fun getFromAccountIconResource(): AccountIconDrawablePreview? {
+        return fromAccount?.accountIconDrawablePreview
     }
 
-    fun getToAccountIconResource(): AccountIconResource? {
-        return toAccount?.accountIconResource
-    }
-
-    fun getAccountImageResource(): Int {
-        return fromAccount?.accountIconResource?.iconResId
-            ?: AccountIconResource.getAccountIconResourceByAccountType(Account.defaultAccountType).iconResId
+    fun getToAccountIconResource(): AccountIconDrawablePreview? {
+        return toAccount?.accountIconDrawablePreview
     }
 
     open val assetDecimal: Int = DEFAULT_ASSET_DECIMAL

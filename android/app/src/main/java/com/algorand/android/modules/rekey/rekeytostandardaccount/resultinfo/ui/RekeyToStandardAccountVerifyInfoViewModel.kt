@@ -14,20 +14,20 @@ package com.algorand.android.modules.rekey.rekeytostandardaccount.resultinfo.ui
 
 import androidx.lifecycle.SavedStateHandle
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.utils.getOrThrow
+import com.algorand.android.modules.rekey.rekeytostandardaccount.resultinfo.ui.usecase.RekeyToStandardAccountVerifyInfoPreviewUseCase
+import com.algorand.android.utils.AccountDisplayName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class RekeyToStandardAccountVerifyInfoViewModel @Inject constructor(
+    private val rekeyToStandardAccountVerifyInfoPreviewUseCase: RekeyToStandardAccountVerifyInfoPreviewUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    val accountAddress = savedStateHandle.getOrThrow<String>(ACCOUNT_ADDRESS_KEY)
-    val authAccountAddress = savedStateHandle.getOrThrow<String>(AUTH_ACCOUNT_ADDRESS_KEY)
+    private val navArgs = RekeyToStandardAccountVerifyInfoFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    private val accountAddress = navArgs.accountAddress
 
-    companion object {
-        private const val ACCOUNT_ADDRESS_KEY = "accountAddress"
-        private const val AUTH_ACCOUNT_ADDRESS_KEY = "authAccountAddress"
-    }
+    val accountDisplayName: AccountDisplayName
+        get() = rekeyToStandardAccountVerifyInfoPreviewUseCase.getAccountDisplayName(accountAddress)
 }

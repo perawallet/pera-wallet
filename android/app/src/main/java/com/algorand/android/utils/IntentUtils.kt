@@ -88,3 +88,18 @@ fun Context.startActivityWithPackageNameIfPossible(packageName: String): Boolean
     }
     return false
 }
+
+fun Context.startActivityWithPackageName(packageName: String, onActivityStartFailed: () -> Unit) {
+    try {
+        val safePackageIntent = packageManager.getLaunchIntentForPackage(packageName)
+        if (safePackageIntent != null) {
+            startActivity(safePackageIntent)
+        } else {
+            onActivityStartFailed.invoke()
+        }
+    } catch (activityNotFoundException: ActivityNotFoundException) {
+        sendErrorLog("$packageName could not found")
+        recordException(activityNotFoundException)
+        onActivityStartFailed.invoke()
+    }
+}

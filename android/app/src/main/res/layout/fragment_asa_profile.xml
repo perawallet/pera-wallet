@@ -19,7 +19,7 @@
     app:layoutDescription="@xml/scene_fragment_asa_profile"
     tools:context=".modules.assets.profile.asaprofile.base.BaseAsaProfileFragment">
 
-    <com.algorand.android.customviews.CustomToolbar
+    <com.algorand.android.customviews.toolbar.CustomToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="@dimen/default_toolbar_height"

@@ -22,17 +22,19 @@ import com.algorand.android.models.WalletConnectAccount
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
+import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
+import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.extensions.mapNotBlank
-import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import com.algorand.android.utils.walletconnect.encodeBase64EncodedHexString
 import java.math.BigInteger
 import javax.inject.Inject
 
 @SuppressWarnings("ReturnCount")
 class BaseAssetCreationTransactionMapper @Inject constructor(
-    private val errorProvider: WalletConnectTransactionErrorProvider,
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val errorProvider: WalletConnectErrorProvider,
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
 ) : BaseWalletConnectTransactionMapper() {
 
     override fun createTransaction(
@@ -74,7 +76,12 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
                 authAddress = accountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(accountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = accountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = accountData?.account?.address.orEmpty()
+                    )
+                ),
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
                 decimals = assetConfigParams?.decimal ?: 0,
                 isFrozen = assetConfigParams?.isFrozen ?: false,
@@ -113,7 +120,12 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 rawTransactionPayload = rawTxn,
                 signer = signer,
                 authAddress = accountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(accountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = accountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = accountData?.account?.address.orEmpty()
+                    )
+                ),
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
                 decimals = assetConfigParams?.decimal ?: 0,
@@ -154,7 +166,12 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 rawTransactionPayload = rawTxn,
                 signer = signer,
                 authAddress = accountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(accountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = accountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = accountData?.account?.address.orEmpty()
+                    )
+                ),
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
@@ -196,7 +213,12 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 rawTransactionPayload = rawTxn,
                 signer = signer,
                 authAddress = accountData?.accountInformation?.rekeyAdminAddress,
-                fromAccount = WalletConnectAccount.create(accountData?.account),
+                fromAccount = WalletConnectAccount.create(
+                    account = accountData?.account,
+                    accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
+                        accountAddress = accountData?.account?.address.orEmpty()
+                    )
+                ),
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
                 decimals = assetConfigParams?.decimal ?: 0,

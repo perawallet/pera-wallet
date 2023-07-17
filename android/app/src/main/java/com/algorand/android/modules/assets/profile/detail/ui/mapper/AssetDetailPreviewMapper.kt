@@ -13,8 +13,7 @@
 package com.algorand.android.modules.assets.profile.detail.ui.mapper
 
 import com.algorand.android.decider.AssetDrawableProviderDecider
-import com.algorand.android.models.Account
-import com.algorand.android.models.AccountIconResource
+import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.modules.assets.profile.detail.ui.model.AssetDetailPreview
 import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
@@ -33,14 +32,13 @@ class AssetDetailPreviewMapper @Inject constructor(
     fun mapToAssetDetailPreview(
         baseOwnedAssetDetail: BaseAccountAssetData.BaseOwnedAssetData,
         accountDisplayName: AccountDisplayName,
-        accountType: Account.Type?,
-        canAccountSignTransaction: Boolean,
         isQuickActionButtonsVisible: Boolean,
         isSwapButtonSelected: Boolean,
         isSwapButtonVisible: Boolean,
         isMarketInformationVisible: Boolean,
         last24HoursChange: BigDecimal?,
-        formattedAssetPrice: String?
+        formattedAssetPrice: String?,
+        accountDetailSummary: AccountDetailSummary?
     ): AssetDetailPreview {
         return with(baseOwnedAssetDetail) {
             AssetDetailPreview(
@@ -49,13 +47,13 @@ class AssetDetailPreviewMapper @Inject constructor(
                 isAlgo = isAlgo,
                 formattedPrimaryValue = formattedAmount,
                 formattedSecondaryValue = getSelectedCurrencyParityValue().getFormattedValue(),
-                accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(accountType),
+                accountDetailSummary = accountDetailSummary,
                 accountDisplayName = accountDisplayName,
                 baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
                 assetPrismUrl = prismUrl,
                 verificationTierConfiguration = verificationTierConfigurationDecider
                     .decideVerificationTierConfiguration(verificationTier),
-                isQuickActionButtonsVisible = canAccountSignTransaction && isQuickActionButtonsVisible,
+                isQuickActionButtonsVisible = isQuickActionButtonsVisible,
                 isSwapButtonSelected = isSwapButtonSelected,
                 isSwapButtonVisible = isSwapButtonVisible,
                 isMarketInformationVisible = isMarketInformationVisible,

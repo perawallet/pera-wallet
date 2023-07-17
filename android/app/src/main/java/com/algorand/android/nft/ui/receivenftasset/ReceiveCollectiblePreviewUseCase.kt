@@ -22,8 +22,8 @@ import com.algorand.android.assetsearch.domain.pagination.AssetSearchPagerBuilde
 import com.algorand.android.assetsearch.domain.usecase.SearchAssetUseCase
 import com.algorand.android.assetsearch.ui.mapper.BaseAssetSearchItemMapper
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ui.AccountAssetItemButtonState
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.modules.assets.addition.domain.usecase.AddAssetItemActionButtonStateDecider
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.AccountNameIconUseCase
@@ -117,7 +117,7 @@ class ReceiveCollectiblePreviewUseCase @Inject constructor(
         }
     }
 
-    fun getReceiverAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource> {
+    fun getReceiverAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconDrawablePreview> {
         return accountNameIconUseCase.getAccountDisplayTextAndIcon(publicKey)
     }
 }

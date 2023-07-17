@@ -22,7 +22,7 @@ import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentAccountSortBinding
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.TextButton
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.TextButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.sorting.accountsorting.domain.model.AccountSortingType
 import com.algorand.android.modules.sorting.accountsorting.domain.model.BaseAccountSortingListItem

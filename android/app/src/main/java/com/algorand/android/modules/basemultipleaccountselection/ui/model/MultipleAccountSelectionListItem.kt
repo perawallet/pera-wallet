@@ -15,10 +15,10 @@ package com.algorand.android.modules.basemultipleaccountselection.ui.model
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import com.algorand.android.customviews.TriStatesCheckBox
-import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.RecyclerListItem
 import com.algorand.android.models.ui.AccountAssetItemButtonState
+import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePreview
 import com.algorand.android.utils.AccountDisplayName
 
 abstract class MultipleAccountSelectionListItem : RecyclerListItem {
@@ -84,7 +84,7 @@ abstract class MultipleAccountSelectionListItem : RecyclerListItem {
 
     data class AccountItem(
         val accountDisplayName: AccountDisplayName,
-        val accountIconResource: AccountIconResource,
+        val accountIconDrawablePreview: AccountIconDrawablePreview,
         val accountViewButtonState: AccountAssetItemButtonState
     ) : MultipleAccountSelectionListItem() {
 

@@ -21,11 +21,13 @@ import com.algorand.android.modules.assets.profile.detail.ui.usecase.AssetDetail
 import com.algorand.android.modules.tracking.swap.assetdetail.AssetDetailAlgoSwapClickEventTracker
 import com.algorand.android.usecase.AccountDeletionUseCase
 import com.algorand.android.utils.getOrThrow
+import com.algorand.android.utils.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -47,17 +49,44 @@ class AssetDetailViewModel @Inject constructor(
         initAssetDetailPreview()
     }
 
-    fun onSwapButtonClick() {
-        val currentPreview = _assetDetailPreviewFlow.value ?: return
-        viewModelScope.launch {
+    fun onSwapClick() {
+        viewModelScope.launchIO {
             if (assetId == ALGO_ID) algoSwapClickEventTracker.logAlgoSwapClickEvent()
-            assetDetailPreviewUseCase.updatePreviewForNavigatingSwap(
-                assetId = assetId,
-                currentPreview = currentPreview,
-                accountAddress = accountAddress
-            ).collect {
-                _assetDetailPreviewFlow.emit(it)
+            _assetDetailPreviewFlow.update { preview ->
+                assetDetailPreviewUseCase.updatePreviewWithSwapNavigation(
+                    assetId = assetId,
+                    preview = preview,
+                    accountAddress = accountAddress
+                )
             }
+        }
+    }
+
+    fun onAddAssetClick() {
+        _assetDetailPreviewFlow.update { preview ->
+            assetDetailPreviewUseCase.updatePreviewWithAssetAdditionNavigation(
+                preview = preview,
+                accountAddress = accountAddress
+            )
+        }
+    }
+
+    fun onBuySellClick() {
+        _assetDetailPreviewFlow.update { preview ->
+            assetDetailPreviewUseCase.updatePreviewWithOfframpNavigation(
+                preview = preview,
+                accountAddress = accountAddress
+            )
+        }
+    }
+
+    fun onSendClick() {
+        _assetDetailPreviewFlow.update { preview ->
+            assetDetailPreviewUseCase.updatePreviewWithSendNavigation(
+                preview = preview,
+                accountAddress = accountAddress,
+                assetId = assetId
+            )
         }
     }
 

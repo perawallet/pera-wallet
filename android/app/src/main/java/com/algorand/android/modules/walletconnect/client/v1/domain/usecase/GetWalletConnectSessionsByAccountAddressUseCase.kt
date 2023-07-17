@@ -15,6 +15,7 @@ package com.algorand.android.modules.walletconnect.client.v1.domain.usecase
 import com.algorand.android.modules.walletconnect.client.v1.domain.repository.WalletConnectRepository
 import com.algorand.android.modules.walletconnect.client.v1.mapper.WalletConnectSessionMetaMapper
 import com.algorand.android.modules.walletconnect.client.v1.mapper.WalletConnectV1SessionIdentifierMapper
+import com.algorand.android.modules.walletconnect.client.v1.session.WalletConnectV1SessionCachedDataHandler
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.mapper.WalletConnectSessionDetailMapper
 import javax.inject.Inject
@@ -27,7 +28,8 @@ class GetWalletConnectSessionsByAccountAddressUseCase @Inject constructor(
     private val getConnectedAccountsOfWalletConnectSessionUseCase: GetConnectedAccountsOfWalletConnectSessionUseCase,
     private val sessionIdentifierMapper: WalletConnectV1SessionIdentifierMapper,
     private val sessionMetaMapper: WalletConnectSessionMetaMapper,
-    private val createWalletConnectSessionNamespaceUseCase: CreateWalletConnectSessionNamespaceUseCase
+    private val createWalletConnectSessionNamespaceUseCase: CreateWalletConnectSessionNamespaceUseCase,
+    private val sessionCachedDataHandler: WalletConnectV1SessionCachedDataHandler
 ) {
 
     suspend operator fun invoke(accountAddress: String): List<WalletConnect.SessionDetail>? {
@@ -38,10 +40,14 @@ class GetWalletConnectSessionsByAccountAddressUseCase @Inject constructor(
             )
             val accountAddresses = wcSessionAccounts.map { it.connectedAccountsAddress }
             val sessionDto = walletConnectSessionByAccount.walletConnectSession
+            val wcSession = sessionCachedDataHandler.getSessionById(sessionDto.id)
             sessionDetailMapper.mapToSessionDetail(
                 sessionIdentifier = sessionIdentifierMapper.mapToSessionIdentifier(sessionDto.id),
                 dto = walletConnectSessionByAccount.walletConnectSession,
-                namespaces = createWalletConnectSessionNamespaceUseCase(accountAddresses),
+                namespaces = createWalletConnectSessionNamespaceUseCase.invoke(
+                    accountAddresses = accountAddresses,
+                    chainId = wcSession?.chainId
+                ),
                 expiry = null,
                 isConnected = sessionDto.isConnected,
                 sessionMeta = sessionMetaMapper.mapToSessionMeta(sessionDto.wcSession)
