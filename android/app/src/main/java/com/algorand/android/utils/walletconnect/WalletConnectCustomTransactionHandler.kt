@@ -24,6 +24,7 @@ import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.groupWalletConnectTransactions
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Error
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Success
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 class WalletConnectCustomTransactionHandler @Inject constructor(
@@ -40,6 +41,7 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
         requestIdentifier: WalletConnect.RequestIdentifier,
         session: WalletConnect.SessionDetail,
         payloadList: List<*>,
+        scope: CoroutineScope,
         onResult: suspend (WalletConnectTransactionResult) -> Unit
     ) {
         try {
@@ -70,7 +72,7 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
                 return
             }
 
-            setAssetParamsIfNeed(walletConnectTxnList)
+            setAssetParamsIfNeed(walletConnectTxnList, scope)
 
             if (hasInvalidAssetTransfer(walletConnectTxnList)) {
                 onResult(Error(sessionIdentifier, requestIdentifier, errorProvider.getInvalidAssetError()))
@@ -161,12 +163,19 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
         }
     }
 
-    private suspend fun setAssetParamsIfNeed(walletConnectTxnList: List<BaseWalletConnectTransaction>) {
+    private suspend fun setAssetParamsIfNeed(
+        walletConnectTxnList: List<BaseWalletConnectTransaction>,
+        scope: CoroutineScope
+    ) {
         val assetListToBeFetched = walletConnectTxnList.filterIsInstance<WalletConnectAssetDetail>()
         if (assetListToBeFetched.isEmpty()) return
+        val assetIdListToBeFetched = assetListToBeFetched.map { it.assetId }
+        val assetDetailMap = walletConnectCustomTransactionAssetDetailHandler.getAssetParamsDefinedWCTransactionList(
+            assetIdList = assetIdListToBeFetched,
+            scope = scope
+        )
         assetListToBeFetched.forEach {
-            val walletConnectAssetDetail = walletConnectCustomTransactionAssetDetailHandler.getAssetParams(it.assetId)
-            it.walletConnectTransactionAssetDetail = walletConnectAssetDetail
+            it.walletConnectTransactionAssetDetail = assetDetailMap[it.assetId]
         }
     }
 
@@ -202,6 +211,6 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
     }
 
     companion object {
-        const val MAX_TRANSACTION_COUNT = 64
+        const val MAX_TRANSACTION_COUNT = 1000
     }
 }

@@ -19,12 +19,10 @@ import javax.inject.Inject
 class BackupAccountsPayloadMapper @Inject constructor() {
 
     fun mapToBackupAccountsPayload(
-        deviceId: String,
         providerName: String,
         accounts: List<BackupTransferAccountElement>
     ): BackupTransferPayload {
         return BackupTransferPayload(
-            deviceId = deviceId,
             providerName = providerName,
             accounts = accounts
         )

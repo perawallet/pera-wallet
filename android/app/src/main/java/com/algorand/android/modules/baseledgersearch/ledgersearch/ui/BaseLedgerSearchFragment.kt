@@ -265,8 +265,8 @@ abstract class BaseLedgerSearchFragment :
     }
 
     private fun arePermissionsTaken(): Boolean {
-        val bluetoothManager = context?.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        val bluetoothAdapter = bluetoothManager.adapter
+        val bluetoothManager = context?.getSystemService(Context.BLUETOOTH_SERVICE) as? BluetoothManager
+        val bluetoothAdapter = bluetoothManager?.adapter
         val areBluetoothAndLocationPermissionsTaken = context?.checkIfBluetoothPermissionAreTaken(
             bluetoothResultLauncher = bluetoothScanConnectRequestLauncher,
             locationResultLauncher = locationRequestLauncher
@@ -274,7 +274,7 @@ abstract class BaseLedgerSearchFragment :
         if (areBluetoothAndLocationPermissionsTaken != true) {
             return false
         }
-        if (bluetoothAdapter.isEnabled.not()) {
+        if (bluetoothAdapter?.isEnabled?.not() == true) {
             showEnableBluetoothPopup(bleRequestLauncher)
             return false
         }

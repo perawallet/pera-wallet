@@ -18,34 +18,43 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
         tools:context=".ui.wctransactionrequest.multipletransaction.WalletConnectMultipleTransactionFragment">
 
         <View
+            android:id="@+id/modalityLineView"
             style="@style/BottomSheetModalityLine"
-            android:layout_marginTop="@dimen/spacing_small" />
+            android:layout_marginTop="@dimen/spacing_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.algorand.android.customviews.toolbar.CustomToolbar
             android:id="@+id/customToolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_toolbar_height"
-            android:layout_marginTop="@dimen/spacing_small" />
+            android:layout_marginTop="@dimen/spacing_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/modalityLineView" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/transactionListRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginTop="@dimen/spacing_xlarge"
             android:clipToPadding="false"
             android:paddingBottom="130dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/customToolbar"
             tools:itemCount="2"
             tools:listitem="@layout/item_wallet_connect_multiple_request" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

@@ -12,7 +12,6 @@
 
 package com.algorand.android.modules.webexport.accountconfirmation.domain.usecase
 
-import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.modules.webexport.accountconfirmation.domain.mapper.BackupAccountsPayloadElementMapper
 import com.algorand.android.modules.webexport.accountconfirmation.domain.mapper.BackupAccountsPayloadMapper
@@ -25,9 +24,9 @@ import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.ENCRYPTION_SEPARATOR_CHAR
 import com.algorand.android.utils.PROVIDER_NAME
 import com.algorand.android.utils.SDK_RESULT_SUCCESS
-import com.algorand.android.utils.encrypt
-import com.algorand.android.utils.encodeBase64
 import com.algorand.android.utils.decodeBase64OrByteArray
+import com.algorand.android.utils.encodeBase64
+import com.algorand.android.utils.encrypt
 import com.algorand.android.utils.exceptions.EncryptionException
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.flow
@@ -37,7 +36,6 @@ import javax.inject.Named
 class WebExportAccountEncryptionUseCase @Inject constructor(
     private val gson: Gson,
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val deviceIdUseCase: DeviceIdUseCase,
     @Named(WebExportAccountRepository.REPOSITORY_INJECTION_NAME)
     private val webExportAccountRepository: WebExportAccountRepository,
     private val encryptionResultMapper: EncryptionResultMapper,
@@ -53,7 +51,7 @@ class WebExportAccountEncryptionUseCase @Inject constructor(
     ) = flow<DataResource<ExportBackupResponseDTO>> {
         emit(DataResource.Loading())
         val encryptedContent = getEncryptedAccountsData(encryptionKey, accountAddresses)
-        encryptedContent?.let { encryptionResult ->
+        encryptedContent.let { encryptionResult ->
             when (encryptionResult) {
                 is EncryptionResult.Success -> {
                     webExportAccountRepository.exportEncryptedBackup(
@@ -69,6 +67,7 @@ class WebExportAccountEncryptionUseCase @Inject constructor(
                         }
                     )
                 }
+
                 is EncryptionResult.Error -> {
                     emit(DataResource.Error.Local(EncryptionException(encryptionResult.errorCode)))
                 }
@@ -76,24 +75,21 @@ class WebExportAccountEncryptionUseCase @Inject constructor(
         }
     }
 
-    private suspend fun getEncryptedAccountsData(
+    private fun getEncryptedAccountsData(
         encryptionKey: String,
         accountAddresses: List<String>
-    ): EncryptionResult? {
+    ): EncryptionResult {
         val accountsDetail = accountAddresses.mapNotNull { key ->
             accountDetailUseCase.getCachedAccountDetail(key)?.data
         }
-        val exportContent = deviceIdUseCase.getSelectedNodeDeviceId()?.let { deviceId ->
-            createWebExportContent(deviceId, accountsDetail)
-        }
+        val exportContent = createWebExportContent(accountsDetail)
 
-        return exportContent?.let { createWebExportEncryptedContent(it, encryptionKey) }
+        return createWebExportEncryptedContent(exportContent, encryptionKey)
     }
 
-    private fun createWebExportContent(deviceId: String, accounts: List<AccountDetail>): String {
+    private fun createWebExportContent(accounts: List<AccountDetail>): String {
         return gson.toJson(
             backupAccountsPayloadMapper.mapToBackupAccountsPayload(
-                deviceId,
                 PROVIDER_NAME,
                 accounts.mapNotNull { accountDetail ->
                     backupAccountsPayloadElementMapper.mapToBackupAccountsPayloadElement(

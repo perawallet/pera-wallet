@@ -61,7 +61,7 @@ class WalletConnectTransactionRequestPreviewUseCase @Inject constructor(
         if (walletConnectSession == null) {
             return preview.copy(navBackEvent = Event(Unit))
         }
-        extendSessionExpirationDateIfCan(walletConnectSession.sessionIdentifier)
+//        extendSessionExpirationDateIfCan(walletConnectSession.sessionIdentifier)
         if (shouldSkipConfirmation) {
             return preview.copy(navBackEvent = Event(Unit))
         }

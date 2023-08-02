@@ -28,4 +28,12 @@ class GetAssetDetailFromIndexerUseCase @Inject constructor(
             assetDetailMapper.mapToAssetDetail(it)
         }
     }
+
+    suspend operator fun invoke(assetIdList: List<Long>): Result<List<BaseAssetDetail>> {
+        return assetRepository.fetchAssetsById(assetIdList).map { assetDetailResponse ->
+            assetDetailResponse.results.map {
+                assetDetailMapper.mapToAssetDetail(it)
+            }
+        }
+    }
 }

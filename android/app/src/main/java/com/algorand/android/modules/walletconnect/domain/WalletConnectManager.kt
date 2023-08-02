@@ -441,13 +441,16 @@ class WalletConnectManager @Inject constructor(
                     latestTransactionRequestIdentifier = requestIdentifier
                     val session = walletConnectClientManager.getSessionDetail(sessionIdentifier)
                     if (session != null) {
-                        walletConnectCustomTransactionHandler.handleCustomTransaction(
-                            sessionIdentifier = sessionIdentifier,
-                            requestIdentifier = requestIdentifier,
-                            session = session,
-                            payloadList = payloadList,
-                            onResult = ::onCustomTransactionParsed
-                        )
+                        coroutineScope?.let { safeCoroutineScope ->
+                            walletConnectCustomTransactionHandler.handleCustomTransaction(
+                                sessionIdentifier = sessionIdentifier,
+                                requestIdentifier = requestIdentifier,
+                                session = session,
+                                payloadList = payloadList,
+                                scope = safeCoroutineScope,
+                                onResult = ::onCustomTransactionParsed
+                            )
+                        }
                     }
                 }
             }

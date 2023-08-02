@@ -22,7 +22,7 @@
         android:clipToPadding="false"
         android:fillViewport="true"
         android:paddingBottom="@dimen/spacing_xlarge"
-        app:layout_constraintBottom_toTopOf="@id/extendSessionValidityButton"
+        app:layout_constraintBottom_toTopOf="@id/disconnectButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -92,12 +92,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xsmall"
                 android:layout_marginTop="@dimen/spacing_large"
-                app:layout_constraintStart_toEndOf="@id/informationBadgeTextView"
                 android:textAppearance="@style/TextAppearance.Footnote.Sans"
                 android:textColor="@color/text_gray"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="@string/this_session_is_using"
-                app:layout_constraintTop_toBottomOf="@id/dAppDescriptionTextView" />
+                app:layout_constraintStart_toEndOf="@id/informationBadgeTextView"
+                app:layout_constraintTop_toBottomOf="@id/dAppDescriptionTextView"
+                tools:text="@string/this_session_is_using" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -240,17 +240,18 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/extendSessionValidityButton"
-        style="@style/Button.Primary"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginBottom="@dimen/spacing_small"
-        android:text="@string/extend_session_validity"
-        app:layout_constraintBottom_toTopOf="@id/disconnectButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--    We disabled extend session feature due to fragile sdk implementation   -->
+    <!--    <com.google.android.material.button.MaterialButton-->
+    <!--        android:id="@+id/extendSessionValidityButton"-->
+    <!--        style="@style/Button.Primary"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginHorizontal="@dimen/spacing_xlarge"-->
+    <!--        android:layout_marginBottom="@dimen/spacing_small"-->
+    <!--        android:text="@string/extend_session_validity"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/disconnectButton"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/disconnectButton"

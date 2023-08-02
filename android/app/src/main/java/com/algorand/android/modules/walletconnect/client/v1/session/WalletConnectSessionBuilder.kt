@@ -23,13 +23,13 @@ import com.algorand.android.utils.walletconnect.peermeta.WalletConnectPeraPeerMe
 import com.algorand.android.utils.walletconnect.peermeta.WalletConnectSessionPeerMetaBuilder
 import com.google.gson.Gson
 import com.squareup.moshi.Moshi
-import javax.inject.Inject
 import okhttp3.OkHttpClient
 import org.walletconnect.Session.Config
 import org.walletconnect.impls.FileWCSessionStore
 import org.walletconnect.impls.GsonPayloadAdapter
 import org.walletconnect.impls.OkHttpTransport
 import org.walletconnect.impls.WCSession
+import javax.inject.Inject
 
 class WalletConnectSessionBuilder @Inject constructor(
     private val gson: Gson,

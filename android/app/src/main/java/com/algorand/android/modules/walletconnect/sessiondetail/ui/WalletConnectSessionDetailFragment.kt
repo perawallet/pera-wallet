@@ -146,13 +146,13 @@ class WalletConnectSessionDetailFragment : BaseFragment(R.layout.fragment_wallet
         }
     }
 
-    private val isExtendExpirationDateButtonEnabledCollector: suspend (Boolean?) -> Unit = { isEnabled ->
-        binding.extendSessionValidityButton.isEnabled = isEnabled == true
-    }
-
-    private val isExtendExpirationDateButtonVisibilityCollector: suspend (Boolean?) -> Unit = { isVisible ->
-        binding.extendSessionValidityButton.isVisible = isVisible == true
-    }
+//    private val isExtendExpirationDateButtonEnabledCollector: suspend (Boolean?) -> Unit = { isEnabled ->
+//        binding.extendSessionValidityButton.isEnabled = isEnabled == true
+//    }
+//
+//    private val isExtendExpirationDateButtonVisibilityCollector: suspend (Boolean?) -> Unit = { isVisible ->
+//        binding.extendSessionValidityButton.isVisible = isVisible == true
+//    }
 
     private val sessionStatusVisibilityCollector: suspend (Boolean?) -> Unit = { isVisible ->
         binding.checkStatusGroup.isVisible = isVisible == true
@@ -171,7 +171,7 @@ class WalletConnectSessionDetailFragment : BaseFragment(R.layout.fragment_wallet
     private fun initUi() {
         with(binding) {
             disconnectButton.setOnClickListener { sessionDetailViewModel.onDisconnectFromSessionClick() }
-            extendSessionValidityButton.setOnClickListener { sessionDetailViewModel.onExtendSessionClick() }
+//            extendSessionValidityButton.setOnClickListener { sessionDetailViewModel.onExtendSessionClick() }
             dAppUrlTextView.movementMethod = LinkMovementMethod()
             advancedPermissionsView.apply {
                 setOnTitleClickListener { sessionDetailViewModel.onAdvancedPermissionsClick() }
@@ -241,14 +241,14 @@ class WalletConnectSessionDetailFragment : BaseFragment(R.layout.fragment_wallet
                 flow = map { it?.navBackEvent }.distinctUntilChanged(),
                 collection = navBackEventCollector
             )
-            collectLatestOnLifecycle(
-                flow = map { it?.isExtendExpirationDateButtonVisible }.distinctUntilChanged(),
-                collection = isExtendExpirationDateButtonVisibilityCollector
-            )
-            collectLatestOnLifecycle(
-                flow = map { it?.isExtendExpirationDateButtonEnabled }.distinctUntilChanged(),
-                collection = isExtendExpirationDateButtonEnabledCollector
-            )
+//            collectLatestOnLifecycle(
+//                flow = map { it?.isExtendExpirationDateButtonVisible }.distinctUntilChanged(),
+//                collection = isExtendExpirationDateButtonVisibilityCollector
+//            )
+//            collectLatestOnLifecycle(
+//                flow = map { it?.isExtendExpirationDateButtonEnabled }.distinctUntilChanged(),
+//                collection = isExtendExpirationDateButtonEnabledCollector
+//            )
             collectLatestOnLifecycle(
                 flow = map { it?.checkSessionStatus }.distinctUntilChanged(),
                 collection = checkSessionStatusCollector

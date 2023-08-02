@@ -17,7 +17,7 @@
 
     <action
         android:id="@+id/action_webExportNavigation_pop"
-        app:popUpTo="@id/accountsQrScannerFragment"
+        app:popUpTo="@id/webExportNavigation"
         app:popUpToInclusive="true" />
 
     <fragment

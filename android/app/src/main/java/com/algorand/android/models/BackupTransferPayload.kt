@@ -15,7 +15,6 @@ package com.algorand.android.models
 import com.google.gson.annotations.SerializedName
 
 data class BackupTransferPayload(
-    @SerializedName("device_id") val deviceId: String,
     @SerializedName("provider_name") val providerName: String,
     @SerializedName("accounts") val accounts: List<BackupTransferAccountElement>
 )
