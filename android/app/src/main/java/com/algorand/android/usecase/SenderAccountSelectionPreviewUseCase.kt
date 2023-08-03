@@ -91,7 +91,7 @@ class SenderAccountSelectionPreviewUseCase @Inject constructor(
     }
 
     suspend fun getUpdatedPreviewFlowWithAccountInformation(
-        fromAccountAddress: String,
+        senderAccountAddress: String,
         viewModelScope: CoroutineScope,
         preview: SenderAccountSelectionPreview
     ): Flow<SenderAccountSelectionPreview> = flow {
@@ -99,11 +99,11 @@ class SenderAccountSelectionPreviewUseCase @Inject constructor(
         val loadingFinishedPreview = preview.copy(isLoading = false)
         when (
             val result =
-                senderAccountSelectionUseCase.fetchAccountInformation(fromAccountAddress, viewModelScope)
+                senderAccountSelectionUseCase.fetchAccountInformation(senderAccountAddress, viewModelScope)
         ) {
-            is Result.Error -> emit(loadingFinishedPreview.copy(fromAccountInformationErrorEvent = Event(result)))
+            is Result.Error -> emit(loadingFinishedPreview.copy(senderAccountInformationErrorEvent = Event(result)))
             is Result.Success ->
-                emit(loadingFinishedPreview.copy(fromAccountInformationSuccessEvent = Event(result.data)))
+                emit(loadingFinishedPreview.copy(senderAccountInformationSuccessEvent = Event(result.data)))
         }
     }
 

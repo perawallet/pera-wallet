@@ -47,7 +47,7 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
 
     private val listener = object : AccountSelectionAdapter.Listener {
         override fun onAccountItemClick(publicKey: String) {
-            senderAccountSelectionViewModel.fetchFromAccountInformation(publicKey)
+            senderAccountSelectionViewModel.fetchSenderAccountInformation(publicKey)
         }
     }
 
@@ -93,7 +93,7 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
             }
             else -> {
                 val transactionData = senderAccountSelectionViewModel.createSendTransactionData(
-                    amount = assetTransaction.amount
+                    assetTransaction
                 ) ?: return
                 SenderAccountSelectionFragmentDirections
                     .actionSenderAccountSelectionFragmentToAssetTransferPreviewFragment(transactionData)
@@ -107,8 +107,8 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
             senderAccountSelectionAdapter.submitList(accountList)
             binding.screenStateView.isVisible = isEmptyStateVisible
 
-            fromAccountInformationSuccessEvent?.consume()?.let { handleNextNavigation(it) }
-            fromAccountInformationErrorEvent?.consume()?.let { handleError(it.getAsResourceError(), binding.root) }
+            senderAccountInformationSuccessEvent?.consume()?.let { handleNextNavigation(it) }
+            senderAccountInformationErrorEvent?.consume()?.let { handleError(it.getAsResourceError(), binding.root) }
         }
     }
 

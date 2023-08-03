@@ -19,6 +19,6 @@ data class SenderAccountSelectionPreview(
     val accountList: List<BaseAccountSelectionListItem>,
     val isLoading: Boolean,
     val isEmptyStateVisible: Boolean,
-    val fromAccountInformationSuccessEvent: Event<AccountInformation>?,
-    val fromAccountInformationErrorEvent: Event<Result.Error>?
+    val senderAccountInformationSuccessEvent: Event<AccountInformation>?,
+    val senderAccountInformationErrorEvent: Event<Result.Error>?
 )

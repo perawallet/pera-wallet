@@ -23,8 +23,8 @@ class SenderAccountSelectionPreviewMapper @Inject constructor() {
             accountList = emptyList(),
             isLoading = true,
             isEmptyStateVisible = false,
-            fromAccountInformationSuccessEvent = null,
-            fromAccountInformationErrorEvent = null
+            senderAccountInformationSuccessEvent = null,
+            senderAccountInformationErrorEvent = null
         )
     }
 }

@@ -26,7 +26,6 @@ import com.algorand.android.usecase.SenderAccountSelectionPreviewUseCase
 import com.algorand.android.usecase.SenderAccountSelectionUseCase
 import com.algorand.android.utils.getOrElse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.math.BigInteger
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -76,10 +75,10 @@ class SenderAccountSelectionViewModel @Inject constructor(
         }
     }
 
-    fun fetchFromAccountInformation(fromAccountAddress: String) {
+    fun fetchSenderAccountInformation(senderAccountAddress: String) {
         viewModelScope.launch {
             senderAccountSelectionPreviewUseCase.getUpdatedPreviewFlowWithAccountInformation(
-                fromAccountAddress = fromAccountAddress,
+                senderAccountAddress = senderAccountAddress,
                 viewModelScope = viewModelScope,
                 preview = _senderAccountSelectionPreviewFlow.value
             ).collectLatest {
@@ -92,7 +91,7 @@ class SenderAccountSelectionViewModel @Inject constructor(
         return senderAccountSelectionUseCase.shouldShowTransactionTips()
     }
 
-    fun getAssetInformation(): AssetInformation? {
+    fun getAssetInformation(assetTransaction: AssetTransaction): AssetInformation? {
         return senderAccountSelectionUseCase.getAssetInformation(
             publicKey = assetTransaction.senderAddress,
             assetId = assetTransaction.assetId
@@ -103,12 +102,12 @@ class SenderAccountSelectionViewModel @Inject constructor(
         return senderAccountSelectionUseCase.getAccountInformation(senderAddress)
     }
 
-    fun createSendTransactionData(amount: BigInteger): TransactionData.Send? {
+    fun createSendTransactionData(assetTransaction: AssetTransaction): TransactionData.Send? {
         return senderAccountSelectionPreviewUseCase.createSendTransactionData(
             accountAddress = assetTransaction.senderAddress,
             note = assetTransaction.xnote ?: assetTransaction.note,
-            selectedAsset = getAssetInformation(),
-            amount = amount,
+            selectedAsset = getAssetInformation(assetTransaction),
+            amount = assetTransaction.amount,
             assetTransaction = assetTransaction
         )
     }
