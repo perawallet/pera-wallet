@@ -19,14 +19,52 @@ import MacaroonUIKit
 
 struct SwapAssetErrorViewModel: ErrorViewModel {
     private(set) var icon: Image?
-    private(set) var message: EditText?
+    private(set) var message: MessageTextProvider?
 
-    init(_ message: String) {
+    init(
+        message: String,
+        messageHighlightedText: String? = nil,
+        messageHighlightedTextURL: URL? = nil
+    ) {
+        bindIcon()
+        bindMessage(
+            text: message,
+            highlightedText: messageHighlightedText,
+            highlightedTextURL: messageHighlightedTextURL
+        )
+    }
+}
+
+extension SwapAssetErrorViewModel {
+    private mutating func bindIcon() {
         self.icon = getIcon()
-        self.message =
-            .attributedString(
-                message
-                .footnoteMedium()
+    }
+
+    private mutating func bindMessage(
+        text: String,
+        highlightedText: String?,
+        highlightedTextURL: URL?
+    ) {
+        let message: MessageTextProvider
+
+        if let highlightedText {
+            var messageHighlightedTextAttributes = Typography.footnoteMediumAttributes(alignment: .center)
+            messageHighlightedTextAttributes.insert(.textColor(Colors.Helpers.positive.uiColor))
+
+            let messageHighlightedText = HighlightedText(
+                text: highlightedText,
+                url: highlightedTextURL,
+                attributes: messageHighlightedTextAttributes
             )
+
+            message = MessageTextProvider(
+                text: text.footnoteMedium(),
+                highlightedText: messageHighlightedText
+            )
+        } else {
+            message = MessageTextProvider(text: text.footnoteMedium())
+        }
+
+        self.message = message
     }
 }

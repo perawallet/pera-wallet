@@ -46,3 +46,11 @@ extension StringProtocol {
         return aRange?.upperBound ?? startIndex
     }
 }
+
+extension String? {
+    func toURL() -> URL? {
+        return self
+            .unwrapNonEmptyString()
+            .unwrap(URL.init)
+    }
+}

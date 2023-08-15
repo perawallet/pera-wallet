@@ -41,7 +41,7 @@ extension LedgerTransactionSigner {
             return nil
         }
 
-        if account.isRekeyed() {
+        if account.hasAuthAccount() {
             return signRekeyedAccountTransaction(transactionData, with: privateData, transactionError: &transactionError)
         } else {
             return signLedgerAccountTransaction(transactionData, with: privateData, transactionError: &transactionError)

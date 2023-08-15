@@ -18,6 +18,6 @@ import Foundation
 
 struct NonWatchAccountListFilterAlgorithm: AccountListFilterAlgorithm {
     func getFormula(_ account: AccountHandle) -> Bool {
-        return !account.value.isWatchAccount()
+        return !account.value.authorization.isWatch
     }
 }

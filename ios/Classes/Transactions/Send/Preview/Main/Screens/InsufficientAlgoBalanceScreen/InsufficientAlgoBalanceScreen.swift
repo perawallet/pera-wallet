@@ -25,6 +25,10 @@ final class InsufficientAlgoBalanceScreen:
     var modalHeight: ModalHeight {
         return .compressed
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return determinePreferredStatusBarStyle(for: api?.network ?? .mainnet)
+    }
 
     private lazy var contextView = MacaroonUIKit.BaseView()
     private lazy var imageView = UIImageView()
@@ -39,13 +43,18 @@ final class InsufficientAlgoBalanceScreen:
 
     typealias EventHandler = (Event) -> Void
     private let eventHandler: EventHandler
+    
+    var api: ALGAPI?
 
     init(
         draft: InsufficientAlgoBalanceDraft,
-        eventHandler: @escaping EventHandler
+        eventHandler: @escaping EventHandler,
+        api: ALGAPI?
     ) {
         self.draft = draft
         self.eventHandler = eventHandler
+        self.api = api
+        
         super.init()
     }
 

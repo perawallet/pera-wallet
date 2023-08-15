@@ -64,8 +64,14 @@ final class NameService:
     let service: Service
 
     var account: AccountHandle {
-        AccountHandle(
-            account: Account(localAccount: AccountInformation(address: address, name: name, type: .standard)),
+        let localAccount = AccountInformation(
+            address: address,
+            name: name,
+            isWatchAccount: false
+        )
+        let aRawAccount = Account(localAccount: localAccount)
+        return AccountHandle(
+            account: aRawAccount,
             status: .idle
         )
     }

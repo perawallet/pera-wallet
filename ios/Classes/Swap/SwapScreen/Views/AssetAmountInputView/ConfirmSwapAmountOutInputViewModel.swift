@@ -61,8 +61,25 @@ extension ConfirmSwapAmountOutInputViewModel {
     ) {
         if let swapQuote,
            let amountOut = swapQuote.amountOut {
-            let amount = swapAssetValueFormatter.getDecimalAmount(of: amountOut, for: AssetDecoration(asset: asset))
-            primaryValue = Formatter.decimalFormatter(maximumFractionDigits: asset.decimals).string(from: NSDecimalNumber(decimal: amount))
+            let decimalAmount = swapAssetValueFormatter.getDecimalAmount(of: amountOut, for: AssetDecoration(asset: asset))
+            let formatter = Formatter.decimalFormatter(maximumFractionDigits: asset.decimals)
+
+            let aPrimaryValue = formatter.string(from: NSDecimalNumber(decimal: decimalAmount))
+
+            let attributes: TextAttributeGroup
+
+            if let priceImpact = swapQuote.priceImpact,
+               priceImpact > PriceImpactLimit.fivePercent {
+                var someAttributes = Typography.bodyLargeMediumAttributes()
+                someAttributes.insert(.textColor(Colors.Helpers.negative))
+                attributes = someAttributes
+            } else {
+                var someAttributes = Typography.bodyLargeMediumAttributes()
+                someAttributes.insert(.textColor(Colors.Text.main))
+                attributes = someAttributes
+            }
+
+            primaryValue = aPrimaryValue?.attributed(attributes)
         }
     }
 
@@ -95,6 +112,7 @@ extension ConfirmSwapAmountOutInputViewModel {
     ) {
         detail = getDetailValueForAlgo(
             value: swapQuote?.amountOutUSDValue,
+            priceImpact: swapQuote?.priceImpact,
             currency: currency,
             currencyFormatter: currencyFormatter
         )
@@ -109,6 +127,7 @@ extension ConfirmSwapAmountOutInputViewModel {
         detail = getDetailValueForAsset(
             asset,
             value: swapQuote?.amountOutUSDValue,
+            priceImpact: swapQuote?.priceImpact,
             currency: currency,
             currencyFormatter: currencyFormatter
         )

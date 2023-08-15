@@ -169,7 +169,7 @@ extension PassphraseVerifyViewController {
         let account = AccountInformation(
             address: address,
             name: address.shortAddressDisplay,
-            type: .standard,
+            isWatchAccount: false,
             preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
         )
         session?.savePrivate(tempPrivateKey, for: account.address)
@@ -182,11 +182,6 @@ extension PassphraseVerifyViewController {
             let user = User(accounts: [account])
             session?.authenticatedUser = user
         }
-
-        NotificationCenter.default.post(
-            name: .didAddAccount,
-            object: self
-        )
 
         return account
     }

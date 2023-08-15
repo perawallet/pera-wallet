@@ -48,6 +48,7 @@ enum AccountAssetsItem: Hashable {
     case assetManagement(ManagementItemViewModel)
     case watchAccountAssetManagement(ManagementItemViewModel)
     case quickActions
+    case watchAccountQuickActions
     case empty(AssetListSearchNoContentViewModel)
 }
 

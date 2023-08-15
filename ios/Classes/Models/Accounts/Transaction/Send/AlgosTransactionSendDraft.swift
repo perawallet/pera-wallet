@@ -33,6 +33,6 @@ struct AlgosTransactionSendDraft: TransactionSendDraft {
 
 extension AlgosTransactionSendDraft {
     var isMaxTransactionFromRekeyedAccount: Bool {
-        return from.isRekeyed() && isMaxTransaction
+        return from.authorization.isRekeyed && isMaxTransaction
     }
 }

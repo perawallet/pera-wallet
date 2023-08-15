@@ -109,8 +109,6 @@ final class DiscoverHomeScreen:
             )
         case .pushTokenDetailScreen:
             handleTokenDetailAction(message)
-        case .pushDappViewerScreen:
-            handleDappDetailAction(message)
         }
     }
 }
@@ -200,49 +198,6 @@ extension DiscoverHomeScreen {
             by: .push
         )
     }
-
-    private func handleDappDetailAction(_ message: WKScriptMessage) {
-        guard let jsonString = message.body as? String else { return }
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        guard let params = try? DiscoverDappParamaters.decoded(jsonData) else { return }
-        navigateToDappDetail(params)
-    }
-
-    private func navigateToDappDetail(_ params: DiscoverDappParamaters) {
-        let screen: Screen = .discoverDappDetail(params) {
-            [weak self] event in
-            guard let self else { return }
-
-            switch event {
-            case .addToFavorites(let dappDetails):
-                self.addToFavorites(dappDetails)
-            case .removeFromFavorites(let dappDetails):
-                self.removeFromFavorites(dappDetails)
-            }
-        }
-
-        open(
-            screen,
-            by: .push
-        )
-    }
-    
-    private func addToFavorites(_ dapp: DiscoverFavouriteDappDetails) {
-        updateFavorites(dapp: dapp)
-    }
-    
-    private func removeFromFavorites(_ dapp: DiscoverFavouriteDappDetails) {
-        updateFavorites(dapp: dapp)
-    }
-    
-    private func updateFavorites(dapp: DiscoverFavouriteDappDetails) {
-        guard let dappDetailsString = try? dapp.encodedString() else {
-            return
-        }
-        
-        let scriptString = "var message = '" + dappDetailsString + "'; handleMessage(message);"
-        self.webView.evaluateJavaScript(scriptString)
-    }
 }
 
 extension DiscoverHomeScreen {
@@ -276,5 +231,4 @@ enum DiscoverHomeScriptMessage:
     String,
     InAppBrowserScriptMessage {
     case pushTokenDetailScreen
-    case pushDappViewerScreen
 }

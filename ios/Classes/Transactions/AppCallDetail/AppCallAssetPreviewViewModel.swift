@@ -36,7 +36,7 @@ extension AppCallAssetPreviewViewModel {
     mutating func bindTitle(
         _ asset: Asset
     ) {
-        let name = asset.naming.name
+        let aTitle = asset.naming.name.unwrapNonEmptyString() ?? "title-unknown".localized
 
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
 
@@ -46,11 +46,23 @@ extension AppCallAssetPreviewViewModel {
             attributes.insert(.textColor(Colors.Text.main))
         }
 
-        let aTitle = name.isNilOrEmpty ? "title-unknown".localized : name!
+        let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
+        let assetText = aTitle.attributed(attributes)
 
         title = .attributedString(
-            aTitle.attributed(attributes)
+            [ destroyedText, assetText ].compound(" ")
         )
+    }
+
+    private func makeDestroyedAssetTextIfNeeded(_ isAssetDestroyed: Bool) -> NSAttributedString? {
+        guard isAssetDestroyed else {
+            return nil
+        }
+
+        let title = "title-deleted-with-parantheses".localized
+        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Helpers.negative))
+        return title.attributed(attributes)
     }
 
     mutating func bindAccessoryIcon(
@@ -67,8 +79,11 @@ extension AppCallAssetPreviewViewModel {
     mutating func bindSubtitle(
         _ asset: Asset
     ) {
+        let components = [asset.naming.unitName, String(asset.id)]
+        let subtitleText = components.compound(", ")
+
         subtitle = .attributedString(
-            String(asset.id)
+            subtitleText
                 .footnoteRegular(
                     lineBreakMode: .byTruncatingTail
                 )

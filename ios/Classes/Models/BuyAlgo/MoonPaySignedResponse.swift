@@ -19,7 +19,7 @@ import MagpieCore
 import MacaroonUtils
 
 final class MoonPaySignedResponse: ALGAPIModel {
-    let url: URL?
+    let url: String?
     
     init() {
         url = nil

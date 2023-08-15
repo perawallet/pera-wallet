@@ -17,8 +17,7 @@
 
 import UIKit
 
-class LedgerAccountVerificationDataController {
-
+final class LedgerAccountVerificationDataController {
     private let selectedAccounts: [Account]
     private(set) var displayedVerificationAccounts: [Account] = []
     private var verifiedAccounts: [Account] = []
@@ -34,7 +33,7 @@ extension LedgerAccountVerificationDataController {
     private func composeVerificationAccounts() {
         selectedAccounts.forEach { selectedAccount in
             // Do not display rekeyed accounts if it's auth account is already in the account list
-            if selectedAccount.isRekeyed() {
+            if selectedAccount.authorization.isRekeyed {
                 addSelectedRekeyedAccountIfNeeded(selectedAccount)
                 return
             }

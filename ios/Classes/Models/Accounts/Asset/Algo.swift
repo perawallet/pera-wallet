@@ -20,7 +20,7 @@ final class Algo: Asset {
     let id: AssetID = 0
     var amount: UInt64
     let isFrozen: Bool? = nil
-    let isDeleted: Bool? = false
+    let isDestroyed: Bool = false
     let optedInAtRound: UInt64? = nil
     let creator: AssetCreator? = nil
     let decimals: Int = 6

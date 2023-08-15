@@ -50,12 +50,11 @@ extension URL {
         )
     }
 
-    func appendQueryParameters(_ newItems: [URLQueryItem]) -> URL? {
-        var components = URLComponents(string: self.absoluteString)
-        var params = components?.queryItems ?? [URLQueryItem]()
-        params += newItems
-        components?.queryItems = params
-
+    func appendingQueryParameters(_ params: [String: String]) -> URL? {
+        var components = URLComponents(string: absoluteString)
+        var queryItems = components?.queryItems ?? []
+        queryItems += params.map(URLQueryItem.init)
+        components?.queryItems = queryItems
         return components?.url
     }
 }

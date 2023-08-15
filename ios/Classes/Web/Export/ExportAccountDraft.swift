@@ -45,7 +45,7 @@ final class ExportAccountDraft: JSONObjectBody {
 
             var parameters = [
                 APIParamKey.address.rawValue: accountAddress,
-                APIParamKey.accountType.rawValue: AccountImportParameters.AccountType(rawAccountType: account.type).rawValue,
+                APIParamKey.accountType.rawValue: AccountImportParameters.AccountType(rawAccountType: account.authorization).rawValue,
                 APIParamKey.name.rawValue: account.name ?? account.address.shortAddressDisplay
             ]
 

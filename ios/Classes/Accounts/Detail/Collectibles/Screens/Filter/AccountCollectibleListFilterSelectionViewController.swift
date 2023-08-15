@@ -28,8 +28,13 @@ final class AccountCollectibleListFilterSelectionViewController: ScrollScreen {
 
     private let theme: AccountCollectibleListFilterSelectionViewControllerTheme
 
-    init(theme: AccountCollectibleListFilterSelectionViewControllerTheme = .init()) {
+    init(
+        theme: AccountCollectibleListFilterSelectionViewControllerTheme = .init(),
+        api: ALGAPI?
+    ) {
         self.theme = theme
+        
+        super.init(api: api)
     }
 
     override func configureNavigationBar() {

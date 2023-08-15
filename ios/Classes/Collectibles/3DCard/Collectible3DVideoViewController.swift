@@ -23,6 +23,9 @@ import MacaroonUtils
 final class Collectible3DVideoViewController:
     BaseViewController,
     Collectible3DCardDisplayable {
+    typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
+    
     var sceneMaterial: SCNMaterial?
     var sceneView: SCNView?
     let renderContext = CIContext(
@@ -168,6 +171,12 @@ extension Collectible3DVideoViewController {
 extension Collectible3DVideoViewController {
     @objc
     private func didTapCloseButton() {
-        dismissScreen()
+        eventHandler?(.didClose)
+    }
+}
+
+extension Collectible3DVideoViewController {
+    enum Event {
+        case didClose
     }
 }

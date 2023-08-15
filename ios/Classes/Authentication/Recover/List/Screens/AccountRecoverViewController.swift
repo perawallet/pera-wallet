@@ -418,11 +418,92 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         didRecover account: AccountInformation
     ) {
         analytics.track(.registerAccount(registrationType: .recover))
+
+        fetchRekeyedAccounts(to: account)
+    }
+
+    private func fetchRekeyedAccounts(to account: AccountInformation) {
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+
+        api?.fetchRekeyedAccounts(account.address) {
+            [weak self] response in
+            guard let self else { return }
+
+            self.loadingController?.stopLoading()
+
+            switch response {
+            case let .success(response):
+                let rekeyedAccounts: [Account] = response.accounts.compactMap { rekeyedAccount in
+                    let isRekeyedToSelf = rekeyedAccount.isRekeyedToSelf
+                    if isRekeyedToSelf {
+                        return nil
+                    }
+
+                    rekeyedAccount.authorization = .unknownToStandardRekeyed
+                    return rekeyedAccount
+                }
+
+                self.openRekeyedAccountSelectionListIfPossible(
+                    account: account,
+                    rekeyedAccounts: rekeyedAccounts
+                )
+            case .failure:
+                self.bannerController?.presentErrorBanner(
+                    title: "title-failed-to-fetch-rekeyed-accounts".localized,
+                    message: ""
+                )
+                
+                self.analytics.record(
+                    .recoverAccountWithPassphraseScreenFetchingRekeyingAccountsFailed(
+                        accountAddress: account.address,
+                        network: self.api!.network
+                    )
+                )
+
+                self.openAccountNameSetup(account)
+            }
+        }
+    }
+
+    private func openAccountNameSetup(_ account: AccountInformation) {
         open(
             .accountNameSetup(
                 flow: accountSetupFlow,
                 mode: .recover(type: .none),
                 accountAddress: account.address
+            ),
+            by: .push
+        )
+    }
+
+    private func openRekeyedAccountSelectionListIfPossible(
+        account: AccountInformation,
+        rekeyedAccounts: [Account]
+    ) {
+        if rekeyedAccounts.isEmpty {
+            openAccountNameSetup(account)
+            return
+        }
+
+        let eventHandler: RekeyedAccountSelectionListScreen.EventHandler = {
+            [weak self] event, _ in
+            guard let self else { return }
+
+            switch event {
+            case .performPrimaryAction:
+                self.openAccountNameSetup(account)
+            case .performSecondaryAction:
+                self.openAccountNameSetup(account)
+            }
+        }
+
+        let authAccount = Account(localAccount: account)
+        authAccount.authorization = .standard
+        open(
+            .rekeyedAccountSelectionList(
+                authAccount: authAccount,
+                rekeyedAccounts: rekeyedAccounts,
+                eventHandler: eventHandler
             ),
             by: .push
         )

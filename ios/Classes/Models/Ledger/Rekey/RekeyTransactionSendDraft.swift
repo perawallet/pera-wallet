@@ -32,7 +32,7 @@ struct RekeyTransactionSendDraft: TransactionSendDraft {
     
     init(account: Account, rekeyedTo: String) {
         self.from = account
-        toAccount = Account(address: rekeyedTo, type: .rekeyed)
+        toAccount = Account(address: rekeyedTo)
         amount = nil
         fee = nil
         isMaxTransaction = false

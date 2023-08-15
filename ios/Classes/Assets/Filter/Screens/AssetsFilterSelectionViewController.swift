@@ -30,8 +30,13 @@ final class AssetsFilterSelectionViewController: ScrollScreen {
 
     private let theme: AssetsFilterSelectionViewControllerTheme
 
-    init(theme: AssetsFilterSelectionViewControllerTheme = .init()) {
+    init(
+        theme: AssetsFilterSelectionViewControllerTheme = .init(),
+        api: ALGAPI?
+    ) {
         self.theme = theme
+        
+        super.init(api: api)
     }
 
     override func configureNavigationBar() {

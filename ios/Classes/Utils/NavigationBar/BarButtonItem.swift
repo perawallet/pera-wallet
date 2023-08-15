@@ -17,13 +17,16 @@
 
 import Foundation
 import UIKit
+import MacaroonUIKit
 
 protocol BarButtonItem {
     
     typealias TitleContent = BarButtonItemTitleContent
     typealias ImageContent = BarButtonItemImageContent
     typealias Size = BarButtonSize
-    
+
+    var backgroundColor: UIColor? { get }
+    var corner: Corner? { get }
     var title: TitleContent? { get }
     var image: ImageContent? { get }
     var size: Size { get }

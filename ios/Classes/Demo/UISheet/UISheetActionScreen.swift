@@ -25,24 +25,35 @@ final class UISheetActionScreen:
     var modalHeight: ModalHeight {
         return .compressed
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return determinePreferredStatusBarStyle(for: api?.network ?? .mainnet)
+    }
 
     private lazy var contextView = MacaroonUIKit.BaseView()
     private lazy var imageView = ImageView()
     private lazy var titleView = Label()
-    private lazy var bodyView = Label()
+    private lazy var bodyView = ALGActiveLabel()
+    private lazy var infoIconView = UIImageView()
+    private lazy var infoMessageView = UILabel()
     private lazy var actionsContextView = MacaroonUIKit.VStackView()
 
     private let sheet: UISheet
     private let theme: UISheetActionScreenTheme
 
     private var uiInteractions: [TargetActionInteraction] = []
+    
+    var api: ALGAPI?
 
     init(
         sheet: UISheet,
-        theme: UISheetActionScreenTheme
+        theme: UISheetActionScreenTheme,
+        api: ALGAPI?
     ) {
         self.sheet = sheet
         self.theme = theme
+        self.api = api
+        
         super.init()
     }
 
@@ -89,6 +100,10 @@ extension UISheetActionScreen {
         addImage()
         addTitle()
         addBody()
+
+        if sheet.info != nil {
+            addInfo()
+        }
     }
 
     private func addImage() {
@@ -124,16 +139,65 @@ extension UISheetActionScreen {
         contextView.addSubview(bodyView)
         bodyView.customizeAppearance(theme.body)
 
-        bodyView.contentEdgeInsets.top = theme.spacingBetweenTitleAndBody
         bodyView.fitToIntrinsicSize()
         bodyView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom
+            let topInset = sheet.body != nil ? theme.spacingBetweenTitleAndBody : .zero
+            $0.top == titleView.snp.bottom + topInset
             $0.leading == 0
             $0.trailing == 0
-            $0.bottom == 0
+            $0.bottom.equalToSuperview().priority(.medium)
         }
-        
-        sheet.body?.load(in: bodyView)
+
+        if let body = sheet.body {
+            if let highlightedText = body.highlightedText {
+                let hyperlink: ALGActiveType = .word(highlightedText.text)
+                bodyView.attachHyperlink(
+                    hyperlink,
+                    to: body.text,
+                    attributes: highlightedText.attributes
+                ) {
+                    [unowned self] in
+                    self.sheet.bodyHyperlinkHandler?()
+                }
+                return
+            }
+
+            body.text.load(in: bodyView)
+        } else {
+            bodyView.text = nil
+            bodyView.attributedText = nil
+        }
+    }
+
+    private func addInfo() {
+        addInfoIcon()
+        addInfoMessage()
+    }
+
+    private func addInfoIcon() {
+        infoIconView.customizeAppearance(theme.infoIcon)
+
+        contextView.addSubview(infoIconView)
+        infoIconView.fitToIntrinsicSize()
+        infoIconView.snp.makeConstraints {
+            $0.top == bodyView.snp.bottom + theme.spacingBetweenBodyAndInfo
+            $0.leading == 0
+        }
+    }
+
+    private func addInfoMessage() {
+        infoMessageView.customizeAppearance(theme.infoMessage)
+
+        contextView.addSubview(infoMessageView)
+        infoMessageView.snp.makeConstraints {
+            $0.height >= infoIconView
+            $0.top == infoIconView
+            $0.leading == infoIconView.snp.trailing + theme.spacingBetweeenInfoIconAndInfoMessage
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        sheet.info?.load(in: infoMessageView)
     }
 
     private func addActionsContext() {

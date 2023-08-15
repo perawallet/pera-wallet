@@ -27,13 +27,17 @@ final class DeveloperSettingsViewController:
     private lazy var developerSettingsView = DeveloperSettingsView()
     
     private var settings: [DeveloperSettings] = [.nodeSettings]
-    
+
+    deinit {
+        stopObservingNotifications()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         reload()
     }
-    
+
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         navigationItem.title = "settings-developer".localized
@@ -114,26 +118,79 @@ extension DeveloperSettingsViewController: UICollectionViewDelegateFlowLayout {
         
         switch setting {
         case .nodeSettings:
-            open(.nodeSettings, by: .push)
+            openNodeSettings()
         case .dispenser:
-            guard let url = AlgorandWeb.dispenser.link else {
-                return
-            }
+            let nonWatchAccountFilterAlgorithm = NonWatchAccountListFilterAlgorithm()
+            let nonWatchAccounts =
+                sharedDataController
+                    .accountCollection
+                    .filter(nonWatchAccountFilterAlgorithm.getFormula)
 
-            guard let firstAccount = self.sharedDataController.sortedAccounts().first else {
-                open(url)
-                return
-            }
-
-            let params = [
-                URLQueryItem(
-                    name: "account",
-                    value: firstAccount.value.address
+            if nonWatchAccounts.count > 1 {
+                openAccountSelection()
+            } else {
+                openDispenser(
+                    for: nonWatchAccounts.first?.value,
+                    from: self
                 )
-            ]
-            let newUrl = url.appendQueryParameters(params)
-
-            open(newUrl)
+            }
         }
+    }
+}
+
+extension DeveloperSettingsViewController {
+    private func openNodeSettings() {
+        open(
+            .nodeSettings,
+            by: .push
+        )
+    }
+
+    private func openAccountSelection() {
+        let draft = SelectAccountDraft(
+            transactionAction: .receive,
+            requiresAssetSelection: false,
+            transactionDraft: nil,
+            receiver: nil
+        )
+        open(
+            .accountSelection(
+                draft: draft,
+                delegate: self
+            ),
+            by: .push
+        )
+    }
+
+    private func openDispenser(
+        for account: Account?,
+        from screen: UIViewController
+    ) {
+        let url = makeDispenserURL(account)
+        screen.open(url)
+    }
+
+    private func makeDispenserURL(_ account: Account?) -> URL? {
+        let url = AlgorandWeb.dispenser.link
+
+        guard let account else {
+            return url
+        }
+
+        let params = ["account": account.address]
+        return url?.appendingQueryParameters(params)
+    }
+}
+
+extension DeveloperSettingsViewController: SelectAccountViewControllerDelegate {
+    func selectAccountViewController(
+        _ selectAccountViewController: SelectAccountViewController,
+        didSelect account: Account,
+        for draft: SelectAccountDraft
+    ) {
+        openDispenser(
+            for: account,
+            from: selectAccountViewController
+        )
     }
 }

@@ -16,6 +16,7 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 class ScrollScreen: MacaroonUIKit.ScrollScreen {
     var hidesCloseBarButtonItem: Bool = false
@@ -23,6 +24,18 @@ class ScrollScreen: MacaroonUIKit.ScrollScreen {
     var rightBarButtonItems: [BarButtonItemRef] = []
     var shouldShowNavigationBar: Bool {
         return true
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return determinePreferredStatusBarStyle(for: api?.network ?? .mainnet)
+    }
+    
+    var api: ALGAPI?
+
+    init(api: ALGAPI?) {
+        self.api = api
+        
+        super.init()
     }
 
     override func viewDidLoad() {

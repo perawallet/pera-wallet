@@ -75,7 +75,7 @@ class WCAppCallTransactionViewModel {
                 return
             }
 
-            account = Account(address: senderAddress, type: .standard)
+            account = Account(address: senderAddress)
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(

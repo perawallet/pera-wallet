@@ -299,7 +299,7 @@ extension AccountAssetListAPIDataController {
 
 extension AccountAssetListAPIDataController {
     private func makeItemsForPortfolio() -> [AccountAssetsItem] {
-        if account.value.isWatchAccount() {
+        if account.value.authorization.isWatch {
             return makeItemsForWatchAccountPortfolio()
         } else {
             return makeItemsForNormalAccountPortfolio()
@@ -336,7 +336,7 @@ extension AccountAssetListAPIDataController {
     }
 
     private func makeItemsForQuickActions() -> [AccountAssetsItem] {
-        if account.value.isWatchAccount() {
+        if account.value.authorization.isWatch {
             return makeItemsForWatchAccountQuickActions()
         } else {
             return makeItemsForNormalAccountQuickActions()
@@ -344,7 +344,7 @@ extension AccountAssetListAPIDataController {
     }
 
     private func makeItemsForWatchAccountQuickActions() -> [AccountAssetsItem] {
-        return []
+        return [ .watchAccountQuickActions ]
     }
 
     private func makeItemsForNormalAccountQuickActions() -> [AccountAssetsItem] {
@@ -356,7 +356,7 @@ extension AccountAssetListAPIDataController {
     }
 
     private func makeItemsForAssetsHeaderTitle() -> [AccountAssetsItem] {
-        if account.value.isWatchAccount() {
+        if account.value.authorization.isWatch {
             return makeItemsForWatchAccountAssetsHeaderTitle()
         } else {
             return makeItemsForNormalAccountAssetsHeaderTitle()

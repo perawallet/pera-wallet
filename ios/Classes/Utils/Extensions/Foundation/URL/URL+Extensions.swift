@@ -55,3 +55,20 @@ extension URL {
         }
     }
 }
+
+extension URL {
+    var inAppBrowserDeeplinkURL: URL? {
+        let browserValidationHost = "in-app-browser"
+        let urlHost = self.host
+
+        guard urlHost == browserValidationHost else {
+            return nil
+        }
+
+        guard let queryParameters, let urlString = queryParameters["url"] else {
+            return nil
+        }
+
+        return URL(string: urlString)
+    }
+}

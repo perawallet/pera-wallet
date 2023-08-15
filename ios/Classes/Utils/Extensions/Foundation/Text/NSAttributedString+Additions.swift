@@ -23,10 +23,8 @@ import UIKit
 extension NSAttributedString {
     static func + (lhs: NSAttributedString, rhs: NSAttributedString) -> NSAttributedString {
         let compoundAttributedString = NSMutableAttributedString()
-        
         compoundAttributedString.append(lhs)
         compoundAttributedString.append(rhs)
-        
         return compoundAttributedString
     }
 
@@ -100,5 +98,51 @@ extension NSAttributedString {
         )
         let numberOfLines = Int(ceil(fullTextSize.height / characterHeight))
         return numberOfLines
+    }
+}
+
+extension Array where Element == NSAttributedString? {
+    public func compound(
+        _ separator: String = " "
+    ) -> NSAttributedString {
+        return self
+            .compactMap { $0 }
+            .joined(separator: separator)
+    }
+}
+
+extension Array where Element == NSAttributedString {
+    func joined(separator: NSAttributedString) -> NSAttributedString {
+        guard let firstElement = first else {
+            return NSMutableAttributedString(string: "")
+        }
+
+        let joined =
+            dropFirst()
+                .reduce(
+                    into: NSMutableAttributedString(attributedString: firstElement)
+                ) { result, element in
+                    result.append(separator)
+                    result.append(element)
+                }
+        return joined
+    }
+
+    func joined(separator: String) -> NSAttributedString {
+        guard let firstElement = first else {
+            return NSMutableAttributedString(string: "")
+        }
+
+        let attributedStringSeparator = NSAttributedString(string: separator)
+
+        let joined =
+            dropFirst()
+                .reduce(
+                    into: NSMutableAttributedString(attributedString: firstElement)
+                ) { result, element in
+                    result.append(attributedStringSeparator)
+                    result.append(element)
+                }
+        return joined
     }
 }

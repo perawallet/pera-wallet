@@ -31,8 +31,10 @@ enum ALGAnalyticsLogName:
     String,
     CaseIterable,
     Printable {
+    case ledgerAccountSelectionScreenFetchingRekeyingAccountsFailed = "ledgerAccountSelectionScreenFetchingRekeyingAccountsFailed"
     case ledgerTransactionError = "LedgerTransactionError"
     case mismatchAccountError = "MismatchAccountFound"
+    case recoverAccountWithPassphraseScreenFetchingRekeyingAccountsFailed = "recoverAccountWithPassphraseScreenFetchingRekeyingAccountsFailed"
     case wcSessionSaveError = "WCSessionNotSaved"
     case walletConnectTransactionRequestDidAppear = "WCTransactionRequestDidAppear"
     case walletConnectTransactionRequestDidLoad = "WCTransactionRequestDidLoad"
@@ -52,6 +54,8 @@ extension ALGAnalyticsLogName {
         case .walletConnectTransactionRequestReceived: return 5
         case .walletConnectTransactionRequestValidated: return 6
         case .walletConnectTransactionRequestSDKError: return 7
+        case .ledgerAccountSelectionScreenFetchingRekeyingAccountsFailed: return 8
+        case .recoverAccountWithPassphraseScreenFetchingRekeyingAccountsFailed: return 9
         }
     }
 }

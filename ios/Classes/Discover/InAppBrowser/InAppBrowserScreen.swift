@@ -119,6 +119,52 @@ where ScriptMessage: InAppBrowserScriptMessage {
         return controller
     }
 
+    func updateUIForLoading() {
+        let state = InAppBrowserNoContentView.State.loading(theme.loading)
+        updateUI(for: state)
+    }
+
+    func updateUIForURL() {
+        let clearNoContent = {
+            [weak self] in
+            guard let self else { return }
+
+            self.noContentView.setState(
+                nil,
+                animated: false
+            )
+        }
+
+        if !webView.isHidden {
+            clearNoContent()
+            return
+        }
+
+        updateUI(
+            from: noContentView,
+            to: webView,
+            animated: isViewAppeared
+        ) { isCompleted in
+            if !isCompleted { return }
+            clearNoContent()
+        }
+    }
+
+    func updateUIForError(_ error: Error) {
+        defer {
+            endRefreshingIfNeeded()
+        }
+
+        if !isPresentable(error) {
+            updateUIForURL()
+            return
+        }
+
+        let viewModel = InAppBrowserErrorViewModel(error: error)
+        let state = InAppBrowserNoContentView.State.error(theme.error, viewModel)
+        updateUI(for: state)
+    }
+
     @objc
     func didPullToRefresh() {
         webView.reload()
@@ -234,26 +280,6 @@ extension InAppBrowserScreen {
         addNoContent()
     }
 
-    private func updateUIForLoading() {
-        let state = InAppBrowserNoContentView.State.loading(theme.loading)
-        updateUI(for: state)
-    }
-
-    private func updateUIForError(_ error: Error) {
-        defer {
-            endRefreshingIfNeeded()
-        }
-
-        if !isPresentable(error) {
-            updateUIForURL()
-            return
-        }
-
-        let viewModel = InAppBrowserErrorViewModel(error: error)
-        let state = InAppBrowserNoContentView.State.error(theme.error, viewModel)
-        updateUI(for: state)
-    }
-
     private func updateUI(for state: InAppBrowserNoContentView.State) {
         let isNoContentVisible = !noContentView.isHidden
 
@@ -269,32 +295,6 @@ extension InAppBrowserScreen {
             to: noContentView,
             animated: isViewAppeared
         )
-    }
-
-    private func updateUIForURL() {
-        let clearNoContent = {
-            [weak self] in
-            guard let self else { return }
-
-            self.noContentView.setState(
-                nil,
-                animated: false
-            )
-        }
-
-        if !webView.isHidden {
-            clearNoContent()
-            return
-        }
-
-        updateUI(
-            from: noContentView,
-            to: webView,
-            animated: isViewAppeared
-        ) { isCompleted in
-            if !isCompleted { return }
-            clearNoContent()
-        }
     }
 
     private typealias UpdateUICompletion = (Bool) -> Void

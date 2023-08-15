@@ -34,11 +34,7 @@ final class AccountAssetListViewController:
 
     private lazy var theme = Theme()
 
-    private lazy var listLayout = AccountAssetListLayout(
-        isWatchAccount: dataController.account.value.isWatchAccount(),
-        listDataSource: listDataSource
-    )
-
+    private lazy var listLayout = AccountAssetListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = AccountAssetListDataSource(listView)
 
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
@@ -199,11 +195,8 @@ extension AccountAssetListViewController {
     private func addUI() {
         addListBackground()
         addList()
-
-        if !dataController.account.value.isWatchAccount() {
-            addAccountActionsMenuAction()
-            updateSafeAreaWhenViewDidLayoutSubviews()
-        }
+        addAccountActionsMenuAction()
+        updateSafeAreaWhenViewDidLayoutSubviews()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
@@ -241,12 +234,12 @@ extension AccountAssetListViewController {
 
     private func updateListBackgroundWhenViewDidLayoutSubviews() {
         /// <note>
-        /// 150/250 is a number smaller than the total height of the total portfolio and the quick
+        /// 250 is a number smaller than the total height of the total portfolio and the quick
         /// actions menu cells, and big enough to cover the background area when the system
         /// triggers auto-scrolling to the top because of the applying snapshot (The system just
         /// does it if the user pulls down the list extending the bounds of the content even if
         /// there isn't anything to update.)
-        let thresholdHeight: CGFloat = dataController.account.value.isWatchAccount() ? 150 : 250
+        let thresholdHeight: CGFloat = 250
         let preferredHeight: CGFloat = thresholdHeight - listView.contentOffset.y
 
         listBackgroundView.snp.updateConstraints {
@@ -347,15 +340,21 @@ extension AccountAssetListViewController {
             return false
         }
 
+        let additionalBottomPaddingForHeroBackground =
+            dataController.account.value.authorization.isWatch
+            ? WatchAccountQuickActionsCell.contextPaddings.bottom
+            : AccountQuickActionsCell.contextPaddings.bottom
+        let adjustedPositionY = positionY - additionalBottomPaddingForHeroBackground
+
         let listHeight = listView.bounds.height
         let listContentHeight = listView.contentSize.height
 
-        if listContentHeight - listHeight <= positionY {
+        if listContentHeight - listHeight <= adjustedPositionY {
             return false
         }
 
         let listContentOffset = listView.contentOffset
-        return listContentOffset.y >= positionY
+        return listContentOffset.y >= adjustedPositionY
     }
 }
 
@@ -494,50 +493,63 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
         case .quickActions:
-            guard let item = cell as? AccountQuickActionsCell else {
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
                 return
             }
 
-            let swapDisplayStore = SwapDisplayStore()
-            let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
-            item.isSwapBadgeVisible = !isOnboardedToSwap
-
-            positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
-
-            item.startObserving(event: .buySell) {
-                [weak self] in
-                guard let self = self else {
+            switch itemIdentifier {
+            case .quickActions:
+                guard let item = cell as? AccountQuickActionsCell else {
                     return
                 }
 
-                self.eventHandler?(.buySell)
-            }
+                let swapDisplayStore = SwapDisplayStore()
+                let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+                item.isSwapBadgeVisible = !isOnboardedToSwap
 
-            item.startObserving(event: .swap) {
-                [weak self] in
-                guard let self = self else {
+                positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
+
+                item.startObserving(event: .buySell) {
+                    [unowned self] in
+                    self.eventHandler?(.buySell)
+                }
+
+                item.startObserving(event: .swap) {
+                    [unowned self] in
+                    self.eventHandler?(.swap)
+                }
+
+                item.startObserving(event: .send) {
+                    [unowned self] in
+                    self.eventHandler?(.send)
+                }
+
+                item.startObserving(event: .more) {
+                    [unowned self] in
+                    self.eventHandler?(.more)
+                }
+            case .watchAccountQuickActions:
+                guard let item = cell as? WatchAccountQuickActionsCell else {
                     return
                 }
 
-                self.eventHandler?(.swap)
-            }
+                positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
-            item.startObserving(event: .send) {
-                [weak self] in
-                guard let self = self else {
-                    return
+                item.startObserving(event: .copyAddress) {
+                    [unowned self] in
+                    self.eventHandler?(.copyAddress)
                 }
 
-                self.eventHandler?(.send)
-            }
-
-            item.startObserving(event: .more) {
-                [weak self] in
-                guard let self = self else {
-                    return
+                item.startObserving(event: .showAddress) {
+                    [unowned self] in
+                    self.eventHandler?(.showAddress)
                 }
 
-                self.eventHandler?(.more)
+                item.startObserving(event: .more) {
+                    [unowned self] in
+                    self.eventHandler?(.more)
+                }
+            default: break
             }
         default:
             return
@@ -622,14 +634,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 let screen = Screen.asaDetail(
                     account: dataController.account.value,
                     asset: item.asset
-                ) { [weak self] event in
-                    guard let self = self else { return }
-
-                    switch event {
-                    case .didRenameAccount: self.eventHandler?(.didRenameAccount)
-                    case .didRemoveAccount: self.eventHandler?(.didRemoveAccount)
-                    }
-                }
+                )
                 open(
                     screen,
                     by: .push
@@ -752,7 +757,7 @@ extension AccountAssetListViewController {
     private func openMinimumBalanceInfo() {
         let uiSheet = UISheet(
             title: "minimum-balance-title".localized.bodyLargeMedium(),
-            body: "minimum-balance-description".localized.bodyRegular()
+            body: UISheetBodyTextProvider(text: "minimum-balance-description".localized.bodyRegular())
         )
 
         let closeAction = UISheetAction(
@@ -951,9 +956,9 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController {
     enum Event {
         case didUpdate(AccountHandle)
-        case didRenameAccount
-        case didRemoveAccount
         case manageAssets(isWatchAccount: Bool)
+        case copyAddress
+        case showAddress
         case addAsset
         case buySell
         case swap

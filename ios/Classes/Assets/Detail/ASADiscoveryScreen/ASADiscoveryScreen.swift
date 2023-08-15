@@ -883,7 +883,7 @@ extension ASADiscoveryScreen {
             
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
-                toAccount: Account(address: creator.address, type: .standard),
+                toAccount: Account(address: creator.address),
                 amount: 0,
                 assetIndex: asset.id,
                 assetCreator: creator.address

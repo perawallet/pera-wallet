@@ -23,5 +23,5 @@ struct BidaliOpenURLParameters: JSONModel {
 
 struct BidaliOpenURLRequest: JSONModel {
     /// URL to support docs, etc. Ideally should open in an external browser or a new in-app modal browser.
-    let url: URL?
+    let url: String?
 }

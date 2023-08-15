@@ -28,20 +28,31 @@ final class LedgerAccountDetailViewController: BaseScrollViewController {
             sharedDataController: sharedDataController,
             loadingController: loadingController,
             account: account,
+            authAccount: authAccount,
             rekeyedAccounts: rekeyedAccounts ?? []
         )
     }()
 
     private let account: Account
+    private let authAccount: Account
     private let ledgerIndex: Int?
     private let rekeyedAccounts: [Account]?
 
-    init(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?, configuration: ViewControllerConfiguration) {
+    init(
+        account: Account,
+        authAccount: Account,
+        ledgerIndex: Int?,
+        rekeyedAccounts: [Account]?,
+        configuration: ViewControllerConfiguration
+    ) {
         self.account = account
+        self.authAccount = authAccount
         self.ledgerIndex = ledgerIndex
 
-        if account.isRekeyed() {
-            self.rekeyedAccounts = [Account(address: account.authAddress.unwrap(or: ""), type: .ledger)]
+        if account.authorization.isRekeyed {
+            let account = Account(address: account.authAddress.unwrap(or: ""))
+            account.authorization = .ledger
+            self.rekeyedAccounts = [ account ]
         } else {
             self.rekeyedAccounts = rekeyedAccounts
         }

@@ -62,11 +62,12 @@ final class ExportAccountsDomainConfirmationScreen:
     private let theme: ExportAccountsDomainConfirmationScreenTheme
 
     init(
-        theme: ExportAccountsDomainConfirmationScreenTheme = .init()
+        theme: ExportAccountsDomainConfirmationScreenTheme = .init(),
+        api: ALGAPI?
     ) {
         self.theme = theme
 
-        super.init()
+        super.init(api: api)
     }
 
     deinit {

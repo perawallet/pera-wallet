@@ -35,7 +35,6 @@ final class AssetActionConfirmationViewController:
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private let api: ALGAPI
     private let sharedDataController: SharedDataController
     private let bannerController: BannerController
     private let copyToClipboardController: CopyToClipboardController
@@ -50,12 +49,11 @@ final class AssetActionConfirmationViewController:
     ) {
         self.draft = draft
         self.copyToClipboardController = copyToClipboardController
-        self.api = api
         self.sharedDataController = sharedDataController
         self.bannerController = bannerController
         self.theme = theme
 
-        super.init()
+        super.init(api: api)
     }
     
     override func viewDidLoad() {
@@ -86,7 +84,7 @@ extension AssetActionConfirmationViewController {
 
         addLoading()
 
-        api.fetchAssetDetails(
+        api?.fetchAssetDetails(
             AssetFetchQuery(ids: [draft.assetId]),
             queue: .main,
             ignoreResponseOnCancelled: false

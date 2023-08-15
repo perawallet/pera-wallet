@@ -32,8 +32,7 @@ struct CollectibleMediaVideoPreviewViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        placeholder = PlaceholerViewTheme()
-
+        placeholder = PlaceholderViewTheme()
         threeDAction = [
             .icon([.normal("icon-3d"), .highlighted("icon-3d")]),
             .backgroundImage([.normal("icon-3d-bg"), .highlighted("icon-3d-bg")]),
@@ -47,16 +46,14 @@ struct CollectibleMediaVideoPreviewViewTheme:
             .icon([ .normal("icon-full-screen"), .highlighted("icon-full-screen")])
         ]
         fullScreenBadgePaddings = (.noMetric, .noMetric, 16, 16)
-
         corner = Corner(radius: 12)
     }
 }
 
 extension CollectibleMediaVideoPreviewViewTheme {
-    struct PlaceholerViewTheme:
+    struct PlaceholderViewTheme:
         URLImagePlaceholderViewLayoutSheet,
         URLImagePlaceholderViewStyleSheet {
-
         var textPaddings: LayoutPaddings
         var background: ViewStyle
         var image: ImageStyle

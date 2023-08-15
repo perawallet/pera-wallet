@@ -41,9 +41,13 @@ import MacaroonStorySheet
 
      private let alert: Alert
 
-     init(alert: Alert) {
+     init(
+        alert: Alert,
+        api: ALGAPI?
+     ) {
          self.alert = alert
-         super.init()
+         
+         super.init(api: api)
      }
 
      override func prepareLayout() {

@@ -31,15 +31,14 @@ struct ConfirmSwapScreenTheme:
     var toSeparatorTopInset: LayoutMetric
     var poolAsset: SwapAssetAmountViewTheme
     var poolAssetTopInset: LayoutMetric
-    var minimumPoolAssetPadding: LayoutMetric
     var assetSeparator: Separator
-    var assetWarningPadding: LayoutMetric
-    var warning: SwapErrorViewTheme
-    var warningSeparatorPadding: LayoutMetric
+    var spacingBetweenToPoolAssetAndInfoSeparator: LayoutMetric
     var infoActionItem: SwapInfoActionItemViewTheme
     var infoItem: SwapInfoItemViewTheme
     var infoSectionPaddings: LayoutPaddings
     var infoSectionItemSpacing: LayoutMetric
+    var warningTopInset: LayoutMetric
+    var warning: SwapErrorViewTheme
     var viewSummary: ButtonStyle
     var confirmAction: ButtonStyle
     var confirmActionIndicator: ImageStyle
@@ -67,17 +66,13 @@ struct ConfirmSwapScreenTheme:
         self.poolAsset = SwapAssetAmountViewTheme(placeholder: "0.00")
         self.poolAsset.spacingBetweenLeftTitleAndInputs = 0
 
-
         self.poolAssetTopInset = 20
-        self.minimumPoolAssetPadding = 28
         self.assetSeparator = Separator(
             color: Colors.Layer.grayLighter,
             size: 1,
             position: .top((0, 0))
         )
-        self.assetWarningPadding = 32
-        self.warningSeparatorPadding = 56
-        self.warning = SwapErrorViewTheme()
+        self.spacingBetweenToPoolAssetAndInfoSeparator = 36
         self.infoSectionPaddings = (28, 24, .noMetric, 24)
         self.infoActionItem = SwapInfoActionItemViewTheme()
         self.infoItem = SwapInfoItemViewTheme()
@@ -89,6 +84,8 @@ struct ConfirmSwapScreenTheme:
             ]),
             .font(Typography.footnoteMedium()),
         ]
+        self.warningTopInset = 28
+        self.warning = SwapErrorViewTheme()
         self.confirmAction = [
             .title("swap-confirm-title".localized),
             .titleColor(

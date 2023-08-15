@@ -29,9 +29,11 @@ final class OptionsViewController:
     override var shouldShowNavigationBar: Bool {
         return false
     }
-    
+
+    private lazy var canvasView = UIView()
     private lazy var primaryContextView = VStackView()
     private lazy var secondaryContextView = VStackView()
+    private lazy var tertiaryContextView = VStackView()
     
     private var muteNotificationsView: ListItemButton?
 
@@ -57,12 +59,13 @@ final class OptionsViewController:
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        build()
+
+        addUI()
     }
     
-    private func build() {
+    private func addUI() {
         addBackground()
-        addContext()
+        addCanvas()
         addButtons()
     }
 }
@@ -72,9 +75,25 @@ extension OptionsViewController {
         view.customizeAppearance(theme.background)
     }
 
+    private func addCanvas() {
+        contentView.addSubview(canvasView)
+        canvasView.snp.makeConstraints {
+            $0.top == theme.canvasPaddings.top
+            $0.leading == theme.canvasPaddings.leading
+            $0.bottom == theme.canvasPaddings.bottom
+            $0.trailing == theme.canvasPaddings.trailing
+        }
+
+        addContext()
+    }
+
     private func addContext() {
         addPrimaryContext()
         addSecondaryContext()
+
+        if optionGroup.tertiaryOptions.isNonEmpty {
+            addTertiaryContext()
+        }
     }
 
     private func addButtons() {
@@ -86,10 +105,14 @@ extension OptionsViewController {
             optionGroup.secondaryOptions,
             to: secondaryContextView
         )
+        addButtons(
+            optionGroup.tertiaryOptions,
+            to: tertiaryContextView
+        )
     }
     
     private func addPrimaryContext() {
-        contentView.addSubview(primaryContextView)
+        canvasView.addSubview(primaryContextView)
         primaryContextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
             top: theme.primaryContextPaddings.top,
             leading: theme.primaryContextPaddings.leading,
@@ -98,9 +121,9 @@ extension OptionsViewController {
         )
         primaryContextView.isLayoutMarginsRelativeArrangement = true
         primaryContextView.snp.makeConstraints {
-            $0.setPaddings(
-                (0, 0, .noMetric, 0)
-            )
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
         }
     }
 
@@ -111,7 +134,7 @@ extension OptionsViewController {
             margin: theme.verticalPadding
         )
 
-        contentView.addSubview(secondaryContextView)
+        canvasView.addSubview(secondaryContextView)
         secondaryContextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
             top: theme.secondaryContextPaddings.top,
             leading: theme.secondaryContextPaddings.leading,
@@ -121,9 +144,32 @@ extension OptionsViewController {
         secondaryContextView.isLayoutMarginsRelativeArrangement = true
         secondaryContextView.snp.makeConstraints {
             $0.top == separator
-            $0.setPaddings(
-                (.noMetric, 0, 0, 0)
-            )
+            $0.leading == 0
+            $0.bottom.equalToSuperview().priority(.medium)
+            $0.trailing == 0
+        }
+    }
+
+    private func addTertiaryContext() {
+        let separator = contentView.attachSeparator(
+            theme.separator,
+            to: secondaryContextView,
+            margin: theme.verticalPadding
+        )
+
+        canvasView.addSubview(tertiaryContextView)
+        tertiaryContextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: theme.tertiaryContextPaddings.top,
+            leading: theme.tertiaryContextPaddings.leading,
+            bottom: theme.tertiaryContextPaddings.bottom,
+            trailing: theme.tertiaryContextPaddings.trailing
+        )
+        tertiaryContextView.isLayoutMarginsRelativeArrangement = true
+        tertiaryContextView.snp.makeConstraints {
+            $0.top == separator
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
         }
     }
     
@@ -143,6 +189,19 @@ extension OptionsViewController {
                 addButton(
                     ShowQrCodeListItemButtonViewModel(),
                     #selector(showQRCode),
+                    to: stackView
+                )
+            case .undoRekey:
+                guard
+                    let authAddress = account.authAddress,
+                    let authAccount = sharedDataController.accountCollection.account(for: authAddress)
+                else {
+                    return
+                }
+
+                addButton(
+                    UndoRekeyListItemButtonViewModel(authAccount: authAccount),
+                    #selector(undoRekey),
                     to: stackView
                 )
             case .rekeyToLedger:
@@ -218,6 +277,16 @@ extension OptionsViewController {
     private func copyAddress() {
         dismissScreen()
         delegate?.optionsViewControllerDidCopyAddress(self)
+    }
+
+    @objc
+    private func undoRekey() {
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.delegate?.optionsViewControllerDidUndoRekey(self)
+        }
     }
     
     @objc
@@ -355,12 +424,13 @@ extension OptionsViewController {
     struct OptionGroup {
         let primaryOptions: [Option]
         let secondaryOptions: [Option]
+        let tertiaryOptions: [Option]
 
         static func makeOptionGroup(
             for account: Account,
             session: Session
         ) -> OptionGroup {
-            return account.isWatchAccount()
+            return account.authorization.isWatch
             ? makeOptionGroup(forWatchAccount: account)
             : makeOptionGroup(
                 forNonWatchAccount: account,
@@ -376,7 +446,7 @@ extension OptionsViewController {
                 .showAddress
             ]
             
-            if account.isRekeyed() {
+            if account.hasAuthAccount() {
                 primaryOptions.append(.rekeyInformation)
             }
 
@@ -387,7 +457,8 @@ extension OptionsViewController {
             ]
             return OptionGroup(
                 primaryOptions: primaryOptions,
-                secondaryOptions: secondaryOptions
+                secondaryOptions: secondaryOptions,
+                tertiaryOptions: []
             )
         }
 
@@ -400,7 +471,7 @@ extension OptionsViewController {
             primaryOptions.append(.copyAddress)
             primaryOptions.append(.showAddress)
 
-            if account.isRekeyed() {
+            if account.hasAuthAccount() {
                 primaryOptions.append(.rekeyInformation)
             }
             
@@ -408,18 +479,34 @@ extension OptionsViewController {
                 primaryOptions.append(.viewPassphrase)
             }
 
-            primaryOptions.append(.rekeyToLedger)
-            primaryOptions.append(.rekeyToStandardAccount)
+            var secondaryOptions: [Option] = []
+            var tertiaryOptions: [Option] = []
 
-            let secondaryOptions: [Option] = [
-                .renameAccount,
-                .muteNotifications,
-                .removeAccount
-            ]
+            if account.authorization.isNoAuth {
+                secondaryOptions = [
+                    .renameAccount,
+                    .muteNotifications,
+                    .removeAccount
+                ]
+            } else {
+                if account.authorization.isRekeyed {
+                    secondaryOptions.append(.undoRekey)
+                }
+
+                secondaryOptions.append(.rekeyToLedger)
+                secondaryOptions.append(.rekeyToStandardAccount)
+
+                tertiaryOptions = [
+                    .renameAccount,
+                    .muteNotifications,
+                    .removeAccount
+                ]
+            }
 
             return OptionGroup(
                 primaryOptions: primaryOptions,
-                secondaryOptions: secondaryOptions
+                secondaryOptions: secondaryOptions,
+                tertiaryOptions: tertiaryOptions
             )
         }
     }
@@ -427,6 +514,7 @@ extension OptionsViewController {
     enum Option {
         case copyAddress
         case showAddress
+        case undoRekey
         case rekeyToLedger
         case rekeyToStandardAccount
         case rekeyInformation
@@ -442,6 +530,9 @@ protocol OptionsViewControllerDelegate: AnyObject {
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidShowQR(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidUndoRekey(
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidOpenRekeyingToLedger(

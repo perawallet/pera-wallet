@@ -52,7 +52,7 @@ final class SelectAssetViewController:
         configuration: ViewControllerConfiguration
     ) {
         self.account = account
-        self.receiverAccount = receiver.unwrap { Account(address: $0, type: .standard) }
+        self.receiverAccount = receiver.unwrap { Account(address: $0) }
         self.theme = theme
 
         super.init(configuration: configuration)

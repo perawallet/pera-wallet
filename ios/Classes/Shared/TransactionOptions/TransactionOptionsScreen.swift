@@ -16,8 +16,6 @@
 
 import Foundation
 import MacaroonBottomSheet
-import MacaroonUIKit
-import MagpieExceptions
 import UIKit
 
 final class TransactionOptionsScreen:
@@ -29,14 +27,17 @@ final class TransactionOptionsScreen:
         return false
     }
 
-    private lazy var contextView = TransactionOptionsContextView(actions: composeActions())
+    private lazy var contextView = TransactionOptionsContextView(actions: makeActions())
 
+    private let account: Account
     private let theme: TransactionOptionsScreenTheme
 
     init(
+        account: Account,
         theme: TransactionOptionsScreenTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
+        self.account = account
         self.theme = theme
         super.init(configuration: configuration)
     }
@@ -60,65 +61,19 @@ extension TransactionOptionsScreen {
 }
 
 extension TransactionOptionsScreen {
-    private func composeActions() -> [TransactionOptionListAction] {
-        let buySellAction = TransactionOptionListAction(
-            viewModel: BuySellTransactionOptionListItemButtonViewModel()
-        ) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.delegate?.transactionOptionsScreenDidBuySell(self)
-        }
+    private func makeActions() -> [TransactionOptionListAction] {
+        return account.authorization.isWatch
+        ? makeActionsForWatchAccount()
+        : makeActionsForNonWatchAccount()
+    }
 
-        let swapDisplayStore = SwapDisplayStore()
-        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
-
-        var swapActionViewModel = SwapTransactionOptionListItemButtonViewModel(isBadgeVisible: !isOnboardedToSwap)
-        let swapAction = TransactionOptionListAction(
-            viewModel: swapActionViewModel
-        ) {
-            [weak self] actionView in
-            guard let self = self else { return }
-
-            if !isOnboardedToSwap {
-                swapActionViewModel.bindIsBadgeVisible(false)
-                actionView.bindData(swapActionViewModel)
-            }
-
-            self.delegate?.transactionOptionsScreenDidSwap(self)
-        }
-
-        let sendAction = TransactionOptionListAction(
-            viewModel: SendTransactionOptionListItemButtonViewModel()
-        ) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.delegate?.transactionOptionsScreenDidSend(self)
-        }
-
-        let receiveAction = TransactionOptionListAction(
-            viewModel: ReceiveTransactionOptionListItemButtonViewModel()
-        ) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.delegate?.transactionOptionsScreenDidReceive(self)
-        }
-
-        let addAssetAction = TransactionOptionListAction(
-            viewModel: AddAssetTransactionOptionListActionViewModel()
-        ) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.delegate?.transactionOptionsScreenDidAddAsset(self)
-        }
-
-        let moreAction = TransactionOptionListAction(
-            viewModel: MoreTransactionOptionListItemButtonViewModel()
-        ) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.delegate?.transactionOptionsScreenDidMore(self)
-        }
-
+    private func makeActionsForNonWatchAccount() -> [TransactionOptionListAction] {
+        let buySellAction = makeBuySellAction()
+        let swapAction = makeSwapAction()
+        let sendAction = makeSendAction()
+        let receiveAction = makeReceiveAction()
+        let addAssetAction = makeAddAssetAction()
+        let moreAction = makeMoreAction()
         return [
             buySellAction,
             swapAction,
@@ -130,23 +85,123 @@ extension TransactionOptionsScreen {
     }
 }
 
+extension TransactionOptionsScreen {
+    private func makeActionsForWatchAccount() -> [TransactionOptionListAction] {
+        let copyAddressAction = makeCopyAddressAction()
+        let showAddressAction = makeShowAddressAction()
+        let moreAction = makeMoreAction()
+        return [
+            copyAddressAction,
+            showAddressAction,
+            moreAction
+        ]
+    }
+
+    private func makeCopyAddressAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            viewModel: CopyAddressTransactionOptionListItemButtonViewModel(account)
+        ) {
+            [unowned self] _ in
+            self.delegate?.transactionOptionsScreenDidTapCopyAddress(self)
+        }
+    }
+
+    private func makeShowAddressAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            viewModel: ShowAddressTransactionOptionListItemButtonViewModel()
+        ) {
+            [unowned self] _ in
+            self.delegate?.transactionOptionsScreenDidTapShowAddress(self)
+        }
+    }
+
+    private func makeBuySellAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            viewModel: BuySellTransactionOptionListItemButtonViewModel()
+        ) {
+            [unowned self] _ in
+            self.delegate?.transactionOptionsScreenDidTapBuySell(self)
+        }
+    }
+
+    private func makeSwapAction() -> TransactionOptionListAction {
+        let swapDisplayStore = SwapDisplayStore()
+        let isOnboardedToSwap = swapDisplayStore.isOnboardedToSwap
+        var swapActionViewModel = SwapTransactionOptionListItemButtonViewModel(isBadgeVisible: !isOnboardedToSwap)
+        return TransactionOptionListAction(
+            viewModel: swapActionViewModel
+        ) {
+            [unowned self] actionView in
+
+            if !isOnboardedToSwap {
+                swapActionViewModel.bindIsBadgeVisible(false)
+                actionView.bindData(swapActionViewModel)
+            }
+
+            self.delegate?.transactionOptionsScreenDidTapSwap(self)
+        }
+    }
+
+    private func makeSendAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            viewModel: SendTransactionOptionListItemButtonViewModel()
+        ) {
+            [unowned self] _ in
+            self.delegate?.transactionOptionsScreenDidTapSend(self)
+        }
+    }
+
+    private func makeReceiveAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            viewModel: ReceiveTransactionOptionListItemButtonViewModel()
+        ) {
+            [unowned self] _ in
+            self.delegate?.transactionOptionsScreenDidTapReceive(self)
+        }
+    }
+
+    private func makeAddAssetAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            viewModel: AddAssetTransactionOptionListActionViewModel()
+        ) {
+            [unowned self] _ in
+            self.delegate?.transactionOptionsScreenDidTapAddAsset(self)
+        }
+    }
+
+    private func makeMoreAction() -> TransactionOptionListAction {
+        return TransactionOptionListAction(
+            viewModel: MoreTransactionOptionListItemButtonViewModel()
+        ) {
+            [unowned self] _ in
+            self.delegate?.transactionOptionsScreenDidTapMore(self)
+        }
+    }
+}
+
 protocol TransactionOptionsScreenDelegate: AnyObject {
-    func transactionOptionsScreenDidBuySell(
+    func transactionOptionsScreenDidTapCopyAddress(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
-    func transactionOptionsScreenDidSwap(
+    func transactionOptionsScreenDidTapShowAddress(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
-    func transactionOptionsScreenDidSend(
+    func transactionOptionsScreenDidTapBuySell(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
-    func transactionOptionsScreenDidReceive(
+    func transactionOptionsScreenDidTapSwap(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
-    func transactionOptionsScreenDidAddAsset(
+    func transactionOptionsScreenDidTapSend(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
-    func transactionOptionsScreenDidMore(
+    func transactionOptionsScreenDidTapReceive(
+        _ transactionOptionsScreen: TransactionOptionsScreen
+    )
+    func transactionOptionsScreenDidTapAddAsset(
+        _ transactionOptionsScreen: TransactionOptionsScreen
+    )
+    func transactionOptionsScreenDidTapMore(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
 }

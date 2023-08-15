@@ -19,7 +19,7 @@ import MacaroonUtils
 import WebKit
 
 final class BidaliDappDetailScreen:
-    DiscoverDappDetailScreen,
+    DiscoverExternalInAppBrowserScreen,
     SharedDataControllerObserver {
 
     private var account: AccountHandle {
@@ -35,12 +35,8 @@ final class BidaliDappDetailScreen:
     ) {
         self.account = account
         self.config = config
-        let dappParameters = DiscoverDappParamaters(
-            name: nil,
-            url: config.url,
-            favorites: nil
-        )
-        super.init(dappParameters: dappParameters, configuration: configuration)
+        let url = URL(string: config.url)
+        super.init(destination: .url(url), configuration: configuration)
         self.allowsPullToRefresh = false
 
         self.sharedDataController.add(self)
@@ -175,7 +171,7 @@ extension BidaliDappDetailScreen {
 
         let draft = makeSendTransactionDraft(
             from: account.value,
-            to: Account(address: address, type: .standard),
+            to: Account(address: address),
             asset: asset,
             amount: amount,
             extraId: extraId
@@ -237,7 +233,7 @@ extension BidaliDappDetailScreen {
     }
 
     private func openOpenURLRequest(_ request: BidaliOpenURLRequest) {
-        guard let url = request.url else {
+        guard let url = request.url.toURL() else {
             presentGenericErrorBanner()
             return
         }

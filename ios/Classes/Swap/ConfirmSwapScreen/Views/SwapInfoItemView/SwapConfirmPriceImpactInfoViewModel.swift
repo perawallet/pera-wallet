@@ -21,38 +21,88 @@ import UIKit
 struct SwapConfirmPriceImpactInfoViewModel: SwapInfoItemViewModel {
     private(set) var title: TextProvider?
     private(set) var icon: Image?
+    private(set) var iconTintColor: Color?
     private(set) var detail: TextProvider?
     private(set) var action: Image?
 
     init(
         _ quote: SwapQuote
     ) {
-        bindTitle()
-        bindIcon()
+        bindTitle(quote)
+        bindIcon(quote)
         bindDetail(quote)
         action = nil
     }
 }
 
 extension SwapConfirmPriceImpactInfoViewModel {
-    mutating func bindTitle() {
-        title = "swap-price-impact-title"
-            .localized
-            .footnoteRegular(lineBreakMode: .byTruncatingTail)
+    mutating func bindTitle(
+        _ quote: SwapQuote
+    ) {
+        guard let priceImpact = quote.priceImpact else {
+            title = nil
+            return
+        }
+
+        let aTitle = "swap-price-impact-title".localized
+
+        let attributes: TextAttributeGroup
+
+        if priceImpact > PriceImpactLimit.fivePercent {
+            var someAttributes = Typography.footnoteMediumAttributes(lineBreakMode: .byTruncatingTail)
+            someAttributes.insert(.textColor(Colors.Helpers.negative))
+            attributes = someAttributes
+        } else {
+            var someAttributes = Typography.footnoteRegularAttributes(lineBreakMode: .byTruncatingTail)
+            someAttributes.insert(.textColor(Colors.Text.gray))
+            attributes = someAttributes
+        }
+
+        title = aTitle.attributed(attributes)
     }
 
-    mutating func bindIcon() {
+    mutating func bindIcon(
+        _ quote: SwapQuote
+    ) {
+        guard let priceImpact = quote.priceImpact else {
+            icon = nil
+            iconTintColor = nil
+            return
+        }
+
         icon = "icon-info-20"
+
+        if priceImpact > PriceImpactLimit.fivePercent {
+            iconTintColor = Colors.Helpers.negative
+        } else {
+            iconTintColor = Colors.Text.grayLighter
+        }
     }
 
     mutating func bindDetail(
         _ quote: SwapQuote
     ) {
-        guard let priceImpact = quote.priceImpact else { return }
+        guard let priceImpact = quote.priceImpact else {
+            detail = nil
+            return
+        }
 
-        detail = priceImpact
+        let aDetail = priceImpact
             .doubleValue
-            .toPercentageWith(fractions: 3)?
-            .footnoteRegular(lineBreakMode: .byTruncatingTail)
+            .toPercentageWith(fractions: 3)
+
+        let attributes: TextAttributeGroup
+
+        if priceImpact > PriceImpactLimit.fivePercent {
+            var someAttributes = Typography.footnoteMediumAttributes(lineBreakMode: .byTruncatingTail)
+            someAttributes.insert(.textColor(Colors.Helpers.negative))
+            attributes = someAttributes
+        } else {
+            var someAttributes = Typography.footnoteRegularAttributes(lineBreakMode: .byTruncatingTail)
+            someAttributes.insert(.textColor(Colors.Text.main))
+            attributes = someAttributes
+        }
+
+        detail = aDetail?.attributed(attributes)
     }
 }

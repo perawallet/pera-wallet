@@ -33,7 +33,6 @@ struct CollectibleMediaImagePreviewViewTheme:
         _ family: LayoutFamily
     ) {
         image = URLImageViewCollectibleMediaTheme()
-
         threeDAction = [
             .icon([.normal("icon-3d"), .highlighted("icon-3d")]),
             .backgroundImage([.normal("icon-3d-bg"), .highlighted("icon-3d-bg")]),
@@ -42,12 +41,10 @@ struct CollectibleMediaImagePreviewViewTheme:
         ]
         threeDActionContentEdgeInsets = (4, 8, 4, 8)
         threeDModeActionPaddings = (.noMetric, 16, 16, .noMetric)
-
         fullScreenAction = [
             .icon([ .normal("icon-full-screen"), .highlighted("icon-full-screen")])
         ]
         fullScreenBadgePaddings = (.noMetric, .noMetric, 16, 16)
-
         corner = Corner(radius: 12)
     }
 }

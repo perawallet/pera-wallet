@@ -18,8 +18,8 @@
 import MacaroonUIKit
 
 final class LedgerAccountSelectionViewModel: ViewModel {
-    private(set) var detail: String?
-    private(set) var accountCount: String?
+    private(set) var detail: TextProvider?
+    private(set) var accountCount: TextProvider?
     private(set) var buttonText: String?
     private(set) var isEnabled: Bool = false
 
@@ -32,11 +32,12 @@ final class LedgerAccountSelectionViewModel: ViewModel {
 
     private func bindButtonText(from isMultiSelect: Bool, and selectedCount: Int) {
         if isMultiSelect {
-            buttonText = selectedCount <= 1
+            buttonText =
+                selectedCount <= 1
                 ? "ledger-account-selection-verify".localized
                 : "ledger-account-selection-verify-plural".localized
         } else {
-            buttonText = "ledger-account-selection-verify".localized
+            buttonText = "title-continue".localized
         }
     }
 
@@ -45,12 +46,18 @@ final class LedgerAccountSelectionViewModel: ViewModel {
     }
 
     private func bindDetail(_ isMultiSelect: Bool) {
-        detail = isMultiSelect ? "ledger-account-selection-detail".localized : "ledger-account-selection-detail-rekey".localized
+        let text =
+            isMultiSelect
+            ? "ledger-account-selection-detail".localized
+            : "ledger-account-selection-detail-rekey".localized
+        detail = text.bodyRegular()
     }
 
     private func bindAccountCount(_ accounts: [Account]) {
-        accountCount = accounts.count == 1 ?
-            "ledger-account-selection-title-singular".localized(params: accounts.count) :
-            "ledger-account-selection-title-plural".localized(params: accounts.count)
+        let text =
+            accounts.count == 1
+            ? "ledger-account-selection-title-singular".localized(params: accounts.count)
+            : "ledger-account-selection-title-plural".localized(params: accounts.count)
+        accountCount = text.bodyLargeMedium()
     }
 }

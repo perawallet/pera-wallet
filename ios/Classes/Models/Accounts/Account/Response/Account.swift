@@ -25,6 +25,8 @@ final class Account: ALGEntityModel {
     
     let address: String
     var amountWithoutRewards: UInt64
+    var authorization: AccountAuthorization
+    var isWatchAccount: Bool
     var rewardsBase: UInt64?
     var round: UInt64?
     var signatureType: SignatureType?
@@ -46,7 +48,6 @@ final class Account: ALGEntityModel {
     var totalCreatedApps: Int
 
     var name: String?
-    var type: AccountInformation.AccountType = .standard
     var ledgerDetail: LedgerDetail?
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
@@ -74,6 +75,8 @@ final class Account: ALGEntityModel {
     ) {
         address = apiModel.address
         amountWithoutRewards = apiModel.amountWithoutPendingRewards
+        authorization = .unknown
+        isWatchAccount = false
         rewardsBase = apiModel.rewardBase
         round = apiModel.round
         signatureType = apiModel.sigType
@@ -98,7 +101,6 @@ final class Account: ALGEntityModel {
 
     init(
         address: String,
-        type: AccountInformation.AccountType,
         ledgerDetail: LedgerDetail? = nil,
         name: String? = nil,
         rekeyDetail: RekeyDetail? = nil,
@@ -108,10 +110,11 @@ final class Account: ALGEntityModel {
     ) {
         self.address = address
         self.amountWithoutRewards = 0
+        self.authorization = .unknown
+        self.isWatchAccount = false
         self.pendingRewards = 0
         self.status = .offline
         self.name = name
-        self.type = type
         self.ledgerDetail = ledgerDetail
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
@@ -125,10 +128,11 @@ final class Account: ALGEntityModel {
     ) {
         self.address = localAccount.address
         self.amountWithoutRewards = 0
+        self.authorization = localAccount.isWatchAccount ? .watch : .unknown
         self.pendingRewards = 0
         self.status = .offline
         self.name = localAccount.name
-        self.type = localAccount.type
+        self.isWatchAccount = localAccount.isWatchAccount
         self.ledgerDetail = localAccount.ledgerDetail
         self.receivesNotification = localAccount.receivesNotification
         self.rekeyDetail = localAccount.rekeyDetail
@@ -183,7 +187,7 @@ extension Account {
         let address = address
         let shortAddressDisplay = address.shortAddressDisplay
 
-        if type == .standard,
+        if authorization.isStandard,
            name == shortAddressDisplay {
             return nil
         }
@@ -469,5 +473,207 @@ extension Account {
         }
 
         return self[assetID]
+    }
+}
+
+extension Account {
+    func update(from localAccount: AccountInformation) {
+        name = localAccount.name
+        authorization = localAccount.isWatchAccount ? .watch : authorization
+        isWatchAccount = localAccount.isWatchAccount
+        ledgerDetail = localAccount.ledgerDetail
+        receivesNotification = localAccount.receivesNotification
+        rekeyDetail = localAccount.rekeyDetail
+        preferredOrder = localAccount.preferredOrder
+    }
+
+    func update(with account: Account) {
+        algo.amount = account.algo.amount
+        status = account.status
+        rewards = account.rewards
+        pendingRewards = account.pendingRewards
+        participation = account.participation
+        createdAssets = account.createdAssets
+        assets = account.assets
+        authorization = account.authorization
+        isWatchAccount = account.isWatchAccount
+        ledgerDetail = account.ledgerDetail
+        amountWithoutRewards = account.amountWithoutRewards
+        rewardsBase = account.rewardsBase
+        round = account.round
+        signatureType = account.signatureType
+        authAddress = account.authAddress
+        rekeyDetail = account.rekeyDetail
+        receivesNotification = account.receivesNotification
+        createdRound = account.createdRound
+        closedRound = account.closedRound
+        isDeleted = account.isDeleted
+        appsLocalState = account.appsLocalState
+        appsTotalExtraPages = account.appsTotalExtraPages
+        appsTotalSchema = account.appsTotalSchema
+        preferredOrder = account.preferredOrder
+
+        if let updatedName = account.name {
+            name = updatedName
+        }
+    }
+}
+
+enum AccountAuthorization: RawRepresentable {
+    var rawValue: String {
+        switch self {
+        case .standard: return "standard"
+        case .ledger: return "ledger"
+        case .watch: return "watch"
+        case .noAuthInLocal: return "noAuthInLocal"
+        case .standardToLedgerRekeyed: return "standardToLedgerRekeyed"
+        case .standardToStandardRekeyed: return "standardToStandardRekeyed"
+        case .standardToNoAuthInLocalRekeyed: return "standardToNoAuthInLocalRekeyed"
+        case .ledgerToLedgerRekeyed: return "ledgerToLedgerRekeyed"
+        case .ledgerToStandardRekeyed: return "ledgerToStandardRekeyed"
+        case .ledgerToNoAuthInLocalRekeyed: return "ledgerToNoAuthInLocalRekeyed"
+        case .unknownToLedgerRekeyed: return "unknownToLedgerRekeyed"
+        case .unknownToStandardRekeyed: return "unknownToStandardRekeyed"
+        case .unknownToNoAuthInLocalRekeyed: return "unknownToNoAuthInLocalRekeyed"
+        case .unknown: return "unknown"
+        }
+    }
+
+    init?(rawValue: String) {
+        switch rawValue {
+        case Self.standard.rawValue: self = .standard
+        case Self.ledger.rawValue: self = .ledger
+        case Self.watch.rawValue: self = .watch
+        case Self.standardToLedgerRekeyed.rawValue: self = .standardToLedgerRekeyed
+        case Self.standardToStandardRekeyed.rawValue: self = .standardToStandardRekeyed
+        case Self.standardToNoAuthInLocalRekeyed.rawValue: self = .standardToNoAuthInLocalRekeyed
+        case Self.ledgerToLedgerRekeyed.rawValue: self = .ledgerToLedgerRekeyed
+        case Self.ledgerToStandardRekeyed.rawValue: self = .ledgerToStandardRekeyed
+        case Self.ledgerToNoAuthInLocalRekeyed.rawValue: self = .ledgerToNoAuthInLocalRekeyed
+        case Self.unknownToLedgerRekeyed.rawValue: self = .unknownToLedgerRekeyed
+        case Self.unknownToStandardRekeyed.rawValue: self = .unknownToStandardRekeyed
+        case Self.unknownToNoAuthInLocalRekeyed.rawValue: self = .unknownToNoAuthInLocalRekeyed
+        case Self.noAuthInLocal.rawValue: self = .noAuthInLocal
+        default: self = .unknown
+        }
+    }
+
+    case standard
+    case ledger
+    case watch
+    case noAuthInLocal /// <note> Missing private data and not rekeyed
+
+    case standardToLedgerRekeyed
+    case standardToStandardRekeyed
+    case standardToNoAuthInLocalRekeyed
+
+    case ledgerToLedgerRekeyed
+    case ledgerToStandardRekeyed
+    case ledgerToNoAuthInLocalRekeyed
+
+    case unknownToLedgerRekeyed
+    case unknownToStandardRekeyed
+    case unknownToNoAuthInLocalRekeyed
+
+    case unknown /// <note> Undetermined or indeterminable authorization state.
+}
+
+extension AccountAuthorization {
+    var isStandard: Bool {
+        return self == .standard
+    }
+
+    var isLedger: Bool {
+        return self == .ledger
+    }
+
+    var isWatch: Bool {
+        return self == .watch
+    }
+
+    var isNoAuthInLocal: Bool {
+        return self == .noAuthInLocal
+    }
+
+    var isUnknown: Bool {
+        return self == .unknown
+    }
+
+    var isStandardToLedgerRekeyed: Bool {
+        return self == .standardToLedgerRekeyed
+    }
+
+    var isStandardToStandardRekeyed: Bool {
+        return self == .standardToStandardRekeyed
+    }
+
+    var isStandardToNoAuthInLocalRekeyed: Bool {
+        return self == .standardToNoAuthInLocalRekeyed
+    }
+
+    var isLedgerToLedgerRekeyed: Bool {
+        return self == .ledgerToLedgerRekeyed
+    }
+
+    var isLedgerToStandardRekeyed: Bool {
+        return self == .ledgerToStandardRekeyed
+    }
+
+    var isLedgerToNoAuthInLocalRekeyed: Bool {
+        return self == .ledgerToNoAuthInLocalRekeyed
+    }
+
+    var isUnknownToLedgerRekeyed: Bool {
+        return self == .unknownToLedgerRekeyed
+    }
+
+    var isUnknownToStandardRekeyed: Bool {
+        return self == .unknownToStandardRekeyed
+    }
+
+    var isUnknownToNoAuthInLocalRekeyed: Bool {
+        return self == .unknownToNoAuthInLocalRekeyed
+    }
+
+    /// <note> Missing private data or rekeyed to account that is not in local
+    var isNoAuth: Bool {
+        return isNoAuthInLocal || isRekeyedToNoAuthInLocal
+    }
+
+    var isAuthorized: Bool {
+        return !isWatch && !isNoAuth && !isUnknown
+    }
+
+    /// <note> `isRekeyedToNoAuthInLocal` is not included in this check.
+    /// Rekeyed account authorization means, we've the auth account or auth ledger detail in the app, If you want to check auth address nullity, check auth address.
+    var isRekeyed: Bool {
+        return
+            isStandardToLedgerRekeyed ||
+            isStandardToStandardRekeyed ||
+            isLedgerToLedgerRekeyed ||
+            isLedgerToStandardRekeyed ||
+            isUnknownToLedgerRekeyed ||
+            isUnknownToStandardRekeyed
+    }
+
+    var isRekeyedToLedger: Bool {
+        return
+            isStandardToLedgerRekeyed ||
+            isLedgerToLedgerRekeyed ||
+            isUnknownToLedgerRekeyed
+    }
+
+    var isRekeyedToStandard: Bool {
+        return
+            isStandardToStandardRekeyed ||
+            isLedgerToStandardRekeyed ||
+            isUnknownToStandardRekeyed
+    }
+
+    var isRekeyedToNoAuthInLocal: Bool {
+       return
+            isStandardToNoAuthInLocalRekeyed ||
+            isLedgerToNoAuthInLocalRekeyed ||
+            isUnknownToNoAuthInLocalRekeyed
     }
 }

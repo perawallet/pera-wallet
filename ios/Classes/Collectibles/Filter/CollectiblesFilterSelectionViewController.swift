@@ -29,8 +29,13 @@ final class CollectiblesFilterSelectionViewController: ScrollScreen {
 
     private let theme: CollectiblesFilterSelectionViewControllerTheme
 
-    init(theme: CollectiblesFilterSelectionViewControllerTheme = .init()) {
+    init(
+        theme: CollectiblesFilterSelectionViewControllerTheme = .init(),
+        api: ALGAPI?
+    ) {
         self.theme = theme
+        
+        super.init(api: api)
     }
 
     override func configureNavigationBar() {

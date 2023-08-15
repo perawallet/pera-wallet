@@ -87,6 +87,10 @@ final class SelectAccountViewController: BaseViewController {
                 return
             }
 
+            guard accountHandle.isAvailable else {
+                return
+            }
+
             self.delegate?.selectAccountViewController(
                 self,
                 didSelect: accountHandle.value,
@@ -150,7 +154,6 @@ enum TransactionAction: Equatable {
     case send
     case receive
     case optIn(asset: AssetID)
-    case rekeyToStandardAccount
 }
 
 protocol SelectAccountViewControllerDelegate: AnyObject {

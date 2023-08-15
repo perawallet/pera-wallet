@@ -39,7 +39,21 @@ extension TransferAssetBalanceNameViewModel {
             attributes.insert(.textColor(Colors.Helpers.negative))
         }
 
-        primaryTitle = title.attributed(attributes)
+        let destroyedText = makeDeletedAssetTextIfNeeded(asset.isDestroyed)
+        let assetText = title.attributed(attributes)
+
+        primaryTitle = [ destroyedText, assetText ].compound(" ")
+    }
+
+    private func makeDeletedAssetTextIfNeeded(_ isAssetDeleted: Bool) -> NSAttributedString? {
+        guard isAssetDeleted else {
+            return nil
+        }
+
+        let deletedTitle = "title-deleted-with-parantheses".localized
+        var attributes = Typography.titleSmallMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Helpers.negative))
+        return deletedTitle.attributed(attributes)
     }
 
     mutating func bindPrimaryTitleAccessory(asset: AssetDecoration) {

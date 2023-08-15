@@ -130,6 +130,8 @@ extension CurrencySelectionListAPIDataController {
     }
 
     func resetSearch() {
+        searchThrottler.cancelAll()
+        
         searchResults.removeAll()
         searchResults = currencies
 

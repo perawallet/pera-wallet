@@ -42,35 +42,3 @@ struct AssetSearchQuery: ObjectQuery {
         return params
     }
 }
-
-struct TransactionSearchQuery: ObjectQuery {
-    let id: String?
-    
-    var queryParams: [APIQueryParam] {
-        var params: [APIQueryParam] = []
-        if let id = id {
-            params.append(.init(.transactionDetailID, id))
-        }
-        return params
-    }
-}
-
-struct AssetFetchQuery: ObjectQuery {
-    let ids: [AssetID]
-    var includeDeleted: Bool? = nil
-
-    var queryParams: [APIQueryParam] {
-        var params: [APIQueryParam] = []
-        params.append(.init(.assetIDs, ids))
-        
-        if let includeDeleted = includeDeleted {
-            params.append(.init(.includeDeleted, includeDeleted))
-        }
-        
-        return params
-    }
-}
-
-struct AssetDetailFetchDraft {
-    let id: AssetID
-}

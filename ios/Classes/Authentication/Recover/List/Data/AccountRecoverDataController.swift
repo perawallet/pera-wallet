@@ -68,12 +68,15 @@ class AccountRecoverDataController: NSObject {
         if let sameAccount = sharedDataController.accountCollection[address]?.value {
             // If the recovered account is rekeyed or watch account in the app, save the passphrase.
             // Convert the account type to standard account if it's a watch account since the account has the passphrase now.
-            if sameAccount.isRekeyed() || sameAccount.isWatchAccount() {
-                let accountType = sameAccount.isWatchAccount() ? .standard : sameAccount.type
+
+            let isRekeyed = sameAccount.authorization.isRekeyed
+            let isWatch = sameAccount.authorization.isWatch
+            let isNoAuth = sameAccount.authorization.isNoAuth
+            if isRekeyed || isWatch || isNoAuth {
                 return AccountInformation(
                     address: address,
                     name: sameAccount.name ?? address.shortAddressDisplay,
-                    type: accountType,
+                    isWatchAccount: false,
                     ledgerDetail: sameAccount.ledgerDetail,
                     rekeyDetail: sameAccount.rekeyDetail,
                     preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
@@ -86,7 +89,7 @@ class AccountRecoverDataController: NSObject {
             return AccountInformation(
                 address: address,
                 name: address.shortAddressDisplay,
-                type: .standard,
+                isWatchAccount: false,
                 preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
             )
         }
@@ -110,11 +113,6 @@ class AccountRecoverDataController: NSObject {
         } else {
             user = User(accounts: [account])
         }
-
-        NotificationCenter.default.post(
-            name: .didAddAccount,
-            object: self
-        )
 
         session.authenticatedUser = user
     }

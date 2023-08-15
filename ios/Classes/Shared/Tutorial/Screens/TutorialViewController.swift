@@ -39,7 +39,6 @@ final class TutorialViewController: BaseScrollViewController {
              .accountVerified,
              .biometricAuthenticationEnabled,
              .collectibleTransferConfirmed,
-             .accountSuccessfullyRekeyed,
              .ledgerSuccessfullyConnected,
              .failedToImportLedgerAccounts:
             hidesCloseBarButtonItem = true
@@ -172,8 +171,6 @@ extension TutorialViewController: TutorialViewDelegate {
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .recoverWithLedger:
             open(.ledgerDeviceList(flow: flow), by: .push)
-        case .accountSuccessfullyRekeyed:
-            uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .collectibleTransferConfirmed:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         }
@@ -202,6 +199,8 @@ extension TutorialViewController: TutorialViewDelegate {
             }
 
             launchMain()
+        case .ledgerSuccessfullyConnected:
+            uiHandlers.didTapSecondaryActionButton?(self)
         default:
             break
         }
@@ -313,8 +312,7 @@ enum Tutorial: Equatable {
     case passphraseVerified(account: AccountInformation)
     case accountVerified(flow: AccountSetupFlow)
     case recoverWithLedger
-    case ledgerSuccessfullyConnected
+    case ledgerSuccessfullyConnected(flow: AccountSetupFlow)
     case failedToImportLedgerAccounts
-    case accountSuccessfullyRekeyed(accountName: String)
     case collectibleTransferConfirmed
 }

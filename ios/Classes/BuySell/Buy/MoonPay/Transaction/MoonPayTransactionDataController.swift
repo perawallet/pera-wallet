@@ -29,10 +29,18 @@ final class MoonPayTransactionDataController: NSObject {
     }
     
     func loadData() {
-        let account = sharedDataController.accountCollection.account(for: accountAddress) ??
-            Account(address: accountAddress, type: .standard)
-        
+        let account = makeAccount()
         delegate?.moonPayTransactionDataControllerDidLoad(self, account: account)
+    }
+
+    private func makeAccount() -> Account {
+        if let account = sharedDataController.accountCollection.account(for: accountAddress) {
+            return account
+        }
+
+        let fallbackAccount = Account(address: accountAddress)
+        fallbackAccount.authorization = .standard
+        return  fallbackAccount
     }
 }
 

@@ -49,7 +49,8 @@ extension AssetNameViewModel {
     ) {
         primaryTitle = getPrimaryTitle(
             assetName: asset.naming.name,
-            assetVerificationTier: asset.verificationTier
+            assetVerificationTier: asset.verificationTier,
+            isAssetDestroyed: asset.isDestroyed
         )
     }
 
@@ -70,7 +71,8 @@ extension AssetNameViewModel {
     mutating func bindPrimaryTitle(update: OptInBlockchainUpdate) {
         primaryTitle = getPrimaryTitle(
             assetName: update.assetName,
-            assetVerificationTier: update.assetVerificationTier
+            assetVerificationTier: update.assetVerificationTier,
+            isAssetDestroyed: update.isAssetDestroyed
         )
     }
 
@@ -87,7 +89,8 @@ extension AssetNameViewModel {
     mutating func bindPrimaryTitle(update: OptOutBlockchainUpdate) {
         primaryTitle = getPrimaryTitle(
             assetName: update.assetName,
-            assetVerificationTier: update.assetVerificationTier
+            assetVerificationTier: update.assetVerificationTier,
+            isAssetDestroyed: update.isAssetDestroyed
         )
     }
 
@@ -103,9 +106,10 @@ extension AssetNameViewModel {
 extension AssetNameViewModel {
     private func getPrimaryTitle(
         assetName: String?,
-        assetVerificationTier: AssetVerificationTier
+        assetVerificationTier: AssetVerificationTier,
+        isAssetDestroyed: Bool
     ) -> TextProvider {
-        let title = assetName.unwrapNonEmptyString() ?? "title-unknown".localized
+        let aTitle = assetName.unwrapNonEmptyString() ?? "title-unknown".localized
 
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         if assetVerificationTier.isSuspicious {
@@ -114,6 +118,20 @@ extension AssetNameViewModel {
             attributes.insert(.textColor(Colors.Text.main))
         }
 
+        let destroyedText = makeDestroyedAssetTextIfNeeded(isAssetDestroyed)
+        let assetText = aTitle.attributed(attributes)
+        let text = [ destroyedText, assetText ].compound(" ")
+        return text
+    }
+
+    private func makeDestroyedAssetTextIfNeeded(_ isAssetDestroyed: Bool) -> NSAttributedString? {
+        guard isAssetDestroyed else {
+            return nil
+        }
+
+        let title = "title-deleted-with-parantheses".localized
+        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Helpers.negative))
         return title.attributed(attributes)
     }
 

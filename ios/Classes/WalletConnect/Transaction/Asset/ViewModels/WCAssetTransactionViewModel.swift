@@ -84,7 +84,7 @@ class WCAssetTransactionViewModel {
         if let senderAccount = senderAccount, senderAddress == senderAccount.address {
             account = senderAccount
         } else {
-            account = Account(address: senderAddress, type: .standard)
+            account = Account(address: senderAddress)
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(
@@ -109,7 +109,7 @@ class WCAssetTransactionViewModel {
         if let senderAccount = senderAccount, senderAccount.address == toAddress {
             account = senderAccount
         } else {
-            account = Account(address: toAddress, type: .standard)
+            account = Account(address: toAddress)
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(

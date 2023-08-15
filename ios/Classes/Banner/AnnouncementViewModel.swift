@@ -20,7 +20,6 @@ import MacaroonUIKit
 struct AnnouncementViewModel:
     PairedViewModel,
     Hashable {
-
     private(set) var title: String?
     private(set) var subtitle: String?
     private(set) var ctaTitle: String?
@@ -32,6 +31,6 @@ struct AnnouncementViewModel:
         subtitle = model.subtitle
         ctaTitle = model.buttonLabel
         isGeneric = model.type == .generic
-        ctaUrl = model.buttonUrl
+        ctaUrl = model.buttonUrl.toURL()
     }
 }

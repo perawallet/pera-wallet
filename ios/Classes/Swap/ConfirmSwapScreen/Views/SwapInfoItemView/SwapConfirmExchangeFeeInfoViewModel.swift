@@ -20,6 +20,7 @@ import MacaroonUIKit
 struct SwapConfirmExchangeFeeInfoViewModel: SwapInfoItemViewModel {
     private(set) var title: TextProvider?
     private(set) var icon: Image?
+    private(set) var iconTintColor: Color?
     private(set) var detail: TextProvider?
     private(set) var action: Image?
 

@@ -22,7 +22,7 @@ final class WatchAccountPortfolioCell:
     CollectionCell<WatchAccountPortfolioView>,
     ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
-        return (16, 24, 36, 24)
+        return (36, 24, 36, 24)
     }
 
     static let theme = WatchAccountPortfolioViewTheme()

@@ -34,13 +34,3 @@ struct TransakConfig {
         }
     }
 }
-
-extension DiscoverDappParamaters {
-    init(_ config: TransakConfig) {
-        self.init(
-            name: nil,
-            url: config.url,
-            favorites: nil
-        )
-    }
-}

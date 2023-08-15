@@ -30,7 +30,6 @@ final class MoonPayIntroductionScreen: ScrollScreen {
     private lazy var theme = MoonPayIntroductionScreenTheme()
 
     private let moonPayDraft: MoonPayDraft
-    private let api: ALGAPI
     private let target: ALGAppTarget
     private let analytics: ALGAnalytics
     private let loadingController: LoadingController
@@ -43,10 +42,11 @@ final class MoonPayIntroductionScreen: ScrollScreen {
         loadingController: LoadingController
     ) {
         self.moonPayDraft = draft
-        self.api = api
         self.target = target
         self.analytics = analytics
         self.loadingController = loadingController
+        
+        super.init(api: api)
     }
 
     deinit {
@@ -402,7 +402,7 @@ extension MoonPayIntroductionScreen {
 
         loadingController.startLoadingWithMessage("title-loading".localized)
 
-        api.getSignedMoonPayURL(moonPaySignDraft) {
+        api?.getSignedMoonPayURL(moonPaySignDraft) {
             [weak self] response in
             guard let self else {
                 return
@@ -412,7 +412,7 @@ extension MoonPayIntroductionScreen {
 
             switch response {
             case .success(let response):
-                self.open(response.url)
+                self.open(response.url.toURL())
             case .failure:
                 break
             }

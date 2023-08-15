@@ -21,8 +21,8 @@ struct ReceiveTransactionOptionListItemButtonViewModel: TransactionOptionListIte
     let title: EditText?
     let subtitle: EditText?
 
-    init(isQR: Bool = false) {
-        icon = isQR ? "icon-transaction-option-list-receive-qr" : "icon-transaction-option-list-receive"
+    init() {
+        icon = "icon-transaction-option-list-receive"
         title = Self.getTitle("title-receive".localized)
         subtitle = Self.getSubtitle("transaction-option-list-receive-subtitle".localized)
     }

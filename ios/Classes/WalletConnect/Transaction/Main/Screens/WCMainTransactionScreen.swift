@@ -258,18 +258,21 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     }
 
     private func confirmSigning() {
-        if let transaction = getFirstSignableTransaction(),
-           let index = transactions.firstIndex(of: transaction) {
-            loadingController?.startLoadingWithMessage("title-loading".localized)
-
-            let requiresLedgerConnection = transaction.requestedSigner.account?.requiresLedgerConnection() ?? false
-            if requiresLedgerConnection {
-                openLedgerConnection()
-            }
-
-            fillInitialUnsignedTransactions(until: index)
-            signTransaction(transaction)
+        guard let transaction = getFirstSignableTransaction(),
+              let index = transactions.firstIndex(of: transaction) else {
+            rejectTransaction(with: .unauthorized(.signerNotFound))
+            return
         }
+        
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+
+        let requiresLedgerConnection = transaction.requestedSigner.account?.requiresLedgerConnection() ?? false
+        if requiresLedgerConnection {
+            openLedgerConnection()
+        }
+
+        fillInitialUnsignedTransactions(until: index)
+        signTransaction(transaction)
     }
 
     private func getFirstSignableTransaction() -> WCTransaction? {

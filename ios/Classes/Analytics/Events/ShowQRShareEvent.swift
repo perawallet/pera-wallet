@@ -42,7 +42,7 @@ extension AnalyticsEvent where Self == ShowQRShareEvent {
     static func showQRShare(
         address: String
     ) -> Self {
-        let account = Account(address: address, type: .standard)
+        let account = Account(address: address)
         return ShowQRShareEvent(account: account)
     }
 }

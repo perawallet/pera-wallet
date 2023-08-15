@@ -17,8 +17,11 @@
 
 import Foundation
 import UIKit
+import MacaroonUIKit
 
-class BarButton: UIButton {
+class BarButton:
+    UIButton,
+    CornerDrawable {
     
     private let barButtonItem: BarButtonItem
     
@@ -42,6 +45,13 @@ extension BarButton {
     
     private func configureAppearance() {
         adjustsImageWhenHighlighted = false
+
+        backgroundColor = barButtonItem.backgroundColor
+
+        if let corner = barButtonItem.corner {
+            draw(corner: corner)
+        }
+        
         titleLabel?.font = barButtonItem.title?.font
         setTitle(barButtonItem.title?.text, for: .normal)
         setTitleColor(barButtonItem.title?.textColor, for: .normal)

@@ -21,9 +21,11 @@ import MacaroonUIKit
 extension WCSingleTransactionRequestScreen {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
+        let bottomInset: LayoutMetric
         
         init(_ family: LayoutFamily) {
-            backgroundColor = Colors.Defaults.background
+            self.backgroundColor = Colors.Defaults.background
+            self.bottomInset = 8
         }
     }
 }

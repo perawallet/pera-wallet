@@ -80,7 +80,7 @@ class WCAssetReconfigurationTransactionViewModel {
         if let senderAccount = senderAccount, senderAddress == senderAccount.address {
             account = senderAccount
         } else {
-            account = Account(address: senderAddress, type: .standard)
+            account = Account(address: senderAddress)
         }
 
         let viewModel = TitledTransactionAccountNameViewModel(

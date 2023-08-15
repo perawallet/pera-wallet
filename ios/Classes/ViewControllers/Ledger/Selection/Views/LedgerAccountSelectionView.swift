@@ -34,7 +34,8 @@ final class LedgerAccountSelectionView: View {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.listContentInset)
-        collectionView.register(LedgerAccountCell.self)
+        collectionView.register(SingleSelectionLedgerAccountCell.self)
+        collectionView.register(MultipleSelectionLedgerAccountCell.self)
         return collectionView
     }()
 
@@ -105,7 +106,7 @@ extension LedgerAccountSelectionView {
     private func addVerticalStackView(_ theme: LedgerAccountSelectionViewTheme) {
         addSubview(verticalStackView)
         verticalStackView.axis = .vertical
-        verticalStackView.alignment = .center
+        verticalStackView.alignment = .leading
         verticalStackView.spacing = theme.verticalStackViewSpacing
         verticalStackView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(theme.verticalStackViewTopPadding)
@@ -153,7 +154,6 @@ extension LedgerAccountSelectionView {
         }
         
         verifyButton.customize(theme.verifyButtonTheme)
-        verifyButton.bindData(ButtonCommonViewModel(title: "ledger-account-selection-verify".localized))
 
         verifyButtonContainer.addSubview(verifyButton)
         verifyButton.snp.makeConstraints {
@@ -216,10 +216,27 @@ extension LedgerAccountSelectionView {
 
 extension LedgerAccountSelectionView: ViewModelBindable {
     func bindData(_ viewModel: LedgerAccountSelectionViewModel?) {
-        titleLabel.text = viewModel?.accountCount
-        descriptionLabel.text = viewModel?.detail
+        if let title = viewModel?.accountCount {
+            title.load(in: titleLabel)
+        } else {
+            titleLabel.attributedText = nil
+            titleLabel.text = nil
+        }
+
+        if let description = viewModel?.detail {
+            description.load(in: descriptionLabel)
+        } else {
+            descriptionLabel.attributedText = nil
+            descriptionLabel.text = nil
+        }
+
         verifyButton.isEnabled = (viewModel?.isEnabled).ifNil(false)
-        verifyButton.setTitle(viewModel?.buttonText, for: .normal)
+
+        if let buttonText = viewModel?.buttonText {
+            verifyButton.bindData(ButtonCommonViewModel(title: buttonText))
+        } else {
+            verifyButton.bindData(nil)
+        }
     }
 }
 

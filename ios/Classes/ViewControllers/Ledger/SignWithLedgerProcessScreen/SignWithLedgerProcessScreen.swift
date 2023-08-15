@@ -26,9 +26,14 @@ final class SignWithLedgerProcessScreen:
         return .compressed
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return determinePreferredStatusBarStyle(for: api?.network ?? .mainnet)
+    }
+    
     var isProgressFinished: Bool {
         return progress.isFinished
     }
+    var api: ALGAPI?
 
     private lazy var progressView = UIProgressView()
     private lazy var contextView = MacaroonUIKit.BaseView()
@@ -42,6 +47,10 @@ final class SignWithLedgerProcessScreen:
 
     private lazy var progress = ALGProgress(totalUnitCount: draft.totalTransactionCount)
 
+    private var isProgressViewVisible: Bool {
+        return !progress.isSingular
+    }
+
     private let draft: SignWithLedgerProcessDraft
 
     typealias EventHandler = (Event) -> Void
@@ -49,10 +58,13 @@ final class SignWithLedgerProcessScreen:
 
     init(
         draft: SignWithLedgerProcessDraft,
-        eventHandler: @escaping EventHandler
+        eventHandler: @escaping EventHandler,
+        api: ALGAPI?
     ) {
         self.draft = draft
         self.eventHandler = eventHandler
+        self.api = api
+        
         super.init()
     }
 
@@ -60,6 +72,7 @@ final class SignWithLedgerProcessScreen:
         super.configureNavigationBar()
 
         navigationItem.largeTitleDisplayMode =  .never
+        navigationBarController.isNavigationBarHidden = !isProgressViewVisible
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -77,7 +90,7 @@ final class SignWithLedgerProcessScreen:
     override func prepareLayout() {
         super.prepareLayout()
 
-        addProgress()
+        addProgressIfPossible()
         addContext()
     }
 
@@ -104,7 +117,9 @@ extension SignWithLedgerProcessScreen {
 }
 
 extension SignWithLedgerProcessScreen {
-    private func addProgress() {
+    private func addProgressIfPossible() {
+        guard isProgressViewVisible else { return }
+
         progressView.progressViewStyle = .bar
         progressView.progressTintColor = theme.progressTintColor.uiColor
         progressView.trackTintColor = theme.trackTintColor.uiColor

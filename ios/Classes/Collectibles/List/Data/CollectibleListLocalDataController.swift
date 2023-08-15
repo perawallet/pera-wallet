@@ -68,7 +68,7 @@ final class CollectibleListLocalDataController:
         self.galleryAccount = galleryAccount
         self.sharedDataController = sharedDataController
 
-        self.isWatchAccount = galleryAccount.singleAccount?.value.isWatchAccount() ?? false
+        self.isWatchAccount = galleryAccount.singleAccount?.value.authorization.isWatch ?? false
 
         self.startObservingCollectibleAssetActions()
     }
@@ -475,23 +475,54 @@ extension CollectibleListLocalDataController {
 
 extension CollectibleListLocalDataController {
     private func makePendingCollectibleListItems() -> [CollectibleListItem] {
-        let monitor = sharedDataController.blockchainUpdatesMonitor
-
-        let pendingOptInAssets = monitor.filterPendingOptInAssetUpdates()
+        let pendingOptInAssets = getPendingOptInAssets()
         let pendingOptInCollectibleItems = pendingOptInAssets.compactMap {
             return $0.isCollectibleAsset ? makePendingCollectibleAssetOptInItem($0) : nil
         }
 
-        let pendingOptOutAssets = monitor.filterPendingOptOutAssetUpdates()
+        let pendingOptOutAssets = getPendingOptOutAssets()
         let pendingOptOutCollectibleItems = pendingOptOutAssets.compactMap {
             return $0.isCollectibleAsset ? makePendingCollectibleAssetOptOutItem($0) : nil
         }
 
-        let pendingSendPureCollectibleAssets = monitor.filterPendingSendPureCollectibleAssetUpdates()
+        let pendingSendPureCollectibleAssets = getPendingSendPureCollectibleAssets()
         let pendingSendPureCollectibleItems =
             pendingSendPureCollectibleAssets.map(makePendingPureCollectibleAssetSendItem)
 
         return pendingOptInCollectibleItems + pendingOptOutCollectibleItems + pendingSendPureCollectibleItems
+    }
+
+    private func getPendingOptInAssets() -> [OptInBlockchainUpdate] {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+
+        if let account = galleryAccount.singleAccount?.value {
+            let updates = monitor.filterPendingOptInAssetUpdates(for: account)
+            return updates.map(\.value)
+        } else {
+            return monitor.filterPendingOptInAssetUpdates()
+        }
+    }
+
+    private func getPendingOptOutAssets() -> [OptOutBlockchainUpdate] {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+
+        if let account = galleryAccount.singleAccount?.value {
+            let updates = monitor.filterPendingOptOutAssetUpdates(for: account)
+            return updates.map(\.value)
+        } else {
+            return monitor.filterPendingOptOutAssetUpdates()
+        }
+    }
+
+    private func getPendingSendPureCollectibleAssets() -> [SendPureCollectibleAssetBlockchainUpdate] {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+
+        if let account = galleryAccount.singleAccount?.value {
+            let updates = monitor.filterPendingSendPureCollectibleAssetUpdates(for: account)
+            return updates.map(\.value)
+        } else {
+            return monitor.filterPendingSendPureCollectibleAssetUpdates()
+        }
     }
 
     private func makeCollectibleList(query: CollectibleListQuery?) -> CollectibleList {

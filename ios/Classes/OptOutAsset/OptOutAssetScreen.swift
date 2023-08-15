@@ -45,13 +45,15 @@ final class OptOutAssetScreen:
         theme: OptOutAssetScreenTheme,
         draft: OptOutAssetDraft,
         eventHandler: @escaping EventHandler,
-        copyToClipboardController: CopyToClipboardController
+        copyToClipboardController: CopyToClipboardController,
+        api: ALGAPI?
     ) {
         self.theme = theme
         self.draft = draft
         self.eventHandler = eventHandler
         self.copyToClipboardController = copyToClipboardController
-        super.init()
+        
+        super.init(api: api)
     }
 
     override func configureNavigationBar() {

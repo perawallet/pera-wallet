@@ -24,7 +24,7 @@ class AccountPortfolioCell:
     UIInteractable,
     ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
-        return (45, 24, 8, 24)
+        return (36, 24, 36, 24)
     }
     
     static let theme = AccountPortfolioViewTheme()

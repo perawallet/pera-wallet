@@ -28,6 +28,7 @@ struct ConfirmSwapScreenViewModel: ViewModel {
     private(set) var minimumReceivedInfo: SwapInfoItemViewModel?
     private(set) var exchangeFeeInfo: SwapInfoItemViewModel?
     private(set) var peraFeeInfo: SwapInfoItemViewModel?
+    private(set) var isConfirmActionEnabled: Bool = true
 
     init(
         account: Account,
@@ -67,6 +68,7 @@ struct ConfirmSwapScreenViewModel: ViewModel {
             quote: quote,
             currencyFormatter: currencyFormatter
         )
+        bindIsConfirmActionEnabled(quote)
     }
 }
 
@@ -133,15 +135,44 @@ extension ConfirmSwapScreenViewModel {
     mutating func bindWarning(
         _ quote: SwapQuote
     ) {
-        let priceImpactWarningLimit: Decimal = 0.05
-        
-        guard let priceImpact = quote.priceImpact,
-              priceImpact > priceImpactWarningLimit else {
+        guard let priceImpact = quote.priceImpact else {
             warning = nil
             return
         }
 
-        warning = SwapAssetErrorViewModel("swap-price-impact-warning-message".localized)
+        let message: String?
+        let messageHighlightedText: String?
+        let messageHighlightedTextURL: URL?
+
+        switch priceImpact {
+        case ...PriceImpactLimit.fivePercent:
+            message = nil
+            messageHighlightedText = nil
+            messageHighlightedTextURL = nil
+        case PriceImpactLimit.fivePercent...PriceImpactLimit.tenPercent:
+            message = "swap-price-impact-warning-message".localized
+            messageHighlightedText = nil
+            messageHighlightedTextURL = nil
+        case PriceImpactLimit.tenPercent...PriceImpactLimit.fifteenPercent:
+            message = "swap-price-impact-greater-than-10-warning-message".localized
+            messageHighlightedText = nil
+            messageHighlightedTextURL = nil
+        default:
+            message = "swap-price-impact-greater-than-15-warning-message".localized
+            messageHighlightedText = "swap-price-impact-greater-than-15-warning-message-highlighted-text".localized
+            messageHighlightedTextURL = AlgorandWeb.tinymanSwapPriceImpact.link
+        }
+
+        guard let message else {
+            warning = nil
+            return
+        }
+
+        warning = SwapAssetErrorViewModel(
+            message: message,
+            messageHighlightedText: messageHighlightedText,
+            messageHighlightedTextURL: messageHighlightedTextURL
+        )
     }
 
     mutating func bindPriceInfo(
@@ -194,5 +225,16 @@ extension ConfirmSwapScreenViewModel {
             quote: quote,
             currencyFormatter: currencyFormatter
         )
+    }
+
+    mutating func bindIsConfirmActionEnabled(
+        _ quote: SwapQuote
+    ) {
+        guard let priceImpact = quote.priceImpact else {
+            isConfirmActionEnabled = true
+            return
+        }
+
+        isConfirmActionEnabled = priceImpact <= PriceImpactLimit.fifteenPercent
     }
 }

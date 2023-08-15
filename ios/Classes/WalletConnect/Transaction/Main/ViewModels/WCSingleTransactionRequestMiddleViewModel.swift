@@ -20,8 +20,7 @@ import MacaroonUIKit
 import UIKit
 
 final class WCSingleTransactionRequestMiddleViewModel {
-    private(set) var title: String?
-    private(set) var titleColor: Color?
+    private(set) var title: TextProvider?
     private(set) var subtitle: String?
     private(set) var verificationTierIcon: UIImage?
 
@@ -63,19 +62,21 @@ final class WCSingleTransactionRequestMiddleViewModel {
 
         switch type {
         case .algos:
+            var titleAttributes = Typography.largeTitleRegularAttributes()
+            titleAttributes.insert(.textColor(Colors.Text.main))
+
             if let amount = transaction.transactionDetail?.amount {
                 currencyFormatter.formattingContext = .standalone()
                 currencyFormatter.currency = AlgoLocalCurrency()
 
                 let text = currencyFormatter.format(amount.toAlgos)
 
-                title = text.someString
+                title = text.someString.attributed(titleAttributes)
             } else {
-                title = ""
+                title = "".attributed(titleAttributes)
             }
 
-            self.titleColor = getTitleColor(.trusted)
-            self.verificationTierIcon = getVerificationTierIcon(.trusted)
+            self.verificationTierIcon = "icon-trusted".uiImage
             self.setUsdValue(transaction: transaction, asset: nil)
         case .asset:
             guard
@@ -103,19 +104,39 @@ final class WCSingleTransactionRequestMiddleViewModel {
             if let assetCode = asset.naming.hasOnlyAssetName ?
                     asset.naming.displayNames.primaryName :
                     asset.naming.displayNames.secondaryName {
-                self.title = "\(text) \(assetCode)"
-                self.titleColor = getTitleColor(asset.verificationTier)
+                var titleAttributes = Typography.largeTitleRegularAttributes()
+
+                if asset.verificationTier.isSuspicious {
+                    titleAttributes.insert(.textColor(Colors.Helpers.negative))
+                } else {
+                    titleAttributes.insert(.textColor(Colors.Text.main))
+                }
+
+                let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
+                let assetText = "\(text) \(assetCode)".attributed(titleAttributes)
+                let text = [ destroyedText, assetText ].compound(" ")
+                self.title = text
             }
 
             self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
             self.setUsdValue(transaction: transaction, asset: asset)
         case .assetAddition,
-                .possibleAssetAddition:
+             .possibleAssetAddition:
             guard let asset = asset else {
                 return
             }
-            self.title = asset.naming.displayNames.primaryName
-            self.titleColor = getTitleColor(asset.verificationTier)
+            var titleAttributes = Typography.largeTitleRegularAttributes()
+
+            if asset.verificationTier.isSuspicious {
+                titleAttributes.insert(.textColor(Colors.Helpers.negative))
+            } else {
+                titleAttributes.insert(.textColor(Colors.Text.main))
+            }
+
+            let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
+            let assetText = asset.naming.displayNames.primaryName.attributed(titleAttributes)
+            let text = [ destroyedText, assetText ].compound(" ")
+            self.title = text
             self.subtitle = "\(asset.id)"
             self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
             return
@@ -129,8 +150,12 @@ final class WCSingleTransactionRequestMiddleViewModel {
                 break
             default:
                 if (transaction.transactionDetail?.isAppCreateTransaction ?? false) {
-                    self.title = "single-transaction-request-opt-in-title".localized
-                    self.titleColor = getTitleColor(nil)
+                    var titleAttributes = Typography.largeTitleRegularAttributes()
+                    titleAttributes.insert(.textColor(Colors.Text.main))
+                    self.title =
+                        "single-transaction-request-opt-in-title"
+                            .localized
+                            .attributed(titleAttributes)
                     self.subtitle = appCallOncomplete.representation
                     self.verificationTierIcon = nil
                     return
@@ -140,36 +165,69 @@ final class WCSingleTransactionRequestMiddleViewModel {
             guard let id = transaction.transactionDetail?.appCallId else {
                 return
             }
-
-            self.title = "#\(id)"
-            self.titleColor = getTitleColor(nil)
+            var titleAttributes = Typography.largeTitleRegularAttributes()
+            titleAttributes.insert(.textColor(Colors.Text.main))
+            self.title = "#\(id)".attributed(titleAttributes)
             self.subtitle = "wallet-connect-transaction-title-app-id".localized
             self.verificationTierIcon = nil
         case .assetConfig(let type):
             switch type {
             case .create:
                 if let assetConfigParams = transaction.transactionDetail?.assetConfigParams {
-                    self.title = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? "title-unknown".localized)"
+                    var titleAttributes = Typography.largeTitleRegularAttributes()
+                    titleAttributes.insert(.textColor(Colors.Text.main))
+                    self.title = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? "title-unknown".localized)".attributed(titleAttributes)
                     /// <note> Newly created asset should be unverified.
-                    self.titleColor = getTitleColor(.unverified)
-                    self.verificationTierIcon = getVerificationTierIcon(.unverified)
+                    self.verificationTierIcon = nil
                 }
             case .reconfig:
                 if let asset = asset {
-                    self.title = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
-                    self.titleColor = getTitleColor(asset.verificationTier)
+                    var titleAttributes = Typography.largeTitleRegularAttributes()
+
+                    if asset.verificationTier.isSuspicious {
+                        titleAttributes.insert(.textColor(Colors.Helpers.negative))
+                    } else {
+                        titleAttributes.insert(.textColor(Colors.Text.main))
+                    }
+
+                    let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
+                    let assetText = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)".attributed(titleAttributes)
+                    let text = [ destroyedText, assetText ].compound(" ")
+                    self.title = text
                     self.subtitle = "#\(asset.id)"
                     self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
                 }
             case .delete:
                 if let asset = asset {
-                    self.title = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
-                    self.titleColor = getTitleColor(asset.verificationTier)
+                    var titleAttributes = Typography.largeTitleRegularAttributes()
+
+                    if asset.verificationTier.isSuspicious {
+                        titleAttributes.insert(.textColor(Colors.Helpers.negative))
+                    } else {
+                        titleAttributes.insert(.textColor(Colors.Text.main))
+                    }
+
+                    let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
+                    let assetText =
+                        "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)".attributed(titleAttributes)
+                    let text = [ destroyedText, assetText ].compound(" ")
+                    self.title = text
                     self.subtitle = "#\(asset.id)"
                     self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
                 }
             }
         }
+    }
+
+    private func makeDestroyedAssetTextIfNeeded(_ isAssetDestroyed: Bool) -> NSAttributedString? {
+        guard isAssetDestroyed else {
+            return nil
+        }
+
+        let title = "title-deleted-with-parantheses".localized
+        var attributes = Typography.largeTitleMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Helpers.negative))
+        return title.attributed(attributes)
     }
 
     private func setUsdValue(

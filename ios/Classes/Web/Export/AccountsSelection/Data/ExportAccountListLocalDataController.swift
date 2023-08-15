@@ -124,7 +124,7 @@ extension ExportAccountListLocalDataController {
             sharedDataController
                 .sortedAccounts()
                 .filter {
-                    let isWatchAccount = $0.value.isWatchAccount()
+                    let isWatchAccount = $0.value.authorization.isWatch
                     let requiresLedgerConnection = $0.value.requiresLedgerConnection()
                     return !isWatchAccount && !requiresLedgerConnection
                 }.map {

@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import WebKit
 
 final class DiscoverGenericScreen: DiscoverInAppBrowserScreen<NoInAppBrowserScriptMessage> {
     init(
@@ -26,5 +27,5 @@ final class DiscoverGenericScreen: DiscoverInAppBrowserScreen<NoInAppBrowserScri
             destination: .generic(params),
             configuration: configuration
         )
-    }    
+    }
 }

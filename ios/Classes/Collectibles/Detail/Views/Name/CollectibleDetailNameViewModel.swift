@@ -14,6 +14,7 @@
 
 //   CollectibleDetailNameViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
 struct CollectibleDetailNameViewModel: PrimaryTitleViewModel {
@@ -34,7 +35,30 @@ extension CollectibleDetailNameViewModel {
         _ asset: CollectibleAsset
     ) {
         let name = asset.title ?? asset.name ?? asset.id.stringWithHashtag
-        primaryTitle = name.bodyLargeMedium(lineBreakMode: .byTruncatingTail)
+
+        var attributes = Typography.bodyLargeMediumAttributes(lineBreakMode: .byTruncatingTail)
+        if asset.verificationTier.isSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        } else {
+            attributes.insert(.textColor(Colors.Text.main))
+        }
+
+        let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
+        let assetText = name.attributed(attributes)
+        let text = [ destroyedText, assetText ].compound(" ")
+
+        primaryTitle = text
+    }
+
+    private func makeDestroyedAssetTextIfNeeded(_ isAssetDestroyed: Bool) -> NSAttributedString? {
+        guard isAssetDestroyed else {
+            return nil
+        }
+
+        let title = "title-deleted-with-parantheses".localized
+        var attributes = Typography.bodyLargeMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Helpers.negative))
+        return title.attributed(attributes)
     }
 
     mutating func bindSecondaryTitle(

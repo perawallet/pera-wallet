@@ -90,7 +90,7 @@ extension CollectibleListItemViewModel {
         let account = item.account
         let asset = item.asset
 
-        if account.isWatchAccount() {
+        if account.authorization.isWatch {
             iconBottomRightBadge = "circle-badge-eye".uiImage
 
             if !asset.isOwned {
@@ -114,8 +114,8 @@ extension CollectibleListItemViewModel {
     mutating func bindPrimaryTitle(_ item: CollectibleAssetItem) {
         primaryTitle = getPrimaryTitle(
             assetName: item.asset.naming.name,
-            assetVerificationTier: item.asset
-            .verificationTier
+            assetVerificationTier: item.asset.verificationTier,
+            isAssetDestroyed: item.asset.isDestroyed
         )
     }
 
@@ -166,7 +166,8 @@ extension CollectibleListItemViewModel {
     mutating func bindPrimaryTitle(_ update: OptInBlockchainUpdate) {
         primaryTitle = getPrimaryTitle(
             assetName: update.assetName,
-            assetVerificationTier: update.assetVerificationTier
+            assetVerificationTier: update.assetVerificationTier,
+            isAssetDestroyed: update.isAssetDestroyed
         )
     }
 
@@ -191,7 +192,8 @@ extension CollectibleListItemViewModel {
     mutating func bindPrimaryTitle(_ update: OptOutBlockchainUpdate) {
         primaryTitle = getPrimaryTitle(
             assetName: update.assetName,
-            assetVerificationTier: update.assetVerificationTier
+            assetVerificationTier: update.assetVerificationTier,
+            isAssetDestroyed: update.isAssetDestroyed
         )
     }
 
@@ -212,7 +214,8 @@ extension CollectibleListItemViewModel {
     mutating func bindPrimaryTitle(_ update: SendPureCollectibleAssetBlockchainUpdate) {
         primaryTitle = getPrimaryTitle(
             assetName: update.assetName,
-            assetVerificationTier: update.assetVerificationTier
+            assetVerificationTier: update.assetVerificationTier,
+            isAssetDestroyed: false
         )
     }
 
@@ -228,9 +231,10 @@ extension CollectibleListItemViewModel {
 extension CollectibleListItemViewModel {
     private func getPrimaryTitle(
         assetName: String?,
-        assetVerificationTier: AssetVerificationTier
+        assetVerificationTier: AssetVerificationTier,
+        isAssetDestroyed: Bool
     ) -> TextProvider {
-        let title = assetName.unwrapNonEmptyString() ?? "title-unknown".localized
+        let aTitle = assetName.unwrapNonEmptyString() ?? "title-unknown".localized
 
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         if assetVerificationTier.isSuspicious {
@@ -239,6 +243,20 @@ extension CollectibleListItemViewModel {
             attributes.insert(.textColor(Colors.Text.main))
         }
 
+        let destroyedText = makeDestroyedAssetTextIfNeeded(isAssetDestroyed)
+        let assetText = aTitle.attributed(attributes)
+        let text = [ destroyedText, assetText ].compound(" ")
+        return text
+    }
+
+    private func makeDestroyedAssetTextIfNeeded(_ isAssetDestroyed: Bool) -> NSAttributedString? {
+        guard isAssetDestroyed else {
+            return nil
+        }
+
+        let title = "title-deleted-with-parantheses".localized
+        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Helpers.negative))
         return title.attributed(attributes)
     }
 

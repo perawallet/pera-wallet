@@ -577,7 +577,7 @@ extension SwapAssetScreen {
         swapActionView.isEnabled = false
 
         errorView.isHidden = false
-        let viewModel = SwapAssetErrorViewModel(message)
+        let viewModel = SwapAssetErrorViewModel(message: message)
         errorView.bindData(viewModel)
     }
 

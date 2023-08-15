@@ -35,6 +35,7 @@ enum ASADetailScreenDataControllerEvent {
     case willLoadData
     case didLoadData
     case didFailToLoadData(ASADiscoveryScreenDataController.Error)
+    case didUpdateAccount(old: Account)
 }
 
 struct ASADetailScreenConfiguration {

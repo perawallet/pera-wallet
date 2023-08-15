@@ -52,7 +52,7 @@ final class ALGAppLaunchController:
         self.session = session
         self.api = api
         self.sharedDataController = sharedDataController
-        self.deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
+        self.deeplinkParser = DeepLinkParser(api: api, sharedDataController: sharedDataController)
         self.authChecker = authChecker
         self.walletConnector = walletConnector
         self.uiHandler = uiHandler
@@ -300,6 +300,8 @@ extension ALGAppLaunchController {
             result = determineUIStateIfPossible(forMoonPay: draft)
         case .qrText(let qrText):
             result = determineUIStateIfPossible(forQRText: qrText)
+        case .externalInAppBrowser(let destination):
+            result = determineUIStateIfPossible(forRedirectedDestination: destination)
         }
         
         switch result {
@@ -357,6 +359,7 @@ extension ALGAppLaunchController {
     private func shouldPresentNotificationForFailure(_ error: DeepLinkParser.Error) -> Bool {
         switch error {
         case .tryingToOptInForWatchAccount,
+             .tryingToOptInForNoAuthInLocalAccount,
              .tryingToActForAssetWithPendingOptInRequest,
              .tryingToActForAssetWithPendingOptOutRequest,
              .accountNotFound,
@@ -420,6 +423,12 @@ extension ALGAppLaunchController {
         case .success(let screen): return .success(.deeplink(screen))
         case .failure(let error): return .failure(error)
         }
+    }
+
+    private func determineUIStateIfPossible(
+        forRedirectedDestination destination: DiscoverExternalDestination
+    ) -> DeeplinkResult {
+        return .success(.deeplink(.externalInAppBrowser(destination: destination)))
     }
     
     private func suspend(

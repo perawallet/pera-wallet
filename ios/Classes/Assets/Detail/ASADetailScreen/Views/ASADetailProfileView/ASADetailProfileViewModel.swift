@@ -213,7 +213,7 @@ extension ASADetailProfileViewModel {
 
     mutating func bindSecondaryValue(text: String?) {
         if let text = text.unwrapNonEmptyString() {
-            secondaryValue = "≈ \(text)".bodyMedium()
+            secondaryValue = text.bodyMedium()
         } else {
             secondaryValue = nil
         }

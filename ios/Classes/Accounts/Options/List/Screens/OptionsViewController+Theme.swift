@@ -22,9 +22,11 @@ struct OptionsViewControllerTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
+    var canvasPaddings: LayoutPaddings
     var verticalPadding: LayoutMetric
     var primaryContextPaddings: LayoutPaddings
     var secondaryContextPaddings: LayoutPaddings
+    var tertiaryContextPaddings: LayoutPaddings
     var separator: Separator
     var button: ListItemButtonTheme
 
@@ -36,8 +38,10 @@ struct OptionsViewControllerTheme:
         ]
         verticalPadding = 20
         let horizontalPadding: LayoutMetric = 24
-        primaryContextPaddings = (verticalPadding, horizontalPadding, 0, horizontalPadding)
-        secondaryContextPaddings = (verticalPadding, horizontalPadding, verticalPadding, horizontalPadding)
+        canvasPaddings = (verticalPadding, horizontalPadding, verticalPadding, horizontalPadding)
+        primaryContextPaddings = (0, 0, 0, 0)
+        secondaryContextPaddings = (verticalPadding, 0, 0, 0)
+        tertiaryContextPaddings = (verticalPadding, 0, 0, 0)
         separator = Separator(
             color: Colors.Layer.grayLighter,
             size: 1,

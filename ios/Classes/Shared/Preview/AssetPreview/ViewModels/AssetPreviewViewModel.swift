@@ -55,14 +55,10 @@ extension AssetPreviewViewModel {
         _ model: T
     ) {
         if let preview = model as? AssetPreviewModel {
-            let titleColor: Color =
-            preview.verificationTier.isSuspicious
-            ? Colors.Helpers.negative
-            : Colors.Text.main
-
             bindTitle(
-                preview.title,
-                titleColor: titleColor
+                title: preview.title,
+                isAssetSuspicious: preview.verificationTier.isSuspicious,
+                isAssetDestroyed: preview.asset?.isDestroyed ?? false
             )
             bindImageSource(preview.asset)
             bindVerificationTierIcon(preview.verificationTier)
@@ -120,19 +116,37 @@ extension AssetPreviewViewModel {
     }
     
     private mutating func bindTitle(
-        _ title: String?,
-        titleColor: Color
+        title: String?,
+        isAssetSuspicious: Bool,
+        isAssetDestroyed: Bool
     ) {
         var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
-        attributes.insert(.textColor(titleColor))
+        if isAssetSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        } else {
+            attributes.insert(.textColor(Colors.Text.main))
+        }
 
-        let aTitle = title.isNilOrEmpty ? "title-unknown".localized : title!
+        let aTitle = title.unwrapNonEmptyString() ?? "title-unknown".localized
 
-        self.title = .attributedString(
-            aTitle.attributed(attributes)
-        )
+        let destroyedText = makeDestroyedAssetTextIfNeeded(isAssetDestroyed)
+        let assetText = aTitle.attributed(attributes)
+        let text = [ destroyedText, assetText ].compound(" ")
+
+        self.title = .attributedString(text)
     }
-    
+
+    private func makeDestroyedAssetTextIfNeeded(_ isAssetDestroyed: Bool) -> NSAttributedString? {
+        guard isAssetDestroyed else {
+            return nil
+        }
+
+        let title = "title-deleted-with-parantheses".localized
+        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Helpers.negative))
+        return title.attributed(attributes)
+    }
+
     private mutating func bindSubtitle(_ subtitle: String?) {
         guard let subtitle = subtitle else {
             return

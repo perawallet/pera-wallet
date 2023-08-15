@@ -20,13 +20,12 @@ import MacaroonUIKit
 import UIKit
 
 struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
+    let imageLight: String
+    let imageDark: String
     let title: TextStyle
     let description: TextStyle
     let backgroundColor: Color
     let indicator: ImageStyle
-
-    let lottie: String
-
     let collectionViewMinimumLineSpacing: LayoutMetric
     let verticalStackViewTopPadding: LayoutMetric
     let verticalStackViewSpacing: LayoutMetric
@@ -37,20 +36,18 @@ struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
     let horizontalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.imageLight = "light-ledger"
+        self.imageDark = "dark-ledger"
         self.backgroundColor = Colors.Defaults.background
         self.title = [
-            .textAlignment(.center),
             .textOverflow(FittingText()),
-            .font(Fonts.DMSans.medium.make(19)),
             .textColor(Colors.Text.main),
-            .text("ledger-device-list-looking".localized)
+            .text("ledger-device-list-looking".localized.bodyLargeMedium())
         ]
         self.description = [
-            .textAlignment(.center),
             .textOverflow(FittingText()),
-            .font(Fonts.DMSans.regular.make(15)),
             .textColor(Colors.Text.gray),
-            .text("tutorial-description-ledger".localized)
+            .text("ledger-device-list-body".localized.bodyRegular())
         ]
         if let i = img("loading-indicator") {
             self.indicator = [
@@ -63,14 +60,12 @@ struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
             ]
         }
 
-        self.lottie = UIApplication.shared.isDarkModeDisplay ? "dark-ledger" : "light-ledger" /// <todo>:  Should be handled also on view.
-
         self.collectionViewMinimumLineSpacing = 20
-        self.verticalStackViewTopPadding = 56
+        self.verticalStackViewTopPadding = 40
         self.verticalStackViewSpacing = 12
         self.listContentInset = (10, 0, 0, 0)
         self.titleLabelTopPadding = 24
-        self.devicesListTopPadding = 50
+        self.devicesListTopPadding = 30
         self.indicatorViewTopPadding = 60
         self.horizontalInset = 24
     }

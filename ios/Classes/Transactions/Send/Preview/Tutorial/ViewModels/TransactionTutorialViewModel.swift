@@ -19,32 +19,31 @@ import UIKit
 import MacaroonUIKit
 
 final class TransactionTutorialViewModel: ViewModel {
-    private(set) var title: EditText?
-    private(set) var subtitle: EditText?
-    private(set) var firstTip: EditText?
-    private(set) var secondTip: EditText?
-    private(set) var tapToMoreText: EditText?
+    private(set) var title: TextProvider?
+    private(set) var subtitle: TextProvider?
+    private(set) var firstInstruction: InstructionItemViewModel?
+    private(set) var secondInstruction: InstructionItemViewModel?
+    private(set) var tapToMoreText: TextProvider?
 
     init(isInitialDisplay: Bool) {
         bindTitle()
         bindSubtitle(from: isInitialDisplay)
-        bindFirstTip()
-        bindSecondTip()
+        bindFirstInstruction()
+        bindSecondInstruction()
         bindTapToMoreText()
     }
 }
 
 extension TransactionTutorialViewModel {
     private func bindTitle() {
-        title = .attributedString(
+        title =
             "transaction-tutorial-title"
                 .localized
                 .bodyLargeMedium(
                     alignment: .center
                 )
-        )
     }
-
+    
     private func bindSubtitle(from isInitialDisplay: Bool) {
         let subtitle: String
         if isInitialDisplay {
@@ -52,70 +51,34 @@ extension TransactionTutorialViewModel {
         } else {
             subtitle = "transaction-tutorial-subtitle-other".localized
         }
-
-        self.subtitle = .attributedString(
+        
+        self.subtitle =
             subtitle
                 .bodyRegular(
                     alignment: .center
                 )
-        )
     }
+    
+    private func bindFirstInstruction() {
+        firstInstruction = TransactionSmallTestTransactionInstructionItemViewModel(order: 1)
+    }
+    
+    private func bindSecondInstruction() {
+        secondInstruction = TransactionCorrectAddressInstructionItemViewModel(order: 2)
+    }
+    
+    private func bindTapToMoreText() {
+        let highlightedText = "transaction-tutorial-tap-to-more-highlighted".localized
+        var highlightedTextAttributes = Typography.footnoteMediumAttributes()
+        highlightedTextAttributes.insert(.textColor(Colors.Link.primary))
 
-    private func bindFirstTip() {
-        firstTip = .attributedString(
-            "transaction-tutorial-tip-first"
+        tapToMoreText =
+            "transaction-tutorial-tap-to-more"
                 .localized
                 .footnoteRegular()
-        )
-    }
-
-    private func bindSecondTip() {
-        let text = "transaction-tutorial-tip-second".localized
-        let highlightedText = "transaction-tutorial-tip-second-highlighted".localized
-
-        let textAttributes = NSMutableAttributedString(
-            attributedString: text.footnoteRegular()
-        )
-
-        let highlightedTextAttributes: TextAttributeGroup = [
-            .textColor(Colors.Helpers.negative),
-            .font(Fonts.DMSans.regular.make(13).uiFont)
-        ]
-
-        let highlightedTextRange = (textAttributes.string as NSString).range(of: highlightedText)
-
-        textAttributes.addAttributes(
-            highlightedTextAttributes.asSystemAttributes(),
-            range: highlightedTextRange
-        )
-
-        secondTip = .attributedString(
-            textAttributes
-        )
-    }
-
-    private func bindTapToMoreText() {
-        let text = "transaction-tutorial-tap-to-more".localized
-        let highlightedText = "transaction-tutorial-tap-to-more-highlighted".localized
-
-        let textAttributes = NSMutableAttributedString(
-            attributedString: text.footnoteRegular()
-        )
-
-        let highlightedTextAttributes: TextAttributeGroup = [
-            .textColor(Colors.Link.primary),
-            .font(Fonts.DMSans.regular.make(13).uiFont)
-        ]
-
-        let highlightedTextRange = (textAttributes.string as NSString).range(of: highlightedText)
-
-        textAttributes.addAttributes(
-            highlightedTextAttributes.asSystemAttributes(),
-            range: highlightedTextRange
-        )
-
-        tapToMoreText = .attributedString(
-            textAttributes
-        )
+                .addAttributes(
+                    to: highlightedText,
+                    newAttributes: highlightedTextAttributes
+                )
     }
 }

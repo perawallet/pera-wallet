@@ -28,6 +28,10 @@ protocol UISheetActionScreenTheme:
     var title: TextStyle { get }
     var spacingBetweenTitleAndBody: LayoutMetric { get }
     var body: TextStyle { get }
+    var spacingBetweenBodyAndInfo: LayoutMetric { get }
+    var infoIcon: ImageStyle { get }
+    var spacingBetweeenInfoIconAndInfoMessage: LayoutMetric { get }
+    var infoMessage: TextStyle { get }
     var actionSpacing: LayoutMetric { get }
     var actionsEdgeInsets: LayoutPaddings { get }
     var actionContentEdgeInsets: LayoutPaddings { get }
@@ -77,6 +81,10 @@ struct UISheetActionScreenCommonTheme:
     var title: TextStyle
     var spacingBetweenTitleAndBody: LayoutMetric
     var body: TextStyle
+    var spacingBetweenBodyAndInfo: LayoutMetric
+    var infoIcon: ImageStyle
+    var spacingBetweeenInfoIconAndInfoMessage: LayoutMetric
+    var infoMessage: TextStyle
     var actionSpacing: LayoutMetric
     var actionsEdgeInsets: LayoutPaddings
     var actionContentEdgeInsets: LayoutPaddings
@@ -100,6 +108,17 @@ struct UISheetActionScreenCommonTheme:
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main),
             .font(Typography.bodyRegular())
+        ]
+        self.spacingBetweenBodyAndInfo = 28
+        self.infoIcon = [
+            .image("icon-red-warning".templateImage),
+            .tintColor(Colors.Helpers.negative)
+        ]
+        self.spacingBetweeenInfoIconAndInfoMessage = 8
+        self.infoMessage = [
+            .textOverflow(FittingText()),
+            .textColor(Colors.Helpers.negative),
+            .font(Typography.footnoteMedium())
         ]
         self.actionSpacing = 16
         self.actionsEdgeInsets = (8, 24, 16, 24)

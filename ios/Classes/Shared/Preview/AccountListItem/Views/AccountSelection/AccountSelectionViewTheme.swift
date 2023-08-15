@@ -22,13 +22,9 @@ import UIKit
 struct AccountSelectionViewTheme: StyleSheet, LayoutSheet {
     let title: TextStyle
     let secondaryTitle: TextStyle
-    let checkmarkImage: ImageStyle
-
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
-    let iconImageSize: LayoutSize
-    let checkmarkImageSize: LayoutSize
-    
+
     init(_ family: LayoutFamily) {
         self.title = [
             .textAlignment(.left),
@@ -42,12 +38,7 @@ struct AccountSelectionViewTheme: StyleSheet, LayoutSheet {
             .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
-        self.checkmarkImage = [
-           .image("icon-circle-check")
-       ]
         self.verticalInset = 16
         self.horizontalInset = 16
-        self.checkmarkImageSize = (40, 40)
-        self.iconImageSize = (40, 40)
     }
 }

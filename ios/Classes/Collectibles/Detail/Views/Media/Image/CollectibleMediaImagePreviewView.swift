@@ -91,6 +91,8 @@ extension CollectibleMediaImagePreviewView {
             target: self,
             action: #selector(didTap3DModeAction)
         )
+
+        threeDModeActionView.isHidden = true
     }
 
     private func addFullScreenAction(
@@ -108,6 +110,8 @@ extension CollectibleMediaImagePreviewView {
             target: self,
             action: #selector(didTapFullScreenAction)
         )
+
+        fullScreenActionView.isHidden = true
     }
 }
 
@@ -127,23 +131,34 @@ extension CollectibleMediaImagePreviewView {
     func bindData(
         _ viewModel: CollectibleMediaImagePreviewViewModel?
     ) {
-        imageView.load(from: viewModel?.image) {
+        guard let viewModel else {
+            prepareForReuse()
+            return
+        }
+
+        imageView.load(from: viewModel.image) {
             [weak self] _ in
-            guard let self = self,
-                  let image = self.imageView.imageContainer.image else {
+            guard let self else {
+                return
+            }
+
+            guard let image = self.imageView.imageContainer.image else {
+                updateUIForImageState(
+                    isImageLoaded: false,
+                    viewModel: viewModel
+                )
                 return
             }
 
             self.handlers.didLoadImage?(image)
-        }
 
-        guard let viewModel = viewModel else {
-            return
+            updateUIForImageState(
+                isImageLoaded: true,
+                viewModel: viewModel
+            )
         }
 
         overlayView.image = viewModel.overlayImage
-        threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
-        fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
     }
 
     class func calculatePreferredSize(
@@ -159,8 +174,36 @@ extension CollectibleMediaImagePreviewView {
     func prepareForReuse() {
         overlayView.image = nil
         imageView.prepareForReuse()
-        threeDModeActionView.isHidden = false
-        fullScreenActionView.isHidden = false
+        threeDModeActionView.isHidden = true
+        fullScreenActionView.isHidden = true
+    }
+}
+
+extension CollectibleMediaImagePreviewView {
+    private func updateUIForImageState(
+        isImageLoaded: Bool,
+        viewModel: CollectibleMediaImagePreviewViewModel
+    ) {
+        UIView.transition(
+            with: self,
+            duration: 0.3,
+            options: [.transitionCrossDissolve, .allowUserInteraction],
+            animations: {
+                [weak self] in
+                guard let self else {
+                    return
+                }
+
+                guard isImageLoaded else {
+                    self.threeDModeActionView.isHidden = true
+                    self.fullScreenActionView.isHidden = true
+                    return
+                }
+
+                self.threeDModeActionView.isHidden = viewModel.is3DModeActionHidden
+                self.fullScreenActionView.isHidden = viewModel.isFullScreenActionHidden
+            }
+        )
     }
 }
 

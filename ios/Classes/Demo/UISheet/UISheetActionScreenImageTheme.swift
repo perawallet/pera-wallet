@@ -26,6 +26,10 @@ struct UISheetActionScreenImageTheme:
     let title: TextStyle
     let spacingBetweenTitleAndBody: LayoutMetric
     let body: TextStyle
+    let spacingBetweenBodyAndInfo: LayoutMetric
+    let infoIcon: ImageStyle
+    let spacingBetweeenInfoIconAndInfoMessage: LayoutMetric
+    let infoMessage: TextStyle
     let actionSpacing: LayoutMetric
     let actionsEdgeInsets: LayoutPaddings
     let actionContentEdgeInsets: LayoutPaddings
@@ -51,6 +55,17 @@ struct UISheetActionScreenImageTheme:
             .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),
             .font(Typography.bodyRegular())
+        ]
+        self.spacingBetweenBodyAndInfo = 28
+        self.infoIcon = [
+            .image("icon-red-warning".templateImage),
+            .tintColor(Colors.Helpers.negative)
+        ]
+        self.spacingBetweeenInfoIconAndInfoMessage = 8
+        self.infoMessage = [
+            .textOverflow(FittingText()),
+            .textColor(Colors.Helpers.negative),
+            .font(Typography.footnoteMedium())
         ]
         self.actionSpacing = 16
         self.actionsEdgeInsets = (8, 24, 16, 24)

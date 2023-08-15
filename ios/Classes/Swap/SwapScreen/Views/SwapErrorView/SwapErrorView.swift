@@ -23,8 +23,10 @@ import UIKit
 final class SwapErrorView:
     View,
     ViewModelBindable {
+    var eventHandlers = EventHandlers()
+
     private lazy var iconView = ImageView()
-    private lazy var messageView = Label()
+    private lazy var messageView = ALGActiveLabel()
 
     func customize(
         _ theme: SwapErrorViewTheme
@@ -45,7 +47,26 @@ final class SwapErrorView:
         _ viewModel: ErrorViewModel?
     ) {
         iconView.image = viewModel?.icon?.uiImage
-        messageView.editText = viewModel?.message
+
+        if let message = viewModel?.message {
+            if let highlightedText = message.highlightedText {
+                let hyperlink: ALGActiveType = .word(highlightedText.text)
+                messageView.attachHyperlink(
+                    hyperlink,
+                    to: message.text,
+                    attributes: highlightedText.attributes
+                ) {
+                    [unowned self] in
+                    self.eventHandlers.messageHyperlinkHandler?(highlightedText.url)
+                }
+                return
+            }
+
+            message.text.load(in: messageView)
+        } else {
+            messageView.text = nil
+            messageView.attributedText = nil
+        }
     }
 }
 
@@ -77,5 +98,11 @@ extension SwapErrorView {
             $0.bottom == 0
             $0.trailing == 0
         }
+    }
+}
+
+extension SwapErrorView {
+    struct EventHandlers {
+        var messageHyperlinkHandler: ((URL?) -> Void)?
     }
 }

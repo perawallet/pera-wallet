@@ -83,7 +83,7 @@ extension HomePortfolioViewModel {
             currencyValue: portfolioItem.currency.secondaryValue,
             in: .standalone()
         ) ?? CurrencyConstanst.unavailable
-        secondaryValue = "≈ \(text)".bodyMedium(
+        secondaryValue = text.bodyMedium(
             alignment: .center,
             lineBreakMode: .byTruncatingTail
         )

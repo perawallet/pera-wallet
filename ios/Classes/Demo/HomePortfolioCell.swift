@@ -35,17 +35,7 @@ final class HomePortfolioCell:
         super.init(frame: frame)
 
         contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
+
         contextView.customize(Self.theme)
-    }
-}
-
-extension HomePortfolioCell: MacaroonUIKit.NavigationBarLargeTitleView {
-    var title: EditText? {
-        get { contextView.titleView.editText }
-        set { contextView.titleView.editText = newValue }
-    }
-
-    var scrollEdgeOffset: CGFloat {
-        return bounds.height - contextView.frame.maxY
     }
 }

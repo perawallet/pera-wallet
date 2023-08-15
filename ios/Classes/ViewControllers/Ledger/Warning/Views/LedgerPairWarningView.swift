@@ -31,8 +31,6 @@ final class LedgerPairWarningView:
     private lazy var instructionVerticalStackView = VStackView()
     private lazy var actionButton = Button()
 
-    private lazy var instructions = Instruction.all
-
     func customize(_ theme: LedgerPairWarningViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
@@ -90,10 +88,16 @@ extension LedgerPairWarningView {
             $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.instructionVerticalStackViewTopPadding)
         }
 
+        let instructions: [InstructionItemViewModel] = [
+            LedgerPairOpenYourLedgerDeviceInstructionItemViewModel(order: 1),
+            LedgerPairCloseAlgorandAppOnLedgerInstructionItemViewModel(order: 2),
+            LedgerPairCloseAlgorandAppOnLedgerInstructionItemViewModel(order: 3),
+            LedgerPairOpenAlgorandAppOnLedgerInstructionItemViewModel(order: 4)
+        ]
         instructions.forEach {
             let instructionView = InstructionItemView()
-            instructionView.customize(theme.largerInstuctionViewTheme)
-            instructionView.bindTitle($0.title)
+            instructionView.customize(theme.instuctionViewTheme)
+            instructionView.bindData($0)
             instructionVerticalStackView.addArrangedSubview(instructionView)
         }
     }
@@ -114,27 +118,6 @@ extension LedgerPairWarningView {
             event: .close,
             for: actionButton
         )
-    }
-}
-
-extension LedgerPairWarningView {
-    private struct Instruction {
-        private(set) var title: EditText?
-
-        init(_ title: String) {
-            self.title = .attributedString(
-                title
-                    .localized
-                    .bodyRegular()
-            )
-        }
-
-        static let all = [
-            Instruction("ledger-pairing-first-warning-message-first-instruction"),
-            Instruction("ledger-pairing-first-warning-message-second-instruction"),
-            Instruction("ledger-pairing-first-warning-message-third-instruction"),
-            Instruction("ledger-pairing-first-warning-message-fourth-instruction")
-        ]
     }
 }
 

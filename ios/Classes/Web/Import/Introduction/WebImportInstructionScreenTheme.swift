@@ -25,7 +25,7 @@ struct WebImportInstructionScreenTheme: LayoutSheet, StyleSheet {
 
     let title: TextStyle
     let titleEdgeInset: UIEdgeInsets
-    let instruction: NumberedInstructionViewTheme
+    let instruction: InstructionItemViewTheme
     let instructionEdgeInset: UIEdgeInsets
 
     let startAction: ButtonStyle
@@ -43,7 +43,7 @@ struct WebImportInstructionScreenTheme: LayoutSheet, StyleSheet {
             .textColor(Colors.Text.main)
         ]
         self.titleEdgeInset = .init(top: 76, left: 24, bottom: 0, right: 24)
-        self.instruction = NumberedInstructionViewTheme(family)
+        self.instruction = InstructionItemViewTheme(family)
         self.instructionEdgeInset = .init(top: 28, left: 24, bottom: 24, right: 24)
 
         self.startAction = [

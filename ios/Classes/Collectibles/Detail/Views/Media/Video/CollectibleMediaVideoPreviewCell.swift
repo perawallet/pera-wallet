@@ -21,7 +21,8 @@ import UIKit
 final class CollectibleMediaVideoPreviewCell:
     CollectionCell<CollectibleMediaVideoPreviewView>,
     ViewModelBindable,
-    UIInteractable {
+    UIInteractable,
+    CollectiblePlayableMediaPreviewCell {
     static let theme = CollectibleMediaVideoPreviewViewTheme()
 
     override init(
@@ -33,15 +34,11 @@ final class CollectibleMediaVideoPreviewCell:
 }
 
 extension CollectibleMediaVideoPreviewCell {
-    var isReadyForDisplay: Bool {
-        return contextView.isReadyForDisplay
-    }
-
-    func playVideo() {
+    func play() {
         contextView.playVideo()
     }
 
-    func stopVideo() {
+    func stop() {
         contextView.stopVideo()
     }
 }

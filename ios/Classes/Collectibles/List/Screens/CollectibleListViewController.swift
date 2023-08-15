@@ -526,7 +526,7 @@ extension CollectibleListViewController {
             }
             
             let isWatchAccount =
-            self.dataController.galleryAccount.singleAccount?.value.isWatchAccount() ?? false
+            self.dataController.galleryAccount.singleAccount?.value.authorization.isWatch ?? false
             
             if isWatchAccount {
                 self.clearFilters()

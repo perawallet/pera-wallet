@@ -45,13 +45,14 @@ final class OptInAssetScreen:
     init(
         draft: OptInAssetDraft,
         copyToClipboardController: CopyToClipboardController,
-        eventHandler: @escaping EventHandler
+        eventHandler: @escaping EventHandler,
+        api: ALGAPI?
     ) {
         self.draft = draft
         self.eventHandler = eventHandler
         self.copyToClipboardController = copyToClipboardController
 
-        super.init()
+        super.init(api: api)
     }
 
     override func configureNavigationBar() {

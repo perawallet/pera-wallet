@@ -23,7 +23,7 @@ struct CompleteTransactionEvent: ALGAnalyticsEvent {
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
-        accountType: AccountInformation.AccountType,
+        accountType: AccountAuthorization,
         assetId: String?,
         isMaxTransaction: Bool,
         amount: UInt64?,
@@ -47,7 +47,7 @@ extension AnalyticsEvent where Self == CompleteTransactionEvent {
     ) -> Self {
         if let algoDraft = draft as? AlgosTransactionSendDraft, let amount = algoDraft.amount {
             return CompleteTransactionEvent(
-                accountType: algoDraft.from.type,
+                accountType: algoDraft.from.authorization,
                 assetId: nil,
                 isMaxTransaction: algoDraft.isMaxTransaction,
                 amount: amount.toMicroAlgos,
@@ -57,7 +57,7 @@ extension AnalyticsEvent where Self == CompleteTransactionEvent {
                   let assetId = assetDraft.assetIndex,
                   let amount = assetDraft.amount {
             return CompleteTransactionEvent(
-                accountType: assetDraft.from.type,
+                accountType: assetDraft.from.authorization,
                 assetId: String(assetId),
                 isMaxTransaction: assetDraft.isMaxTransaction,
                 amount: amount.toFraction(of: assetDraft.assetDecimalFraction),
@@ -80,7 +80,7 @@ extension AnalyticsEvent where Self == CompleteTransactionEvent {
         transactionId: TransactionID
     ) -> Self {
         return CompleteTransactionEvent(
-            accountType: draft.fromAccount.type,
+            accountType: draft.fromAccount.authorization,
             assetId: String(draft.collectibleAsset.id),
             isMaxTransaction: false,
             amount: draft.collectibleAsset.amount,

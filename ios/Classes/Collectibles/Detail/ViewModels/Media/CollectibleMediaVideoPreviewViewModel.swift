@@ -52,6 +52,7 @@ extension CollectibleMediaVideoPreviewViewModel {
         _ media: Media
     ) {
         if media.type != .video {
+            self.url = nil
             return
         }
 
@@ -65,10 +66,10 @@ extension CollectibleMediaVideoPreviewViewModel {
         switch accountCollectibleStatus {
         case .notOptedIn,
              .optingOut,
+             .optingIn,
              .owned:
             overlayImage = nil
-        case .optingIn,
-             .optedIn:
+        case .optedIn:
             overlayImage = "overlay-bg".uiImage
         }
     }

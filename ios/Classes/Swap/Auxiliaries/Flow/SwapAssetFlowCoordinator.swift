@@ -598,7 +598,7 @@ extension SwapAssetFlowCoordinator {
         let uiSheet = UISheet(
             image: "icon-ledger-48",
             title: title,
-            body: body
+            body: UISheetBodyTextProvider(text: body)
         )
 
         let signTransactionsAction = UISheetAction(
@@ -807,7 +807,7 @@ extension SwapAssetFlowCoordinator {
 
         let uiSheet = UISheet(
             title: "swap-slippage-tolerance-info-title".localized.bodyLargeMedium(),
-            body:"swap-slippage-tolerance-info-body".localized.bodyRegular()
+            body: UISheetBodyTextProvider(text: "swap-slippage-tolerance-info-body".localized.bodyRegular())
         )
 
         let closeAction = UISheetAction(
@@ -853,7 +853,7 @@ extension SwapAssetFlowCoordinator {
 
         let uiSheet = UISheet(
             title: "swap-price-impact-info-title".localized.bodyLargeMedium(),
-            body:"swap-price-impact-info-body".localized.bodyRegular()
+            body: UISheetBodyTextProvider(text: "swap-price-impact-info-body".localized.bodyRegular())
         )
 
         let closeAction = UISheetAction(
@@ -877,7 +877,7 @@ extension SwapAssetFlowCoordinator {
 
         let uiSheet = UISheet(
             title: "swap-confirm-exchange-fee-title".localized.bodyLargeMedium(),
-            body: "swap-confirm-exchange-fee-detail".localized.bodyRegular()
+            body: UISheetBodyTextProvider(text: "swap-confirm-exchange-fee-detail".localized.bodyRegular())
         )
 
         let closeAction = UISheetAction(

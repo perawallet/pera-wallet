@@ -51,10 +51,10 @@ fileprivate struct ASAAboutScreenASAURLSecondaryListItemValueViewModel: Secondar
 
 extension ASAAboutScreenASAURLSecondaryListItemValueViewModel {
     private mutating func bindTitle(asset: Asset) {
-        let aTitle = asset.url
-            .unwrapNonEmptyString()
-            .unwrap(URL.init)?
-            .presentationString
+        let aTitle =
+            asset.url
+                .toURL()?
+                .presentationString
 
         var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Helpers.positive))

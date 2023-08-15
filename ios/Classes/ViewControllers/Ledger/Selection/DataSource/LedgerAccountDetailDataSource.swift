@@ -31,6 +31,7 @@ final class LedgerAccountDetailDataSource: NSObject {
     private let sharedDataController: SharedDataController
     private let loadingController: LoadingController?
     private let account: Account
+    private let authAccount: Account
     private let rekeyedAccounts: [Account]
 
     init(
@@ -38,12 +39,14 @@ final class LedgerAccountDetailDataSource: NSObject {
         sharedDataController: SharedDataController,
         loadingController: LoadingController?,
         account: Account,
+        authAccount: Account,
         rekeyedAccounts: [Account]
     ) {
         self.api = api
         self.sharedDataController = sharedDataController
         self.loadingController = loadingController
         self.account = account
+        self.authAccount = authAccount
         self.rekeyedAccounts = rekeyedAccounts
         super.init()
     }
@@ -65,7 +68,7 @@ extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
         switch sections[section] {
         case .ledgerAccount: return 1
         case .assets: return assetListItems.count
-        case .rekeyedAccounts: return account.isRekeyed() ? 1 : rekeyedAccounts.count
+        case .rekeyedAccounts: return account.authorization.isRekeyed ? 1 : rekeyedAccounts.count
         }
     }
 
@@ -97,12 +100,8 @@ extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
 extension LedgerAccountDetailDataSource {
     func cellForLedgerAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AccountListItemCell.self, at: indexPath)
-        let accountNameViewModel = AccountNameViewModel(account: account)
-        let item = CustomAccountListItem(
-            accountNameViewModel,
-            address: account.address
-        )
-        cell.bindData(AccountListItemViewModel(item))
+        let viewModel = makeAccountListItemViewModel(account)
+        cell.bindData(viewModel)
         return cell
     }
 
@@ -130,23 +129,32 @@ extension LedgerAccountDetailDataSource {
     func cellForRekeyedAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AccountListItemCell.self, at: indexPath)
 
-        if account.isRekeyed() {
-            let accountNameViewModel = AuthAccountNameViewModel(account)
-            let item = CustomAccountListItem(
-                accountNameViewModel,
-                address: account.address
-            )
-            cell.bindData(AccountListItemViewModel(item))
+        if account.authorization.isRekeyed {
+            let viewModel = makeAccountListItemViewModel(authAccount)
+            cell.bindData(viewModel)
         } else {
             let rekeyedAccount = rekeyedAccounts[indexPath.row]
-            let accountNameViewModel = AccountNameViewModel(account: rekeyedAccount)
-            let item = CustomAccountListItem(
-                accountNameViewModel,
-                address: rekeyedAccount.address
-            )
-            cell.bindData(AccountListItemViewModel(item))
+            let viewModel = makeAccountListItemViewModel(rekeyedAccount)
+            cell.bindData(viewModel)
         }
+
         return cell
+    }
+}
+
+extension LedgerAccountDetailDataSource {
+    private func makeAccountListItemViewModel(_ account: Account) -> AccountListItemViewModel {
+        let currency = sharedDataController.currency
+        let accountValue = AccountHandle(
+            account: account,
+            status: .ready
+        )
+        let item = AccountPortfolioItem(
+            accountValue: accountValue,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        return AccountListItemViewModel(item)
     }
 }
 
@@ -179,7 +187,7 @@ extension LedgerAccountDetailDataSource {
         }
 
         api.fetchAssetDetails(
-            AssetFetchQuery(ids: assetsToBeFetched),
+            AssetFetchQuery(ids: assetsToBeFetched, includeDeleted: true),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] assetResponse in

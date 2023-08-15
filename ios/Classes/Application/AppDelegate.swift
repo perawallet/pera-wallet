@@ -215,6 +215,12 @@ class AppDelegate:
             return true
         }
 
+        if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
+            let destination = DiscoverExternalDestination.redirection(inAppBrowserDeeplinkURL, api.network)
+            receive(deeplinkWithSource: .externalInAppBrowser(destination))
+            return true
+        }
+
         let deeplinkQR = DeeplinkQR(url: url)
 
         if let walletConnectURL = deeplinkQR.walletConnectUrl() {
@@ -271,12 +277,18 @@ extension AppDelegate {
         if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
             src = .remoteNotification(userInfo, waitForUserConfirmation: false)
         } else if let url = options?[.url] as? URL {
-            let deeplinkQR = DeeplinkQR(url: url)
+            if let inAppBrowserDeeplinkURL = url.inAppBrowserDeeplinkURL {
+                let destination = DiscoverExternalDestination.redirection(inAppBrowserDeeplinkURL, api.network)
 
-            if let qrText = deeplinkQR.qrText() {
-                src = .qrText(qrText)
+                src = .externalInAppBrowser(destination)
             } else {
-                src = nil
+                let deeplinkQR = DeeplinkQR(url: url)
+
+                if let qrText = deeplinkQR.qrText() {
+                    src = .qrText(qrText)
+                } else {
+                    src = nil
+                }
             }
         } else {
             src = nil

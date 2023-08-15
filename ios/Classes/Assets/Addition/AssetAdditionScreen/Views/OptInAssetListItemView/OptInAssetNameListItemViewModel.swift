@@ -42,7 +42,21 @@ extension OptInAssetNameListItemViewModel {
             attributes.insert(.textColor(Colors.Text.main))
         }
 
-        primaryTitle = title.attributed(attributes)
+        let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
+        let assetText = title.attributed(attributes)
+
+        primaryTitle = [ destroyedText, assetText ].compound(" ")
+    }
+
+    private func makeDestroyedAssetTextIfNeeded(_ isAssetDestroyed: Bool) -> NSAttributedString? {
+        guard isAssetDestroyed else {
+            return nil
+        }
+
+        let title = "title-deleted-with-parantheses".localized
+        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Helpers.negative))
+        return title.attributed(attributes)
     }
 
     mutating func bindPrimaryTitleAccessory(asset: AssetDecoration) {

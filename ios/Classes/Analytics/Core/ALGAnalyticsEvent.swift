@@ -28,6 +28,7 @@ where
 /// <note>
 /// Naming convention:
 /// Action-related name should be used, i.e. either showQRCopy (active) or wcSessionApproved (passive)
+/// Some providers may not support a name that is too long. For example, in Firebase Analytics, the maximum supported length is 40 characters. Therefore, event names should be adjusted accordingly.
 /// Sort:
 /// Alphabetical order
 enum ALGAnalyticsEventName:

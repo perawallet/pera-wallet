@@ -66,7 +66,7 @@ extension ListItemButtonViewModel {
         }
         
         return .attributedString(
-            aSubtitle.captionMonoRegular(
+            aSubtitle.captionRegular(
                 lineBreakMode: .byTruncatingMiddle
             )
         )

@@ -29,7 +29,7 @@ struct TransactionTutorialViewTheme: StyleSheet, LayoutSheet {
     let actionButton: ButtonStyle
     let actionButtonContentEdgeInsets: LayoutPaddings
     let actionButtonCorner: Corner
-    let smallerInstuctionViewTheme: SmallerInstructionItemViewTheme
+    let instuctionViewTheme: InstructionItemViewTheme
 
     let bottomInset: LayoutMetric
     let horizontalInset: LayoutMetric
@@ -67,7 +67,7 @@ struct TransactionTutorialViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(Colors.Button.Secondary.background)
         ]
-        self.smallerInstuctionViewTheme = SmallerInstructionItemViewTheme()
+        self.instuctionViewTheme = InstructionItemViewTheme(family)
         self.actionButtonContentEdgeInsets = (14, 0, 14, 0)
         self.actionButtonCorner = Corner(radius: 4)
         self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)

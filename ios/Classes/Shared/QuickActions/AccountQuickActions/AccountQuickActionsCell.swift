@@ -22,7 +22,7 @@ final class AccountQuickActionsCell:
     CollectionCell<AccountQuickActionsView>,
     UIInteractable {
     override class var contextPaddings: LayoutPaddings {
-        return (36, 24, 36, 24)
+        return (0, 24, 36, 24)
     }
 
     static let theme = AccountQuickActionsViewTheme()

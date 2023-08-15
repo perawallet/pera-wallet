@@ -22,7 +22,7 @@ final class LedgerAccountSelectionViewController: BaseViewController {
     private lazy var ledgerAccountSelectionView = LedgerAccountSelectionView(isMultiSelect: isMultiSelect)
     private lazy var theme = Theme()
 
-    private let ledgerAccounts: [Account]
+    private var accounts: [Account]
     private let accountSetupFlow: AccountSetupFlow
 
     private var selectedAccountCount: Int {
@@ -47,8 +47,9 @@ final class LedgerAccountSelectionViewController: BaseViewController {
 
     private lazy var dataSource = LedgerAccountSelectionDataSource(
         api: api!,
+        analytics: analytics,
         sharedDataController: sharedDataController,
-        accounts: ledgerAccounts,
+        accounts: accounts,
         rekeyingAccount: accountSetupFlow.rekeyingAccount,
         isMultiSelect: isMultiSelect
     )
@@ -57,10 +58,10 @@ final class LedgerAccountSelectionViewController: BaseViewController {
     
     init(accountSetupFlow: AccountSetupFlow, accounts: [Account], configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow
-        self.ledgerAccounts = accounts
+        self.accounts = accounts
         super.init(configuration: configuration)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         loadingController?.startLoadingWithMessage("title-loading".localized)
@@ -75,7 +76,8 @@ final class LedgerAccountSelectionViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = ledgerAccounts.first?.ledgerDetail?.name
+
+        title = accounts.first?.ledgerDetail?.name
 
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
@@ -89,13 +91,7 @@ final class LedgerAccountSelectionViewController: BaseViewController {
     }
 
     override func bindData() {
-        ledgerAccountSelectionView.bindData(
-            LedgerAccountSelectionViewModel(
-                accounts: ledgerAccounts,
-                isMultiSelect: isMultiSelect,
-                selectedCount: selectedAccountCount
-            )
-        )
+        bindLedgerAccountSelectionView()
     }
     
     override func prepareLayout() {
@@ -111,9 +107,13 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
         _ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource,
         didFetch accounts: [Account]
     ) {
+        self.accounts = accounts
+
         loadingController?.stopLoading()
         ledgerAccountSelectionView.setNormalState()
         ledgerAccountSelectionView.reloadData()
+
+        bindLedgerAccountSelectionView()
     }
     
     func ledgerAccountSelectionDataSourceDidFailToFetch(_ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource) {
@@ -130,10 +130,23 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
               let account = dataSource.account(at: indexPath.item) else {
             return
         }
+
+        let authAccount: Account?
+
+        if account.authorization.isRekeyed {
+            authAccount = dataSource.getAuthAccount(of: account)
+        } else {
+            authAccount = account
+        }
+
+        guard let authAccount else {
+            return
+        }
         
         open(
             .ledgerAccountDetail(
                 account: account,
+                authAccount: authAccount,
                 ledgerIndex: dataSource.ledgerAccountIndex(for: account.address),
                 rekeyedAccounts: dataSource.rekeyedAccounts(for: account.address)
             ),
@@ -154,7 +167,7 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
         case let .addNewAccount(mode):
             switch mode {
             case let .rekey(rekeyedAccount):
-                openRekeyConfirmation(for: rekeyedAccount)
+                openRekeyConfirmationScreen(for: rekeyedAccount)
             default:
                 openAccountVerification()
             }
@@ -165,21 +178,61 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
         }
     }
 
-    private func openRekeyConfirmation(for rekeyedAccount: Account) {
+    private func openRekeyConfirmationScreen(for rekeyedAccount: Account) {
         guard let selectedIndex = ledgerAccountSelectionView.selectedIndexes.first,
               let account = dataSource.account(at: selectedIndex.item),
               !isMultiSelect else {
             return
         }
 
-        open(
+        let authAccount = sharedDataController.authAccount(of: rekeyedAccount)
+        let screen = open(
             .rekeyConfirmation(
-                account: rekeyedAccount,
-                ledgerDetail: account.ledgerDetail,
-                newAuthAddress: account.address
+                sourceAccount: rekeyedAccount,
+                authAccount: authAccount?.value,
+                newAuthAccount: account
             ),
             by: .push
-        )
+        ) as? RekeyConfirmationScreen
+        screen?.eventHandler = {
+            [weak self, weak screen] event in
+            guard let self,
+                  let screen else {
+                return
+            }
+
+            switch event {
+            case .didRekey:
+                self.openRekeySuccessScreen(
+                    sourceAccount: rekeyedAccount,
+                    screen: screen
+                )
+            }
+        }
+    }
+
+    private func openRekeySuccessScreen(
+        sourceAccount: Account,
+        screen: UIViewController
+    ) {
+        let eventHandler: RekeySuccessScreen.EventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            switch event {
+            case .performPrimaryAction:
+                self.dismissScreen()
+            case .performCloseAction:
+                self.dismissScreen()
+            }
+        }
+        let rekeySuccessScreen = screen.open(
+            .rekeySuccess(
+                sourceAccount: sourceAccount,
+                eventHandler: eventHandler
+            ),
+            by: .push
+        ) as? RekeySuccessScreen
+        rekeySuccessScreen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
     private func openAccountVerification() {
@@ -193,25 +246,24 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionListLayout
         _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
         didSelectItemAt indexPath: IndexPath
     ) {
-        ledgerAccountSelectionView.bindData(
-            LedgerAccountSelectionViewModel(
-                accounts: ledgerAccounts,
-                isMultiSelect: isMultiSelect,
-                selectedCount: selectedAccountCount
-            )
-        )
+        bindLedgerAccountSelectionView()
     }
     
     func ledgerAccountSelectionListLayout(
         _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
         didDeselectItemAt indexPath: IndexPath
     ) {
-        ledgerAccountSelectionView.bindData(
-            LedgerAccountSelectionViewModel(
-                accounts: ledgerAccounts,
-                isMultiSelect: isMultiSelect,
-                selectedCount: selectedAccountCount
-            )
+        bindLedgerAccountSelectionView()
+    }
+}
+
+extension LedgerAccountSelectionViewController {
+    private func bindLedgerAccountSelectionView() {
+        let viewModel = LedgerAccountSelectionViewModel(
+            accounts: accounts,
+            isMultiSelect: isMultiSelect,
+            selectedCount: selectedAccountCount
         )
+        ledgerAccountSelectionView.bindData(viewModel)
     }
 }

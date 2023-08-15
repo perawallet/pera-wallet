@@ -23,7 +23,6 @@ enum TransactionSignatureValidationError:
     ErrorDisplayable {
     case invalidAccountType
     case missingAuthAccount
-    case missingLedgerDetail
     case missingPrivateKey
 }
 
@@ -37,7 +36,6 @@ extension TransactionSignatureValidationError {
         switch self {
         case .invalidAccountType: return ""
         case .missingAuthAccount: return "ledger-rekey-error-not-found".localized
-        case .missingLedgerDetail: return "ledger-rekey-error-not-found".localized
         case .missingPrivateKey: return "ledger-rekey-error-not-found".localized
         }
     }

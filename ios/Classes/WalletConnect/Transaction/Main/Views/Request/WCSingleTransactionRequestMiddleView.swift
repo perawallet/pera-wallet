@@ -100,8 +100,13 @@ extension WCSingleTransactionRequestMiddleView {
     func bind(
         _ viewModel: WCSingleTransactionRequestMiddleViewModel?
     ) {
-        titleLabel.text = viewModel?.title
-        titleLabel.textColor = viewModel?.titleColor?.uiColor
+        if let title = viewModel?.title {
+            title.load(in: titleLabel)
+        } else {
+            titleLabel.text = nil
+            titleLabel.attributedText = nil
+        }
+
         subtitleLabel.text = viewModel?.subtitle
 
         if let verificationTierIcon = viewModel?.verificationTierIcon {

@@ -39,7 +39,21 @@ extension ASAProfileNameViewModel {
             attributes.insert(.textColor(Colors.Text.gray))
         }
 
-        text = name.attributed(attributes)
+        let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
+        let assetText = name.attributed(attributes)
+
+        text = [ destroyedText, assetText ].compound(" ")
+    }
+
+    private func makeDestroyedAssetTextIfNeeded(_ isAssetDestroyed: Bool) -> NSAttributedString? {
+        guard isAssetDestroyed else {
+            return nil
+        }
+
+        let title = "title-deleted-with-parantheses".localized
+        var attributes = Typography.footnoteMediumAttributes()
+        attributes.insert(.textColor(Colors.Helpers.negative))
+        return title.attributed(attributes)
     }
 
     mutating func bindAccessory(asset: Asset) {

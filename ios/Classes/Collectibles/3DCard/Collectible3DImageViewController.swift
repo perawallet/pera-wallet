@@ -31,14 +31,18 @@ final class Collectible3DImageViewController:
     private lazy var theme = Collectible3DViewerTheme()
 
     private lazy var closeButton = UIButton(type: .custom)
+    private lazy var imageView = UIImageView(image: image)
 
     private let image: UIImage
+    private let rendersContinuously: Bool
 
     init(
         image: UIImage,
+        rendersContinuously: Bool,
         configuration: ViewControllerConfiguration
     ) {
         self.image = image
+        self.rendersContinuously = rendersContinuously
         super.init(configuration: configuration)
     }
 
@@ -124,7 +128,9 @@ extension Collectible3DImageViewController {
             }
         }
 
-        material.diffuse.contents = image
+        sceneView?.rendersContinuously = rendersContinuously
+
+        material.diffuse.contents = imageView.layer
     }
 
     private func addCloseButton() {

@@ -33,13 +33,3 @@ struct SardineConfig {
         }
     }
 }
-
-extension DiscoverDappParamaters {
-    init(_ config: SardineConfig) {
-        self.init(
-            name: nil,
-            url: config.url,
-            favorites: nil
-        )
-    }
-}

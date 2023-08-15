@@ -163,6 +163,10 @@ class AccountSelectionListScreen<DataController: AccountSelectionListDataControl
             return
         }
 
+        guard account.isAvailable else {
+            return
+        }
+
         selectedAccount = account.value
         eventHandler(.didSelect(account), self)
     }

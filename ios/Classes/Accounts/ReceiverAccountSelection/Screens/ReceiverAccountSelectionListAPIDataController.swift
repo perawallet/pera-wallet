@@ -355,10 +355,8 @@ extension ReceiverAccountSelectionListAPIDataController {
 
 extension ReceiverAccountSelectionListAPIDataController {
     private func makeAccountGeneratedFromQueryItem(for query: String) -> ReceiverAccountSelectionListItem {
-        let accountGeneratedFromQuery = Account(
-            address: query,
-            type: .standard
-        )
+        let accountGeneratedFromQuery = Account(address: query)
+        accountGeneratedFromQuery.authorization = .standard
         self.accountGeneratedFromQuery = accountGeneratedFromQuery
 
         let draft = IconWithShortAddressDraft(accountGeneratedFromQuery)

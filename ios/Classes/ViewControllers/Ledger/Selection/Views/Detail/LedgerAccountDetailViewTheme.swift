@@ -25,6 +25,6 @@ struct LedgerAccountDetailViewTheme: LayoutSheet, StyleSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.cellSpacing = 0
-        self.contentInset = (40, 0, 0, 0)
+        self.contentInset = (24, 0, 0, 0)
     }
 }

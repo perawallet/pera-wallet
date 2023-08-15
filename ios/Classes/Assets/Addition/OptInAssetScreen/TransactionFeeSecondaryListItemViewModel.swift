@@ -31,7 +31,7 @@ struct TransactionFeeSecondaryListItemViewModel: SecondaryListItemViewModel {
 
 extension TransactionFeeSecondaryListItemViewModel {
     private mutating func bindTitle() {
-        var attributes = Typography.bodyRegularAttributes()
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Text.gray))
 
         title =

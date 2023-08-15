@@ -888,7 +888,7 @@ extension ScanQRFlowCoordinator {
         let amount = qr.amount ?? 0
 
         var draft = SendTransactionDraft(
-            from: Account(address: address, type: .standard),
+            from: Account(address: address),
             transactionMode: .algo
         )
         draft.note = qr.note
@@ -909,7 +909,7 @@ extension ScanQRFlowCoordinator {
         }
 
         var draft = SendTransactionDraft(
-            from: Account(address: address, type: .standard),
+            from: Account(address: address),
             transactionMode: .asset(asset)
         )
         draft.amount = amount.assetAmount(fromFraction: asset.decimals)
@@ -921,7 +921,7 @@ extension ScanQRFlowCoordinator {
     private func findCachedAsset(
         for id: AssetID
     ) -> Asset? {
-        for account in sharedDataController.accountCollection where !account.value.isWatchAccount() {
+        for account in sharedDataController.accountCollection where account.value.authorization.isAuthorized {
             if let asset = account.value[id] {
                 return asset
             }

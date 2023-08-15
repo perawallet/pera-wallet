@@ -23,14 +23,6 @@ final class AccountCellViewModel {
     private(set) var detail: String?
     private(set) var attributedDetail: NSAttributedString?
 
-    /// Shows checkmark image if `isSelected` is `true` in `AccountCheckmarkSelectionViewCell`
-    private(set) lazy var isSelected: Bool = {
-        if case let .walletConnect(selectedAccount) = mode {
-           return selectedAccount == account
-        }
-        return false
-    }()
-
     private let mode: AccountListViewController.Mode
     private let account: Account
 
@@ -62,14 +54,7 @@ extension AccountCellViewModel {
         currencyFormatter: CurrencyFormatter
     ) {
         switch mode {
-        case .walletConnect:
-            currencyFormatter.formattingContext = .listItem
-            currencyFormatter.currency = AlgoLocalCurrency()
-
-            detail = currencyFormatter.format(account.algo.amount.toAlgos)
-        case let .transactionSender(assetDetail),
-            let .transactionReceiver(assetDetail),
-            let .contact(assetDetail):
+        case let .contact(assetDetail):
             if let assetDetail = assetDetail {
                 currencyFormatter.formattingContext = .listItem
                 currencyFormatter.currency = nil

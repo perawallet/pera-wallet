@@ -54,6 +54,7 @@ enum ALGAnalyticsMetadataKey:
     case peraFeeAsUSD = "pera_fee_inusd"
     case mismatchFoundAccountAddress = "received_address"
     case mismatchExpectedAccountAddress = "requested_address"
+    case network = "network"
     case senderAccountAddress = "sender"
     case signedTransaction = "signed_transaction"
     case swapAddress = "swap_wallet_address"

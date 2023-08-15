@@ -37,11 +37,12 @@ final class SwapSummaryScreen: ScrollScreen {
     init(
         swapController: SwapController,
         theme: SwapSummaryScreenTheme = .init(),
-        configuration: ViewControllerConfiguration
+        api: ALGAPI?
     ) {
         self.swapController = swapController
         self.theme = theme
-        super.init()
+        
+        super.init(api: api)
     }
 
     override func configureNavigationBar() {

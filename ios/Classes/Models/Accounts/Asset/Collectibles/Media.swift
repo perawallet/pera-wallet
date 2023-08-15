@@ -26,16 +26,16 @@ final class Media: ALGEntityModel {
         _ apiModel: APIModel = APIModel()
     ) {
         self.type = apiModel.type
-        self.previewURL = apiModel.previewURL
-        self.downloadURL = apiModel.downloadURL
+        self.previewURL = apiModel.previewURL.toURL()
+        self.downloadURL = apiModel.downloadURL.toURL()
         self.mediaExtension = apiModel.mediaExtension ?? .init()
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.type = type
-        apiModel.previewURL = previewURL
-        apiModel.downloadURL = downloadURL
+        apiModel.previewURL = previewURL?.absoluteString
+        apiModel.downloadURL = downloadURL?.absoluteString
         apiModel.mediaExtension = mediaExtension
         return apiModel
     }
@@ -44,8 +44,8 @@ final class Media: ALGEntityModel {
 extension Media {
     struct APIModel: ALGAPIModel {
         var type: MediaType
-        var previewURL: URL?
-        var downloadURL: URL?
+        var previewURL: String?
+        var downloadURL: String?
         var mediaExtension: MediaExtension?
 
         init() {
@@ -61,5 +61,11 @@ extension Media {
             case downloadURL = "download_url"
             case mediaExtension = "extension"
         }
+    }
+}
+
+extension Media {
+    var isGIF: Bool {
+        return mediaExtension.isGIF
     }
 }

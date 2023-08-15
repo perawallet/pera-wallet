@@ -35,18 +35,20 @@ final class DiscoverURLGenerator {
                 theme: theme,
                 session: session
             )
-        case .dappDetail(let params):
-            return generateURLForDappDetail(
-                params: params,
-                theme: theme,
-                session: session
-            )
         case .generic(let params):
             return generateGenericURL(
                 params: params,
                 theme: theme,
                 session: session
             )
+        case .external(let externalDestination):
+            switch externalDestination {
+            case .redirection(let url, let network):
+                return generateRedirectionURL(redirectionURL: url, on: network)
+            case .url(let url):
+                return url
+            }
+
         }
     }
 
@@ -81,14 +83,6 @@ final class DiscoverURLGenerator {
         return components?.url
     }
 
-    private static func generateURLForDappDetail(
-        params: DiscoverDappParamaters,
-        theme: UIUserInterfaceStyle,
-        session: Session?
-    ) -> URL? {
-        return URL(string: params.url)
-    }
-
     private static func generateGenericURL(
         params: DiscoverGenericParameters,
         theme: UIUserInterfaceStyle,
@@ -111,7 +105,7 @@ final class DiscoverURLGenerator {
         session: Session?
     ) -> [URLQueryItem] {
         var queryItems: [URLQueryItem] = []
-        queryItems.append(.init(name: "version", value: "3"))
+        queryItems.append(.init(name: "version", value: "4"))
         queryItems.append(.init(name: "theme", value: theme.peraRawValue))
         queryItems.append(.init(name: "platform", value: "ios"))
         queryItems.append(.init(name: "currency", value: session?.preferredCurrencyID.localValue))
@@ -127,11 +121,44 @@ final class DiscoverURLGenerator {
         }
         return queryItems
     }
+
+    private static func generateRedirectionURL(
+        redirectionURL: URL?,
+        on network: ALGAPI.Network
+    ) -> URL? {
+        guard let redirectionURL else {
+            return nil
+        }
+
+        var queryItems: [URLQueryItem] = []
+        queryItems.append(.init(name: "url", value: redirectionURL.absoluteString))
+
+        let base: String
+
+        switch network {
+        case .testnet:
+            base = Environment.current.testNetMobileAPIV1
+        case .mainnet:
+            base = Environment.current.mainNetMobileAPIV1
+        }
+
+        var urlComponents = URLComponents(string: base)
+        // Note: We are adding v1 because when URLComponents used and set the path, it's overrided.
+        urlComponents?.path = "/v1/discover/redirect-if-allowed/"
+        urlComponents?.queryItems = queryItems
+
+        return urlComponents?.url
+    }
 }
 
 enum DiscoverDestination {
     case home
     case assetDetail(DiscoverAssetParameters)
-    case dappDetail(DiscoverDappParamaters)
     case generic(DiscoverGenericParameters)
+    case external(DiscoverExternalDestination)
+}
+
+enum DiscoverExternalDestination {
+    case redirection(URL?, ALGAPI.Network)
+    case url(URL?)
 }

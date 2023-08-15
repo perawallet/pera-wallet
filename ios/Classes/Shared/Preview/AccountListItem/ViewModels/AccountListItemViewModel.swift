@@ -26,6 +26,8 @@ struct AccountListItemViewModel:
     Hashable {
 
     private(set) var address: String?
+    private(set) var authorization: AccountAuthorization?
+
     private(set) var icon: ImageSource?
     private(set) var title: AccountPreviewTitleViewModel?
     private(set) var primaryAccessory: EditText?
@@ -47,6 +49,7 @@ extension AccountListItemViewModel {
     ) {
         if let accountPortfolioItem = model as? AccountPortfolioItem {
             address = accountPortfolioItem.accountValue.value.address
+            authorization = accountPortfolioItem.accountValue.value.authorization
             currencyFormatter = accountPortfolioItem.currencyFormatter
 
             bindIcon(accountPortfolioItem)
@@ -60,7 +63,8 @@ extension AccountListItemViewModel {
         
         if let account = model as? Account {
             address = account.address
-            
+            authorization = account.authorization
+
             bindIcon(account)
             bindTitle(account)
             bindPrimaryAccessory(account)
@@ -84,6 +88,7 @@ extension AccountListItemViewModel {
 
         if let accountOrderingDraft = model as? AccountOrderingDraft {
             address = accountOrderingDraft.account.address
+            authorization = accountOrderingDraft.account.authorization
 
             bindIcon(accountOrderingDraft)
             bindTitle(accountOrderingDraft)
@@ -92,6 +97,7 @@ extension AccountListItemViewModel {
 
         if let iconWithShortAddressDraft = model as? IconWithShortAddressDraft {
             address = iconWithShortAddressDraft.account.address
+            authorization = iconWithShortAddressDraft.account.authorization
 
             bindIcon(iconWithShortAddressDraft)
             bindTitle(iconWithShortAddressDraft)
@@ -99,11 +105,11 @@ extension AccountListItemViewModel {
             return
         }
 
-        if let mameServiceAccountListItem = model as? NameServiceAccountListItem {
-            address = mameServiceAccountListItem.address
+        if let nameServiceAccountListItem = model as? NameServiceAccountListItem {
+            address = nameServiceAccountListItem.address
 
-            bindIcon(mameServiceAccountListItem)
-            bindTitle(mameServiceAccountListItem)
+            bindIcon(nameServiceAccountListItem)
+            bindTitle(nameServiceAccountListItem)
         }
     }
 }
@@ -323,10 +329,19 @@ extension AccountListItemViewModel {
 }
 
 extension AccountListItemViewModel {
+    mutating func bindIcon(
+        _ icon: Image?
+    ) {
+        self.icon = icon?.uiImage
+    }
+}
+
+extension AccountListItemViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
         hasher.combine(address)
+        hasher.combine(authorization)
         hasher.combine(title)
         hasher.combine(primaryAccessory)
         hasher.combine(secondaryAccessory)
@@ -338,6 +353,7 @@ extension AccountListItemViewModel {
     ) -> Bool {
         return
             lhs.address == rhs.address &&
+            lhs.authorization == rhs.authorization &&
             lhs.title == rhs.title &&
             lhs.primaryAccessory == rhs.primaryAccessory &&
             lhs.secondaryAccessory == rhs.secondaryAccessory

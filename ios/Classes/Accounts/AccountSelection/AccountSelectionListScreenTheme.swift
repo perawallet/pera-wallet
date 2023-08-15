@@ -28,7 +28,7 @@ struct AccountSelectionListScreenTheme:
         self.background = [
             .backgroundColor(Colors.Defaults.background)
         ]
-        self.navigationBarEdgeInsets = (0, 24, .noMetric, 24)
+        self.navigationBarEdgeInsets = (8, 24, .noMetric, 24)
         self.listContentTopInset = .zero
     }
 }

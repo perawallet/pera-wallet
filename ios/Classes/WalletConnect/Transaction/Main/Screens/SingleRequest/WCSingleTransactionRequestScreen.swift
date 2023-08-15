@@ -184,14 +184,13 @@ extension WCSingleTransactionRequestScreen {
         scrollView.addSubview(contentView)
         contentView.snp.makeConstraints { make in
             make.width.equalTo(view)
-            make.height.equalToSuperview().inset(view.safeAreaBottom).priority(.low)
+            make.height.equalToSuperview().inset(view.safeAreaBottom + theme.bottomInset).priority(.low)
             make.edges.equalToSuperview()
         }
 
         contentView.addSubview(requestView)
         requestView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
 }

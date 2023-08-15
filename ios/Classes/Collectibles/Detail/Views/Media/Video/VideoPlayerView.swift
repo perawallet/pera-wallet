@@ -20,7 +20,6 @@ import AVKit
 import AVFoundation
 
 final class VideoPlayerView: View {
-
     override static var layerClass: AnyClass {
         return AVPlayerLayer.self
     }

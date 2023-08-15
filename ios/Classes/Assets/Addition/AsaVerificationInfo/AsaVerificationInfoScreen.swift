@@ -29,8 +29,8 @@ final class AsaVerificationInfoScreen: ScrollScreen {
 
     private lazy var theme = AsaVerificationInfoScreenTheme()
 
-    override func configureNavigationBar() {
-        navigationBarController.isNavigationBarHidden = true
+    override var shouldShowNavigationBar: Bool {
+        return false
     }
 
     override func viewDidLoad() {

@@ -79,18 +79,13 @@ extension WCAssetInformationView: ViewModelBindable {
         }
 
         if let title = viewModel.title {
-            titleLabel.text = title
+            title.load(in: titleLabel)
+        } else {
+            titleLabel.text = nil
+            titleLabel.attributedText = nil
         }
 
-        if let name = viewModel.name {
-            if let assetId = viewModel.assetId {
-                assetView.setTitle("\(name) \(assetId)", for: .normal)
-            } else {
-                assetView.setTitle(name, for: .normal)
-            }
-        }
-
-        assetView.setTitleColor(viewModel.nameColor?.uiColor, for: .normal)
+        assetView.editTitle = viewModel.name
         assetView.setImage(viewModel.verificationTierIcon, for: .normal)
 
         if viewModel.verificationTierIcon == nil {

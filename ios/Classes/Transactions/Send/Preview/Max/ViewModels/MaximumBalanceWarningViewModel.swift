@@ -39,7 +39,7 @@ extension MaximumBalanceWarningViewModel {
     ) {
         let minimumAmountForAccount = "\(calculateMininmumAmount(for: account, and: transactionParams).toAlgos)"
 
-        if !account.isRekeyed() {
+        if !account.hasAuthAccount() {
             description =
             "maximum-balance-standard-account-warning-description"
                 .localized(params: minimumAmountForAccount)

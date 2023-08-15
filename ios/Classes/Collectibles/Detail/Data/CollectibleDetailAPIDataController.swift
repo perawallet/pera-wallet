@@ -85,8 +85,9 @@ extension CollectibleDetailAPIDataController {
         fetchAssetDetails()
     }
 
-    func retry() {
-        fetchAssetDetails()
+    func reloadAfterOptInStatusUpdates() {
+        currentAccountCollectibleStatus = getAccountCollectibleStatus()
+        deliverContentSnapshot()
     }
 
     private func fetchAssetDetails() {
@@ -158,7 +159,7 @@ extension CollectibleDetailAPIDataController {
         /// interpret a newly-created NFT as a normal asset.
         switch updatedAsset {
         case let updatedCollectibleAsset as CollectibleAsset:
-            asset = updatedCollectibleAsset
+            asset.update(with: updatedCollectibleAsset)
         case let updatedStandardAsset as StandardAsset:
             asset.update(with: updatedStandardAsset)
         default:
@@ -253,11 +254,11 @@ extension CollectibleDetailAPIDataController {
     ) {
         var mediaItems: [CollectibleDetailItem] = [.media(asset)]
 
-        if currentAccountCollectibleStatus == .optedIn {
+        if currentAccountCollectibleStatus == .optedIn && !asset.isDestroyed {
             mediaItems.append(
                 .error(
                     CollectibleMediaErrorViewModel(
-                        .notOwner(isWatchAccount: account.isWatchAccount())
+                        .notOwner(isWatchAccount: account.authorization.isWatch)
                     )
                 )
             )
@@ -285,7 +286,7 @@ extension CollectibleDetailAPIDataController {
             return
         }
 
-        if account.isWatchAccount() {
+        if account.authorization.isWatch {
             return
         }
 

@@ -68,7 +68,6 @@ final class AssetDetail: ALGEntityModel {
     let freezeAddress: String?
     let clawBackAddress: String?
     let fractionDecimals: Int
-    var isDeleted: Bool?
     
     var isVerified: Bool = false
 
@@ -87,7 +86,6 @@ final class AssetDetail: ALGEntityModel {
         self.freezeAddress = apiModel.params?.freeze
         self.clawBackAddress = apiModel.params?.clawback
         self.fractionDecimals = apiModel.params?.decimals ?? 0
-        self.isDeleted = apiModel.params?.deleted
     }
     
     init(assetDecoration: AssetDecoration) {
@@ -119,7 +117,6 @@ final class AssetDetail: ALGEntityModel {
         params.freeze = freezeAddress
         params.clawback = clawBackAddress
         params.decimals = fractionDecimals
-        params.deleted = isDeleted
 
         var apiModel = APIModel()
         apiModel.index = id
@@ -237,7 +234,6 @@ extension AssetDetail.APIModel {
         var freeze: String?
         var clawback: String?
         var decimals: Int?
-        var deleted: Bool?
 
         init() {
             self.creator = nil
@@ -253,7 +249,6 @@ extension AssetDetail.APIModel {
             self.freeze = nil
             self.clawback = nil
             self.decimals = nil
-            self.deleted = nil
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -270,7 +265,6 @@ extension AssetDetail.APIModel {
             case freeze
             case clawback
             case decimals
-            case deleted
         }
     }
 }

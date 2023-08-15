@@ -54,10 +54,6 @@ extension Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.single.transaction.headerUpdate")
     }
 
-    static var didAddAccount: Notification.Name {
-        return .init(rawValue: "com.algorand.algorand.notification.account.added")
-    }
-
     static var didRedirectFromMoonPay: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.moonpay.redirect")
     }

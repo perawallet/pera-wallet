@@ -22,15 +22,7 @@ import UIKit
 
 final class ASADetailScreen:
     BaseViewController,
-    Container,
-    ChoosePasswordViewControllerDelegate,
-    OptionsViewControllerDelegate,
-    RenameAccountScreenDelegate,
-    SelectAccountViewControllerDelegate {
-    typealias EventHandler = (Event) -> Void
-
-    var eventHandler: EventHandler?
-
+    Container {
     private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var loadingView = makeLoading()
     private lazy var errorView = makeError()
@@ -50,11 +42,6 @@ final class ASADetailScreen:
         copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
-
-    private lazy var transitionToAccountActions = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToPassphrase = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToConfirmToDeleteAccount = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToRenameAccount = BottomSheetTransition(presentingViewController: self)
 
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
@@ -77,9 +64,24 @@ final class ASADetailScreen:
         asset: dataController.asset
     )
     private lazy var receiveTransactionFlowCoordinator =
-        ReceiveTransactionFlowCoordinator(presentingScreen: self, account: dataController.account)
+        ReceiveTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var undoRekeyFlowCoordinator = UndoRekeyFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController
+    )
+    private lazy var rekeyToStandardAccountFlowCoordinator = RekeyToStandardAccountFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController
+    )
+    private lazy var rekeyToLedgerAccountFlowCoordinator = RekeyToLedgerAccountFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController
+    )
+    private lazy var accountInformationFlowCoordinator = AccountInformationFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController
+    )
 
-    private lazy var localAuthenticator = LocalAuthenticator()
     private lazy var currencyFormatter = CurrencyFormatter()
     private lazy var rekeyingValidator = RekeyingValidator(
         session: session!,
@@ -176,264 +178,20 @@ final class ASADetailScreen:
     }
 }
 
-/// <todo>
-/// Make it reusable
-/// <mark>
-/// OptionsViewControllerDelegate
 extension ASADetailScreen {
-    func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
-        let account = dataController.account
-        analytics.track(.showQRCopy(account: account))
-        copyToClipboardController.copyAddress(account)
-    }
-
-    func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
-        let account = dataController.account
-        let accountName = account.primaryDisplayName
-        let draft = QRCreationDraft(address: account.address, mode: .address, title: accountName)
-        let screen: Screen = .qrGenerator(title: accountName, draft: draft, isTrackable: true)
-        open(
-            screen,
-            by: .present
-        )
+    func optionsViewControllerDidUndoRekey(_ optionsViewController: OptionsViewController) {
+        let sourceAccount = dataController.account
+        undoRekeyFlowCoordinator.launch(sourceAccount)
     }
     
     func optionsViewControllerDidOpenRekeyingToLedger(_ optionsViewController: OptionsViewController) {
-        let viewModel = RekeyToLedgerInstructionsViewModel(dataController.account.requiresLedgerConnection())
-        openRekeyInstructions(viewModel: viewModel) {
-            [weak self] in
-            guard let self else { return }
-
-            self.open(
-                .ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: self.dataController.account))),
-                by: .customPresent(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: nil,
-                    transitioningDelegate: nil
-                )
-            )
-        }
+        let sourceAccount = dataController.account
+        rekeyToLedgerAccountFlowCoordinator.launch(sourceAccount)
     }
     
     func optionsViewControllerDidOpenRekeyingToStandardAccount(_ optionsViewController: OptionsViewController) {
-        let viewModel = RekeyToStandardAccountInstructionsViewModel()
-        openRekeyInstructions(viewModel: viewModel) {
-            [weak self] in
-            guard let self else { return }
-            self.openSelectAccountForRekeyingToStandardAccount()
-        }
-    }
-    
-    private func openRekeyInstructions(
-        viewModel: RekeyToAnyAccountInstructionsViewModel,
-        rekeyHandler: @escaping () -> Void
-    ) {
-        let eventHandler: RekeyInstructionsViewController.EventHandler = {
-            event in
-
-            switch event {
-            case .performRekey:
-                rekeyHandler()
-            }
-        }
-        
-        open(
-            .rekeyInstruction(
-                viewModel: viewModel,
-                eventHandler: eventHandler
-            ),
-            by: .customPresent(
-                presentationStyle: .fullScreen,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            )
-        )
-    }
-    
-    private func openSelectAccountForRekeyingToStandardAccount() {
-        let draft = SelectAccountDraft(
-            transactionAction: .rekeyToStandardAccount,
-            requiresAssetSelection: false
-        )
-        
-        let accountFilters: (Account) -> Bool = {
-            [weak self] account in
-            guard let self else { return false }
-            
-            return self.isRekeyingRestricted(to: account)
-        }
-
-        let screen: Screen = .accountSelection(
-            draft: draft,
-            delegate: self,
-            shouldFilterAccount: accountFilters
-        )
-
-        open(
-            screen,
-            by: .present
-        )
-    }
-    
-    private func isRekeyingRestricted(to account: Account) -> Bool {
-        let validation = rekeyingValidator.validateRekeying(
-            from: dataController.account,
-            to: account
-        )
-        
-        /// <note>
-        /// Rekeying a standard account to ledger account should not be handled from this flow.
-        /// So, the ledger accounts are filtered separately.
-        return validation.isFailure || account.hasLedgerDetail()
-    }
-
-    func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
-        let account = dataController.account
-
-        guard let authAddress = account.authAddress else { return }
-
-        let title = "options-auth-account".localized
-        let draft = QRCreationDraft(address: authAddress, mode: .address, title: account.name)
-        let screen: Screen = .qrGenerator(title: title, draft: draft, isTrackable: true)
-        open(
-            screen,
-            by: .present
-        )
-    }
-
-    func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
-        guard let session = session else { return }
-
-        if !session.hasPassword() {
-            navigateToViewPassphrase()
-            return
-        }
-
-        if localAuthenticator.localAuthenticationStatus != .allowed {
-            let screen = open(
-                .choosePassword(mode: .confirm(flow: .viewPassphrase), flow: nil),
-                by: .present
-            ) as? ChoosePasswordViewController
-            screen?.delegate = self
-
-            return
-        }
-
-        localAuthenticator.authenticate {
-            [weak self] error in
-            guard let self = self else { return }
-
-            if error != nil { return }
-
-            self.navigateToViewPassphrase()
-        }
-    }
-
-    func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController) {
-        let screen: Screen = .renameAccount(
-            account: dataController.account,
-            delegate: self
-        )
-
-        transitionToRenameAccount.perform(
-            screen,
-            by: .present
-        )
-    }
-
-    func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-trash-red".uiImage,
-            title: "options-remove-account".localized,
-            description: .plain(
-                dataController.account.isWatchAccount()
-                    ? "options-remove-watch-account-explanation".localized
-                    : "options-remove-main-account-explanation".localized
-            ),
-            primaryActionButtonTitle: "title-remove".localized,
-            secondaryActionButtonTitle: "title-keep".localized,
-            primaryAction: { [weak self] in
-                self?.removeAccount()
-            }
-        )
-
-        transitionToConfirmToDeleteAccount.perform(
-            .bottomWarning(configurator: configurator),
-            by: .presentWithoutNavigationController
-        )
-    }
-
-    private func removeAccount() {
-        sharedDataController.resetPollingAfterRemoving(dataController.account)
-        walletConnector.updateSessionsWithRemovingAccount(dataController.account)
-        eventHandler?(.didRemoveAccount)
-    }
-
-    private func navigateToViewPassphrase() {
-        transitionToPassphrase.perform(
-            .passphraseDisplay(address: dataController.account.address),
-            by: .present
-        )
-    }
-}
-
-/// <mark>
-/// ChoosePasswordViewControllerDelegate
-extension ASADetailScreen {
-    func choosePasswordViewController(
-        _ choosePasswordViewController: ChoosePasswordViewController,
-        didConfirmPassword isConfirmed: Bool
-    ) {
-        choosePasswordViewController.dismissScreen {
-            [weak self] in
-            guard let self else { return }
-            
-            if isConfirmed {
-                self.navigateToViewPassphrase()
-            }
-        }
-    }
-}
-
-/// <mark>
-/// RenameAccountScreenDelegate
-extension ASADetailScreen {
-    func renameAccountScreenDidTapDoneButton(_ screen: RenameAccountScreen) {
-        screen.closeScreen(by: .dismiss) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.updateUIWhenAccountDidRename()
-            self.eventHandler?(.didRenameAccount)
-        }
-    }
-}
-
-extension ASADetailScreen {
-    func selectAccountViewController(
-        _ selectAccountViewController: SelectAccountViewController,
-        didSelect account: Account,
-        for draft: SelectAccountDraft
-    ) {
-        switch draft.transactionAction {
-        case .rekeyToStandardAccount:
-            selectAccountViewController.dismissScreen {
-                [weak self] in
-                guard let self else { return }
-                
-                self.open(
-                    .rekeyConfirmation(
-                        account: self.dataController.account,
-                        ledgerDetail: nil,
-                        newAuthAddress: account.address
-                    ),
-                    by: .present
-                )
-            }
-        default: break
-        }
+        let sourceAccount = dataController.account
+        rekeyToStandardAccountFlowCoordinator.launch(sourceAccount)
     }
 }
 
@@ -476,16 +234,17 @@ extension ASADetailScreen {
 
     private func makeAccountActionsBarButtonItem() ->  ALGBarButtonItem {
         let account = dataController.account
-        let accountActionsItem = ALGBarButtonItem(kind: .account(account.typeImage)) {
+        let accountActionsItem = ALGBarButtonItem(kind: .account(account)) {
             [unowned self] in
-
-            self.transitionToAccountActions.perform(
-                .options(account: self.dataController.account, delegate: self),
-                by: .presentWithoutNavigationController
-            )
+            openAccountInformationScreen()
         }
 
         return accountActionsItem
+    }
+
+    private func openAccountInformationScreen() {
+        let sourceAccount = dataController.account
+        accountInformationFlowCoordinator.launch(sourceAccount)
     }
 
     private func addUI() {
@@ -713,7 +472,7 @@ extension ASADetailScreen {
         quickActionsView.startObserving(event: .buy) {
             [unowned self] in
 
-            self.navigateToBuyAlgo()
+            self.navigateToBuyAlgoIfPossible()
         }
         quickActionsView.startObserving(event: .swap) {
             [unowned self, unowned quickActionsView] in
@@ -723,12 +482,12 @@ extension ASADetailScreen {
                 quickActionsView.bindData(viewModel)
             }
 
-            self.navigateToSwapAsset()
+            self.navigateToSwapAssetIfPossible()
         }
         quickActionsView.startObserving(event: .send) {
             [unowned self] in
 
-            self.navigateToSendTransaction()
+            self.navigateToSendTransactionIfPossible()
         }
         quickActionsView.startObserving(event: .receive) {
             [unowned self] in
@@ -946,9 +705,22 @@ extension ASADetailScreen {
             case .willLoadData: self.updateUIWhenDataWillLoad()
             case .didLoadData: self.updateUIWhenDataDidLoad()
             case .didFailToLoadData(let error): self.updateUIWhenDataDidFailToLoad(error)
+            case .didUpdateAccount(let old): self.updateNavigationItemsIfNeededWhenAccountDidUpdate(old: old)
             }
         }
         dataController.loadData()
+    }
+}
+
+extension ASADetailScreen {
+    private func updateNavigationItemsIfNeededWhenAccountDidUpdate(old: Account) {
+        if old.authorization == dataController.account.authorization {
+            return
+        }
+
+        addNavigationActions()
+        bindNavigationTitle()
+        setNeedsRightBarButtonItemsUpdate()
     }
 }
 
@@ -1178,34 +950,56 @@ extension ASADetailScreen {
 }
 
 extension ASADetailScreen {
-    private func navigateToBuyAlgo() {
+    private func navigateToBuyAlgoIfPossible() {
+        let account = dataController.account
+        if account.authorization.isNoAuth {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+        
         let draft = MoonPayDraft()
         draft.address = dataController.account.address
         moonPayFlowCoordinator.launch(draft: draft)
     }
 
-    private func navigateToSwapAsset() {
+    private func navigateToSwapAssetIfPossible() {
+        let account = dataController.account
+        if account.authorization.isNoAuth {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
         analytics.track(.tapSwapInAlgoDetail())
         swapAssetFlowCoordinator.launch()
     }
 
-    private func navigateToSendTransaction() {
+    private func navigateToSendTransactionIfPossible() {
+        let account = dataController.account
+        if account.authorization.isNoAuth {
+            presentActionsNotAvailableForAccountBanner()
+            return
+        }
+
         sendTransactionFlowCoordinator.launch()
         analytics.track(.tapSendInDetail(account: dataController.account))
     }
 
     private func navigateToReceiveTransaction() {
-        receiveTransactionFlowCoordinator.launch()
+        receiveTransactionFlowCoordinator.launch(dataController.account)
         analytics.track(.tapReceiveAssetInDetail(account: dataController.account))
     }
 }
 
 extension ASADetailScreen {
-    enum Event {
-        case didRenameAccount
-        case didRemoveAccount
+    private func presentActionsNotAvailableForAccountBanner() {
+        bannerController?.presentErrorBanner(
+            title: "action-not-available-for-account-type".localized,
+            message: ""
+        )
     }
+}
 
+extension ASADetailScreen {
     private enum DisplayState: CaseIterable {
         case normal
         case folded

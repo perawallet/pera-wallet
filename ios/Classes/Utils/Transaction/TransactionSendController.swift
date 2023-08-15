@@ -113,7 +113,6 @@ extension TransactionSendController {
                         return
                     }
 
-                    accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                     if accountWrapper.account.algo.amount == 0 {
                         self.delegate?.transactionSendController(self, didFailValidation: .algo(.minimumAmount))
                     } else {
@@ -161,7 +160,6 @@ extension TransactionSendController {
                     return
                 }
 
-                receiverAccountWrapper.account.assets = receiverAccountWrapper.account.nonDeletedAssets()
                 let receiverAccount = receiverAccountWrapper.account
 
                 if let assets = receiverAccount.assets {

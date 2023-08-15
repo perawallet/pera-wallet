@@ -56,11 +56,7 @@ final class AccountListViewController: BaseViewController {
     }
     
     override func prepareLayout() {
-        if case .walletConnect = mode {
-            accountListView.accountsCollectionView.register(AccountCheckmarkSelectionViewCell.self)
-        } else {
-            accountListView.accountsCollectionView.register(AccountSelectionViewCell.self)
-        }
+        accountListView.accountsCollectionView.register(AccountSelectionViewCell.self)
 
         accountListView.customize(theme.accountListViewTheme)
         view.addSubview(accountListView)
@@ -97,10 +93,7 @@ extension AccountListViewController: AccountListLayoutBuilderDelegate {
 
 extension AccountListViewController {
     enum Mode: Equatable {
-        case walletConnect(account: Account?)
         case contact(asset: StandardAsset?)
-        case transactionReceiver(asset: StandardAsset?)
-        case transactionSender(asset: StandardAsset?)
     }
 }
 

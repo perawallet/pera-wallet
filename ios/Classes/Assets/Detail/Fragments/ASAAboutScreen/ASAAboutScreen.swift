@@ -536,7 +536,7 @@ extension ASAAboutScreen {
     private func openTotalSupplyInfo() {
         let uiSheet = UISheet(
             title: "title-total-supply".localized.bodyLargeMedium(),
-            body: "asset-total-supply-body".localized.bodyRegular()
+            body: UISheetBodyTextProvider(text: "asset-total-supply-body".localized.bodyRegular())
         )
 
         let closeAction = UISheetAction(

@@ -68,11 +68,29 @@ final class TransactionTutorialView:
     }
 
     func bindData(_ viewModel: TransactionTutorialViewModel?) {
-        titleLabel.editText = viewModel?.title
-        subtitleLabel.editText = viewModel?.subtitle
-        firstInstructionView.bindTitle(viewModel?.firstTip)
-        secondInstructionView.bindTitle(viewModel?.secondTip)
-        tapToMoreLabel.editText = viewModel?.tapToMoreText
+        if let title = viewModel?.title {
+            title.load(in: titleLabel)
+        } else {
+            titleLabel.attributedText = nil
+            titleLabel.text = nil
+        }
+
+        if let subtitle = viewModel?.subtitle {
+            subtitle.load(in: subtitleLabel)
+        } else {
+            subtitleLabel.attributedText = nil
+            subtitleLabel.text = nil
+        }
+
+        firstInstructionView.bindData(viewModel?.firstInstruction)
+        secondInstructionView.bindData(viewModel?.secondInstruction)
+
+        if let tapToMore = viewModel?.tapToMoreText {
+            tapToMore.load(in: tapToMoreLabel)
+        } else {
+            tapToMoreLabel.attributedText = nil
+            tapToMoreLabel.text = nil
+        }
     }
 }
 
@@ -122,7 +140,7 @@ extension TransactionTutorialView {
     }
 
     private func addFirstInstructionView(_ theme: TransactionTutorialViewTheme) {
-        firstInstructionView.customize(theme.smallerInstuctionViewTheme)
+        firstInstructionView.customize(theme.instuctionViewTheme)
 
         addSubview(firstInstructionView)
         firstInstructionView.snp.makeConstraints {
@@ -132,7 +150,7 @@ extension TransactionTutorialView {
     }
 
     private func addSecondInstructionView(_ theme: TransactionTutorialViewTheme) {
-        secondInstructionView.customize(theme.smallerInstuctionViewTheme)
+        secondInstructionView.customize(theme.instuctionViewTheme)
 
         addSubview(secondInstructionView)
         secondInstructionView.snp.makeConstraints {

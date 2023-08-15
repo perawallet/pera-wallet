@@ -141,7 +141,7 @@ extension WatchAccountAdditionAPIDataController {
         let account = AccountInformation(
             address: address,
             name: name,
-            type: .watch,
+            isWatchAccount: true,
             preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
         )
         let user: User
@@ -157,11 +157,6 @@ extension WatchAccountAdditionAPIDataController {
         } else {
             user = User(accounts: [account])
         }
-
-        NotificationCenter.default.post(
-            name: .didAddAccount,
-            object: self
-        )
 
         session.authenticatedUser = user
 

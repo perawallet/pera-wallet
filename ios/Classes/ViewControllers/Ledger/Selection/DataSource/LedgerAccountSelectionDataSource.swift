@@ -17,7 +17,12 @@
 
 import UIKit
 
-final class LedgerAccountSelectionDataSource: NSObject {
+typealias LedgerAccountCell = BaseCollectionViewCell<LedgerAccountCellView>
+
+final class LedgerAccountSelectionDataSource:
+    NSObject,
+    SingleSelectionLedgerAccountCellDelegate,
+    MultipleSelectionLedgerAccountCellDelegate {
     weak var delegate: LedgerAccountSelectionDataSourceDelegate?
 
     private var hasOngoingRekeying: Bool {
@@ -27,6 +32,7 @@ final class LedgerAccountSelectionDataSource: NSObject {
     private let accountsFetchGroup = DispatchGroup()
     
     private let api: ALGAPI
+    private let analytics: ALGAnalytics
     private let sharedDataController: SharedDataController
     private var accounts = [Account]()
     private let ledgerAccounts: [Account]
@@ -42,12 +48,14 @@ final class LedgerAccountSelectionDataSource: NSObject {
     
     init(
         api: ALGAPI,
+        analytics: ALGAnalytics,
         sharedDataController: SharedDataController,
         accounts: [Account],
         rekeyingAccount: Account?,
         isMultiSelect: Bool
     ) {
         self.api = api
+        self.analytics = analytics
         self.sharedDataController = sharedDataController
         self.ledgerAccounts = accounts
         self.rekeyingAccount = rekeyingAccount
@@ -59,9 +67,8 @@ final class LedgerAccountSelectionDataSource: NSObject {
 extension LedgerAccountSelectionDataSource {
     func loadData() {
         for account in ledgerAccounts {
-            account.type = .ledger
-            account.assets = account.nonDeletedAssets()
-            
+            account.authorization = .ledger
+
             if hasOngoingRekeying {
                 filterAvailableAccountsForRekeying(account)
             } else {
@@ -82,7 +89,12 @@ extension LedgerAccountSelectionDataSource {
             from: rekeyingAccount,
             to: account
         )
-        if validation.isSuccess {
+
+        /// <note>
+        /// We're not displaying the same account in this list, we've a different flow for undoing the rekey.
+        let isNotSameAccount = !account.isSameAccount(with: rekeyingAccount)
+
+        if validation.isSuccess && isNotSameAccount {
             accounts.append(account)
         }
     }
@@ -98,8 +110,7 @@ extension LedgerAccountSelectionDataSource {
                 let rekeyedAccounts = rekeyedAccountsResponse.accounts.filter { $0.authAddress != $0.address }
                 self.rekeyedAccounts[account.address] = rekeyedAccounts
                 rekeyedAccounts.forEach { rekeyedAccount in
-                    rekeyedAccount.assets = rekeyedAccount.nonDeletedAssets()
-                    rekeyedAccount.type = .rekeyed
+                    rekeyedAccount.authorization = .unknownToLedgerRekeyed
 
                     /// <note> If a rekeyed account is already in the ledger accounts on the same ledger device, it should not be added to the list again.
                     if let ledgerAccount = self.authenticatedAccountOnTheSameLedgerDevice(rekeyedAccount) {
@@ -116,6 +127,13 @@ extension LedgerAccountSelectionDataSource {
                     }
                 }
             case .failure:
+                self.analytics.record(
+                    .ledgerAccountSelectionScreenFetchingRekeyingAccountsFailed(
+                        accountAddress: account.address,
+                        network: self.api.network
+                    )
+                )
+
                 self.delegate?.ledgerAccountSelectionDataSourceDidFailToFetch(self)
             }
             
@@ -126,6 +144,10 @@ extension LedgerAccountSelectionDataSource {
     private func authenticatedAccountOnTheSameLedgerDevice(_ rekeyedAccount: Account) -> Account? {
         return ledgerAccounts.first { $0.address == rekeyedAccount.address }
     }
+
+    func getAuthAccount(of account: Account) -> Account? {
+        return ledgerAccounts.first(matching: (\.address, account.authAddress))
+    }
 }
 
 extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
@@ -134,19 +156,68 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let account = accounts[safe: indexPath.item] {
-            let cell = collectionView.dequeue(LedgerAccountCell.self, at: indexPath)
-            cell.delegate = self
-            cell.bind(LedgerAccountViewModel(account))
-            return cell
+        guard let account = accounts[safe: indexPath.item] else {
+            fatalError("Index path is out of bounds")
         }
 
-        fatalError("Index path is out of bounds")
+        return makeLedgerAccountCell(
+            collectionView: collectionView,
+            account: account,
+            indexPath: indexPath
+        )
+    }
+
+    private func makeLedgerAccountCell(
+        collectionView: UICollectionView,
+        account: Account,
+        indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        if isMultiSelect {
+            return makeMultipleSelectionLedgerAccountCell(
+                collectionView: collectionView,
+                account: account,
+                indexPath: indexPath
+            )
+        } else {
+            return makeSingleSelectionLedgerAccountCell(
+                collectionView: collectionView,
+                account: account,
+                indexPath: indexPath
+            )
+        }
+    }
+
+    private func makeMultipleSelectionLedgerAccountCell(
+        collectionView: UICollectionView,
+        account: Account,
+        indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeue(MultipleSelectionLedgerAccountCell.self, at: indexPath)
+        cell.delegate = self
+        let viewModel = LedgerAccountViewModel(account)
+        cell.bind(viewModel)
+        return cell
+    }
+
+    private func makeSingleSelectionLedgerAccountCell(
+        collectionView: UICollectionView,
+        account: Account,
+        indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeue(SingleSelectionLedgerAccountCell.self, at: indexPath)
+        cell.delegate = self
+        let viewModel = LedgerAccountViewModel(account)
+        cell.bind(viewModel)
+        return cell
     }
 }
 
-extension LedgerAccountSelectionDataSource: LedgerAccountCellDelegate {
-    func ledgerAccountCellDidOpenMoreInfo(_ ledgerAccountCell: LedgerAccountCell) {
+extension LedgerAccountSelectionDataSource {
+    func singleSelectionLedgerAccountCellDidOpenMoreInfo(_ ledgerAccountCell: SingleSelectionLedgerAccountCell) {
+        delegate?.ledgerAccountSelectionDataSource(self, didTapMoreInfoFor: ledgerAccountCell)
+    }
+
+    func multipleSelectionLedgerAccountCellDidOpenMoreInfo(_ ledgerAccountCell: MultipleSelectionLedgerAccountCell) {
         delegate?.ledgerAccountSelectionDataSource(self, didTapMoreInfoFor: ledgerAccountCell)
     }
 }
@@ -162,7 +233,7 @@ extension LedgerAccountSelectionDataSource {
     
     func ledgerAccountIndex(for address: String) -> Int? {
         return accounts.firstIndex { account -> Bool in
-            account.type == .ledger && account.address == address
+            account.authorization.isLedger && account.address == address
         }
     }
 

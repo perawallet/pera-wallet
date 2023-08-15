@@ -124,7 +124,7 @@ extension CollectibleListQuery {
             return true
         }
 
-        if !account.isWatchAccount() {
+        if !account.authorization.isWatch {
             return true
         }
 

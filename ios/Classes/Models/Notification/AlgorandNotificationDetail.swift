@@ -20,7 +20,7 @@ import MagpieCore
 import MacaroonUtils
 
 final class AlgorandNotificationDetail: ALGAPIModel {
-    let url: URL?
+    let url: String?
     
     init() {
         url = nil

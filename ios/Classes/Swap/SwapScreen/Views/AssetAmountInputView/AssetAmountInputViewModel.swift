@@ -59,12 +59,13 @@ extension AssetAmountInputViewModel {
 
     func getDetailValueForAlgo(
         value: Decimal?,
+        priceImpact: Decimal? = nil,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) -> TextProvider? {
         guard let amountUSDValue = value,
               let fiatCurrencyValue = currency.fiatValue else {
-            return getDetailValue(text: "0.00")
+            return getDetailValue(text: "0.00", priceImpact: priceImpact)
         }
 
         do {
@@ -77,7 +78,7 @@ extension AssetAmountInputViewModel {
             currencyFormatter.currency = fiatRawCurrency
 
             let text = currencyFormatter.format(amount)
-            return getDetailValue(text: text)
+            return getDetailValue(text: text, priceImpact: priceImpact)
         } catch {
             return nil
         }
@@ -86,12 +87,13 @@ extension AssetAmountInputViewModel {
     func getDetailValueForAsset(
         _ asset: Asset,
         value: Decimal?,
+        priceImpact: Decimal? = nil,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) -> TextProvider? {
         guard let amountUSDValue = value,
               let currencyValue = currency.primaryValue else {
-            return getDetailValue(text: "0.00")
+            return getDetailValue(text: "0.00", priceImpact: priceImpact)
         }
 
         do {
@@ -104,15 +106,31 @@ extension AssetAmountInputViewModel {
             currencyFormatter.currency = rawCurrency
 
             let text = currencyFormatter.format(amount)
-            return getDetailValue(text: text)
+            return getDetailValue(text: text, priceImpact: priceImpact)
         } catch {
             return nil
         }
     }
 
-    func getDetailValue(text: String?) -> TextProvider?  {
+    func getDetailValue(
+        text: String?,
+        priceImpact: Decimal?
+    ) -> TextProvider?  {
+        let attributes: TextAttributeGroup
+
+        if let priceImpact,
+           priceImpact > PriceImpactLimit.fivePercent {
+            var someAttributes = Typography.footnoteRegularAttributes()
+            someAttributes.insert(.textColor(Colors.Helpers.negative))
+            attributes = someAttributes
+        } else {
+            var someAttributes = Typography.footnoteRegularAttributes()
+            someAttributes.insert(.textColor(Colors.Text.grayLighter))
+            attributes = someAttributes
+        }
+
         if let text = text.unwrapNonEmptyString() {
-            return "≈\(text)".footnoteRegular()
+            return text.attributed(attributes)
         } else {
             return nil
         }

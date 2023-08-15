@@ -35,6 +35,7 @@
 "title-copy" = "Copy";
 "title-new-uppercased" = "NEW";
 "title-skip" = "Skip";
+"title-skip-for-now" = "Skip for now";
 "title-learn-more" = "Learn More";
 "title-connect" = "Connect";
 "title-disconnect" = "Disconnect";
@@ -73,6 +74,12 @@
 "title-watch-account" = "Watch Account";
 "title-ledger-account" = "Ledger Account";
 "title-rekeyed-account" = "Rekeyed Account";
+"title-no-auth-account-capitalized-sentence" = "No Auth account";
+"title-standard-account-capitalized-sentence" = "Standard account";
+"title-ledger-account-capitalized-sentence" = "Ledger account";
+"title-rekeyed-account-capitalized-sentence" = "Rekeyed account";
+"title-no-auth-account-capitalized-sentence" = "No Auth account";
+"title-watch-account-capitalized-sentence" = "Watch account";
 "title-more" = "More";
 "title-app-call" = "App Call";
 "title-show-more-assets" = "Show +%@ more assets";
@@ -94,12 +101,39 @@
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
 "title-disclaimer" = "DISCLAIMER";
-"title-select-account" = "Select Account";
+"title-select-account" = "Select account";
 "title-to" = "To";
 "title-try-again" = "Try Again";
 "filter" = "Filter";
 "title-choose-account-to-proceed-with" = "Choose an account to proceed with";
 "opt-in-to-usdc" = "Opt-in to USDC";
+"title-rekey-to-standard-account-capitalized-sentence" = "Rekey to standard account";
+"title-rekey-to-ledger-account-capitalized-sentence" = "Rekey to Ledger account";
+"account-continue-unable-to-sign-transactions-itself" = "This account will continue to be unable to sign transactions for itself.";
+"summary-of-rekey-title" = "Summary of rekey";
+"currently-rekeyed-title" = "Currently Rekeyed";
+"undo-rekey-title" = "Undo Rekey";
+"title-undo-rekey-capitalized-sentence" = "Undo rekey";
+"title-account-type" = "Account type";
+"title-standard" = "Standard";
+"title-ledger" = "Ledger";
+"title-watch" = "Watch";
+"title-standard-to-standard-rekeyed" = "Rekeyed (Standard to Standard)";
+"title-standard-to-ledger-rekeyed" = "Rekeyed (Standard to Ledger)";
+"title-ledger-to-standard-rekeyed" = "Rekeyed (Ledger to Standard)";
+"title-ledger-to-ledger-rekeyed" = "Rekeyed (Ledger to Ledger)";
+"title-unknown-to-standard-rekeyed" = "Rekeyed (Unknown* to Standard)";
+"title-unknown-to-ledger-rekeyed" = "Rekeyed (Unknown* to Ledger)";
+"title-no-auth" = "No Auth";
+"title-rekeyed-to" = "REKEYED TO";
+"title-rekeyed" = "Rekeyed";
+"title-account-details" = "Account details";
+"title-copy-address-capitalized-sentence" = "Copy address";
+"title-yes-continue" = "Yes, continue";
+"title-show-address-capitalized-sentence" = "Show address";
+"title-rekeyed-to-with-param" = "Rekeyed to %@";
+"title-failed-to-fetch-rekeyed-accounts" = "Failed to fetch rekeyed accounts";
+"title-deleted-with-parantheses" = "(Deleted)";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -192,8 +226,8 @@
 "recover-from-seed-verify-pop-up-explanation" = "Welcome to Pera Wallet!\nYour account is ready to use.";
 "recover-from-seed-verify-pop-up-explanation-already-added" = "Congratulations, your account is ready to use.";
 "recover-from-seed-verify-pop-up-title-watch-account" = "Watch account added successfully";
-"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Welcome to Pera Wallet!\nThe Watch Account has been added successfully.";
-"recover-from-seed-verify-pop-up-description-watch-account-add" = "The Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Welcome to Pera Wallet!\nYour Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account-add" = "Congratulations, your Watch Account has been added successfully.";
 "recover-from-seed-verify-pop-up-title" = "Account is Verified!";
 "recover-from-seed-verify-exist-error" = "This account already exists";
 "recover-title" = "Recover";
@@ -233,7 +267,7 @@
 
 // MARK: Accounts
 "accounts-tranaction-empty-text" = "No Transactions";
-"accounts-tranaction-empty-detail" = "There are no transactions to be displayed for selected period";
+"accounts-tranaction-empty-detail" = "There are no transactions to be displayed for the selected period";
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algo";
 "accounts-dollar-value-title" = "Dollar Value";
@@ -354,8 +388,7 @@
 "options-passphrase" = "Passphrase";
 "options-edit-account-name" = "Rename Account";
 "options-remove-account" = "Remove Account";
-"options-remove-main-account-explanation" = "You are about to remove your main account, are you sure you want to proceed with this choice?";
-"options-remove-watch-account-explanation" = "You are about to remove a watch account. Are you sure you want to proceed with this choice?";
+"options-remove-account-explanation" = "You are about to remove your account. Are you sure you want to proceed?";
 "options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
 "options-auth-account" = "Auth Account Address";
 "options-mute-notification" = "Mute Notifications";
@@ -364,7 +397,8 @@
 "options-manage-assets" = "Manage Assets";
 "options-manage-collectibles" = "Manage NFTs";
 "options-sort-title" = "Sort";
-"options-remove-account-auth-address-error" = "You can't remove this account before removing rekeyed %@";
+"remove-auth-account-rekeyed-account-error-title" = "You can’t remove this account before removing its 1 rekeyed account";
+"remove-auth-account-rekeyed-accounts-error-title" = "You can’t remove this account before removing its %@ rekeyed accounts";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
@@ -545,6 +579,7 @@
 // MARK: Ledger Device List
 "ledger-device-list-title" = "Pair Ledger Device";
 "ledger-device-list-looking" = "Looking for devices";
+"ledger-device-list-body" = "Please make sure that your Ledger device is unlocked with Bluetooth enabled. On your Ledger, launch the Algorand app to see it in the list:";
 "ledger-device-list-connect" = "Connect";
 "ledger-device-list-troubleshoot" = "Troubleshoot";
 
@@ -642,39 +677,33 @@
 "pin-limit-reset-all" = "Reset All Data";
 
 // MARK: Rekey Instruction
-"rekey-instruction-start" = "Start Process";
+"rekey-instruction-start" = "Start process";
 "rekey-instruction-title" = "Rekey Account";
 "rekey-instruction-subtitle-ledger" = "Replace your account ledger with a new Ledger Device";
 "rekey-instruction-subtitle-standard" = "Replace your account’s passphrase with a Ledger Device.";
-"rekey-instruction-header" = "What to expect";
+"rekey-instruction-header" = "WHAT TO EXPECT";
 "rekey-instruction-first" = "Future transactions will be signed by your new Ledger Device.";
-"rekey-instruction-second-ledger" = "Your old Ledger will no longer function for this account.";
-"rekey-instruction-second-standard" = "This account's passphrase will no longer function for this account";
+"rekey-instruction-second-ledger" = "If you already have a Ledger device keyed to this account, your old Ledger will no longer be connected to it.";
+"rekey-instruction-second-standard" = "This account will no longer be able to sign transactions.";
 "rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
-"rekey-instruction-soft-subtitle" = "Protect your account by delegating signatures to another account.";
 "rekey-instruction-soft-first" = "Future transactions can only be signed by the delegated account.";
-"rekey-instruction-soft-second" = "This account will no longer be able to sign transactions.";
-"rekey-instruction-soft-third" = "Your account’s public key, balances, and configuration will not change.";
 
 // MARK: Rekey Confirm
-"ledger-rekey-confirm-title" = "Confirm Rekeying";
+"ledger-rekey-confirm-title" = "Confirm rekeying";
 "ledger-rekey-transaction-title" = "Rekeying transaction";
 "ledger-rekey-ledger-old" = "Old Ledger";
 "ledger-rekey-ledger-passphrase" = "Passphrase";
-"ledger-rekey-ledger-new" = "New Ledger";
-"ledger-rekey-finalize" = "Finalize Rekeying";
-"ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algo";
 "ledger-rekey-more-assets" = "+%@ more assets";
 "ledger-rekey-success-title" = "Account successfully\nrekeyed";
-"ledger-rekey-success-message" = "The account \"%@\" has been successfully rekeyed";
+"ledger-rekey-success-message" = "The account %@ has been successfully rekeyed.";
 
 // MARK: Ledger Account Selection
-"ledger-account-selection-title-singular" = "%d Account Found";
-"ledger-account-selection-title-plural" = "%d Accounts Found";
+"ledger-account-selection-title-singular" = "%d account found";
+"ledger-account-selection-title-plural" = "%d accounts found";
 "ledger-account-selection-detail" = "This ledger device can sign transactions for the following accounts. Select the accounts to add to your Pera Wallet.";
-"ledger-account-selection-detail-rekey" = "Choose the account you want to use for signing this account.";
-"ledger-account-selection-verify" = "Verify Selected Account";
-"ledger-account-selection-verify-plural" = "Verify Selected Accounts";
+"ledger-account-selection-detail-rekey" = "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account.";
+"ledger-account-selection-verify" = "Verify selected account";
+"ledger-account-selection-verify-plural" = "Verify selected accounts";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
 "ledger-rekey-error-not-found" = "The signing account has been rekeyed to an account that is not in your wallet or is misconfigured. Please ensure the authorising account is added to your wallet, and if it is a Ledger account ensure it is correctly connected.";
 "ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
@@ -704,15 +733,12 @@
 "notification-filter-show-title" = "Push Notifications";
 "notification-filter-show-for" = "Show notification for";
 
-"title-plus-asset-count" = "%@ Assets";
-"title-plus-asset-singular-count" = "%@ Asset";
 "title-plus-collectible-count" = "%@ NFTs";
 "title-plus-collectible-singular-count" = "%@ NFT";
 "title-plus-account-count" = "%@ Accounts";
 "title-plus-account-singular-count" = "Account";
 
 "ledger-account-detail-name" = "Ledger #%@";
-"ledger-account-detail-title" = "Ledger Account";
 "ledger-account-detail-assets" = "Assets";
 "ledger-account-detail-can-sign" = "Can sign for these accounts";
 "ledger-account-detail-can-signed" = "Can be signed by";
@@ -732,7 +758,6 @@
 "tutorial-title-recover" = "Recover an Algorand Account";
 "tutorial-title-write" = "Prepare to write\ndown your recovery passphrase";
 "tutorial-title-passcode" = "Increase your security with a PIN";
-"tutorial-title-ledger-connected" = "Ledger successfully connected";
 
 "tutorial-description-back-up" = "Creating a passphrase backup will allow you to recover your account. Without the passphrase, if you lose your device, remove the account or delete the app, you can permanently lose access to your Algorand account!";
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
@@ -744,7 +769,7 @@
 "tutorial-description-passcode" = "This 6-digit PIN will be required to use the Pera Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-ledger" = "Please make sure your Ledger is unlocked with Bluetooth enabled";
-"tutorial-description-ledger-connected" = "Welcome to Pera Wallet! Your account is\nready to use";
+"tutorial-description-ledger-connected" = "Welcome to Pera Wallet!\nYour account is ready to use.";
 "tutorial-title-failed-to-import-ledger-accounts" = "Accounts not imported";
 "tutorial-description-failed-to-import-ledger-accounts" = "Your accounts could not be imported because you did not complete the verification step. Please try again.";
 
@@ -1006,8 +1031,6 @@
 "account-select-search-empty-title" = "No Account Found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
-"account-select-soft-rekey-empty-title" = "No Standard Accounts Found";
-"account-select-soft-rekey-empty-detail" = "Please add a standard (non-ledger) account to continue.";
 
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Transaction";
@@ -1153,6 +1176,8 @@
 "quick-actions-receive-title" = "Receive";
 "quick-actions-more-title" = "More";
 
+"action-not-available-for-account-type" = "This action is not available for this account type";
+
 // MARK: Transaction Options
 "transaction-option-list-buy-sell-subtitle" = "See all options to buy or sell your crypto";
 "transaction-option-list-swap-subtitle" = "Convert between popular ASA pairs";
@@ -1258,10 +1283,19 @@
 "swap-price-impact-info-title" = "Price Impact";
 "swap-price-impact-info-body" = "Price impact is the influence of your trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.";
 "swap-price-impact-warning-message" = "Caution! Price impact is greater than 5%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.";
+"swap-price-impact-greater-than-10-warning-message" = "Caution! Price impact is greater than 10%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.";
+"swap-price-impact-greater-than-15-warning-message" = "This swap cannot be executed because the price impact is too large. Find out more about price impact and how it works here.";
+"swap-price-impact-greater-than-15-warning-message-highlighted-text" = "here";
 
 /// MARK: Swap Slippage Tolerance Info
 "swap-slippage-tolerance-info-title" = "Slippage Tolerance";
 "swap-slippage-tolerance-info-body" = "Slippage is the price difference between when you submit a transaction and when the transaction is confirmed on the blockchain. If slippage rate goes over the tolerance percentage you set here, transaction will be cancelled automatically to protect you from value loss.";
+
+/// MARK: Swap High Price Impact Warning
+"swap-high-price-impact-warning-title" = "High Price impact detected!";
+"swap-high-price-impact-warning-body" = "It appears that you are trying to confirm a Swap with a Price impact greater than 10%.\nTo learn more about Price impact, how it is calculated or how it can affect your swap’s overall value, please visit Tinyman’s
+FAQ section.";
+"swap-high-price-impact-warning-body-highlighted-text" = "FAQ section";
 
 /// MARK: Swap Slippage
 "swap-slippage-title" = "Slippage Tolerance";
@@ -1420,3 +1454,96 @@
 "transak-introduction-body" = "Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.";
 "transak-introduction-action-title" = "Buy USDC with Transak";
 "transak-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Transak.";
+
+// MARK: Rekey Standard to Standard Account Instructions
+"rekey-standard-to-standard-account-instructions-body" = "Use another account's private key to sign transactions for this account. Learn more";
+"rekey-standard-to-standard-account-instructions-body-highlighted-text" = "Learn more";
+
+// MARK: Rekey Standard to Ledger Account Instructions
+"rekey-standard-to-ledger-account-instructions-body" = "Back your standard account with a Ledger device for extra security. Learn more";
+"rekey-standard-to-ledger-account-instructions-body-highlighted-text" = "Learn more";
+
+// MARK: Rekey Ledger to Ledger Account Instructions
+"rekey-ledger-to-ledger-account-instructions-body" = "Change the Ledger account signing for your wallet. Learn more";
+"rekey-ledger-to-ledger-account-instructions-body-highlighted-text" = "Learn more";
+
+// MARK: Rekey Ledger to Standard Account Instructions
+"rekey-ledger-to-standard-account-future-transactions-sign-instruction-title" = "Future transactions can only be signed by the new delegated account.";
+"rekey-ledger-to-standard-account-instruction-title" = "Your ledger device will no longer be required to sign transactions. This removes a layer of security.";
+"rekey-ledger-to-standard-account-instructions-body" = "Remove a Ledger device from your account. Learn more";
+"rekey-ledger-to-standard-account-instructions-body-highlighted-text" = "Learn more";
+
+// MARK: Rekeyed to Standard Account Instructions
+"rekey-rekeyed-to-standard-account-future-transactions-sign-instruction-title" = "Future transactions will be signed by the new standard account.";
+"rekey-rekeyed-to-standard-account-instructions-body" = "Rekey your account to a different standard account. Learn more";
+"rekey-rekeyed-to-standard-account-instructions-body-highlighted-text" = "Learn more";
+
+// MARK: Rekeyed to Ledger Account Instructions
+"rekey-rekeyed-to-ledger-account-future-transactions-sign-instruction-title" = "Future transactions will be signed by the new account.";
+"rekey-rekeyed-to-ledger-account-instructions-body" = "Rekey your account to a different account that is backed by a Ledger device. Learn more";
+"rekey-rekeyed-to-ledger-account-instructions-body-highlighted-text" = "Learn more";
+
+// MARK: Rekey Any to Any Account Confirmation
+"rekey-any-to-any-account-confirmation-body" = "You are about to rekey this account. It will no longer be able to sign transactions for itself. Learn more";
+"rekey-any-to-any-account-confirmation-body-highlighted-text" = "Learn more";
+
+// MARK: Rekeyed to Any Account Confirmation
+"rekey-rekeyed-to-any-account-confirmation-body" = "You are about to rekey this account to another authorized address. The new address will be able to sign transactions on its behalf. Learn more";
+"rekey-rekeyed-to-any-account-confirmation-body-highlighted-text" = "Learn more";
+
+// MARK: Undo Any Account Rekey
+"undo-any-account-rekey-body" = "You are about to undo this account's rekey operation. You will rekey the account back to itself using its authorized address. Learn more";
+"undo-any-account-rekey-body-highlighted-text" = "Learn more";
+
+// MARK: Account Information
+"standard-account-type-description" = "Your account is a standard Algorand account. It has not been rekeyed and it is not associated with a Ledger device. It was added to your wallet with its keys. Learn more";
+"standard-account-type-description-highlighted-text" = "Learn more";
+"ledger-account-type-description" = "Your account is a Ledger account. It was added to your wallet directly from the hardware device. All transactions for this account must be confirmed on your Ledger. Learn more";
+"ledger-account-type-description-highlighted-text" = "Learn more";
+"no-auth-account-type-description" = "Your account doesn’t have any Auth information. You can't send assets or sign transactions. Learn more";
+"no-auth-account-type-description-highlighted-text" = "Learn more";
+"standard-to-standard-rekeyed-account-type-description" = "Your account is rekeyed to another standard Algorand account. Transactions for this account will be authorized by the other account. Learn more";
+"standard-to-standard-rekeyed-account-type-description-highlighted-text" = "Learn more";
+"standard-to-ledger-rekeyed-account-type-description" = "Your account is rekeyed to an account on a Ledger hardware device. Transactions for this account must be authorized on the Ledger device. Learn more";
+"standard-to-ledger-rekeyed-account-type-description-highlighted-text" = "Learn more";
+"ledger-to-standard-rekeyed-account-type-description" = "Your account is rekeyed to a standard Algorand account. Transactions for this account will be authorized by the standard account, not by your Ledger (Not recommended). Learn more";
+"ledger-to-standard-rekeyed-account-type-description-highlighted-text" = "Learn more";
+"ledger-to-ledger-rekeyed-account-type-description" = "Your Ledger account is rekeyed to an account on another Ledger hardware device. Transactions for this account will be authorized by the other Ledger device. Learn more";
+"ledger-to-ledger-rekeyed-account-type-description-highlighted-text" = "Learn more";
+"any-to-no-auth-rekeyed-account-type-description" = "Your account is rekeyed to an Algorand account that is not in your wallet. You can't send assets or sign transactions. Learn more";
+"any-to-no-auth-rekeyed-account-type-description-highlighted-text" = "Learn more";
+"no-record-of-original-account-type-footnote" = "* No record of original account type found";
+"watch-account-type-description" = "This account was not added to your wallet with its keys. It is read-only and cannot interact with other accounts or authorize transactions.";
+"watch-account-type-description-highlighted-text" = "Learn  more";
+
+// MARK: Rekey Account Selection List
+"rekey-account-selection-list-header" = "Choose the account you would like to rekey to. The account you select here will be responsible for signing all transactions for the source account.";
+"rekey-account-selection-list-header-highlighted-text" = "The account you select here will be responsible for signing all transactions for the source account.";
+
+// MARK: Rekeyed Account selection List
+"rekeyed-account-selection-list-header-title-singular" = "Rekeyed account found";
+"rekeyed-account-selection-list-header-title-plural" = "%@ rekeyed accounts found";
+"rekeyed-account-selection-list-header-body-singular" = "A rekeyed account is attached to this account address. This means you can sign the transactions of the rekeyed account with the account you just added.";
+"rekeyed-account-selection-list-header-body-plural" = "You have %@ rekeyed accounts. This means that you can sign the transactions of the rekeyed accounts with the account you just added.\n\nSelect the rekeyed accounts you want to add to your wallet:";
+"rekeyed-account-selection-list-primary-action-title" = "Choose accounts to add";
+"rekeyed-account-selection-list-primary-action-title-singular" = "Add rekeyed account";
+"rekeyed-account-selection-list-primary-action-title-plural" = "Add rekeyed accounts";
+
+// MARK: Overwrite Rekey Confirmation
+"overwrite-rekey-confirmation-title" = "Your previous rekey will be replaced";
+
+// MARK: Have you backed up your account
+"back-up-before-removing-account-warning-title" = "Have you backed up your account?";
+"back-up-before-removing-account-warning-body" = "If you don't have a copy of this account's passphrase or the account is not backed up with a Ledger device or managed by an Auth Account, access to this account and its funds will be lost forever.";
+"back-up-before-removing-account-warning-cancel-action" = "No, keep account";
+
+// MARK: Undo Rekey Confirmation
+"undo-rekey-confirmation-title" = "Your previous rekey will be undone";
+
+// MARK: Overwrite/Undo Rekey Confirmation
+"overwrite-undo-rekey-confirmation-body" = "%@ will no longer be authorized to sign transactions for %@. Ensure you understand the implications of this before continuing. Learn more";
+"overwrite-undo-rekey-confirmation-body-highlighted-text" = "Learn more";
+
+// MARK: Undo Rekey Success Result
+"undo-rekey-success-result-title" = "Rekey successfully undone";
+"undo-rekey-success-result-body" = "The account %@ has been reverted to its original state.";

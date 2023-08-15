@@ -108,6 +108,11 @@ extension LedgerDeviceCellView {
 
 extension LedgerDeviceCellView: ViewModelBindable {
     func bindData(_ viewModel: LedgerDeviceListViewModel?) {
-        deviceNameLabel.text = viewModel?.ledgerName
+        if let name = viewModel?.ledgerName  {
+            name.load(in: deviceNameLabel)
+        } else {
+            deviceNameLabel.text = nil
+            deviceNameLabel.attributedText = nil
+        }
     }
 }

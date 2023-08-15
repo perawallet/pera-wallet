@@ -29,10 +29,10 @@ final class WebImportInstructionScreen: ScrollScreen, NavigationBarLargeTitleCon
 
     private lazy var theme = WebImportInstructionScreenTheme()
     private lazy var titleView = Label()
-    private lazy var firstInstructionView = NumberedInstructionView()
-    private lazy var secondInstructionView = NumberedInstructionView()
-    private lazy var thirdInstructionView = NumberedInstructionView()
-    private lazy var fourthInstructionView = NumberedInstructionView()
+    private lazy var firstInstructionView = InstructionItemView()
+    private lazy var secondInstructionView = InstructionItemView()
+    private lazy var thirdInstructionView = InstructionItemView()
+    private lazy var fourthInstructionView = InstructionItemView()
     private lazy var startActionView = MacaroonUIKit.Button()
 
     private(set) lazy var navigationBarTitleView = createNavigationBarTitleView()
@@ -141,10 +141,9 @@ extension WebImportInstructionScreen {
             make.leading.equalToSuperview().inset(theme.instructionEdgeInset.left)
             make.trailing.equalToSuperview().inset(theme.instructionEdgeInset.right)
         }
-        firstInstructionView.bind(
-            NumberedInstructionViewModel(
-                number: 1,
-                instruction: "web-import-instruction-first-message".localized
+        firstInstructionView.bindData(
+            WebImportGoToPeraWebWalletInstructionItemViewModel(
+                order: 1
             )
         )
     }
@@ -157,10 +156,9 @@ extension WebImportInstructionScreen {
             make.leading.equalToSuperview().inset(theme.instructionEdgeInset.left)
             make.trailing.equalToSuperview().inset(theme.instructionEdgeInset.right)
         }
-        secondInstructionView.bind(
-            NumberedInstructionViewModel(
-                number: 2,
-                instruction: "web-import-instruction-second-message".localized
+        secondInstructionView.bindData(
+            WebImportGoToTransferAccountsInstructionViewModel(
+                order: 2
             )
         )
     }
@@ -173,10 +171,9 @@ extension WebImportInstructionScreen {
             make.leading.equalToSuperview().inset(theme.instructionEdgeInset.left)
             make.trailing.equalToSuperview().inset(theme.instructionEdgeInset.right)
         }
-        thirdInstructionView.bind(
-            NumberedInstructionViewModel(
-                number: 3,
-                instruction: "web-import-instruction-third-message".localized
+        thirdInstructionView.bindData(
+            WebImportSelectAccountsAndGenerateQRInstructionItemViewModel(
+                order: 3
             )
         )
     }
@@ -191,10 +188,9 @@ extension WebImportInstructionScreen {
             make.bottom.equalToSuperview().inset(theme.instructionEdgeInset.bottom).priority(.high)
             make.bottom.greaterThanOrEqualToSuperview().inset(theme.instructionEdgeInset.bottom).priority(.required)
         }
-        fourthInstructionView.bind(
-            NumberedInstructionViewModel(
-                number: 4,
-                instruction: "web-import-instruction-fourth-message".localized
+        fourthInstructionView.bindData(
+            WebImportTapStartToScanQRInstructionItemViewModel(
+                order: 4
             )
         )
     }

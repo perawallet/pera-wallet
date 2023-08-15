@@ -16,43 +16,6 @@
 //   PageCell.swift
 
 import Foundation
-import MacaroonUIKit
-import SnapKit
 import UIKit
 
-final class PageCell: UICollectionViewCell {
-    weak var contextView: UIView? {
-        didSet {
-            if contextView == oldValue {
-                return
-            }
-
-            removeContext(oldValue)
-
-            if let contextView = contextView {
-                addContext(contextView)
-            }
-        }
-    }
-}
-
-extension PageCell {
-    private func removeContext(_ view: UIView?) {
-        guard let aView = view else {
-            return
-        }
-
-        let hasContext =
-            aView.isDescendant(of: self)
-
-        if hasContext {
-            aView.removeFromSuperview()
-        }
-    }
-
-    private func addContext(_ view: UIView) {
-        view.frame = contentView.bounds
-
-        contentView.addSubview(view)
-    }
-}
+final class PageCell: UIViewControllerCollectionCell {}

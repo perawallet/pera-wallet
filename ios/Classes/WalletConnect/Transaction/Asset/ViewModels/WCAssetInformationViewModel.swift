@@ -20,10 +20,8 @@ import MacaroonUIKit
 import UIKit
 
 final class WCAssetInformationViewModel: ViewModel {
-    private(set) var title: String?
-    private(set) var name: String?
-    private(set) var nameColor: Color?
-    private(set) var assetId: String?
+    private(set) var title: TextProvider?
+    private(set) var name: EditText?
     private(set) var verificationTierIcon: UIImage?
 
     var isAlgo: Bool {
@@ -40,27 +38,44 @@ final class WCAssetInformationViewModel: ViewModel {
     }
 
     private func bindName() {
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
+
         guard let asset = asset else {
-            name = "ALGO"
-            nameColor = Colors.Text.main
+            attributes.insert(.textColor(Colors.Text.main))
+            name = .attributedString("ALGO".attributed(attributes))
             return
         }
 
-        name = asset.naming.name
+        let aTitle = asset.naming.name
 
-        let nameColor: Color =
-            asset.verificationTier.isSuspicious
-            ? Colors.Helpers.negative
-            : Colors.Text.main
+        if asset.verificationTier.isSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        } else {
+            attributes.insert(.textColor(Colors.Text.main))
+        }
 
-        self.nameColor = nameColor
+        let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
+        let assetText = aTitle?.attributed(attributes)
+        let assetIDText = "\(asset.id)".attributed(attributes)
+        let text = [ destroyedText, assetText, assetIDText ].compound(" ")
 
-        assetId = "\(asset.id)"
+        self.name = .attributedString(text)
+    }
+
+    private func makeDestroyedAssetTextIfNeeded(_ isAssetDestroyed: Bool) -> NSAttributedString? {
+        guard isAssetDestroyed else {
+            return nil
+        }
+
+        let title = "title-deleted-with-parantheses".localized
+        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Helpers.negative))
+        return title.attributed(attributes)
     }
 
     private func bindVerificationTierIcon() {
         if isAlgo {
-            verificationTierIcon = "icon-trusted".uiImage
+           verificationTierIcon = "icon-trusted".uiImage
             return
         }
 

@@ -24,7 +24,7 @@ final class StandardAsset: Asset {
     let total: UInt64?
     let totalSupply: Decimal?
     let isFrozen: Bool?
-    let isDeleted: Bool?
+    let isDestroyed: Bool
     let optedInAtRound: UInt64?
     let name: String?
     let unitName: String?
@@ -66,7 +66,7 @@ final class StandardAsset: Asset {
     ) {
         self.id = asset.id
         self.isFrozen = asset.isFrozen
-        self.isDeleted = asset.isDeleted
+        self.isDestroyed = decoration.isDestroyed
         self.optedInAtRound = asset.optedInAtRound
         self.name = decoration.name
         self.unitName = decoration.unitName
@@ -105,7 +105,7 @@ final class StandardAsset: Asset {
     ) {
         self.id = decoration.id
         self.isFrozen = nil
-        self.isDeleted = nil
+        self.isDestroyed = decoration.isDestroyed
         self.optedInAtRound = nil
         self.name = decoration.name
         self.unitName = decoration.unitName
@@ -161,7 +161,7 @@ extension StandardAsset: Comparable {
         return lhs.id == rhs.id &&
             lhs.amount == rhs.amount &&
             lhs.isFrozen == rhs.isFrozen &&
-            lhs.isDeleted == rhs.isDeleted &&
+            lhs.isDestroyed == rhs.isDestroyed &&
             lhs.name == rhs.name &&
             lhs.unitName == rhs.unitName &&
             lhs.decimals == rhs.decimals &&

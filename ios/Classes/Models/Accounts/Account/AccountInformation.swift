@@ -24,22 +24,28 @@ typealias RekeyDetail = [PublicKey: LedgerDetail]
 final class AccountInformation: Codable {
     let address: String
     var name: String
-    var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
-
-    var isOrderred: Bool {
-        return preferredOrder != Self.invalidOrder
-    }
     
     static let invalidOrder = -1
+
+    var isWatchAccount: Bool {
+        get {
+            return type == .watch
+        }
+        set {
+            type = newValue ? .watch : .standard
+        }
+    }
+
+    private var type: AccountType
     
     init(
         address: String,
         name: String,
-        type: AccountType,
+        isWatchAccount: Bool,
         ledgerDetail: LedgerDetail? = nil,
         rekeyDetail: RekeyDetail? = nil,
         receivesNotification: Bool = true,
@@ -47,7 +53,7 @@ final class AccountInformation: Codable {
     ) {
         self.address = address
         self.name = name
-        self.type = type
+        self.type = isWatchAccount ? .watch : .standard
         self.ledgerDetail = ledgerDetail
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
@@ -69,17 +75,6 @@ final class AccountInformation: Codable {
 extension AccountInformation {
     func updateName(_ name: String) {
         self.name = name
-    }
-    
-    func mnemonics() -> [String]? {
-        if type == .watch || type == .ledger || type == .rekeyed {
-            return nil
-        }
-        return UIApplication.shared.appConfiguration?.session.mnemonics(forAccount: address)
-    }
-    
-    func encoded() -> Data? {
-        return try? JSONEncoder().encode(self)
     }
     
     func addRekeyDetail(_ ledgerDetail: LedgerDetail, for address: String) {
@@ -107,14 +102,6 @@ extension AccountInformation {
         case watch = "watch"
         case ledger = "ledger"
         case rekeyed = "rekeyed"
-        
-        var isStandard: Bool {
-            return self == .standard
-        }
-
-        var isRekeyed: Bool {
-            return self == .rekeyed
-        }
     }
 }
 

@@ -30,8 +30,6 @@ protocol HomeDataController: AnyObject {
     func reload()
     func fetchAnnouncements()
     func hideAnnouncement()
-
-    func removeAccount(_ account: Account)
 }
 
 enum HomeSectionIdentifier:

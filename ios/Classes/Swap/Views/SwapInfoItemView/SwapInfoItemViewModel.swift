@@ -21,6 +21,7 @@ import UIKit
 protocol SwapInfoItemViewModel: ViewModel {
     var title: TextProvider? { get }
     var icon: Image? { get }
+    var iconTintColor: Color? { get }
     var detail: TextProvider?  { get }
     var action: Image? { get }
 }

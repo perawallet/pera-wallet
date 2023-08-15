@@ -175,7 +175,7 @@ extension LedgerAccountVerificationViewController {
         let controller = open(
             .tutorial(
                 flow: .none,
-                tutorial: .ledgerSuccessfullyConnected
+                tutorial: .ledgerSuccessfullyConnected(flow: accountSetupFlow)
             ),
             by: .customPresent(
                 presentationStyle: .fullScreen,
@@ -183,9 +183,16 @@ extension LedgerAccountVerificationViewController {
                 transitioningDelegate: nil
             )
         ) as? TutorialViewController
-        controller?.uiHandlers.didTapButtonPrimaryActionButton = {
-            [weak self] _ in
-            self?.launchHome()
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
+            self.launchHome {
+                [weak self] in
+                guard let self = self else { return }
+
+                self.launchBuyAlgoWithMoonPay()
+            }
+        }
+        controller?.uiHandlers.didTapSecondaryActionButton = { _ in
+            self.launchHome()
         }
     }
 
@@ -207,7 +214,7 @@ extension LedgerAccountVerificationViewController {
 
     private func updateLocalAccount(_ localAccount: AccountInformation, with account: Account) {
         var localAccount = localAccount
-        localAccount.type = account.type
+        localAccount.isWatchAccount = false
         setupLedgerDetails(of: &localAccount, from: account)
 
         api?.session.authenticatedUser?.updateAccount(localAccount)
@@ -217,7 +224,7 @@ extension LedgerAccountVerificationViewController {
         var localAccount = AccountInformation(
             address: account.address,
             name: account.address.shortAddressDisplay,
-            type: account.type,
+            isWatchAccount: false,
             preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
         )
         setupLedgerDetails(of: &localAccount, from: account)
@@ -230,12 +237,7 @@ extension LedgerAccountVerificationViewController {
         } else {
             user = User(accounts: [localAccount])
         }
-
-        NotificationCenter.default.post(
-            name: .didAddAccount,
-            object: self
-        )
-
+        
         api?.session.authenticatedUser = user
     }
 
@@ -250,12 +252,12 @@ extension LedgerAccountVerificationViewController {
         }
     }
 
-    private func launchHome() {
+    private func launchHome(completion: (() -> Void)? = nil) {
         switch self.accountSetupFlow {
         case .initializeAccount:
-            launchMain()
+            launchMain(completion: completion)
         case .addNewAccount:
-            closeScreen(by: .dismiss, animated: true)
+            closeScreen(by: .dismiss, animated: true, onCompletion: completion)
         case .none:
             break
         }

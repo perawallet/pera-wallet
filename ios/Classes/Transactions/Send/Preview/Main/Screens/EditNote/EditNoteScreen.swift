@@ -46,6 +46,8 @@ final class EditNoteScreen:
 
     private var note: String?
     private let isLocked: Bool
+    
+    private var transactionNoteValidator = NoteSizeValidator()
 
     init(
         note: String?,
@@ -112,6 +114,7 @@ extension EditNoteScreen {
         }
 
         noteInputView.delegate = self
+        noteInputView.editingDelegate = self
 
         bindNoteInput()
     }
@@ -154,6 +157,39 @@ extension EditNoteScreen {
 extension EditNoteScreen: MultilineTextInputFieldViewDelegate {
     func multilineTextInputFieldViewDidReturn(_ view: MultilineTextInputFieldView) {
         didTapDoneButton()
+    }
+}
+
+extension EditNoteScreen: FormInputFieldViewEditingDelegate {
+    func formInputFieldViewDidEdit(_ view: MacaroonForm.FormInputFieldView) {
+        updateNoteAfterValidation()
+    }
+    
+    func formInputFieldViewDidEndEditing(_ view: MacaroonForm.FormInputFieldView) {}
+    
+    func formInputFieldViewDidBeginEditing(_ view: MacaroonForm.FormInputFieldView) {}
+}
+
+extension EditNoteScreen {
+    private func updateNoteAfterValidation() {
+        guard let noteByteArray = noteInputView.text?.convertToByteArray() else {
+            return
+        }
+        
+        let validation = transactionNoteValidator.validate(byteArray: noteByteArray)
+        
+        switch validation {
+        case .success:
+            return
+        case .failure(let validationError):
+            switch validationError {
+            case .exceededSize(let extraSize):
+                noteInputView.text = String(
+                    decoding: noteByteArray.dropLast(extraSize),
+                    as: UTF8.self
+                )
+            }
+        }
     }
 }
 

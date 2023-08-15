@@ -51,7 +51,7 @@ extension CollectibleMediaPreviewDataSource {
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {        
+    ) -> UICollectionViewCell {
         let width = collectionView.bounds.width - theme.horizontalInset * 2
 
         if asset.media.isEmpty {
@@ -77,6 +77,21 @@ extension CollectibleMediaPreviewDataSource {
         }
 
         switch media.type {
+        case .audio:
+            let cell = collectionView.dequeue(
+                CollectibleMediaAudioPreviewCell.self,
+                at: indexPath
+            )
+            
+            cell.bindData(
+                CollectibleMediaAudioPreviewViewModel(
+                    asset: asset,
+                    accountCollectibleStatus: accountCollectibleStatus,
+                    media: media
+                )
+            )
+            
+            return cell
         case .image:
             let cell = collectionView.dequeue(
                 CollectibleMediaImagePreviewCell.self,

@@ -31,7 +31,7 @@ final class NotificationMessage: ALGEntityModel {
         _ apiModel: APIModel = APIModel()
     ) {
         self.id = apiModel.id ?? 0
-        self.url = apiModel.url
+        self.url = apiModel.url.toURL()
         /// <todo>
         /// Without format string ???
         self.date = apiModel.creationDatetime?.toDate()?.date
@@ -42,7 +42,7 @@ final class NotificationMessage: ALGEntityModel {
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.id = id
-        apiModel.url = url
+        apiModel.url = url?.absoluteString
         apiModel.creationDatetime = date?.toString(.standard)
         apiModel.message = message
         apiModel.icon = icon?.encode()
@@ -53,7 +53,7 @@ final class NotificationMessage: ALGEntityModel {
 extension NotificationMessage {
     struct APIModel: ALGAPIModel {
         var id: Int?
-        var url: URL?
+        var url: String?
         var creationDatetime: String?
         var message: String?
         var icon: NotificationIcon.APIModel?
@@ -83,13 +83,13 @@ final class NotificationIcon: ALGEntityModel {
     init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.logo = apiModel.logo
+        self.logo = apiModel.logo.toURL()
         self.shape = apiModel.shape
     }
     
     func encode() -> APIModel {
         var apiModel = APIModel()
-        apiModel.logo = logo
+        apiModel.logo = logo?.absoluteString
         apiModel.shape = shape
         return apiModel
     }
@@ -97,7 +97,7 @@ final class NotificationIcon: ALGEntityModel {
 
 extension NotificationIcon {
     struct APIModel: ALGAPIModel {
-        var logo: URL?
+        var logo: String?
         var shape: NotificationIconShape?
         
         init() {
@@ -107,14 +107,8 @@ extension NotificationIcon {
         
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            
-            let logoString = try container.decodeIfPresent(
-                String.self,
-                forKey: .logo
-            )
-            self.logo = logoString
-                .unwrapNonEmptyString()
-                .unwrap(URL.init)
+
+            self.logo = try container.decodeIfPresent(String.self, forKey: .logo)
             
             if self.logo == nil {
                 self.shape = nil

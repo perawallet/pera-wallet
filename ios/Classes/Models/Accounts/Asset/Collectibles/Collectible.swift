@@ -33,7 +33,7 @@ final class Collectible: ALGEntityModel {
     ) {
         self.standard = apiModel.standard
         self.mediaType = apiModel.mediaType
-        self.thumbnailImage = apiModel.primaryImage
+        self.thumbnailImage = apiModel.primaryImage.toURL()
         self.title = apiModel.title
         self.collection = apiModel.collection
         self.media = apiModel.media.unwrapMap(Media.init)
@@ -45,7 +45,7 @@ final class Collectible: ALGEntityModel {
         var apiModel = APIModel()
         apiModel.standard = standard
         apiModel.mediaType = mediaType
-        apiModel.primaryImage = thumbnailImage
+        apiModel.primaryImage = thumbnailImage?.absoluteString
         apiModel.title = title
         apiModel.collection = collection
         apiModel.media = media.map { $0.encode() }
@@ -59,7 +59,7 @@ extension Collectible {
     struct APIModel: ALGAPIModel {
         var standard: CollectibleStandard?
         var mediaType: MediaType?
-        var primaryImage: URL?
+        var primaryImage: String?
         var title: String?
         var collection: CollectibleCollection?
         var media: [Media.APIModel]?
@@ -95,6 +95,7 @@ enum MediaType:
     CaseIterable,
     Codable,
     Equatable {
+    case audio
     case image
     case video
     case mixed
@@ -102,6 +103,7 @@ enum MediaType:
 
     var rawValue: String {
         switch self {
+        case .audio: return "audio"
         case .image: return "image"
         case .video: return "video"
         case .mixed: return "mixed"
@@ -110,7 +112,7 @@ enum MediaType:
     }
 
     static var allCases: [Self] = [
-        .image, .video, .mixed
+        .audio, .image, .video, .mixed
     ]
 
     init() {
@@ -120,8 +122,13 @@ enum MediaType:
     init?(
         rawValue: String
     ) {
-        let foundCase = Self.allCases.first { $0.rawValue == rawValue }
-        self = foundCase ?? .unknown(rawValue)
+        switch rawValue {
+        case Self.audio.rawValue: self = .audio
+        case Self.image.rawValue: self = .image
+        case Self.video.rawValue: self = .video
+        case Self.mixed.rawValue: self = .mixed
+        default: self = .unknown(rawValue)
+        }
     }
 
     var isSupported: Bool {
@@ -171,38 +178,114 @@ enum MediaExtension:
     CaseIterable,
     Codable,
     Equatable {
+    case aac
+    case adts
+    case aif
+    case aifc
+    case aiff
+    case ass
+    case au
     case gif
     case jpg
     case jpeg
-    case png
+    case loas
+    case mid
+    case midi
+    case mp2
+    case mp3
     case mp4
+    case opus
+    case png
+    case ra
+    case snd
+    case threeGp
+    case threeGpp
+    case threeG2
+    case threeGpp2
+    case wav
     case webp
     case other(String)
 
     var rawValue: String {
         switch self {
+        case .aac: return ".aac"
+        case .adts: return ".adts"
+        case .aif: return ".aif"
+        case .aifc: return ".aifc"
+        case .aiff: return ".aiff"
+        case .ass: return ".ass"
+        case .au: return ".au"
         case .gif: return ".gif"
         case .jpg: return ".jpg"
         case .jpeg: return ".jpeg"
-        case .png: return ".png"
+        case .loas: return ".loas"
+        case .mid: return ".mid"
+        case .midi: return ".midi"
+        case .mp2: return ".mp2"
+        case .mp3: return ".mp3"
         case .mp4: return ".mp4"
+        case .opus: return ".opus"
+        case .png: return ".png"
+        case .ra: return ".ra"
+        case .snd: return ".snd"
+        case .threeGp: return ".3gp"
+        case .threeGpp: return ".3gpp"
+        case .threeG2: return ".3g2"
+        case .threeGpp2: return ".3gpp2"
+        case .wav: return ".wav"
         case .webp: return ".webp"
         case .other(let aRawValue): return aRawValue
         }
     }
 
     static var allCases: [Self] = [
-        .gif, .jpg, .jpeg, .png, .mp4, .webp
+        .aac, .adts, .aif, .aifc, .aiff,
+        .ass, .au, .gif, .jpg, .jpeg,
+        .loas, .mid, .midi, .mp2, .mp3,
+        .mp4, .opus, .png, .ra, .threeGp,
+        .threeGpp, .threeG2, .threeGpp2, .snd, .wav,
+        .webp
     ]
 
     init() {
         self = .other("")
     }
 
-    init?(
-        rawValue: String
-    ) {
-        let foundCase = Self.allCases.first { $0.rawValue == rawValue }
-        self = foundCase ?? .other(rawValue)
+    init?(rawValue: String) {
+        switch rawValue {
+        case Self.aac.rawValue: self = .aac
+        case Self.adts.rawValue: self = .adts
+        case Self.aif.rawValue: self = .aif
+        case Self.aifc.rawValue: self = .aifc
+        case Self.aiff.rawValue: self = .aiff
+        case Self.ass.rawValue: self = .ass
+        case Self.au.rawValue: self = .au
+        case Self.gif.rawValue: self = .gif
+        case Self.jpg.rawValue: self = .jpg
+        case Self.jpeg.rawValue: self = .jpeg
+        case Self.loas.rawValue: self = .loas
+        case Self.mid.rawValue: self = .mid
+        case Self.midi.rawValue: self = .midi
+        case Self.mp2.rawValue: self = .mp2
+        case Self.mp3.rawValue: self = .mp3
+        case Self.mp4.rawValue: self = .mp4
+        case Self.opus.rawValue: self = .opus
+        case Self.png.rawValue: self = .png
+        case Self.ra.rawValue: self = .ra
+        case Self.snd.rawValue: self = .snd
+        case Self.threeGp.rawValue: self = .threeGp
+        case Self.threeGpp.rawValue: self = .threeGpp
+        case Self.threeG2.rawValue: self = .threeG2
+        case Self.threeGpp2.rawValue: self = .threeGpp2
+        case Self.wav.rawValue: self = .wav
+        case Self.webp.rawValue: self = .webp
+        default: self = .other(rawValue)
+        }
+    }
+}
+
+extension MediaExtension {
+    var isGIF: Bool {
+        return self == .gif
     }
 }

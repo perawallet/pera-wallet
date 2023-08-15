@@ -20,7 +20,7 @@ import MacaroonUIKit
 
 struct PortfolioCalculationErrorViewModel: ErrorViewModel {
     private(set) var icon: Image?
-    private(set) var message: EditText?
+    private(set) var message: MessageTextProvider?
     
     init() {
         icon = getIcon()
@@ -30,7 +30,7 @@ struct PortfolioCalculationErrorViewModel: ErrorViewModel {
 
 struct PortfolioCalculationPartialErrorViewModel: ErrorViewModel {
     private(set) var icon: Image?
-    private(set) var message: EditText?
+    private(set) var message: MessageTextProvider?
 
     init() {
         icon = getIcon()

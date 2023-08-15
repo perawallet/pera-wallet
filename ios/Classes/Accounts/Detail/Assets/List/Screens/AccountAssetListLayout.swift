@@ -28,14 +28,9 @@ final class AccountAssetListLayout: NSObject {
 
     private lazy var theme = Theme()
 
-    private let isWatchAccount: Bool
     private let listDataSource: AccountAssetListDataSource
 
-    init(
-        isWatchAccount: Bool,
-        listDataSource: AccountAssetListDataSource
-    ) {
-        self.isWatchAccount = isWatchAccount
+    init(listDataSource: AccountAssetListDataSource) {
         self.listDataSource = listDataSource
         super.init()
     }
@@ -120,14 +115,16 @@ extension AccountAssetListLayout {
                 atSection: indexPath.section
             )
         case .quickActions:
-            let width = calculateContentWidth(
+            return sizeForQuickActionsItem(
                 collectionView,
-                forSectionAt: indexPath.section
+                layout: collectionViewLayout,
+                atSection: indexPath.section
             )
-
-            return AccountQuickActionsCell.calculatePreferredSize(
-                for: AccountQuickActionsViewTheme(),
-                fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        case .watchAccountQuickActions:
+            return sizeForWatchAccountQuickActionsItem(
+                collectionView,
+                layout: collectionViewLayout,
+                atSection: indexPath.section
             )
         case .empty(let item):
             return sizeForNoContent(
@@ -149,22 +146,66 @@ extension AccountAssetListLayout {
             return .zero
         }
 
-        let insets: UIEdgeInsets = .zero
-
         switch listSection {
         case .quickActions:
             return UIEdgeInsets(top: 0, left: 0, bottom: 36, right: 0)
-        case .assets:
-            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        case .portfolio:
-            return UIEdgeInsets(top: 0, left: 0, bottom: isWatchAccount ? 36 : 0, right: 0)
         default:
-            return insets
+            return .zero
         }
     }
 }
 
 extension AccountAssetListLayout {
+    private func sizeForQuickActionsItem(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = AccountQuickActionsCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = AccountQuickActionsCell.calculatePreferredSize(
+            for: AccountQuickActionsViewTheme(),
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func sizeForWatchAccountQuickActionsItem(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = WatchAccountQuickActionsCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = WatchAccountQuickActionsCell.calculatePreferredSize(
+            for: WatchAccountQuickActionsViewTheme(),
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,

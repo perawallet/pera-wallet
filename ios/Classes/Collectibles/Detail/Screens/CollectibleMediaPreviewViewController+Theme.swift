@@ -22,14 +22,20 @@ extension CollectibleMediaPreviewViewController {
         LayoutSheet {
         let cellSpacing: LayoutMetric
         let horizontalInset: LayoutMetric
+        let pageControlHeight: LayoutMetric
         let pageControlScale: LayoutMetric
+        let pageIndicatorTintColor: Color
+        let currentPageIndicatorTintColor: Color
 
         init(
             _ family: LayoutFamily
         ) {
             self.cellSpacing = 12
             self.horizontalInset = 24
+            self.pageControlHeight = 26
             self.pageControlScale = 0.5
+            self.pageIndicatorTintColor = Colors.Text.grayLighter.uiColor
+            self.currentPageIndicatorTintColor = Colors.Text.gray.uiColor
         }
     }
 }

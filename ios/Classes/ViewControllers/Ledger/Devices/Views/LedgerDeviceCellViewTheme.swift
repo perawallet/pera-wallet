@@ -35,9 +35,7 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = UIColor.clear
         self.title = [
-            .textAlignment(.left),
-            .textOverflow(FittingText()),
-            .font(Fonts.DMSans.regular.make(15)),
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main)
         ]
         self.arrowImage = [
@@ -53,7 +51,7 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
             offset: (0, 0),
             radius: 0,
             spread: 1,
-            cornerRadii: (4, 4),
+            cornerRadii: (12, 12),
             corners: .allCorners
         )
         self.secondShadow = MacaroonUIKit.Shadow(
@@ -63,7 +61,7 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
             offset: (0, 2),
             radius: 4,
             spread: 0,
-            cornerRadii: (4, 4),
+            cornerRadii: (12, 12),
             corners: .allCorners
         )
         self.thirdShadow = MacaroonUIKit.Shadow(
@@ -73,7 +71,7 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
             offset: (0, 2),
             radius: 4,
             spread: -1,
-            cornerRadii: (4, 4),
+            cornerRadii: (12, 12),
             corners: .allCorners
         )
 

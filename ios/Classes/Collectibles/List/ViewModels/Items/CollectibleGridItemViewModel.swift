@@ -158,7 +158,7 @@ extension CollectibleGridItemViewModel {
         let account = item.account
         let asset = item.asset
 
-        if account.isWatchAccount() {
+        if account.authorization.isWatch {
             bottomLeftBadge = "badge-eye".uiImage
             bottomLeftBadgeCanvas = "badge-bg".uiImage
             return
@@ -227,16 +227,37 @@ extension CollectibleGridItemViewModel {
     ) -> EditText? {
         let subtitle = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
 
-        return .attributedString(
-            subtitle
-                .bodyRegular(lineBreakMode: .byTruncatingTail)
-        )
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
+        if asset.verificationTier.isSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        } else {
+            attributes.insert(.textColor(Colors.Text.main))
+        }
+
+        let destroyedText = makeDestroyedAssetTextIfNeeded(asset.isDestroyed)
+        let assetText = subtitle.attributed(attributes)
+        let text = [ destroyedText, assetText ].compound(" ")
+
+        return .attributedString(text)
+    }
+
+    private func makeDestroyedAssetTextIfNeeded(_ isAssetDestroyed: Bool) -> NSAttributedString? {
+        guard isAssetDestroyed else {
+            return nil
+        }
+
+        let title = "title-deleted-with-parantheses".localized
+        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Helpers.negative))
+        return title.attributed(attributes)
     }
 
     func getTopLeftBadge(
         _ asset: CollectibleAsset
     ) -> UIImage? {
         switch asset.mediaType {
+        case .audio:
+            return "badge-audio".uiImage
         case .video:
             return "badge-video".uiImage
         case .mixed:

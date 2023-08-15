@@ -192,11 +192,6 @@ extension ImportAccountScreen {
 
         pushNotificationController.sendDeviceDetails()
 
-        NotificationCenter.default.post(
-            name: .didAddAccount,
-            object: self
-        )
-
         session.authenticatedUser = authenticatedUser
     }
 
@@ -204,10 +199,20 @@ extension ImportAccountScreen {
         imported: [AccountInformation],
         unimported: [AccountInformation]
     ) {
+        let importedAccounts = imported.map {
+            let account = Account(localAccount: $0)
+            account.authorization = .standard
+            return account
+        }
+        let unimportedAccounts = unimported.map {
+            let account = Account(localAccount: $0)
+            account.authorization = .standard
+            return account
+        }
         eventHandler?(
             .didCompleteImport(
-                importedAccounts: imported.map({.init(localAccount: $0)}),
-                unimportedAccounts: unimported.map({.init(localAccount: $0)})
+                importedAccounts: importedAccounts,
+                unimportedAccounts: unimportedAccounts
             ),
             self
         )
@@ -229,7 +234,7 @@ extension ImportAccountScreen {
             let accountInformation = AccountInformation(
                 address: accountAddress,
                 name: accountParameter.name ?? accountAddress.shortAddressDisplay,
-                type: accountParameter.accountType.rawAccountType,
+                isWatchAccount: accountParameter.accountType.rawAccountType.isWatch,
                 preferredOrder: currentPreferredOrder
             )
             transferAccounts.append(

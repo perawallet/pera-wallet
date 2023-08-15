@@ -105,7 +105,12 @@ extension InvalidAccountOptionsViewController {
     }
     
     private func addViewPassphraseButton() {
-        guard !account.value.isWatchAccount() else {
+        guard let session else {
+            return
+        }
+
+        let address = account.value.address
+        guard session.hasPrivateData(for: address) else {
             return
         }
 

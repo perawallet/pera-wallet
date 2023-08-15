@@ -64,7 +64,7 @@ final class Announcement: ALGAPIModel {
     let title: String?
     let subtitle: String?
     let buttonLabel: String?
-    let buttonUrl: URL?
+    let buttonUrl: String?
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -73,13 +73,7 @@ final class Announcement: ALGAPIModel {
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
         self.subtitle = try container.decodeIfPresent(String.self, forKey: .subtitle)
         self.buttonLabel = try container.decodeIfPresent(String.self, forKey: .buttonLabel)
-
-        if let buttonURLString = try container.decodeIfPresent(String.self, forKey: .buttonUrl),
-           !buttonURLString.isEmptyOrBlank {
-            self.buttonUrl = URL(string: buttonURLString)
-        } else {
-            self.buttonUrl = nil
-        }
+        self.buttonUrl = try container.decodeIfPresent(String.self, forKey: .buttonUrl)
     }
     
     init() {

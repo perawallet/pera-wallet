@@ -36,6 +36,10 @@ final class ALGProgress {
         return currentUnitCount == totalUnitCount + 1
     }
 
+    var isSingular: Bool {
+        return totalUnitCount == 1
+    }
+
     func callAsFunction() {
         if isFinished {
             assertionFailure("Progress has already been completed.")

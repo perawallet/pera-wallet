@@ -22,4 +22,8 @@ extension String {
         return chars
             .compactMap({ UInt8($0) })
     }
+    
+    func convertToByteArray() -> [UInt8] {
+        return Array(self.utf8)
+    }
 }

@@ -42,7 +42,7 @@ extension AnalyticsEvent where Self == ShowQRCopyEvent {
     static func showQRCopy(
         address: String
     ) -> Self {
-        let account = Account(address: address, type: .standard)
+        let account = Account(address: address)
         return ShowQRCopyEvent(account: account)
     }
 }

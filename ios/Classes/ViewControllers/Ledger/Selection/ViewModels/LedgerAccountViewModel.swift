@@ -18,21 +18,15 @@
 import MacaroonUIKit
 
 final class LedgerAccountViewModel: PairedViewModel {
-    private(set) var accountAssetCountViewModel: LedgerAccountAssetCountViewModel?
-    private(set) var accountNameViewModel: AccountNameViewModel?
+    private(set) var accountItem: AccountListItemViewModel?
 
     init(_ model: Account) {
-        bindAccountAssetCountViewModel(model)
-        bindAccountNameViewModel(model)
+        bindAccountItem(model)
     }
 }
 
 extension LedgerAccountViewModel {
-    func bindAccountAssetCountViewModel(_ account: Account) {
-        self.accountAssetCountViewModel = LedgerAccountAssetCountViewModel(account)
-    }
-
-    func bindAccountNameViewModel(_ account: Account) {
-        self.accountNameViewModel = AccountNameViewModel(account: account)
+    func bindAccountItem(_ account: Account) {
+        self.accountItem = AccountListItemViewModel(account)
     }
 }

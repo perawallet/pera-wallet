@@ -56,7 +56,15 @@ final class SwapInfoItemView:
             titleView.clearText()
         }
 
-        infoActionView.setImage(viewModel?.icon?.uiImage , for: .normal)
+        if let iconTintColor = viewModel?.iconTintColor?.uiColor {
+            let infoIcon = viewModel?.icon?.uiImage.withRenderingMode(.alwaysTemplate)
+            infoActionView.setImage(infoIcon, for: .normal)
+            infoActionView.tintColor = iconTintColor
+        } else {
+            let infoIcon = viewModel?.icon?.uiImage
+            infoActionView.setImage(infoIcon, for: .normal)
+            infoActionView.tintColor = nil
+        }
 
         if let detail = viewModel?.detail {
             detail.load(in: detailView)

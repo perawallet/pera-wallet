@@ -32,9 +32,13 @@ final class WebImportErrorScreen: ScrollScreen {
 
     private let error: ImportAccountScreenError
 
-    init(error: ImportAccountScreenError) {
+    init(
+        error: ImportAccountScreenError,
+        api: ALGAPI?
+    ) {
         self.error = error
-        super.init()
+        
+        super.init(api: api)
     }
 
     override func prepareLayout() {

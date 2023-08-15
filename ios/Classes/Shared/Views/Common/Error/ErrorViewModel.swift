@@ -20,7 +20,21 @@ import MacaroonUIKit
 
 protocol ErrorViewModel: ViewModel {
     var icon: Image? { get }
-    var message: EditText? { get }
+    var message: MessageTextProvider? { get }
+
+    typealias MessageTextProvider = ErrorMessageTextProvider
+    typealias HighlightedText = ErrorMessageTextProvider.HighlightedText
+}
+
+struct ErrorMessageTextProvider {
+    var text: TextProvider
+    var highlightedText: HighlightedText? = nil
+
+    struct HighlightedText {
+        let text: String
+        var url: URL? = nil
+        let attributes: TextAttributeGroup
+    }
 }
 
 extension ErrorViewModel {
@@ -30,14 +44,11 @@ extension ErrorViewModel {
     
     func getMessage(
         _  aMessage: String?
-    ) -> EditText? {
+    ) -> MessageTextProvider? {
         guard let aMessage = aMessage else {
             return nil
         }
         
-        return .attributedString(
-            aMessage
-                .bodyMedium()
-        )
+        return MessageTextProvider(text: aMessage.bodyMedium())
     }
 }

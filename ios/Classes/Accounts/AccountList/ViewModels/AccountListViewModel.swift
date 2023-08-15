@@ -22,12 +22,8 @@ struct AccountListViewModel {
 
     init(_ mode: AccountListViewController.Mode) {
         switch mode {
-        case .contact, .transactionSender:
+        case .contact:
             title = "send-sending-algos-select".localized
-        case .transactionReceiver:
-            title = "send-receiving-algos-select".localized
-        case .walletConnect:
-            title = "accounts-title".localized
         }
     }
 }

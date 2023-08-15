@@ -17,10 +17,49 @@
 
 import Foundation
 import UIKit
+import MacaroonUIKit
 
 struct ALGBarButtonItem: BarButtonItem {
     
     var handler: EmptyHandler?
+    
+    var backgroundColor: UIColor? {
+        switch kind {
+        case .account(let account):
+            let authorization = account.authorization
+
+            if authorization.isNoAuth {
+                return Colors.Helpers.negativeLighter.uiColor
+            }
+
+            if authorization.isRekeyedToLedger {
+                return Colors.Wallet.wallet3.uiColor
+            }
+
+            if authorization.isRekeyedToStandard {
+                return Colors.Wallet.wallet4.uiColor
+            }
+
+            return nil
+        default:
+            return nil
+        }
+    }
+    
+    var corner: Corner? {
+        switch kind {
+        case .account(let account):
+            let authorization = account.authorization
+
+            if authorization.isRekeyed || authorization.isNoAuth {
+                return Corner(radius: 8)
+            }
+
+            return nil
+        default:
+            return nil
+        }
+    }
     
     var title: TitleContent? {
         switch kind {
@@ -60,6 +99,34 @@ struct ALGBarButtonItem: BarButtonItem {
                 textColor: Colors.Link.primary.uiColor,
                 font: UIFont.font(withWeight: .medium(size: 16.0))
             )
+        case .account(let account):
+            let authorization = account.authorization
+
+            if authorization.isRekeyedToLedger {
+                return BarButtonItemTitleContent(
+                    text: "title-rekeyed".localized,
+                    textColor: Colors.Wallet.wallet3Icon.uiColor,
+                    font: Typography.captionMedium()
+                )
+            }
+
+            if authorization.isRekeyedToStandard {
+                return BarButtonItemTitleContent(
+                    text: "title-rekeyed".localized,
+                    textColor: Colors.Wallet.wallet4Icon.uiColor,
+                    font: Typography.captionMedium()
+                )
+            }
+
+            if authorization.isNoAuth {
+                return BarButtonItemTitleContent(
+                    text: "title-no-auth".localized,
+                    textColor: Colors.Helpers.negative.uiColor,
+                    font: Typography.captionMedium()
+                )
+            }
+
+            return nil
         default:
             return nil
         }
@@ -154,8 +221,31 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
-        case .account(let image):
-            return ImageContent(normal: image)
+        case .account(let account):
+            let authorization = account.authorization
+
+            if authorization.isRekeyedToLedger {
+                return ImageContent(
+                    normal: "icon-shield-16".templateImage,
+                    tintColor: Colors.Wallet.wallet3Icon.uiColor
+                )
+            }
+
+            if authorization.isRekeyedToStandard {
+                return ImageContent(
+                    normal: "icon-shield-16".templateImage,
+                    tintColor: Colors.Wallet.wallet4Icon.uiColor
+                )
+            }
+
+            if authorization.isNoAuth {
+                return ImageContent(
+                    normal: "icon-shield-16".templateImage,
+                    tintColor: Colors.Helpers.negative.uiColor
+                )
+            }
+
+            return ImageContent(normal: account.typeImage)
         case .discoverHome:
             if let icon = img("icon-homepage") {
                 let disabledIcon = img("icon-homepage-disabled")
@@ -264,7 +354,23 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .search:
             return .explicit(CGSize(width: 40, height: 40))
-        case .account:
+        case .account(let account):
+            let authorization = account.authorization
+
+            if authorization.isRekeyed || authorization.isNoAuth {
+                let spacing = 4 / 2.0
+                let contentInsets = UIEdgeInsets((6, spacing + 6, 6, spacing + 8))
+                let titleInsets = UIEdgeInsets((0, spacing, 0, -spacing))
+                let imageInsets = UIEdgeInsets((0, -spacing, 0, spacing))
+                return .compressed(
+                    BarButtonCompressedSizeInsets(
+                        contentInsets: contentInsets,
+                        titleInsets: titleInsets,
+                        imageInsets: imageInsets
+                    )
+                )
+            }
+
             return .explicit(CGSize(width: 28, height: 28))
         case .discoverHome:
             return .explicit(CGSize(width: 40, height: 40))
@@ -324,7 +430,7 @@ extension ALGBarButtonItem {
         case filter
         case troubleshoot
         case search
-        case account(UIImage)
+        case account(Account)
         case discoverNext
         case discoverPrevious
         case discoverHome

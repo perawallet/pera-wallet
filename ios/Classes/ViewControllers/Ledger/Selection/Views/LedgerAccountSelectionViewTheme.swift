@@ -39,18 +39,13 @@ struct LedgerAccountSelectionViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.title = [
-            .textAlignment(.center),
             .textOverflow(FittingText()),
-            .font(Fonts.DMSans.medium.make(19)),
             .textColor(Colors.Text.main),
-            .text("ledger-device-list-looking".localized)
         ]
         self.description = [
-            .textAlignment(.center),
             .textOverflow(FittingText()),
-            .font(Fonts.DMSans.regular.make(15)),
             .textColor(Colors.Text.gray),
-            .text("tutorial-description-ledger".localized)
+            .text("tutorial-description-ledger".bodyLargeMedium())
         ]
         self.image = [
             .image("icon-wallet"),
@@ -58,16 +53,16 @@ struct LedgerAccountSelectionViewTheme: StyleSheet, LayoutSheet {
         ]
         self.verifyButtonTheme = ButtonPrimaryTheme()
         
-        self.collectionViewMinimumLineSpacing = 20
-        self.verticalStackViewTopPadding = 66
+        self.collectionViewMinimumLineSpacing = 16
+        self.verticalStackViewTopPadding = 40
         self.verticalStackViewSpacing = 12
-        self.titleLabelTopPadding = 30
-        self.devicesListTopPadding = 50
+        self.titleLabelTopPadding = 24
+        self.devicesListTopPadding = 30
         self.bottomInset = 16
         self.horizontalInset = 24
         let buttonHeight: LayoutMetric = 52
         let additionalLinearGradientHeightForButtonTop: LayoutMetric = 4
         self.linearGradientHeight = bottomInset + buttonHeight + additionalLinearGradientHeightForButtonTop
-        self.listContentInset = (10, 0, linearGradientHeight + 4, 0)
+        self.listContentInset = (10, 0, linearGradientHeight + 16, 0)
     }
 }

@@ -120,8 +120,6 @@ extension ContactDetailViewController {
                     return
                 }
 
-                accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
-
                 let account = accountWrapper.account
                 self.contactAccount = account
                 
@@ -195,7 +193,7 @@ extension ContactDetailViewController {
                 }
             case let .failure(error, _):
                 if error.isHttpNotFound {
-                    self.contactAccount = Account(address: address, type: .standard)
+                    self.contactAccount = Account(address: address)
                     self.loadingController?.stopLoading()
 
                     guard let account = self.contactAccount else { return }

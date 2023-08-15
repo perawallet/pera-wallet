@@ -105,6 +105,12 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                     at: indexPath
                 )
                 return cell
+            case .watchAccountQuickActions:
+                let cell = collectionView.dequeue(
+                    WatchAccountQuickActionsCell.self,
+                    at: indexPath
+                )
+                return cell
             case .empty(let item):
                 let cell = collectionView.dequeue(
                     NoContentCell.self,
@@ -127,6 +133,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
             CollectibleListItemCell.self,
             PendingCollectibleAssetListItemCell.self,
             AccountQuickActionsCell.self,
+            WatchAccountQuickActionsCell.self,
             NoContentCell.self
         ].forEach {
             collectionView.register($0)

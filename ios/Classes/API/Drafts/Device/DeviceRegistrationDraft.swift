@@ -34,7 +34,7 @@ struct DeviceRegistrationDraft: JSONObjectBody {
         params.append(.init(.model, model))
         params.append(.init(.locale, locale))
         params.append(.init(.accounts, accounts))
-        params.append(.init(.pushToken, pushToken, .setIfPresent))
+        params.append(.init(.pushToken, pushToken.someString))
         return params
     }
 }

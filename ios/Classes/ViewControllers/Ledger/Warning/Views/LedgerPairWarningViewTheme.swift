@@ -27,7 +27,7 @@ struct LedgerPairWarningViewTheme: StyleSheet, LayoutSheet {
     let actionButton: ButtonStyle
     let actionButtonContentEdgeInsets: LayoutPaddings
     let actionButtonCorner: Corner
-    let largerInstuctionViewTheme: LargerInstructionItemViewTheme
+    let instuctionViewTheme: InstructionItemViewTheme
 
     let bottomInset: LayoutMetric
     let horizontalInset: LayoutMetric
@@ -59,7 +59,7 @@ struct LedgerPairWarningViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(Colors.Button.Secondary.background)
         ]
-        self.largerInstuctionViewTheme = LargerInstructionItemViewTheme()
+        self.instuctionViewTheme = InstructionItemViewTheme(family)
         self.actionButtonContentEdgeInsets = (14, 0, 14, 0)
         self.actionButtonCorner = Corner(radius: 4)
 
