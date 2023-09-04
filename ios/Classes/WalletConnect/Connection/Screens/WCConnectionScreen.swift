@@ -23,30 +23,29 @@ final class WCConnectionScreen:
     BottomSheetPresentable {
     typealias EventHandler = (Event) -> Void
     var eventHandler: EventHandler?
+
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+
+    private(set) var modalHeight: ModalHeight = .compressed
     
-    let walletConnectSession: WalletConnectSession
-    
-    var modalHeight: ModalHeight = .compressed
-    
-    private let theme = WCConnectionScreenTheme()
+    private lazy var theme = WCConnectionScreenTheme()
     
     private(set) lazy var contextView = WCConnectionView()
     private(set) lazy var bottomContainerView = EffectView()
     private lazy var actionsStackView = UIStackView()
     private lazy var cancelActionView = MacaroonUIKit.Button()
     private lazy var connectActionView = MacaroonUIKit.Button()
-    
-    private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler
-        
+
     private lazy var listLayout = WCConnectionAccountListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = WCConnectionAccountListDataSource(contextView.accountListView)
-    
+
+    private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler
+
+    let walletConnectSession: WalletConnectSession
     let dataController: WCConnectionAccountListDataController
-    
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-    
+
     init(
         walletConnectSession: WalletConnectSession,
         walletConnectSessionConnectionCompletionHandler: @escaping WalletConnectSessionConnectionCompletionHandler,
@@ -56,9 +55,10 @@ final class WCConnectionScreen:
         self.walletConnectSession = walletConnectSession
         self.walletConnectSessionConnectionCompletionHandler = walletConnectSessionConnectionCompletionHandler
         self.dataController = dataController
+
         super.init(configuration: configuration)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -87,6 +87,7 @@ final class WCConnectionScreen:
     
     override func setListeners() {
         super.setListeners()
+
         contextView.accountListView.delegate = self
     }
     
@@ -175,27 +176,27 @@ extension WCConnectionScreen {
 
 extension WCConnectionScreen {
     private func bindUIData() {
-        contextView.bindData(WCConnectionViewModel(
-            session: self.walletConnectSession,
-            hasSingleAccount: self.dataController.hasSingleAccount
-        ))
+        let viewModel = WCConnectionViewModel(
+            session: walletConnectSession,
+            hasSingleAccount: dataController.hasSingleAccount
+        )
+        contextView.bindData(viewModel)
         
         updateButtonState()
         
         contextView.startObserving(event: .openUrl) {
             [unowned self] in
-            
             self.open(walletConnectSession.dAppInfo.peerMeta.url)
         }
     }
     
     private func updateUILayout() {
         contextView.accountListView.setContentInset(
-            bottom: self.bottomContainerView.bounds.height
+            bottom: bottomContainerView.bounds.height
         )
         
-        modalHeight = self.theme.calculateModalHeightAsBottomSheet(self)
-        performLayoutUpdates(animated: self.isViewAppeared)
+        modalHeight = theme.calculateModalHeightAsBottomSheet(self)
+        performLayoutUpdates(animated: isViewAppeared)
     }
     
     private func updateButtonState() {
@@ -247,9 +248,7 @@ extension WCConnectionScreen: UICollectionViewDelegateFlowLayout {
         
         let isSelected = dataController.isAccountSelected(at: indexPath.row)
         
-        cell.accessory = isSelected
-            ? .selected
-            : .unselected
+        cell.accessory = isSelected ? .selected : .unselected
     }
     
     private func toggleAccountCell(at indexPath: IndexPath) {
@@ -294,6 +293,9 @@ extension WCConnectionScreen {
         )
 
         DispatchQueue.main.async {
+            [weak self] in
+            guard let self else { return }
+
             self.walletConnectSessionConnectionCompletionHandler(
                 self.walletConnectSession.getDeclinedWalletConnectionInfo(on: self.api!.network)
             )
@@ -316,6 +318,9 @@ extension WCConnectionScreen {
         )
         
         DispatchQueue.main.async {
+            [weak self] in
+            guard let self else { return }
+
             self.walletConnectSessionConnectionCompletionHandler(
                 self.walletConnectSession.getApprovedWalletConnectionInfo(
                     for: selectedAccountAddresses,

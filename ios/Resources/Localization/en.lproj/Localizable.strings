@@ -97,6 +97,7 @@
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
+"title-copied-to-clipboard" = "Copied to clipboard";
 "account-not-found" = "Account not found";
 "title-select-all" = "Select all";
 "title-unselect-all" = "Unselect all";
@@ -924,7 +925,7 @@
 "wallet-connect-transaction-error-group-validation" = "Transaction Request Rejected: The transaction group has failed validation by the Algorand SDK.";
 "wallet-connect-transaction-error-already-displayed" = "Transaction Request Rejected: The User currently has another transaction request that is in progress.";
 "wallet-connect-transaction-error-group-unauthorized-user" = "The requested operation and/or account has not been authorized by the user.";
-"wallet-connect-transaction-error-transaction-size" = "Invalid Input: Transaction request contains more than 64 transactions";
+"wallet-connect-transaction-error-transaction-size" = "Invalid Input: Transaction request contains more than 1000 transactions";
 "wallet-connect-transaction-error-invalid-signer" = "Signing Error: A transaction in the transaction request requires a private key (signer) that does not exist in the connected Wallet.";
 "wallet-connect-transaction-error-node" = "Signing Error: Network mismatch between dApp and Wallet. For example, Wallet is connected to TestNet and dApp connected to MainNet (or vice versa).";
 "wallet-connect-transaction-error-group" = "Invalid Input: Group transaction does not need to be signed by Wallet user.";
@@ -967,10 +968,8 @@
 "wallet-connect-asset-deletion-title" = "Asset Deletion Request";
 "wallet-connect-asset-deletion-warning-title" = "This asset will be deleted.";
 
-"title-confirm-all" = "Confirm All";
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
-"wallet-connect-transaction-dapp-show-more" = "Read More";
 
 "wallet-connect-transaction-title-possible-opt-in" = "Possible Assets Opt-in Request";
 "wallet-connect-transaction-title-app-call" = "Application Call";

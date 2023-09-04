@@ -20,7 +20,7 @@ import UIKit
 import MacaroonUIKit
 
 final class WCSingleTransactionRequestBottomView: BaseView {
-    private(set) lazy var showTransactionDetailsButton = Button()
+    private(set) lazy var showTransactionDetailsButton = MacaroonUIKit.Button()
     private lazy var warningLabel = UILabel()
     private lazy var warningIcon = UIImageView()
     private lazy var networkFeeTitleLabel = UILabel()

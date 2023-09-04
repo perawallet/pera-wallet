@@ -97,7 +97,7 @@ struct ALGBarButtonItem: BarButtonItem {
             return BarButtonItemTitleContent(
                 text: "title-copy".localized,
                 textColor: Colors.Link.primary.uiColor,
-                font: UIFont.font(withWeight: .medium(size: 16.0))
+                font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .account(let account):
             let authorization = account.authorization

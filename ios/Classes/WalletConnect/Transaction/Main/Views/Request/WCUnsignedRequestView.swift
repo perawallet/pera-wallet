@@ -66,32 +66,15 @@ final class WCUnsignedRequestView: BaseView {
     }()
 
     private lazy var buttonsContainerView = UIView()
-    private lazy var confirmButton = Button()
-    private lazy var cancelButton = Button()
+    private lazy var confirmButton = MacaroonUIKit.Button()
+    private lazy var cancelButton = MacaroonUIKit.Button()
 
     private lazy var theme = WCUnsignedRequestViewTheme()
-
-    override func configureAppearance() {
-        super.configureAppearance()
-
-        backgroundColor = theme.backgroundColor.uiColor
-
-        confirmButton.customize(theme.confirmButton)
-        confirmButton.setTitle("title-confirm-all".localized, for: .normal)
-        cancelButton.customize(theme.cancelButton)
-        cancelButton.setTitle("title-cancel".localized, for: .normal)
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-
-        cancelButton.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
-        confirmButton.addTarget(self, action: #selector(didTapConfirm), for: .touchUpInside)
-    }
 
     override func prepareLayout() {
         super.prepareLayout()
 
+        addBackground()
         addCollectionView()
         addButtons()
     }
@@ -124,30 +107,50 @@ extension WCUnsignedRequestView {
 }
 
 extension WCUnsignedRequestView {
+    private func addBackground() {
+        backgroundColor = theme.backgroundColor.uiColor
+    }
+
     private func addButtons() {
         addButtonsGradient()
         addSubview(buttonsContainerView)
         buttonsContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(theme.buttonContainerHeight)
+            make.height.equalTo(theme.collectionViewBottomOffset)
             make.bottom.equalToSuperview()
         }
 
+        cancelButton.customizeAppearance(theme.cancelButton)
         buttonsContainerView.addSubview(cancelButton)
+        cancelButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
         cancelButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(theme.buttonBottomInset)
+            let safeAreaBottom = compactSafeAreaInsets.bottom
+            let bottom = safeAreaBottom + theme.buttonBottomPadding
+            make.bottom.equalToSuperview().inset(bottom)
             make.leading.equalToSuperview().inset(theme.horizontalPadding)
-            make.height.equalTo(theme.buttonHeight)
         }
 
+        cancelButton.addTouch(
+            target: self,
+            action: #selector(didTapCancel)
+        )
+
+        confirmButton.customizeAppearance(theme.confirmButton)
         buttonsContainerView.addSubview(confirmButton)
+        confirmButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
         confirmButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(theme.buttonBottomInset)
-            make.leading.equalTo(cancelButton.snp.trailing).offset(theme.buttonPadding)
+            let safeAreaBottom = compactSafeAreaInsets.bottom
+            let bottom = safeAreaBottom + theme.buttonBottomPadding
+            make.bottom.equalToSuperview().inset(bottom)
+            make.leading.equalTo(cancelButton.snp.trailing).offset(theme.buttonHorizontalPadding)
             make.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            make.height.equalTo(cancelButton)
             make.width.equalTo(cancelButton).multipliedBy(theme.confirmButtonWidthMultiplier)
         }
+
+        confirmButton.addTouch(
+            target: self,
+            action: #selector(didTapConfirm)
+        )
     }
 
     private func addCollectionView() {
@@ -159,7 +162,7 @@ extension WCUnsignedRequestView {
 
     private func addButtonsGradient() {
         let layer : CAGradientLayer = CAGradientLayer()
-        layer.frame.size = CGSize(width: UIScreen.main.bounds.width, height: theme.buttonContainerHeight)
+        layer.frame.size = CGSize(width: UIScreen.main.bounds.width, height: theme.collectionViewBottomOffset)
         layer.frame.origin = .zero
 
         let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0).cgColor

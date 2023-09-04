@@ -282,5 +282,4 @@ extension WCMainTransactionDataSource {
 
 protocol WCMainTransactionDataSourceDelegate: AnyObject {
     func wcMainTransactionDataSourceDidFailedGroupingValidation(_ wcMainTransactionDataSource: WCMainTransactionDataSource)
-    func wcMainTransactionDataSourceDidOpenLongDappMessageView(_ wcMainTransactionDataSource: WCMainTransactionDataSource)
 }

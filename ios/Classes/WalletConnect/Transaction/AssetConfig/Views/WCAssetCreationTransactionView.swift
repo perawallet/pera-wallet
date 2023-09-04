@@ -264,7 +264,8 @@ extension WCAssetCreationTransactionView {
             metadataView.hideViewInStack()
         }
 
-        showNoteStackView(!isDetailedInformationStackViewEmpty())
+        let shouldShowNotStackView = !noteView.isHidden || !metadataView.isHidden
+        showNoteStackView(shouldShowNotStackView)
 
         if viewModel.rawTransactionInformationViewModel != nil {
             rawTransactionButton.showViewInStack()

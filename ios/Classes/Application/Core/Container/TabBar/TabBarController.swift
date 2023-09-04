@@ -32,7 +32,7 @@ final class TabBarController: TabBarContainer {
         }
     }
 
-    private lazy var toggleTransactionOptionsActionView = Button()
+    private lazy var toggleTransactionOptionsActionView = MacaroonUIKit.Button()
 
     private lazy var buySellAction = TransactionOptionListAction(
         viewModel: BuySellTransactionOptionListItemButtonViewModel()

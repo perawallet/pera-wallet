@@ -27,10 +27,19 @@ class JSONDisplayViewController: BaseScrollViewController {
 
     private let jsonData: Data
     private let screenTitle: String
+    private let copyToClipboardController: CopyToClipboardController
 
-    init(jsonData: Data, title: String, configuration: ViewControllerConfiguration) {
+    private lazy var viewModel = JSONDisplayViewModel(json: jsonData)
+
+    init(
+        jsonData: Data,
+        title: String,
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration
+    ) {
         self.jsonData = jsonData
         self.screenTitle = title
+        self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
     }
 
@@ -51,7 +60,7 @@ class JSONDisplayViewController: BaseScrollViewController {
     }
 
     override func bindData() {
-        jsonDisplayView.bind(JSONDisplayViewModel(json: jsonData))
+        jsonDisplayView.bind(viewModel)
     }
 }
 
@@ -65,7 +74,10 @@ extension JSONDisplayViewController {
     }
 
     private func copyJSON() {
-        UIPasteboard.general.string = JSONDisplayViewModel(json: jsonData).jsonText
+        let jsonText = viewModel.jsonText
+        if let jsonText {
+            copyToClipboardController.copyText(jsonText)
+        }
     }
 }
 

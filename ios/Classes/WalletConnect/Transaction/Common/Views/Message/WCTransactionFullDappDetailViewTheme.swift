@@ -21,10 +21,13 @@ import UIKit
 
 struct WCTransactionFullDappDetailViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
+    let image: URLImageViewStyleLayoutSheet
+    let imageSize: LayoutSize
+    let imageCorner: Corner
     let title: TextStyle
     let description: TextStyle
-    let mainButtonTheme: ButtonTheme
-
+    let primaryAction: ButtonStyle
+    let primaryActionEdgeInsets: LayoutPaddings
     let verticalInset: LayoutMetric
     let buttonInset: LayoutMetric
     let horizontalInset: LayoutMetric
@@ -36,6 +39,9 @@ struct WCTransactionFullDappDetailViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
+        self.image = URLImageViewNoStyleLayoutSheet(family)
+        self.imageSize = (48, 48)
+        self.imageCorner = Corner(radius: 24)
         self.title = [
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(19)),
@@ -50,9 +56,17 @@ struct WCTransactionFullDappDetailViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
             .text("screenshot-description".localized)
         ]
-
-        self.mainButtonTheme = ButtonPrimaryTheme()
-
+        self.primaryAction = [
+            .titleColor([ .normal(Colors.Button.Primary.text) ]),
+            .font(Typography.bodyMedium()),
+            .backgroundImage([
+                .normal("components/buttons/primary/bg"),
+                .highlighted("components/buttons/primary/bg-highlighted"),
+                .selected("components/buttons/primary/bg-highlighted"),
+                .disabled("components/buttons/primary/bg-disabled")
+            ])
+        ]
+        self.primaryActionEdgeInsets = (16, 8, 16, 8)
         self.buttonInset = 16
         self.verticalInset = 32
         self.horizontalInset = 24

@@ -123,6 +123,17 @@ extension CopyToClipboardController {
         let item = ClipboardItem(copy: idCopy, interaction: interaction)
         return copy(item)
     }
+
+    func copyText(
+        _ someText: String
+    ) {
+        let interaction = CopyToClipboardInteraction(
+            title: "title-copied-to-clipboard".localized,
+            body: nil
+        )
+        let item = ClipboardItem(copy: someText, interaction: interaction)
+        return copy(item)
+    }
 }
 
 struct ClipboardItem {

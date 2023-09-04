@@ -21,8 +21,8 @@ import MacaroonUIKit
 import UIKit
 
 final class WCSingleTransactionRequestView: BaseView {
-    private lazy var confirmButton = Button()
-    private lazy var cancelButton = Button()
+    private lazy var confirmButton = MacaroonUIKit.Button()
+    private lazy var cancelButton = MacaroonUIKit.Button()
     private(set) lazy var bottomView = WCSingleTransactionRequestBottomView()
     private(set) lazy var middleView = WCSingleTransactionRequestMiddleView()
 
@@ -42,11 +42,6 @@ final class WCSingleTransactionRequestView: BaseView {
             guard let self = self else { return }
             self.delegate?.wcSingleTransactionRequestViewDidOpenASADiscovery(self)
         }
-
-        confirmButton.customize(theme.confirmButton)
-        confirmButton.setTitle("title-confirm".localized, for: .normal)
-        cancelButton.customize(theme.cancelButton)
-        cancelButton.setTitle("title-cancel".localized, for: .normal)
     }
 
     override func linkInteractors() {
@@ -90,17 +85,24 @@ extension WCSingleTransactionRequestView {
 
 extension WCSingleTransactionRequestView {
     private func addButtons() {
+        cancelButton.customizeAppearance(theme.cancelButton)
         addSubview(cancelButton)
+        cancelButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
         cancelButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
+            let safeAreaBottom = compactSafeAreaInsets.bottom
+            let bottom = safeAreaBottom + theme.buttonHorizontalPadding
+            make.bottom.equalToSuperview().inset(bottom)
             make.leading.equalToSuperview().inset(theme.horizontalPadding)
-            make.height.equalTo(theme.buttonHeight)
         }
 
+        confirmButton.customizeAppearance(theme.confirmButton)
         addSubview(confirmButton)
+        confirmButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
         confirmButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.leading.equalTo(cancelButton.snp.trailing).offset(theme.buttonPadding)
+            let safeAreaBottom = compactSafeAreaInsets.bottom
+            let bottom = safeAreaBottom + theme.buttonHorizontalPadding
+            make.bottom.equalToSuperview().inset(bottom)
+            make.leading.equalTo(cancelButton.snp.trailing).offset(theme.buttonHorizontalPadding)
             make.trailing.equalToSuperview().inset(theme.horizontalPadding)
             make.height.equalTo(cancelButton)
             make.width.equalTo(cancelButton).multipliedBy(theme.confirmButtonWidthMultiplier)

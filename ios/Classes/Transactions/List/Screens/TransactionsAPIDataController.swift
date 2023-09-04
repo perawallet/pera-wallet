@@ -48,6 +48,10 @@ final class TransactionsAPIDataController:
         label: "pera.queue.transactions.updates",
         qos: .userInitiated
     )
+    private lazy var pendingTransactionsUpdateQueue = DispatchQueue(
+        label: "pera.queue.pendingTransactions.updates",
+        qos: .userInitiated
+    )
 
     init(
         _ api: ALGAPI,
@@ -133,14 +137,28 @@ extension TransactionsAPIDataController {
                 }
                 switch response {
                 case let .success(pendingTransactionList):
-                    let updatedPendingTransactions = pendingTransactionList.pendingTransactions.filterDuplicates()
-                    if !self.pendingTransactions.isEmpty && updatedPendingTransactions.isEmpty {
-                        self.pendingTransactions = []
-                        return
-                    }
+                    pendingTransactionsUpdateQueue.async {
+                        [weak self] in
+                        guard let self else { return }
 
-                    self.pendingTransactions = updatedPendingTransactions
-                    self.deliverContentSnapshot()
+                        var pendingTransactionsSet = Set<PendingTransaction>()
+
+                        let updatedPendingTransactions = pendingTransactionList.pendingTransactions.filter {
+                            let isInserted = pendingTransactionsSet.insert($0).inserted
+
+                            if let assetID = self.draft.asset?.id {
+                                return isInserted && $0.assetID == assetID
+                            }
+
+                            return isInserted
+                        }
+
+                        self.pendingTransactions = updatedPendingTransactions
+
+                        if !updatedPendingTransactions.isEmpty {
+                            self.deliverContentSnapshot()
+                        }
+                    }
                 case .failure:
                     /// <todo> Handle error case
                     break

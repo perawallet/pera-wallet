@@ -21,24 +21,46 @@ import UIKit
 
 struct WCSingleTransactionRequestViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
-    let confirmButton: ButtonPrimaryTheme
-    let cancelButton: ButtonSecondaryTheme
-    let buttonPadding: LayoutMetric
+    let confirmButton: ButtonStyle
+    let cancelButton: ButtonStyle
+    let buttonEdgeInsets: LayoutPaddings
+    let buttonHorizontalPadding: LayoutMetric
+    let buttonBottomPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let confirmButtonWidthMultiplier: LayoutMetric
-    let buttonHeight: LayoutMetric
     let bottomHeight: LayoutMetric
     let bottomViewBottomOffset: LayoutMetric
     let separator: Separator
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
-        self.confirmButton = ButtonPrimaryTheme(family)
-        self.cancelButton = ButtonSecondaryTheme(family)
-        self.buttonPadding = 20
+        self.confirmButton = [
+            .title("title-confirm".localized),
+            .titleColor([ .normal(Colors.Button.Primary.text) ]),
+            .font(Typography.bodyMedium()),
+            .backgroundImage([
+                .normal("components/buttons/primary/bg"),
+                .highlighted("components/buttons/primary/bg-highlighted"),
+                .selected("components/buttons/primary/bg-highlighted"),
+                .disabled("components/buttons/primary/bg-disabled")
+            ])
+        ]
+        self.cancelButton = [
+            .title("title-cancel".localized),
+            .titleColor([ .normal(Colors.Button.Secondary.text) ]),
+            .font(Typography.bodyMedium()),
+            .backgroundImage([
+                .normal("components/buttons/secondary/bg"),
+                .highlighted("components/buttons/secondary/bg-highlighted"),
+                .selected("components/buttons/secondary/bg-highlighted"),
+                .disabled("components/buttons/secondary/bg-disabled")
+            ])
+        ]
+        self.buttonEdgeInsets = (16, 8, 16, 8)
+        self.buttonHorizontalPadding = 20
+        self.buttonBottomPadding = 12
         self.horizontalPadding = 24
         self.confirmButtonWidthMultiplier = 2
-        self.buttonHeight = 52
         self.bottomHeight = 109
         self.bottomViewBottomOffset = -35
         self.separator = Separator(color: Colors.Layer.grayLighter.uiColor, size: 1)

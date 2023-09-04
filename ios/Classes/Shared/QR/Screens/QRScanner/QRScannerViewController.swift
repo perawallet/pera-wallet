@@ -420,15 +420,18 @@ extension QRScannerViewController: WalletConnectorDelegate {
             ) as? WCConnectionScreen
             
             wcConnectionScreen?.eventHandler = {
-                [weak self] event in
-                guard let self = self else { return }
+                [weak self, weak wcConnectionScreen] event in
+                guard let self,
+                      let wcConnectionScreen else {
+                    return
+                }
                 
                 switch event {
                 case .performCancel:
-                    wcConnectionScreen?.dismissScreen()
+                    wcConnectionScreen.dismissScreen()
                     self.resetUIForScanning()
                 case .performConnect:
-                    wcConnectionScreen?.dismiss(animated: true) {
+                    wcConnectionScreen.dismiss(animated: true) {
                         [weak self] in
                         guard let self else { return }
 

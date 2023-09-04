@@ -17,16 +17,17 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonURLImage
 
 final class WCTransactionFullDappDetailView: View {
     weak var delegate: WCTransactionFullDappDetailViewDelegate?
 
     private lazy var titleLabel = UILabel()
-    private lazy var imageView = UIImageView()
+    private lazy var imageView = URLImageView()
     private lazy var descriptionLabel = UILabel()
     private lazy var verticalStackView = UIStackView()
-    private lazy var primaryActionButton = Button()
-    private lazy var secondaryActionButton = Button()
+    private lazy var primaryActionButton = MacaroonUIKit.Button()
+    private lazy var secondaryActionButton = MacaroonUIKit.Button()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -54,11 +55,14 @@ final class WCTransactionFullDappDetailView: View {
 
 extension WCTransactionFullDappDetailView {
     private func addImageView(_ theme: WCTransactionFullDappDetailViewTheme) {
+        imageView.build(theme.image)
+        imageView.draw(corner: theme.imageCorner)
+
         addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.topInset)
-            $0.size.equalTo(CGSize(width: 48, height: 48))
+            $0.fitToSize(theme.imageSize)
         }
     }
 
@@ -68,7 +72,7 @@ extension WCTransactionFullDappDetailView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.titleLeadingInset)
-            $0.top.equalTo(imageView.snp.top).offset(theme.titleTopInset)
+            $0.centerY == imageView
             $0.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
@@ -99,7 +103,8 @@ extension WCTransactionFullDappDetailView {
     }
 
     private func addPrimaryActionButton(_ theme: WCTransactionFullDappDetailViewTheme) {
-        primaryActionButton.customize(theme.mainButtonTheme)
+        primaryActionButton.customizeAppearance(theme.primaryAction)
+        primaryActionButton.contentEdgeInsets = UIEdgeInsets(theme.primaryActionEdgeInsets)
 
         primaryActionButton.fitToVerticalIntrinsicSize()
         verticalStackView.addArrangedSubview(primaryActionButton)
@@ -111,7 +116,7 @@ extension WCTransactionFullDappDetailView {
         titleLabel.text = configurator?.title
         descriptionLabel.text = configurator?.description
         imageView.load(from: configurator?.image)
-        primaryActionButton.bindData(ButtonCommonViewModel(title: configurator?.primaryActionButtonTitle))
+        primaryActionButton.setTitle(configurator?.primaryActionButtonTitle, for: .normal)
     }
 }
 
