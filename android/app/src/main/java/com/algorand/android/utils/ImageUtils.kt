@@ -57,7 +57,7 @@ fun ImageView.loadPeerMetaIcon(url: String?) {
             override fun onLoadFailed(
                 e: GlideException?,
                 model: Any?,
-                target: Target<Drawable>?,
+                target: Target<Drawable>,
                 isFirstResource: Boolean
             ): Boolean {
                 val errorDrawable = AppCompatResources.getDrawable(context, getRandomPeerMetaIconResId())
@@ -66,10 +66,10 @@ fun ImageView.loadPeerMetaIcon(url: String?) {
             }
 
             override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
+                resource: Drawable,
+                model: Any,
                 target: Target<Drawable>?,
-                dataSource: DataSource?,
+                dataSource: DataSource,
                 isFirstResource: Boolean
             ): Boolean {
                 return false
@@ -93,7 +93,7 @@ fun Context.loadImage(uri: String, onResourceReady: (Drawable) -> Unit, onLoadFa
             override fun onLoadFailed(
                 e: GlideException?,
                 model: Any?,
-                target: Target<Drawable>?,
+                target: Target<Drawable>,
                 isFirstResource: Boolean
             ): Boolean {
                 onLoadFailed?.invoke()
@@ -101,10 +101,10 @@ fun Context.loadImage(uri: String, onResourceReady: (Drawable) -> Unit, onLoadFa
             }
 
             override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
+                resource: Drawable,
+                model: Any,
                 target: Target<Drawable>?,
-                dataSource: DataSource?,
+                dataSource: DataSource,
                 isFirstResource: Boolean
             ): Boolean {
                 if (resource != null) {
@@ -132,7 +132,7 @@ fun Context.loadImageWithCachedFirst(
             override fun onLoadFailed(
                 e: GlideException?,
                 model: Any?,
-                target: Target<Drawable>?,
+                target: Target<Drawable>,
                 isFirstResource: Boolean
             ): Boolean {
                 onLoadFailed?.invoke()
@@ -140,10 +140,10 @@ fun Context.loadImageWithCachedFirst(
             }
 
             override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
+                resource: Drawable,
+                model: Any,
                 target: Target<Drawable>?,
-                dataSource: DataSource?,
+                dataSource: DataSource,
                 isFirstResource: Boolean
             ): Boolean {
                 if (resource != null) {
@@ -191,7 +191,7 @@ fun ImageView.loadImage(
                 override fun onLoadFailed(
                     e: GlideException?,
                     model: Any?,
-                    target: Target<Drawable>?,
+                    target: Target<Drawable>,
                     isFirstResource: Boolean
                 ): Boolean {
                     onLoadFailed.invoke(placeHolder)

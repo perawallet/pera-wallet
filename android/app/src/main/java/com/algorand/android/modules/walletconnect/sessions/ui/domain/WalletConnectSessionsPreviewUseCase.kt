@@ -54,7 +54,8 @@ class WalletConnectSessionsPreviewUseCase @Inject constructor(
         killAllWalletConnectSessionsUseCase()
     }
 
-    fun getWalletConnectSessionsPreviewFlow(): Flow<WalletConnectSessionsPreview> {
+    suspend fun getWalletConnectSessionsPreviewFlow(): Flow<WalletConnectSessionsPreview> {
+        walletConnectManager.updateLocalSessionsFlow()
         return walletConnectManager.localSessionsFlow.map {
             val walletConnectSessionList = createWalletConnectSessionList(it)
             walletConnectSessionsPreviewMapper.mapToWalletConnectSessionsPreview(

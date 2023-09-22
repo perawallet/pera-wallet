@@ -123,14 +123,6 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
         accountAssetsAdapter.submitList(accountDetailItemList.orEmpty())
     }
 
-    private val floatingActionButtonVisibilityCollector: suspend (Boolean?) -> Unit = { isVisible ->
-        if (isVisible == true) {
-            recyclerViewPositionVisibilityHandler.addOnScrollListener(binding.accountAssetsRecyclerView)
-        } else {
-            recyclerViewPositionVisibilityHandler.removeOnScrollListener(binding.accountAssetsRecyclerView)
-        }
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = parentFragment as? Listener
@@ -149,14 +141,19 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
     }
 
     private fun initUi() {
-        binding.accountAssetsRecyclerView.adapter = accountAssetsAdapter
-        binding.accountAssetsRecyclerView.addCustomDivider(
-            drawableResId = R.drawable.horizontal_divider_80_24dp,
-            showLast = false,
-            divider = ExcludedViewTypesDividerItemDecoration(AccountDetailAssetsItem.excludedItemFromDivider)
-        )
+        binding.accountAssetsRecyclerView.apply {
+            recyclerViewPositionVisibilityHandler.addOnScrollListener(this)
+            adapter = accountAssetsAdapter
+            addCustomDivider(
+                drawableResId = R.drawable.horizontal_divider_80_24dp,
+                showLast = false,
+                divider = ExcludedViewTypesDividerItemDecoration(AccountDetailAssetsItem.excludedItemFromDivider)
+            )
+        }
         binding.accountQuickActionsFloatingActionButton.setOnClickListener {
-            listener?.onAccountQuickActionsFloatingActionButtonClicked()
+            accountAssetsViewModel.isWatchAccount?.let { isWatchAccount ->
+                listener?.onAccountQuickActionsFloatingActionButtonClicked(isWatchAccount)
+            }
         }
     }
 
@@ -165,10 +162,6 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
             collectLatestOnLifecycle(
                 flow = map { it?.accountDetailAssetsItemList },
                 collection = accountAssetsCollector
-            )
-            collectLatestOnLifecycle(
-                flow = map { it?.isFloatingActionButtonVisible },
-                collection = floatingActionButtonVisibilityCollector
             )
         }
     }
@@ -184,7 +177,7 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
         fun onSwapClick()
         fun onMoreClick()
         fun onManageAssetsClick()
-        fun onAccountQuickActionsFloatingActionButtonClicked()
+        fun onAccountQuickActionsFloatingActionButtonClicked(isWatchAccount: Boolean)
         fun onMinimumBalanceInfoClick()
         fun onCopyAddressClick()
         fun onShowAddressClick()

@@ -22,7 +22,6 @@ import com.algorand.android.modules.accountdetail.assets.ui.model.AccountAssetsP
 import com.algorand.android.modules.tracking.accountdetail.accountassets.AccountAssetsFragmentEventTracker
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +31,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class AccountAssetsViewModel @Inject constructor(
@@ -44,6 +44,9 @@ class AccountAssetsViewModel @Inject constructor(
 
     val accountAssetsFlow: StateFlow<AccountAssetsPreview?> get() = _accountAssetsFlow
     private val _accountAssetsFlow = MutableStateFlow<AccountAssetsPreview?>(null)
+
+    val isWatchAccount: Boolean?
+        get() = _accountAssetsFlow.value?.isWatchAccount
 
     private val searchQueryFlow = MutableStateFlow("")
 

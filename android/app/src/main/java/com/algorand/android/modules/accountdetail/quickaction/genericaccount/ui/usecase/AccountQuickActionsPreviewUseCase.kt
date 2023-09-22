@@ -10,15 +10,15 @@
  * limitations under the License
  */
 
-package com.algorand.android.modules.accountdetail.quickaction.ui.usecase
+package com.algorand.android.modules.accountdetail.quickaction.genericaccount.ui.usecase
 
 import androidx.navigation.NavDirections
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.models.AssetTransaction
-import com.algorand.android.modules.accountdetail.quickaction.AccountQuickActionsBottomSheetDirections
-import com.algorand.android.modules.accountdetail.quickaction.ui.mapper.AccountQuickActionsPreviewMapper
-import com.algorand.android.modules.accountdetail.quickaction.ui.model.AccountQuickActionsPreview
+import com.algorand.android.modules.accountdetail.quickaction.genericaccount.AccountQuickActionsBottomSheetDirections
+import com.algorand.android.modules.accountdetail.quickaction.genericaccount.ui.mapper.AccountQuickActionsPreviewMapper
+import com.algorand.android.modules.accountdetail.quickaction.genericaccount.ui.model.AccountQuickActionsPreview
 import com.algorand.android.modules.accountstatehelper.domain.usecase.AccountStateHelperUseCase
 import com.algorand.android.modules.swap.utils.SwapNavigationDestinationHelper
 import com.algorand.android.utils.Event

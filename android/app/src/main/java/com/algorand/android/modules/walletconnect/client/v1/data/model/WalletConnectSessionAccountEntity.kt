@@ -15,7 +15,7 @@ package com.algorand.android.modules.walletconnect.client.v1.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.ForeignKey.CASCADE
+import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionAccountEntity.Companion.WALLET_CONNECT_SESSION_ACCOUNT_TABLE_SESSION_ID_COLUMN_NAME
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionEntity.Companion.WALLET_CONNECT_SESSION_TABLE_SESSION_ID_COLUMN_NAME

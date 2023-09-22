@@ -1,4 +1,3 @@
-@file:Suppress("MagicNumber")
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,10 +10,12 @@
  * limitations under the License
  */
 
-package com.algorand.android.modules.walletconnect.client.v1.model
+package com.algorand.android.modules.accountdetail.quickaction.genericaccount.ui.model
 
-enum class WalletConnectV1ChainIdentifier(val id: Long) {
-    MAINNET(416001L),
-    TESTNET(416002L),
-    MAINNET_BACKWARD_SUPPORTABILITY(4160L)
-}
+import androidx.navigation.NavDirections
+import com.algorand.android.utils.Event
+
+data class AccountQuickActionsPreview(
+    val onNavigationEvent: Event<NavDirections>?,
+    val showGlobalErrorEvent: Event<Int>?
+)

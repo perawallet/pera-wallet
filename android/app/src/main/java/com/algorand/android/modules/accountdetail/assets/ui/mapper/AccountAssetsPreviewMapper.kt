@@ -20,11 +20,11 @@ class AccountAssetsPreviewMapper @Inject constructor() {
 
     fun mapToAccountAssetsPreview(
         accountDetailAssetsItemList: List<AccountDetailAssetsItem>,
-        isFloatingActionButtonVisible: Boolean
+        isWatchAccount: Boolean
     ): AccountAssetsPreview {
         return AccountAssetsPreview(
             accountDetailAssetsItemList = accountDetailAssetsItemList,
-            isFloatingActionButtonVisible = isFloatingActionButtonVisible
+            isWatchAccount = isWatchAccount
         )
     }
 }

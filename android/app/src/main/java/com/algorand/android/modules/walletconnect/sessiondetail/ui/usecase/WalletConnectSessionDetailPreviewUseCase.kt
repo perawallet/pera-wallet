@@ -91,7 +91,7 @@ class WalletConnectSessionDetailPreviewUseCase @Inject constructor(
             sessionDetailPreviewMapper.mapToDappMetaData(
                 name = name,
                 url = url,
-                imageUrl = icons?.first(),
+                imageUrl = icons?.firstOrNull(),
                 description = description,
                 isDescriptionVisible = !description.isNullOrBlank()
             )

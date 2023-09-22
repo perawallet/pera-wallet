@@ -19,11 +19,9 @@ import javax.inject.Inject
 class ConnectedAccountNodeTextColorDecider @Inject constructor() {
 
     fun decideTextColor(chainIdentifier: WalletConnect.ChainIdentifier): Int {
-        // TODO Change Betanet when design is updated
         return when (chainIdentifier) {
             WalletConnect.ChainIdentifier.MAINNET -> R.color.positive
             WalletConnect.ChainIdentifier.TESTNET -> R.color.connected_node_testnet_text_color
-            WalletConnect.ChainIdentifier.BETANET -> R.color.text_gray
             WalletConnect.ChainIdentifier.UNKNOWN -> R.color.text_gray
         }
     }

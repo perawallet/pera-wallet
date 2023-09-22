@@ -36,7 +36,6 @@ import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.notification.NotificationPermissionManager
 import com.algorand.android.notification.PeraNotificationManager
 import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.utils.BETANET_NETWORK_SLUG
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import com.algorand.android.utils.coremanager.AccountDetailCacheManager
 import com.algorand.android.utils.coremanager.AssetCacheManager
@@ -110,7 +109,7 @@ abstract class CoreMainActivity : BaseActivity() {
         }
     }
 
-    private var isConnectedToTestNetOrBetaNet: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
+    private var isConnectedToTestNet: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
         if (oldValue != newValue) {
             handleStatusBarChanges(statusBarConfiguration)
             handleBottomBarNavigationForChosenNetwork()
@@ -160,7 +159,7 @@ abstract class CoreMainActivity : BaseActivity() {
 
     private fun handleStatusBarChanges(statusBarConfiguration: StatusBarConfiguration) {
         val intendedStatusBarColor =
-            if (statusBarConfiguration.showNodeStatus && isConnectedToTestNetOrBetaNet) {
+            if (statusBarConfiguration.showNodeStatus && isConnectedToTestNet) {
                 R.color.testnet_bg
             } else {
                 statusBarConfiguration.backgroundColor
@@ -172,7 +171,7 @@ abstract class CoreMainActivity : BaseActivity() {
     fun handleBottomBarNavigationForChosenNetwork() {
         binding.bottomNavigationView.menu.forEach { menuItem ->
             if (menuItem.itemId == R.id.discoverNavigation) {
-                menuItem.isEnabled = isConnectedToTestNetOrBetaNet.not()
+                menuItem.isEnabled = isConnectedToTestNet.not()
             }
         }
     }
@@ -190,10 +189,8 @@ abstract class CoreMainActivity : BaseActivity() {
         }
     }
 
-    fun checkIfConnectedToTestNetOrBetaNet(activeNode: Node?) {
-        isConnectedToTestNetOrBetaNet = with(activeNode?.networkSlug) {
-            this == TESTNET_NETWORK_SLUG || this == BETANET_NETWORK_SLUG
-        }
+    fun checkIfConnectedToTestNet(activeNode: Node?) {
+        isConnectedToTestNet = activeNode?.networkSlug == TESTNET_NETWORK_SLUG
     }
 
     fun navBack() {

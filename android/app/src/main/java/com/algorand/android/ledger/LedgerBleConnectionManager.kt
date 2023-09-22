@@ -66,7 +66,7 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager(appContext) {
             override fun initialize() {
                 beginAtomicRequestQueue()
                     .add(
-                        requestMtu(DEFAULT_MTU)
+                        requestMtu(GATT_MAX_MTU_SIZE)
                             .with { _, mtu -> log(Log.INFO, "MTU set to $mtu") }
                             .fail { _, status -> log(Log.WARN, "Requested MTU not supported: $status") }
                     )
@@ -348,7 +348,7 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager(appContext) {
 
         val SERVICE_UUID = UUID.fromString(SERVICE_KEY)
 
-        private const val DEFAULT_MTU = 23
+        private const val GATT_MAX_MTU_SIZE = 517
         private const val CONNECTION_TIMEOUT = 18000L
         private const val RETRY_COUNT = 0
         private const val RETRY_DELAY = 300

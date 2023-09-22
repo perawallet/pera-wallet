@@ -51,7 +51,9 @@ class AssetSwapAmountUpdatedPreviewUseCase @Inject constructor(
                         formattedApproximateValue = BigDecimal.ZERO
                             .formatAsCurrency(swapAppxValueParityHelper.getDisplayedCurrencySymbol())
                     ),
-                    isSwapButtonEnabled = false
+                    isSwapButtonEnabled = false,
+                    isLoadingVisible = false,
+                    errorEvent = null
                 )
                 emit(newState)
                 return@flow

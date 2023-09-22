@@ -27,6 +27,8 @@ import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.GetWa
 import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.GetWalletConnectSessionsOrderedByCreationUseCase
 import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.GetWalletConnectV1SessionCountUseCase
 import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.InsertWalletConnectV1SessionToDBUseCase
+import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.WalletConnectV1SessionRequestIdValidationUseCase
+import com.algorand.android.modules.walletconnect.client.v1.domain.usecase.WalletConnectV1TransactionRequestIdValidationUseCase
 import com.algorand.android.modules.walletconnect.client.v1.mapper.WalletConnectClientV1Mapper
 import com.algorand.android.modules.walletconnect.client.v1.retrycount.WalletConnectV1SessionRetryCounter
 import com.algorand.android.modules.walletconnect.client.v1.session.WalletConnectSessionBuilder
@@ -48,11 +50,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import org.walletconnect.impls.FileWCSessionStore
 import java.io.File
 import javax.inject.Named
 import javax.inject.Singleton
-import okhttp3.OkHttpClient
-import org.walletconnect.impls.FileWCSessionStore
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -80,7 +82,9 @@ object WalletConnectV1ClientModule {
         deleteWalletConnectAccountBySessionUseCase: DeleteWalletConnectAccountBySessionUseCase,
         getWalletConnectSessionsOrderedByCreationUseCase: GetWalletConnectSessionsOrderedByCreationUseCase,
         getWalletConnectV1SessionCountUseCase: GetWalletConnectV1SessionCountUseCase,
-        walletConnectV1SessionRetryCounter: WalletConnectV1SessionRetryCounter
+        walletConnectV1SessionRetryCounter: WalletConnectV1SessionRetryCounter,
+        sessionRequestIdValidationUseCase: WalletConnectV1SessionRequestIdValidationUseCase,
+        transactionRequestIdValidationUseCase: WalletConnectV1TransactionRequestIdValidationUseCase
     ): WalletConnectClient {
         return WalletConnectClientV1Impl(
             sessionBuilder = sessionBuilder,
@@ -99,7 +103,9 @@ object WalletConnectV1ClientModule {
             deleteWalletConnectAccountBySessionUseCase = deleteWalletConnectAccountBySessionUseCase,
             getWalletConnectSessionsOrderedByCreationUseCase = getWalletConnectSessionsOrderedByCreationUseCase,
             getWalletConnectV1SessionCountUseCase = getWalletConnectV1SessionCountUseCase,
-            walletConnectSessionRetryCounter = walletConnectV1SessionRetryCounter
+            walletConnectSessionRetryCounter = walletConnectV1SessionRetryCounter,
+            sessionRequestIdValidationUseCase = sessionRequestIdValidationUseCase,
+            transactionRequestIdValidationUseCase = transactionRequestIdValidationUseCase
         )
     }
 

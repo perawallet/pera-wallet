@@ -55,7 +55,6 @@ class CreateWalletConnectSessionNamespaceUseCase @Inject constructor(
                 listOf(
                     decideChainIdentifier(WalletConnectV1ChainIdentifier.MAINNET.id),
                     decideChainIdentifier(WalletConnectV1ChainIdentifier.TESTNET.id),
-                    decideChainIdentifier(WalletConnectV1ChainIdentifier.BETANET.id)
                 )
             } else {
                 listOf(decideChainIdentifier(chainId))

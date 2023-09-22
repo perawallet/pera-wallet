@@ -19,6 +19,8 @@ import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.Wall
 import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionWithAccountsAddressesDtoMapper
 import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectSessionAccountEntityMapper
 import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectSessionEntityMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectV1SessionRequestIdEntityMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectV1TransactionRequestIdEntityMapper
 import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionAccountDto
 import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionByAccountsAddressDto
 import com.algorand.android.modules.walletconnect.client.v1.domain.model.WalletConnectSessionDto
@@ -34,7 +36,9 @@ class WalletConnectV1RepositoryImpl constructor(
     private val sessionDtoMapper: WalletConnectSessionDtoMapper,
     private val sessionEntityMapper: WalletConnectSessionEntityMapper,
     private val sessionByAccountsAddressDtoMapper: WalletConnectSessionByAccountsAddressDtoMapper,
-    private val sessionWithAccountsAddressesDtoMapper: WalletConnectSessionWithAccountsAddressesDtoMapper
+    private val sessionWithAccountsAddressesDtoMapper: WalletConnectSessionWithAccountsAddressesDtoMapper,
+    private val sessionRequestIdEntityMapper: WalletConnectV1SessionRequestIdEntityMapper,
+    private val transactionRequestIdEntityMapper: WalletConnectV1TransactionRequestIdEntityMapper
 ) : WalletConnectRepository {
 
     override suspend fun getAllDisconnectedSessions(): List<WalletConnectSessionDto> {
@@ -119,5 +123,23 @@ class WalletConnectV1RepositoryImpl constructor(
 
     override suspend fun getWalletConnectSessionCount(): Int {
         return walletConnectDao.getWalletConnectSessionCount()
+    }
+
+    override suspend fun isSessionRequestIdExist(requestId: Long): Boolean {
+        return walletConnectDao.isSessionRequestIdExist(requestId)
+    }
+
+    override suspend fun isTransactionRequestIdExist(requestId: Long): Boolean {
+        return walletConnectDao.isTransactionRequestIdExist(requestId)
+    }
+
+    override suspend fun setSessionRequestId(requestId: Long, timestampAsSec: Long) {
+        val sessionRequestIdEntity = sessionRequestIdEntityMapper.mapToEntity(requestId, timestampAsSec)
+        walletConnectDao.insertWalletConnectSessionRequestId(sessionRequestIdEntity)
+    }
+
+    override suspend fun setTransactionRequestId(requestId: Long, timestampAsSec: Long) {
+        val transactionRequestIdEntity = transactionRequestIdEntityMapper.mapToEntity(requestId, timestampAsSec)
+        walletConnectDao.insertWalletConnectTransactionRequestId(transactionRequestIdEntity)
     }
 }

@@ -31,7 +31,6 @@ interface WalletConnect {
     enum class ChainIdentifier {
         MAINNET,
         TESTNET,
-        BETANET,
         UNKNOWN
     }
 

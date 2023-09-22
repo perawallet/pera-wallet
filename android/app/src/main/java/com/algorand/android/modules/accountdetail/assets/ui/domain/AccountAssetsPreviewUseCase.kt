@@ -108,7 +108,7 @@ class AccountAssetsPreviewUseCase @Inject constructor(
             }
             accountAssetsPreviewMapper.mapToAccountAssetsPreview(
                 accountDetailAssetsItemList = accountDetailAssetsItemList,
-                isFloatingActionButtonVisible = !isWatchAccount
+                isWatchAccount = isWatchAccount
             )
         }
     }

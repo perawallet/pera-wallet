@@ -63,6 +63,7 @@ class WalletConnectV1SessionCachedData(
             is Session.Status.Connected -> callback?.onSessionConnected(this, status.clientId)
             is Session.Status.Disconnected -> callback?.onSessionDisconnected(this, status.isSessionDeletionNeeded)
             is Session.Status.Approved -> callback?.onSessionApproved(this, status.clientId)
+            is Session.Status.Closed -> callback?.onSessionKilled(this)
             is Session.Status.Error -> callback?.onSessionError(this, status)
             else -> {
                 sendErrorLog("Unhandled else case in WalletConnectSessionCachedData")

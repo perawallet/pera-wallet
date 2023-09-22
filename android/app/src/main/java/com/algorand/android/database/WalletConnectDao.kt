@@ -21,7 +21,9 @@ import androidx.room.Transaction
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionAccountEntity
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionByAccountsAddress
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionEntity
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectV1SessionRequestIdEntity
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionWithAccountsAddresses
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectV1TransactionRequestIdEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -42,6 +44,12 @@ interface WalletConnectDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWalletConnectSessionAccount(walletConnectSessionAccountEntity: WalletConnectSessionAccountEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWalletConnectSessionRequestId(entity: WalletConnectV1SessionRequestIdEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWalletConnectTransactionRequestId(entity: WalletConnectV1TransactionRequestIdEntity)
 
     @Query("SELECT * FROM WalletConnectSessionEntity WHERE id = :sessionId")
     suspend fun getSessionById(sessionId: Long): WalletConnectSessionEntity?
@@ -87,4 +95,10 @@ interface WalletConnectDao {
 
     @Query("SELECT COUNT(*) FROM WalletConnectSessionEntity")
     suspend fun getWalletConnectSessionCount(): Int
+
+    @Query("SELECT EXISTS(SELECT * FROM WalletConnectV1SessionRequestIdEntity WHERE id = :id)")
+    suspend fun isSessionRequestIdExist(id: Long): Boolean
+
+    @Query("SELECT EXISTS(SELECT * FROM WalletConnectV1TransactionRequestIdEntity WHERE id = :id)")
+    suspend fun isTransactionRequestIdExist(id: Long): Boolean
 }

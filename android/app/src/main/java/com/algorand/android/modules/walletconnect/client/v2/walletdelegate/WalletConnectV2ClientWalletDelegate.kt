@@ -51,7 +51,10 @@ class WalletConnectV2ClientWalletDelegate @Inject constructor(
         walletDelegateListener?.onSessionDelete(sessionDelete)
     }
 
-    override fun onSessionProposal(sessionProposal: Sign.Model.SessionProposal) {
+    override fun onSessionProposal(
+        sessionProposal: Sign.Model.SessionProposal,
+        verifyContext: Sign.Model.VerifyContext
+    ) {
         coroutineScope.launchIO {
             val namespaces = createProposalNamespacesUseCase(sessionProposal)
             val fallbackBrowserUrl = getLaunchBackBrowserGroupUseCase(sessionProposal.pairingTopic)
@@ -66,7 +69,7 @@ class WalletConnectV2ClientWalletDelegate @Inject constructor(
         walletDelegateListener?.onSessionUpdate(sessionUpdate)
     }
 
-    override fun onSessionRequest(sessionRequest: Sign.Model.SessionRequest) {
+    override fun onSessionRequest(sessionRequest: Sign.Model.SessionRequest, verifyContext: Sign.Model.VerifyContext) {
         val sessionPeerMeta = sessionRequest.peerMetaData
         if (sessionPeerMeta != null) {
             val peerMeta = walletDelegateMapperFacade.mapToPeerMeta(sessionPeerMeta)
@@ -85,6 +88,7 @@ class WalletConnectV2ClientWalletDelegate @Inject constructor(
                     onSessionSettleResponseSuccess(settleSessionResponse, sessionPeerMeta)
                 }
             }
+
             is Sign.Model.SettledSessionResponse.Error -> {
                 val sessionSettleError = walletDelegateMapperFacade.mapToSessionSettleError(settleSessionResponse)
                 walletDelegateListener?.onSessionSettleFail(sessionSettleError)

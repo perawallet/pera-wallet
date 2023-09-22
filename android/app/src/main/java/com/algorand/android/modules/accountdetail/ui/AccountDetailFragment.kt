@@ -187,8 +187,15 @@ class AccountDetailFragment :
         navToManageAssetsFragment()
     }
 
-    override fun onAccountQuickActionsFloatingActionButtonClicked() {
-        nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToAccountQuickActionsBottomSheet(args.publicKey))
+    override fun onAccountQuickActionsFloatingActionButtonClicked(isWatchAccount: Boolean) {
+        val navigationDestination = with(AccountDetailFragmentDirections) {
+            if (isWatchAccount) {
+                actionAccountDetailFragmentToWatchAccountQuickActionsBottomSheet(args.publicKey)
+            } else {
+                actionAccountDetailFragmentToAccountQuickActionsBottomSheet(args.publicKey)
+            }
+        }
+        nav(navigationDestination)
     }
 
     override fun onMinimumBalanceInfoClick() {

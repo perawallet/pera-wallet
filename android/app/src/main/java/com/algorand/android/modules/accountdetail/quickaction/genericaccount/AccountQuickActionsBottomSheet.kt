@@ -10,7 +10,7 @@
  * limitations under the License
  */
 
-package com.algorand.android.modules.accountdetail.quickaction
+package com.algorand.android.modules.accountdetail.quickaction.genericaccount
 
 import android.os.Bundle
 import android.view.View

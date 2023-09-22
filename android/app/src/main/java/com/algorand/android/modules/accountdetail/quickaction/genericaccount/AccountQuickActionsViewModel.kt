@@ -10,13 +10,13 @@
  * limitations under the License
  */
 
-package com.algorand.android.modules.accountdetail.quickaction
+package com.algorand.android.modules.accountdetail.quickaction.genericaccount
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.modules.accountdetail.quickaction.ui.model.AccountQuickActionsPreview
-import com.algorand.android.modules.accountdetail.quickaction.ui.usecase.AccountQuickActionsPreviewUseCase
+import com.algorand.android.modules.accountdetail.quickaction.genericaccount.ui.model.AccountQuickActionsPreview
+import com.algorand.android.modules.accountdetail.quickaction.genericaccount.ui.usecase.AccountQuickActionsPreviewUseCase
 import com.algorand.android.utils.getOrThrow
 import com.algorand.android.utils.launchIO
 import dagger.hilt.android.lifecycle.HiltViewModel

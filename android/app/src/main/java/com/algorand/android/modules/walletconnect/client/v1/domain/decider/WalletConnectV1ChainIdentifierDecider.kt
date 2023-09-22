@@ -23,7 +23,6 @@ class WalletConnectV1ChainIdentifierDecider @Inject constructor() {
         return when (chainId) {
             WalletConnectV1ChainIdentifier.MAINNET.id -> WalletConnect.ChainIdentifier.MAINNET
             WalletConnectV1ChainIdentifier.TESTNET.id -> WalletConnect.ChainIdentifier.TESTNET
-            WalletConnectV1ChainIdentifier.BETANET.id -> WalletConnect.ChainIdentifier.BETANET
             WalletConnectV1ChainIdentifier.MAINNET_BACKWARD_SUPPORTABILITY.id -> WalletConnect.ChainIdentifier.MAINNET
             else -> WalletConnect.ChainIdentifier.UNKNOWN
         }
@@ -33,7 +32,6 @@ class WalletConnectV1ChainIdentifierDecider @Inject constructor() {
         return when (chainIdentifier) {
             WalletConnect.ChainIdentifier.MAINNET -> WalletConnectV1ChainIdentifier.MAINNET.id
             WalletConnect.ChainIdentifier.TESTNET -> WalletConnectV1ChainIdentifier.TESTNET.id
-            WalletConnect.ChainIdentifier.BETANET -> WalletConnectV1ChainIdentifier.BETANET.id
             WalletConnect.ChainIdentifier.UNKNOWN -> WalletConnectV1ChainIdentifier.MAINNET.id
         }
     }

@@ -17,4 +17,6 @@ sealed class FirebaseTokenResult {
     object TokenLoading : FirebaseTokenResult()
 
     object TokenLoaded : FirebaseTokenResult()
+
+    object TokenFailed : FirebaseTokenResult()
 }

@@ -9,8 +9,10 @@
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:clipToPadding="false"
         android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingBottom="@dimen/spacing_normal"
+        app:layout_constraintBottom_toTopOf="@id/recoverButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,8 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_xxxsmall"
-            android:orientation="vertical"
-            android:paddingBottom="130dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/recoverPassphraseTitle"

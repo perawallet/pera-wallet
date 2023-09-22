@@ -19,7 +19,6 @@ import com.algorand.android.utils.preference.getDefaultNodeListVersion
 import com.algorand.android.utils.preference.setNodeListVersion
 
 const val TESTNET_NETWORK_SLUG = "testnet"
-const val BETANET_NETWORK_SLUG = "betanet"
 const val MAINNET_NETWORK_SLUG = "mainnet"
 
 suspend fun findAllNodes(

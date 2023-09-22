@@ -10,45 +10,43 @@ ext {
     ]
 
     libVersions = [
-            coroutines      : '1.6.4',
-            material        : '1.6.1',
-            appCompat       : '1.4.2',
+            coroutines      : '1.7.3',
+            material        : '1.9.0',
+            appCompat       : '1.6.1',
             legacySupport   : '1.0.0',
-            lifecycle       : '2.5.1',
+            lifecycle       : '2.6.1',
             lifecycleExt    : '2.2.0',
             constraintLayout: '2.1.4',
-            fragment        : '1.5.2',
-            coreKtx         : '1.8.0',
-            navigation      : '2.5.3',
-            paging          : '3.1.1',
+            fragment        : '1.6.1',
+            coreKtx         : '1.10.1',
+            navigation      : '2.6.0',
+            paging          : '3.2.0',
             retrofit        : '2.9.0',
             okhttp          : '4.10.0',
             hiltCompiler    : '1.0.0',
             biometric       : '1.1.0',
             flexbox         : '2.0.1',
             zxing           : '4.3.0',
-            room            : '2.4.3',
-            glide           : '4.13.2',
+            room            : '2.5.2',
+            glide           : '4.16.0',
             multidex        : '2.0.1',
-            tink            : '1.7.0',
+            tink            : '1.10.0',
             mpChart         : '3.1.0',
-            browser         : '1.4.0',
+            browser         : '1.5.0',
             playcore        : '1.10.3',
-            ble             : '2.6.0',
-            lottie          : '5.2.0',
-            // TODO update desugar to 1.2.0 once gradle plugin 7.3.0 is stable
-            desugar         : '1.1.5',
+            ble             : '2.6.1',
+            lottie          : '6.1.0',
+            desugar         : '2.0.3',
             localization    : '1.2.11',
             hipoexceptions  : '1.0.0',
             mpAndroidChart  : '3.1.0',
-            walletConnect   : '0.9.6',
-            javaWebSocket   : '1.5.3',
+            javaWebSocket   : '1.5.4',
             khex            : '1.1.2',
-            moshi           : '1.14.0',
-            walletConnectBom: '1.6.1',
-            exoPlayer       : '2.18.1',
-            firebaseBom     : '30.4.0',
-            algoSdk         : '1.19.0'
+            moshi           : '1.15.0',
+            walletConnectBom: '1.15.0',
+            exoPlayer       : '2.19.0',
+            firebaseBom     : '32.2.2',
+            algoSdk         : '2.2.0'
     ]
 
     discoverVersions = [
@@ -58,7 +56,7 @@ ext {
 
     testLibVersions = [
             junit   : '4.13.2',
-            runner  : '1.4.0',
-            espresso: '3.4.0'
+            runner  : '1.5.2',
+            espresso: '3.5.1'
     ]
 }

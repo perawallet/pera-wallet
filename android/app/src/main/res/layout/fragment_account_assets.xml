@@ -12,7 +12,7 @@
   -->
 
 
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.algorand.android.customviews.ProgressSaverMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/accountAssetsMotionLayout"
     android:layout_width="match_parent"
@@ -44,4 +44,4 @@
         app:srcCompat="@drawable/ic_quick_actions"
         app:tint="@color/button_primary_text" />
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+</com.algorand.android.customviews.ProgressSaverMotionLayout>

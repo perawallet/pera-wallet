@@ -548,7 +548,7 @@ class WalletConnectManager @Inject constructor(
         walletConnectClientManager.setSessionRetryCount(sessionIdentifier, increasedRetryCount)
     }
 
-    private suspend fun updateLocalSessionsFlow() {
+    suspend fun updateLocalSessionsFlow() {
         _localSessionsFlow.value = walletConnectClientManager.getAllWalletConnectSessions()
     }
 

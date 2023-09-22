@@ -24,7 +24,6 @@ class WalletConnectNetworkItemDecider @Inject constructor() {
         return when (chainIdentifier) {
             WalletConnect.ChainIdentifier.MAINNET -> R.color.positive
             WalletConnect.ChainIdentifier.TESTNET -> R.color.yellow_600
-            WalletConnect.ChainIdentifier.BETANET -> R.color.yellow_600
             WalletConnect.ChainIdentifier.UNKNOWN -> R.color.yellow_600
         }
     }

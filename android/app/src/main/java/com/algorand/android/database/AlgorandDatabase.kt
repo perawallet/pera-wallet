@@ -23,6 +23,8 @@ import com.algorand.android.models.NotificationFilter
 import com.algorand.android.models.User
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionAccountEntity
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionEntity
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectV1SessionRequestIdEntity
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectV1TransactionRequestIdEntity
 
 @Suppress("MagicNumber", "MaxLineLength")
 @Database(
@@ -31,7 +33,9 @@ import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletCon
         Node::class,
         NotificationFilter::class,
         WalletConnectSessionEntity::class,
-        WalletConnectSessionAccountEntity::class
+        WalletConnectSessionAccountEntity::class,
+        WalletConnectV1SessionRequestIdEntity::class,
+        WalletConnectV1TransactionRequestIdEntity::class
     ],
     version = LATEST_DB_VERSION,
     exportSchema = true
@@ -44,7 +48,7 @@ abstract class AlgorandDatabase : RoomDatabase() {
     abstract fun walletConnect(): WalletConnectDao
 
     companion object {
-        const val LATEST_DB_VERSION = 11
+        const val LATEST_DB_VERSION = 12
 
         val MIGRATION_3_4 = object : Migration(3, 4) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -183,6 +187,29 @@ abstract class AlgorandDatabase : RoomDatabase() {
         val MIGRATION_10_11 = object : Migration(10, 11) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE WalletConnectSessionEntity ADD COLUMN is_subscribed INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+
+        val MIGRATION_11_12 = object : Migration(11, 12) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    """
+                        CREATE TABLE IF NOT EXISTS WalletConnectV1SessionRequestIdEntity (
+                            id INTEGER NOT NULL,
+                            timestamp INTEGER NOT NULL,
+                            PRIMARY KEY(id)
+                        )
+                    """.trimIndent()
+                )
+                database.execSQL(
+                    """
+                        CREATE TABLE IF NOT EXISTS WalletConnectV1TransactionRequestIdEntity (
+                            id INTEGER NOT NULL,
+                            timestamp INTEGER NOT NULL,
+                            PRIMARY KEY(id)
+                        )
+                    """.trimIndent()
+                )
             }
         }
 

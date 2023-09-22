@@ -14,5 +14,5 @@ package com.algorand.android.modules.accountdetail.assets.ui.model
 
 data class AccountAssetsPreview(
     val accountDetailAssetsItemList: List<AccountDetailAssetsItem>,
-    val isFloatingActionButtonVisible: Boolean
+    val isWatchAccount: Boolean
 )

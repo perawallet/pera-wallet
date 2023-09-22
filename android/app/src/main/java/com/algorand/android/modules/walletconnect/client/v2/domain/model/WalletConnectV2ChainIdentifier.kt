@@ -15,6 +15,5 @@ package com.algorand.android.modules.walletconnect.client.v2.domain.model
 
 enum class WalletConnectV2ChainIdentifier(val id: String) {
     MAINNET("wGHE2Pwdvd7S12BL5FaOP20EGYesN73k"),
-    TESTNET("SGO1GKSzyE7IEPItTxCByw9x8FmnrCDe"),
-    BETANET("mFgazF-2uRS1tMiL9dsj01hJGySEmPN2")
+    TESTNET("SGO1GKSzyE7IEPItTxCByw9x8FmnrCDe")
 }

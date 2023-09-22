@@ -13,18 +13,18 @@
 package com.algorand.android.modules.notification.ui
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
-import com.algorand.android.modules.notification.domain.usecase.NotificationStatusUseCase
 import com.algorand.android.modules.notification.domain.pagination.NotificationDataSource
-import com.algorand.android.modules.notification.ui.usecase.NotificationCenterPreviewUseCase
+import com.algorand.android.modules.notification.domain.usecase.NotificationStatusUseCase
 import com.algorand.android.modules.notification.ui.model.NotificationCenterPreview
 import com.algorand.android.modules.notification.ui.model.NotificationListItem
+import com.algorand.android.modules.notification.ui.usecase.NotificationCenterPreviewUseCase
 import com.algorand.android.notification.PeraNotificationManager
 import com.algorand.android.repository.NotificationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -89,7 +89,7 @@ class NotificationCenterViewModel @Inject constructor(
 
     fun isRefreshNeededLiveData(): LiveData<Boolean> {
         var newNotificationCount = 0
-        return Transformations.map(peraNotificationManager.newNotificationLiveData) {
+        return peraNotificationManager.newNotificationLiveData.map {
             newNotificationCount++
             return@map newNotificationCount > 1
         }

@@ -14,7 +14,6 @@ package com.algorand.android.modules.walletconnect.domain.decider
 
 import com.algorand.android.models.Node
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
-import com.algorand.android.utils.BETANET_NETWORK_SLUG
 import com.algorand.android.utils.MAINNET_NETWORK_SLUG
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import javax.inject.Inject
@@ -25,7 +24,6 @@ class WalletConnectNodeChainIdentifierDecider @Inject constructor() {
         return when (node.networkSlug) {
             MAINNET_NETWORK_SLUG -> WalletConnect.ChainIdentifier.MAINNET
             TESTNET_NETWORK_SLUG -> WalletConnect.ChainIdentifier.TESTNET
-            BETANET_NETWORK_SLUG -> WalletConnect.ChainIdentifier.BETANET
             else -> WalletConnect.ChainIdentifier.UNKNOWN
         }
     }

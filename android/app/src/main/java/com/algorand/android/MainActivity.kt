@@ -379,7 +379,7 @@ class MainActivity :
     }
 
     private val activeNodeCollector: suspend (Node?) -> Unit = { activatedNode ->
-        checkIfConnectedToTestNetOrBetaNet(activatedNode)
+        checkIfConnectedToTestNet(activatedNode)
     }
 
     private val firebaseTokenResultCollector: suspend (FirebaseTokenResult) -> Unit = { firebaseTokenResult ->
@@ -387,6 +387,8 @@ class MainActivity :
             FirebaseTokenResult.TokenLoaded -> onNewNodeActivated()
             // TODO: do not show activity loading while token is loading
             FirebaseTokenResult.TokenLoading -> onNewNodeLoading()
+
+            FirebaseTokenResult.TokenFailed -> onNewTokenFailed()
         }
     }
 
@@ -653,6 +655,10 @@ class MainActivity :
 
     private fun onNewNodeLoading() {
         showProgress()
+    }
+
+    private fun onNewTokenFailed() {
+        hideProgress()
     }
 
     override fun onSessionRequestResult(wCSessionRequestResult: WCSessionRequestResult) {

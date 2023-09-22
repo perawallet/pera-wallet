@@ -15,11 +15,10 @@ package com.algorand.android.utils
 import com.algorand.android.BuildConfig
 import com.algorand.android.models.Node
 
-const val CURRENT_DEFAULT_NODE_LIST_VERSION = 27
+const val CURRENT_DEFAULT_NODE_LIST_VERSION = 28
 
 const val MAINNET_NODE_NAME = "Algorand MainNet Node"
 const val TESTNET_NODE_NAME = "TestNet"
-const val BETANET_NODE_NAME = "BetaNet"
 
 val mainNetNode = Node(
     name = MAINNET_NODE_NAME,
@@ -43,16 +42,4 @@ val testNetNode = Node(
     isAddedDefault = true,
     networkSlug = TESTNET_NETWORK_SLUG,
     mobileAlgorandAddress = BuildConfig.MOBILE_ALGORAND_TESTNET_BASE_URL
-)
-
-val betaNetNode = Node(
-    name = BETANET_NODE_NAME,
-    algodAddress = "https://node-betanet.chain.perawallet.app/",
-    algodApiKey = BuildConfig.ALGORAND_API_KEY,
-    indexerAddress = "https://indexer-betanet.chain.perawallet.app/",
-    indexerApiKey = BuildConfig.INDEXER_API_KEY,
-    isActive = false,
-    isAddedDefault = true,
-    networkSlug = BETANET_NETWORK_SLUG,
-    mobileAlgorandAddress = "https://betanet.staging.api.perawallet.app/"
 )

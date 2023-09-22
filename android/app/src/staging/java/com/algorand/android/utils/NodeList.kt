@@ -18,8 +18,5 @@ val defaultNodeList = listOf(
     ),
     mainNetNode.copy(
         isActive = false
-    ),
-    betaNetNode.copy(
-        isActive = false
     )
 )

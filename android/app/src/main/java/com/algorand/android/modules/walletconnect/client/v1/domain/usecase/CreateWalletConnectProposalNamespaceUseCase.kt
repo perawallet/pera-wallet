@@ -15,7 +15,6 @@ package com.algorand.android.modules.walletconnect.client.v1.domain.usecase
 import com.algorand.android.modules.walletconnect.client.v1.domain.decider.WalletConnectV1BlockchainDecider
 import com.algorand.android.modules.walletconnect.client.v1.domain.decider.WalletConnectV1ChainIdentifierDecider
 import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1ChainIdentifier
-import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1ChainIdentifier.BETANET
 import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1ChainIdentifier.MAINNET
 import com.algorand.android.modules.walletconnect.client.v1.model.WalletConnectV1ChainIdentifier.TESTNET
 import com.algorand.android.modules.walletconnect.client.v1.utils.WalletConnectClientV1Utils
@@ -47,7 +46,6 @@ class CreateWalletConnectProposalNamespaceUseCase @Inject constructor(
                 listOf(
                     decideChainIdentifier(MAINNET.id),
                     decideChainIdentifier(TESTNET.id),
-                    decideChainIdentifier(BETANET.id)
                 )
             } else {
                 listOf(decideChainIdentifier(chainId))

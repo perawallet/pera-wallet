@@ -70,6 +70,9 @@ class FirebaseTokenManager @Inject constructor(
         if (it is DataResource.Success) {
             onPushTokenUpdated()
             bannersUseCase.initializeBanner(deviceId = it.data)
+        } else {
+            _firebaseTokenResultEventFlow.emit(firebaseTokenResultMapper.mapToTokenLoaded())
+            onPushTokenFailed()
         }
     }
 
@@ -87,7 +90,7 @@ class FirebaseTokenManager @Inject constructor(
         refreshFirebasePushTokenJob?.cancel()
         refreshFirebasePushTokenJob = coroutineScope?.launchIO {
             try {
-                _firebaseTokenResultEventFlow.emit(firebaseTokenResultMapper.maoToTokenLoading())
+                _firebaseTokenResultEventFlow.emit(firebaseTokenResultMapper.mapToTokenLoading())
                 if (previousNode != null) {
                     deletePreviousNodePushToken(previousNode)
                 }
@@ -130,6 +133,10 @@ class FirebaseTokenManager @Inject constructor(
 
     private suspend fun onPushTokenUpdated() {
         _firebaseTokenResultEventFlow.emit(firebaseTokenResultMapper.mapToTokenLoaded())
+    }
+
+    private suspend fun onPushTokenFailed() {
+        _firebaseTokenResultEventFlow.emit(firebaseTokenResultMapper.mapToTokenFailed())
     }
 
     override fun onCreate(owner: LifecycleOwner) {

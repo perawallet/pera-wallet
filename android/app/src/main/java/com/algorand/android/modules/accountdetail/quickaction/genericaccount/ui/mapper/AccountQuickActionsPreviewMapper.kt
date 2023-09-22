@@ -10,10 +10,10 @@
  * limitations under the License
  */
 
-package com.algorand.android.modules.accountdetail.quickaction.ui.mapper
+package com.algorand.android.modules.accountdetail.quickaction.genericaccount.ui.mapper
 
 import androidx.navigation.NavDirections
-import com.algorand.android.modules.accountdetail.quickaction.ui.model.AccountQuickActionsPreview
+import com.algorand.android.modules.accountdetail.quickaction.genericaccount.ui.model.AccountQuickActionsPreview
 import com.algorand.android.utils.Event
 import javax.inject.Inject
 

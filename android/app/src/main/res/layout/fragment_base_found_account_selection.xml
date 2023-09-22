@@ -22,10 +22,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingBottom="@dimen/bottom_padding_for_screen_with_double_floating_button"
+        android:paddingBottom="@dimen/spacing_normal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/actionButtonBarrier"
         app:layout_constraintEnd_toEndOf="parent"
+        tools:itemCount="20"
+        tools:listitem="@layout/item_account"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,6 +66,13 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:text="@tools:sample/lorem[2]"
         tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/actionButtonBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="primaryActionButton, secondaryActionButton" />
 
     <include
         android:id="@+id/progressbar"

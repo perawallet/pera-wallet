@@ -55,6 +55,14 @@ interface WalletConnectRepository {
 
     suspend fun getWalletConnectSessionCount(): Int
 
+    suspend fun isSessionRequestIdExist(requestId: Long): Boolean
+
+    suspend fun isTransactionRequestIdExist(requestId: Long): Boolean
+
+    suspend fun setSessionRequestId(requestId: Long, timestampAsSec: Long)
+
+    suspend fun setTransactionRequestId(requestId: Long, timestampAsSec: Long)
+
     companion object {
         const val INJECTION_NAME = "walletConnectV1RepositoryInjectionName"
     }

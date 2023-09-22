@@ -1,4 +1,3 @@
-@file:Suppress("MagicNumber")
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,10 +10,17 @@
  * limitations under the License
  */
 
-package com.algorand.android.modules.walletconnect.client.v1.model
+package com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity
 
-enum class WalletConnectV1ChainIdentifier(val id: Long) {
-    MAINNET(416001L),
-    TESTNET(416002L),
-    MAINNET_BACKWARD_SUPPORTABILITY(4160L)
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectV1TransactionRequestIdEntity
+import javax.inject.Inject
+
+class WalletConnectV1TransactionRequestIdEntityMapper @Inject constructor() {
+
+    fun mapToEntity(requestId: Long, timestamp: Long): WalletConnectV1TransactionRequestIdEntity {
+        return WalletConnectV1TransactionRequestIdEntity(
+            id = requestId,
+            timestampAsSec = timestamp
+        )
+    }
 }

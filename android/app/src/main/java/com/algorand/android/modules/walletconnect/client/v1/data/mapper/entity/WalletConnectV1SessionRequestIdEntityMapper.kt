@@ -10,12 +10,17 @@
  * limitations under the License
  */
 
-package com.algorand.android.modules.accountdetail.quickaction.ui.model
+package com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity
 
-import androidx.navigation.NavDirections
-import com.algorand.android.utils.Event
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectV1SessionRequestIdEntity
+import javax.inject.Inject
 
-data class AccountQuickActionsPreview(
-    val onNavigationEvent: Event<NavDirections>?,
-    val showGlobalErrorEvent: Event<Int>?
-)
+class WalletConnectV1SessionRequestIdEntityMapper @Inject constructor() {
+
+    fun mapToEntity(requestId: Long, timestamp: Long): WalletConnectV1SessionRequestIdEntity {
+        return WalletConnectV1SessionRequestIdEntity(
+            id = requestId,
+            timestampAsSec = timestamp
+        )
+    }
+}

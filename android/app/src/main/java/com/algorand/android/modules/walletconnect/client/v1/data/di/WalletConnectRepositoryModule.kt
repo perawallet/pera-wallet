@@ -19,6 +19,8 @@ import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.Wall
 import com.algorand.android.modules.walletconnect.client.v1.data.mapper.dto.WalletConnectSessionWithAccountsAddressesDtoMapper
 import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectSessionAccountEntityMapper
 import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectSessionEntityMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectV1SessionRequestIdEntityMapper
+import com.algorand.android.modules.walletconnect.client.v1.data.mapper.entity.WalletConnectV1TransactionRequestIdEntityMapper
 import com.algorand.android.modules.walletconnect.client.v1.data.repository.WalletConnectV1RepositoryImpl
 import com.algorand.android.modules.walletconnect.client.v1.domain.repository.WalletConnectRepository
 import dagger.Module
@@ -42,7 +44,9 @@ object WalletConnectRepositoryModule {
         sessionDtoMapper: WalletConnectSessionDtoMapper,
         sessionEntityMapper: WalletConnectSessionEntityMapper,
         sessionByAccountsAddressDtoMapper: WalletConnectSessionByAccountsAddressDtoMapper,
-        sessionWithAccountsAddressesDtoMapper: WalletConnectSessionWithAccountsAddressesDtoMapper
+        sessionWithAccountsAddressesDtoMapper: WalletConnectSessionWithAccountsAddressesDtoMapper,
+        sessionRequestIdEntityMapper: WalletConnectV1SessionRequestIdEntityMapper,
+        transactionRequestIdEntityMapper: WalletConnectV1TransactionRequestIdEntityMapper
     ): WalletConnectRepository {
         return WalletConnectV1RepositoryImpl(
             walletConnectDao = walletConnectDao,
@@ -51,7 +55,9 @@ object WalletConnectRepositoryModule {
             sessionDtoMapper = sessionDtoMapper,
             sessionEntityMapper = sessionEntityMapper,
             sessionByAccountsAddressDtoMapper = sessionByAccountsAddressDtoMapper,
-            sessionWithAccountsAddressesDtoMapper = sessionWithAccountsAddressesDtoMapper
+            sessionWithAccountsAddressesDtoMapper = sessionWithAccountsAddressesDtoMapper,
+            sessionRequestIdEntityMapper = sessionRequestIdEntityMapper,
+            transactionRequestIdEntityMapper = transactionRequestIdEntityMapper
         )
     }
 }

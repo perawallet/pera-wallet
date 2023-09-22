@@ -21,7 +21,11 @@ class FirebaseTokenResultMapper @Inject constructor() {
         return FirebaseTokenResult.TokenLoaded
     }
 
-    fun maoToTokenLoading(): FirebaseTokenResult.TokenLoading {
+    fun mapToTokenLoading(): FirebaseTokenResult.TokenLoading {
         return FirebaseTokenResult.TokenLoading
+    }
+
+    fun mapToTokenFailed(): FirebaseTokenResult.TokenFailed {
+        return FirebaseTokenResult.TokenFailed
     }
 }

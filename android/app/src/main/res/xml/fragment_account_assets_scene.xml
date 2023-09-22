@@ -4,16 +4,13 @@
 
     <Transition
         app:constraintSetEnd="@id/end"
-        app:constraintSetStart="@+id/start"
+        app:constraintSetStart="@id/start"
         app:duration="460" />
 
     <ConstraintSet android:id="@+id/start">
         <Constraint
             android:id="@id/accountQuickActionsFloatingActionButton"
             app:visibilityMode="ignore">
-            <CustomAttribute
-                app:attributeName="clickable"
-                app:customBoolean="false" />
             <Layout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,9 +32,6 @@
         <Constraint
             android:id="@id/accountQuickActionsFloatingActionButton"
             app:visibilityMode="ignore">
-            <CustomAttribute
-                app:attributeName="clickable"
-                app:customBoolean="true" />
             <Layout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

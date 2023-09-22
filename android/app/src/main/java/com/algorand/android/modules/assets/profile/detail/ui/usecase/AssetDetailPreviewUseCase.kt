@@ -19,7 +19,7 @@ import com.algorand.android.discover.home.domain.model.TokenDetailInfo
 import com.algorand.android.models.Account
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.AssetTransaction
-import com.algorand.android.modules.accountdetail.quickaction.AccountQuickActionsBottomSheetDirections
+import com.algorand.android.modules.accountdetail.quickaction.genericaccount.AccountQuickActionsBottomSheetDirections
 import com.algorand.android.modules.accounts.domain.usecase.AccountDetailSummaryUseCase
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.accountstatehelper.domain.usecase.AccountStateHelperUseCase
@@ -36,11 +36,11 @@ import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.AlgoAssetInformationProvider
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Event
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import javax.inject.Inject
 
 @SuppressWarnings("LongParameterList")
 class AssetDetailPreviewUseCase @Inject constructor(
