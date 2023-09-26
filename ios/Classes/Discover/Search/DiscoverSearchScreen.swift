@@ -397,7 +397,7 @@ extension DiscoverSearchScreen {
                     [weak self] in
                     guard let self = self else { return }
 
-                    self.listView.scrollToTop(animated: true)
+                    self.listView.scrollToTop(animated: false)
                 }
             case .didUpdate(let snapshot):
                 self.dataSource.apply(

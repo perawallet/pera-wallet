@@ -19,8 +19,6 @@ import MacaroonUIKit
 import UIKit
 
 final class DiscoverSearchScreenLayout: NSObject {
-    typealias AssetListItemViewModelProvider = (AssetID) -> DiscoverSearchAssetListItemViewModel?
-
     private var sizeCache: [String: CGSize] = [:]
 
     private let listDataSource: DiscoverSearchDataSource

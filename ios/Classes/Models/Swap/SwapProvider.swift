@@ -23,19 +23,21 @@ enum SwapProvider:
     Equatable {
     case tinyman
     case tinymanV2
+    case vestige
     case unknown(String)
 
     var rawValue: String {
         switch self {
         case .tinyman: return "tinyman"
         case .tinymanV2: return "tinyman-v2"
+        case .vestige: return "vestige-v3"
 
         case .unknown(let aRawValue): return aRawValue
         }
     }
 
     static var allCases: [Self] = [
-        .tinyman, .tinymanV2
+        .tinyman, .tinymanV2, vestige
     ]
 
     init() {

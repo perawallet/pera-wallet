@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import ActiveLabel
 
 /// <todo>
 /// Let's find a better name.
@@ -120,6 +121,8 @@ extension ShowMoreView {
             $0.trailing == 0
         }
 
+        bodyView.delegate = self
+
         fullBodyView.customizeBaseAppearance(textOverflow: theme.fullBodyOverflow)
 
         insertSubview(
@@ -199,6 +202,21 @@ extension ShowMoreView {
     }
 }
 
+extension ShowMoreView: ActiveLabelDelegate {
+    func didSelect(_ text: String, type: ActiveType) {
+        if type != .url { return }
+
+        guard
+            let decodedURLString = text.removingPercentEncoding,
+            let urlComponents = URLComponents(string: decodedURLString),
+            let url = urlComponents.url
+        else {
+            return
+        }
+
+        delegate?.showMoreViewDidTapURL(self, url: url)
+    }
+}
 protocol ShowMoreViewDelegate: AnyObject {
     func showMoreViewDidTapURL(_ view: ShowMoreView, url: URL)
 }

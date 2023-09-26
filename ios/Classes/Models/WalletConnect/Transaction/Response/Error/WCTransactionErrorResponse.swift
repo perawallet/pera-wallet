@@ -28,13 +28,13 @@ enum WCTransactionErrorResponse: Error {
         case let .rejected(type):
             switch type {
             case .user:
-                return "wallet-connect-transaction-error-rejected-user".localized
+                return "wallet-connect-request-error-rejected-user".localized
             case .failedValidation:
                 return "wallet-connect-transaction-error-group-validation".localized
             case .unsignable:
                 return "wallet-connect-transaction-error-group-unauthorized-user".localized
             case .alreadyDisplayed:
-                return "wallet-connect-transaction-error-already-displayed".localized
+                return "wallet-connect-request-error-already-displayed".localized
             case .none:
                 return "wallet-connect-transaction-error-rejected".localized
             }
@@ -42,7 +42,9 @@ enum WCTransactionErrorResponse: Error {
             switch type {
             case .nodeMismatch:
                 return "wallet-connect-transaction-error-node".localized
-            case .signerNotFound:
+            case .dataSignerNotFound:
+                return "wallet-connect-data-error-invalid-signer".localized
+            case .transactionSignerNotFound:
                 return "wallet-connect-transaction-error-invalid-signer".localized
             case .none:
                 return "wallet-connect-transaction-error-unauthorized".localized
@@ -58,9 +60,13 @@ enum WCTransactionErrorResponse: Error {
             }
         case let .invalidInput(type):
             switch type {
+            case .dataCount:
+                return "wallet-connect-data-error-data-size".localized
             case .transactionCount:
                 return "wallet-connect-transaction-error-transaction-size".localized
-            case .parse:
+            case .dataParse:
+                return "wallet-connect-data-error-parse".localized
+            case .transactionParse:
                 return "wallet-connect-transaction-error-parse".localized
             case .publicKey:
                 return "wallet-connect-transaction-error-invalid-key".localized
@@ -126,7 +132,8 @@ extension WCTransactionErrorResponse {
 
     enum Authorization {
         case nodeMismatch
-        case signerNotFound
+        case dataSignerNotFound
+        case transactionSignerNotFound
         case none
     }
 
@@ -137,8 +144,10 @@ extension WCTransactionErrorResponse {
     }
 
     enum Invalid {
+        case dataCount
         case transactionCount
-        case parse
+        case dataParse
+        case transactionParse
         case publicKey
         case asset
         case unableToFetchAsset

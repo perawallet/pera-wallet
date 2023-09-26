@@ -65,6 +65,7 @@
 "title-oldest-to-newest" = "Oldest to Newest";
 "title-manually" = "Manually";
 "title-show-transaction-detail" = "Show Transaction Details";
+"title-show-details" = "Show Details";
 "title-show-all-detail" = "Show All Details";
 "title-home" = "Home";
 "title-discover" = "Discover";
@@ -154,6 +155,8 @@
 "account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-welcome-add-account-title" = "Add an account";
+"title-arbitrary-data" = "Arbitrary Data";
+"title-data" = "Data";
 
 // MARK: Introduction
 
@@ -338,7 +341,7 @@
 "asset-quick-action-title-remove" = "Opted-in to";
 "asset-opt-in-successful-message" = "%@ successfully opted-in and added to your account.";
 "asset-opt-out-successful-message" = "%@ successfully opted-out and removed from your account.";
-"asset-search-not-found" = "We are not able to find this asset.";
+"asset-search-not-found" = "We are not able to fetch any asset.";
 "asset-creator-opt-out-error-message" = "Creator accounts cannot opt out of assets they created.";
 "asset-detail-markets-title" = "Markets";
 
@@ -882,6 +885,7 @@
 // MARK: Wallet Connect Transaction
 "wallet-connect-transaction-title-transaction" = "Transaction Request";
 "wallet-connect-transaction-title-unsigned" = "Unsigned Transactions";
+"wallet-connect-title-unsigned-requests" = "Unsigned Requests";
 "wallet-connect-transaction-title-atomic" = "Atomic Transaction Request";
 "wallet-connect-transaction-title-asset" = "Transfer Asset Request";
 "wallet-connect-transaction-title-opt-in" = "Assets Opt-in Request";
@@ -921,12 +925,15 @@
 "wallet-connect-transaction-error-unsupported" = "The wallet does not support the requested operation.";
 "wallet-connect-transaction-error-invalid" = "The input provided is invalid.";
 "wallet-connect-raw-transaction-title" = "Raw Transaction";
-"wallet-connect-transaction-error-rejected-user" = "Transaction Request Rejected: The User has rejected the transaction request.";
+"wallet-connect-request-error-rejected-user" = "Request Rejected: The User has rejected the request.";
 "wallet-connect-transaction-error-group-validation" = "Transaction Request Rejected: The transaction group has failed validation by the Algorand SDK.";
 "wallet-connect-transaction-error-already-displayed" = "Transaction Request Rejected: The User currently has another transaction request that is in progress.";
+"wallet-connect-request-error-already-displayed" = "Request Rejected: The User currently has another request that is in progress.";
 "wallet-connect-transaction-error-group-unauthorized-user" = "The requested operation and/or account has not been authorized by the user.";
 "wallet-connect-transaction-error-transaction-size" = "Invalid Input: Transaction request contains more than 1000 transactions";
+"wallet-connect-data-error-data-size" = "Invalid Input: Transaction request contains more than 1000 data";
 "wallet-connect-transaction-error-invalid-signer" = "Signing Error: A transaction in the transaction request requires a private key (signer) that does not exist in the connected Wallet.";
+"wallet-connect-data-error-invalid-signer" = "Signing Error: Request requires a private key (signer) that does not exist in the connected Wallet.";
 "wallet-connect-transaction-error-node" = "Signing Error: Network mismatch between dApp and Wallet. For example, Wallet is connected to TestNet and dApp connected to MainNet (or vice versa).";
 "wallet-connect-transaction-error-group" = "Invalid Input: Group transaction does not need to be signed by Wallet user.";
 "wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";
@@ -934,6 +941,7 @@
 "wallet-connect-transaction-error-session-not-found" = "No valid WalletConnect session found. Please try reconnecting your wallet to the dApp";
 "wallet-connect-transaction-error-unsupported-type" = "The transaction request contains an Unsupported Transaction Type";
 "wallet-connect-transaction-error-parse" = "Invalid Input: Unable to parse transaction";
+"wallet-connect-data-error-parse" = "Invalid Input: Unable to parse data";
 "wallet-connect-transaction-error-invalid-key" = "Invalid Input: Invalid Public Key";
 "wallet-connect-transaction-error-invalid-asset" = "Invalid Input: Invalid Asset";
 "wallet-connect-transaction-error-multisig" = "The transaction request contains an Unsupported Transaction Type: Multi-sig";
@@ -953,6 +961,9 @@
 "wc-transaction-request-signed-warning-title" = "Your transaction is being processed!";
 "wc-transaction-request-signed-warning-message" = "The transaction has been signed and sent to %@. Please visit %@ for the remaining process.";
 
+"wc-arbitrary-data-request-signed-warning-title" = "Your data is being processed!";
+"wc-arbitrary-data-request-signed-warning-message" = "The data has been signed and sent to %@. Please visit %@ for the remaining process.";
+
 "wallet-connect-session-timeout-message" = "We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists, please contact the dApp.";
 
 "wallet-connect-asset-creation-title" = "Asset Creation Request";
@@ -967,6 +978,7 @@
 "wallet-connect-asset-reconfiguration-title" = "Asset Reconfiguration Request";
 "wallet-connect-asset-deletion-title" = "Asset Deletion Request";
 "wallet-connect-asset-deletion-warning-title" = "This asset will be deleted.";
+"wallet-connect-arbitrary-data-details-title" = "Arbitrary Data Details";
 
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";

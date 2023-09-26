@@ -17,7 +17,7 @@
 
 import Foundation
 
-class WCGroupTransactionAccountInformationViewModel {
+final class WCGroupTransactionAccountInformationViewModel {
     private(set) var accountNameViewModel: AccountNameViewModel?
     private(set) var isAlgos = true
     private(set) var isDisplayingDotSeparator = true

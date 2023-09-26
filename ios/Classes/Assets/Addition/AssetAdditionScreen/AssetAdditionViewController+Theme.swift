@@ -22,25 +22,36 @@ extension AssetAdditionViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
 
-        let searchInputViewTheme: SearchInputViewTheme
+        let searchInputTheme: SearchInputViewTheme
         let searchInputHorizontalPadding: LayoutMetric
         let searchInputTopPadding: LayoutMetric
-
-        let assetListViewTheme: AssetListViewTheme
-        let cellSize: LayoutSize
-
+        
+        let searchInputBackground: Effect
+        let searchInputBackgroundHeight: LayoutMetric
+        
+        let listBackgroundColor: Color
+        let listTopPadding: LayoutMetric
+        
         init(_ family: LayoutFamily) {
             self.backgroundColor = Colors.Defaults.background
 
-            self.searchInputViewTheme = SearchInputViewCommonTheme(
+            self.searchInputTheme = SearchInputViewCommonTheme(
                 placeholder: "asset-search-placeholder".localized,
                 family: family
             )
             self.searchInputHorizontalPadding = 24
             self.searchInputTopPadding = 16
+            
+            var gradient = Gradient()
+            gradient.colors = [
+                Colors.Defaults.background.uiColor,
+                Colors.Defaults.background.uiColor.withAlphaComponent(0)
+            ]
+            self.searchInputBackground = LinearGradientEffect(gradient: gradient)
+            self.searchInputBackgroundHeight = 36
 
-            self.assetListViewTheme = AssetListViewTheme()
-            self.cellSize = (UIScreen.main.bounds.width - 48, 72)
+            self.listBackgroundColor = Colors.Defaults.background
+            self.listTopPadding = 20
         }
     }
 }

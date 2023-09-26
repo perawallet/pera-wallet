@@ -23,6 +23,7 @@ final class NoContentWithActionCell:
     CollectionCell<NoContentWithActionView>,
     ViewModelBindable,
     UIInteractable {
+    static let theme = NoContentWithActionViewCommonTheme()
     
     override init(
         frame: CGRect
@@ -31,6 +32,6 @@ final class NoContentWithActionCell:
             frame: frame
         )
 
-        contextView.customize(NoContentWithActionViewCommonTheme())
+        contextView.customize(Self.theme)
     }
 }

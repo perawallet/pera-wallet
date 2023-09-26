@@ -20,18 +20,24 @@ import MacaroonUIKit
 import UIKit
 
 final class AssetListViewLayout: NSObject {
-    private lazy var theme = AssetAdditionViewController.Theme()
-
     private var sizeCache: [String: CGSize] = [:]
 
-    private let listDataSource: AssetListViewDataSource
+    private let dataSource: AssetListViewDataSource
+    private let dataController: AssetListViewDataController
 
     init(
-        listDataSource: AssetListViewDataSource
+        dataSource: AssetListViewDataSource,
+        dataController: AssetListViewDataController
     ) {
-        self.listDataSource = listDataSource
-
+        self.dataSource = dataSource
+        self.dataController = dataController
         super.init()
+    }
+    
+    static func build() -> UICollectionViewFlowLayout {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = .zero
+        return flowLayout
     }
 }
 
@@ -41,17 +47,16 @@ extension AssetListViewLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
-        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+        let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers
 
         guard let listSection = sectionIdentifiers[safe: section] else {
             return .zero
         }
 
         switch listSection {
-        case .empty:
-            return UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
-        case .assets:
-            return UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
+        case .noContent: return .init(top: 16, left: 24, bottom: 0, right: 24)
+        case .content: return .init(top: 16, left: 0, bottom: 0, right: 0)
+        case .waitingForMore: return .init(top: 0, left: 24, bottom: 0, right: 24)
         }
     }
 
@@ -60,26 +65,158 @@ extension AssetListViewLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
             return CGSize((collectionView.bounds.width, 0))
         }
 
         switch itemIdentifier {
         case .loading:
-            return CGSize(theme.cellSize)
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForLoadingItemAt: indexPath
+            )
+        case .loadingFailed(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForLoadingFailedItem: item,
+                at: indexPath
+            )
+        case .notFound:
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForNotFoundItemAt: indexPath
+            )
         case .asset(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForAssetCellItem: item,
-                forSectionAt: indexPath.section
+                sizeForAssetItem: item,
+                at: indexPath
             )
-        case .noContent:
-            return sizeForSearchNoContent(
+        case .loadingMore:
+            return listView(
                 collectionView,
-                forSectionAt: indexPath.section
+                layout: collectionViewLayout,
+                sizeForLoadingMoreItemAt: indexPath
+            )
+        case .loadingMoreFailed(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForLoadingMoreFailedItem: item,
+                at: indexPath
             )
         }
+    }
+}
+
+extension AssetListViewLayout {
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForLoadingItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        return OptInAssetListLoadingCell.calculatePreferredSize(
+            for: OptInAssetListLoadingCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForLoadingFailedItem item: OptInAssetList.ErrorItem,
+        at indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        return NoContentWithActionCell.calculatePreferredSize(
+            OptInAssetListErrorViewModel(error: item),
+            for: NoContentWithActionCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForNotFoundItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        return NoContentCell.calculatePreferredSize(
+            OptInAssetListNotFoundViewModel(),
+            for: NoContentCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAssetItem item: OptInAssetList.AssetItem,
+        at indexPath: IndexPath
+    ) -> CGSize {
+        let cacheIdentifier = OptInAssetListItemCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[cacheIdentifier] {
+            return cachedSize
+        }
+
+        let viewModel: OptInAssetListItemViewModel? = dataController[item.assetID]
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        let size = OptInAssetListItemCell.calculatePreferredSize(
+            viewModel,
+            for: OptInAssetListItemCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
+
+        sizeCache[cacheIdentifier] = size
+
+        return size
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForLoadingMoreItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        return .init(width: width, height: 174)
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForLoadingMoreFailedItem item: OptInAssetList.ErrorItem,
+        at indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: indexPath.section
+        )
+        return NoContentWithActionCell.calculatePreferredSize(
+            OptInAssetNextListErrorViewModel(error: item),
+            for: NoContentWithActionCell.theme,
+            fittingIn: .init(width: width, height: .greatestFiniteMagnitude)
+        )
     }
 }
 
@@ -98,59 +235,5 @@ extension AssetListViewLayout {
             collectionView.contentInset.horizontal -
             sectionInset.left -
             sectionInset.right
-    }
-
-    private func sizeForSearchNoContent(
-        _ listView: UICollectionView,
-        forSectionAt section: Int
-    ) -> CGSize {
-        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
-
-        if let cachedSize = sizeCache[sizeCacheIdentifier] {
-            return cachedSize
-        }
-
-        let width = calculateContentWidth(
-            listView,
-            forSectionAt: section
-        )
-        let item = AssetAdditionNoContentViewModel()
-        let newSize = NoContentCell.calculatePreferredSize(
-            item,
-            for: NoContentCell.theme,
-            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
-        )
-
-        sizeCache[sizeCacheIdentifier] = newSize
-
-        return newSize
-    }
-
-    private func listView(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: OptInAssetListItem,
-        forSectionAt section: Int
-    ) -> CGSize {
-        let sizeCacheIdentifier = OptInAssetListItemCell.reuseIdentifier
-
-        if let cachedSize = sizeCache[sizeCacheIdentifier] {
-            return cachedSize
-        }
-
-        let width = calculateContentWidth(
-            listView,
-            forSectionAt: section
-        )
-        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
-        let newSize = OptInAssetListItemCell.calculatePreferredSize(
-            item.viewModel,
-            for: OptInAssetListItemCell.theme,
-            fittingIn:maxSize
-        )
-
-        sizeCache[sizeCacheIdentifier] = newSize
-
-        return newSize
     }
 }

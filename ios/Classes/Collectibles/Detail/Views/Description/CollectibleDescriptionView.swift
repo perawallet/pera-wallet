@@ -17,6 +17,7 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import ActiveLabel
 
 final class CollectibleDescriptionView:
     View,
@@ -105,6 +106,8 @@ extension CollectibleDescriptionView {
             $0.leading == 0
             $0.trailing == 0
         }
+
+        descriptionView.delegate = self
     }
 
     private func addToggleTruncationAction(_ theme: CollectibleDescriptionViewTheme) {
@@ -142,6 +145,22 @@ extension CollectibleDescriptionView {
         } else {
             delegate?.collectibleDescriptionViewDidShowMore(self)
         }
+    }
+}
+
+extension CollectibleDescriptionView: ActiveLabelDelegate {
+    func didSelect(_ text: String, type: ActiveType) {
+        if type != .url { return }
+
+        guard
+            let decodedURLString = text.removingPercentEncoding,
+            let urlComponents = URLComponents(string: decodedURLString),
+            let url = urlComponents.url
+        else {
+            return
+        }
+
+        delegate?.collectibleDescriptionViewDidTapURL(self, url: url)
     }
 }
 

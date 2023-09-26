@@ -17,22 +17,29 @@
 
 import Foundation
 
-class LedgerTransactionSigner: TransactionSigner {
+final class LedgerTransactionSigner: TransactionSigner {
+    private var signerAddress: PublicKey?
 
-    private var account: Account
-
-    init(account: Account) {
-        self.account = account
+    init(
+        signerAddress: PublicKey?
+    ) {
+        self.signerAddress = signerAddress
         super.init()
     }
 
-    override func sign(_ data: Data?, with privateData: Data?) -> Data? {
+    override func sign(
+        _ data: Data?,
+        with privateData: Data?
+    ) -> Data? {
         return signTransaction(data, with: privateData)
     }
 }
 
 extension LedgerTransactionSigner {
-    private func signTransaction(_ data: Data?, with privateData: Data?) -> Data? {
+    private func signTransaction(
+        _ data: Data?,
+        with privateData: Data?
+    ) -> Data? {
         var transactionError: NSError?
 
         guard let transactionData = data,
@@ -41,16 +48,30 @@ extension LedgerTransactionSigner {
             return nil
         }
 
-        if account.hasAuthAccount() {
-            return signRekeyedAccountTransaction(transactionData, with: privateData, transactionError: &transactionError)
-        } else {
-            return signLedgerAccountTransaction(transactionData, with: privateData, transactionError: &transactionError)
+        if let signerAddress {
+            return signRekeyedAccountTransaction(
+                transactionData,
+                with: privateData,
+                for: signerAddress,
+                transactionError: &transactionError
+            )
         }
+
+        return signLedgerAccountTransaction(
+            transactionData,
+            with: privateData,
+            transactionError: &transactionError
+        )
     }
 
-    private func signRekeyedAccountTransaction(_ transactionData: Data, with privateData: Data, transactionError: inout NSError?) -> Data? {
+    private func signRekeyedAccountTransaction(
+        _ transactionData: Data,
+        with privateData: Data,
+        for signerAddress: PublicKey,
+        transactionError: inout NSError?
+    ) -> Data? {
         guard let signedTransactionData = algorandSDK.getSignedTransaction(
-            with: account.authAddress,
+            with: signerAddress,
             transaction: transactionData,
             from: privateData,
             error: &transactionError
@@ -62,7 +83,11 @@ extension LedgerTransactionSigner {
         return signedTransactionData
     }
 
-    private func signLedgerAccountTransaction(_ transactionData: Data, with privateData: Data, transactionError: inout NSError?) -> Data? {
+    private func signLedgerAccountTransaction(
+        _ transactionData: Data,
+        with privateData: Data,
+        transactionError: inout NSError?
+    ) -> Data? {
         guard let signedTransactionData = algorandSDK.getSignedTransaction(
             transactionData,
             from: privateData,

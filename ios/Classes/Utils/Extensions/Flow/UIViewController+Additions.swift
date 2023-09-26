@@ -147,7 +147,10 @@ extension UIViewController {
         switch network {
         case .mainnet:
             if presentingViewController != nil {
-                return .lightContent
+                let srcViewController = navigationController ?? self
+                if srcViewController.modalPresentationStyle != .fullScreen {
+                    return .lightContent
+                }
             }
             
             return isDarkMode ? .lightContent : .default

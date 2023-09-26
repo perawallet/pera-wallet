@@ -18,36 +18,41 @@
 import Foundation
 import MacaroonUtils
 import MagpieCore
+import MagpieHipo
 
 final class AssetListViewAPIDataController:
     AssetListViewDataController,
     SharedDataControllerObserver {
-    var eventHandler: ((AssetListViewDataControllerEvent) -> Void)?
+    var eventHandler: EventHandler?
 
     private(set) var account: Account
-
-    private var assets: [AssetDecoration] = []
-
+    
+    private lazy var asyncLoadingQueue = makeAsyncLoadingQueue()
+    private lazy var searchThrottler = makeSearchThrottler()
+        
+    private var nextDraft: OptInAssetListDraft?
+    private var lastDraft: OptInAssetListDraft?
     private var lastSnapshot: Snapshot?
 
-    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
+    private var assetModelsCache: [AssetID: AssetDecoration] = [:]
+    /// <todo>
+    /// We can have some sort of UI cache and manage it outside of the scope of this type.
+    private var assetViewModelsCache: [AssetID: OptInAssetListItemViewModel] = [:]
 
-    private var draft = AssetSearchQuery()
+    private var ongoingEndpointToFetchAssets: EndpointOperatable?
 
-    private var ongoingEndpoint: EndpointOperatable?
-    private var ongoingEndpointToLoadNextPage: EndpointOperatable?
-
-    private var hasNextPage: Bool {
-        return draft.cursor != nil
-    }
-
+    private var isFirstLoading = true
+    
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
 
-    private let snapshotQueue = DispatchQueue(
-        label: "pera.queue.optinAssets.updates",
-        qos: .userInitiated
-    )
+    subscript(assetID: AssetID) -> AssetDecoration? {
+        return findModel(forID: assetID)
+    }
+
+    subscript(assetID: AssetID) -> OptInAssetListItemViewModel? {
+        return findViewModel(forID: assetID)
+    }
 
     init(
         account: Account,
@@ -57,94 +62,141 @@ final class AssetListViewAPIDataController:
         self.account = account
         self.api = api
         self.sharedDataController = sharedDataController
-
-        sharedDataController.add(self)
     }
 
     deinit {
+        cancel()
         sharedDataController.remove(self)
     }
 }
 
 extension AssetListViewAPIDataController {
-    func load() {
-        deliverLoadingSnapshot()
-        loadData()
+    func load(query: OptInAssetListQuery?) {
+        let draft = OptInAssetListDraft(query: query)
+
+        if draft == lastDraft {
+            nextDraft = nil
+            return
+        }
+
+        cancel()
+        clearCache()
+        loadData(draft: draft)
     }
 
-    func search(for query: String?) {
+    private func loadData(draft: OptInAssetListDraft) {
+        nextDraft = draft
+
+        deliverUpdatesForLoading()
+
         searchThrottler.performNext {
             [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
-            self.draft.query = query
-            self.draft.cursor = nil
+            self.fetchAssets(draft: draft) {
+                [weak self] result in
+                guard let self else { return }
 
-            self.loadData()
-        }
-    }
-
-    func loadNextPageIfNeeded(for indexPath: IndexPath) {
-        if ongoingEndpointToLoadNextPage != nil { return }
-
-        if !hasNextPage { return }
-
-        if indexPath.item < assets.count - 3 { return }
-
-        ongoingEndpointToLoadNextPage = api.searchAssets(
-            draft,
-            ignoreResponseOnCancelled: false
-        ) { [weak self] response in
-            guard let self = self else { return }
-
-            self.ongoingEndpointToLoadNextPage = nil
-
-            switch response {
-            case let .success(searchResults):
-                let results = self.assets + searchResults.results
-                self.assets = results
-                self.draft.cursor = searchResults.nextCursor
-
-                self.deliverContentSnapshot(next: true)
-            case .failure:
-                /// <todo>
-                /// Handle error properly.
-                break
+                let task = self.makeTaskWithUpdatesForContent(
+                    draft: draft,
+                    result: result
+                )
+                self.enqueueNextUpdates(task)
             }
         }
     }
 
-    private func loadData() {
-        cancelOngoingEndpoint()
+    func loadMore() {
+        if hasMoreBeingLoaded() { return }
+        if hasMoreFailedToBeLoaded() { return }
+        loadMoreData()
+    }
 
-        ongoingEndpoint = api.searchAssets(
-            draft,
-            ignoreResponseOnCancelled: false
-        ) { [weak self] response in
-            guard let self = self else { return }
+    func loadMoreAgain() {
+        if hasMoreBeingLoaded() { return }
+        loadMoreData()
+    }
 
-            self.ongoingEndpoint = nil
+    private func loadMoreData() {
+        guard let draft = lastDraft.unwrap(where: \.hasMore) else { return }
 
-            switch response {
-            case let .success(searchResults):
-                self.assets = searchResults.results
-                self.draft.cursor = searchResults.nextCursor
+        nextDraft = draft
 
-                self.deliverContentSnapshot(next: false)
-            case .failure:
-                /// <todo>
-                /// Handle error properly.
-                break
+        let task = makeTaskWithUpdatesForLoadingMore()
+        enqueueNextUpdates(task)
+
+        fetchAssets(draft: draft) {
+            [weak self] result in
+            guard let self else { return }
+
+            let task = self.makeTaskWithUpdatesForMoreContent(
+                draft: draft,
+                result: result
+            )
+            self.enqueueNextUpdates(task)
+        }
+    }
+
+    private func hasMoreBeingLoaded() -> Bool {
+        return !ongoingEndpointToFetchAssets.isNilOrFinished
+    }
+
+    private func hasMoreFailedToBeLoaded() -> Bool {
+        return nextDraft != nil
+    }
+
+    func cancel() {
+        /// <note>
+        /// Cancel next search
+        searchThrottler.cancelAll()
+
+        /// <note>
+        /// Cancel ongoing search
+        cancelFetchingAssets()
+        asyncLoadingQueue.cancel()
+
+        lastDraft = nil
+        nextDraft = nil
+    }
+
+    private func startObservingForAccountUpdates() {
+        guard isFirstLoading else { return }
+        sharedDataController.add(self)
+        isFirstLoading = false
+    }
+
+    private typealias AssetListResult = Result<AssetDecorationList, AssetListError>
+    private typealias AssetListError = HIPNetworkError<NoAPIModel>
+    private func fetchAssets(
+        draft: OptInAssetListDraft,
+        completion: @escaping (AssetListResult) -> Void
+    ) {
+        var endpointDraft = AssetSearchQuery()
+        endpointDraft.type = .standard
+        endpointDraft.query = draft.query
+        endpointDraft.cursor = draft.cursor
+
+        ongoingEndpointToFetchAssets = api.searchAssets(
+            endpointDraft,
+            ignoreResponseOnCancelled: true
+        ) { [weak self] result in
+            guard let self else { return }
+
+            self.ongoingEndpointToFetchAssets = nil
+
+            switch result {
+            case .success(let list):
+                completion(.success(list))
+            case .failure(let apiError, let apiErrorDetail):
+                let err = AssetListError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                completion(.failure(err))
             }
         }
     }
 
-    private func cancelOngoingEndpoint() {
-        ongoingEndpointToLoadNextPage?.cancel()
-        ongoingEndpointToLoadNextPage = nil
-
-        ongoingEndpoint?.cancel()
-        ongoingEndpoint = nil
+    private func cancelFetchingAssets() {
+        ongoingEndpointToFetchAssets?.cancel()
+        ongoingEndpointToFetchAssets = nil
     }
 }
 
@@ -166,8 +218,6 @@ extension AssetListViewAPIDataController {
     }
 }
 
-/// <mark>
-/// SharedDataControllerObserver
 extension AssetListViewAPIDataController {
     func sharedDataController(
         _ sharedDataController: SharedDataController,
@@ -175,7 +225,7 @@ extension AssetListViewAPIDataController {
     ) {
         if case .didFinishRunning = event {
             updateAccountIfNeeded()
-            publish(.didUpdateAccount)
+            eventHandler?(.didUpdateAccount)
         }
     }
 
@@ -191,90 +241,419 @@ extension AssetListViewAPIDataController {
 }
 
 extension AssetListViewAPIDataController {
-    private func deliverLoadingSnapshot() {
-        deliverSnapshot(next: false) {
-            var snapshot = Snapshot()
-            snapshot.appendSections([.assets])
-            snapshot.appendItems([.loading("1"), .loading("2")], toSection: .assets)
-            return snapshot
+    private func enqueueNextUpdates(_ task: AsyncTask) {
+        asyncLoadingQueue.add(task)
+        asyncLoadingQueue.resume()
+    }
+
+    private func makeTaskWithUpdatesForContent(
+        draft: OptInAssetListDraft,
+        result: AssetListResult
+    ) -> AsyncTask {
+        return AsyncTask {
+            [weak self] completionBlock in
+            guard let self else { return }
+
+            switch result {
+            case .success(let list):
+                self.deliverUpdatesForContent(
+                    list,
+                    when: { draft == self.nextDraft },
+                    success: { [weak self] in
+                        guard let self else { return }
+
+                        self.saveUpdatesForNewContent((draft, list))
+                        self.startObservingForAccountUpdates()
+
+                        completionBlock()
+                    },
+                    failure: {
+                        completionBlock()
+                    }
+                )
+            case .failure(let error):
+                self.deliverUpdatesForLoadingFailed(error)
+                completionBlock()
+            }
         }
     }
 
-    private func deliverContentSnapshot(next: Bool) {
-        guard !self.assets.isEmpty else {
-            deliverNoContentSnapshot()
+    private func makeTaskWithUpdatesForLoadingMore() -> AsyncTask {
+        return AsyncTask {
+            [weak self] completionBlock in
+            guard let self else { return }
+
+            self.deliverUpdatesForLoadingMore()
+            completionBlock()
+        }
+    }
+
+    private func makeTaskWithUpdatesForMoreContent(
+        draft: OptInAssetListDraft,
+        result: AssetListResult
+    ) -> AsyncTask {
+        return AsyncTask {
+            [weak self] completionBlock in
+            guard let self else { return }
+
+            switch result {
+            case .success(let list):
+                self.deliverUpdatesForMoreContent(
+                    list,
+                    when: { draft == self.nextDraft },
+                    success: { [weak self] in
+                        guard let self else { return }
+
+                        self.saveUpdatesForNewContent((draft, list))
+                        completionBlock()
+                    },
+                    failure: {
+                        completionBlock()
+                    }
+                )
+            case .failure(let error):
+                self.deliverUpdatesForLoadingMoreFailed(error)
+                completionBlock()
+            }
+        }
+    }
+
+    private typealias ContentUpdates = (draft: OptInAssetListDraft, list: AssetDecorationList)
+    private func saveUpdatesForNewContent(_ updates: ContentUpdates) {
+        self.lastDraft = updates.draft
+        self.lastDraft?.cursor = updates.list.nextCursor
+        self.nextDraft = nil
+    }
+}
+
+extension AssetListViewAPIDataController {
+    private func deliverUpdatesForLoading() {
+        if lastSnapshot?.indexOfSection(.noContent) != nil,
+           lastSnapshot?.itemIdentifiers(inSection: .noContent).last == .loading {
+            return
+        }
+        
+        var snapshot = Snapshot()
+        appendSectionsForLoading(into: &snapshot)
+
+        publishUpdatesByReloading(snapshot)
+    }
+
+    private func appendSectionsForLoading(into snapshot: inout Snapshot) {
+        let items = makeItemsForLoading()
+        snapshot.appendSections([ .noContent ])
+        snapshot.appendItems(
+            items,
+            toSection: .noContent
+        )
+    }
+
+    private func makeItemsForLoading() -> [ItemIdentifier] {
+        return [ .loading ]
+    }
+
+    private func deliverUpdatesForLoadingFailed(_ error: AssetListError) {
+        var snapshot = Snapshot()
+        appendSectionsForLoadingFailed(
+            error,
+            into: &snapshot
+        )
+
+        publishUpdatesByReloading(snapshot)
+    }
+
+    private func appendSectionsForLoadingFailed(
+        _ error: AssetListError,
+        into snapshot: inout Snapshot
+    ) {
+        let items = makeItemsForLoadingFailed(error)
+        snapshot.appendSections([ .noContent ])
+        snapshot.appendItems(
+            items,
+            toSection: .noContent
+        )
+    }
+
+    private func makeItemsForLoadingFailed(_ error: AssetListError) -> [ItemIdentifier] {
+        let item = makeItem(for: error)
+        return [ .loadingFailed(item) ]
+    }
+
+    private func makeItem(for error: AssetListError) -> OptInAssetList.ErrorItem {
+        let fallbackTitle = "title-generic-api-error".localized
+        let fallbackBody = "\("asset-search-not-found".localized)\n\("title-retry-later".localized)"
+
+        let title: String
+        let body: String
+        switch error {
+        case .connection(let connectionError):
+            if connectionError.isNotConnectedToInternet {
+                title = "discover-error-connection-title".localized
+                body = "discover-error-connection-body".localized
+            } else {
+                title = fallbackTitle
+                body = fallbackBody
+            }
+        default:
+            title = fallbackTitle
+            body = fallbackBody
+        }
+
+        return .init(title: title, body: body)
+    }
+    
+    private func deliverUpdatesForContent(
+        _ list: AssetDecorationList,
+        when condition: () -> Bool,
+        success: () -> Void,
+        failure: () -> Void
+    ) {
+        if !condition() {
+            failure()
             return
         }
 
-        deliverSnapshot(next: next) {
-            [weak self] in
-            guard let self = self else {
-                return Snapshot()
-            }
+        var snapshot = Snapshot()
+        appendSectionsForContent(
+            list,
+            into: &snapshot
+        )
 
-            var snapshot = Snapshot()
-
-            snapshot.appendSections([ .assets ])
-
-            let assetItems: [AssetListViewItem] = self.assets.map {
-                let item = OptInAssetListItem(asset: $0)
-                return AssetListViewItem.asset(item)
-            }
-            snapshot.appendItems(
-                assetItems,
-                toSection: .assets
-            )
-
-            return snapshot
+        if !condition() {
+            failure()
+            return
         }
+
+        publishUpdatesByReloading(snapshot)
+        success()
     }
 
-    private func deliverNoContentSnapshot() {
-        deliverSnapshot(next: false) {
-            var snapshot = Snapshot()
-            snapshot.appendSections([.empty])
-            snapshot.appendItems(
-                [.noContent],
-                toSection: .empty
-            )
-            return snapshot
-        }
-    }
-
-    private func deliverSnapshot(
-        next: Bool,
-        _ snapshot: @escaping () -> Snapshot
+    private func appendSectionsForContent(
+        _ list: AssetDecorationList,
+        into snapshot: inout Snapshot
     ) {
-        snapshotQueue.async {
-            [weak self] in
-            guard let self = self else { return }
+        if list.results.isEmpty {
+            appendSectionsForNotFound(into: &snapshot)
+        } else {
+            appendSectionsForAssets(
+                list.results,
+                into: &snapshot
+            )
 
-            let newSnapshot = snapshot()
-
-            self.lastSnapshot = newSnapshot
-
-            let event: AssetListViewDataControllerEvent
-            if next {
-                event = .didUpdateNextAssets(newSnapshot)
-            } else {
-                event = .didUpdateAssets(newSnapshot)
+            if list.hasMore {
+                appendSectionsForLoadingMore(into: &snapshot)
             }
+        }
+    }
 
-            self.publish(event)
+    private func appendSectionsForNotFound(into snapshot: inout Snapshot) {
+        let items = makeItemsForNotFound()
+        snapshot.appendSections([ .noContent ])
+        snapshot.appendItems(
+            items,
+            toSection: .noContent
+        )
+    }
+
+    private func makeItemsForNotFound() -> [ItemIdentifier] {
+        return [ .notFound ]
+    }
+
+    private func appendSectionsForAssets(
+        _ assets: [AssetDecoration],
+        into snapshot: inout Snapshot
+    ) {
+        let items = makeItemsForAssets(assets)
+        snapshot.appendSections([ .content ])
+        snapshot.appendItems(
+            items,
+            toSection: .content
+        )
+    }
+
+    private func makeItemsForAssets(_ assets: [AssetDecoration]) -> [ItemIdentifier] {
+        return assets.map { .asset(makeItem(for: $0)) }
+    }
+
+    private func makeItem(for asset: AssetDecoration) -> OptInAssetList.AssetItem {
+        saveToCache(asset)
+        return .init(assetID: asset.id)
+    }
+
+    private func deliverUpdatesForLoadingMore() {
+        guard var snapshot = lastSnapshot else { return }
+
+        if snapshot.indexOfSection(.waitingForMore) != nil,
+           snapshot.itemIdentifiers(inSection: .waitingForMore).last == .loadingMore {
+            return
+        }
+
+        /// <note>
+        /// If the last snapshot contains the `loadingMoreFailed` item identifier, the section
+        /// should be removed first to not deal with the items in the section.
+        removeSectionsForLoadingMore(from: &snapshot)
+        appendSectionsForLoadingMore(into: &snapshot)
+
+        publishUpdates(snapshot)
+    }
+
+    private func removeSectionsForLoadingMore(from snapshot: inout Snapshot) {
+        guard snapshot.indexOfSection(.waitingForMore) != nil else { return }
+        snapshot.deleteSections([ .waitingForMore ])
+    }
+
+    private func appendSectionsForLoadingMore(into snapshot: inout Snapshot) {
+        let items = makeItemsForLoadingMore()
+        snapshot.appendSections([ .waitingForMore ])
+        snapshot.appendItems(
+            items,
+            toSection: .waitingForMore
+        )
+    }
+
+    private func makeItemsForLoadingMore() -> [ItemIdentifier] {
+        return [ .loadingMore ]
+    }
+
+    private func deliverUpdatesForMoreContent(
+        _ list: AssetDecorationList,
+        when condition: () -> Bool,
+        success: () -> Void,
+        failure: () -> Void
+    ) {
+        if !condition() {
+            failure()
+            return
+        }
+
+        guard var snapshot = lastSnapshot else {
+            failure()
+            return
+        }
+
+        appendSectionsForMoreContent(
+            list,
+            into: &snapshot
+        )
+
+        if !condition() {
+            failure()
+            return
+        }
+
+        publishUpdates(snapshot)
+        success()
+    }
+
+    private func appendSectionsForMoreContent(
+        _ list: AssetDecorationList,
+        into snapshot: inout Snapshot
+    ) {
+        let items = makeItemsForAssets(list.results)
+        snapshot.appendItems(
+            items,
+            toSection: .content
+        )
+
+        if !list.hasMore {
+            removeSectionsForLoadingMore(from: &snapshot)
+        }
+    }
+    
+    private func deliverUpdatesForLoadingMoreFailed(_ error: AssetListError) {
+        guard var snapshot = lastSnapshot else { return }
+
+        /// <note>
+        /// If the last snapshot contains the `loadingMoreFailed` item identifier, the section
+        /// should be removed first to not deal with the items in the section.
+        removeSectionsForLoadingMore(from: &snapshot)
+        appendSectionsForLoadingMoreFailed(
+            error,
+            into: &snapshot
+        )
+
+        publishUpdates(snapshot)
+    }
+
+    private func appendSectionsForLoadingMoreFailed(
+        _ error: AssetListError,
+        into snapshot: inout Snapshot
+    ) {
+        let items = makeItemsForLoadingMoreFailed(error)
+        snapshot.appendSections([ .waitingForMore ])
+        snapshot.appendItems(
+            items,
+            toSection: .waitingForMore
+        )
+    }
+
+    private func makeItemsForLoadingMoreFailed(_ error: AssetListError) -> [ItemIdentifier] {
+        let item = makeItem(for: error)
+        return [ .loadingMoreFailed(item) ]
+    }
+}
+
+extension AssetListViewAPIDataController {
+    private func publishUpdates(_ snapshot: Snapshot?) {
+        guard let snapshot else { return }
+
+        lastSnapshot = snapshot
+        publish(event: .didUpdate(snapshot))
+    }
+
+    private func publishUpdatesByReloading(_ snapshot: Snapshot?) {
+        guard let snapshot else { return }
+
+        lastSnapshot = snapshot
+        publish(event: .didReload(snapshot))
+    }
+
+    private func publish(event: AssetListDataControllerEvent) {
+        asyncMain { [weak self] in
+            guard let self else { return }
+            self.eventHandler?(event)
         }
     }
 }
 
 extension AssetListViewAPIDataController {
-    private func publish(
-        _ event: AssetListViewDataControllerEvent
-    ) {
-        asyncMain { [weak self] in
-            guard let self = self else {
-                return
-            }
+    private func findModel(forID id: AssetID) -> AssetDecoration? {
+        return assetModelsCache[id]
+    }
 
-            self.eventHandler?(event)
+    private func findViewModel(forID id: AssetID) -> OptInAssetListItemViewModel? {
+        if let cachedViewModel = assetViewModelsCache[id] {
+            return cachedViewModel
+        } else {
+            let asset = findModel(forID: id)
+            return asset.unwrap(OptInAssetListItemViewModel.init)
         }
+    }
+
+    private func saveToCache(_ asset: AssetDecoration) {
+        assetModelsCache[asset.id] = asset
+        assetViewModelsCache[asset.id] = OptInAssetListItemViewModel(asset: asset)
+    }
+
+    private func clearCache() {
+        assetModelsCache = [:]
+        assetViewModelsCache = [:]
+    }
+}
+
+extension AssetListViewAPIDataController {
+    private func makeAsyncLoadingQueue() -> AsyncSerialQueue {
+        let underlyingQueue = DispatchQueue(
+            label: "pera.queue.assetAddition.updates",
+            qos: .userInitiated
+        )
+        return .init(
+            name: "assetListViewAPIDataController.asyncLoadingQueue",
+            underlyingQueue: underlyingQueue
+        )
+    }
+
+    private func makeSearchThrottler() -> Throttler {
+        return .init(intervalInSeconds: 0.4)
     }
 }

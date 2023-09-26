@@ -153,7 +153,15 @@ indirect enum Screen {
     )
     case transactionResult
     case sendTransactionPreview(draft: TransactionSendDraft)
-    case wcMainTransactionScreen(draft: WalletConnectRequestDraft, delegate: WCMainTransactionScreenDelegate)
+    case wcMainTransactionScreen(
+        draft: WalletConnectTransactionSignRequestDraft,
+        delegate: WCMainTransactionScreenDelegate
+    )
+    case wcMainArbitraryDataScreen(
+        draft: WalletConnectArbitraryDataSignRequestDraft,
+        delegate: WCMainArbitraryDataScreenDelegate
+    )
+    case wcArbitraryDataScreen(data: WCArbitraryData, wcRequest: WalletConnectRequest)
     case wcSingleTransactionScreen(
         transactions: [WCTransaction],
         transactionRequest: WalletConnectRequest,

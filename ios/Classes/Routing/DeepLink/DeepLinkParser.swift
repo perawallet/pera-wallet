@@ -543,13 +543,23 @@ extension DeepLinkParser {
     }
     
     func discover(
-        walletConnectRequest draft: WalletConnectRequestDraft
+        walletConnectTransactionSignRequest draft: WalletConnectTransactionSignRequestDraft
     ) -> Result? {
         if !sharedDataController.isAvailable {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
         return .success(.wcMainTransactionScreen(draft: draft))
+    }
+
+    func discover(
+        walletConnectArbitraryDataSignRequest draft: WalletConnectArbitraryDataSignRequestDraft
+    ) -> Result? {
+        if !sharedDataController.isAvailable {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+
+        return .success(.wcMainArbitraryDataScreen(draft: draft))
     }
     
     func discoverBuyAlgoWithMoonPay(
@@ -595,7 +605,8 @@ extension DeepLinkParser {
             draft: QRSendTransactionDraft,
             shouldFilterAccount: ((Account) -> Bool)? = nil
         )
-        case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
+        case wcMainTransactionScreen(draft: WalletConnectTransactionSignRequestDraft)
+        case wcMainArbitraryDataScreen(draft: WalletConnectArbitraryDataSignRequestDraft)
         case buyAlgoWithMoonPay(draft: MoonPayDraft)
         case accountSelect(asset: AssetID)
         case externalInAppBrowser(destination: DiscoverExternalDestination)

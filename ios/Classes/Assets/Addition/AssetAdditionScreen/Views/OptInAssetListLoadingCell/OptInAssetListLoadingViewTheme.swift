@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2023 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,17 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetListViewTheme.swift
+//   OptInAssetListLoadingViewTheme.swift
 
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct AssetListViewTheme: LayoutSheet, StyleSheet {
-    let backgroundColor: Color
-    let cellSpacing: LayoutMetric
+struct OptInAssetListLoadingViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var asset: ManageAssetListItemLoadingViewTheme
+    var assetHeight: CGFloat
+    var assetSeparator: Separator
+    var numberOfAssets: Int
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.background
-        self.cellSpacing = 0
+        self.asset = ManageAssetListItemLoadingViewTheme(family)
+        self.assetHeight = 80
+        self.assetSeparator = Separator(
+            color: Colors.Layer.grayLighter,
+            size: 1,
+            position: .bottom((56, 0))
+        )
+        self.numberOfAssets = 3
     }
 }

@@ -17,15 +17,11 @@
 
 import Foundation
 
-class SDKTransactionSigner: TransactionSigner {
-
-    override func sign(_ data: Data?, with privateData: Data?) -> Data? {
-        return signTransaction(data, with: privateData)
-    }
-}
-
-extension SDKTransactionSigner {
-    private func signTransaction(_ data: Data?, with privateData: Data?) -> Data? {
+final class SDKTransactionSigner: TransactionSigner {
+    override func sign(
+        _ data: Data?,
+        with privateData: Data?
+    ) -> Data? {
         var transactionError: NSError?
 
         guard let unsignedTransactionData = data,

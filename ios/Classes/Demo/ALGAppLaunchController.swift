@@ -294,8 +294,10 @@ extension ALGAppLaunchController {
                 forWalletConnectSessionRequest: url,
                 prefersConnectionApproval: prefersConnectionApproval
             )
-        case .walletConnectRequest(let draft):
-            result = determineUIStateIfPossible(forWalletConnectRequest: draft)
+        case .walletConnectTransactionSignRequest(let draft):
+            result = determineUIStateIfPossible(forWalletConnectTransactionSignRequest: draft)
+        case .walletConnectArbitraryDataSignRequest(let draft):
+            result = determineUIStateIfPossible(forWalletConnectArbitraryDataSignRequest: draft)
         case .buyAlgoWithMoonPay(let draft):
             result = determineUIStateIfPossible(forMoonPay: draft)
         case .qrText(let qrText):
@@ -404,9 +406,9 @@ extension ALGAppLaunchController {
 
     
     private func determineUIStateIfPossible(
-        forWalletConnectRequest draft: WalletConnectRequestDraft
+        forWalletConnectTransactionSignRequest draft: WalletConnectTransactionSignRequestDraft
     ) -> DeeplinkResult {
-        let parserResult = deeplinkParser.discover(walletConnectRequest: draft)
+        let parserResult = deeplinkParser.discover(walletConnectTransactionSignRequest: draft)
         
         switch parserResult {
         case .none: return nil
@@ -414,7 +416,19 @@ extension ALGAppLaunchController {
         case .failure(let error): return .failure(error)
         }
     }
-    
+
+    private func determineUIStateIfPossible(
+        forWalletConnectArbitraryDataSignRequest draft: WalletConnectArbitraryDataSignRequestDraft
+    ) -> DeeplinkResult {
+        let parserResult = deeplinkParser.discover(walletConnectArbitraryDataSignRequest: draft)
+
+        switch parserResult {
+        case .none: return nil
+        case .success(let screen): return .success(.deeplink(screen))
+        case .failure(let error): return .failure(error)
+        }
+    }
+
     private func determineUIStateIfPossible(forMoonPay draft: MoonPayDraft) -> DeeplinkResult {
         let parserResult = deeplinkParser.discoverBuyAlgoWithMoonPay(draft: draft)
         

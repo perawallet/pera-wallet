@@ -22,6 +22,7 @@ extension UICollectionViewDiffableDataSource {
 
     func reload(
         _ snapshot: Snapshot,
+        animatingDifferences: Bool = true,
         completion: (() -> Void)? = nil
     ) {
         if #available(iOS 15, *) {
@@ -32,7 +33,7 @@ extension UICollectionViewDiffableDataSource {
         } else {
             apply(
                 snapshot,
-                animatingDifferences: true,
+                animatingDifferences: animatingDifferences,
                 completion: completion
             )
         }

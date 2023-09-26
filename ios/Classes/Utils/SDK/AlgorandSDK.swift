@@ -22,44 +22,44 @@ class AlgorandSDK {
     static let roundTreshold: Int64 = 1000
     
     func generatePrivateKey() -> Data? {
-        return AlgoMobileGenerateSK()
+        return AlgoSdkGenerateSK()
     }
     
     func sign(_ privateData: Data, with data: Data, error: inout NSError?) -> Data? {
-        return AlgoMobileSignTransaction(privateData, data, &error)
+        return AlgoSdkSignTransaction(privateData, data, &error)
     }
     
     func getSignedTransaction(_ transaction: Data, from signature: Data, error: inout NSError?) -> Data? {
-        return AlgoMobileAttachSignature(signature, transaction, &error)
+        return AlgoSdkAttachSignature(signature, transaction, &error)
     }
     
     func getSignedTransaction(with signer: String?, transaction: Data, from signature: Data, error: inout NSError?) -> Data? {
-        return AlgoMobileAttachSignatureWithSigner(signature, transaction, signer, &error)
+        return AlgoSdkAttachSignatureWithSigner(signature, transaction, signer, &error)
     }
 }
 
 extension AlgorandSDK {
     func mnemonicFrom(_ privateKey: Data, error: inout NSError?) -> String {
-        return AlgoMobileMnemonicFromPrivateKey(privateKey, &error)
+        return AlgoSdkMnemonicFromPrivateKey(privateKey, &error)
     }
     
     func privateKeyFrom(_ mnemonic: String, error: inout NSError?) -> Data? {
-        return AlgoMobileMnemonicToPrivateKey(mnemonic, &error)
+        return AlgoSdkMnemonicToPrivateKey(mnemonic, &error)
     }
     
     func addressFrom(_ privateKey: Data, error: inout NSError?) -> String? {
-        return AlgoMobileGenerateAddressFromSK(privateKey, &error)
+        return AlgoSdkGenerateAddressFromSK(privateKey, &error)
     }
     
     func addressFromPublicKey(_ publicKey: Data, error: inout NSError?) -> String {
-        return AlgoMobileGenerateAddressFromPublicKey(publicKey, &error)
+        return AlgoSdkGenerateAddressFromPublicKey(publicKey, &error)
     }
 }
 
 extension AlgorandSDK {
     func sendAlgos(with draft: AlgosTransactionDraft, error: inout NSError?) -> Data? {
         let toAddress = draft.toAccount.trimmingCharacters(in: .whitespacesAndNewlines)
-        return AlgoMobileMakePaymentTxn(
+        return AlgoSdkMakePaymentTxn(
             getTrimmedAddress(from: draft.from),
             toAddress,
             draft.amount.toSDKInt64(),
@@ -73,7 +73,7 @@ extension AlgorandSDK {
 
 extension AlgorandSDK {
     func sendAsset(with draft: AssetTransactionDraft, error: inout NSError?) -> Data? {
-        return AlgoMobileMakeAssetTransferTxn(
+        return AlgoSdkMakeAssetTransferTxn(
             getTrimmedAddress(from: draft.from),
             draft.toAccount.trimmingCharacters(in: .whitespacesAndNewlines),
             draft.closeTo, // closing address should be empty for asset transaction
@@ -86,7 +86,7 @@ extension AlgorandSDK {
     }
     
     func addAsset(with draft: AssetAdditionDraft, error: inout NSError?) -> Data? {
-        return AlgoMobileMakeAssetAcceptanceTxn(
+        return AlgoSdkMakeAssetAcceptanceTxn(
             getTrimmedAddress(from: draft.from),
             draft.note,
             draft.transactionParams.toSDKSuggestedParams(),
@@ -96,7 +96,7 @@ extension AlgorandSDK {
     }
     
     func removeAsset(with draft: AssetRemovalDraft, error: inout NSError?) -> Data? {
-        return AlgoMobileMakeAssetTransferTxn(
+        return AlgoSdkMakeAssetTransferTxn(
             getTrimmedAddress(from: draft.from),
             getTrimmedAddress(from: draft.from), // Receiver address should be same with the sender while removing an asset
             draft.assetCreatorAddress,
@@ -111,7 +111,7 @@ extension AlgorandSDK {
 
 extension AlgorandSDK {
     func rekeyAccount(with draft: RekeyTransactionDraft, error: inout NSError?) -> Data? {
-        return AlgoMobileMakeRekeyTxn(
+        return AlgoSdkMakeRekeyTxn(
             getTrimmedAddress(from: draft.from),
             draft.rekeyedAccount.trimmingCharacters(in: .whitespacesAndNewlines),
             draft.transactionParams.toSDKSuggestedParams(),
@@ -122,27 +122,31 @@ extension AlgorandSDK {
 
 extension AlgorandSDK {
     func isValidAddress(_ address: String) -> Bool {
-        return AlgoMobileIsValidAddress(address)
+        return AlgoSdkIsValidAddress(address)
+    }
+    
+    func signBytes(data: Data, with privateData: Data, with error: inout NSError?) -> Data? {
+        return AlgoSdkSignBytes(privateData, data, &error)
     }
 
     func msgpackToJSON(_ msgpack: Data?, error: inout NSError?) -> String {
-        return AlgoMobileTransactionMsgpackToJson(msgpack, &error)
+        return AlgoSdkTransactionMsgpackToJson(msgpack, &error)
     }
 
     func jsonToMsgpack(_ json: String, error: inout NSError?) -> Data? {
-        return AlgoMobileTransactionJsonToMsgpack(json, &error)
+        return AlgoSdkTransactionJsonToMsgpack(json, &error)
     }
 
     func findAndVerifyTransactionGroups(for transactions: [Data], error: inout NSError?) -> [Int64]? {
-        return AlgoMobileFindAndVerifyTxnGroups(transactions.toSDKByteArray(), &error)?.toIntArray()
+        return AlgoSdkFindAndVerifyTxnGroups(transactions.toSDKByteArray(), &error)?.toIntArray()
     }
 
     func getTransactionID(for transaction: Data) -> String {
-        return AlgoMobileGetTxID(transaction)
+        return AlgoSdkGetTxID(transaction)
     }
 
     func getAddressfromProgram(_ program: Data?) -> String {
-        return AlgoMobileAddressFromProgram(program)
+        return AlgoSdkAddressFromProgram(program)
     }
 }
 
@@ -153,8 +157,8 @@ extension AlgorandSDK {
 }
 
 fileprivate extension TransactionParams {
-    func toSDKSuggestedParams() -> AlgoMobileSuggestedParams {
-        let params = AlgoMobileSuggestedParams()
+    func toSDKSuggestedParams() -> AlgoSdkSuggestedParams {
+        let params = AlgoSdkSuggestedParams()
         params.fee = Int64(fee)
         params.firstRoundValid = Int64(lastRound)
         params.lastRoundValid = Int64(lastRound) + AlgorandSDK.roundTreshold // Need to add 1000 as last round
@@ -165,8 +169,8 @@ fileprivate extension TransactionParams {
 }
 
 fileprivate extension Array where Element == Data {
-    func toSDKByteArray() -> AlgoMobileBytesArray {
-        let transactionByteArray = AlgoMobileBytesArray()
+    func toSDKByteArray() -> AlgoSdkBytesArray {
+        let transactionByteArray = AlgoSdkBytesArray()
         forEach {
             transactionByteArray.append($0)
         }
@@ -174,7 +178,7 @@ fileprivate extension Array where Element == Data {
     }
 }
 
-fileprivate extension AlgoMobileInt64Array {
+fileprivate extension AlgoSdkInt64Array {
     func toIntArray() -> [Int64] {
         var intArray = [Int64]()
 
@@ -188,8 +192,8 @@ fileprivate extension AlgoMobileInt64Array {
 
 fileprivate extension UInt64 {
     // Received from: https://github.com/algorand/go-algorand-sdk/blob/MobileWrapper/mobile/utils.go#L22-L27
-    func toSDKInt64() -> AlgoMobileUint64 {
-        let int64 = AlgoMobileUint64()
+    func toSDKInt64() -> AlgoSdkUint64 {
+        let int64 = AlgoSdkUint64()
         let upperValue = (self >> 32)
         int64.upper = Int64(upperValue)
         let lowerValue = UInt64(UInt32.max) & self

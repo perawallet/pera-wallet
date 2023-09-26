@@ -23,6 +23,9 @@ class PaginatedList<Item> {
     var nextCursor: String? {
         return next?.queryParameters?[APIParamKey.cursor.rawValue]
     }
+    var hasMore: Bool {
+        return !nextCursor.isNilOrEmpty
+    }
 
     let count: Int
     let next: URL?

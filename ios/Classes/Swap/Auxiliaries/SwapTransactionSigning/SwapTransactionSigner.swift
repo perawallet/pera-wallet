@@ -142,7 +142,7 @@ extension SwapTransactionSigner {
         if let account {
             sign(
                 signature: data,
-                signer: LedgerTransactionSigner(account: account),
+                signer: LedgerTransactionSigner(signerAddress: account.authAddress),
                 unsignedTransaction: unsignedTransaction!
             )
         }

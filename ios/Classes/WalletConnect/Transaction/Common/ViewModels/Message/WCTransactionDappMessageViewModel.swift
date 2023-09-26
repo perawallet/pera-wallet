@@ -19,7 +19,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 
-class WCTransactionDappMessageViewModel {
+final class WCTransactionDappMessageViewModel {
     private(set) var image: ImageSource?
     private(set) var name: String?
     private(set) var message: String?
@@ -37,6 +37,17 @@ class WCTransactionDappMessageViewModel {
         setName(from: session)
         setMessage(from: session, option: transactionOption, transaction: transaction)
         setIsReadMoreHidden()
+    }
+
+    init(
+        session: WCSession,
+        imageSize: CGSize
+    ) {
+        setImage(
+            from: session,
+            and: imageSize
+        )
+        setName(from: session)
     }
 
     private func setImage(from session: WCSession, and imageSize: CGSize) {

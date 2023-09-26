@@ -341,6 +341,40 @@ class Router:
             queue.asyncAfter(deadline: time) {
                 task()
             }
+        case .wcMainArbitraryDataScreen(let draft):
+            let task = {
+                [weak self] in
+                guard let self else { return }
+
+                route(
+                    to: .wcMainArbitraryDataScreen(
+                        draft: draft,
+                        delegate: rootViewController
+                    ),
+                    from: findVisibleScreen(over: rootViewController),
+                    by: .customPresent(
+                        presentationStyle: .fullScreen,
+                        transitionStyle: nil,
+                        transitioningDelegate: nil
+                    ),
+                    animated: true
+                )
+            }
+
+            /// <note>
+            /// Refactor
+            /// This delay should be removed after refactoring the router.
+            /// A delay has been added to ensure that the screen is not presented
+            /// before the top view controller's view is added to the window's hierarchy.
+            /// If the top view controller's view is not in the hierarchy, UIKit will not
+            /// present the WC Transaction screen.
+            /// Error: Attempt to present <*> on <*> (from <*>) whose view is not in the window hierarchy.
+            let delay = 0.3
+            let time: DispatchTime = .now() + delay
+            let queue: DispatchQueue = .main
+            queue.asyncAfter(deadline: time) {
+                task()
+            }
         case .buyAlgoWithMoonPay(let draft):
             route(
                 to: .moonPayIntroduction(draft: draft, delegate: self),
@@ -1074,9 +1108,25 @@ class Router:
                 configuration: configuration
             )
         case let .wcMainTransactionScreen(draft, delegate):
-            let aViewController = WCMainTransactionScreen(draft: draft, configuration: configuration)
+            let aViewController = WCMainTransactionScreen(
+                draft: draft,
+                configuration: configuration
+            )
             aViewController.delegate = delegate
             viewController = aViewController
+        case let .wcMainArbitraryDataScreen(draft, delegate):
+            let aViewController = WCMainArbitraryDataScreen(
+                draft: draft,
+                configuration: configuration
+            )
+            aViewController.delegate = delegate
+            viewController = aViewController
+        case let .wcArbitraryDataScreen(data, wcRequest):
+            viewController = WCArbitraryDataViewController(
+                data: data,
+                wcRequest: wcRequest,
+                configuration: configuration
+            )
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
             let currencyFormatter = CurrencyFormatter()
             let dataSource = WCMainTransactionDataSource(

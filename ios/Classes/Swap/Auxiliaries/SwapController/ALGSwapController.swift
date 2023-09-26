@@ -22,7 +22,7 @@ final class ALGSwapController: SwapController {
 
     var account: Account
     let swapType: SwapType = .fixedInput /// <note> Swap type won't change for now.
-    let providers: [SwapProvider] = [.tinyman, .tinymanV2] /// <note> Only provider is Tinyman for now.
+    let providers: [SwapProvider] = [.tinyman, .tinymanV2, .vestige] /// <note> Only provider is Tinyman for now.
 
     var userAsset: Asset
     var quote: SwapQuote?

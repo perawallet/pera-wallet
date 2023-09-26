@@ -36,11 +36,14 @@ struct WCSingleTransactionRequestMiddleViewTheme:
         self.horizontalStackViewSpacing = 8
         self.iconHeight = 24
         self.titleLabel = [
-            .textOverflow(FittingText()),
+            .textOverflow(SingleLineText()),
+            .textAlignment(.center),
             .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(36))
         ]
         self.subtitleLabel = [
+            .textOverflow(MultilineText(numberOfLines: 2)),
+            .textAlignment(.center),
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]

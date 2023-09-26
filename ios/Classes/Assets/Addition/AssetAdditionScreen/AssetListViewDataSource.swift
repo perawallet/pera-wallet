@@ -19,45 +19,146 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetListViewSection, AssetListViewItem> {
+final class AssetListViewDataSource: UICollectionViewDiffableDataSource<
+    OptInAssetList.SectionIdentifier,
+    OptInAssetList.ItemIdentifier
+> {
     init(
-        _ collectionView: UICollectionView
+        collectionView: UICollectionView,
+        dataController: AssetListViewDataController
     ) {
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
-            case let .asset(item):
-                let cell = collectionView.dequeue(
-                    OptInAssetListItemCell.self,
-                    at: indexPath
-                )
-                cell.bindData(item.viewModel)
-                return cell
             case .loading:
-                return collectionView.dequeue(
-                    PreviewLoadingCell.self,
+                return Self.listView(
+                    collectionView,
+                    cellForLoadingItemAt: indexPath
+                )
+            case .loadingFailed(let item):
+                return Self.listView(
+                    collectionView,
+                    cellForLoadingFailedItem: item,
                     at: indexPath
                 )
-            case .noContent:
-                let cell = collectionView.dequeue(
-                    NoContentCell.self,
+            case .notFound:
+                return Self.listView(
+                    collectionView,
+                    cellForNotFoundItemAt: indexPath
+                )
+            case .asset(let item):
+                let viewModel: OptInAssetListItemViewModel? = dataController[item.assetID]
+                return Self.listView(
+                    collectionView,
+                    cellForAssetItemWith: viewModel,
                     at: indexPath
                 )
-                cell.bindData(
-                    AssetAdditionNoContentViewModel()
+            case .loadingMore:
+                return Self.listView(
+                    collectionView,
+                    cellForLoadingMoreItemAt: indexPath
                 )
-                return cell
+            case .loadingMoreFailed(let item):
+                return Self.listView(
+                    collectionView,
+                    cellForLoadingMoreFailedItem: item,
+                    at: indexPath
+                )
             }
         }
 
-        [
-            PreviewLoadingCell.self,
+        prepareForUse(collectionView)
+    }
+}
+
+extension AssetListViewDataSource {
+    private func prepareForUse(_ listView: UICollectionView) {
+        let cells = [
+            OptInAssetListLoadingCell.self,
+            NoContentWithActionCell.self,
+            NoContentCell.self,
             OptInAssetListItemCell.self,
-            NoContentCell.self
-        ].forEach {
-            collectionView.register($0)
+            OptInAssetNextListLoadingCell.self
+        ]
+        cells.forEach {
+            listView.register($0)
         }
     }
 }
 
+extension AssetListViewDataSource {
+    private static func listView(
+        _ listView: UICollectionView,
+        cellForLoadingItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        return listView.dequeue(
+            OptInAssetListLoadingCell.self,
+            at: indexPath
+        )
+    }
+
+    private static func listView(
+        _ listView: UICollectionView,
+        cellForLoadingFailedItem item: OptInAssetList.ErrorItem,
+        at indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let viewModel = OptInAssetListErrorViewModel(error: item)
+        let cell = listView.dequeue(
+            NoContentWithActionCell.self,
+            at: indexPath
+        )
+        cell.bindData(viewModel)
+        return cell
+    }
+
+    private static func listView(
+        _ listView: UICollectionView,
+        cellForNotFoundItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let viewModel = OptInAssetListNotFoundViewModel()
+        let cell = listView.dequeue(
+            NoContentCell.self,
+            at: indexPath
+        )
+        cell.bindData(viewModel)
+        return cell
+    }
+
+    private static func listView(
+        _ listView: UICollectionView,
+        cellForAssetItemWith viewModel: OptInAssetListItemViewModel?,
+        at indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = listView.dequeue(
+            OptInAssetListItemCell.self,
+            at: indexPath
+        )
+        cell.bindData(viewModel)
+        return cell
+    }
+
+    private static func listView(
+        _ listView: UICollectionView,
+        cellForLoadingMoreItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        return listView.dequeue(
+            OptInAssetNextListLoadingCell.self,
+            at: indexPath
+        )
+    }
+
+    private static func listView(
+        _ listView: UICollectionView,
+        cellForLoadingMoreFailedItem item: OptInAssetList.ErrorItem,
+        at indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let viewModel = OptInAssetNextListErrorViewModel(error: item)
+        let cell = listView.dequeue(
+            NoContentWithActionCell.self,
+            at: indexPath
+        )
+        cell.bindData(viewModel)
+        return cell
+    }
+}

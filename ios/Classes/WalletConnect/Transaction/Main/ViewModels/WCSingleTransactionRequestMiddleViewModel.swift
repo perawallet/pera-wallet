@@ -21,16 +21,18 @@ import UIKit
 
 final class WCSingleTransactionRequestMiddleViewModel {
     private(set) var title: TextProvider?
-    private(set) var subtitle: String?
+    private(set) var subtitle: TextProvider?
     private(set) var verificationTierIcon: UIImage?
 
     var asset: Asset? {
         didSet {
-            setData(transaction, for: account)
+            if let transaction {
+                setData(transaction, for: account)
+            }
         }
     }
 
-    private let transaction: WCTransaction
+    private let transaction: WCTransaction?
     private let account: Account?
     private let currency: CurrencyProvider
     private let currencyFormatter: CurrencyFormatter
@@ -50,6 +52,22 @@ final class WCSingleTransactionRequestMiddleViewModel {
             transaction,
             for: account
         )
+    }
+
+    init(
+        data: WCArbitraryData,
+        account: Account?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        self.transaction = nil
+        
+        self.account = account
+        self.currency = currency
+        self.currencyFormatter = currencyFormatter
+
+        self.title = "title-arbitrary-data".localized
+        self.subtitle = data.message
     }
 
     private func setData(

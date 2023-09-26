@@ -40,7 +40,6 @@ struct WCSingleTransactionRequestBottomViewTheme: LayoutSheet, StyleSheet {
 
     init(_ family: LayoutFamily) {
         showTransactionDetailsButton = [
-            .title("single-transaction-request-show-detail-title".localized),
             .titleColor([.normal(Colors.Link.primary)]),
             .font(Fonts.DMSans.bold.make(13))
         ]

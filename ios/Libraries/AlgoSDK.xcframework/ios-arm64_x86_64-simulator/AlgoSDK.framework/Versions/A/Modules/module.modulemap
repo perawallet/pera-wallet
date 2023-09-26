@@ -1,6 +1,6 @@
 framework module "AlgoSDK" {
 	header "ref.h"
-    header "AlgoMobile.objc.h"
+    header "AlgoSdk.objc.h"
     header "Universe.objc.h"
     header "AlgoSDK.h"
 

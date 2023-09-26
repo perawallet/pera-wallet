@@ -25,6 +25,7 @@ final class WCSingleTransactionRequestBottomViewModel {
     private(set) var warningMessage: String?
     private(set) var assetIcon: UIImage?
     private(set) var balance: String?
+    private(set) var showDetailsActionTitle: String?
 
     init(
         transaction: WCTransaction,
@@ -47,6 +48,29 @@ final class WCSingleTransactionRequestBottomViewModel {
             asset: asset,
             currencyFormatter: currencyFormatter
         )
+        showDetailsActionTitle = "single-transaction-request-show-detail-title".localized
+    }
+
+    init(
+        data: WCArbitraryData,
+        account: Account?,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        senderAddress =
+            data.requestedSigner.account?.name ??
+            data.requestedSigner.account?.address
+        assetIcon = account?.typeImage
+
+        bindNetworkFee(
+            data: data,
+            currencyFormatter: currencyFormatter
+        )
+        bindBalance(
+            data: data,
+            account: account,
+            currencyFormatter: currencyFormatter
+        )
+        showDetailsActionTitle = "title-show-details".localized
     }
 }
 
@@ -88,5 +112,34 @@ extension WCSingleTransactionRequestBottomViewModel {
 
             balance = currencyFormatter.format(amount.toAlgos)
         }
+    }
+}
+
+extension WCSingleTransactionRequestBottomViewModel {
+    private func bindBalance(
+        data: WCArbitraryData,
+        account: Account?,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        guard let amount = account?.algo.amount else {
+            balance = nil
+            return
+        }
+
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
+        balance = currencyFormatter.format(amount.toAlgos)
+    }
+
+    private func bindNetworkFee(
+        data: WCArbitraryData,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        let fee: UInt64 = .zero
+        let text = currencyFormatter.format(fee.toAlgos)
+        networkFee = text.someString
     }
 }

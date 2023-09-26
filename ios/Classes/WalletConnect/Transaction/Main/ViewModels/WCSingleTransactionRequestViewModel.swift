@@ -46,6 +46,26 @@ final class WCSingleTransactionRequestViewModel {
         setTitle(transaction: transaction, account: account)
     }
 
+    init(
+        data: WCArbitraryData,
+        account: Account?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        bottomView = WCSingleTransactionRequestBottomViewModel(
+            data: data,
+            account: account,
+            currencyFormatter: currencyFormatter
+        )
+        middleView = WCSingleTransactionRequestMiddleViewModel(
+            data: data,
+            account: account,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        title = "request-title".localized
+    }
+
     private func setTitle(transaction: WCTransaction, account: Account?) {
         guard let transactionDetail = transaction.transactionDetail,
               let type = transactionDetail.transactionType(for: account) else {

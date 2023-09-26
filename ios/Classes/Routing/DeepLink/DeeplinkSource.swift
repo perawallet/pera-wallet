@@ -26,7 +26,8 @@ enum DeeplinkSource {
     /// false => Take the action immediately.
     case remoteNotification(UserInfo, waitForUserConfirmation: Bool)
     case walletConnectSessionRequest(URL, prefersConnectionApproval: Bool = true)
-    case walletConnectRequest(WalletConnectRequestDraft)
+    case walletConnectTransactionSignRequest(WalletConnectTransactionSignRequestDraft)
+    case walletConnectArbitraryDataSignRequest(WalletConnectArbitraryDataSignRequestDraft)
     case buyAlgoWithMoonPay(MoonPayDraft)
     case qrText(QRText)
     case externalInAppBrowser(DiscoverExternalDestination)
@@ -55,8 +56,13 @@ extension DeeplinkSource {
 /// <todo>
 /// I think we should move it elsewhere, but let's think about it later when refactoring Wallet
 /// Connect infrastructure.
-struct WalletConnectRequestDraft {
+struct WalletConnectTransactionSignRequestDraft {
     let request: WalletConnectRequest
     let transactions: [WCTransaction]
     let option: WCTransactionOption?
+}
+
+struct WalletConnectArbitraryDataSignRequestDraft {
+    let request: WalletConnectRequest
+    let arbitraryData: [WCArbitraryData]
 }

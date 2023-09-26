@@ -90,7 +90,7 @@ final class WCMainTransactionScreen:
     private let currencyFormatter: CurrencyFormatter
 
     init(
-        draft: WalletConnectRequestDraft,
+        draft: WalletConnectTransactionSignRequestDraft,
         configuration: ViewControllerConfiguration
     ) {
         self.transactions = draft.transactions
@@ -172,7 +172,8 @@ extension WCMainTransactionScreen {
 
             validateTransactions(
                 transactions,
-                with: dataSource.groupedTransactions
+                with: dataSource.groupedTransactions,
+                sharedDataController: sharedDataController
             )
 
             /// <note>:
@@ -311,6 +312,7 @@ extension WCMainTransactionScreen {
     private func createTransactionSigner() -> WCTransactionSigner {
         let signer = WCTransactionSigner(
             api: api!,
+            sharedDataController: sharedDataController,
             analytics: analytics
         )
         signer.delegate = self
@@ -413,7 +415,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
         guard let transaction = getFirstSignableTransaction(),
               let index = transactions.firstIndex(of: transaction) else {
-            rejectSigning(reason: .unauthorized(.signerNotFound))
+            rejectSigning(reason: .unauthorized(.transactionSignerNotFound))
             return
         }
 

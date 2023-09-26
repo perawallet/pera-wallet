@@ -16,15 +16,32 @@
 //  AssetAdditionViewController.swift
 
 import UIKit
+import MacaroonUIKit
 import MagpieHipo
 import MagpieExceptions
 
 final class AssetAdditionViewController:
     BaseViewController,
-    TestNetTitleDisplayable,
+    SearchInputViewDelegate,
     UICollectionViewDelegateFlowLayout {
-    private lazy var theme = Theme()
+    private lazy var searchInputView = SearchInputView()
+    private lazy var searchInputBackgroundView = EffectView()
+    private lazy var listView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: AssetListViewLayout.build()
+    )
 
+    private lazy var dataSource = AssetListViewDataSource(
+        collectionView: listView,
+        dataController: dataController
+    )
+    private lazy var listLayout = AssetListViewLayout(
+        dataSource: dataSource,
+        dataController: dataController
+    )
+
+    private lazy var currencyFormatter = CurrencyFormatter()
+    
     private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToLedgerConnectionIssuesWarning = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToLedgerConnection = BottomSheetTransition(
@@ -36,6 +53,10 @@ final class AssetAdditionViewController:
         interactable: false
     )
 
+    private lazy var theme = Theme()
+
+    private var isViewLayoutLoaded = false
+
     private var ledgerConnectionScreen: LedgerConnectionScreen?
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
@@ -45,151 +66,65 @@ final class AssetAdditionViewController:
         return Array(optInTransactions.values.map { $0.transactionController })
     }
 
-    private lazy var dataSource = AssetListViewDataSource(assetListView.collectionView)
-    private lazy var listLayout = AssetListViewLayout(listDataSource: dataSource)
-
-    private lazy var assetSearchInput = SearchInputView()
-    private lazy var assetListView = AssetListView()
-
-    private lazy var currencyFormatter = CurrencyFormatter()
-
     private let dataController: AssetListViewDataController
-
+    
     init(
         dataController: AssetListViewDataController,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
         super.init(configuration: configuration)
+
+        startObservingDataUpdates()
     }
 
     override func configureNavigationBarAppearance() {
         addBarButtons()
-    }
-
-    override func configureAppearance() {
-        super.configureAppearance()
-
-        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        title = "title-add-asset".localized
-    }
-
-    override func prepareLayout() {
-        super.prepareLayout()
-
-        addAssetSearchInput()
-        addAssetList()
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-
-        assetSearchInput.delegate = self
-
-        assetListView.collectionView.dataSource = dataSource
-        assetListView.collectionView.delegate = self
+        bindNavigationItemTitle()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        dataController.eventHandler = {
-            [weak self] event in
-            guard let self = self else {
-                return
-            }
-
-            switch event {
-            case .didUpdateAccount:
-                self.configureAccessoryOfVisibleCells()
-            case .didUpdateAssets(let snapshot):
-                self.dataSource.reload(snapshot) {
-                    [weak self] in
-                    guard let self = self else { return }
-                    
-                    self.assetListView.collectionView.scrollToTop(animated: true)
-                }
-            case .didUpdateNextAssets(let snapshot):
-                self.dataSource.apply(
-                    snapshot,
-                    animatingDifferences: self.isViewAppeared
-                )
-            }
-        }
-
-        dataController.load()
+        addUI()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        restartLoadingOfVisibleCellsIfNeeded()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if view.bounds.isEmpty { return }
+
+        if !isViewLayoutLoaded {
+            loadInitialData()
+            isViewLayoutLoaded = true
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        startAnimatingLoadingIfNeededWhenViewDidAppear()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        assetListView.collectionView.visibleCells.forEach {
-            let loadingCell = $0 as? PreviewLoadingCell
-            loadingCell?.stopAnimating()
-        }
-
         transactionControllers.forEach { controller in
             controller.stopBLEScan()
             controller.stopTimer()
         }
+
+        stopAnimatingLoadingIfNeededWhenViewDidDisappear()
     }
 }
 
+/// <mark>
+/// SearchInputViewDelegate
 extension AssetAdditionViewController {
-    private func createNewTransactionController(
-        for asset: AssetDecoration
-    ) -> TransactionController {
-        let transactionController = TransactionController(
-            api: api!,
-            sharedDataController: sharedDataController,
-            bannerController: bannerController,
-            analytics: analytics
-        )
-        optInTransactions[asset.id] = AssetOptInTransaction(
-            asset: asset,
-            transactionController: transactionController
-        )
-        transactionController.delegate = self
-        return transactionController
+    func searchInputViewDidEdit(_ view: SearchInputView) {
+        loadRequestedData()
     }
 
-    private func clearTransactionCache(
-        _ transactionController: TransactionController
-    ) {
-        if let assetID = getAssetID(from: transactionController) {
-            optInTransactions[assetID] = nil
-        }
-    }
-
-    private func getAssetID(
-        from transactionController: TransactionController
-    ) -> AssetID? {
-        return transactionController.assetTransactionDraft?.assetIndex
-    }
-
-    private func findCell(
-        from asset: AssetDecoration
-    ) -> OptInAssetListItemCell?  {
-        let item = AssetListViewItem.asset(OptInAssetListItem(asset: asset))
-        let indexPath = dataSource.indexPath(for: item)
-        return indexPath.unwrap {
-            assetListView.collectionView.cellForItem(at: $0)
-        } as? OptInAssetListItemCell
-    }
-
-    private func restoreCellState(
-        for transactionController: TransactionController
-    ) {
-        if let assetID = getAssetID(from: transactionController),
-           let assetDetail = optInTransactions[assetID]?.asset,
-           let cell = findCell(from: assetDetail) {
-            cell.accessory = .add
-        }
+    func searchInputViewDidReturn(_ view: SearchInputView) {
+        view.endEditing()
     }
 }
 
@@ -229,29 +164,27 @@ extension AssetAdditionViewController {
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        defer {
-            dataController.loadNextPageIfNeeded(for: indexPath)
-        }
-
-        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
-            return
-        }
+        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else { return }
 
         switch itemIdentifier {
-        case .asset(let item):
-            configureAccessory(
-                cell as? OptInAssetListItemCell,
-                for: item
-            )
-            linkInteractors(
-                cell as? OptInAssetListItemCell,
-                for: item
-            )
         case .loading:
-            let loadingCell = cell as? PreviewLoadingCell
-            loadingCell?.startAnimating()
-        default:
-            break
+            startAnimatingListLoadingIfNeeded(cell)
+        case .loadingFailed:
+            startObservingLoadingFailedEvents(cell)
+        case .asset(let item):
+            configureAssetAccessory(
+                cell,
+                for: item
+            )
+            startObservingAssetEvents(
+                cell,
+                for: item
+            )
+        case .loadingMore:
+            startAnimatingLoadingMoreCellIfNeeded(cell)
+        case .loadingMoreFailed:
+            startObservingLoadingMoreFailedEvents(cell)
+        default: break
         }
     }
 
@@ -260,14 +193,13 @@ extension AssetAdditionViewController {
         didEndDisplaying cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
-            return
-        }
+        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else { return }
 
         switch itemIdentifier {
         case .loading:
-            let loadingCell = cell as? PreviewLoadingCell
-            loadingCell?.stopAnimating()
+            stopAnimatingListLoadingIfNeeded(cell)
+        case .loadingMore:
+            stopAnimatingLoadingMoreCellIfNeeded(cell)
         default:
             break
         }
@@ -277,77 +209,31 @@ extension AssetAdditionViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        guard case .asset(let item) = dataSource.itemIdentifier(for: indexPath) else { return }
+        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else { return }
 
-        let asset = item.model
-
-        if asset.isCollectible {
-            let cell = collectionView.cellForItem(at: indexPath)
-            let optInCell = cell as? OptInAssetListItemCell
-            openCollectibleDetail(
-                asset,
-                from: optInCell
+        switch itemIdentifier {
+        case .asset(let item):
+            selectAsset(
+                item,
+                at: indexPath
             )
-        } else {
-            let cell = collectionView.cellForItem(at: indexPath)
-            let optInCell = cell as? OptInAssetListItemCell
-            openASADiscovery(
-                asset,
-                from: optInCell
-            )
+        default:
+            break
         }
     }
+}
 
-    private func openCollectibleDetail(
-        _ asset: AssetDecoration,
-        from cell: OptInAssetListItemCell? = nil
-    ) {
-        let account = dataController.account
-        let collectibleAsset = CollectibleAsset(
-            asset: ALGAsset(id: asset.id),
-            decoration: asset
-        )
-        let screen = Screen.collectibleDetail(
-            asset: collectibleAsset,
-            account: account,
-            quickAction: .optIn
-        ) { event in
-            switch event {
-            case .didOptOutAssetFromAccount:
-                break
-            case .didOptOutFromAssetWithQuickAction:
-                break
-            case .didOptInToAsset:
-                cell?.accessory = .loading
-            }
-        }
-        open(
-            screen,
-            by: .push
-        )
-    }
+/// <mark>
+/// UIScrollViewDelegate
+extension AssetAdditionViewController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentHeight = scrollView.contentSize.height
+        let scrollHeight = scrollView.bounds.height
 
-    private func openASADiscovery(
-        _ asset: AssetDecoration,
-        from cell: OptInAssetListItemCell? = nil
-    ) {
-        let account = dataController.account
-        let screen = Screen.asaDiscovery(
-            account: account,
-            quickAction: .optIn,
-            asset: asset
-        ) { event in
-            switch event {
-            case .didOptInToAsset:
-                cell?.accessory = .loading
-            case .didOptOutFromAsset:
-                break
-            }
+        if contentHeight <= scrollHeight ||
+           contentHeight - scrollView.contentOffset.y < 2 * scrollHeight {
+            loadMoreData()
         }
-        open(
-            screen,
-            by: .push
-        )
     }
 }
 
@@ -372,50 +258,94 @@ extension AssetAdditionViewController {
 
         rightBarButtonItems = [infoBarButton]
     }
+    
+    private func bindNavigationItemTitle() {
+        title = "title-add-asset".localized
+    }
 }
 
 extension AssetAdditionViewController {
-    private func addAssetSearchInput() {
-        assetSearchInput.customize(theme.searchInputViewTheme)
-        view.addSubview(assetSearchInput)
-        assetSearchInput.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.searchInputTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.searchInputHorizontalPadding)
-        }
+    private func addUI() {
+        addBackground()
+        addSearchInput()
+        addList()
     }
 
-    private func addAssetList() {
-        assetListView.customize(AssetListViewTheme())
-        view.addSubview(assetListView)
-        assetListView.snp.makeConstraints {
-            $0.top.equalTo(assetSearchInput.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
+    private func addBackground() {
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+    }
+    
+    private func addSearchInput() {
+        searchInputView.customize(theme.searchInputTheme)
+        
+        view.addSubview(searchInputView)
+        searchInputView.snp.makeConstraints {
+            $0.top == theme.searchInputTopPadding
+            $0.leading.trailing == theme.searchInputHorizontalPadding
         }
+        
+        searchInputView.delegate = self
+        
+        searchInputBackgroundView.effect = theme.searchInputBackground
+        searchInputBackgroundView.isUserInteractionEnabled = false
+
+        view.insertSubview(
+            searchInputBackgroundView,
+            belowSubview: searchInputView
+        )
+        searchInputBackgroundView.snp.makeConstraints {
+            $0.fitToHeight(theme.searchInputBackgroundHeight)
+            $0.top == searchInputView.snp.bottom
+            $0.leading.trailing == 0
+        }
+    }
+    
+    private func addList() {
+        view.insertSubview(
+            listView,
+            belowSubview: searchInputBackgroundView
+        )
+        listView.snp.makeConstraints {
+            $0.top == searchInputView.snp.bottom
+            $0.leading.trailing.bottom == 0
+        }
+        
+        listView.backgroundColor = theme.listBackgroundColor.uiColor
+        listView.showsVerticalScrollIndicator = false
+        listView.showsHorizontalScrollIndicator = false
+        listView.alwaysBounceVertical = true
+        listView.keyboardDismissMode = .onDrag
+        listView.delegate = self
     }
 }
 
 extension AssetAdditionViewController {
     private func configureAccessoryOfVisibleCells() {
-        let listView = assetListView.collectionView
-
         listView.indexPathsForVisibleItems.forEach {
             indexPath in
-            guard let listItem = dataSource.itemIdentifier(for: indexPath) else { return }
-            guard case let AssetListViewItem.asset(item) = listItem else { return }
+            guard let cell = listView.cellForItem(at: indexPath) else { return }
+            guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else { return }
+            guard case let OptInAssetList.ItemIdentifier.asset(item) = itemIdentifier else { return }
 
-            let cell = listView.cellForItem(at: indexPath) as? OptInAssetListItemCell
-            configureAccessory(
+            configureAssetAccessory(
                 cell,
                 for: item
             )
         }
     }
 
-    private func configureAccessory(
-        _ cell: OptInAssetListItemCell?,
-        for item: OptInAssetListItem
+    private func configureAssetAccessory(
+        _ cell: UICollectionViewCell,
+        for item: OptInAssetList.AssetItem
     ) {
-        let asset = item.model
+        guard let asset: AssetDecoration = dataController[item.assetID] else { return }
+
+        let accessory = determineAccessory(asset)
+        let assetCell = cell as? OptInAssetListItemCell
+        assetCell?.accessory = accessory
+    }
+
+    private func determineAccessory(_ asset: AssetDecoration) -> OptInAssetListItemAccessory {
         let status = dataController.hasOptedIn(asset)
 
         let accessory: OptInAssetListItemAccessory
@@ -425,20 +355,85 @@ extension AssetAdditionViewController {
         case .rejected: accessory = .add
         }
 
-        cell?.accessory = accessory
+        return accessory
     }
 }
 
 extension AssetAdditionViewController {
-    private func linkInteractors(
-        _ cell: OptInAssetListItemCell?,
-        for item: OptInAssetListItem
-    ) {
-        cell?.startObserving(event: .add) {
+    private func startAnimatingLoadingIfNeededWhenViewDidAppear() {
+        for cell in listView.visibleCells {
+            if let assetCell = cell as? OptInAssetListItemCell,
+               assetCell.accessory == .loading {
+                assetCell.accessory = .loading
+                break
+            }
+
+            if let listLoadingCell = cell as? OptInAssetListLoadingCell {
+                listLoadingCell.startAnimating()
+                break
+            }
+
+            if let loadingMoreCell = cell as? OptInAssetNextListLoadingCell {
+                loadingMoreCell.startAnimating()
+                break
+            }
+        }
+    }
+
+    private func startAnimatingListLoadingIfNeeded(_ cell: UICollectionViewCell) {
+        let loadingCell = cell as? OptInAssetListLoadingCell
+        loadingCell?.startAnimating()
+    }
+
+    private func startAnimatingLoadingMoreCellIfNeeded(_ cell: UICollectionViewCell) {
+        let loadingCell = cell as? OptInAssetNextListLoadingCell
+        loadingCell?.startAnimating()
+    }
+
+    private func stopAnimatingLoadingIfNeededWhenViewDidDisappear() {
+        for cell in listView.visibleCells {
+            if let listLoadingCell = cell as? OptInAssetListLoadingCell {
+                listLoadingCell.stopAnimating()
+                break
+            }
+
+            if let loadingMoreCell = cell as? OptInAssetNextListLoadingCell {
+                loadingMoreCell.stopAnimating()
+                break
+            }
+        }
+    }
+
+    private func stopAnimatingListLoadingIfNeeded(_ cell: UICollectionViewCell) {
+        let loadingCell = cell as? OptInAssetListLoadingCell
+        loadingCell?.stopAnimating()
+    }
+
+    private func stopAnimatingLoadingMoreCellIfNeeded(_ cell: UICollectionViewCell?) {
+        let loadingCell = cell as? OptInAssetNextListLoadingCell
+        loadingCell?.stopAnimating()
+    }
+}
+
+extension AssetAdditionViewController {
+    private func startObservingLoadingFailedEvents(_ cell: UICollectionViewCell) {
+        let failedCell = cell as? NoContentWithActionCell
+        failedCell?.startObserving(event: .performPrimaryAction) {
             [unowned self] in
+            self.loadRequestedData()
+        }
+    }
+
+    private func startObservingAssetEvents(
+        _ cell: UICollectionViewCell,
+        for item: OptInAssetList.AssetItem
+    ) {
+        let assetCell = cell as? OptInAssetListItemCell
+        assetCell?.startObserving(event: .add) {
+            [unowned self, weak assetCell] in
+            guard let asset: AssetDecoration = self.dataController[item.assetID] else { return }
 
             let account = self.dataController.account
-            let asset = item.model
             let draft = OptInAssetDraft(account: account, asset: asset)
             let screen = Screen.optInAsset(draft: draft) {
                 [weak self] event in
@@ -446,7 +441,7 @@ extension AssetAdditionViewController {
 
                 switch event {
                 case .performApprove:
-                    cell?.accessory = .loading
+                    assetCell?.accessory = .loading
                     self.continueToOptInAsset(asset: asset)
                 case .performClose:
                     self.cancelOptInAsset()
@@ -466,7 +461,7 @@ extension AssetAdditionViewController {
 
             let account = self.dataController.account
             let transactionController = self.createNewTransactionController(for: asset)
-            
+
             if !transactionController.canSignTransaction(for: account) {
                 self.clearTransactionCache(transactionController)
                 self.restoreCellState(for: transactionController)
@@ -493,29 +488,190 @@ extension AssetAdditionViewController {
     private func cancelOptInAsset() {
         dismiss(animated: true)
     }
-}
 
-extension AssetAdditionViewController {
-    private func restartLoadingOfVisibleCellsIfNeeded() {
-        for cell in assetListView.collectionView.visibleCells {
-            if let assetCell = cell as? OptInAssetListItemCell,
-               assetCell.accessory == .loading {
-                assetCell.accessory = .loading
-            } else if let loadingCell = cell as? PreviewLoadingCell {
-                loadingCell.startAnimating()
-            }
+    private func startObservingLoadingMoreFailedEvents(_ cell: UICollectionViewCell) {
+        let failedCell = cell as? NoContentWithActionCell
+        failedCell?.startObserving(event: .performPrimaryAction) {
+            [unowned self] in
+            self.loadMoreDataAgain()
         }
     }
 }
 
-extension AssetAdditionViewController: SearchInputViewDelegate {
-    func searchInputViewDidEdit(_ view: SearchInputView) {
-        let query = view.text
-        dataController.search(for: query)
+extension AssetAdditionViewController {
+    private func startObservingDataUpdates() {
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdateAccount:
+                self.configureAccessoryOfVisibleCells()
+            case .didReload(let snapshot):
+                self.dataSource.reload(
+                    snapshot,
+                    animatingDifferences: self.isViewAppeared
+                ) { [weak self] in
+                    guard let self = self else { return }
+
+                    self.listView.scrollToTop(animated: false)
+                }
+            case .didUpdate(let snapshot):
+                self.dataSource.apply(
+                    snapshot,
+                    animatingDifferences: self.isViewAppeared
+                )
+            }
+        }
     }
 
-    func searchInputViewDidReturn(_ view: SearchInputView) {
-        view.endEditing()
+    private func loadInitialData() {
+        dataController.load(query: nil)
+    }
+
+    private func loadRequestedData() {
+        let keyword = searchInputView.text
+        let query = keyword.unwrap(OptInAssetListQuery.init)
+        dataController.load(query: query)
+    }
+
+    private func loadMoreData() {
+        dataController.loadMore()
+    }
+
+    private func loadMoreDataAgain() {
+        dataController.loadMoreAgain()
+    }
+}
+
+extension AssetAdditionViewController {
+    private func selectAsset(
+        _ item: OptInAssetList.AssetItem,
+        at indexPath: IndexPath
+    ) {
+        guard let asset: AssetDecoration = dataController[item.assetID] else { return }
+
+        let cell = listView.cellForItem(at: indexPath)
+
+        if asset.isCollectible {
+            openCollectibleDetail(
+                asset,
+                from: cell
+            )
+        } else {
+            openASADiscovery(
+                asset,
+                from: cell
+            )
+        }
+    }
+
+    private func openCollectibleDetail(
+        _ asset: AssetDecoration,
+        from cell: UICollectionViewCell? = nil
+    ) {
+        let account = dataController.account
+        let collectibleAsset = CollectibleAsset(
+            asset: ALGAsset(id: asset.id),
+            decoration: asset
+        )
+        let screen = Screen.collectibleDetail(
+            asset: collectibleAsset,
+            account: account,
+            quickAction: .optIn
+        ) { event in
+            switch event {
+            case .didOptOutAssetFromAccount:
+                break
+            case .didOptOutFromAssetWithQuickAction:
+                break
+            case .didOptInToAsset:
+                let assetCell = cell as? OptInAssetListItemCell
+                assetCell?.accessory = .loading
+            }
+        }
+        open(
+            screen,
+            by: .push
+        )
+    }
+
+    private func openASADiscovery(
+        _ asset: AssetDecoration,
+        from cell: UICollectionViewCell? = nil
+    ) {
+        let account = dataController.account
+        let screen = Screen.asaDiscovery(
+            account: account,
+            quickAction: .optIn,
+            asset: asset
+        ) { event in
+            switch event {
+            case .didOptInToAsset:
+                let assetCell = cell as? OptInAssetListItemCell
+                assetCell?.accessory = .loading
+            case .didOptOutFromAsset:
+                break
+            }
+        }
+        open(
+            screen,
+            by: .push
+        )
+    }
+}
+
+extension AssetAdditionViewController {
+    private func createNewTransactionController(
+        for asset: AssetDecoration
+    ) -> TransactionController {
+        let transactionController = TransactionController(
+            api: api!,
+            sharedDataController: sharedDataController,
+            bannerController: bannerController,
+            analytics: analytics
+        )
+        optInTransactions[asset.id] = AssetOptInTransaction(
+            asset: asset,
+            transactionController: transactionController
+        )
+        transactionController.delegate = self
+        return transactionController
+    }
+
+    private func clearTransactionCache(
+        _ transactionController: TransactionController
+    ) {
+        if let assetID = getAssetID(from: transactionController) {
+            optInTransactions[assetID] = nil
+        }
+    }
+
+    private func getAssetID(
+        from transactionController: TransactionController
+    ) -> AssetID? {
+        return transactionController.assetTransactionDraft?.assetIndex
+    }
+
+    private func findCell(
+        from asset: AssetDecoration
+    ) -> OptInAssetListItemCell?  {
+        let item = OptInAssetList.AssetItem(assetID: asset.id)
+        let itemIdentifier = OptInAssetList.ItemIdentifier.asset(item)
+        let indexPath = dataSource.indexPath(for: itemIdentifier)
+        return indexPath.unwrap {
+            listView.cellForItem(at: $0)
+        } as? OptInAssetListItemCell
+    }
+
+    private func restoreCellState(
+        for transactionController: TransactionController
+    ) {
+        if let assetID = getAssetID(from: transactionController),
+           let assetDetail = optInTransactions[assetID]?.asset,
+           let cell = findCell(from: assetDetail) {
+            cell.accessory = .add
+        }
     }
 }
 

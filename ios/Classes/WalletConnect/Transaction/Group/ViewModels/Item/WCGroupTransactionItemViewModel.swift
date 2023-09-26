@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WCGroupTransactionItemViewModel {
+final class WCGroupTransactionItemViewModel {
     private(set) var hasWarning = false
     private(set) var title: String?
     private(set) var isAlgos = true
@@ -25,6 +25,7 @@ class WCGroupTransactionItemViewModel {
     private(set) var assetName: String?
     private(set) var usdValue: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
+    private(set) var showDetailLabelText: String?
 
     init(
         transaction: WCTransaction,
@@ -53,6 +54,23 @@ class WCGroupTransactionItemViewModel {
             with: asset,
             currencyFormatter: currencyFormatter
         )
+        showDetailLabelText = "title-show-transaction-detail".localized
+    }
+
+    init(
+        account: Account?,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        title = "title-arbitrary-data".localized
+
+        accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
+            account: account,
+            asset: nil,
+            isDisplayingAmount: true,
+            currencyFormatter: currencyFormatter
+        )
+
+        showDetailLabelText = "title-show-details".localized
     }
 
     private func setHasWarning(

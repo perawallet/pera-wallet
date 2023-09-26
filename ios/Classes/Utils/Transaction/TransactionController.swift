@@ -326,7 +326,7 @@ extension TransactionController: LedgerTransactionOperationDelegate {
             return
         }
 
-        sign(data, with: LedgerTransactionSigner(account: account))
+        sign(data, with: LedgerTransactionSigner(signerAddress: account.authAddress))
         calculateTransactionFee(for: transactionType)
         if transactionDraft?.fee != nil {
             completeLedgerTransaction(for: transactionType)

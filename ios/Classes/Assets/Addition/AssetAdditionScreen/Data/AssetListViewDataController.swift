@@ -19,34 +19,66 @@ import Foundation
 import UIKit
 
 protocol AssetListViewDataController: AnyObject {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<AssetListViewSection, AssetListViewItem>
+    typealias SectionIdentifier = OptInAssetList.SectionIdentifier
+    typealias ItemIdentifier = OptInAssetList.ItemIdentifier
+    typealias Snapshot = OptInAssetList.Snapshot
+    typealias EventHandler = (AssetListDataControllerEvent) -> Void
 
-    var eventHandler: ((AssetListViewDataControllerEvent) -> Void)? { get set }
+    var eventHandler: EventHandler? { get set }
 
     var account: Account { get }
 
-    func load()
-    func loadNextPageIfNeeded(for indexPath: IndexPath)
-    func search(for query: String?)
+    subscript (assetID: AssetID) -> AssetDecoration? { get }
+    subscript (assetID: AssetID) -> OptInAssetListItemViewModel? { get }
+
+    func load(query: OptInAssetListQuery?)
+    func loadMore()
+    /// <note>
+    /// It should be called for loading more after it is failed last time.
+    func loadMoreAgain()
+    func cancel()
 
     func hasOptedIn(_ asset: AssetDecoration) -> OptInStatus
 }
 
-enum AssetListViewSection:
-    Int,
-    Hashable {
-    case assets
-    case empty
-}
+enum AssetListDataControllerEvent {
+    typealias Snapshot = OptInAssetList.Snapshot
 
-enum AssetListViewItem: Hashable {
-    case asset(OptInAssetListItem)
-    case loading(String)
-    case noContent
-}
-
-enum AssetListViewDataControllerEvent {
     case didUpdateAccount
-    case didUpdateAssets(AssetListViewDataController.Snapshot)
-    case didUpdateNextAssets(AssetListViewDataController.Snapshot)
+    case didReload(Snapshot)
+    case didUpdate(Snapshot)
+}
+
+enum OptInAssetList {}
+
+extension OptInAssetList {
+    enum SectionIdentifier: Hashable {
+        case noContent
+        case content
+        case waitingForMore
+    }
+
+    enum ItemIdentifier: Hashable {
+        case loading
+        case loadingFailed(ErrorItem)
+        case notFound
+        case asset(AssetItem)
+        case loadingMore
+        case loadingMoreFailed(ErrorItem)
+    }
+
+    typealias Snapshot = NSDiffableDataSourceSnapshot<SectionIdentifier, ItemIdentifier>
+}
+
+extension OptInAssetList {
+    struct AssetItem: Hashable {
+        let assetID: AssetID
+    }
+}
+
+extension OptInAssetList {
+    struct ErrorItem: Hashable {
+        let title: String?
+        let body: String?
+    }
 }

@@ -19,17 +19,24 @@ import Foundation
 import UIKit
 import MagpieHipo
 
-class TransactionSigner: NSObject, TransactionSignable {
-
+class TransactionSigner:
+    NSObject,
+    TransactionSignable {
     weak var delegate: TransactionSignerDelegate?
 
     let algorandSDK = AlgorandSDK()
 
-    func sign(_ data: Data?, with privateData: Data?) -> Data? {
+    func sign(
+        _ data: Data?,
+        with privateData: Data?
+    ) -> Data? {
         return nil
     }
 }
 
 protocol TransactionSignerDelegate: AnyObject {
-    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPTransactionError)
+    func transactionSigner(
+        _ transactionSigner: TransactionSigner,
+        didFailedSigning error: HIPTransactionError
+    )
 }

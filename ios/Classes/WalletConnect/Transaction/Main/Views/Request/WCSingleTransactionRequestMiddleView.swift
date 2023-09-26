@@ -107,7 +107,12 @@ extension WCSingleTransactionRequestMiddleView {
             titleLabel.attributedText = nil
         }
 
-        subtitleLabel.text = viewModel?.subtitle
+        if let subtitle = viewModel?.subtitle {
+            subtitle.load(in: subtitleLabel)
+        } else {
+            subtitleLabel.text = nil
+            subtitleLabel.attributedText = nil
+        }
 
         if let verificationTierIcon = viewModel?.verificationTierIcon {
             icon.image = verificationTierIcon
