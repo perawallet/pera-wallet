@@ -140,7 +140,8 @@ open class BaseTransactionDetailPreviewUseCase constructor(
             is BaseTransactionDetail.AssetTransferTransaction -> baseTransactionDetail.assetId
             is BaseTransactionDetail.PaymentTransaction -> ALGO_ID
             is BaseTransactionDetail.ApplicationCallTransaction,
-            is BaseTransactionDetail.UndefinedTransaction -> null
+            is BaseTransactionDetail.UndefinedTransaction,
+            is BaseTransactionDetail.BaseKeyRegTransaction -> null
         } ?: ALGO_ID
     }
 
@@ -166,7 +167,8 @@ open class BaseTransactionDetailPreviewUseCase constructor(
             }
             is BaseTransactionDetail.ApplicationCallTransaction,
             is BaseTransactionDetail.AssetConfigurationTransaction,
-            is BaseTransactionDetail.UndefinedTransaction -> null
+            is BaseTransactionDetail.UndefinedTransaction,
+            is BaseTransactionDetail.BaseKeyRegTransaction -> null
         } ?: BigInteger.ZERO
     }
 
@@ -175,12 +177,14 @@ open class BaseTransactionDetailPreviewUseCase constructor(
         senderAccountPublicKey: String,
         publicKey: String,
         closeToAccountAddress: String?,
-        areAccountsInCache: Boolean
+        areAccountsInCache: Boolean,
+        isKeyReg: Boolean,
     ): TransactionSign {
         return when {
             !areAccountsInCache -> TransactionSign.NATURAL
             senderAccountPublicKey == publicKey && receiverAccountPublicKey == publicKey -> TransactionSign.NATURAL
             receiverAccountPublicKey == publicKey || closeToAccountAddress == publicKey -> TransactionSign.POSITIVE
+            isKeyReg -> TransactionSign.NATURAL
             else -> TransactionSign.NEGATIVE
         }
     }

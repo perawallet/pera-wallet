@@ -22,6 +22,7 @@ class SwapAssetDetailProviderDecider @Inject constructor() {
         return when (response) {
             SwapQuoteProviderResponse.TINYMAN -> SwapQuoteProvider.TINYMAN
             SwapQuoteProviderResponse.TINYMAN_V2 -> SwapQuoteProvider.TINYMAN_V2
+            SwapQuoteProviderResponse.VESTIGE_V3 -> SwapQuoteProvider.VESTIGE_V3
             SwapQuoteProviderResponse.UNKNOWN, null -> null
         }
     }

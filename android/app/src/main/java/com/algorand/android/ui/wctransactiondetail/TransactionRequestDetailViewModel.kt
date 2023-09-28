@@ -13,17 +13,19 @@
 
 package com.algorand.android.ui.wctransactiondetail
 
-import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.TransactionRequestAmountInfo
 import com.algorand.android.models.TransactionRequestExtrasInfo
 import com.algorand.android.models.TransactionRequestNoteInfo
+import com.algorand.android.models.TransactionRequestOfflineKeyRegInfo
+import com.algorand.android.models.TransactionRequestOnlineKeyRegInfo
 import com.algorand.android.models.TransactionRequestSenderInfo
 import com.algorand.android.models.TransactionRequestTransactionInfo
 import com.algorand.android.models.decider.WalletConnectTransactionDetailUiDecider
 import com.algorand.android.network.AlgodInterceptor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @HiltViewModel
 class TransactionRequestDetailViewModel @Inject constructor(
@@ -53,5 +55,17 @@ class TransactionRequestDetailViewModel @Inject constructor(
 
     fun buildTransactionRequestAmountInfo(txn: BaseWalletConnectTransaction): TransactionRequestAmountInfo {
         return walletConnectTransactionDetailUiDecider.buildTransactionRequestAmountInfo(txn)
+    }
+
+    fun buildTransactionRequestOnlineKeyRegInfo(
+        txn: BaseWalletConnectTransaction
+    ): TransactionRequestOnlineKeyRegInfo? {
+        return walletConnectTransactionDetailUiDecider.buildTransactionRequestOnlineKeyRegInfo(txn)
+    }
+
+    fun buildTransactionRequestOfflineKeyRegInfo(
+        txn: BaseWalletConnectTransaction
+    ): TransactionRequestOfflineKeyRegInfo? {
+        return walletConnectTransactionDetailUiDecider.buildTransactionRequestOfflineKeyRegInfo(txn)
     }
 }

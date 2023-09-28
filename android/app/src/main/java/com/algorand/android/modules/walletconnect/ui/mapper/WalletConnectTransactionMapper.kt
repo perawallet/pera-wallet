@@ -15,6 +15,7 @@ package com.algorand.android.modules.walletconnect.ui.mapper
 import com.algorand.android.mapper.AppCallTransactionMapper
 import com.algorand.android.mapper.AssetConfigurationTransactionMapper
 import com.algorand.android.mapper.AssetTransferTransactionMapper
+import com.algorand.android.mapper.KeyRegTransactionMapper
 import com.algorand.android.mapper.PaymentTransactionMapper
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.SignTxnOptions
@@ -23,8 +24,8 @@ import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.modules.transaction.common.data.model.TransactionTypeResponse.APP_TRANSACTION
 import com.algorand.android.modules.transaction.common.data.model.TransactionTypeResponse.ASSET_CONFIGURATION
 import com.algorand.android.modules.transaction.common.data.model.TransactionTypeResponse.ASSET_TRANSACTION
+import com.algorand.android.modules.transaction.common.data.model.TransactionTypeResponse.KEYREG
 import com.algorand.android.modules.transaction.common.data.model.TransactionTypeResponse.PAY_TRANSACTION
-import com.algorand.android.modules.walletconnect.client.v1.mapper.WalletConnectSessionMetaMapper
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.utils.walletconnect.getTransactionRequest
 import com.google.gson.Gson
@@ -35,9 +36,9 @@ class WalletConnectTransactionMapper @Inject constructor(
     private val appCallTransactionMapper: AppCallTransactionMapper,
     private val assetTransferTransactionMapper: AssetTransferTransactionMapper,
     private val assetConfigurationTransactionMapper: AssetConfigurationTransactionMapper,
+    private val keyRegTransactionMapper: KeyRegTransactionMapper,
     private val peerMetaMapper: WalletConnectPeerMetaMapper,
     private val sessionIdentifierMapper: WalletConnectSessionIdentifierMapper,
-    private val sessionMetaMapper: WalletConnectSessionMetaMapper,
     private val gson: Gson
 ) {
 
@@ -78,6 +79,9 @@ class WalletConnectTransactionMapper @Inject constructor(
             }
             ASSET_CONFIGURATION -> {
                 assetConfigurationTransactionMapper.createTransaction(walletConnectPeerMeta, transactionRequest, rawTxn)
+            }
+            KEYREG -> {
+                keyRegTransactionMapper.createTransaction(walletConnectPeerMeta, transactionRequest, rawTxn)
             }
             else -> null
         }

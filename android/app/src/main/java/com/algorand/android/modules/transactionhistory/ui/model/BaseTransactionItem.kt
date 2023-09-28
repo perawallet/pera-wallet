@@ -51,6 +51,33 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
             return isSameTransaction(other)
         }
 
+        @Parcelize
+        data class KeyRegItem(
+            override val id: String?,
+            override val signature: String?,
+            override val isPending: Boolean,
+        ) : TransactionItem() {
+
+            override val formattedAmount: String?
+                get() = null
+
+            override val description: String?
+                get() = null
+
+            override val amountColorRes: Int?
+                get() = null
+
+            override val isAmountVisible: Boolean
+                get() = false
+
+            override val nameRes: Int
+                get() = R.string.key_reg
+
+            override fun isSameTransaction(other: RecyclerListItem): Boolean {
+                return other is KeyRegItem && other.signature == signature
+            }
+        }
+
         sealed class PayItem : TransactionItem(), Parcelable {
             @Parcelize
             data class PaySendItem(

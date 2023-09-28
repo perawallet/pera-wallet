@@ -23,7 +23,8 @@ class TransactionDTOMapper @Inject constructor(
     private val paymentMapper: PaymentDTOMapper,
     private val assetFreezeMapper: AssetFreezeDTOMapper,
     private val transactionTypeMapper: TransactionTypeDTOMapper,
-    private val signatureDTOMapper: SignatureDTOMapper
+    private val signatureDTOMapper: SignatureDTOMapper,
+    private val keyRegTransactionDTOMapper: KeyRegTransactionDTOMapper
 ) {
 
     fun mapToTransactionDTO(transactionResponse: TransactionResponse): TransactionDTO {
@@ -47,7 +48,10 @@ class TransactionDTOMapper @Inject constructor(
                 rekeyTo = rekeyTo,
                 transactionType = transactionType?.let { transactionTypeMapper.mapToTransactionTypeDTO(it) },
                 innerTransactions = innerTransactions?.map { mapToTransactionDTO(it) },
-                createdAssetIndex = createdAssetIndex
+                createdAssetIndex = createdAssetIndex,
+                keyRegTransactionDTO = keyRegTransaction?.let {
+                    keyRegTransactionDTOMapper.mapToKeyRegTransactionDTO(it)
+                }
             )
         }
     }

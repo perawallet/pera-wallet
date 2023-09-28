@@ -35,6 +35,7 @@ import java.util.Locale
 const val PERCENT_FORMAT = "##0.00'%'"
 const val PLUS_SIGN = "+"
 const val MINUS_SIGN = "-"
+private const val NUMBER_DECIMAL_FORMAT = "#,###.##"
 
 fun getFormatter(
     format: String,
@@ -59,6 +60,10 @@ fun formatCompactNumber(number: BigDecimal, fractionalDigitCreator: FractionalDi
         .setFractionalDigitCreator(fractionalDigitCreator)
         .build()
         .format(number.toPeraDecimal()).formattedNumberWithSuffix
+}
+
+fun formatNumberWithDecimalSeparators(number: Number): String? {
+    return DecimalFormat(NUMBER_DECIMAL_FORMAT, DecimalFormatSymbols.getInstance(Locale.getDefault())).format(number)
 }
 
 // TODO: Create a library function for this

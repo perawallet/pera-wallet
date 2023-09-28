@@ -29,4 +29,6 @@ data class WalletConnectTransactionAmount(
     val formattedSelectedCurrencyValue: String? = null,
     val verificationTierConfiguration: VerificationTierConfiguration? = null,
     val fromDisplayedAddress: BaseWalletConnectDisplayedAddress? = null,
+    val title: AnnotatedString? = null,
+    val subtitle: AnnotatedString? = null
 )

@@ -15,6 +15,8 @@ package com.algorand.android.modules.transaction.detail.domain.usecase
 import com.algorand.android.R
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail
+import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail.BaseKeyRegTransaction.OfflineKeyRegTransaction
+import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail.BaseKeyRegTransaction.OnlineKeyRegTransaction
 import com.algorand.android.modules.transaction.detail.domain.model.TransactionDetailPreview
 import com.algorand.android.modules.transaction.detail.ui.mapper.TransactionDetailItemMapper
 import com.algorand.android.modules.transaction.detail.ui.mapper.TransactionDetailPreviewMapper
@@ -26,8 +28,9 @@ import com.algorand.android.usecase.GetActiveNodeUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
-import javax.inject.Inject
+import com.algorand.android.utils.formatNumberWithDecimalSeparators
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 @SuppressWarnings("LongParameterList")
 class StandardTransactionDetailPreviewUseCase @Inject constructor(
@@ -101,7 +104,8 @@ class StandardTransactionDetailPreviewUseCase @Inject constructor(
             senderAccountPublicKey = senderAccountPublicKey,
             publicKey = publicKey,
             closeToAccountAddress = baseTransactionDetail.closeToAccountAddress,
-            areAccountsInCache = areAccountsInCache
+            areAccountsInCache = areAccountsInCache,
+            isKeyReg = baseTransactionDetail is BaseTransactionDetail.BaseKeyRegTransaction
         )
 
         val isCloseTo = isTransactionCloseTo(baseTransactionDetail)
@@ -174,6 +178,17 @@ class StandardTransactionDetailPreviewUseCase @Inject constructor(
             )
             add(TransactionDetailItem.DividerItem)
 
+            if (baseTransactionDetail is BaseTransactionDetail.BaseKeyRegTransaction) {
+                if (baseTransactionDetail is OnlineKeyRegTransaction) {
+                    add(createOnlineKeyRegItem(baseTransactionDetail))
+                }
+
+                if (baseTransactionDetail is OfflineKeyRegTransaction) {
+                    add(createOfflineKeyRegItem(baseTransactionDetail))
+                }
+                add(TransactionDetailItem.DividerItem)
+            }
+
             addNoteIfExist(this, baseTransactionDetail.noteInBase64)
             add(createTransactionChipGroupItem(transactionId))
         }
@@ -193,6 +208,33 @@ class StandardTransactionDetailPreviewUseCase @Inject constructor(
             assetFullName = AssetName.create(transactionDetail.name),
             assetShortName = AssetName.createShortName(transactionDetail.unitName),
             assetId = assetId
+        )
+    }
+
+    private fun createOnlineKeyRegItem(
+        onlineKeyReg: OnlineKeyRegTransaction
+    ): TransactionDetailItem.BaseKeyRegItem.OnlineKeyRegItem {
+        return with(onlineKeyReg) {
+            TransactionDetailItem.BaseKeyRegItem.OnlineKeyRegItem(
+                voteKey = voteKey,
+                selectionKey = selectionKey,
+                stateProofKey = stateProofKey,
+                validFirstRound = formatNumberWithDecimalSeparators(validFirstRound) ?: validFirstRound.toString(),
+                validLastRound = formatNumberWithDecimalSeparators(validLastRound) ?: validLastRound.toString(),
+                voteKeyDilution = formatNumberWithDecimalSeparators(voteKeyDilution) ?: voteKeyDilution.toString()
+            )
+        }
+    }
+
+    private fun createOfflineKeyRegItem(
+        offlineKeyReg: OfflineKeyRegTransaction
+    ): TransactionDetailItem.BaseKeyRegItem.OfflineKeyRegItem {
+        return TransactionDetailItem.BaseKeyRegItem.OfflineKeyRegItem(
+            participationStatusResId = if (offlineKeyReg.isParticipating) {
+                R.string.participating
+            } else {
+                R.string.not_participating
+            }
         )
     }
 }

@@ -19,8 +19,8 @@ import com.algorand.android.models.WalletConnectAccount
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
-import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
+import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.extensions.mapNotBlank
 import com.algorand.android.utils.generateAddressFromProgram
@@ -81,7 +81,7 @@ class AppCallTransactionMapper @Inject constructor(
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 appId = appId ?: return null,
                 signer = signer,
-                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                authAddress = getAuthAddress(accountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = accountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
@@ -107,6 +107,7 @@ class AppCallTransactionMapper @Inject constructor(
             val accountData = senderWalletConnectAddress.decodedAddress?.mapNotBlank { safeAddress ->
                 accountDetailUseCase.getCachedAccountDetail(safeAddress)?.data
             }
+            val signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider)
             BaseAppCallTransaction.AppCallTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -115,8 +116,8 @@ class AppCallTransactionMapper @Inject constructor(
                 appArgs = appArgs,
                 peerMeta = peerMeta,
                 appId = appId ?: return null,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                signer = signer,
+                authAddress = getAuthAddress(accountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = accountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
@@ -141,6 +142,7 @@ class AppCallTransactionMapper @Inject constructor(
             val accountData = senderWalletConnectAddress.decodedAddress?.mapNotBlank { safeAddress ->
                 accountDetailUseCase.getCachedAccountDetail(safeAddress)?.data
             }
+            val signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider)
             BaseAppCallTransaction.AppCallCreationTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -149,8 +151,8 @@ class AppCallTransactionMapper @Inject constructor(
                 appArgs = appArgs,
                 peerMeta = peerMeta,
                 appId = appId,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                signer = signer,
+                authAddress = getAuthAddress(accountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = accountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
@@ -178,6 +180,7 @@ class AppCallTransactionMapper @Inject constructor(
             val accountData = senderWalletConnectAddress.decodedAddress?.mapNotBlank { safeAddress ->
                 accountDetailUseCase.getCachedAccountDetail(safeAddress)?.data
             }
+            val signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider)
             BaseAppCallTransaction.AppOptInTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -186,8 +189,8 @@ class AppCallTransactionMapper @Inject constructor(
                 appArgs = appArgs,
                 peerMeta = peerMeta,
                 appId = appId ?: return null,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                signer = signer,
+                authAddress = getAuthAddress(accountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = accountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(

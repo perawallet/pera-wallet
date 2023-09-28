@@ -16,11 +16,19 @@ import com.google.gson.annotations.SerializedName
 
 private const val TINYMAN_SERIALIZE_VALUE = "tinyman"
 private const val TINYMAN_V2_SERIALIZE_VALUE = "tinyman-v2"
+private const val VESTIGE_V3_SERIALIZE_VALUE = "vestige-v3"
 
 enum class SwapQuoteProviderResponse(val value: String?) {
+
     @SerializedName(TINYMAN_SERIALIZE_VALUE)
     TINYMAN(TINYMAN_SERIALIZE_VALUE),
+
+    @SerializedName(TINYMAN_V2_SERIALIZE_VALUE)
     TINYMAN_V2(TINYMAN_V2_SERIALIZE_VALUE),
+
+    @SerializedName(VESTIGE_V3_SERIALIZE_VALUE)
+    VESTIGE_V3(VESTIGE_V3_SERIALIZE_VALUE),
+
     UNKNOWN(null);
 
     companion object {

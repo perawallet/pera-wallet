@@ -14,7 +14,8 @@ package com.algorand.android.modules.swap.assetswap.domain.model
 
 enum class SwapQuoteProvider {
     TINYMAN,
-    TINYMAN_V2;
+    TINYMAN_V2,
+    VESTIGE_V3;
 
     companion object {
         fun getProviders(): List<SwapQuoteProvider> = values().toList()

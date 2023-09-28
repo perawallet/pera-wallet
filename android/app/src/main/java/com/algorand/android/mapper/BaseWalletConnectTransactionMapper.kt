@@ -12,10 +12,12 @@
 
 package com.algorand.android.mapper
 
+import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WCAlgoTransactionRequest
 import com.algorand.android.models.WalletConnectAddress
 import com.algorand.android.models.WalletConnectPeerMeta
+import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionParams
 import com.algorand.android.models.WalletConnectTransactionRequest
 
@@ -39,6 +41,21 @@ abstract class BaseWalletConnectTransactionMapper {
                 genesisId = genesisId,
                 genesisHash = genesisHash
             )
+        }
+    }
+
+    protected fun getAuthAddress(accountData: AccountDetail?, signer: WalletConnectSigner): String? {
+        return when (signer) {
+            is WalletConnectSigner.Rekeyed -> signer.address.decodedAddress
+            is WalletConnectSigner.Sender -> {
+                val isAccountRekeyed = accountData?.accountInformation?.isRekeyed() ?: false
+                return if (isAccountRekeyed) {
+                    accountData?.accountInformation?.rekeyAdminAddress
+                } else {
+                    accountData?.account?.address
+                }
+            }
+            else -> null
         }
     }
 

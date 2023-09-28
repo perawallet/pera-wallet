@@ -15,6 +15,8 @@ package com.algorand.android.modules.transaction.detail.domain.mapper
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.modules.transaction.common.domain.model.TransactionDTO
 import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail
+import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail.BaseKeyRegTransaction.OfflineKeyRegTransaction
+import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail.BaseKeyRegTransaction.OnlineKeyRegTransaction
 import com.algorand.android.utils.MIN_FEE
 import com.algorand.android.utils.getAllNestedTransactions
 import java.math.BigInteger
@@ -114,9 +116,21 @@ class BaseTransactionDetailMapper @Inject constructor() {
         }
     }
 
-    fun mapToUndefinedTransactionDetail(
-        transactionDTO: TransactionDTO
-    ): BaseTransactionDetail.UndefinedTransaction {
+    fun mapToKeyRegTransactionDetail(transactionDto: TransactionDTO): BaseTransactionDetail.BaseKeyRegTransaction {
+        return with(transactionDto) {
+            val isOnlineKeyReg: Boolean = keyRegTransactionDTO?.run {
+                voteKey != null && selectionKey != null && stateProofKey != null && validFirstRound != null &&
+                    validLastRound != null && voteKeyDilution != null
+            } ?: false
+            if (isOnlineKeyReg) {
+                mapToOnlineKeyRegTransactionDetail(transactionDto)
+            } else {
+                mapToOfflineKeyRegTransactionDetail(transactionDto)
+            }
+        }
+    }
+
+    fun mapToUndefinedTransactionDetail(transactionDTO: TransactionDTO): BaseTransactionDetail.UndefinedTransaction {
         return with(transactionDTO) {
             BaseTransactionDetail.UndefinedTransaction(
                 id = id,
@@ -128,6 +142,49 @@ class BaseTransactionDetailMapper @Inject constructor() {
                 confirmedRound = confirmedRound,
                 fee = fee?.toBigInteger() ?: BigInteger.valueOf(MIN_FEE),
                 noteInBase64 = noteInBase64
+            )
+        }
+    }
+
+    private fun mapToOnlineKeyRegTransactionDetail(transactionDto: TransactionDTO): OnlineKeyRegTransaction {
+        return with(transactionDto) {
+            OnlineKeyRegTransaction(
+                id = id,
+                signature = signature?.signatureKey,
+                senderAccountAddress = senderAddress,
+                receiverAccountAddress = null,
+                closeToAccountAddress = null,
+                roundTimeAsTimestamp = roundTimeAsTimestamp,
+                confirmedRound = confirmedRound,
+                transactionAmount = null,
+                transactionCloseAmount = null,
+                fee = fee?.toBigInteger() ?: BigInteger.valueOf(MIN_FEE),
+                noteInBase64 = noteInBase64,
+                voteKey = keyRegTransactionDTO?.voteKey.orEmpty(),
+                selectionKey = keyRegTransactionDTO?.selectionKey.orEmpty(),
+                stateProofKey = keyRegTransactionDTO?.stateProofKey.orEmpty(),
+                validFirstRound = keyRegTransactionDTO?.validFirstRound ?: 0,
+                validLastRound = keyRegTransactionDTO?.validLastRound ?: 0,
+                voteKeyDilution = keyRegTransactionDTO?.voteKeyDilution ?: 0
+            )
+        }
+    }
+
+    private fun mapToOfflineKeyRegTransactionDetail(transactionDto: TransactionDTO): OfflineKeyRegTransaction {
+        return with(transactionDto) {
+            OfflineKeyRegTransaction(
+                id = id,
+                signature = signature?.signatureKey,
+                senderAccountAddress = senderAddress,
+                receiverAccountAddress = null,
+                closeToAccountAddress = null,
+                roundTimeAsTimestamp = roundTimeAsTimestamp,
+                confirmedRound = confirmedRound,
+                transactionAmount = null,
+                transactionCloseAmount = null,
+                fee = fee?.toBigInteger() ?: BigInteger.valueOf(MIN_FEE),
+                noteInBase64 = noteInBase64,
+                isParticipating = keyRegTransactionDTO?.nonParticipation == false
             )
         }
     }

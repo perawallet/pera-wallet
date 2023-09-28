@@ -10,26 +10,14 @@
  * limitations under the License
  */
 
-package com.algorand.android.modules.transaction.common.data.model
+package com.algorand.android.modules.transaction.common.domain.model
 
-import com.google.gson.annotations.SerializedName
-
-enum class TransactionTypeResponse {
-
-    @SerializedName("pay")
-    PAY_TRANSACTION,
-
-    @SerializedName("axfer")
-    ASSET_TRANSACTION,
-
-    @SerializedName("appl")
-    APP_TRANSACTION,
-
-    @SerializedName("acfg")
-    ASSET_CONFIGURATION,
-
-    @SerializedName("keyreg")
-    KEYREG,
-
-    UNDEFINED
-}
+data class KeyRegTransactionDTO(
+    val voteKey: String?,
+    val selectionKey: String?,
+    val stateProofKey: String?,
+    val validFirstRound: Long?,
+    val validLastRound: Long?,
+    val voteKeyDilution: Long?,
+    val nonParticipation: Boolean?
+)

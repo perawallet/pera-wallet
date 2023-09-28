@@ -22,6 +22,7 @@ class SwapQuoteProviderResponseDecider @Inject constructor() {
         return when (provider) {
             SwapQuoteProvider.TINYMAN -> SwapQuoteProviderResponse.TINYMAN
             SwapQuoteProvider.TINYMAN_V2 -> SwapQuoteProviderResponse.TINYMAN_V2
+            SwapQuoteProvider.VESTIGE_V3 -> SwapQuoteProviderResponse.VESTIGE_V3
         }
     }
 }

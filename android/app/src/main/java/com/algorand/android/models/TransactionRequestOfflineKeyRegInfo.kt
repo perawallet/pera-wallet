@@ -7,29 +7,14 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License
+ *  limitations under the License
+ *
  */
 
-package com.algorand.android.modules.transaction.common.data.model
+package com.algorand.android.models
 
-import com.google.gson.annotations.SerializedName
+import androidx.annotation.StringRes
 
-enum class TransactionTypeResponse {
-
-    @SerializedName("pay")
-    PAY_TRANSACTION,
-
-    @SerializedName("axfer")
-    ASSET_TRANSACTION,
-
-    @SerializedName("appl")
-    APP_TRANSACTION,
-
-    @SerializedName("acfg")
-    ASSET_CONFIGURATION,
-
-    @SerializedName("keyreg")
-    KEYREG,
-
-    UNDEFINED
-}
+data class TransactionRequestOfflineKeyRegInfo(
+    @StringRes val participationStatusResId: Int
+)

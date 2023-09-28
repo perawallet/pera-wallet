@@ -30,8 +30,8 @@ import com.algorand.android.utils.appendAssetName
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.formatAsAlgoAmount
 import com.algorand.android.utils.toShortenedAddress
-import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 @SuppressWarnings("LongParameterList")
 class InnerTransactionDetailPreviewUseCase @Inject constructor(
@@ -72,7 +72,8 @@ class InnerTransactionDetailPreviewUseCase @Inject constructor(
                     is BaseTransactionDetail.AssetConfigurationTransaction,
                     is BaseTransactionDetail.AssetTransferTransaction,
                     is BaseTransactionDetail.PaymentTransaction,
-                    is BaseTransactionDetail.UndefinedTransaction -> {
+                    is BaseTransactionDetail.UndefinedTransaction,
+                    is BaseTransactionDetail.BaseKeyRegTransaction -> {
                         createStandardTransactionItem(transaction = baseTransactionDetail, publicKey = publicKey)
                     }
                 }.apply { add(this) }
@@ -129,7 +130,8 @@ class InnerTransactionDetailPreviewUseCase @Inject constructor(
                 senderAccountPublicKey = transaction.senderAccountAddress.orEmpty(),
                 publicKey = publicKey,
                 closeToAccountAddress = transaction.closeToAccountAddress,
-                areAccountsInCache = areAccountsInCache
+                areAccountsInCache = areAccountsInCache,
+                isKeyReg = transaction is BaseTransactionDetail.BaseKeyRegTransaction
             ),
             transactionAmount = transactionAmount,
             formattedTransactionAmount = formattedTransactionAmount,

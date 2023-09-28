@@ -32,5 +32,6 @@ data class TransactionResponse(
     @SerializedName("rekey-to") val rekeyTo: String?,
     @SerializedName("tx-type") val transactionType: TransactionTypeResponse?,
     @SerializedName("inner-txns") val innerTransactions: List<TransactionResponse>?,
-    @SerializedName("created-asset-index") val createdAssetIndex: Long?
+    @SerializedName("created-asset-index") val createdAssetIndex: Long?,
+    @SerializedName("keyreg-transaction") val keyRegTransaction: KeyRegTransactionResponse?
 )

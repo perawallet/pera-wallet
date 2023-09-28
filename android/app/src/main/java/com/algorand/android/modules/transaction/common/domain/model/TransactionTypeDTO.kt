@@ -17,5 +17,6 @@ enum class TransactionTypeDTO(val value: String?) {
     ASSET_TRANSACTION("axfer"),
     APP_TRANSACTION("appl"),
     ASSET_CONFIGURATION("acfg"),
+    KEYREG_TRANSACTION("keyreg"),
     UNDEFINED(null)
 }

@@ -16,16 +16,16 @@ import com.algorand.android.modules.transaction.common.domain.model.TransactionD
 import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO.APP_TRANSACTION
 import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO.ASSET_CONFIGURATION
 import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO.ASSET_TRANSACTION
+import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO.KEYREG_TRANSACTION
 import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO.PAY_TRANSACTION
 import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO.UNDEFINED
 import com.algorand.android.modules.transaction.detail.domain.mapper.BaseTransactionDetailMapper
 import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail
 import com.algorand.android.modules.transaction.detail.domain.repository.TransactionDetailRepository
 import com.algorand.android.utils.DataResource
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Named
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 
 class GetTransactionDetailUseCase @Inject constructor(
     @Named(TransactionDetailRepository.TRANSACTION_DETAIL_REPOSITORY_INJECTION_NAME)
@@ -62,6 +62,7 @@ class GetTransactionDetailUseCase @Inject constructor(
                 ASSET_TRANSACTION -> baseTransactionDetailMapper.mapToAssetTransferTransactionDetail(this)
                 ASSET_CONFIGURATION -> baseTransactionDetailMapper.mapToAssetConfigurationTransactionDetail(this)
                 UNDEFINED -> baseTransactionDetailMapper.mapToUndefinedTransactionDetail(this)
+                KEYREG_TRANSACTION -> baseTransactionDetailMapper.mapToKeyRegTransactionDetail(this)
                 null -> baseTransactionDetailMapper.mapToUndefinedTransactionDetail(this)
             }
         }

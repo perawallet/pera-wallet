@@ -251,4 +251,14 @@ class TransactionItemMapper @Inject constructor() {
     ): BaseTransactionItem.ResourceTitleItem {
         return BaseTransactionItem.ResourceTitleItem(transaction.stringRes)
     }
+
+    fun mapToKeyRegTransactionItem(
+        transaction: BaseTransaction.Transaction.KeyReg
+    ): BaseTransactionItem.TransactionItem.KeyRegItem {
+        return BaseTransactionItem.TransactionItem.KeyRegItem(
+            id = transaction.id,
+            signature = transaction.signature,
+            isPending = transaction.isPending
+        )
+    }
 }

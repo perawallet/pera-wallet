@@ -25,6 +25,7 @@ class TransactionTypeDTOMapper @Inject constructor() {
             TransactionTypeResponse.ASSET_CONFIGURATION -> TransactionTypeDTO.ASSET_CONFIGURATION
             TransactionTypeResponse.APP_TRANSACTION -> TransactionTypeDTO.APP_TRANSACTION
             TransactionTypeResponse.UNDEFINED -> TransactionTypeDTO.UNDEFINED
+            TransactionTypeResponse.KEYREG -> TransactionTypeDTO.KEYREG_TRANSACTION
         }
     }
 }

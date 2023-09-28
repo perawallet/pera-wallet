@@ -24,8 +24,8 @@ import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
-import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
+import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetBaseOwnedAssetDataUseCase
 import com.algorand.android.utils.extensions.mapNotBlank
@@ -94,7 +94,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = signer,
-                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                authAddress = getAuthAddress(accountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = accountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
@@ -140,7 +140,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = signer,
-                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                authAddress = getAuthAddress(accountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = accountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
@@ -187,7 +187,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = signer,
-                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                authAddress = getAuthAddress(accountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = accountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
@@ -235,7 +235,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = signer,
-                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                authAddress = getAuthAddress(accountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = accountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(

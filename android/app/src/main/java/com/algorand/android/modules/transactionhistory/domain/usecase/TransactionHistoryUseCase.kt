@@ -24,6 +24,7 @@ import com.algorand.android.modules.transaction.common.domain.model.TransactionD
 import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO.APP_TRANSACTION
 import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO.ASSET_CONFIGURATION
 import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO.ASSET_TRANSACTION
+import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO.KEYREG_TRANSACTION
 import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO.PAY_TRANSACTION
 import com.algorand.android.modules.transactionhistory.domain.mapper.BaseTransactionMapper
 import com.algorand.android.modules.transactionhistory.domain.model.BaseTransaction
@@ -35,13 +36,13 @@ import com.algorand.android.utils.formatAsRFC3339Version
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
 import com.algorand.android.utils.isGreaterThan
 import com.algorand.android.utils.sendErrorLog
-import java.math.BigInteger
-import javax.inject.Inject
-import javax.inject.Named
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
+import java.math.BigInteger
+import javax.inject.Inject
+import javax.inject.Named
 
 class TransactionHistoryUseCase @Inject constructor(
     @Named(TransactionHistoryRepository.INJECTION_NAME)
@@ -107,6 +108,7 @@ class TransactionHistoryUseCase @Inject constructor(
                             ASSET_TRANSACTION -> createAssetTransaction(txn, publicKey)
                             ASSET_CONFIGURATION -> baseTransactionMapper.mapToAssetConfiguration(txn)
                             APP_TRANSACTION -> baseTransactionMapper.mapToApplicationCall(txn)
+                            KEYREG_TRANSACTION -> createKeyRegTransaction(txn)
                             else -> baseTransactionMapper.mapToUndefined(txn)
                         }
                     }
@@ -250,6 +252,14 @@ class TransactionHistoryUseCase @Inject constructor(
                 }
                 else -> mapToAssetTransactionSend(transactionDTO)
             }
+        }
+    }
+
+    private fun createKeyRegTransaction(txn: TransactionDTO): BaseTransaction.Transaction.KeyReg {
+        return if (txn.keyRegTransactionDTO?.voteKey != null) {
+            baseTransactionMapper.mapToOnlineKeyReg(txn)
+        } else {
+            baseTransactionMapper.mapToOfflineKeyReg(txn)
         }
     }
 }

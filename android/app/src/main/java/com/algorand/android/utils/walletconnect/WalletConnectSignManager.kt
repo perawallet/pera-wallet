@@ -45,9 +45,9 @@ import com.algorand.android.utils.LifecycleScopedCoroutineOwner
 import com.algorand.android.utils.ListQueuingHelper
 import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.signTx
-import javax.inject.Inject
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class WalletConnectSignManager @Inject constructor(
     private val walletConnectSignValidator: WalletConnectSignValidator,
@@ -75,7 +75,7 @@ class WalletConnectSignManager @Inject constructor(
             currentItemIndex: Int,
             totalItemCount: Int
         ) {
-            val accountType = getSignerAccountType(transaction.signer.address?.decodedAddress)
+            val accountType = getSignerAccountType(transaction.authAddress)
             if (accountType == null) {
                 signHelper.cacheDequeuedItem(null)
             } else {

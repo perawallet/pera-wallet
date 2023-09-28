@@ -36,7 +36,9 @@ import com.algorand.android.modules.transaction.detail.ui.viewholder.Transaction
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionIdViewHolder
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionInnerTransactionListItemViewHolder
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionNoteViewHolder
+import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionOfflineKeyRegViewHolder
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionOnCompletionViewHolder
+import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionOnlineKeyRegViewHolder
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionRoundViewHolder
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionSenderViewHolder
 import com.algorand.android.modules.transaction.detail.ui.viewholder.TransactionStatusViewHolder
@@ -145,6 +147,12 @@ class TransactionDetailAdapter(
             TransactionDetailItem.ItemType.INNER_TRANSACTION_LIST_ITEM.ordinal -> {
                 createInnerTransactionListItemViewHolder(parent)
             }
+            TransactionDetailItem.ItemType.ONLINE_KEY_REG_ITEM.ordinal -> {
+                createOnlineKeyRegViewHolder(parent)
+            }
+            TransactionDetailItem.ItemType.OFFLINE_KEY_REG_ITEM.ordinal -> {
+                createOfflineKeyRegViewHolder(parent)
+            }
             else -> throw Exception("$logTag list item is unknown")
         }
     }
@@ -207,6 +215,14 @@ class TransactionDetailAdapter(
 
     private fun createOnCompletionViewHolder(parent: ViewGroup): TransactionOnCompletionViewHolder {
         return TransactionOnCompletionViewHolder.create(parent)
+    }
+
+    private fun createOnlineKeyRegViewHolder(parent: ViewGroup): TransactionOnlineKeyRegViewHolder {
+        return TransactionOnlineKeyRegViewHolder.create(parent)
+    }
+
+    private fun createOfflineKeyRegViewHolder(parent: ViewGroup): TransactionOfflineKeyRegViewHolder {
+        return TransactionOfflineKeyRegViewHolder.create(parent)
     }
 
     private fun createApplicationCallTransactionAssetInformationViewHolder(

@@ -45,7 +45,9 @@ sealed class TransactionDetailItem : RecyclerListItem {
         INNER_TRANSACTION_TITLE_ITEM,
         INNER_STANDARD_TRANSACTION_DETAIL_ITEM,
         INNER_APPLICATION_CALL_TRANSACTION_DETAIL_ITEM,
-        ASSET_INFORMATION_ITEM
+        ASSET_INFORMATION_ITEM,
+        ONLINE_KEY_REG_ITEM,
+        OFFLINE_KEY_REG_ITEM
     }
 
     abstract val itemType: ItemType
@@ -507,6 +509,46 @@ sealed class TransactionDetailItem : RecyclerListItem {
                     return other is SuccessItem && this == other
                 }
             }
+        }
+    }
+
+    sealed class BaseKeyRegItem : TransactionDetailItem() {
+
+        data class OnlineKeyRegItem(
+            val voteKey: String,
+            val selectionKey: String,
+            val stateProofKey: String,
+            val validFirstRound: String,
+            val validLastRound: String,
+            val voteKeyDilution: String
+        ) : BaseKeyRegItem() {
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is OnlineKeyRegItem && other.voteKey == voteKey
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is OnlineKeyRegItem && other == this
+            }
+
+            override val itemType: ItemType
+                get() = ItemType.ONLINE_KEY_REG_ITEM
+        }
+
+        data class OfflineKeyRegItem(
+            @StringRes val participationStatusResId: Int
+        ) : BaseKeyRegItem() {
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is OfflineKeyRegItem && other.participationStatusResId == participationStatusResId
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is OfflineKeyRegItem && other == this
+            }
+
+            override val itemType: ItemType
+                get() = ItemType.OFFLINE_KEY_REG_ITEM
         }
     }
 }

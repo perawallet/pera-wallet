@@ -31,5 +31,6 @@ data class TransactionDTO(
     val rekeyTo: String?,
     val transactionType: TransactionTypeDTO?,
     val innerTransactions: List<TransactionDTO>?,
-    val createdAssetIndex: Long?
+    val createdAssetIndex: Long?,
+    val keyRegTransactionDTO: KeyRegTransactionDTO?
 )

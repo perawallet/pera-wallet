@@ -14,22 +14,19 @@ package com.algorand.android.modules.transaction.common.data.model
 
 import com.google.gson.annotations.SerializedName
 
-enum class TransactionTypeResponse {
-
-    @SerializedName("pay")
-    PAY_TRANSACTION,
-
-    @SerializedName("axfer")
-    ASSET_TRANSACTION,
-
-    @SerializedName("appl")
-    APP_TRANSACTION,
-
-    @SerializedName("acfg")
-    ASSET_CONFIGURATION,
-
-    @SerializedName("keyreg")
-    KEYREG,
-
-    UNDEFINED
-}
+data class KeyRegTransactionResponse(
+    @SerializedName("vote-participation-key")
+    val voteParticipationKey: String?,
+    @SerializedName("selection-participation-key")
+    val selectionParticipationKey: String?,
+    @SerializedName("state-proof-key")
+    val stateProofKey: String?,
+    @SerializedName("vote-first-valid")
+    val voteFirstValid: Long?,
+    @SerializedName("vote-last-valid")
+    val voteLastValid: Long?,
+    @SerializedName("vote-key-dilution")
+    val voteKeyDilution: Long?,
+    @SerializedName("non-participation")
+    val nonParticipation: Boolean?
+)

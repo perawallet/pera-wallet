@@ -23,6 +23,7 @@ import androidx.core.view.setPadding
 import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.databinding.CustomWalletConnectTransactionShortAmountViewBinding
+import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.BaseAppCallTransaction
 import com.algorand.android.models.WalletConnectTransactionAmount
 import com.algorand.android.utils.ALGO_DECIMALS
@@ -71,6 +72,7 @@ class WalletConnectSingleTransactionAssetInfoView @JvmOverloads constructor(
                 isAssetUnnamed -> setAssetNameAsUnnamed()
                 applicationId != null -> setAppIdGroup(applicationId = applicationId)
                 appOnComplete != null -> setAppOnCompleteGroup(appOnComplete = appOnComplete)
+                title != null && subtitle != null -> setTitleAndSubtitle(title, subtitle)
             }
         }
     }
@@ -79,6 +81,14 @@ class WalletConnectSingleTransactionAssetInfoView @JvmOverloads constructor(
         listener: WalletConnectSingleTransactionAssetInfoViewListener
     ) {
         this.listener = listener
+    }
+
+    private fun setTitleAndSubtitle(title: AnnotatedString, subtitle: AnnotatedString) {
+        with(binding) {
+            appIdTextView.text = context?.getXmlStyledString(title)
+            applicationIdLabelTextView.text = context?.getXmlStyledString(subtitle)
+            appIdGroup.show()
+        }
     }
 
     private fun setTransactionAmountGroup(

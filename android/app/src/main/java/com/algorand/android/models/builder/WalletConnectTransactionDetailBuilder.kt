@@ -17,6 +17,8 @@ import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.TransactionRequestAmountInfo
 import com.algorand.android.models.TransactionRequestExtrasInfo
 import com.algorand.android.models.TransactionRequestNoteInfo
+import com.algorand.android.models.TransactionRequestOfflineKeyRegInfo
+import com.algorand.android.models.TransactionRequestOnlineKeyRegInfo
 import com.algorand.android.models.TransactionRequestSenderInfo
 import com.algorand.android.models.TransactionRequestTransactionInfo
 
@@ -27,6 +29,14 @@ interface WalletConnectTransactionDetailBuilder<T : BaseWalletConnectTransaction
     }
 
     fun buildTransactionRequestSenderInfo(txn: T): TransactionRequestSenderInfo? {
+        return null
+    }
+
+    fun buildTransactionRequestOnlineKeyRegInfo(txn: T): TransactionRequestOnlineKeyRegInfo? {
+        return null
+    }
+
+    fun buildTransactionRequestOfflineKeyRegInfo(txn: T): TransactionRequestOfflineKeyRegInfo? {
         return null
     }
 

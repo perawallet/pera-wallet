@@ -47,6 +47,36 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
+        <com.algorand.android.ui.common.walletconnect.WalletConnectOnlineKeyRegInfoCardView
+            android:id="@+id/onlineKeyRegInfoCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <View
+            android:id="@+id/onlineKeyRegInfoDivider"
+            style="@style/Divider.Horizontal"
+            android:layout_marginVertical="@dimen/spacing_xxsmall"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.algorand.android.ui.common.walletconnect.WalletConnectOfflineKeyRegInfoCardView
+            android:id="@+id/offlineKeyRegInfoCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <View
+            android:id="@+id/offlineKeyRegInfoDivider"
+            style="@style/Divider.Horizontal"
+            android:layout_marginVertical="@dimen/spacing_xxsmall"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
         <com.algorand.android.ui.common.walletconnect.WalletConnectTransactionInfoCardView
             android:id="@+id/transactionInfoCardView"
             android:layout_width="match_parent"

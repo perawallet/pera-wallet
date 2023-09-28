@@ -44,7 +44,14 @@ data class WalletConnectTransactionRequest(
     @SerializedName("apsu") val stateHash: String? = null,
     @SerializedName("caid") val assetIdBeingConfigured: Long? = null,
     @SerializedName("apar") val assetConfigParams: AssetConfigParameters? = null,
-    @SerializedName("grp") val groupId: String? = null
+    @SerializedName("grp") val groupId: String? = null,
+    @SerializedName("votekey") val votePublicKey: String?,
+    @SerializedName("selkey") val selectionPublicKey: String?,
+    @SerializedName("sprfkey") val stateProofPublicKey: String?,
+    @SerializedName("votefst") val voteFirstValidRound: Long?, // Not to be confused with the LastValid round
+    @SerializedName("votelst") val voteLastValidRound: Long?, // Not to be confused with the FirstValid round
+    @SerializedName("votekd") val voteKeyDilution: Long?,
+    @SerializedName("nonpart") val nonParticipation: Boolean?
 ) {
 
     val decodedNote: String

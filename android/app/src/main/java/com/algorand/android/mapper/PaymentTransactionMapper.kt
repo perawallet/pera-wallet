@@ -22,8 +22,8 @@ import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
-import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
+import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetBaseOwnedAssetDataUseCase
 import com.algorand.android.utils.extensions.mapNotBlank
@@ -93,7 +93,7 @@ class PaymentTransactionMapper @Inject constructor(
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 signer = signer,
-                authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
+                authAddress = getAuthAddress(senderAccountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = senderAccountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
@@ -136,7 +136,7 @@ class PaymentTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 signer = signer,
-                authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
+                authAddress = getAuthAddress(senderAccountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = senderAccountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
@@ -179,7 +179,7 @@ class PaymentTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 signer = signer,
-                authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
+                authAddress = getAuthAddress(senderAccountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = senderAccountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(
@@ -199,8 +199,8 @@ class PaymentTransactionMapper @Inject constructor(
         rawTransaction: WCAlgoTransactionRequest
     ): BasePaymentTransaction.PaymentTransaction? {
         return with(transactionRequest) {
-            val senderWCAddress = createWalletConnectAddress(senderAddress)
-            val senderAccountData = senderWCAddress?.decodedAddress?.mapNotBlank { safeAddress ->
+            val senderWCAddress = createWalletConnectAddress(senderAddress) ?: return null
+            val senderAccountData = senderWCAddress.decodedAddress?.mapNotBlank { safeAddress ->
                 accountDetailUseCase.getCachedAccountDetail(publicKey = safeAddress)?.data
             }
             val receiverWCAddress = createWalletConnectAddress(receiverAddress)
@@ -211,17 +211,18 @@ class PaymentTransactionMapper @Inject constructor(
             val ownedAsset = senderAccountData.mapNotNull { accountDetail ->
                 getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(ALGO_ID, accountDetail.account.address)
             }
+            val signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider)
             val walletConnectAssetInformation = createWalletConnectAssetInformation(ownedAsset, amount)
             BasePaymentTransaction.PaymentTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 amount = amount,
-                senderAddress = senderWCAddress ?: return null,
+                senderAddress = senderWCAddress,
                 receiverAddress = createWalletConnectAddress(receiverAddress) ?: return null,
                 peerMeta = peerMeta,
-                signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
-                authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
+                signer = signer,
+                authAddress = getAuthAddress(senderAccountData, signer),
                 fromAccount = WalletConnectAccount.create(
                     account = senderAccountData?.account,
                     accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(

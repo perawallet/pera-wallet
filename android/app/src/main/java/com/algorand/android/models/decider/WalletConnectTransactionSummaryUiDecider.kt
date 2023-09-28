@@ -16,12 +16,14 @@ package com.algorand.android.models.decider
 import com.algorand.android.models.BaseAppCallTransaction
 import com.algorand.android.models.BaseAssetConfigurationTransaction
 import com.algorand.android.models.BaseAssetTransferTransaction
+import com.algorand.android.models.BaseKeyRegTransaction
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WalletConnectTransactionSummary
 import com.algorand.android.models.builder.BaseAppCallTransactionSummaryUiBuilder
 import com.algorand.android.models.builder.BaseAssetConfigurationTransactionSummaryUiBuilder
 import com.algorand.android.models.builder.BaseAssetTransferTransactionSummaryUiBuilder
+import com.algorand.android.models.builder.BaseKeyRegTransactionSummaryUiBuilder
 import com.algorand.android.models.builder.BasePaymentTransactionSummaryUiBuilder
 import com.algorand.android.models.builder.WalletConnectTransactionSummaryUIBuilder
 import javax.inject.Inject
@@ -30,7 +32,8 @@ class WalletConnectTransactionSummaryUiDecider @Inject constructor(
     private val basePaymentTransactionSummaryUiBuilder: BasePaymentTransactionSummaryUiBuilder,
     private val baseAssetTransferTransactionSummaryUiBuilder: BaseAssetTransferTransactionSummaryUiBuilder,
     private val baseAssetConfigurationTransactionSummaryUiBuilder: BaseAssetConfigurationTransactionSummaryUiBuilder,
-    private val baseAppCallTransactionSummaryUiBuilder: BaseAppCallTransactionSummaryUiBuilder
+    private val baseAppCallTransactionSummaryUiBuilder: BaseAppCallTransactionSummaryUiBuilder,
+    private val baseKeyRegTransactionSummaryUiBuilder: BaseKeyRegTransactionSummaryUiBuilder
 ) {
 
     fun buildTransactionSummary(txn: BaseWalletConnectTransaction): WalletConnectTransactionSummary {
@@ -45,6 +48,7 @@ class WalletConnectTransactionSummaryUiDecider @Inject constructor(
             is BaseAssetTransferTransaction -> baseAssetTransferTransactionSummaryUiBuilder
             is BaseAssetConfigurationTransaction -> baseAssetConfigurationTransactionSummaryUiBuilder
             is BaseAppCallTransaction -> baseAppCallTransactionSummaryUiBuilder
+            is BaseKeyRegTransaction -> baseKeyRegTransactionSummaryUiBuilder
             else -> throw Exception("Unknown wallet connect transaction type.")
         } as WalletConnectTransactionSummaryUIBuilder<BaseWalletConnectTransaction>
     }

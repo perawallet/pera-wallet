@@ -214,6 +214,43 @@ class BaseTransactionMapper @Inject constructor() {
         }
     }
 
+    fun mapToOnlineKeyReg(
+        transaction: TransactionDTO
+    ): BaseTransaction.Transaction.KeyReg.Online {
+        return with(transaction) {
+            BaseTransaction.Transaction.KeyReg.Online(
+                id = id,
+                signature = signature?.signatureKey,
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = null,
+                zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
+                isPending = false,
+                voteKey = keyRegTransactionDTO?.voteKey.orEmpty(),
+                selectionKey = keyRegTransactionDTO?.selectionKey.orEmpty(),
+                stateProofKey = keyRegTransactionDTO?.stateProofKey.orEmpty(),
+                voteFirstValidRound = keyRegTransactionDTO?.validFirstRound ?: 0,
+                voteLastValidRound = keyRegTransactionDTO?.validLastRound ?: 0,
+                voteKeyDilution = keyRegTransactionDTO?.voteKeyDilution ?: 0
+            )
+        }
+    }
+
+    fun mapToOfflineKeyReg(
+        transaction: TransactionDTO
+    ): BaseTransaction.Transaction.KeyReg.Offline {
+        return with(transaction) {
+            BaseTransaction.Transaction.KeyReg.Offline(
+                id = id,
+                signature = signature?.signatureKey,
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = null,
+                zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
+                isPending = false,
+                nonParticipating = keyRegTransactionDTO?.nonParticipation ?: false
+            )
+        }
+    }
+
     fun mapToApplicationCall(
         transaction: TransactionDTO
     ): BaseTransaction.Transaction.ApplicationCall {

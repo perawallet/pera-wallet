@@ -15,8 +15,8 @@ package com.algorand.android.modules.transaction.detail.domain.model
 import android.os.Parcelable
 import com.algorand.android.R
 import com.algorand.android.modules.transaction.common.domain.model.OnCompletionDTO
-import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
+import java.math.BigInteger
 
 sealed class BaseTransactionDetail : Parcelable {
 
@@ -139,5 +139,53 @@ sealed class BaseTransactionDetail : Parcelable {
 
         override val toolbarTitleResId: Int
             get() = R.string.transaction_detail
+    }
+
+    sealed class BaseKeyRegTransaction : BaseTransactionDetail() {
+
+        @Parcelize
+        data class OnlineKeyRegTransaction(
+            override val id: String?,
+            override val signature: String?,
+            override val senderAccountAddress: String?,
+            override val receiverAccountAddress: String?,
+            override val roundTimeAsTimestamp: Long?,
+            override val confirmedRound: Long?,
+            override val fee: BigInteger,
+            override val noteInBase64: String?,
+            override val closeToAccountAddress: String?,
+            override val transactionCloseAmount: BigInteger?,
+            override val transactionAmount: BigInteger?,
+            val voteKey: String,
+            val selectionKey: String,
+            val stateProofKey: String,
+            val validFirstRound: Long,
+            val validLastRound: Long,
+            val voteKeyDilution: Long
+        ) : BaseKeyRegTransaction() {
+
+            override val toolbarTitleResId: Int
+                get() = R.string.transaction_detail
+        }
+
+        @Parcelize
+        data class OfflineKeyRegTransaction(
+            override val id: String?,
+            override val signature: String?,
+            override val senderAccountAddress: String?,
+            override val receiverAccountAddress: String?,
+            override val roundTimeAsTimestamp: Long?,
+            override val confirmedRound: Long?,
+            override val fee: BigInteger,
+            override val noteInBase64: String?,
+            override val closeToAccountAddress: String?,
+            override val transactionCloseAmount: BigInteger?,
+            override val transactionAmount: BigInteger?,
+            val isParticipating: Boolean
+        ) : BaseKeyRegTransaction() {
+
+            override val toolbarTitleResId: Int
+                get() = R.string.transaction_detail
+        }
     }
 }

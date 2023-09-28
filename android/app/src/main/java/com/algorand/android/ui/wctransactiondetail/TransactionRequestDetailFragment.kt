@@ -135,6 +135,8 @@ class TransactionRequestDetailFragment : DaggerBaseFragment(
         initSenderInfoViews()
         initNoteInfoViews()
         initExtrasInfoViews()
+        initOnlineKeyRefInfoViews()
+        initOfflineKeyRefInfoViews()
     }
 
     private fun initTransactionInfoViews() {
@@ -169,6 +171,28 @@ class TransactionRequestDetailFragment : DaggerBaseFragment(
             noteInfoDivider.isVisible = noteInfo != null
             noteInfoCardView.isVisible = noteInfo != null
             noteInfoCardView.initNoteInfo(noteInfo)
+        }
+    }
+
+    private fun initOnlineKeyRefInfoViews() {
+        val keyRegInfo = transactionDetailViewModel.buildTransactionRequestOnlineKeyRegInfo(args.transaction)
+        with(binding) {
+            onlineKeyRegInfoCardView.isVisible = keyRegInfo != null
+            onlineKeyRegInfoDivider.isVisible = keyRegInfo != null
+            if (keyRegInfo != null) {
+                onlineKeyRegInfoCardView.initKeyRegInfo(keyRegInfo)
+            }
+        }
+    }
+
+    private fun initOfflineKeyRefInfoViews() {
+        val keyRegInfo = transactionDetailViewModel.buildTransactionRequestOfflineKeyRegInfo(args.transaction)
+        with(binding) {
+            offlineKeyRegInfoCardView.isVisible = keyRegInfo != null
+            offlineKeyRegInfoDivider.isVisible = keyRegInfo != null
+            if (keyRegInfo != null) {
+                offlineKeyRegInfoCardView.initKeyRegInfo(keyRegInfo)
+            }
         }
     }
 

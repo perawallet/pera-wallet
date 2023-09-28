@@ -16,6 +16,7 @@ package com.algorand.android.models.decider
 import com.algorand.android.models.BaseAppCallTransaction
 import com.algorand.android.models.BaseAssetConfigurationTransaction
 import com.algorand.android.models.BaseAssetTransferTransaction
+import com.algorand.android.models.BaseKeyRegTransaction
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WalletConnectTransactionAmount
@@ -23,6 +24,7 @@ import com.algorand.android.models.WalletConnectTransactionShortDetail
 import com.algorand.android.models.builder.BaseAppCallSingleTransactionUiBuilder
 import com.algorand.android.models.builder.BaseAssetConfigurationSingleTransactionUiBuilder
 import com.algorand.android.models.builder.BaseAssetTransferSingleTransactionUiBuilder
+import com.algorand.android.models.builder.BaseKeyRegSingleTransactionUiBuilder
 import com.algorand.android.models.builder.BasePaymentSingleTransactionUiBuilder
 import com.algorand.android.models.builder.WalletConnectSingleTransactionUiBuilder
 import javax.inject.Inject
@@ -31,7 +33,8 @@ class WalletConnectSingleTransactionUiDecider @Inject constructor(
     private val basePaymentSingleTransactionUiBuilder: BasePaymentSingleTransactionUiBuilder,
     private val baseAssetTransferSingleTransactionUiBuilder: BaseAssetTransferSingleTransactionUiBuilder,
     private val baseAssetConfigurationSingleTransactionUiBuilder: BaseAssetConfigurationSingleTransactionUiBuilder,
-    private val baseAppCallSingleTransactionUiBuilder: BaseAppCallSingleTransactionUiBuilder
+    private val baseAppCallSingleTransactionUiBuilder: BaseAppCallSingleTransactionUiBuilder,
+    private val baseKeyRegSingleTransactionUiBuilder: BaseKeyRegSingleTransactionUiBuilder
 ) {
 
     fun buildToolbarTitleRes(txn: BaseWalletConnectTransaction): Int {
@@ -54,6 +57,7 @@ class WalletConnectSingleTransactionUiDecider @Inject constructor(
             is BaseAssetTransferTransaction -> baseAssetTransferSingleTransactionUiBuilder
             is BaseAssetConfigurationTransaction -> baseAssetConfigurationSingleTransactionUiBuilder
             is BaseAppCallTransaction -> baseAppCallSingleTransactionUiBuilder
+            is BaseKeyRegTransaction -> baseKeyRegSingleTransactionUiBuilder
             else -> throw Exception("Unknown wallet connect transaction type.")
         } as WalletConnectSingleTransactionUiBuilder<BaseWalletConnectTransaction>
     }

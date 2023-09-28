@@ -168,6 +168,34 @@ sealed class BaseTransaction {
             val foreignAssetIds: List<Long>?
         ) : Transaction()
 
+        sealed class KeyReg : Transaction() {
+
+            data class Online(
+                override val id: String?,
+                override val signature: String?,
+                override val senderAddress: String?,
+                override val receiverAddress: String?,
+                override val zonedDateTime: ZonedDateTime?,
+                override val isPending: Boolean,
+                val voteKey: String,
+                val selectionKey: String,
+                val stateProofKey: String,
+                val voteFirstValidRound: Long,
+                val voteLastValidRound: Long,
+                val voteKeyDilution: Long
+            ) : KeyReg()
+
+            data class Offline(
+                override val id: String?,
+                override val signature: String?,
+                override val senderAddress: String?,
+                override val receiverAddress: String?,
+                override val zonedDateTime: ZonedDateTime?,
+                override val isPending: Boolean,
+                val nonParticipating: Boolean
+            ) : KeyReg()
+        }
+
         data class Undefined(
             override val id: String? = null,
             override val signature: String? = null,

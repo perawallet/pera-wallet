@@ -16,16 +16,22 @@ package com.algorand.android.models.decider
 import com.algorand.android.models.BaseAppCallTransaction
 import com.algorand.android.models.BaseAssetConfigurationTransaction
 import com.algorand.android.models.BaseAssetTransferTransaction
+import com.algorand.android.models.BaseKeyRegTransaction.BaseOfflineKeyRegTransaction
+import com.algorand.android.models.BaseKeyRegTransaction.BaseOnlineKeyRegTransaction
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.TransactionRequestAmountInfo
 import com.algorand.android.models.TransactionRequestExtrasInfo
 import com.algorand.android.models.TransactionRequestNoteInfo
+import com.algorand.android.models.TransactionRequestOfflineKeyRegInfo
+import com.algorand.android.models.TransactionRequestOnlineKeyRegInfo
 import com.algorand.android.models.TransactionRequestSenderInfo
 import com.algorand.android.models.TransactionRequestTransactionInfo
 import com.algorand.android.models.builder.BaseAppCallTransactionDetailUiBuilder
 import com.algorand.android.models.builder.BaseAssetConfigurationTransactionDetailUiBuilder
 import com.algorand.android.models.builder.BaseAssetTransferTransactionDetailUiBuilder
+import com.algorand.android.models.builder.BaseOfflineKeyRegTransactionDetailUiBuilder
+import com.algorand.android.models.builder.BaseOnlineKeyRegTransactionDetailUiBuilder
 import com.algorand.android.models.builder.BasePaymentTransactionDetailUiBuilder
 import com.algorand.android.models.builder.WalletConnectTransactionDetailBuilder
 import javax.inject.Inject
@@ -34,7 +40,9 @@ class WalletConnectTransactionDetailUiDecider @Inject constructor(
     private val basePaymentTransactionDetailUiBuilder: BasePaymentTransactionDetailUiBuilder,
     private val baseAssetTransferTransactionDetailUiBuilder: BaseAssetTransferTransactionDetailUiBuilder,
     private val baseAssetConfigurationTransactionDetailUiBuilder: BaseAssetConfigurationTransactionDetailUiBuilder,
-    private val baseAppCallTransactionDetailUiBuilder: BaseAppCallTransactionDetailUiBuilder
+    private val baseAppCallTransactionDetailUiBuilder: BaseAppCallTransactionDetailUiBuilder,
+    private val baseOnlineKeyRegTransactionDetailUiBuilder: BaseOnlineKeyRegTransactionDetailUiBuilder,
+    private val baseOfflineKeyRegTransactionDetailUiBuilder: BaseOfflineKeyRegTransactionDetailUiBuilder
 ) {
 
     fun buildTransactionRequestTransactionInfo(txn: BaseWalletConnectTransaction): TransactionRequestTransactionInfo? {
@@ -57,6 +65,18 @@ class WalletConnectTransactionDetailUiDecider @Inject constructor(
         return getTxnTypeUiBuilder(txn).buildTransactionRequestAmountInfo(txn)
     }
 
+    fun buildTransactionRequestOnlineKeyRegInfo(
+        txn: BaseWalletConnectTransaction
+    ): TransactionRequestOnlineKeyRegInfo? {
+        return getTxnTypeUiBuilder(txn).buildTransactionRequestOnlineKeyRegInfo(txn)
+    }
+
+    fun buildTransactionRequestOfflineKeyRegInfo(
+        txn: BaseWalletConnectTransaction
+    ): TransactionRequestOfflineKeyRegInfo? {
+        return getTxnTypeUiBuilder(txn).buildTransactionRequestOfflineKeyRegInfo(txn)
+    }
+
     private fun getTxnTypeUiBuilder(
         txn: BaseWalletConnectTransaction
     ): WalletConnectTransactionDetailBuilder<BaseWalletConnectTransaction> {
@@ -65,6 +85,8 @@ class WalletConnectTransactionDetailUiDecider @Inject constructor(
             is BaseAssetTransferTransaction -> baseAssetTransferTransactionDetailUiBuilder
             is BaseAssetConfigurationTransaction -> baseAssetConfigurationTransactionDetailUiBuilder
             is BaseAppCallTransaction -> baseAppCallTransactionDetailUiBuilder
+            is BaseOnlineKeyRegTransaction -> baseOnlineKeyRegTransactionDetailUiBuilder
+            is BaseOfflineKeyRegTransaction -> baseOfflineKeyRegTransactionDetailUiBuilder
             else -> throw Exception("Unknown wallet connect transaction type.")
         } as WalletConnectTransactionDetailBuilder<BaseWalletConnectTransaction>
     }

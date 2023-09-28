@@ -1347,4 +1347,16 @@
 
     <string name="percentage_must_be_between">Percentage must be between %1$.2f%% and %2$.0f%%</string>
     <string name="failed_to_fetch_rekeyed">Failed to fetch rekeyed accounts</string>
+
+    <string name="vote_key">Vote Key</string>
+    <string name="selection_key">Selection Key</string>
+    <string name="state_proof_key">State Proof Key</string>
+    <string name="valid_first_round">Valid First Round</string>
+    <string name="valid_last_round">Valid Last Round</string>
+    <string name="vote_key_dilution">Vote Key Dilution</string>
+    <string name="participation_status">Participation Status</string>
+    <string name="participating">Participating</string>
+    <string name="not_participating">Not Participating</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
 </resources>
