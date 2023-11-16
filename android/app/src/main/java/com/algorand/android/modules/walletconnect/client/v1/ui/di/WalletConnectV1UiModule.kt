@@ -12,14 +12,15 @@
 
 package com.algorand.android.modules.walletconnect.client.v1.ui.di
 
+import com.algorand.android.modules.walletconnect.client.v1.ui.launchback.WcArbitraryDataLaunchBackDescriptionAnnotatedStringProviderV1Impl
 import com.algorand.android.modules.walletconnect.client.v1.ui.launchback.WcConnectionLaunchBackDescriptionAnnotatedStringProviderV1Impl
 import com.algorand.android.modules.walletconnect.client.v1.ui.launchback.WcConnectionLaunchBackSessionInformationAnnotatedStringProviderV1Impl
 import com.algorand.android.modules.walletconnect.client.v1.ui.launchback.WcConnectionLaunchBackTitleAnnotatedStringProviderV1Impl
-import com.algorand.android.modules.walletconnect.client.v1.ui.launchback.WcTransactionLaunchBackDescriptionAnnotatedStringProviderV1Impl
+import com.algorand.android.modules.walletconnect.client.v1.ui.launchback.WcRequestLaunchBackDescriptionAnnotatedStringProviderV1Impl
 import com.algorand.android.modules.walletconnect.launchback.connection.ui.model.WCConnectionLaunchBackDescriptionAnnotatedStringProvider
 import com.algorand.android.modules.walletconnect.launchback.connection.ui.model.WCConnectionLaunchBackSessionInformationAnnotatedStringProvider
 import com.algorand.android.modules.walletconnect.launchback.connection.ui.model.WcConnectionLaunchBackTitleAnnotatedStringProvider
-import com.algorand.android.modules.walletconnect.launchback.transaction.ui.model.WcTransactionLaunchBackDescriptionAnnotatedStringProvider
+import com.algorand.android.modules.walletconnect.launchback.wcrequest.ui.model.WcRequestLaunchBackDescriptionAnnotatedStringProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,28 +34,35 @@ object WalletConnectV1UiModule {
     @Provides
     @Named(WcConnectionLaunchBackDescriptionAnnotatedStringProviderV1Impl.INJECTION_NAME)
     fun provideWcConnectionLaunchBackDescriptionAnnotatedStringProvider():
-        WCConnectionLaunchBackDescriptionAnnotatedStringProvider {
+            WCConnectionLaunchBackDescriptionAnnotatedStringProvider {
         return WcConnectionLaunchBackDescriptionAnnotatedStringProviderV1Impl()
     }
 
     @Provides
     @Named(WcConnectionLaunchBackSessionInformationAnnotatedStringProviderV1Impl.INJECTION_NAME)
     fun provideWcConnectionLaunchBackSessionInformationAnnotatedStringProvider():
-        WCConnectionLaunchBackSessionInformationAnnotatedStringProvider {
+            WCConnectionLaunchBackSessionInformationAnnotatedStringProvider {
         return WcConnectionLaunchBackSessionInformationAnnotatedStringProviderV1Impl()
     }
 
     @Provides
     @Named(WcConnectionLaunchBackTitleAnnotatedStringProviderV1Impl.INJECTION_NAME)
     fun provideWcConnectionLaunchBackTitleAnnotatedStringProvider():
-        WcConnectionLaunchBackTitleAnnotatedStringProvider {
+            WcConnectionLaunchBackTitleAnnotatedStringProvider {
         return WcConnectionLaunchBackTitleAnnotatedStringProviderV1Impl()
     }
 
     @Provides
-    @Named(WcTransactionLaunchBackDescriptionAnnotatedStringProviderV1Impl.INJECTION_NAME)
+    @Named(WcRequestLaunchBackDescriptionAnnotatedStringProviderV1Impl.INJECTION_NAME)
     fun provideWcTransactionLaunchBackDescriptionAnnotatedStringProvider():
-        WcTransactionLaunchBackDescriptionAnnotatedStringProvider {
-        return WcTransactionLaunchBackDescriptionAnnotatedStringProviderV1Impl()
+            WcRequestLaunchBackDescriptionAnnotatedStringProvider {
+        return WcRequestLaunchBackDescriptionAnnotatedStringProviderV1Impl()
+    }
+
+    @Provides
+    @Named(WcArbitraryDataLaunchBackDescriptionAnnotatedStringProviderV1Impl.INJECTION_NAME)
+    fun provideWcArbitraryDataLaunchBackDescriptionAnnotatedStringProvider():
+            WcRequestLaunchBackDescriptionAnnotatedStringProvider {
+        return WcArbitraryDataLaunchBackDescriptionAnnotatedStringProviderV1Impl()
     }
 }

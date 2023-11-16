@@ -26,12 +26,25 @@
 
     <include app:graph="@navigation/warning_confirmation_navigation" />
 
-    <include app:graph="@navigation/wallet_connect_navigation" />
+    <include app:graph="@navigation/wallet_connect_transaction_request_navigation" />
+
+    <include app:graph="@navigation/wallet_connect_arbitrary_data_request_navigation" />
 
     <action
-        android:id="@+id/action_global_walletConnectRequestNavigation"
-        app:destination="@id/walletConnectRequestNavigation"
-        app:popUpTo="@id/walletConnectRequestNavigation"
+        android:id="@+id/action_global_walletConnectTransactionRequestNavigation"
+        app:destination="@id/walletConnectTransactionRequestNavigation"
+        app:popUpTo="@id/walletConnectTransactionRequestNavigation"
+        app:popUpToInclusive="true">
+        <argument
+            android:name="shouldSkipConfirmation"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </action>
+
+    <action
+        android:id="@+id/action_global_walletConnectArbitraryDataRequestNavigation"
+        app:destination="@id/walletConnectArbitraryDataRequestNavigation"
+        app:popUpTo="@id/walletConnectArbitraryDataRequestNavigation"
         app:popUpToInclusive="true">
         <argument
             android:name="shouldSkipConfirmation"

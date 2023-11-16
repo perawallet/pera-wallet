@@ -39,7 +39,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
-import com.algorand.android.WalletConnectRequestNavigationDirections
+import com.algorand.android.WalletConnectTransactionRequestNavigationDirections
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.LedgerLoadingDialog
 import com.algorand.android.databinding.FragmentWalletConnectTransactionRequestBinding
@@ -48,8 +48,8 @@ import com.algorand.android.models.ConfirmationBottomSheetParameters
 import com.algorand.android.models.ConfirmationBottomSheetResult
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.TransactionRequestAction
+import com.algorand.android.models.WalletConnectRequest.WalletConnectTransaction
 import com.algorand.android.models.WalletConnectSignResult
-import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.ui.common.walletconnect.WalletConnectAppPreviewCardView
 import com.algorand.android.utils.BaseDoubleButtonBottomSheet.Companion.RESULT_KEY
@@ -105,7 +105,7 @@ class WalletConnectTransactionRequestFragment :
 
     private val appPreviewListener = WalletConnectAppPreviewCardView.OnShowMoreClickListener { peerMeta, message ->
         nav(
-            WalletConnectRequestNavigationDirections.actionGlobalWalletConnectDappMessageBottomSheet(
+            WalletConnectTransactionRequestNavigationDirections.actionGlobalWalletConnectDappMessageBottomSheet(
                 message = message,
                 peerMeta = peerMeta
             )
@@ -129,7 +129,10 @@ class WalletConnectTransactionRequestFragment :
         event?.consume()?.run {
             nav(
                 WalletConnectTransactionRequestFragmentDirections
-                    .actionWalletConnectTransactionRequestFragmentToWcTransactionLaunchBackBrowserBottomSheet(this)
+                    .actionWalletConnectTransactionRequestFragmentToWcRequestLaunchBackNavigation(
+                        this,
+                        transactionRequestViewModel.transaction
+                    )
             )
         }
     }
@@ -153,8 +156,8 @@ class WalletConnectTransactionRequestFragment :
 
     private fun initNavController() {
         walletConnectNavController = (
-            childFragmentManager.findFragmentById(binding.walletConnectNavigationHostFragment.id) as NavHostFragment
-            ).navController
+                childFragmentManager.findFragmentById(binding.walletConnectNavigationHostFragment.id) as NavHostFragment
+                ).navController
     }
 
     private fun handleNextNavigation() {
@@ -175,13 +178,14 @@ class WalletConnectTransactionRequestFragment :
     }
 
     private fun configureScreenStateByDestination() {
-        val motionTransaction = binding.transactionRequestMotionLayout.getTransition(R.id.transactionRequestMotionScene)
+        val motionTransaction = binding.transactionRequestMotionLayout.getTransition(R.id.wcRequestMotionScene)
         walletConnectNavController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.walletConnectSingleTransactionFragment -> {
                     binding.transactionRequestMotionLayout.transitionToStart()
                     motionTransaction.isEnabled = false
                 }
+
                 else -> {
                     motionTransaction.isEnabled = true
                 }
@@ -316,12 +320,14 @@ class WalletConnectTransactionRequestFragment :
                     )
                 }
             }
+
             is WalletConnectSignResult.Success -> onSigningSuccess(result)
             is WalletConnectSignResult.Error -> showSigningError(result)
             is WalletConnectSignResult.TransactionCancelledByLedger -> {
                 showSigningError(result.error)
                 rejectRequest()
             }
+
             is WalletConnectSignResult.LedgerScanFailed -> showLedgerNotFoundDialog()
             else -> {
                 sendErrorLog("Unhandled else case in WalletConnectTransactionRequestFragment.handleSignResult")

@@ -502,14 +502,9 @@
     <string name="minimum_amount_required">Montant minimum requis</string>
     <string name="this_is_the_first_transaction">Il s\'agit de la première transaction pour le compte sélectionné. Les premières transactions nécessitent un montant minimum d\'au moins 0,1 Algo. Veuillez saisir un montant valide et réessayer.</string>
     <string name="i_want_to_create">Je veux créer un compte</string>
-    <string name="create_a_new_algorand">Créer un nouveau compte Algorand ou ajouter un compte de suivi</string>
-    <string name="i_already_have">J\'ai déjà un compte</string>
-    <string name="import_an_existing">Importer un compte Algorand existant via une phrase secrète de récupération ou associez votre Ledger</string>
     <string name="i_want_to_create_an_algorand_account">Je veux créer\nun compte Algorand</string>
     <string name="create_a_new_account">Créer un nouveau compte</string>
     <string name="create_a_new_algorand_account_with">Créer un nouveau compte Algorand avec une nouvelle adresse et une phrase secrète de récupération</string>
-    <string name="add_watch_account">Ajouter un compte de suivi</string>
-    <string name="i_already_have_nan_account">J\'ai déjà\nun compte</string>
     <string name="recover_an_account">Récupérer un compte</string>
     <string name="pair_Ledger_device">Associer un appareil Ledger</string>
     <string name="confirm_transaction">Confirmer la transaction</string>
@@ -790,7 +785,7 @@
     <string name="set_custom_percentage">Définir un pourcentage personnalisé</string>
     <string name="balance_percentage">Pourcentage Solde</string>
     <string name="pera_wallet_provides_an_easy">Pera Wallet offre un moyen simple et rapide d\'échanger des actifs. Vous pouvez échanger un ASA avec un autre à l\'aide d\'un contrat intelligent, en payant les frais du marché.</string>
-    <string name="by_continuing_you_agree_to">En continuant, vous acceptez les<annotation url="tinymanTermsOfServiceUrl">\n<annotation type="bold"><annotation type="color"> Conditions d\'utilisation </annotation></annotation></annotation>de notre partenaire de swap</string>
+    <string name="by_continuing_you_agree_to">En continuant, vous acceptez les<annotation url="vestigeTermsOfServiceUrl">\n<annotation type="bold"><annotation type="color"> Conditions d\'utilisation </annotation></annotation></annotation>de notre partenaire de swap</string>
     <string name="start_swapping">Commencer Swap</string>
     <string name="powered_by">Fourni par</string>
     <string name="new_text">Nouveau</string>
@@ -835,18 +830,6 @@
     <string name="custom">Personnalisé</string>
     <string name="select_all">Sélectionner tout</string>
     <string name="unselect_all">Tout déselectionner</string>
-    <string name="disclaimer">CLAUSE DE NON-RESPONSABILITÉ</string>
-    <string name="export_to_pera_web">Exporter vers Pera Web</string>
-    <string name="you_re_about_to_share">Vous êtes sur le point de partager et d\'importer votre phrase secrète vers Pera Web!</string>
-    <string name="confirm_export_domain">Confirmer Exportation Domaine</string>
-    <string name="for_your_security_please_confirm">Pour votre sécurité, veuillez confirmer que vous exportez vos comptes vers Pera Web en saisissant le nom de domaine que vous voyez sur votre ordinateur.</string>
-    <string name="enter_url_of_web_wallet">Entrez l\'URL du Web Wallet</string>
-    <string name="url_of_web_wallet">URL du Web Wallet</string>
-    <string name="to_make_sure_that_you">Pour vous assurer que vous exportez vos comptes vers un emplacement sûr, vérifiez toujours que vous êtes sur l\'URL officielle de Pera Web:</string>
-    <string name="confirm_accounts">Confirmer Comptes</string>
-    <string name="you_re_about_to_export">Vous êtes sur le point d\'exporter ces comptes vers Pera Web en toute sécurité:</string>
-    <string name="accounts_exported_successfully">Comptes exportés avec succès!</string>
-    <string name="you_can_now_use_these">Vous pouvez maintenant utiliser ces comptes sur Pera Web.</string>
     <string name="we_couldn_t_find">Nous n\'avons trouvé aucun compte éligible à l\'exportation.</string>
     <plurals name="account_count">
         <item quantity="one">Compte</item>
@@ -921,7 +904,6 @@
     <string name="you_need_to_opt_in">Vous devez activer l\'identifiant ASA du NFT pour pouvoir le transférer sur votre portefeuille. Collez l\'identifiant ASA dans la barre de recherche.</string>
     <string name="you_need_to_opt_in_to">Vous devez activer l\'identifiant ASA du NFT pour pouvoir le transférer sur votre portefeuille.</string>
     <string name="round">Rond</string>
-    <string name="do_not_proceed_if_you">Ne continuez pas si vous n\'êtes pas à l\'origine de cette demande.</string>
     <string name="this_asset_is">Cet actif est déjà en attente de suppression.</string>
     <string name="get_help">Obtenir de l\'aide</string>
     <string name="couldn_t_retrieve">Impossible de récupérer les détails du compte, veuillez réessayer</string>
@@ -955,7 +937,6 @@
     <string name="future_transactions_can_only">Les transactions futures ne peuvent être signées que par le compte délégué.</string>
     <string name="this_account_will_no_longer">Ce compte ne pourra plus signer de transactions.</string>
     <string name="your_account_s_public_key">La clé publique, les soldes et la configuration de votre compte ne changeront pas.</string>
-    <string name="account_transfer_is">Le transfert de compte est désactivé sur Testnet pour votre sécurité. Veuillez passer sur Mainnet pour utiliser cette fonctionnalité.</string>
     <string name="invalid_url">URL invalide</string>
     <string name="high_price_impact_detected">Impact élevé sur le prix détecté !</string>
     <string name="it_appears_that_you_formatted">Il semble que vous essayez de confirmer un échange avec un impact sur le prix supérieur à <annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation>%%.\n\nPour en savoir plus sur l\'impact sur le prix, la façon dont il est calculé ou comment il peut affecter la valeur globale de votre swap, veuillez consulter la <annotation custom="faq_url">section FAQ</annotation> de Tinyman.</string>

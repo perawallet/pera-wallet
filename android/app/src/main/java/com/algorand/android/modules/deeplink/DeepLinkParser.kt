@@ -16,11 +16,9 @@ package com.algorand.android.modules.deeplink
 
 import android.net.Uri
 import com.algorand.android.models.RawMnemonicPayload
-import com.algorand.android.modules.deeplink.domain.model.NotificationGroupType
 import com.algorand.android.models.WebQrCode
+import com.algorand.android.modules.deeplink.domain.model.NotificationGroupType
 import com.algorand.android.modules.deeplink.domain.model.RawDeepLink
-import com.algorand.android.modules.webexport.common.data.mapper.WebExportQrCodeMapper
-import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
 import com.algorand.android.modules.webimport.common.data.mapper.WebImportQrCodeMapper
 import com.algorand.android.modules.webimport.common.data.model.WebImportQrCode
 import com.algorand.android.utils.fromJson
@@ -31,8 +29,7 @@ import javax.inject.Inject
 
 class DeepLinkParser @Inject constructor(
     private val moshi: Moshi,
-    private val webImportQrCodeMapper: WebImportQrCodeMapper,
-    private val webExportQrCodeMapper: WebExportQrCodeMapper
+    private val webImportQrCodeMapper: WebImportQrCodeMapper
 ) {
 
     fun parseDeepLink(deepLink: String): RawDeepLink {
@@ -48,7 +45,6 @@ class DeepLinkParser @Inject constructor(
             label = getLabel(parsedUri),
             transactionId = getTransactionId(parsedUri),
             transactionStatus = getTransactionStatus(parsedUri),
-            webExportQrCode = getWebExportData(parsedUri),
             webImportQrCode = getWebImportData(parsedUri),
             notificationGroupType = getNotificationGroupType(parsedUri)
         )
@@ -113,16 +109,6 @@ class DeepLinkParser @Inject constructor(
     private fun getMnemonic(uri: Uri): String? {
         return try {
             moshi.fromJson<RawMnemonicPayload>(uri.toString())?.mnemonic
-        } catch (exception: Exception) {
-            null
-        }
-    }
-
-    private fun getWebExportData(uri: Uri): WebExportQrCode? {
-        return try {
-            moshi.fromJson<WebQrCode>(uri.toString())?.let { qrCode ->
-                webExportQrCodeMapper.mapFromWebQrCode(qrCode)
-            }
         } catch (exception: Exception) {
             null
         }

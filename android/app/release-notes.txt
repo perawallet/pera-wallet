@@ -1,1 +1,3 @@
-Android - 10 - B/E - Sprint #12
+Sprint 1 - Store release
+- Arbitrary data signing
+- Change browser navigate back icon

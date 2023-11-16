@@ -33,7 +33,6 @@ class WalletConnectSessionSettleSuccessMapperImpl(
         peerMeta: WalletConnect.PeerMeta,
         namespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Session>,
         creationDateTimestamp: Long,
-        isSubscribed: Boolean,
         isConnected: Boolean,
         fallbackBrowserGroupResponse: String?
     ): WalletConnect.Session.Settle.Result {
@@ -45,8 +44,7 @@ class WalletConnectSessionSettleSuccessMapperImpl(
                 peerMeta = peerMeta,
                 namespaces = namespaces,
                 creationDateTimestamp = creationDateTimestamp,
-                isSubscribed = isSubscribed,
-                isConnected,
+                isConnected = isConnected,
                 fallbackBrowserGroupResponse = fallbackBrowserGroupResponse,
                 expiry = expiryMapper.mapToExpiry(expiry),
                 sessionMeta = sessionMetaMapper.mapToSessionMeta(topic)

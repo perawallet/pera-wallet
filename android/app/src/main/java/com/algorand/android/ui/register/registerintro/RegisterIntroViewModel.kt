@@ -59,7 +59,7 @@ class RegisterIntroViewModel @Inject constructor(
 
     fun logOnboardingWelcomeAccountCreateClickEvent() {
         viewModelScope.launch {
-            registerIntroPreviewUseCase.logOnboardingWelcomeAccountCreateClickEvent()
+            registerIntroPreviewUseCase.logOnboardingCreateNewAccountClickEvent()
         }
     }
 
@@ -72,6 +72,12 @@ class RegisterIntroViewModel @Inject constructor(
     fun logOnboardingCreateAccountSkipClickEvent() {
         viewModelScope.launch {
             registerIntroPreviewUseCase.logOnboardingCreateAccountSkipClickEvent()
+        }
+    }
+
+    fun logOnboardingCreateWatchAccountClickEvent() {
+        viewModelScope.launch {
+            registerIntroPreviewUseCase.logOnboardingCreateWatchAccountClickEvent()
         }
     }
 

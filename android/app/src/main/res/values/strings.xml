@@ -573,14 +573,9 @@
     <string name="minimum_amount_required">Minimum Amount Required</string>
     <string name="this_is_the_first_transaction">This is the first transaction for the selected account. The first transactions require a minimum amount of at least 0.1 Algo. Please enter a valid amount and try again.</string>
     <string name="i_want_to_create">I want to create an account</string>
-    <string name="create_a_new_algorand">Create a new Algorand account or add a watch account</string>
-    <string name="i_already_have">I already have an account</string>
-    <string name="import_an_existing">Import an existing Algorand account via recovery passphrase or pair your Ledger</string>
     <string name="i_want_to_create_an_algorand_account">I want to create\nan Algorand account</string>
     <string name="create_a_new_account">Create a new account</string>
     <string name="create_a_new_algorand_account_with">Create a new Algorand account with a new address and recovery passphrase</string>
-    <string name="add_watch_account">Add watch account</string>
-    <string name="i_already_have_nan_account">I already have\nan account</string>
     <string name="recover_an_account">Recover an account</string>
     <string name="i_want_to_recover">I want to recover an Algorand account using my 25-word passphrase</string>
     <string name="pair_Ledger_device">Pair Ledger device</string>
@@ -868,7 +863,7 @@
     <string name="set_custom_percentage">Set custom percentage</string>
     <string name="balance_percentage">Balance Percentage</string>
     <string name="pera_wallet_provides_an_easy">Pera Wallet provides an easy and fast way to swap assets. Swapping allows an ASA to be exchanged with another one using a smart contract, at market fees.</string>
-    <string name="by_continuing_you_agree_to">By continuing, you agree to our\nswap partner\'s <annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">Terms of Service</annotation></annotation></annotation></string>
+    <string name="by_continuing_you_agree_to">By continuing, you agree to our\nswap partner\'s <annotation url="vestigeTermsOfServiceUrl"><annotation type="bold"><annotation type="color">Terms of Service</annotation></annotation></annotation></string>
     <string name="start_swapping">Start Swapping</string>
     <string name="powered_by">Powered by</string>
     <string name="new_text">New</string>
@@ -934,22 +929,6 @@
 
     <string name="select_all">Select all</string>
     <string name="unselect_all">Unselect all</string>
-    <string name="disclaimer">DISCLAIMER</string>
-
-    <string name="export_to_pera_web">Export to Pera Web</string>
-    <string name="you_re_about_to_share">You\'re about to share and import your passphrase into Pera Web!</string>
-
-    <string name="confirm_export_domain">Confirm Export Domain</string>
-    <string name="for_your_security_please_confirm">For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.</string>
-    <string name="enter_url_of_web_wallet">Enter URL of the Web Wallet</string>
-    <string name="url_of_web_wallet">URL of the Web Wallet</string>
-    <string name="to_make_sure_that_you">To make sure that you are exporting your accounts to a safe location, always verify you are on the official Pera Web URL:</string>
-
-    <string name="confirm_accounts">Confirm Accounts</string>
-    <string name="you_re_about_to_export">You\'re about to export these accounts to Pera Web securely:</string>
-
-    <string name="accounts_exported_successfully">Accounts exported successfully!</string>
-    <string name="you_can_now_use_these">You can now use these accounts on Pera Web.</string>
 
     <string name="we_couldn_t_find">We couldn\'t find any accounts eligible for export.</string>
 
@@ -1020,7 +999,6 @@
     <string name="you_need_to_opt_in_to">You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.</string>
 
     <string name="round">Round</string>
-    <string name="do_not_proceed_if_you">Do not proceed if you did not initiate this request.</string>
 
     <string name="this_asset_is">This asset is already pending removal.</string>
 
@@ -1062,7 +1040,6 @@
     <string name="future_transactions_can_only">Future transactions can only be signed by the delegated account.</string>
     <string name="this_account_will_no_longer">This account will no longer be able to sign transactions.</string>
     <string name="your_account_s_public_key">Your account\'s public key, balances, and configuration will not change.</string>
-    <string name="account_transfer_is">Account transfer is disabled on Testnet for your security. Please switch to Mainnet to use this feature.</string>
 
     <string name="invalid_url">Invalid Url</string>
 
@@ -1130,7 +1107,9 @@
     <string name="unsupported_transaction_type_this">Unsupported transaction type: this transaction request contains one or more unsupported transaction types.</string>
     <string name="multisig_required_this_transaction">Multi-sig required: this transaction request requires a multisig type signature, currently unsupported by Pera Wallet.</string>
     <string name="transaction_limit_this_transaction">Transaction limit: this transaction request contains %1$d transactions, exceeding Pera Wallet transactions limit.</string>
+    <string name="arbitrary_data_limit_this">Arbirary Data limit: this arbitrary data request contains %1$d arbitrary data, exceeding Pera Wallet arbirary data limit.</string>
     <string name="invalid_request_format_pera">Invalid request format: Pera Wallet is unable to parse the transaction request.</string>
+    <string name="invalid_arbitrary_data_request">Invalid request format: Pera Wallet is unable to parse the arbitrary data request.</string>
     <string name="invalid_public_key_transaction">Invalid public key(s): the transaction request contains one or more invalid account addresses.</string>
     <string name="invalid_asset_id_transaction">Invalid asset ID: the transaction request contains one or more invalid asset ID.</string>
     <string name="invalid_input_pera_wallet">Invalid input: Pera Wallet is unable to sign the transaction request.</string>
@@ -1359,4 +1338,19 @@
     <string name="not_participating">Not Participating</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>
+
+    <string name="import_an_account">Import an account</string>
+    <string name="import_an_existing">Import an existing Algorand account with various methods or pair your Ledger</string>
+    <string name="watch_an_account">Watch an account</string>
+    <string name="monitor_an_algorand_account">Monitor an Algorand account by providing its address</string>
+    <string name="recover_an_account_with_qr">Recover an account with QR code</string>
+    <string name="i_want_to_recover_qr">I want to recover an Algorand account using my QR code</string>
+
+    <string name="unsigned_requests">Unsigned Requests</string>
+    <string name="arbitrary_data">Arbitrary Data</string>
+    <string name="arbitrary_data_request">Arbitrary Data Request</string>
+    <string name="arbitrary_data_details">Arbitrary Data Details</string>
+    <string name="data">Data</string>
+    <string name="your_data_is_being_processed">Your data is being processed!</string>
+    <string name="the_data_has_been_signed">The data has been signed and sent to <annotation replacement="peer_name">peer_name_placeholder</annotation>. Please visit  <annotation replacement="peer_name">peer_name_placeholder</annotation> for the remaining process.</string>
 </resources>

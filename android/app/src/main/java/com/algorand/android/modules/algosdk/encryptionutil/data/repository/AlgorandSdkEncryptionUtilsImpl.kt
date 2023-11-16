@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.algosdk.encryptionutil.data.repository
 
-import com.algorand.algosdk.mobile.Mobile
+import com.algorand.algosdk.sdk.Sdk
 import com.algorand.android.modules.algosdk.encryptionutil.domain.repository.AlgorandSdkEncryptionUtils
 import com.algorand.android.utils.SDK_RESULT_SUCCESS
 import com.algorand.android.utils.extensions.decodeBase64ToByteArray
@@ -22,7 +22,7 @@ class AlgorandSdkEncryptionUtilsImpl : AlgorandSdkEncryptionUtils {
 
     override fun encryptContent(content: ByteArray, key: ByteArray): String? {
         return try {
-            val encryption = Mobile.encrypt(content, key)
+            val encryption = Sdk.encrypt(content, key)
             return if (encryption.errorCode == SDK_RESULT_SUCCESS) {
                 encryption.encryptedData.encodeBase64()
             } else {
@@ -36,7 +36,7 @@ class AlgorandSdkEncryptionUtilsImpl : AlgorandSdkEncryptionUtils {
     override fun decryptContent(encryptedContent: String, key: ByteArray): String? {
         return try {
             val decodedContent = encryptedContent.decodeBase64ToByteArray()
-            val decryption = Mobile.decrypt(decodedContent, key)
+            val decryption = Sdk.decrypt(decodedContent, key)
             return if (decryption.errorCode == SDK_RESULT_SUCCESS) {
                 String(decryption.decryptedData)
             } else {

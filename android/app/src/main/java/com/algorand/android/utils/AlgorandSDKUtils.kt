@@ -15,11 +15,11 @@
 package com.algorand.android.utils
 
 import android.util.Base64
-import com.algorand.algosdk.mobile.BytesArray
-import com.algorand.algosdk.mobile.Encryption
-import com.algorand.algosdk.mobile.Mobile
-import com.algorand.algosdk.mobile.SuggestedParams
-import com.algorand.algosdk.mobile.Uint64
+import com.algorand.algosdk.sdk.BytesArray
+import com.algorand.algosdk.sdk.Encryption
+import com.algorand.algosdk.sdk.Sdk
+import com.algorand.algosdk.sdk.SuggestedParams
+import com.algorand.algosdk.sdk.Uint64
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.TransactionParams
@@ -34,7 +34,11 @@ const val SDK_RESULT_ERROR_INVALID_ENCRYPTED_DATA_LENGTH_KEY = 3L
 const val SDK_RESULT_ERROR_DECRYPTION_ERROR_LENGTH_KEY = 4L
 
 fun ByteArray.signTx(secretKey: ByteArray): ByteArray {
-    return Mobile.signTransaction(secretKey, this)
+    return Sdk.signTransaction(secretKey, this)
+}
+
+fun ByteArray.signArbitraryData(secretKey: ByteArray): ByteArray {
+    return Sdk.signBytes(secretKey, this)
 }
 
 fun TransactionParams.makeAssetTx(
@@ -44,7 +48,7 @@ fun TransactionParams.makeAssetTx(
     assetId: Long,
     noteInByteArray: ByteArray? = null
 ): ByteArray {
-    return Mobile.makeAssetTransferTxn(
+    return Sdk.makeAssetTransferTxn(
         senderAddress,
         receiverAddress,
         "",
@@ -62,7 +66,7 @@ fun TransactionParams.makeAlgoTx(
     isMax: Boolean,
     noteInByteArray: ByteArray? = null
 ): ByteArray {
-    return Mobile.makePaymentTxn(
+    return Sdk.makePaymentTxn(
         senderAddress,
         receiverAddress,
         amount.toUint64(),
@@ -73,7 +77,7 @@ fun TransactionParams.makeAlgoTx(
 }
 
 fun TransactionParams.makeRekeyTx(rekeyAddress: String, rekeyAdminAddress: String): ByteArray {
-    return Mobile.makeRekeyTxn(
+    return Sdk.makeRekeyTxn(
         rekeyAddress,
         rekeyAdminAddress,
         toSuggestedParams()
@@ -81,7 +85,7 @@ fun TransactionParams.makeRekeyTx(rekeyAddress: String, rekeyAdminAddress: Strin
 }
 
 fun TransactionParams.makeAddAssetTx(publicKey: String, assetId: Long): ByteArray {
-    return Mobile.makeAssetAcceptanceTxn(
+    return Sdk.makeAssetAcceptanceTxn(
         publicKey,
         null,
         toSuggestedParams(),
@@ -94,7 +98,7 @@ fun TransactionParams.makeRemoveAssetTx(
     creatorPublicKey: String,
     assetId: Long
 ): ByteArray {
-    return Mobile.makeAssetTransferTxn(
+    return Sdk.makeAssetTransferTxn(
         senderAddress,
         creatorPublicKey,
         creatorPublicKey,
@@ -112,7 +116,7 @@ fun TransactionParams.makeSendAndRemoveAssetTx(
     amount: BigInteger,
     noteInByteArray: ByteArray? = null
 ): ByteArray {
-    return Mobile.makeAssetTransferTxn(
+    return Sdk.makeAssetTransferTxn(
         senderAddress,
         receiverAddress,
         receiverAddress,
@@ -149,7 +153,7 @@ fun String?.isValidAddress(): Boolean {
         return false
     }
     return try {
-        Mobile.isValidAddress(this)
+        Sdk.isValidAddress(this)
     } catch (exception: Exception) {
         recordException(exception)
         false
@@ -170,7 +174,7 @@ fun TransactionParams.toSuggestedParams(
 
 fun getPublicKey(publicKey: ByteArray): String? {
     return try {
-        Mobile.generateAddressFromPublicKey(publicKey)
+        Sdk.generateAddressFromPublicKey(publicKey)
     } catch (exception: Exception) {
         recordException(exception)
         null
@@ -199,7 +203,7 @@ fun BigInteger.toUint64(): Uint64 {
 fun decodeBase64DecodedMsgPackToJsonString(msgPack: String): String {
     return try {
         val decodedByteArray = Base64.decode(msgPack, Base64.DEFAULT)
-        Mobile.transactionMsgpackToJson(decodedByteArray)
+        Sdk.transactionMsgpackToJson(decodedByteArray)
     } catch (exception: Exception) {
         recordException(exception)
         ""
@@ -209,7 +213,7 @@ fun decodeBase64DecodedMsgPackToJsonString(msgPack: String): String {
 fun generateAddressFromProgram(hashValue: String?): String {
     return try {
         val decodedByteArray = Base64.decode(hashValue, Base64.DEFAULT)
-        Mobile.addressFromProgram(decodedByteArray)
+        Sdk.addressFromProgram(decodedByteArray)
     } catch (exception: Exception) {
         recordException(exception)
         ""
@@ -240,7 +244,7 @@ fun groupWalletConnectTransactions(
         decodedTxnList.forEach { append(it) }
     }
     return try {
-        val txnGroupInt64Array = Mobile.findAndVerifyTxnGroups(decodedTxnBytesArray)
+        val txnGroupInt64Array = Sdk.findAndVerifyTxnGroups(decodedTxnBytesArray)
         val txnGroupList = mutableListOf<Pair<Long, BaseWalletConnectTransaction>>().apply {
             for (index in 0L until txnGroupInt64Array.length()) {
                 add(txnGroupInt64Array.get(index) to txnList[index.toInt()])
@@ -254,7 +258,7 @@ fun groupWalletConnectTransactions(
 
 fun getTransactionId(txnByteArray: ByteArray?): String {
     return try {
-        Mobile.getTxID(txnByteArray)
+        Sdk.getTxID(txnByteArray)
     } catch (exception: Exception) {
         recordException(exception)
         ""
@@ -271,7 +275,7 @@ fun List<ByteArray>.toBytesArray(): BytesArray {
 
 // TODO: 1.06.2022 Create a wrapper for grouped BytesArray so that we can distinguish between them
 fun BytesArray.assignGroupId(): BytesArray {
-    return Mobile.assignGroupID(this)
+    return Sdk.assignGroupID(this)
 }
 
 fun List<ByteArray>.flatten(): ByteArray {
@@ -281,9 +285,9 @@ fun List<ByteArray>.flatten(): ByteArray {
 }
 
 fun ByteArray.encrypt(secretKey: ByteArray): Encryption {
-    return Mobile.encrypt(this, secretKey)
+    return Sdk.encrypt(this, secretKey)
 }
 
 fun ByteArray.decrypt(secretKey: ByteArray): Encryption {
-    return Mobile.decrypt(this, secretKey)
+    return Sdk.decrypt(this, secretKey)
 }

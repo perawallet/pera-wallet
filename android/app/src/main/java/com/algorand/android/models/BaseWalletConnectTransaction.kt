@@ -27,7 +27,7 @@ abstract class BaseWalletConnectTransaction : Parcelable {
     abstract val note: String?
     abstract val peerMeta: WalletConnectPeerMeta
     abstract val rawTransactionPayload: WCAlgoTransactionRequest
-    abstract val signer: WalletConnectSigner
+    abstract val signer: WalletConnectTransactionSigner
     abstract val groupId: String?
     abstract val fee: Long
 

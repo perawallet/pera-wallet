@@ -15,6 +15,7 @@ package com.algorand.android.modules.onboarding.recoverypassphrase.enterpassphra
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
@@ -31,7 +32,6 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.onboarding.recoverypassphrase.options.ui.RecoverOptionsBottomSheet
 import com.algorand.android.modules.onboarding.recoverypassphrase.options.ui.RecoverOptionsBottomSheet.Companion.RESULT_KEY
-import com.algorand.android.modules.onboarding.recoverypassphrase.qrscanner.ui.RecoverWithPassphraseQrScannerFragment.Companion.MNEMONIC_QR_SCAN_RESULT_KEY
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.delegation.keyboardvisibility.KeyboardHandlerDelegation
 import com.algorand.android.utils.delegation.keyboardvisibility.KeyboardHandlerDelegationImpl
@@ -56,6 +56,8 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
     )
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
+
+    private val args by navArgs<RecoverWithPassphraseFragmentArgs>()
 
     private val recoverWithPassphraseViewModel: RecoverWithPassphraseViewModel by viewModels()
 
@@ -163,6 +165,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
         super.onViewCreated(view, savedInstanceState)
         registerKeyboardHandlerDelegation(baseFragment = this, onKeyboardOpenedListener = onKeyboardOpenedListener)
         initUi()
+        loadData()
         initObservers()
         customizeToolbar()
     }
@@ -181,25 +184,20 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
         }
     }
 
-    private fun initSavedStateListener() {
-        startSavedStateListener(R.id.recoverWithPassphraseFragment) {
-            useSavedStateValue<String>(MNEMONIC_QR_SCAN_RESULT_KEY) { mnemonic ->
-                recoverWithPassphraseViewModel.onClipboardTextPasted(mnemonic)
-            }
-            useSavedStateValue<RecoverOptionsBottomSheet.OptionResult>(RESULT_KEY) { optionResult ->
-                when (optionResult) {
-                    RecoverOptionsBottomSheet.OptionResult.PASTE -> pasteClipboard()
-                    RecoverOptionsBottomSheet.OptionResult.SCAN_QR -> navToScanQr()
-                }
-            }
+    private fun loadData() {
+        args.mnemonic?.let { mnemonic ->
+            recoverWithPassphraseViewModel.onClipboardTextPasted(mnemonic)
         }
     }
 
-    private fun navToScanQr() {
-        nav(
-            RecoverWithPassphraseFragmentDirections
-                .actionRecoverWithPassphraseFragmentToRecoverWithPassphraseQrScannerFragment()
-        )
+    private fun initSavedStateListener() {
+        startSavedStateListener(R.id.recoverWithPassphraseFragment) {
+            useSavedStateValue<RecoverOptionsBottomSheet.OptionResult>(RESULT_KEY) { optionResult ->
+                when (optionResult) {
+                    RecoverOptionsBottomSheet.OptionResult.PASTE -> pasteClipboard()
+                }
+            }
+        }
     }
 
     private fun initObservers() {

@@ -22,7 +22,6 @@ data class WalletConnectSession(
     val peerMeta: WalletConnectPeerMeta,
     val dateTimeStamp: Long,
     val isConnected: Boolean = false,
-    val isSubscribed: Boolean,
     val connectedAccountsAddresses: List<String>,
     val fallbackBrowserGroupResponse: String? = null
 ) : Parcelable

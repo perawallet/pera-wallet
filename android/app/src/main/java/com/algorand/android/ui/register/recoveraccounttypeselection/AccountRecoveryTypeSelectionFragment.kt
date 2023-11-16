@@ -18,9 +18,9 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.LoginNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.TextButton
 import com.algorand.android.databinding.FragmentAccountRecoveryTypeSelectionBinding
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.customviews.toolbar.buttoncontainer.model.TextButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,6 +49,7 @@ class AccountRecoveryTypeSelectionFragment : BaseFragment(R.layout.fragment_acco
         setupToolbar()
         with(binding) {
             recoverAnAccountSelectionItem.setOnClickListener { navToRecoverAccountInfoFragment() }
+            recoverAnAccountWithQrSelectionItem.setOnClickListener { navToRecoverWithPassphraseQrScannerFragment() }
             pairLedgerSelectionItem.setOnClickListener { navToPairLedgerNavigation() }
             importFromWebSelectionItem.setOnClickListener { navToImportFromWeb() }
             algorandSecureBackupSelectionItem.setOnClickListener { navToAlgorandSecureRestoreNavigation() }
@@ -66,6 +67,13 @@ class AccountRecoveryTypeSelectionFragment : BaseFragment(R.layout.fragment_acco
         nav(
             AccountRecoveryTypeSelectionFragmentDirections
                 .actionAccountRecoveryTypeSelectionFragmentToRecoverAccountInfoFragment()
+        )
+    }
+
+    private fun navToRecoverWithPassphraseQrScannerFragment() {
+        nav(
+            AccountRecoveryTypeSelectionFragmentDirections
+                .actionAccountRecoveryTypeSelectionFragmentToRecoverWithPassphraseQrScannerFragment()
         )
     }
 

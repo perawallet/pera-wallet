@@ -24,10 +24,10 @@
         android:layout_height="wrap_content"
         android:gravity="start"
         android:paddingEnd="@dimen/spacing_small"
+        android:text="@string/participation_status"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/participationStatusTextView"
-        tools:text="Note" />
+        app:layout_constraintTop_toTopOf="@id/participationStatusTextView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -45,6 +45,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@tools:sample/lorem[25]" />
+        tools:text="@string/participating" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

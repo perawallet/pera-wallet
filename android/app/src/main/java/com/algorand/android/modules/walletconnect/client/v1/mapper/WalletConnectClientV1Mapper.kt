@@ -110,7 +110,6 @@ class WalletConnectClientV1Mapper @Inject constructor(
         cachedData: WalletConnectV1SessionCachedData,
         namespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Session>,
         creationDateTimestamp: Long,
-        isSubscribed: Boolean,
         isConnected: Boolean,
         expiry: WalletConnect.Model.Expiry?,
         clientId: String
@@ -121,7 +120,6 @@ class WalletConnectClientV1Mapper @Inject constructor(
             peerMeta = peerMetaMapper.mapToPeerMeta(cachedData.session.peerMeta()),
             namespaces = namespaces,
             creationDateTimestamp = creationDateTimestamp,
-            isSubscribed = isSubscribed,
             isConnected = isConnected,
             fallbackBrowserGroupResponse = cachedData.fallbackBrowserGroupResponse,
             expiry = expiry,
@@ -156,7 +154,6 @@ class WalletConnectClientV1Mapper @Inject constructor(
             isConnected = walletConnectSessionDto.isConnected,
             namespaces = namespaces,
             creationDateTimestamp = walletConnectSessionDto.dateTimeStamp,
-            isSubscribed = walletConnectSessionDto.isSubscribed,
             fallbackBrowserGroupResponse = walletConnectSessionDto.fallbackBrowserGroupResponse,
             expiry = null,
             sessionMeta = sessionMetaMapper.mapToSessionMeta(walletConnectSessionDto.wcSession)
@@ -166,7 +163,6 @@ class WalletConnectClientV1Mapper @Inject constructor(
     fun mapToSessionDetail(
         entity: WalletConnectSessionDto,
         creationDateTimestamp: Long,
-        isSubscribed: Boolean,
         fallbackBrowserGroupResponse: String?,
         namespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Session>,
         sessionMeta: WalletConnectSessionMetaDto
@@ -181,7 +177,6 @@ class WalletConnectClientV1Mapper @Inject constructor(
             namespaces = namespaces,
             isConnected = entity.isConnected,
             creationDateTimestamp = creationDateTimestamp,
-            isSubscribed = isSubscribed,
             fallbackBrowserGroupResponse = fallbackBrowserGroupResponse,
             expiry = null,
             sessionMeta = sessionMetaMapper.mapToSessionMeta(sessionMeta)

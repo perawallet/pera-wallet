@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.onboarding.recoverypassphrase.enterpassphrase.ui.usecase
 
-import com.algorand.algosdk.mobile.Mobile
+import com.algorand.algosdk.sdk.Sdk
 import com.algorand.android.R
 import com.algorand.android.core.AccountManager
 import com.algorand.android.customviews.passphraseinput.usecase.PassphraseInputGroupUseCase
@@ -125,7 +125,7 @@ class RecoverWithPassphrasePreviewUseCase @Inject constructor(
         try {
             emit(preview.copy(showLoadingDialogEvent = Event(Unit)))
             val mnemonics = passphraseInputConfigurationUtil.getOrderedInput(preview.passphraseInputGroupConfiguration)
-            val privateKey = Mobile.mnemonicToPrivateKey(mnemonics.lowercase(Locale.ENGLISH))
+            val privateKey = Sdk.mnemonicToPrivateKey(mnemonics.lowercase(Locale.ENGLISH))
             if (privateKey == null) {
                 val copiedPreview = preview.copy(
                     onAccountNotFoundEvent = Event(AnnotatedString(R.string.account_not_found_please_try))
@@ -133,7 +133,7 @@ class RecoverWithPassphrasePreviewUseCase @Inject constructor(
                 emit(copiedPreview)
                 return@flow
             }
-            val accountAddress = Mobile.generateAddressFromSK(privateKey)
+            val accountAddress = Sdk.generateAddressFromSK(privateKey)
             val isThereAnyAccountWithPublicKey = accountManager.isThereAnyAccountWithPublicKey(accountAddress)
             if (isThereAnyAccountWithPublicKey) {
                 val account = accountManager.getAccount(accountAddress)

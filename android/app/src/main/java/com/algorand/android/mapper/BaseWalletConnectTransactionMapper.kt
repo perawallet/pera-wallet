@@ -17,9 +17,9 @@ import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WCAlgoTransactionRequest
 import com.algorand.android.models.WalletConnectAddress
 import com.algorand.android.models.WalletConnectPeerMeta
-import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionParams
 import com.algorand.android.models.WalletConnectTransactionRequest
+import com.algorand.android.models.WalletConnectTransactionSigner
 
 @SuppressWarnings("ReturnCount")
 abstract class BaseWalletConnectTransactionMapper {
@@ -44,10 +44,10 @@ abstract class BaseWalletConnectTransactionMapper {
         }
     }
 
-    protected fun getAuthAddress(accountData: AccountDetail?, signer: WalletConnectSigner): String? {
+    protected fun getAuthAddress(accountData: AccountDetail?, signer: WalletConnectTransactionSigner): String? {
         return when (signer) {
-            is WalletConnectSigner.Rekeyed -> signer.address.decodedAddress
-            is WalletConnectSigner.Sender -> {
+            is WalletConnectTransactionSigner.Rekeyed -> signer.address.decodedAddress
+            is WalletConnectTransactionSigner.Sender -> {
                 val isAccountRekeyed = accountData?.accountInformation?.isRekeyed() ?: false
                 return if (isAccountRekeyed) {
                     accountData?.accountInformation?.rekeyAdminAddress

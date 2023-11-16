@@ -29,7 +29,6 @@ class WalletConnectSessionEntityMapper @Inject constructor(
                 wcSession = sessionMetaEntityMapper.mapToSessionMetaEntity(wcSession),
                 dateTimeStamp = dateTimeStamp,
                 isConnected = isConnected,
-                isSubscribed = isSubscribed,
                 fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
             )
         }

@@ -20,8 +20,8 @@ import com.algorand.android.models.WCAlgoTransactionRequest
 import com.algorand.android.models.WalletConnectAccount
 import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
-import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
+import com.algorand.android.models.WalletConnectTransactionSigner
 import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.usecase.AccountDetailUseCase
@@ -78,7 +78,7 @@ class PaymentTransactionMapper @Inject constructor(
                 getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(ALGO_ID, accountDetail.account.address)
             }
             val walletConnectAssetInformation = createWalletConnectAssetInformation(ownedAsset, amount)
-            val signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider)
+            val signer = WalletConnectTransactionSigner.create(rawTransaction, senderWCAddress, errorProvider)
             val isLocalAccountSigner = signer.address?.decodedAddress?.mapNotBlank { safeAddress ->
                 accountDetailUseCase.isThereAnyAccountWithPublicKey(safeAddress)
             } ?: false
@@ -122,7 +122,7 @@ class PaymentTransactionMapper @Inject constructor(
                 getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(ALGO_ID, accountDetail.account.address)
             }
             val walletConnectAssetInformation = createWalletConnectAssetInformation(ownedAsset, amount)
-            val signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider)
+            val signer = WalletConnectTransactionSigner.create(rawTransaction, senderWCAddress, errorProvider)
             val isLocalAccountSigner = signer.address?.decodedAddress?.mapNotBlank { safeAddress ->
                 accountDetailUseCase.isThereAnyAccountWithPublicKey(safeAddress)
             } ?: false
@@ -165,7 +165,7 @@ class PaymentTransactionMapper @Inject constructor(
                 getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(ALGO_ID, accountDetail.account.address)
             }
             val walletConnectAssetInformation = createWalletConnectAssetInformation(ownedAsset, amount)
-            val signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider)
+            val signer = WalletConnectTransactionSigner.create(rawTransaction, senderWCAddress, errorProvider)
             val isLocalAccountSigner = signer.address?.decodedAddress?.mapNotBlank { safeAddress ->
                 accountDetailUseCase.isThereAnyAccountWithPublicKey(safeAddress)
             } ?: false
@@ -211,8 +211,8 @@ class PaymentTransactionMapper @Inject constructor(
             val ownedAsset = senderAccountData.mapNotNull { accountDetail ->
                 getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(ALGO_ID, accountDetail.account.address)
             }
-            val signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider)
             val walletConnectAssetInformation = createWalletConnectAssetInformation(ownedAsset, amount)
+            val signer = WalletConnectTransactionSigner.create(rawTransaction, senderWCAddress, errorProvider)
             BasePaymentTransaction.PaymentTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),

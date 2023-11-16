@@ -496,14 +496,9 @@
     <string name="minimum_amount_required">최소 금액 필요</string>
     <string name="this_is_the_first_transaction">선택한 계정의 첫 번째 거래입니다. 첫 번째 거래의 최소 금액은 0.1알고 이상입니다. 유효한 금액을 입력하고 다시 시도해 주세요.</string>
     <string name="i_want_to_create">계정을 만들겠습니다</string>
-    <string name="create_a_new_algorand">새 알고랜드 계정을 만들거나 읽기 전용 계정을 추가합니다</string>
-    <string name="i_already_have">이미 계정이 있습니다</string>
-    <string name="import_an_existing">복구 비밀문구를 사용하거나 Ledger를 페어링해 기존 알고랜드 계정 불러오기</string>
     <string name="i_want_to_create_an_algorand_account">새 알고랜드 계정을\n만들겠습니다</string>
     <string name="create_a_new_account">새 계정 만들기</string>
     <string name="create_a_new_algorand_account_with">새로운 주소와 복구 비밀문구로 새 알고랜드 계정 만들기</string>
-    <string name="add_watch_account">읽기 전용 계정 추가</string>
-    <string name="i_already_have_nan_account">이미 계정이\n있습니다</string>
     <string name="recover_an_account">계정 복구</string>
     <string name="pair_Ledger_device">Ledger 기기 페어링</string>
     <string name="confirm_transaction">트랜잭션 확정</string>
@@ -780,7 +775,7 @@
     <string name="set_custom_percentage">사용자 지정 백분율 설정</string>
     <string name="balance_percentage">잔액 백분율</string>
     <string name="pera_wallet_provides_an_easy">Pera Wallet은 자산을 쉽고 빠르게 스왑할 수 있는 방법을 제공합니다. 스왑을 통해 시장 수수료만 내고 스마트 컨트랙트를 사용하여 ASA와 다른 ASA와 교환할 수 있습니다.</string>
-    <string name="by_continuing_you_agree_to">계속하면 스왑 파트너의\n<annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">서비스 약관</annotation></annotation></annotation>에 동의하시게 됩니다.</string>
+    <string name="by_continuing_you_agree_to">계속하면 스왑 파트너의\n<annotation url="vestigeTermsOfServiceUrl"><annotation type="bold"><annotation type="color">서비스 약관</annotation></annotation></annotation>에 동의하시게 됩니다.</string>
     <string name="start_swapping">스왑 시작</string>
     <string name="powered_by">제공:</string>
     <string name="new_text">신규</string>
@@ -824,18 +819,6 @@
     <string name="custom">사용자 설정</string>
     <string name="select_all">전체 선택</string>
     <string name="unselect_all">전체 선택 해제</string>
-    <string name="disclaimer">고지사항</string>
-    <string name="export_to_pera_web">Pera Web으로 내보내기</string>
-    <string name="you_re_about_to_share">Pera Web으로 비밀문구를 공유하고 가져오려고 합니다!</string>
-    <string name="confirm_export_domain">도메인 내보내기 확인</string>
-    <string name="for_your_security_please_confirm">보안을 위해 컴퓨터에 표시되는 도메인 이름을 입력하여 계정을 Pera Web으로 내보내고 있는지 확인해주세요.</string>
-    <string name="enter_url_of_web_wallet">웹 지갑의 URL을 입력하세요</string>
-    <string name="url_of_web_wallet">웹 지갑의 URL</string>
-    <string name="to_make_sure_that_you">계정을 안전한 위치로 내보내기 위해, 항상 공식 Pera Web URL에 접속 중인지 확인하세요:</string>
-    <string name="confirm_accounts">계정 확인</string>
-    <string name="you_re_about_to_export">계정을 Pera Web으로 안전하게 내보내려고 합니다:</string>
-    <string name="accounts_exported_successfully">계정을 내보냈습니다!</string>
-    <string name="you_can_now_use_these">이제 계정을 Pera Web에서 사용할 수 있습니다.</string>
     <string name="we_couldn_t_find">내보낼 수 있는 계정을 찾을 수 없습니다.</string>
     <plurals name="account_count">
         <item quantity="other">계정 %1$d개</item>
@@ -906,7 +889,6 @@
     <string name="you_need_to_opt_in">NFT ASA ID를 옵트인해야 지갑으로 전송할 수 있습니다. 검색 창에 ASA ID를 붙여넣으세요.</string>
     <string name="you_need_to_opt_in_to">NFT ASA ID를 옵트인해야 지갑으로 전송할 수 있습니다.</string>
     <string name="round">라운드</string>
-    <string name="do_not_proceed_if_you">이런 요청을 하신 적이 없다면 계속 진행하지 마십시오.</string>
     <string name="this_asset_is">이미 삭제 대기 중인 자산입니다.</string>
     <string name="get_help">지원 요청</string>
     <string name="couldn_t_retrieve">계정 정보를 불러올 수 없습니다, 다시 시도해 주세요</string>
@@ -938,7 +920,6 @@
     <string name="future_transactions_can_only">향후 트랜잭션은 위임받은 계정에서만 서명할 수 있습니다.</string>
     <string name="this_account_will_no_longer">이 계정에서는 더 이상 거래에 서명할 수 없게 됩니다.</string>
     <string name="your_account_s_public_key">계정의 공개 키, 잔액, 설정은 그대로 유지됩니다.</string>
-    <string name="account_transfer_is">보안상의 이유로 테스트넷에서는 계정을 이전할 수 없습니다. 이전 기능을 사용하려면 메인넷으로 전환하십시오.</string>
     <string name="invalid_url">유효하지 않은 URL</string>
     <string name="high_price_impact_detected">가격 영향이 큽니다!</string>
     <string name="it_appears_that_you_formatted">가격 영향이 <annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation> %%보다 큰 스왑을 진행하시려는 것 같습니다.\n\n가격 영향, 계산 방법 또는 스왑의 전체 가치에 미치는 영향에 대해 자세히 알아보려면 Tinyman의 <annotation custom="faq_url">FAQ 섹션</annotation>을 참조하세요.</string>

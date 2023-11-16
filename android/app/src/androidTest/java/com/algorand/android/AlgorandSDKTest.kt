@@ -13,9 +13,9 @@
 package com.algorand.android
 
 import android.util.Base64
-import com.algorand.algosdk.mobile.Mobile
-import com.algorand.algosdk.mobile.SuggestedParams
-import com.algorand.algosdk.mobile.Uint64
+import com.algorand.algosdk.sdk.Sdk
+import com.algorand.algosdk.sdk.SuggestedParams
+import com.algorand.algosdk.sdk.Uint64
 import org.junit.Test
 
 class AlgorandSDKTest {
@@ -24,7 +24,7 @@ class AlgorandSDKTest {
     fun isMnemonicFromPrivateKeyWorks() {
 
         val privateKey = byteArrayOf(80, -73, 43, 100, -5, -58, -47, -107, 27, 92, -76, -99, 110, 7, -127, 61, -55, -15, 73, -26, 59, 30, -9, -15, 22, 70, -3, -69, -110, 93, 86, 47, 81, 96, -55, -16, 10, -32, 36, -121, -127, -70, -35, -9, -23, -18, 36, 127, -121, -81, 46, 3, 96, 32, -39, 3, 44, -40, -48, 67, 104, -13, -86, -82)
-        val mnemonic = Mobile.mnemonicFromPrivateKey(privateKey)
+        val mnemonic = Sdk.mnemonicFromPrivateKey(privateKey)
 
         val expectedMnemonic = "tube put rare hurry phone tornado this reform squirrel buffalo scene need toe mystery tennis bullet discover forward perfect save century number kingdom ability person"
 
@@ -35,7 +35,7 @@ class AlgorandSDKTest {
     fun isMnemonicToPrivateKeyWorks() {
 
         val mnemonic = "tube put rare hurry phone tornado this reform squirrel buffalo scene need toe mystery tennis bullet discover forward perfect save century number kingdom ability person"
-        val privateKey = Mobile.mnemonicToPrivateKey(mnemonic)
+        val privateKey = Sdk.mnemonicToPrivateKey(mnemonic)
 
         val expectedPrivateKey = byteArrayOf(80, -73, 43, 100, -5, -58, -47, -107, 27, 92, -76, -99, 110, 7, -127, 61, -55, -15, 73, -26, 59, 30, -9, -15, 22, 70, -3, -69, -110, 93, 86, 47, 81, 96, -55, -16, 10, -32, 36, -121, -127, -70, -35, -9, -23, -18, 36, 127, -121, -81, 46, 3, 96, 32, -39, 3, 44, -40, -48, 67, 104, -13, -86, -82)
 
@@ -46,7 +46,7 @@ class AlgorandSDKTest {
     fun isGenerateAddressFromSecretKeyWorks() {
 
         val privateKey = byteArrayOf(80, -73, 43, 100, -5, -58, -47, -107, 27, 92, -76, -99, 110, 7, -127, 61, -55, -15, 73, -26, 59, 30, -9, -15, 22, 70, -3, -69, -110, 93, 86, 47, 81, 96, -55, -16, 10, -32, 36, -121, -127, -70, -35, -9, -23, -18, 36, 127, -121, -81, 46, 3, 96, 32, -39, 3, 44, -40, -48, 67, 104, -13, -86, -82)
-        val publicKey = Mobile.generateAddressFromSK(privateKey)
+        val publicKey = Sdk.generateAddressFromSK(privateKey)
 
         val expectedPublicKey = "KFQMT4AK4ASIPAN23X36T3REP6D26LQDMAQNSAZM3DIEG2HTVKXEF76AP4"
 
@@ -58,7 +58,7 @@ class AlgorandSDKTest {
 
         val transaction = byteArrayOf(-119, -93, 97, 109, 116, -50, 0, 15, 66, 64, -93, 102, 101, 101, -51, 3, -24, -94, 102, 118, -50, 0, -28, -97, 85, -93, 103, 101, 110, -84, 116, 101, 115, 116, 110, 101, 116, 45, 118, 49, 46, 48, -94, 103, 104, -60, 32, 72, 99, -75, 24, -92, -77, -56, 78, -56, 16, -14, 45, 79, 16, -127, -53, 15, 113, -16, 89, -89, -84, 32, -34, -58, 47, 127, 112, -27, 9, 58, 34, -94, 108, 118, -50, 0, -28, -93, 61, -93, 114, 99, 118, -60, 32, -18, -58, 52, -38, -17, -105, -115, 95, 66, -77, 101, 81, 2, 102, 18, -60, -123, -87, 87, 119, -96, 14, 89, -107, -26, 20, -38, -97, -2, 71, -57, -41, -93, 115, 110, 100, -60, 32, 81, 96, -55, -16, 10, -32, 36, -121, -127, -70, -35, -9, -23, -18, 36, 127, -121, -81, 46, 3, 96, 32, -39, 3, 44, -40, -48, 67, 104, -13, -86, -82, -92, 116, 121, 112, 101, -93, 112, 97, 121)
         val secretKey = byteArrayOf(80, -73, 43, 100, -5, -58, -47, -107, 27, 92, -76, -99, 110, 7, -127, 61, -55, -15, 73, -26, 59, 30, -9, -15, 22, 70, -3, -69, -110, 93, 86, 47, 81, 96, -55, -16, 10, -32, 36, -121, -127, -70, -35, -9, -23, -18, 36, 127, -121, -81, 46, 3, 96, 32, -39, 3, 44, -40, -48, 67, 104, -13, -86, -82)
-        val signedTransaction = Mobile.signTransaction(secretKey, transaction)
+        val signedTransaction = Sdk.signTransaction(secretKey, transaction)
 
         val expectedSignedTransaction = byteArrayOf(-126, -93, 115, 105, 103, -60, 64, -63, 85, 52, -91, 28, -119, -104, -74, -38, 56, -116, -74, 117, 102, -53, -104, -43, 41, 40, 34, -88, -26, -73, -95, 52, -56, 50, -127, 53, 82, 27, 68, -24, -47, -103, 22, 63, -84, 38, -31, -114, 7, -122, 44, -98, -93, -92, -90, -24, -81, 70, -14, 94, -125, -26, 55, 88, -37, 91, -64, 92, -54, -98, 15, -93, 116, 120, 110, -119, -93, 97, 109, 116, -50, 0, 15, 66, 64, -93, 102, 101, 101, -51, 3, -24, -94, 102, 118, -50, 0, -28, -97, 85, -93, 103, 101, 110, -84, 116, 101, 115, 116, 110, 101, 116, 45, 118, 49, 46, 48, -94, 103, 104, -60, 32, 72, 99, -75, 24, -92, -77, -56, 78, -56, 16, -14, 45, 79, 16, -127, -53, 15, 113, -16, 89, -89, -84, 32, -34, -58, 47, 127, 112, -27, 9, 58, 34, -94, 108, 118, -50, 0, -28, -93, 61, -93, 114, 99, 118, -60, 32, -18, -58, 52, -38, -17, -105, -115, 95, 66, -77, 101, 81, 2, 102, 18, -60, -123, -87, 87, 119, -96, 14, 89, -107, -26, 20, -38, -97, -2, 71, -57, -41, -93, 115, 110, 100, -60, 32, 81, 96, -55, -16, 10, -32, 36, -121, -127, -70, -35, -9, -23, -18, 36, 127, -121, -81, 46, 3, 96, 32, -39, 3, 44, -40, -48, 67, 104, -13, -86, -82, -92, 116, 121, 112, 101, -93, 112, 97, 121)
 
@@ -82,7 +82,7 @@ class AlgorandSDKTest {
             lower = transactionAmount.and(Int.MAX_VALUE.toLong())
         }
 
-        val assetTransferTransaction = Mobile.makeAssetTransferTxn(
+        val assetTransferTransaction = Sdk.makeAssetTransferTxn(
             "53DDJWXPS6GV6QVTMVIQEZQSYSC2SV3XUAHFTFPGCTNJ77SHY7L3WSK5E4",
             "5KYQMJHCDW6CJNLZPZCB6IBWO7FTEDYAH3U7DH3JWWPJP7NXH3BSGAGUUM",
             "",
@@ -114,7 +114,7 @@ class AlgorandSDKTest {
             lower = transactionAmount.and(Int.MAX_VALUE.toLong())
         }
 
-        val algoPaymentTransaction = Mobile.makePaymentTxn(
+        val algoPaymentTransaction = Sdk.makePaymentTxn(
             "53DDJWXPS6GV6QVTMVIQEZQSYSC2SV3XUAHFTFPGCTNJ77SHY7L3WSK5E4",
             "5KYQMJHCDW6CJNLZPZCB6IBWO7FTEDYAH3U7DH3JWWPJP7NXH3BSGAGUUM",
             transactionAmountUint64,
@@ -139,7 +139,7 @@ class AlgorandSDKTest {
             lastRoundValid = 14955294L
         }
 
-        val addHipoCoinTransaction = Mobile.makeAssetAcceptanceTxn(
+        val addHipoCoinTransaction = Sdk.makeAssetAcceptanceTxn(
             "5KYQMJHCDW6CJNLZPZCB6IBWO7FTEDYAH3U7DH3JWWPJP7NXH3BSGAGUUM",
             null,
             suggestedParams,
@@ -168,7 +168,7 @@ class AlgorandSDKTest {
             lower = transactionAmount.and(Int.MAX_VALUE.toLong())
         }
 
-        val removeHipoCoinTransaction = Mobile.makeAssetTransferTxn(
+        val removeHipoCoinTransaction = Sdk.makeAssetTransferTxn(
             "5KYQMJHCDW6CJNLZPZCB6IBWO7FTEDYAH3U7DH3JWWPJP7NXH3BSGAGUUM",
             "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
             "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
@@ -194,7 +194,7 @@ class AlgorandSDKTest {
             lastRoundValid = 14958693L
         }
 
-        val rekeyTransaction = Mobile.makeRekeyTxn(
+        val rekeyTransaction = Sdk.makeRekeyTxn(
             "KFQMT4AK4ASIPAN23X36T3REP6D26LQDMAQNSAZM3DIEG2HTVKXEF76AP4",
             "PSFS47IHURFRHYPQIXWHNRFGA2GQMBJVF4KJSYVKIX35YIZTS2JJZA4W5Y",
             suggestedParams
@@ -209,7 +209,7 @@ class AlgorandSDKTest {
     fun isMsgPackToJsonWorks() {
         val transactionMsgPack = "iqNhbXTOAAGGoKNmZWXNA+iiZnbOAOA1S6NnZW6sbWFpbm5ldC12MS4womdoxCDAYcTY/B293tLXYEvkVo4/bQQZh6w3veS2ILWrOSSK36Jsds4A4DkzpG5vdGXEEmV4YW1wbGUgbm90ZSB2YWx1ZaNyY3bEIGtpDtrpSU5mJJEvKaoCmL40NlS8xDz/fhybP0aS83rAo3NuZMQgUWDJ8ArgJIeBut336e4kf4evLgNgINkDLNjQQ2jzqq6kdHlwZaNwYXk="
         val decodedTransactionByteArray = Base64.decode(transactionMsgPack, Base64.DEFAULT)
-        val transactionJson = Mobile.transactionMsgpackToJson(decodedTransactionByteArray)
+        val transactionJson = Sdk.transactionMsgpackToJson(decodedTransactionByteArray)
 
         val expectedPayload = """
             {

@@ -8,12 +8,12 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.LoginNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.TextButton
 import com.algorand.android.databinding.FragmentRegisterTypeSelectionBinding
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.RegisterIntroPreview
 import com.algorand.android.models.StatusBarConfiguration
-import com.algorand.android.customviews.toolbar.buttoncontainer.model.TextButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.browser.openPrivacyPolicyUrl
 import com.algorand.android.utils.browser.openTermsAndServicesUrl
@@ -54,8 +54,9 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
 
     private fun initUi() {
         with(binding) {
-            createAccountSelectionItem.setOnClickListener { navToAddAccountTypeSelectionFragment() }
+            createAccountSelectionItem.setOnClickListener { navToBackupInfoFragment() }
             recoveryAccountSelectionItem.setOnClickListener { navToAccountRecoveryTypeSelectionFragment() }
+            watchAccountSelectionItem.setOnClickListener { navToWatchAccountInfoFragment() }
         }
         setupPolicyText()
     }
@@ -67,14 +68,19 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
         )
     }
 
-    private fun navToAddAccountTypeSelectionFragment() {
+    private fun navToBackupInfoFragment() {
         registerIntroViewModel.logOnboardingWelcomeAccountCreateClickEvent()
-        nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToAddAccountTypeSelectionFragment())
+        nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToBackupInfoFragment())
     }
 
     private fun navToAccountRecoveryTypeSelectionFragment() {
         registerIntroViewModel.logOnboardingWelcomeAccountRecoverClickEvent()
         nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToAccountRecoveryTypeSelectionFragment())
+    }
+
+    private fun navToWatchAccountInfoFragment() {
+        registerIntroViewModel.logOnboardingCreateWatchAccountClickEvent()
+        nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToWatchAccountInfoFragment())
     }
 
     private fun configureToolbar(isCloseButtonVisible: Boolean, isSkipButtonVisible: Boolean) {

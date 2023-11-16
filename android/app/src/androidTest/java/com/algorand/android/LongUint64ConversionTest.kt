@@ -12,7 +12,7 @@
 
 package com.algorand.android
 
-import com.algorand.algosdk.mobile.Uint64
+import com.algorand.algosdk.sdk.Uint64
 import com.algorand.android.utils.toUint64
 import org.junit.Test
 

@@ -15,11 +15,15 @@ package com.algorand.android.modules.walletconnect.domain.model
 import com.google.gson.annotations.SerializedName
 
 private const val METHOD_ALGO_SIGN_TXN_VALUE = "algo_signTxn"
+private const val METHOD_ALGO_SIGN_DATA_VALUE = "algo_signData"
 
 enum class WalletConnectMethod(val value: String) {
 
     @SerializedName(METHOD_ALGO_SIGN_TXN_VALUE)
     ALGO_SIGN_TXN(METHOD_ALGO_SIGN_TXN_VALUE),
+
+    @SerializedName(METHOD_ALGO_SIGN_DATA_VALUE)
+    ALGO_SIGN_DATA(METHOD_ALGO_SIGN_DATA_VALUE),
 
     UNKNOWN("")
 }

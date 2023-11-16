@@ -30,7 +30,6 @@ class WalletConnectSessionDtoMapper @Inject constructor(
                 wcSession = sessionMetaDtoMapper.mapToSessionMetaDto(wcSession),
                 dateTimeStamp = dateTimeStamp,
                 isConnected = isConnected,
-                isSubscribed = isSubscribed,
                 fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
             )
         }
@@ -47,7 +46,6 @@ class WalletConnectSessionDtoMapper @Inject constructor(
                 wcSession = sessionMetaDtoMapper.mapToSessionMetaDto(sessionMeta),
                 dateTimeStamp = session.creationDateTimestamp,
                 isConnected = session.isConnected,
-                isSubscribed = session.isSubscribed,
                 fallbackBrowserGroupResponse = session.fallbackBrowserGroupResponse
             )
         }

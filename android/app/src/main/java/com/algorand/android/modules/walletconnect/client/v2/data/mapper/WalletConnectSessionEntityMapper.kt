@@ -22,7 +22,6 @@ class WalletConnectSessionEntityMapper @Inject constructor() {
         return WalletConnectV2SessionEntity(
             topic = dto.topic,
             dateTimeStamp = dto.creationDateTimestamp,
-            isSubscribed = dto.isSubscribed,
             fallbackBrowserGroupResponse = dto.fallbackBrowserGroupResponse
         )
     }

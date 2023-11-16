@@ -45,7 +45,7 @@ class BidaliBrowserFragment :
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.bidali,
         titleColor = R.color.text_main,
-        startIconResId = R.drawable.ic_left_arrow,
+        startIconResId = R.drawable.ic_close,
         startIconClick = ::navBack,
     )
 

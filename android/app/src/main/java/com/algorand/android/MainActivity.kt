@@ -53,7 +53,9 @@ import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
 import com.algorand.android.models.TransactionManagerResult
-import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.models.WalletConnectRequest
+import com.algorand.android.models.WalletConnectRequest.WalletConnectArbitraryDataRequest
+import com.algorand.android.models.WalletConnectRequest.WalletConnectTransaction
 import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
 import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
 import com.algorand.android.modules.deeplink.DeepLinkParser
@@ -69,7 +71,6 @@ import com.algorand.android.modules.walletconnect.connectionrequest.ui.WalletCon
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
-import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
 import com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment
 import com.algorand.android.ui.lockpreference.AutoLockSuggestionManager
 import com.algorand.android.usecase.IsAccountLimitExceedUseCase.Companion.MAX_NUMBER_OF_ACCOUNTS
@@ -161,7 +162,7 @@ class MainActivity :
     }
 
     private val newNotificationObserver = Observer<Event<NotificationMetadata>> {
-        it?.consume()?.let { newNotificationData ->
+        it.consume()?.let { newNotificationData ->
             if (!isAppUnlocked) {
                 return@let
             }
@@ -286,18 +287,6 @@ class MainActivity :
             }
         }
 
-        override fun onWebExportQrCodeDeepLink(webExportQrCode: WebExportQrCode): Boolean {
-            return true.also {
-                nav(
-                    HomeNavigationDirections.actionGlobalWebExportNavigation(
-                        backupId = webExportQrCode.backupId,
-                        modificationKey = webExportQrCode.modificationKey,
-                        encryptionKey = webExportQrCode.encryptionKey
-                    )
-                )
-            }
-        }
-
         override fun onAssetOptInDeepLink(assetAction: AssetAction): Boolean {
             return true.also {
                 navController.navigateSafe(
@@ -337,11 +326,13 @@ class MainActivity :
                         mainViewModel.sendAssetOperationSignedTransaction(signedTransactionDetail)
                     }
                 }
+
                 is TransactionManagerResult.Error.GlobalWarningError -> {
                     hideLedgerLoadingDialog()
                     val (title, errorMessage) = result.getMessage(this)
                     showGlobalError(title = title, errorMessage = errorMessage, tag = activityTag)
                 }
+
                 is TransactionManagerResult.Error.SnackbarError -> {
                     hideLedgerLoadingDialog()
                     CustomSnackbar.Builder()
@@ -354,12 +345,14 @@ class MainActivity :
                         .build()
                         .show(binding.root)
                 }
+
                 is TransactionManagerResult.LedgerWaitingForApproval -> showLedgerLoadingDialog(result.bluetoothName)
                 is TransactionManagerResult.Loading -> showProgress()
                 is TransactionManagerResult.LedgerScanFailed -> {
                     hideLedgerLoadingDialog()
                     navigateToConnectionIssueBottomSheet()
                 }
+
                 else -> {
                     sendErrorLog("Unhandled else case in transactionManagerResultLiveData")
                 }
@@ -460,7 +453,7 @@ class MainActivity :
 
         mainViewModel.accountBalanceSyncStatus.observe(this, assetSetupCompletedObserver)
 
-        walletConnectViewModel.requestLiveData.observe(this, ::handleWalletConnectTransactionRequest)
+        walletConnectViewModel.walletConnectRequestLiveData.observe(this, ::handleWalletConnectRequest)
 
         walletConnectViewModel.invalidTransactionCauseLiveData.observe(this, invalidTransactionCauseObserver)
 
@@ -512,26 +505,46 @@ class MainActivity :
         )
     }
 
-    private fun handleWalletConnectTransactionRequest(requestEvent: Event<Resource<WalletConnectTransaction>>?) {
-        requestEvent?.consume()?.use(onSuccess = ::onNewWalletConnectTransactionRequest)
+    private fun handleWalletConnectRequest(requestEvent: Event<Resource<WalletConnectRequest>>?) {
+        requestEvent?.consume()?.use(onSuccess = ::onNewWalletConnectRequest)
     }
 
-    private fun onNewWalletConnectTransactionRequest(transaction: WalletConnectTransaction) {
+    private fun onNewWalletConnectRequest(wcRequest: WalletConnectRequest) {
         if (isAppUnlocked) {
-            nav(
-                directions = MainNavigationDirections.actionGlobalWalletConnectRequestNavigation(
-                    shouldSkipConfirmation = isBasePeraWebViewFragmentActive()
-                ),
-                onError = { saveWcTransactionToPendingIntent(transaction.requestId) }
-            )
+            when (wcRequest) {
+                is WalletConnectTransaction -> {
+                    nav(
+                        directions = MainNavigationDirections.actionGlobalWalletConnectTransactionRequestNavigation(
+                            shouldSkipConfirmation = isBasePeraWebViewFragmentActive()
+                        ),
+                        onError = { saveWcTransactionToPendingIntent(wcRequest.requestId) }
+                    )
+                }
+
+                is WalletConnectArbitraryDataRequest -> {
+                    nav(
+                        directions = MainNavigationDirections.actionGlobalWalletConnectArbitraryDataRequestNavigation(
+                            shouldSkipConfirmation = isBasePeraWebViewFragmentActive()
+                        ),
+                        onError = { saveWcTransactionToPendingIntent(wcRequest.requestId) }
+                    )
+                }
+            }
         } else {
-            saveWcTransactionToPendingIntent(transaction.requestId)
+            saveWcTransactionToPendingIntent(wcRequest.requestId)
         }
     }
 
     private fun saveWcTransactionToPendingIntent(transactionRequestId: Long) {
         val pendingIntent = Intent().apply {
             putExtra(WC_TRANSACTION_ID_INTENT_KEY, transactionRequestId)
+        }
+        pendingIntentKeeper.setPendingIntent(pendingIntent)
+    }
+
+    private fun saveWcArbitraryDataToPendingIntent(arbitraryDataRequestId: Long) {
+        val pendingIntent = Intent().apply {
+            putExtra(WC_ARBITRARY_DATA_ID_INTENT_KEY, arbitraryDataRequestId)
         }
         pendingIntentKeeper.setPendingIntent(pendingIntent)
     }
@@ -572,7 +585,9 @@ class MainActivity :
             setExtrasClassLoader(com.algorand.android.models.AssetInformation::class.java.classLoader)
 
             if (getLongExtra(WC_TRANSACTION_ID_INTENT_KEY, -1L) != -1L) {
-                nav(HomeNavigationDirections.actionGlobalWalletConnectRequestNavigation())
+                nav(HomeNavigationDirections.actionGlobalWalletConnectTransactionRequestNavigation())
+            } else if (getLongExtra(WC_ARBITRARY_DATA_ID_INTENT_KEY, -1L) != -1L) {
+                nav(HomeNavigationDirections.actionGlobalWalletConnectArbitraryDataRequestNavigation())
             } else {
                 getStringExtra(DEEPLINK_KEY)?.let { handleDeepLink(it) }
             }
@@ -772,5 +787,6 @@ class MainActivity :
         const val DEEPLINK_KEY = "deeplinkKey"
         const val DEEPLINK_AND_NAVIGATION_INTENT = "deeplinknavIntent"
         const val WC_TRANSACTION_ID_INTENT_KEY = "wcTransactionId"
+        const val WC_ARBITRARY_DATA_ID_INTENT_KEY = "wcArbitraryDataId"
     }
 }

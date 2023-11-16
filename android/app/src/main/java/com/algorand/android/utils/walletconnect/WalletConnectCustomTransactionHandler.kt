@@ -14,18 +14,19 @@ package com.algorand.android.utils.walletconnect
 
 import com.algorand.android.models.BaseAssetTransferTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
-import com.algorand.android.models.WalletConnectSigner
-import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.models.WalletConnectRequest.WalletConnectTransaction
+import com.algorand.android.models.WalletConnectTransactionSigner.Rekeyed
+import com.algorand.android.models.WalletConnectTransactionSigner.Sender
 import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.ui.mapper.WalletConnectTransactionMapper
 import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.groupWalletConnectTransactions
-import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Error
-import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Success
-import kotlinx.coroutines.CoroutineScope
+import com.algorand.android.utils.walletconnect.WalletConnectRequestResult.Error
+import com.algorand.android.utils.walletconnect.WalletConnectRequestResult.Success
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
 
 class WalletConnectCustomTransactionHandler @Inject constructor(
     private val transactionsRepository: TransactionsRepository,
@@ -35,6 +36,25 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
     private val walletConnectCustomTransactionAssetDetailHandler: WalletConnectCustomTransactionAssetDetailHandler
 ) {
 
+    /*
+    * Transaction validation rules
+    * -> Parsed transcation payload must not be null (List<WCAlgoTransactionRequest>)
+    * -> Transaction list size must be 1 to MAX_TRANSACTION_COUNT (List<WCAlgoTransactionRequest>)
+    * -> Convert List<WCAlgoTransactionRequest> to List<BaseWalletConnectTransaction>
+    * -> After this conversion check list sizes if they are matching
+    * -> Check if nodes are matching
+    * -> If it's needed set asset detail
+    * -> Check if any assset tranfer transaction doesn't contain asset detail info
+    * -> Create grouped wc transactions
+    * -> This group can't be empty
+    * -> Check if all wc ids and auth account addresses are valid
+    * -> Check if all the signers are valid
+    * -> hasAllAtomicAtLeastOneTxnNeedsToBeSigned
+    * -> doAppHaveAtLeastOneSignerAccountInTxn
+    *
+    *
+    *
+    * */
     @SuppressWarnings("ReturnCount", "LongMethod")
     suspend fun handleCustomTransaction(
         sessionIdentifier: WalletConnect.SessionIdentifier,
@@ -42,7 +62,7 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
         session: WalletConnect.SessionDetail,
         payloadList: List<*>,
         scope: CoroutineScope,
-        onResult: suspend (WalletConnectTransactionResult) -> Unit
+        onResult: suspend (WalletConnectRequestResult) -> Unit
     ) {
         try {
             val wcAlgoTxnRequestList = walletConnectTransactionMapper.parseTransactionPayload(payloadList)
@@ -194,7 +214,7 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
     ): Boolean {
         return groupedTxnList.all { txnList ->
             txnList.any { txn ->
-                txn.signer is WalletConnectSigner.Sender || txn.signer is WalletConnectSigner.Rekeyed
+                txn.signer is Sender || txn.signer is Rekeyed
             }
         }
     }

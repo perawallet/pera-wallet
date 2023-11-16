@@ -13,8 +13,8 @@
 package com.algorand.android.ui.wctransactionrequest.ui.usecase
 
 import com.algorand.android.models.Account
+import com.algorand.android.models.WalletConnectRequest.WalletConnectTransaction
 import com.algorand.android.models.WalletConnectSession
-import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.ui.wctransactionrequest.ui.mapper.WalletConnectTransactionRequestPreviewMapper

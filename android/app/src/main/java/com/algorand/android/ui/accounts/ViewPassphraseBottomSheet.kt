@@ -16,7 +16,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.fragment.app.viewModels
-import com.algorand.algosdk.mobile.Mobile
+import com.algorand.algosdk.sdk.Sdk
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.DialogViewPassphraseBinding
@@ -54,7 +54,7 @@ class ViewPassphraseBottomSheet : BaseBottomSheet(R.layout.dialog_view_passphras
     private fun setupPassphraseLayout() {
         viewPassphraseViewModel.getAccountSecretKey()?.let {
             try {
-                val mnemonic = Mobile.mnemonicFromPrivateKey(it) ?: throw Exception("Mnemonic cannot be null.")
+                val mnemonic = Sdk.mnemonicFromPrivateKey(it) ?: throw Exception("Mnemonic cannot be null.")
                 binding.passphraseBoxView.setPassphrases(mnemonic)
             } catch (exception: Exception) {
                 navBack()

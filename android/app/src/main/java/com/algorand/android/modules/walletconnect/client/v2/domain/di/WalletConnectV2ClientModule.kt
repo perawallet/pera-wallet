@@ -26,7 +26,6 @@ import com.algorand.android.modules.walletconnect.client.v2.utils.WalletConnectV
 import com.algorand.android.modules.walletconnect.client.v2.utils.WalletConnectV2ErrorCodeProvider
 import com.algorand.android.modules.walletconnect.client.v2.walletdelegate.WalletConnectV2ClientWalletDelegate
 import com.algorand.android.modules.walletconnect.domain.WalletConnectClient
-import com.algorand.android.modules.walletconnect.subscription.v2.domain.SubscribeWalletConnectV2SessionUseCase
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -76,11 +75,5 @@ object WalletConnectV2ClientModule {
             sessionExpirationManager = sessionExpirationManager,
             sessionServerStatusManager = sessionServerStatusManager
         )
-    }
-
-    @Provides
-    @Named(SubscribeWalletConnectV2SessionUseCase.INJECTION_NAME)
-    fun provideSubscribeWalletConnectSessionUseCase(): SubscribeWalletConnectV2SessionUseCase {
-        return SubscribeWalletConnectV2SessionUseCase()
     }
 }

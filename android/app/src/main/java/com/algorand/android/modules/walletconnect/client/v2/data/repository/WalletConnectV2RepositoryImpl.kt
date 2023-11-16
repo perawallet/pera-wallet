@@ -29,10 +29,6 @@ class WalletConnectV2RepositoryImpl(
     private val pairUriLocalCache: WalletConnectV2PairUriLocalCache
 ) : WalletConnectV2Repository {
 
-    override suspend fun setGivenSessionAsSubscribed(sessionTopic: String) {
-        walletConnectV2Dao.setGivenSessionAsSubscribed(sessionTopic)
-    }
-
     override suspend fun insertWalletConnectSession(sessionDto: WalletConnectSessionDto) {
         val sessionEntity = sessionEntityMapper.mapToEntity(sessionDto)
         walletConnectV2Dao.insertWalletConnectSession(sessionEntity)

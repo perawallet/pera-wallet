@@ -12,14 +12,14 @@
 
 package com.algorand.android.modules.algosdk.backuputils.data.repository
 
-import com.algorand.algosdk.mobile.Mobile
+import com.algorand.algosdk.sdk.Sdk
 import com.algorand.android.modules.algosdk.backuputils.domain.repository.AlgorandSdkBackupUtils
 
 class AlgorandSdkBackupUtilsImpl : AlgorandSdkBackupUtils {
 
     override suspend fun generateBackupKey(): ByteArray? {
         return try {
-            Mobile.generateBackupPrivateKey()
+            Sdk.generateBackupPrivateKey()
         } catch (exception: Exception) {
             null
         }
@@ -27,7 +27,7 @@ class AlgorandSdkBackupUtilsImpl : AlgorandSdkBackupUtils {
 
     override suspend fun generateBackupCipherKey(key: String, input: ByteArray): ByteArray? {
         return try {
-            Mobile.generateBackupCipherKey(key, input)
+            Sdk.generateBackupCipherKey(key, input)
         } catch (exception: Exception) {
             null
         }
@@ -35,7 +35,7 @@ class AlgorandSdkBackupUtilsImpl : AlgorandSdkBackupUtils {
 
     override suspend fun generateMnemonicsFromBackupKey(backupKey: ByteArray): String? {
         return try {
-            Mobile.backupMnemonicFromKey(backupKey)
+            Sdk.backupMnemonicFromKey(backupKey)
         } catch (exception: Exception) {
             null
         }
@@ -43,7 +43,7 @@ class AlgorandSdkBackupUtilsImpl : AlgorandSdkBackupUtils {
 
     override suspend fun derivePrivateKeyFromMnemonics(mnemonics: String): ByteArray? {
         return try {
-            Mobile.backupMnemonicToKey(mnemonics)
+            Sdk.backupMnemonicToKey(mnemonics)
         } catch (exception: Exception) {
             null
         }

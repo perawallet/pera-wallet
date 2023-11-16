@@ -497,14 +497,9 @@
     <string name="minimum_amount_required">最少額を満たす必要があります</string>
     <string name="this_is_the_first_transaction">これは、選択した口座での最初のトランザクションです。最初のトランザクションでは、最低でも0.1 Algoが必要です。有効な額を入力して、やり直してください。</string>
     <string name="i_want_to_create">アカウントを作成したい</string>
-    <string name="create_a_new_algorand">Algorandアカウントの新規作成、またはウォッチアカウントの追加</string>
-    <string name="i_already_have">すでにアカウントを持っている</string>
-    <string name="import_an_existing">回復用パスフレーズを使用してAlgorandアカウントをインポートするか、Ledgerをペアリングする</string>
     <string name="i_want_to_create_an_algorand_account">Algorandアカウントを\n作成したい</string>
     <string name="create_a_new_account">新規アカウントの作成</string>
     <string name="create_a_new_algorand_account_with">新規アドレスと回復用パスフレーズを持つ、新しいAlgorandアカウントを作成</string>
-    <string name="add_watch_account">ウォッチアカウントの追加</string>
-    <string name="i_already_have_nan_account">すでにアカウントを\n持っています</string>
     <string name="recover_an_account">アカウントの復元</string>
     <string name="pair_Ledger_device">Ledgerデバイスのペアリング</string>
     <string name="confirm_transaction">トランザクションの確認</string>
@@ -781,7 +776,7 @@
     <string name="set_custom_percentage">カスタムパーセンテージを設定する</string>
     <string name="balance_percentage">残高パーセンテージ</string>
     <string name="pera_wallet_provides_an_easy">Pera Walletは、簡単かつ迅速に資産をスワップする方法を提供します。スワップでは、スマートコントラクトを利用して、ASAを別のASAと市場価格で交換することができます。</string>
-    <string name="by_continuing_you_agree_to">続行することで、あなたは当社スワップパートナーの<annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">利用規約</annotation></annotation></annotation>に同意したとみなされます</string>
+    <string name="by_continuing_you_agree_to">続行することで、あなたは当社スワップパートナーの<annotation url="vestigeTermsOfServiceUrl"><annotation type="bold"><annotation type="color">利用規約</annotation></annotation></annotation>に同意したとみなされます</string>
     <string name="start_swapping">スワップ開始</string>
     <string name="powered_by">Powered by</string>
     <string name="new_text">新規</string>
@@ -825,18 +820,6 @@
     <string name="custom">カスタム</string>
     <string name="select_all">すべて選択</string>
     <string name="unselect_all">すべて選択解除</string>
-    <string name="disclaimer">免責事項</string>
-    <string name="export_to_pera_web">Pera Webにエクスポートする</string>
-    <string name="you_re_about_to_share">Pera Webとパスフレーズを共有し、インポートしようとしています！</string>
-    <string name="confirm_export_domain">ドメインエクスポートの確認</string>
-    <string name="for_your_security_please_confirm">セキュリティのため、パソコンに表示されているドメイン名を入力して、Pera Webにアカウントをエクスポートしていることをご確認ください。</string>
-    <string name="enter_url_of_web_wallet">Web WalletのURLを入力してください</string>
-    <string name="url_of_web_wallet">Web WalletのURL</string>
-    <string name="to_make_sure_that_you">アカウントを安全な場所にエクスポートしていることを確認するために、常に公式のPera Web URL上にいることをご確認ください:</string>
-    <string name="confirm_accounts">アカウントの確認</string>
-    <string name="you_re_about_to_export">これらのアカウントをPera Webに安全にエクスポートしようとしています:</string>
-    <string name="accounts_exported_successfully">アカウントは正常にエクスポートされました！</string>
-    <string name="you_can_now_use_these">これらのアカウントは、Pera Webで利用できるようになりました。</string>
     <string name="we_couldn_t_find">エクスポートの対象となるアカウントが見つかりませんでした。</string>
     <plurals name="account_count">
         <item quantity="other">%1$d アカウント</item>
@@ -907,7 +890,6 @@
     <string name="you_need_to_opt_in">NFT ASA IDをウォレットに転送するには、オプトインする必要があります。検索バーにASA IDを貼り付けてください。</string>
     <string name="you_need_to_opt_in_to">NFT ASA IDをウォレットに転送するには、オプトインする必要があります。</string>
     <string name="round">ラウンド</string>
-    <string name="do_not_proceed_if_you">このリクエストを開始されていない場合は、先に進まないでください。</string>
     <string name="this_asset_is">この資産はすでに削除待ちです。</string>
     <string name="get_help">ヘルプ</string>
     <string name="couldn_t_retrieve">アカウント情報を取得できませんでした。もう一度やり直してください。</string>
@@ -939,7 +921,6 @@
     <string name="future_transactions_can_only">今後のトランザクションは、委任されたアカウントによってのみ署名できます。</string>
     <string name="this_account_will_no_longer">このアカウントでは、トランザクションに署名することはできなくなります。</string>
     <string name="your_account_s_public_key">お客様のアカウントの公開鍵、残高、設定は変更されません。</string>
-    <string name="account_transfer_is">セキュリティを確保するため、Testnetでのアカウント転送は無効になっています。この機能を利用するには、Mainnetに切り替えてください。</string>
     <string name="invalid_url">無効なURL</string>
     <string name="high_price_impact_detected">高い価格への影響が検出されました！</string>
     <string name="it_appears_that_you_formatted">価格への影響が<annotation replacement="price_impact_percentage"> priceImpactPercentagePlaceholder </annotation>%％を超えるスワップを確認しようとしているようです。 \n\n価格への影響、その計算方法、またはスワップの全体的な価値への影響についての詳細は、Tinymanの<annotation custom="faq_url">FAQセクション</annotation>をご覧ください。</string>

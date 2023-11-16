@@ -28,6 +28,5 @@ data class WebQrCode(
     companion object {
         const val CURRENT_QR_CODE_VERSION = 1
         const val ACTION_IMPORT_KEY = "import"
-        const val ACTION_EXPORT_KEY = "export"
     }
 }

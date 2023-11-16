@@ -69,7 +69,6 @@ interface WalletConnect {
         val sessionMeta: Session.Meta,
         val namespaces: Map<WalletConnectBlockchain, Namespace.Session>,
         val creationDateTimestamp: Long,
-        val isSubscribed: Boolean,
         val fallbackBrowserGroupResponse: String?,
         val isConnected: Boolean,
         val expiry: Model.Expiry?, // TODO Make this non-nullable after removing WC v1

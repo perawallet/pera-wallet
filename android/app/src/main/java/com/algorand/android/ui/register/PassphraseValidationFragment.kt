@@ -16,7 +16,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.algorand.algosdk.mobile.Mobile
+import com.algorand.algosdk.sdk.Sdk
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.PassphraseValidationGroupView
@@ -60,7 +60,7 @@ class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passph
 
     private fun getPassphraseWords(): List<String> {
         val tempAccountSecretKey = args.accountCreation.tempAccount.getSecretKey()
-        return Mobile.mnemonicFromPrivateKey(tempAccountSecretKey).split(" ")
+        return Sdk.mnemonicFromPrivateKey(tempAccountSecretKey).split(" ")
     }
 
     private fun setupPassphraseValidationView() {

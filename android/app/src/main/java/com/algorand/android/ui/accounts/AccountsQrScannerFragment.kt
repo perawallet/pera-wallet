@@ -18,7 +18,6 @@ import com.algorand.android.R
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.modules.qrscanning.BaseQrScannerFragment
-import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
 import com.algorand.android.modules.webimport.common.data.model.WebImportQrCode
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -71,18 +70,6 @@ class AccountsQrScannerFragment : BaseQrScannerFragment(R.id.accountsQrScannerFr
             nav(
                 AccountsQrScannerFragmentDirections.actionAccountsQrScannerFragmentToRecoverWithPassphraseNavigation(
                     mnemonic = mnemonic
-                )
-            )
-        }
-    }
-
-    override fun onWebExportQrCodeDeepLink(webExportQrCode: WebExportQrCode): Boolean {
-        return true.also {
-            nav(
-                HomeNavigationDirections.actionGlobalWebExportNavigation(
-                    backupId = webExportQrCode.backupId,
-                    modificationKey = webExportQrCode.modificationKey,
-                    encryptionKey = webExportQrCode.encryptionKey
                 )
             )
         }

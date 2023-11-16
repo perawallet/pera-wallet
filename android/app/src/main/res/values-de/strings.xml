@@ -504,14 +504,9 @@
     <string name="minimum_amount_required">Mindestbetrag erforderlich</string>
     <string name="this_is_the_first_transaction">Dies ist die erste Transaktion für das ausgewählte Konto. Für die ersten Transaktionen ist ein Mindestbetrag von 0,1 Algo erforderlich. Bitte geben Sie einen gültigen Betrag ein und versuchen Sie es erneut.</string>
     <string name="i_want_to_create">Ich möchte ein Konto erstellen</string>
-    <string name="create_a_new_algorand">Ein neues Algorand-Konto anlegen oder ein Watch-Konto hinzufügen</string>
-    <string name="i_already_have">Ich habe bereits ein Konto</string>
-    <string name="import_an_existing">Importieren Sie ein bestehendes Algorand-Konto über die Wiederherstellungspassphrase oder koppeln Sie Ihr Ledger-Gerät</string>
     <string name="i_want_to_create_an_algorand_account">Ich möchte\nein Algorand-Konto erstellen</string>
     <string name="create_a_new_account">Neues Konto erstellen</string>
     <string name="create_a_new_algorand_account_with">Neues Algorand-Konto mit einer neuen Adresse und einer Passphrase für die Wiederherstellung erstellen</string>
-    <string name="add_watch_account">Watch-Konto hinzufügen</string>
-    <string name="i_already_have_nan_account">Ich habe bereits\nein Konto</string>
     <string name="recover_an_account">Ein Konto wiederherstellen</string>
     <string name="pair_Ledger_device">Ledger-Gerät koppeln</string>
     <string name="confirm_transaction">Transaktion bestätigen</string>
@@ -792,7 +787,7 @@
     <string name="set_custom_percentage">Benutzerdefinierten Prozentsatz einstellen</string>
     <string name="balance_percentage">Guthaben-Prozentsatz</string>
     <string name="pera_wallet_provides_an_easy">Pera Wallet bietet eine einfache und schnelle Möglichkeit, Assets zu tauschen. Der Tausch ermöglicht den Austausch einer ASA gegen ein anderes mit Hilfe eines Smart Contracts zu Marktgebühren.</string>
-    <string name="by_continuing_you_agree_to">Wenn Sie fortfahren, stimmen Sie den <annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">Nutzungsbedingungen</annotation></annotation></annotation> unseres Tausch-Partners zu.</string>
+    <string name="by_continuing_you_agree_to">Wenn Sie fortfahren, stimmen Sie den <annotation url="vestigeTermsOfServiceUrl"><annotation type="bold"><annotation type="color">Nutzungsbedingungen</annotation></annotation></annotation> unseres Tausch-Partners zu.</string>
     <string name="start_swapping">Tausch beginnen</string>
     <string name="powered_by">Unterstützt von</string>
     <string name="new_text">Neu</string>
@@ -837,18 +832,6 @@
     <string name="custom">Benutzerdefiniert</string>
     <string name="select_all">Alle auswählen</string>
     <string name="unselect_all">Auswahl für alle aufheben</string>
-    <string name="disclaimer">HAFTUNGSAUSSCHLUSS</string>
-    <string name="export_to_pera_web">Zu Pera Web exportieren</string>
-    <string name="you_re_about_to_share">Sie sind dabei, Ihre Passphrase zu teilen und in Pera Web zu importieren!</string>
-    <string name="confirm_export_domain">Export-Domain bestätigen</string>
-    <string name="for_your_security_please_confirm">Zu Ihrer Sicherheit bestätigen Sie bitte, dass Sie Ihre Konten zu Pera Web exportieren, indem Sie den Domainnamen eingeben, den Sie auf Ihrem Computer sehen.</string>
-    <string name="enter_url_of_web_wallet">URL der Web-Wallet eingeben</string>
-    <string name="url_of_web_wallet">URL der Web-Wallet</string>
-    <string name="to_make_sure_that_you">Um sicherzugehen, dass Sie Ihre Konten an einen sicheren Ort exportieren, vergewissern Sie sich immer, dass Sie sich auf der offiziellen Pera-Web-URL befinden:</string>
-    <string name="confirm_accounts">Konten bestätigen</string>
-    <string name="you_re_about_to_export">Sie sind dabei, diese Konten sicher zu Pera Web zu exportieren:</string>
-    <string name="accounts_exported_successfully">Konten erfolgreich exportiert!</string>
-    <string name="you_can_now_use_these">Sie können diese Konten jetzt auf Pera Web verwenden.</string>
     <string name="we_couldn_t_find">Wir konnten keine für den Export geeigneten Konten finden.</string>
     <plurals name="account_count">
         <item quantity="one">Konto</item>
@@ -924,7 +907,6 @@ das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
     <string name="you_need_to_opt_in">Sie müssen das Opt-in für die NFT ASA ID durchführen, um es in Ihre Wallet übertragen zu können. Fügen Sie die ASA-ID in die Suchleiste ein.</string>
     <string name="you_need_to_opt_in_to">Sie müssen das Opt-in für die NFT ASA ID durchführen, um es in Ihre Wallet übertragen zu können.</string>
     <string name="round">Runde</string>
-    <string name="do_not_proceed_if_you">Fahren Sie nicht fort, wenn Sie diese Anfrage nicht initiiert haben.</string>
     <string name="this_asset_is">Dieses Asset steht bereits zur Entfernung aus.</string>
     <string name="get_help">Hilfe erhalten</string>
     <string name="couldn_t_retrieve">Kontodetails konnten nicht abgerufen werden. Bitte versuchen Sie es erneut</string>
@@ -958,7 +940,6 @@ das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
     <string name="future_transactions_can_only">Zukünftige Transaktionen können nur von dem delegierten Konto signiert werden.</string>
     <string name="this_account_will_no_longer">Dieses Konto wird nicht mehr in der Lage sein, Transaktionen zu signieren.</string>
     <string name="your_account_s_public_key">Der öffentliche Schlüssel, das Kontoguthaben und die Konfiguration Ihres Kontos sind vom Rekeying nicht betroffen.</string>
-    <string name="account_transfer_is">Die Kontoübertragung ist im Testnet zu Ihrer Sicherheit deaktiviert. Bitte wechseln Sie zum Mainnet, um diese Funktion zu nutzen.</string>
     <string name="invalid_url">Ungültige URL</string>
     <string name="high_price_impact_detected">Hohe Preisauswirkung erkannt!</string>
     <string name="it_appears_that_you_formatted">Anscheinend versuchen Sie, einen Swap mit einer Preisauswirkung von mehr als <annotation replacement="price_impact_percentage"> priceImpactPercentagePlaceholder </annotation>%% zu bestätigen.\n\nUm mehr über die Preisauswirkung zu erfahren, wie sie berechnet wird oder wie sie den Gesamtwert Ihres Swaps beeinflussen kann, besuchen Sie bitte den <annotation custom="faq_url">FAQ-Bereich</annotation> von Tinyman.</string>

@@ -15,9 +15,12 @@ package com.algorand.android.utils.walletconnect
 import com.algorand.android.R
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.BaseWalletConnectTransaction
+import com.algorand.android.models.WalletConnectArbitraryData
+import com.algorand.android.models.WalletConnectArbitraryDataSigner
+import com.algorand.android.models.WalletConnectRequest.WalletConnectArbitraryDataRequest
+import com.algorand.android.models.WalletConnectRequest.WalletConnectTransaction
 import com.algorand.android.models.WalletConnectSignResult
-import com.algorand.android.models.WalletConnectSigner
-import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.models.WalletConnectTransactionSigner
 import javax.inject.Inject
 
 class WalletConnectSignValidator @Inject constructor() {
@@ -27,6 +30,18 @@ class WalletConnectSignValidator @Inject constructor() {
             when {
                 areThereAnyMultisigTransaction(transactionList) -> onMultisigTransactionFound()
                 areThereAnyUnsignableTransaction(transactionList) -> onUnsignableTransactionFound()
+                else -> WalletConnectSignResult.CanBeSigned
+            }
+        }
+    }
+
+    fun canArbitraryDataBeSigned(arbitraryDataRequest: WalletConnectArbitraryDataRequest): WalletConnectSignResult {
+        return with(arbitraryDataRequest) {
+            when {
+                areThereAnyUnsignableArbitraryData(
+                    arbitraryDataRequest.arbitraryDataList
+                ) -> onUnsignableTransactionFound()
+
                 else -> WalletConnectSignResult.CanBeSigned
             }
         }
@@ -43,13 +58,19 @@ class WalletConnectSignValidator @Inject constructor() {
 
     private fun areThereAnyUnsignableTransaction(groupedTxnList: List<List<BaseWalletConnectTransaction>>): Boolean {
         return groupedTxnList.flatten().any {
-            it.signer is WalletConnectSigner.Unsignable
+            it.signer is WalletConnectTransactionSigner.Unsignable
+        }
+    }
+
+    private fun areThereAnyUnsignableArbitraryData(arbitraryDataList: List<WalletConnectArbitraryData>): Boolean {
+        return arbitraryDataList.any {
+            it.signer is WalletConnectArbitraryDataSigner.Unsignable
         }
     }
 
     private fun areThereAnyMultisigTransaction(groupedTxnList: List<List<BaseWalletConnectTransaction>>): Boolean {
         return groupedTxnList.flatten().any {
-            it.signer is WalletConnectSigner.Multisig
+            it.signer is WalletConnectTransactionSigner.Multisig
         }
     }
 }

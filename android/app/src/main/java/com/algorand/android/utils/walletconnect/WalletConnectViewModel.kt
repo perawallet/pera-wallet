@@ -15,7 +15,7 @@ package com.algorand.android.utils.walletconnect
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.models.WalletConnectRequest
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
 import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
@@ -39,8 +39,8 @@ class WalletConnectViewModel @Inject constructor(
     val sessionResultFlow: SharedFlow<Event<Resource<WalletConnectSessionProposal>>>
         get() = walletConnectManager.sessionResultFlow
 
-    val requestLiveData: LiveData<Event<Resource<WalletConnectTransaction>>?>
-        get() = walletConnectManager.requestLiveData
+    val walletConnectRequestLiveData: LiveData<Event<Resource<WalletConnectRequest>>?>
+        get() = walletConnectManager.walletConnectRequestLiveData
 
     val invalidTransactionCauseLiveData
         get() = walletConnectManager.invalidTransactionCauseLiveData

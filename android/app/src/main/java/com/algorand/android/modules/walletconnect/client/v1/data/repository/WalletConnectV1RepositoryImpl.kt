@@ -111,10 +111,6 @@ class WalletConnectV1RepositoryImpl constructor(
         return walletConnectDao.deleteWalletConnectAccountBySession(sessionId, accountAddress)
     }
 
-    override suspend fun setGivenSessionAsSubscribed(sessionId: Long) {
-        walletConnectDao.setGivenSessionAsSubscribed(sessionId)
-    }
-
     override suspend fun getWalletConnectSessionListOrderedByCreationTime(count: Int): List<WalletConnectSessionDto> {
         return walletConnectDao.getWalletConnectSessionListOrderedByCreationTime(count)?.map { sessionEntity ->
             sessionDtoMapper.mapToSessionDto(sessionEntity)

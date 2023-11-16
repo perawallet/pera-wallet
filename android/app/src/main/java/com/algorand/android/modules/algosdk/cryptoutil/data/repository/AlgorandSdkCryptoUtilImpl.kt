@@ -12,14 +12,14 @@
 
 package com.algorand.android.modules.algosdk.cryptoutil.data.repository
 
-import com.algorand.algosdk.mobile.Mobile
+import com.algorand.algosdk.sdk.Sdk
 import com.algorand.android.modules.algosdk.cryptoutil.domain.repository.AlgorandSdkCryptoUtil
 
 class AlgorandSdkCryptoUtilImpl : AlgorandSdkCryptoUtil {
 
     override suspend fun generateAccountAddressFromSecretKey(secretKey: ByteArray): String? {
         return try {
-            Mobile.generateAddressFromSK(secretKey)
+            Sdk.generateAddressFromSK(secretKey)
         } catch (exception: Exception) {
             null
         }

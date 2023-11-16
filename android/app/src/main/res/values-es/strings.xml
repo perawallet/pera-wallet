@@ -503,14 +503,9 @@
     <string name="minimum_amount_required">Importe mínimo requerido</string>
     <string name="this_is_the_first_transaction">Esta es la primera transacción de la cuenta seleccionada. Se necesita un mínimo de 0,1 Algo en las primeras transacciones. Ingresa un importe válido e inténtalo nuevamente.</string>
     <string name="i_want_to_create">Quiero crear una cuenta</string>
-    <string name="create_a_new_algorand">Crea una nueva cuenta de Algorand o agrega una cuenta en observación</string>
-    <string name="i_already_have">Ya tengo una cuenta</string>
-    <string name="import_an_existing">Importa una cuenta existente de Algorand mediante la recuperación con frase secreta o empareja tu Ledger</string>
     <string name="i_want_to_create_an_algorand_account">Quiero crear\nuna cuenta de Algorand</string>
     <string name="create_a_new_account">Crea una nueva cuenta</string>
     <string name="create_a_new_algorand_account_with">Crea una nueva cuenta de Algorand con una nueva dirección y frase de recuperación</string>
-    <string name="add_watch_account">Agregar cuenta en observación</string>
-    <string name="i_already_have_nan_account">Ya tengo\nuna cuenta</string>
     <string name="recover_an_account">Recuperar una cuenta</string>
     <string name="pair_Ledger_device">Emparejar dispositivo Ledger</string>
     <string name="confirm_transaction">Confirmar transacción</string>
@@ -791,7 +786,7 @@
     <string name="set_custom_percentage">Establecer porcentaje personalizado</string>
     <string name="balance_percentage">Porcentaje de saldo</string>
     <string name="pera_wallet_provides_an_easy">Pera Wallet proporciona una manera fácil y rápida de intercambiar activos. El intercambio permite intercambiar un ASA con otro mediante un contrato inteligente, a tarifas de mercado.</string>
-    <string name="by_continuing_you_agree_to">Al continuar, aceptas las <annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">Condiciones de servicio</annotation></annotation></annotation> de nuestro\n socio de intercambios</string>
+    <string name="by_continuing_you_agree_to">Al continuar, aceptas las <annotation url="vestigeTermsOfServiceUrl"><annotation type="bold"><annotation type="color">Condiciones de servicio</annotation></annotation></annotation> de nuestro\n socio de intercambios</string>
     <string name="start_swapping">Comienza a intercambiar</string>
     <string name="powered_by">Desarrollado por</string>
     <string name="new_text">Nuevo</string>
@@ -836,18 +831,6 @@
     <string name="custom">Personalizado</string>
     <string name="select_all">Seleccionar todo</string>
     <string name="unselect_all">Anular la selección de todo</string>
-    <string name="disclaimer">DESCARGO DE RESPONSABILIDAD</string>
-    <string name="export_to_pera_web">Exportar a Pera Web</string>
-    <string name="you_re_about_to_share">¡Estás a punto de compartir e importar tu frase secreta a Pera Web!</string>
-    <string name="confirm_export_domain">Confirmar dominio de exportación</string>
-    <string name="for_your_security_please_confirm">Para tu seguridad, confirma que estás exportando tus cuentas a Pera Web ingresando el nombre de dominio que ves en tu computadora.</string>
-    <string name="enter_url_of_web_wallet">Ingresa la URL del monedero web</string>
-    <string name="url_of_web_wallet">URL del monedero web</string>
-    <string name="to_make_sure_that_you">Para asegurarte de que estás exportando tus cuentas a una ubicación segura, verifica siempre que estés en la URL oficial de Pera Web:</string>
-    <string name="confirm_accounts">Confirmar cuentas</string>
-    <string name="you_re_about_to_export">Estás a punto de exportar estas cuentas a Pera Web de forma segura:</string>
-    <string name="accounts_exported_successfully">¡Se exportaron las cuentas correctamente!</string>
-    <string name="you_can_now_use_these">Ahora puedes usar estas cuentas en Pera Web.</string>
     <string name="we_couldn_t_find">No pudimos encontrar ninguna cuenta apta para la exportación.</string>
     <plurals name="account_count">
         <item quantity="one">Cuenta</item>
@@ -922,7 +905,6 @@
     <string name="you_need_to_opt_in">Debes suscribirte al ID del ASA del NFT para poder transferirlo a tu monedero. Pega el ID del ASA en la barra de búsqueda.</string>
     <string name="you_need_to_opt_in_to">Debes suscribirte al ID del ASA del NFT para poder transferirlo a tu monedero.</string>
     <string name="round">Ronda</string>
-    <string name="do_not_proceed_if_you">No procedas si no iniciaste esta solicitud.</string>
     <string name="this_asset_is">Este activo ya está pendiente de eliminación.</string>
     <string name="get_help">Obtener ayuda</string>
     <string name="couldn_t_retrieve">Error al recuperar los detalles de la cuenta. Inténtalo de nuevo</string>
@@ -956,7 +938,6 @@
     <string name="future_transactions_can_only">Las transacciones futuras solo pueden ser firmadas por la cuenta delegada.</string>
     <string name="this_account_will_no_longer">Esta cuenta ya no podrá firmar transacciones.</string>
     <string name="your_account_s_public_key">La clave pública, los saldos y la configuración de tu cuenta no cambiarán.</string>
-    <string name="account_transfer_is">La transferencia de cuentas está deshabilitada en la TestNet por seguridad. Cambia a MainNet para usar esta función.</string>
     <string name="invalid_url">URL inválida</string>
     <string name="high_price_impact_detected">¡Impacto de precio alto detectado!</string>
     <string name="it_appears_that_you_formatted">Parece que estás intentando confirmar un intercambio con un impacto en el precio superior al <annotation replacement="price_impact_percentage"> priceImpactPercentagePlaceholder </annotation> %%\n\nPara obtener más información sobre el impacto en el precio, cómo se calcula o cómo puede afectar el valor general de un intercambio, visita la <annotation custom="faq_url"> sección de preguntas frecuentes </annotation> de Tinyman.</string>

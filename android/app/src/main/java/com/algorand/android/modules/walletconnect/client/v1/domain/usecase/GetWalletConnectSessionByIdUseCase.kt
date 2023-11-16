@@ -48,7 +48,6 @@ class GetWalletConnectSessionByIdUseCase @Inject constructor(
                     chainId = wcSession?.chainId
                 ),
                 creationDateTimestamp = wcSessionDto.dateTimeStamp,
-                isSubscribed = wcSessionDto.isSubscribed,
                 isConnected = wcSessionDto.isConnected,
                 fallbackBrowserGroupResponse = wcSessionDto.fallbackBrowserGroupResponse,
                 expiry = null,

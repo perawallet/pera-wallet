@@ -21,8 +21,8 @@ import androidx.room.Transaction
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionAccountEntity
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionByAccountsAddress
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionEntity
-import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectV1SessionRequestIdEntity
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectSessionWithAccountsAddresses
+import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectV1SessionRequestIdEntity
 import com.algorand.android.modules.walletconnect.client.v1.data.model.WalletConnectV1TransactionRequestIdEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -86,9 +86,6 @@ interface WalletConnectDao {
 
     @Query("DELETE FROM WalletConnectSessionAccountEntity WHERE session_id = :sessionId AND connected_account_address = :accountAddress")
     suspend fun deleteWalletConnectAccountBySession(sessionId: Long, accountAddress: String)
-
-    @Query("UPDATE WalletConnectSessionEntity SET is_subscribed = 1 WHERE id = :sessionId")
-    suspend fun setGivenSessionAsSubscribed(sessionId: Long)
 
     @Query("SELECT * FROM WalletConnectSessionEntity ORDER BY date_time_stamp ASC LIMIT :count")
     suspend fun getWalletConnectSessionListOrderedByCreationTime(count: Int): List<WalletConnectSessionEntity>?

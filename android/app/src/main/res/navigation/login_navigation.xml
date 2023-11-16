@@ -107,29 +107,14 @@
             android:name="isShowingCloseButton"
             app:argType="boolean" />
         <action
-            android:id="@+id/action_registerIntroFragment_to_addAccountTypeSelectionFragment"
-            app:destination="@id/addAccountTypeSelectionFragment" />
+            android:id="@+id/action_registerIntroFragment_to_backupInfoFragment"
+            app:destination="@id/backupInfoFragment" />
         <action
             android:id="@+id/action_registerIntroFragment_to_accountRecoveryTypeSelectionFragment"
             app:destination="@id/accountRecoveryTypeSelectionFragment" />
         <action
-            android:id="@+id/action_registerIntroFragment_to_registerWatchAccountFragment"
-            app:destination="@id/registerWatchAccountFragment"
-            app:popUpTo="@id/registerIntroFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/addAccountTypeSelectionFragment"
-        android:name="com.algorand.android.ui.register.addaccounttypeselection.AddAccountTypeSelectionFragment"
-        android:label="AddAccountTypeSelectionFragment"
-        tools:layout="@layout/fragment_register_type_selection">
-        <action
-            android:id="@+id/action_addAccountTypeSelectionFragment_to_watchAccountInfoFragment"
+            android:id="@+id/action_registerIntroFragment_to_watchAccountInfoFragment"
             app:destination="@id/watchAccountInfoFragment" />
-        <action
-            android:id="@+id/action_addAccountTypeSelectionFragment_to_backupInfoFragment"
-            app:destination="@id/backupInfoFragment" />
     </fragment>
 
     <fragment
@@ -141,6 +126,9 @@
             android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_recoverAccountInfoFragment"
             app:destination="@id/recoverAccountInfoFragment" />
         <action
+            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_recoverWithPassphraseQrScannerFragment"
+            app:destination="@id/recoverWithPassphraseQrScannerFragment" />
+        <action
             android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_pairLedgerNavigation"
             app:destination="@id/pairLedgerNavigation" />
         <action
@@ -149,6 +137,22 @@
         <action
             android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_asbImportNavigation"
             app:destination="@id/asbImportNavigation" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recoverWithPassphraseQrScannerFragment"
+        android:name="com.algorand.android.modules.onboarding.recoverypassphrase.qrscanner.ui.RecoverWithPassphraseQrScannerFragment"
+        android:label="RecoverWithPassphraseQrScannerFragment"
+        tools:layout="@layout/fragment_qr_code_scanner" >
+        <action
+            android:id="@+id/action_recoverWithPassphraseQrScannerFragment_to_recoverWithPassphraseNavigation"
+            app:destination="@id/recoverWithPassphraseNavigation">
+            <argument
+                android:name="mnemonic"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
     </fragment>
 
 

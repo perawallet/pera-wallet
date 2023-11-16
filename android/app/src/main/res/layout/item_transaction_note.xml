@@ -18,7 +18,7 @@
     android:paddingVertical="@dimen/spacing_small">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/dateLabelTextView"
+        android:id="@+id/noteLabelTextView"
         style="@style/TextView.TransactionLabelStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:gravity="start"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/dateView"
+        app:layout_constraintTop_toTopOf="@id/noteTextView"
         tools:text="Note" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -37,7 +37,7 @@
         app:layout_constraintGuide_percent="@integer/label_percentage" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/dateView"
+        android:id="@+id/noteTextView"
         style="@style/TextAppearance.Body.Sans"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

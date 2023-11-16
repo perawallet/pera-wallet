@@ -39,14 +39,6 @@
         app:icon="@drawable/ic_clipboard" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/scanQrButton"
-        style="@style/Button.Text.Option"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/scan_qr_code"
-        app:icon="@drawable/ic_qr_scan" />
-
-    <com.google.android.material.button.MaterialButton
         android:id="@+id/learnMoreButton"
         style="@style/Button.Text.Option"
         android:layout_width="match_parent"

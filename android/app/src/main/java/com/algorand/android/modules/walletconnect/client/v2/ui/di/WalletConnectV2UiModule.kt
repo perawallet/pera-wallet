@@ -15,13 +15,14 @@ package com.algorand.android.modules.walletconnect.client.v2.ui.di
 import com.algorand.android.modules.walletconnect.client.v2.ui.launchback.connection.WCConnectionLaunchBackDescriptionAnnotatedStringProviderV2Impl
 import com.algorand.android.modules.walletconnect.client.v2.ui.launchback.connection.WCConnectionLaunchBackSessionInformationAnnotatedStringProviderV2Impl
 import com.algorand.android.modules.walletconnect.client.v2.ui.launchback.connection.WCConnectionLaunchBackTitleAnnotatedStringProviderV2Impl
-import com.algorand.android.modules.walletconnect.client.v2.ui.launchback.transaction.WCTransactionLaunchBackDescriptionAnnotatedStringProviderV2Impl
+import com.algorand.android.modules.walletconnect.client.v2.ui.launchback.transaction.WCArbitraryDataLaunchBackDescriptionAnnotatedStringProviderV2Impl
+import com.algorand.android.modules.walletconnect.client.v2.ui.launchback.transaction.WCRequestLaunchBackDescriptionAnnotatedStringProviderV2Impl
 import com.algorand.android.modules.walletconnect.client.v2.ui.launchback.usecase.GetFormattedWCSessionMaxExpirationDateUseCase
 import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
 import com.algorand.android.modules.walletconnect.launchback.connection.ui.model.WCConnectionLaunchBackDescriptionAnnotatedStringProvider
 import com.algorand.android.modules.walletconnect.launchback.connection.ui.model.WCConnectionLaunchBackSessionInformationAnnotatedStringProvider
 import com.algorand.android.modules.walletconnect.launchback.connection.ui.model.WcConnectionLaunchBackTitleAnnotatedStringProvider
-import com.algorand.android.modules.walletconnect.launchback.transaction.ui.model.WcTransactionLaunchBackDescriptionAnnotatedStringProvider
+import com.algorand.android.modules.walletconnect.launchback.wcrequest.ui.model.WcRequestLaunchBackDescriptionAnnotatedStringProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,12 +58,24 @@ object WalletConnectV2UiModule {
     }
 
     @Provides
-    @Named(WCTransactionLaunchBackDescriptionAnnotatedStringProviderV2Impl.INJECTION_NAME)
+    @Named(WCRequestLaunchBackDescriptionAnnotatedStringProviderV2Impl.INJECTION_NAME)
     fun provideWcTransactionLaunchBackDescriptionAnnotatedStringProvider(
         getFormattedWCSessionMaxExpirationDateUseCase: GetFormattedWCSessionMaxExpirationDateUseCase,
         walletConnectManager: WalletConnectManager
-    ): WcTransactionLaunchBackDescriptionAnnotatedStringProvider {
-        return WCTransactionLaunchBackDescriptionAnnotatedStringProviderV2Impl(
+    ): WcRequestLaunchBackDescriptionAnnotatedStringProvider {
+        return WCRequestLaunchBackDescriptionAnnotatedStringProviderV2Impl(
+            getFormattedWCSessionMaxExpirationDateUseCase,
+            walletConnectManager
+        )
+    }
+
+    @Provides
+    @Named(WCArbitraryDataLaunchBackDescriptionAnnotatedStringProviderV2Impl.INJECTION_NAME)
+    fun provideWcArbitraryDataLaunchBackDescriptionAnnotatedStringProvider(
+        getFormattedWCSessionMaxExpirationDateUseCase: GetFormattedWCSessionMaxExpirationDateUseCase,
+        walletConnectManager: WalletConnectManager
+    ): WcRequestLaunchBackDescriptionAnnotatedStringProvider {
+        return WCArbitraryDataLaunchBackDescriptionAnnotatedStringProviderV2Impl(
             getFormattedWCSessionMaxExpirationDateUseCase,
             walletConnectManager
         )

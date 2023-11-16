@@ -50,6 +50,7 @@
     <com.algorand.android.customviews.ListMenuItemView
         android:id="@+id/sardineButton"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_large"
         app:description="@string/use_instant_ach"

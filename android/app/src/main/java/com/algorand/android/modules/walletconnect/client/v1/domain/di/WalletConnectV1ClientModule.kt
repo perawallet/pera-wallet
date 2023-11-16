@@ -13,8 +13,6 @@
 package com.algorand.android.modules.walletconnect.client.v1.domain.di
 
 import android.content.Context
-import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
-import com.algorand.android.deviceregistration.domain.usecase.FirebasePushTokenUseCase
 import com.algorand.android.modules.walletconnect.client.v1.WalletConnectClientV1Impl
 import com.algorand.android.modules.walletconnect.client.v1.domain.decider.WalletConnectV1ChainIdentifierDecider
 import com.algorand.android.modules.walletconnect.client.v1.domain.repository.WalletConnectRepository
@@ -37,11 +35,6 @@ import com.algorand.android.modules.walletconnect.client.v1.session.mapper.Walle
 import com.algorand.android.modules.walletconnect.client.v1.utils.WalletConnectV1ErrorCodeProvider
 import com.algorand.android.modules.walletconnect.client.v1.utils.WalletConnectV1IdentifierParser
 import com.algorand.android.modules.walletconnect.domain.WalletConnectClient
-import com.algorand.android.modules.walletconnect.subscription.data.mapper.WalletConnectSessionSubscriptionBodyMapper
-import com.algorand.android.modules.walletconnect.subscription.data.usecase.SetGivenSessionAsSubscribedUseCase
-import com.algorand.android.modules.walletconnect.subscription.domain.SubscribeWalletConnectSessionUseCase
-import com.algorand.android.modules.walletconnect.subscription.v1.domain.SubscribeWalletConnectV1SessionUseCase
-import com.algorand.android.network.MobileAlgorandApi
 import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -136,24 +129,5 @@ object WalletConnectV1ClientModule {
         return Moshi.Builder()
             .addLast(KotlinJsonAdapterFactory())
             .build()
-    }
-
-    @Singleton
-    @Provides
-    @Named(SubscribeWalletConnectV1SessionUseCase.INJECTION_NAME)
-    fun provideSubscribeWalletConnectSessionUseCase(
-        firebasePushTokenUseCase: FirebasePushTokenUseCase,
-        mobileAlgorandApi: MobileAlgorandApi,
-        deviceIdUseCase: DeviceIdUseCase,
-        setGivenSessionAsSubscribedUseCase: SetGivenSessionAsSubscribedUseCase,
-        walletConnectSessionSubscriptionBodyMapper: WalletConnectSessionSubscriptionBodyMapper
-    ): SubscribeWalletConnectSessionUseCase {
-        return SubscribeWalletConnectV1SessionUseCase(
-            firebasePushTokenUseCase,
-            mobileAlgorandApi,
-            deviceIdUseCase,
-            setGivenSessionAsSubscribedUseCase,
-            walletConnectSessionSubscriptionBodyMapper
-        )
     }
 }

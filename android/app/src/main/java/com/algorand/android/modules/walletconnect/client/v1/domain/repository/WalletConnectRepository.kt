@@ -49,8 +49,6 @@ interface WalletConnectRepository {
 
     suspend fun deleteWalletConnectAccountBySession(sessionId: Long, accountAddress: String)
 
-    suspend fun setGivenSessionAsSubscribed(sessionId: Long)
-
     suspend fun getWalletConnectSessionListOrderedByCreationTime(count: Int): List<WalletConnectSessionDto>
 
     suspend fun getWalletConnectSessionCount(): Int

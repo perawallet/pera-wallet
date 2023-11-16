@@ -14,6 +14,7 @@ package com.algorand.android.modules.pendingintentkeeper.ui
 
 import android.content.Intent
 import androidx.lifecycle.DefaultLifecycleObserver
+import com.algorand.android.MainActivity.Companion.WC_ARBITRARY_DATA_ID_INTENT_KEY
 import com.algorand.android.MainActivity.Companion.WC_TRANSACTION_ID_INTENT_KEY
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -42,6 +43,10 @@ class PendingIntentKeeper @Inject constructor() : DefaultLifecycleObserver {
         val isExistingIntentNull = pendingIntent == null
         if (isExistingIntentNull) return true
 
+        return hasTransactionIntent(intent) || hasArbitraryDataIntent(intent)
+    }
+
+    private fun hasTransactionIntent(intent: Intent?): Boolean {
         val isIntentIntentContainsWCTransactionId = isGivenIntentContainsWCTransactionId(intent)
         if (isIntentIntentContainsWCTransactionId) return true
 
@@ -49,7 +54,19 @@ class PendingIntentKeeper @Inject constructor() : DefaultLifecycleObserver {
         return !isPendingIntentContainsWCTransactionId
     }
 
+    private fun hasArbitraryDataIntent(intent: Intent?): Boolean {
+        val isIntentIntentContainsWCArbitraryDataId = isGivenIntentContainsWCArbitraryDataId(intent)
+        if (isIntentIntentContainsWCArbitraryDataId) return true
+
+        val isPendingIntentContainsWCArbitraryDataId = isGivenIntentContainsWCArbitraryDataId(pendingIntent)
+        return !isPendingIntentContainsWCArbitraryDataId
+    }
+
     private fun isGivenIntentContainsWCTransactionId(intent: Intent?): Boolean {
         return intent?.getLongExtra(WC_TRANSACTION_ID_INTENT_KEY, -1L) != -1L
+    }
+
+    private fun isGivenIntentContainsWCArbitraryDataId(intent: Intent?): Boolean {
+        return intent?.getLongExtra(WC_ARBITRARY_DATA_ID_INTENT_KEY, -1L) != -1L
     }
 }

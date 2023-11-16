@@ -16,7 +16,7 @@ import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.coroutineScope
-import com.algorand.algosdk.mobile.BytesArray
+import com.algorand.algosdk.sdk.BytesArray
 import com.algorand.android.R
 import com.algorand.android.ledger.CustomScanCallback
 import com.algorand.android.ledger.LedgerBleOperationManager

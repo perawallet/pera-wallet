@@ -16,7 +16,8 @@ import android.util.Base64
 import com.algorand.android.R
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WCAlgoTransactionRequest
-import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.models.WalletConnectRequest.WalletConnectArbitraryDataRequest
+import com.algorand.android.models.WalletConnectRequest.WalletConnectTransaction
 import com.algorand.android.models.WalletConnectTransactionRequest
 import com.algorand.android.utils.decodeBase64
 import com.algorand.android.utils.decodeBase64DecodedMsgPackToJsonString
@@ -65,7 +66,7 @@ fun WCAlgoTransactionRequest.getTransactionRequest(gson: Gson): WalletConnectTra
     return gson.fromJson(transactionJson, WalletConnectTransactionRequest::class.java)
 }
 
-fun BaseWalletConnectTransaction.signTransaction(secretKey: ByteArray): ByteArray? {
+fun BaseWalletConnectTransaction.signArbitraryData(secretKey: ByteArray): ByteArray? {
     return decodedTransaction?.signTx(secretKey)
 }
 
@@ -93,6 +94,10 @@ fun WalletConnectTransaction.getTransactionIds(): List<String> {
 
 fun WalletConnectTransaction.getTransactionCount(): Int {
     return transactionList.flatten().size
+}
+
+fun WalletConnectArbitraryDataRequest.getArbitraryDataCount(): Int {
+    return arbitraryDataList.size
 }
 
 fun WalletConnectTransaction.isFutureTransaction(): Boolean {

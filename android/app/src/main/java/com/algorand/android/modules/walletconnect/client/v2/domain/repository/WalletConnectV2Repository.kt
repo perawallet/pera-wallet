@@ -18,8 +18,6 @@ import com.algorand.android.utils.CacheResult
 
 interface WalletConnectV2Repository {
 
-    suspend fun setGivenSessionAsSubscribed(sessionTopic: String)
-
     suspend fun insertWalletConnectSession(sessionDto: WalletConnectSessionDto)
 
     suspend fun getSessionById(sessionTopic: String): WalletConnectSessionDto?

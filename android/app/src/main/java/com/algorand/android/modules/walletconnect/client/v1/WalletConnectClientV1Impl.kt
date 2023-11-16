@@ -152,7 +152,6 @@ class WalletConnectClientV1Impl(
                         chainId = cachedData.session.chainId
                     ),
                     creationDateTimestamp = getCurrentTimeAsSec(),
-                    isSubscribed = false,
                     expiry = null,
                     isConnected = true,
                     clientId = clientId
@@ -295,7 +294,6 @@ class WalletConnectClientV1Impl(
         return walletConnectMapper.mapToSessionDetail(
             entity = sessionEntity,
             creationDateTimestamp = sessionEntity.dateTimeStamp,
-            isSubscribed = sessionEntity.isSubscribed,
             fallbackBrowserGroupResponse = sessionEntity.fallbackBrowserGroupResponse,
             namespaces = createWalletConnectSessionNamespaceUseCase.invoke(
                 accountAddresses = walletConnectSessionAccountDto,

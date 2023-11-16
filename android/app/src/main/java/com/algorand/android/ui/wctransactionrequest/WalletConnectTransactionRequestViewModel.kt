@@ -22,9 +22,9 @@ import com.algorand.android.R
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.BaseWalletConnectTransaction
+import com.algorand.android.models.WalletConnectRequest.WalletConnectTransaction
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSignResult
-import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.models.builder.WalletConnectTransactionListBuilder
 import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.modules.walletconnect.domain.WalletConnectManager
@@ -35,7 +35,7 @@ import com.algorand.android.utils.Resource
 import com.algorand.android.utils.getOrElse
 import com.algorand.android.utils.preference.getFirstWalletConnectRequestBottomSheetShown
 import com.algorand.android.utils.preference.setFirstWalletConnectRequestBottomSheetShown
-import com.algorand.android.utils.walletconnect.WalletConnectSignManager
+import com.algorand.android.utils.walletconnect.WalletConnectTransactionSignManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,7 +47,7 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     private val walletConnectManager: WalletConnectManager,
     private val errorProvider: WalletConnectErrorProvider,
     private val sharedPreferences: SharedPreferences,
-    private val walletConnectSignManager: WalletConnectSignManager,
+    private val walletConnectSignManager: WalletConnectTransactionSignManager,
     private val transactionListBuilder: WalletConnectTransactionListBuilder,
     private val walletConnectTransactionRequestPreviewUseCase: WalletConnectTransactionRequestPreviewUseCase,
     savedStateHandle: SavedStateHandle
@@ -60,7 +60,7 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
         get() = walletConnectSignManager.signResultLiveData
 
     val transaction: WalletConnectTransaction?
-        get() = walletConnectManager.transaction
+        get() = walletConnectManager.wcRequest as? WalletConnectTransaction
 
     private val walletConnectSession: WalletConnectSession?
         get() = transaction?.session
@@ -127,9 +127,11 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
             R.id.walletConnectSingleTransactionFragment -> {
                 Bundle().apply { putParcelable(SINGLE_TRANSACTION_KEY, transactionList.first()) }
             }
+
             R.id.walletConnectMultipleTransactionFragment -> {
                 Bundle().apply { putParcelableArray(MULTIPLE_TRANSACTION_KEY, transactionList.toTypedArray()) }
             }
+
             else -> null
         }
 

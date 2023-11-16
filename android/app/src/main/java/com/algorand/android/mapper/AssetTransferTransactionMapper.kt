@@ -19,8 +19,8 @@ import com.algorand.android.models.WCAlgoTransactionRequest
 import com.algorand.android.models.WalletConnectAccount
 import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
-import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
+import com.algorand.android.models.WalletConnectTransactionSigner
 import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.modules.walletconnect.domain.WalletConnectErrorProvider
 import com.algorand.android.usecase.AccountDetailUseCase
@@ -84,7 +84,7 @@ class AssetTransferTransactionMapper @Inject constructor(
                 getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, accountDetail.account.address)
             }
             val assetInformation = createWalletConnectAssetInformation(ownedAsset, amount)
-            val signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider)
+            val signer = WalletConnectTransactionSigner.create(rawTransaction, senderWCAddress, errorProvider)
             val isLocalAccountSigner = signer.address?.decodedAddress?.mapNotBlank { safeAddress ->
                 accountDetailUseCase.isThereAnyAccountWithPublicKey(safeAddress)
             } ?: false
@@ -129,7 +129,7 @@ class AssetTransferTransactionMapper @Inject constructor(
                 getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, accountDetail.account.address)
             }
             val assetInformation = createWalletConnectAssetInformation(ownedAsset, amount)
-            val signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider)
+            val signer = WalletConnectTransactionSigner.create(rawTransaction, senderWCAddress, errorProvider)
             val isLocalAccountSigner = signer.address?.decodedAddress?.mapNotBlank { safeAddress ->
                 accountDetailUseCase.isThereAnyAccountWithPublicKey(safeAddress)
             } ?: false
@@ -174,7 +174,7 @@ class AssetTransferTransactionMapper @Inject constructor(
                 getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, accountDetail.account.address)
             }
             val assetInformation = createWalletConnectAssetInformation(ownedAsset, amount)
-            val signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider)
+            val signer = WalletConnectTransactionSigner.create(rawTransaction, senderWCAddress, errorProvider)
             val isLocalAccountSigner = signer.address?.decodedAddress?.mapNotBlank { safeAddress ->
                 accountDetailUseCase.isThereAnyAccountWithPublicKey(safeAddress)
             } ?: false
@@ -223,7 +223,7 @@ class AssetTransferTransactionMapper @Inject constructor(
             val ownedAsset = senderAccountData.mapNotNull { accountDetail ->
                 getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, accountDetail.account.address)
             }
-            val signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider)
+            val signer = WalletConnectTransactionSigner.create(rawTransaction, senderWCAddress, errorProvider)
             val assetInformation = createWalletConnectAssetInformation(ownedAsset, amount)
             BaseAssetTransferTransaction.AssetTransferTransaction(
                 rawTransactionPayload = rawTransaction,
@@ -275,7 +275,7 @@ class AssetTransferTransactionMapper @Inject constructor(
                 getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, accountDetail.account.address)
             }
             val assetInformation = createWalletConnectAssetInformation(ownedAsset, amount)
-            val signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider)
+            val signer = WalletConnectTransactionSigner.create(rawTransaction, senderWCAddress, errorProvider)
             BaseAssetTransferTransaction.AssetOptInTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),

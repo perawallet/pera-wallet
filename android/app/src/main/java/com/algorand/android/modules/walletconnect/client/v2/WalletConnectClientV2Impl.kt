@@ -274,7 +274,6 @@ class WalletConnectClientV2Impl(
                 WalletConnectSessionDto(
                     topic = settle.session.topic,
                     creationDateTimestamp = settle.session.creationDateTimestamp,
-                    isSubscribed = settle.session.isSubscribed,
                     fallbackBrowserGroupResponse = settle.session.fallbackBrowserGroupResponse
                 )
             )

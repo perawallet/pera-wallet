@@ -13,7 +13,7 @@
 package com.algorand.android
 
 import android.util.Base64
-import com.algorand.algosdk.mobile.SuggestedParams
+import com.algorand.algosdk.sdk.SuggestedParams
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.TransactionParams
 import com.algorand.android.utils.makeAddAssetTx

@@ -15,6 +15,5 @@ package com.algorand.android.modules.walletconnect.client.v2.domain.model
 data class WalletConnectSessionDto(
     val topic: String,
     val creationDateTimestamp: Long,
-    val isSubscribed: Boolean,
     val fallbackBrowserGroupResponse: String?
 )

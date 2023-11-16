@@ -139,7 +139,21 @@ sealed class WalletConnectErrorReason : Parcelable {
     }
 
     @Parcelize
+    object MaxArbitraryDataLimit : WalletConnectErrorReason() {
+
+        override val category: WalletConnectErrorReasonCategory
+            get() = WalletConnectErrorReasonCategory.CONFIRMATION_FAILED
+    }
+
+    @Parcelize
     object UnableToParseTransaction : WalletConnectErrorReason() {
+
+        override val category: WalletConnectErrorReasonCategory
+            get() = WalletConnectErrorReasonCategory.CONFIRMATION_FAILED
+    }
+
+    @Parcelize
+    object UnableToParseArbitraryData : WalletConnectErrorReason() {
 
         override val category: WalletConnectErrorReasonCategory
             get() = WalletConnectErrorReasonCategory.CONFIRMATION_FAILED

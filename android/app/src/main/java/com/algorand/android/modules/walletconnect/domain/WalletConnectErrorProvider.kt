@@ -102,9 +102,19 @@ class WalletConnectErrorProvider @Inject constructor(
         return createWalletConnectError(errorMessage, WalletConnectErrorReason.MaxTransactionLimit)
     }
 
+    fun getMaxArbitraryDataLimitError(maxArbitraryDataLimit: Int): WalletConnectError {
+        val errorMessage = context.getString(R.string.arbitrary_data_limit_this, maxArbitraryDataLimit)
+        return createWalletConnectError(errorMessage, WalletConnectErrorReason.MaxArbitraryDataLimit)
+    }
+
     fun getUnableToParseTransactionError(): WalletConnectError {
         val errorMessage = context.getString(R.string.invalid_request_format_pera)
         return createWalletConnectError(errorMessage, WalletConnectErrorReason.UnableToParseTransaction)
+    }
+
+    fun getUnableToParseArbitraryDataError(): WalletConnectError {
+        val errorMessage = context.getString(R.string.invalid_arbitrary_data_request)
+        return createWalletConnectError(errorMessage, WalletConnectErrorReason.UnableToParseArbitraryData)
     }
 
     fun getInvalidPublicKeyError(): WalletConnectError {

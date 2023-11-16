@@ -40,7 +40,7 @@ class DiscoverDappFragment :
     BaseDiscoverFragment(R.layout.fragment_discover_dapp) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        startIconResId = R.drawable.ic_left_arrow,
+        startIconResId = R.drawable.ic_close,
         startIconClick = ::navBack
     )
 

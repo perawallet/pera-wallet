@@ -42,7 +42,7 @@ class DiscoverUrlViewerFragment :
     PeraMobileWebInterface.WebInterfaceListener {
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        startIconResId = R.drawable.ic_left_arrow,
+        startIconResId = R.drawable.ic_close,
         startIconClick = ::navBack
     )
 

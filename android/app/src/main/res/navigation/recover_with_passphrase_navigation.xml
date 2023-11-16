@@ -29,9 +29,6 @@
             app:argType="string"
             app:nullable="true" />
         <action
-            android:id="@+id/action_recoverWithPassphraseFragment_to_recoverWithPassphraseQrScannerFragment"
-            app:destination="@id/recoverWithPassphraseQrScannerFragment" />
-        <action
             android:id="@+id/action_recoverWithPassphraseFragment_to_recoverOptionsBottomSheet"
             app:destination="@id/recoverOptionsBottomSheet" />
         <action
@@ -41,12 +38,6 @@
             android:id="@+id/action_recoverWithPassphraseFragment_to_rekeyedAccountSelectionFragment"
             app:destination="@id/rekeyedAccountSelectionFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/recoverWithPassphraseQrScannerFragment"
-        android:name="com.algorand.android.modules.onboarding.recoverypassphrase.qrscanner.ui.RecoverWithPassphraseQrScannerFragment"
-        android:label="RecoverWithPassphraseQrScannerFragment"
-        tools:layout="@layout/fragment_qr_code_scanner" />
 
     <fragment
         android:id="@+id/recoverAccountNameRegistrationFragment"

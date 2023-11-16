@@ -80,7 +80,7 @@
         android:layout_marginBottom="@dimen/spacing_xxxsmall"
         app:icon="@drawable/ic_watch_account_circle"
         app:showBottomDivider="true"
-        app:title="@string/add_watch_account" />
+        app:title="@string/watch_an_account" />
 
     <com.algorand.android.customviews.ListMenuItemView
         android:id="@+id/addNewContactButton"

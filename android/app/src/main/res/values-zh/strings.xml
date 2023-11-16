@@ -507,14 +507,9 @@
     <string name="minimum_amount_required">所需最低余额</string>
     <string name="this_is_the_first_transaction">这是所选账户的首笔交易。首笔交易的最低金额要求为0.1ALGO。请输入有效金额，并再重试。</string>
     <string name="i_want_to_create">我想要创建一个账户</string>
-    <string name="create_a_new_algorand">创建新的Algorand账户或添加Watch账户</string>
-    <string name="i_already_have">我已经有一个账户了</string>
-    <string name="import_an_existing">通过恢复助记词以导入现有的Algorand账户，或与您的Ledger账户配对</string>
     <string name="i_want_to_create_an_algorand_account">我想要创建\nAlgorand账户</string>
     <string name="create_a_new_account">创建新的账户</string>
     <string name="create_a_new_algorand_account_with">使用新地址与助记词创建新的Algorand账户</string>
-    <string name="add_watch_account">添加Watch账户</string>
-    <string name="i_already_have_nan_account">我已经有\n一个账户了</string>
     <string name="recover_an_account">恢复帐户</string>
     <string name="pair_Ledger_device">Ledger设备配对</string>
     <string name="confirm_transaction">确认交易</string>
@@ -791,7 +786,7 @@
     <string name="set_custom_percentage">设置自定义百分比</string>
     <string name="balance_percentage">余额百分比</string>
     <string name="pera_wallet_provides_an_easy">Pera钱包提供简单快捷的交换资产方式。该交换功能允许一项ASA与另一项使用智能合约的ASA进行交换，并收取市场费用。</string>
-    <string name="by_continuing_you_agree_to">继续表明您同意我们的\n 交换伙伴<annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">服务条款</annotation></annotation></annotation></string>
+    <string name="by_continuing_you_agree_to">继续表明您同意我们的\n 交换伙伴<annotation url="vestigeTermsOfServiceUrl"><annotation type="bold"><annotation type="color">服务条款</annotation></annotation></annotation></string>
     <string name="start_swapping">开始交换</string>
     <string name="powered_by">提供者为</string>
     <string name="new_text">全新</string>
@@ -835,18 +830,6 @@
     <string name="custom">自定义</string>
     <string name="select_all">全选</string>
     <string name="unselect_all">取消全选</string>
-    <string name="disclaimer">免责声明</string>
-    <string name="export_to_pera_web">导出到Pera网络</string>
-    <string name="you_re_about_to_share">您将会分享您的密码，并将密码导入到Pera网络钱包上！</string>
-    <string name="confirm_export_domain">确认导出域名</string>
-    <string name="for_your_security_please_confirm">为了您的安全，请通过输入您在电脑上所看到的的域名，以确认您在把账户导出到Pera网络上。</string>
-    <string name="enter_url_of_web_wallet">输入网络钱包地址</string>
-    <string name="url_of_web_wallet">网络钱包地址</string>
-    <string name="to_make_sure_that_you">为确保您能够将账户导出到安全的位置，请始终确认您是在Pera的官网上。</string>
-    <string name="confirm_accounts">确认账户</string>
-    <string name="you_re_about_to_export">您将会安全地把这些账户导出到Pera网络上：</string>
-    <string name="accounts_exported_successfully">账户导出成功！</string>
-    <string name="you_can_now_use_these">您现在可以在Pera网络钱包上使用这些账户。</string>
     <string name="we_couldn_t_find">我们无法找到任何符合导出条件的账户。</string>
     <plurals name="account_count">
         <item quantity="other">%1$d 账户</item>
@@ -917,7 +900,6 @@
     <string name="you_need_to_opt_in">您需要选择加入NFT ASA ID，以便能够将其转移到您的钱包里。将ASA ID粘贴在搜索栏中。</string>
     <string name="you_need_to_opt_in_to">您需要选择加入NFT ASA ID，以便能够将其转移到您的钱包里。</string>
     <string name="round">区块高度</string>
-    <string name="do_not_proceed_if_you">如果您没有发起这项请求，请勿继续。</string>
     <string name="this_asset_is">该资产正待删除中。</string>
     <string name="get_help">获取帮助</string>
     <string name="couldn_t_retrieve">无法检索到账户信息，请重试。</string>
@@ -949,7 +931,6 @@
     <string name="future_transactions_can_only">未来的交易只能由被委托的账户签署。</string>
     <string name="this_account_will_no_longer">该账户将不能再签署交易。</string>
     <string name="your_account_s_public_key">您的账户公钥、余额和配置不会改变。</string>
-    <string name="account_transfer_is">出于安全原因，测试网上的账户转移功能已被禁用。请切换到主网后，再使用此功能。</string>
     <string name="invalid_url">无效网址</string>
     <string name="high_price_impact_detected">检测到高价格影响！</string>
     <string name="it_appears_that_you_formatted">您似乎正在尝试确认价格影响大于<annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation>。\n\n如需了解价格影响、相关计算方式或其对交换总价值影响的更多信息，请查看 Tinyman 的<annotation custom="faq_url">常见问题解答部分</annotation>。</string>

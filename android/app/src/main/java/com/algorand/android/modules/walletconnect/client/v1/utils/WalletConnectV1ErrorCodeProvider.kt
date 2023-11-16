@@ -44,6 +44,8 @@ class WalletConnectV1ErrorCodeProvider @Inject constructor() {
             is WalletConnectErrorReason.UnsupportedMethods -> UNSUPPORTED_ERROR_CODE
             is WalletConnectErrorReason.UnsupportedNamespaceKey -> UNSUPPORTED_ERROR_CODE
             is WalletConnectErrorReason.UserRejected -> REJECTED_ERROR_CODE
+            is WalletConnectErrorReason.MaxArbitraryDataLimit -> INVALID_INPUT_ERROR_CODE
+            is WalletConnectErrorReason.UnableToParseArbitraryData -> INVALID_INPUT_ERROR_CODE
         }
     }
 

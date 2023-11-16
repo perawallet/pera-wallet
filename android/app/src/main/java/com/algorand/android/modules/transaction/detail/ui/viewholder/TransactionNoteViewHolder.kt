@@ -26,8 +26,8 @@ class TransactionNoteViewHolder(
     override fun bind(item: TransactionDetailItem) {
         if (item !is TransactionDetailItem.NoteItem) return
         with(binding) {
-            dateLabelTextView.setText(item.labelTextRes)
-            dateView.text = item.note
+            noteLabelTextView.setText(item.labelTextRes)
+            noteTextView.text = item.note
             root.enableLongPressToCopyText(item.note)
         }
     }

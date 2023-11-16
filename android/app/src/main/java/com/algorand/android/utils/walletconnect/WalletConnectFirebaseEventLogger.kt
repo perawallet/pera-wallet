@@ -13,7 +13,8 @@
 package com.algorand.android.utils.walletconnect
 
 import androidx.core.os.bundleOf
-import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.models.WalletConnectRequest.WalletConnectArbitraryDataRequest
+import com.algorand.android.models.WalletConnectRequest.WalletConnectTransaction
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 import com.algorand.android.network.AlgodInterceptor
@@ -40,7 +41,7 @@ class WalletConnectFirebaseEventLogger(
                 DAPP_URL_PARAM to session.peerMeta.url
             )
         }
-        firebaseAnalytics.logEvent(REQUEST_CONFIRMATION_EVENT_KEY, bundle)
+        firebaseAnalytics.logEvent(REQUEST_TRANSACTION_CONFIRMATION_EVENT_KEY, bundle)
     }
 
     override fun logTransactionRequestRejection(transaction: WalletConnectTransaction) {
@@ -53,7 +54,31 @@ class WalletConnectFirebaseEventLogger(
                 TRANSACTION_COUNT_PARAM to getTransactionCount()
             )
         }
-        firebaseAnalytics.logEvent(REQUEST_REJECTION_EVENT_KEY, bundle)
+        firebaseAnalytics.logEvent(REQUEST_TRANSACTION_REJECTION_EVENT_KEY, bundle)
+    }
+
+    override fun logArbitraryDataRequestConfirmation(arbitraryData: WalletConnectArbitraryDataRequest) {
+        if (!isCurrentNetworkMainNet) return
+        val bundle = with(arbitraryData) {
+            bundleOf(
+                DAPP_NAME_PARAM to session.peerMeta.name,
+                DAPP_URL_PARAM to session.peerMeta.url
+            )
+        }
+        firebaseAnalytics.logEvent(REQUEST_ARBITRARY_DATA_CONFIRMATION_EVENT_KEY, bundle)
+    }
+
+    override fun logArbitraryDataRequestRejection(arbitraryData: WalletConnectArbitraryDataRequest) {
+        if (!isCurrentNetworkMainNet) return
+        val bundle = with(arbitraryData) {
+            bundleOf(
+                DAPP_NAME_PARAM to session.peerMeta.name,
+                DAPP_URL_PARAM to session.peerMeta.url,
+                CONNECTED_ACCOUNT_ADDRESS_PARAM to session.connectedAccountsAddresses.toAccountAddressesString(),
+                TRANSACTION_COUNT_PARAM to getArbitraryDataCount()
+            )
+        }
+        firebaseAnalytics.logEvent(REQUEST_ARBITRARY_DATA_REJECTION_EVENT_KEY, bundle)
     }
 
     override fun logSessionConfirmation(
@@ -110,8 +135,10 @@ class WalletConnectFirebaseEventLogger(
         /**
          * Firebase Event Keys
          */
-        private const val REQUEST_CONFIRMATION_EVENT_KEY = "wc_transaction_confirmed"
-        private const val REQUEST_REJECTION_EVENT_KEY = "wc_transaction_declined"
+        private const val REQUEST_TRANSACTION_CONFIRMATION_EVENT_KEY = "wc_transaction_confirmed"
+        private const val REQUEST_TRANSACTION_REJECTION_EVENT_KEY = "wc_transaction_declined"
+        private const val REQUEST_ARBITRARY_DATA_CONFIRMATION_EVENT_KEY = "wc_arbitrary_data_confirmed"
+        private const val REQUEST_ARBITRARY_DATA_REJECTION_EVENT_KEY = "wc_arbitrary_data_declined"
         private const val SESSION_CONFIRMATION_EVENT_KEY = "wc_session_approved"
         private const val SESSION_REJECTION_EVENT_KEY = "wc_session_rejected"
         private const val SESSION_DISCONNECTION_EVENT_KEY = "wc_session_disconnected"

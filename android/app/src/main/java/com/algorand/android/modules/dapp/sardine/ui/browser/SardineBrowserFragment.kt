@@ -40,7 +40,7 @@ class SardineBrowserFragment :
 
     private val toolbarConfiguration = ToolbarConfiguration(
         titleColor = R.color.text_main,
-        startIconResId = R.drawable.ic_left_arrow,
+        startIconResId = R.drawable.ic_close,
         startIconClick = ::navBack,
     )
 

@@ -22,21 +22,21 @@ import com.algorand.android.models.AssetSupportRequest
 import com.algorand.android.models.Feedback
 import com.algorand.android.models.FeedbackCategory
 import com.algorand.android.models.NotificationFilterRequest
-import com.algorand.android.modules.notification.data.model.NotificationResponse
 import com.algorand.android.models.Pagination
 import com.algorand.android.models.PushTokenDeleteRequest
 import com.algorand.android.models.TrackTransactionRequest
 import com.algorand.android.models.VerifiedAssetDetail
 import com.algorand.android.modules.accountblockpolling.data.model.ShouldRefreshRequestBody
 import com.algorand.android.modules.accountblockpolling.data.model.ShouldRefreshResponse
-import com.algorand.android.modules.notification.data.model.LastSeenNotificationRequest
-import com.algorand.android.modules.notification.data.model.LastSeenNotificationResponse
-import com.algorand.android.modules.notification.data.model.NotificationStatusResponse
 import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
 import com.algorand.android.modules.currency.data.model.CurrencyOptionResponse
 import com.algorand.android.modules.fetchnameservices.data.model.FetchNameServicesRequestBody
 import com.algorand.android.modules.fetchnameservices.data.model.FetchNameServicesResponse
 import com.algorand.android.modules.nftdomain.data.model.NftDomainSearchResponse
+import com.algorand.android.modules.notification.data.model.LastSeenNotificationRequest
+import com.algorand.android.modules.notification.data.model.LastSeenNotificationResponse
+import com.algorand.android.modules.notification.data.model.NotificationResponse
+import com.algorand.android.modules.notification.data.model.NotificationStatusResponse
 import com.algorand.android.modules.parity.data.model.CurrencyDetailResponse
 import com.algorand.android.modules.swap.assetselection.toasset.data.model.AvailableSwapAssetListResponse
 import com.algorand.android.modules.swap.assetswap.data.model.PeraFeeRequestBody
@@ -45,16 +45,12 @@ import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteRequestBo
 import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteResultResponse
 import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsRequestBody
 import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsResponse
-import com.algorand.android.modules.walletconnect.subscription.data.model.WalletConnectSessionSubscriptionBody
-import com.algorand.android.modules.webexport.accountconfirmation.data.model.ExportBackupResponse
-import com.algorand.android.modules.webexport.common.data.model.WebBackupRequestBody
 import com.algorand.android.modules.webimport.loading.data.model.ImportBackupResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.HTTP
-import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -164,13 +160,6 @@ interface MobileAlgorandApi {
         @Query("name") name: String
     ): Response<NftDomainSearchResponse>
 
-    @PUT("v1/backups/{id}/")
-    suspend fun putBackup(
-        @Path("id") id: String,
-        @Body body: WebBackupRequestBody,
-        @Header("X-Modification-Key") modificationKey: String
-    ): Response<ExportBackupResponse>
-
     @Streaming
     @GET("v1/accounts/{address}/export-history/")
     suspend fun getExportHistory(
@@ -200,11 +189,6 @@ interface MobileAlgorandApi {
     suspend fun getQuoteTransactions(
         @Body requestBody: CreateSwapQuoteTransactionsRequestBody
     ): Response<CreateSwapQuoteTransactionsResponse>
-
-    @POST("v1/devices/wallet-connect-subscriptions/")
-    suspend fun subscribeWalletConnectSession(
-        @Body body: WalletConnectSessionSubscriptionBody
-    ): Response<Void>
 
     @POST("v1/algorand-indexer/should-refresh/")
     suspend fun shouldRefresh(

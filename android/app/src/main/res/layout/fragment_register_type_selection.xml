@@ -42,35 +42,33 @@
             app:layout_constraintTop_toBottomOf="@id/titleTextView"
             app:layout_constraintVertical_bias="0.4"
             app:layout_constraintVertical_chainStyle="packed"
-            app:typeSelectionDescriptionText="@string/create_a_new_algorand"
+            app:typeSelectionDescriptionText="@string/create_a_new_algorand_account_with"
             app:typeSelectionIcon="@drawable/ic_wallet"
-            app:typeSelectionTitleText="@string/i_want_to_create" />
+            app:typeSelectionTitleText="@string/create_a_new_account" />
 
         <com.algorand.android.customviews.RegisterTypeSelectionItem
             android:id="@+id/recoveryAccountSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/transferSelectionItem"
+            app:layout_constraintBottom_toTopOf="@id/watchAccountSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/createAccountSelectionItem"
             app:typeSelectionDescriptionText="@string/import_an_existing"
             app:typeSelectionIcon="@drawable/ic_key"
-            app:typeSelectionTitleText="@string/i_already_have" />
+            app:typeSelectionTitleText="@string/import_an_account" />
 
         <com.algorand.android.customviews.RegisterTypeSelectionItem
-            android:id="@+id/transferSelectionItem"
+            android:id="@+id/watchAccountSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/policyTextView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recoveryAccountSelectionItem"
-            app:typeSelectionDescriptionText="@string/i_already_have_an"
-            app:typeSelectionIcon="@drawable/ic_phone"
-            app:typeSelectionTitleText="@string/transfer_from_another_phone"
-            tools:visibility="visible" />
+            app:typeSelectionDescriptionText="@string/monitor_an_algorand_account"
+            app:typeSelectionIcon="@drawable/ic_eye"
+            app:typeSelectionTitleText="@string/watch_an_account" />
 
         <TextView
             android:id="@+id/policyTextView"

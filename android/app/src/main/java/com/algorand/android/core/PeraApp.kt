@@ -72,10 +72,13 @@ open class PeraApp : Application() {
 
         AppCompatDelegate.setDefaultNightMode(sharedPref.getSavedThemePreference().convertToSystemAbbr())
         accountManager.initAccounts()
-
-        walletConnectInitializer.initialize(this, ProcessLifecycleOwner.get().lifecycle)
+        initializeWalletConnect()
         bindApplicationLifecycleAwareComponents()
         bindActivityLifecycleAwareComponents()
+    }
+
+    private fun initializeWalletConnect() {
+        walletConnectInitializer.initialize(this, ProcessLifecycleOwner.get().lifecycle)
     }
 
     private fun bindApplicationLifecycleAwareComponents() {

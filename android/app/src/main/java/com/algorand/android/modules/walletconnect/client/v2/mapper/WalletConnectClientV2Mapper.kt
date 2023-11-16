@@ -128,7 +128,6 @@ class WalletConnectClientV2Mapper @Inject constructor(
             peerMeta = peerMeta,
             namespaces = namespaces,
             creationDateTimestamp = sessionDto.creationDateTimestamp,
-            isSubscribed = sessionDto.isSubscribed,
             isConnected = isConnected,
             fallbackBrowserGroupResponse = sessionDto.fallbackBrowserGroupResponse,
             expiry = expiryMapper.mapToExpiry(session.expiry),

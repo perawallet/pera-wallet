@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.algosdk.data.repository
 
-import com.algorand.algosdk.mobile.Mobile
+import com.algorand.algosdk.sdk.Sdk
 import com.algorand.algosdk.v2.client.Utils
 import com.algorand.algosdk.v2.client.common.AlgodClient
 import com.algorand.android.modules.algosdk.data.mapper.AlgorandAddressDTOMapper
@@ -46,14 +46,14 @@ internal class AlgorandSDKUtilsImpl @Inject constructor(
     }
 
     override fun parseRawTransaction(txnByteArray: ByteArray): RawTransactionDTO? {
-        val transactionJson = Mobile.transactionMsgpackToJson(txnByteArray)
+        val transactionJson = Sdk.transactionMsgpackToJson(txnByteArray)
         val rawTransactionPayload = gson.fromJson<RawTransactionPayload>(transactionJson) ?: return null
         return rawTransactionDTOMapper.mapToRawTransactionDTO(rawTransactionPayload)
     }
 
     override fun generateAccountAddressFromPublicKey(addressBase64: String): AlgorandAddressDTO? {
         val publicKey = addressBase64.decodeBase64() ?: return null
-        val accountAddress = Mobile.generateAddressFromPublicKey(publicKey)
+        val accountAddress = Sdk.generateAddressFromPublicKey(publicKey)
         return algorandAddressDTOMapper.mapToAlgorandAddressDTO(publicKey, accountAddress)
     }
 }

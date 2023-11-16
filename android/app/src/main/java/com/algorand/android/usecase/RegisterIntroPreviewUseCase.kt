@@ -35,12 +35,16 @@ class RegisterIntroPreviewUseCase @Inject constructor(
         emit(registerIntroPreview)
     }
 
-    suspend fun logOnboardingWelcomeAccountCreateClickEvent() {
-        registerIntroFragmentEventTracker.logOnboardingWelcomeAccountCreateEvent()
+    suspend fun logOnboardingCreateNewAccountClickEvent() {
+        registerIntroFragmentEventTracker.logOnboardingCreateNewAccountEventTracker()
     }
 
     suspend fun logOnboardingWelcomeAccountRecoverClickEvent() {
         registerIntroFragmentEventTracker.logOnboardingWelcomeAccountRecoverEvent()
+    }
+
+    suspend fun logOnboardingCreateWatchAccountClickEvent() {
+        registerIntroFragmentEventTracker.logOnboardingCreateWatchAccountEvent()
     }
 
     suspend fun logOnboardingCreateAccountSkipClickEvent() {

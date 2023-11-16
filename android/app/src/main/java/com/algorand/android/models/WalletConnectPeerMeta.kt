@@ -29,5 +29,5 @@ data class WalletConnectPeerMeta(
         get() = icons.firstOrNull()?.toUri()
 
     val hasDescription: Boolean
-        get() = description != null && description.isNotBlank()
+        get() = !description.isNullOrBlank()
 }

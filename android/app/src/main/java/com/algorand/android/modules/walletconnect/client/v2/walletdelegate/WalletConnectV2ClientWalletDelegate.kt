@@ -109,7 +109,6 @@ class WalletConnectV2ClientWalletDelegate @Inject constructor(
                 peerMeta = walletDelegateMapperFacade.mapToPeerMeta(sessionPeerMeta),
                 namespaces = createSessionNamespaceUseCase(settleSessionResponse.session),
                 creationDateTimestamp = getCurrentTimeAsSec(),
-                isSubscribed = false,
                 isConnected = true,
                 fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
             )

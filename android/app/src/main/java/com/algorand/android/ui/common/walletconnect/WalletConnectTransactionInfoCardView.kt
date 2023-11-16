@@ -21,7 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import com.algorand.android.R
-import com.algorand.android.databinding.CustomWalletConnectTransactionInfoBinding
+import com.algorand.android.databinding.CustomWalletConnectRequestInfoBinding
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.TransactionRequestAssetInformation
 import com.algorand.android.models.TransactionRequestTransactionInfo
@@ -41,7 +41,7 @@ class WalletConnectTransactionInfoCardView(
     attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
 
-    private val binding = viewBinding(CustomWalletConnectTransactionInfoBinding::inflate)
+    private val binding = viewBinding(CustomWalletConnectRequestInfoBinding::inflate)
 
     private var listener: WalletConnectTransactionInfoCardViewListener? = null
 
@@ -85,6 +85,7 @@ class WalletConnectTransactionInfoCardView(
                     assetNameGroup.show()
                 }
             }
+
             !assetName.isNullOrBlank() -> {
                 with(binding) {
                     assetTextView.text = assetName
@@ -102,6 +103,7 @@ class WalletConnectTransactionInfoCardView(
                     unitNameGroup.show()
                 }
             }
+
             !assetUnitName.isNullOrBlank() -> {
                 with(binding) {
                     assetUnitNameTextView.text = assetUnitName

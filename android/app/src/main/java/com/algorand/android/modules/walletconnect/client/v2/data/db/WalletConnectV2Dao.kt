@@ -33,7 +33,4 @@ interface WalletConnectV2Dao {
 
     @Query("SELECT * FROM WalletConnectV2SessionEntity")
     suspend fun getWCSessionList(): List<WalletConnectV2SessionEntity>
-
-    @Query("UPDATE WalletConnectV2SessionEntity SET is_subscribed = 1 WHERE topic == :sessionTopic")
-    suspend fun setGivenSessionAsSubscribed(sessionTopic: String)
 }

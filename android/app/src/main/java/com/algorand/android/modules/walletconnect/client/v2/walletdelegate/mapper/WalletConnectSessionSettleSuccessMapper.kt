@@ -23,7 +23,6 @@ interface WalletConnectSessionSettleSuccessMapper {
         peerMeta: WalletConnect.PeerMeta,
         namespaces: Map<WalletConnectBlockchain, WalletConnect.Namespace.Session>,
         creationDateTimestamp: Long,
-        isSubscribed: Boolean,
         isConnected: Boolean,
         fallbackBrowserGroupResponse: String?
     ): WalletConnect.Session.Settle.Result

@@ -20,7 +20,6 @@ import com.algorand.android.modules.deeplink.DeepLinkParser
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink.WalletConnectConnectionDeepLink
 import com.algorand.android.modules.deeplink.domain.model.NotificationGroupType
-import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
 import com.algorand.android.modules.webimport.common.data.model.WebImportQrCode
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.toShortenedAddress
@@ -52,7 +51,6 @@ class DeeplinkHandler @Inject constructor(
             is WalletConnectConnectionDeepLink -> handleWalletConnectConnectionDeepLink(baseDeeplink)
             is BaseDeepLink.UndefinedDeepLink -> handleUndefinedDeepLink(baseDeeplink)
             is BaseDeepLink.MoonpayResultDeepLink -> handleMoonpayResultDeepLink(baseDeeplink)
-            is BaseDeepLink.WebExportQrCodeDeepLink -> handleWebExportQrCodeDeepLink(baseDeeplink)
             is BaseDeepLink.WebImportQrCodeDeepLink -> handleWebImportQrCodeDeepLink(baseDeeplink)
             is BaseDeepLink.NotificationDeepLink -> handleNotificationDeepLink(baseDeeplink)
         }
@@ -88,14 +86,6 @@ class DeeplinkHandler @Inject constructor(
                 accountAddress = moonpayResultDeepLink.accountAddress,
                 txnStatus = moonpayResultDeepLink.transactionStatus,
                 txnId = moonpayResultDeepLink.transactionId
-            )
-        }
-    }
-
-    private fun handleWebExportQrCodeDeepLink(webExportQrCodeDeepLink: BaseDeepLink.WebExportQrCodeDeepLink): Boolean {
-        return triggerListener {
-            it.onWebExportQrCodeDeepLink(
-                webExportQrCode = webExportQrCodeDeepLink.webExportQrCode
             )
         }
     }
@@ -157,7 +147,6 @@ class DeeplinkHandler @Inject constructor(
         fun onWalletConnectConnectionDeeplink(wcUrl: String): Boolean = false
         fun onAssetTransferWithNotOptInDeepLink(assetId: Long): Boolean = false
         fun onMoonpayResultDeepLink(accountAddress: String, txnStatus: String, txnId: String?): Boolean = false
-        fun onWebExportQrCodeDeepLink(webExportQrCode: WebExportQrCode): Boolean = false
         fun onWebImportQrCodeDeepLink(webImportQrCode: WebImportQrCode): Boolean = false
         fun onNotificationDeepLink(
             accountAddress: String,

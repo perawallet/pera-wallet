@@ -12,7 +12,8 @@
 
 package com.algorand.android.utils.walletconnect
 
-import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.models.WalletConnectRequest.WalletConnectArbitraryDataRequest
+import com.algorand.android.models.WalletConnectRequest.WalletConnectTransaction
 import com.algorand.android.modules.walletconnect.domain.model.WalletConnect
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
 
@@ -37,12 +38,32 @@ interface WalletConnectEventLogger {
     fun logTransactionRequestRejection(transaction: WalletConnectTransaction)
 
     /**
+     * After the arbitrary data is confirmed, for all signed arbitrary data
+     *
+     * KEY wc_arbitrary_data_confirmed
+     *
+     * PARAMS dapp_name, dapp_url
+     */
+
+    fun logArbitraryDataRequestConfirmation(arbitraryData: WalletConnectArbitraryDataRequest)
+
+    /**
+     * After the arbitrary data request is declined
+     *
+     * KEY wc_arbitrary_data_declined
+     *
+     * PARAMS dapp_name, dapp_url, address, arbitrary_data_count
+     */
+    fun logArbitraryDataRequestRejection(arbitraryData: WalletConnectArbitraryDataRequest)
+
+    /**
      * After the user approves the session
      *
      * KEY wc_session_approved
      *
      * PARAMS dapp_name, dapp_url, topic, address
      */
+
     fun logSessionConfirmation(sessionProposal: WalletConnectSessionProposal, connectedAccountAddresses: List<String>)
 
     /**

@@ -87,7 +87,6 @@
 
     <string name="asset_amount_with_x">x%1$s</string>
 
-    <string name="web_dot_perawallet_dot_app">https://web.perawallet.app</string>
     <string name="swap_amount_hint">0.00</string>
     <string name="formatted_percentage">%1$s%%</string>
 

@@ -12,26 +12,26 @@
 
 package com.algorand.android.modules.webimport.loading.domain.usecase
 
-import com.algorand.algosdk.mobile.Mobile
+import com.algorand.algosdk.sdk.Sdk
 import com.algorand.android.core.AccountManager
 import com.algorand.android.models.Account
 import com.algorand.android.models.Result
-import com.algorand.android.models.BackupTransferAccountElement
+import com.algorand.android.modules.webimport.loading.data.model.BackupTransferAccountElement
 import com.algorand.android.modules.webimport.loading.domain.model.ImportedAccountResult
 import com.algorand.android.modules.webimport.loading.domain.repository.WebImportAccountRepository
 import com.algorand.android.usecase.AccountAdditionUseCase
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.analytics.CreationType
+import com.algorand.android.utils.decodeBase64OrByteArray
 import com.algorand.android.utils.decrypt
 import com.algorand.android.utils.exceptions.DecryptionException
 import com.algorand.android.utils.exceptions.EmptyContentException
 import com.algorand.android.utils.fromJson
-import com.algorand.android.utils.decodeBase64OrByteArray
 import com.algorand.android.utils.toShortenedAddress
 import com.google.gson.Gson
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Named
-import kotlinx.coroutines.flow.flow
 
 class WebImportAccountDecryptionUseCase @Inject constructor(
     private val gson: Gson,
@@ -86,7 +86,7 @@ class WebImportAccountDecryptionUseCase @Inject constructor(
                 val unimportedAccounts = mutableListOf<String>()
                 elements?.forEach {
                     val privateKey = it.privateKey?.decodeBase64OrByteArray()
-                    val publicKey = Mobile.generateAddressFromSK(privateKey)
+                    val publicKey = Sdk.generateAddressFromSK(privateKey)
                     if (shouldSkipImport(publicKey) || privateKey == null) {
                         unimportedAccounts.add(publicKey)
                     } else {

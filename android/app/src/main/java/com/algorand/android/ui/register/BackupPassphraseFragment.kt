@@ -15,7 +15,7 @@ package com.algorand.android.ui.register
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.algorand.algosdk.mobile.Mobile
+import com.algorand.algosdk.sdk.Sdk
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentBackupPassphraseBinding
@@ -73,8 +73,8 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
         try {
             val secretKeyByteArray: ByteArray?
             if (accountCreation?.tempAccount?.getSecretKey() == null) {
-                secretKeyByteArray = Mobile.generateSK()
-                val publicKey = Mobile.generateAddressFromSK(secretKeyByteArray)
+                secretKeyByteArray = Sdk.generateSK()
+                val publicKey = Sdk.generateAddressFromSK(secretKeyByteArray)
                 val tempAccount = Account.create(
                     publicKey = publicKey,
                     detail = Account.Detail.Standard(secretKeyByteArray)
@@ -83,7 +83,7 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
             } else {
                 secretKeyByteArray = accountCreation?.tempAccount?.getSecretKey()
             }
-            return Mobile.mnemonicFromPrivateKey(secretKeyByteArray)
+            return Sdk.mnemonicFromPrivateKey(secretKeyByteArray)
         } catch (exception: Exception) {
             navBack()
         }

@@ -17,7 +17,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/modality_bg"
-    app:layoutDescription="@xml/scene_fragment_wallet_connect_transaction_request">
+    app:layoutDescription="@xml/scene_fragment_wallet_connect_request">
 
     <com.algorand.android.ui.common.walletconnect.WalletConnectAppPreviewCardView
         android:id="@+id/dAppPreviewView"

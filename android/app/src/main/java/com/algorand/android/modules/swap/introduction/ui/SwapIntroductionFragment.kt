@@ -21,7 +21,7 @@ import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentSwapIntroductionBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.utils.Event
-import com.algorand.android.utils.browser.openTinymanTermsOfServiceUrl
+import com.algorand.android.utils.browser.openVestigeTermsOfServiceUrl
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.setXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -67,6 +67,6 @@ class SwapIntroductionFragment : BaseFragment(R.layout.fragment_swap_introductio
     }
 
     private fun onTermsOfServicesClick(url: String) {
-        context?.openTinymanTermsOfServiceUrl()
+        context?.openVestigeTermsOfServiceUrl()
     }
 }

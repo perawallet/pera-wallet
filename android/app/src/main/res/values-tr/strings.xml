@@ -514,14 +514,9 @@
     <string name="minimum_amount_required">Minimum Miktar Gerekli</string>
     <string name="this_is_the_first_transaction">Bu, seçili hesabın ilk işlemidir. İlk işlemler için en az 0,1 Algo\'luk minimum miktar gereklidir. Lütfen geçerli bir miktar girerek tekrar deneyin.</string>
     <string name="i_want_to_create">Bir hesap oluşturmak istiyorum</string>
-    <string name="create_a_new_algorand">Yeni bir Algorand hesabı oluşturun veya bir izleme hesabı ekleyin</string>
-    <string name="i_already_have">Zaten bir hesabım var</string>
-    <string name="import_an_existing">Kurtarma parolası aracılığıyla mevcut bir Algorand hesabını içe aktarın veya Ledger\'ınızı eşleştirin</string>
     <string name="i_want_to_create_an_algorand_account">Bir Algorand hesabı\noluşturmak istiyorum</string>
     <string name="create_a_new_account">Yeni bir hesap oluşturun</string>
     <string name="create_a_new_algorand_account_with">Yeni bir adres ve kurtarma parolası ile bir Algorand hesabı oluşturun</string>
-    <string name="add_watch_account">İzleme hesabı ekleyin</string>
-    <string name="i_already_have_nan_account">Zaten bir\nhesabım var</string>
     <string name="recover_an_account">Bir hesabı kurtarın</string>
     <string name="pair_Ledger_device">Ledger cihazı eşleştirin</string>
     <string name="confirm_transaction">İşlemi Onayla</string>
@@ -802,7 +797,7 @@
     <string name="set_custom_percentage">Özel yüzde belirleyin</string>
     <string name="balance_percentage">Bakiye Yüzdesi</string>
     <string name="pera_wallet_provides_an_easy">Pera Wallet varlıkları takas etmenin kolay ve hızlı bir yolunu sunuyor. Takas işlemi sayesinde bir ASA\'yı akıllı sözleşme kullanarak başka bir ASA\'ya piyasa fiyatları üzerinden dönüştürebilirsiniz.</string>
-    <string name="by_continuing_you_agree_to">Devam ederek\ntakas ortağımızın <annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">Hizmet Koşullarını</annotation></annotation></annotation> kabul ediyorsunuz</string>
+    <string name="by_continuing_you_agree_to">Devam ederek\ntakas ortağımızın <annotation url="vestigeTermsOfServiceUrl"><annotation type="bold"><annotation type="color">Hizmet Koşullarını</annotation></annotation></annotation> kabul ediyorsunuz</string>
     <string name="start_swapping">Takasa Başlayın</string>
     <string name="powered_by">Destekleyen:</string>
     <string name="new_text">Yeni</string>
@@ -847,18 +842,6 @@
     <string name="custom">Özel</string>
     <string name="select_all">Tümünü seçin</string>
     <string name="unselect_all">Tümünün seçimini kaldırın</string>
-    <string name="disclaimer">SORUMLULUK REDDİ</string>
-    <string name="export_to_pera_web">Pera Web\'e Aktarma</string>
-    <string name="you_re_about_to_share">Parolanızı Pera Web ile paylaşmak ve içe aktarmak üzeresiniz!</string>
-    <string name="confirm_export_domain">Etki Alanını Dışa Aktarma Onayı</string>
-    <string name="for_your_security_please_confirm">Güvenliğiniz için hesaplarınızı Pera Web\'e bilgisayarınızda gördüğünüz etki alanı adını girerek aktarmakta olduğunuzu lütfen onaylayın.</string>
-    <string name="enter_url_of_web_wallet">Web Wallet\'ın URL\'sini Girin</string>
-    <string name="url_of_web_wallet">Web Wallet\'ın URL\'si</string>
-    <string name="to_make_sure_that_you">Hesaplarınızı güvenli bir konuma aktardığınızdan emin olmak için Pera Web\'in resmi URL\'sinde bulunduğunuzu her zaman doğrulayın:</string>
-    <string name="confirm_accounts">Hesapları Onayla</string>
-    <string name="you_re_about_to_export">Pera Web\'e güvenli bir biçimde aktarmak üzere olduğunuz hesaplar:</string>
-    <string name="accounts_exported_successfully">Hesaplar başarıyla dışa aktarıldı!</string>
-    <string name="you_can_now_use_these">Bu hesapları artık Pera Web ile kullanabilirsiniz.</string>
     <string name="we_couldn_t_find">Dışa aktarılabilecek nitelikte hiçbir hesap bulamadık.</string>
     <plurals name="account_count">
         <item quantity="one">Hesap</item>
@@ -933,7 +916,6 @@
     <string name="you_need_to_opt_in">NFT\'yi cüzdanınıza transfer edebilmek için NFT ASA Kimliğine katılmanız gerekmektedir. ASA Kimliğini arama çubuğuna yapıştırın.</string>
     <string name="you_need_to_opt_in_to">NFT\'yi cüzdanınıza transfer edebilmek için NFT ASA Kimliğine katılmanız gerekmektedir.</string>
     <string name="round">Tur</string>
-    <string name="do_not_proceed_if_you">Bu talebi siz başlatmadıysanız devam etmeyin.</string>
     <string name="this_asset_is">Bu varlık zaten kaldırılmayı bekliyor.</string>
     <string name="get_help">Yardım Alın</string>
     <string name="couldn_t_retrieve">Hesap ayrıntıları alınamadı, lütfen tekrar deneyin</string>
@@ -967,7 +949,6 @@
     <string name="future_transactions_can_only">Gelecekteki işlemler yalnızca yetki verilen hesap tarafından imzalanabilir.</string>
     <string name="this_account_will_no_longer">Bu hesap artık işlemleri imzalayamayacak.</string>
     <string name="your_account_s_public_key">Hesabınızın herkese açık anahtarı, bakiyeleri ve yapılandırması değişmeyecektir.</string>
-    <string name="account_transfer_is">Güvenliğiniz için Testnet\'te hesap aktarımı devre dışı bırakılmıştır. Bu özelliği kullanmak için lütfen Mainnet\'e geçin.</string>
     <string name="invalid_url">Geçersiz URL</string>
     <string name="high_price_impact_detected">Yüksek Fiyat etkisi tespit edildi!</string>
     <string name="it_appears_that_you_formatted">Fiyat etkisi %%<annotation replacement="price_impact_percentage">priceImpactPercentagePlaceholder</annotation> üzerinde olan bir Takası onaylamaya çalıştığınız anlaşılıyor.\n\nFiyat etkisi, bu etkinin nasıl hesaplandığı veya takasınızın genel değerini nasıl etkileyebileceği hakkında daha fazla bilgi edinmek için lütfen Tinyman\'ın <annotation custom="faq_url">SSS bölümünü</annotation> ziyaret edin.</string>

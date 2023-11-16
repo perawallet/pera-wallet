@@ -15,16 +15,21 @@ package com.algorand.android.modules.tracking.onboarding.register.registerintro
 import javax.inject.Inject
 
 class RegisterIntroFragmentEventTracker @Inject constructor(
-    private val onboardingWelcomeAccountCreateEventTracker: OnboardingWelcomeAccountCreateEventTracker,
+    private val onboardingCreateNewAccountEventTracker: OnboardingCreateNewAccountEventTracker,
     private val onboardingWelcomeAccountRecoverEventTracker: OnboardingWelcomeAccountRecoverEventTracker,
+    private val onboardingCreateWatchAccountEventTracker: OnboardingCreateWatchAccountEventTracker,
     private val onboardingWelcomeAccountSkipEventTracker: OnboardingWelcomeAccountSkipEventTracker
 ) {
-    suspend fun logOnboardingWelcomeAccountCreateEvent() {
-        onboardingWelcomeAccountCreateEventTracker.logOnboardingWelcomeAccountCreateEvent()
+    suspend fun logOnboardingCreateNewAccountEventTracker() {
+        onboardingCreateNewAccountEventTracker.logOnboardingCreateNewAccountEvent()
     }
 
     suspend fun logOnboardingWelcomeAccountRecoverEvent() {
         onboardingWelcomeAccountRecoverEventTracker.logOnboardingWelcomeAccountRecoverEvent()
+    }
+
+    suspend fun logOnboardingCreateWatchAccountEvent() {
+        onboardingCreateWatchAccountEventTracker.logOnboardingCreateWatchAccountEvent()
     }
 
     suspend fun logOnboardingWelcomeAccountSkipEvent() {

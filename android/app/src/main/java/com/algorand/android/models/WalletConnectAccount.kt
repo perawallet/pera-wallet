@@ -17,7 +17,7 @@ import com.algorand.android.modules.accounticon.ui.model.AccountIconDrawablePrev
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class WalletConnectAccount constructor(
+data class WalletConnectAccount(
     val address: String,
     var name: String = "",
     val type: Account.Type? = null,

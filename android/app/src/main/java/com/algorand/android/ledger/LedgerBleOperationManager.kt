@@ -15,7 +15,7 @@ package com.algorand.android.ledger
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.Lifecycle
-import com.algorand.algosdk.mobile.Mobile
+import com.algorand.algosdk.sdk.Sdk
 import com.algorand.android.R
 import com.algorand.android.ledger.operations.AccountFetchAllOperation
 import com.algorand.android.ledger.operations.BaseOperation
@@ -220,9 +220,9 @@ class LedgerBleOperationManager @Inject constructor(
             try {
                 (currentOperation as? BaseTransactionOperation)?.run {
                     val signedTransactionData = if (isRekeyedToAnotherAccount) {
-                        Mobile.attachSignatureWithSigner(transactionSignature, transactionByteArray, accountAuthAddress)
+                        Sdk.attachSignatureWithSigner(transactionSignature, transactionByteArray, accountAuthAddress)
                     } else {
-                        Mobile.attachSignature(transactionSignature, transactionByteArray)
+                        Sdk.attachSignature(transactionSignature, transactionByteArray)
                     }
                     postResult(LedgerBleResult.SignedTransactionResult(signedTransactionData))
                 }

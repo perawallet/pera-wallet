@@ -16,7 +16,6 @@ package com.algorand.android.modules.deeplink.domain.model
 
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.modules.swap.assetswap.data.utils.getSafeAssetIdForResponse
-import com.algorand.android.modules.webexport.common.data.model.WebExportQrCode
 import com.algorand.android.modules.webimport.common.data.model.WebImportQrCode
 import com.algorand.android.utils.isEqualTo
 import java.math.BigInteger
@@ -41,9 +40,6 @@ sealed class BaseDeepLink {
         protected const val DEFAULT_AMOUNT = 0L
         protected const val DEFAULT_MNEMONIC = ""
         protected const val DEFAULT_TRANSACTION_STATUS = ""
-        protected const val DEFAULT_WEBEXPORT_BACKUPID = ""
-        protected const val DEFAULT_WEBEXPORT_MODIFICATIONKEY = ""
-        protected const val DEFAULT_WEBEXPORT_ENCRYPTIONKEY = ""
         protected const val DEFAULT_WEBIMPORT_BACKUPID = ""
         protected const val DEFAULT_WEBIMPORT_ENCRYPTIONKEY = ""
         protected val DEFAULT_NOTIFICATION_GROUP_TYPE = NotificationGroupType.TRANSACTIONS
@@ -94,7 +90,6 @@ sealed class BaseDeepLink {
                         amount == null &&
                         note == null &&
                         xnote == null &&
-                        webExportQrCode == null &&
                         webImportQrCode == null &&
                         notificationGroupType == null
                 }
@@ -135,7 +130,6 @@ sealed class BaseDeepLink {
                         note == null &&
                         xnote == null &&
                         label == null &&
-                        webExportQrCode == null &&
                         webImportQrCode == null &&
                         notificationGroupType == null
                 }
@@ -201,7 +195,6 @@ sealed class BaseDeepLink {
                 return with(rawDeepLink) {
                     val doesDeeplinkHaveAssetTransferQueries = accountAddress != null && amount != null
                     doesDeeplinkHaveAssetTransferQueries && walletConnectUrl == null &&
-                        webExportQrCode == null &&
                         webImportQrCode == null &&
                         notificationGroupType == null
                 }
@@ -238,7 +231,6 @@ sealed class BaseDeepLink {
                         note == null &&
                         xnote == null &&
                         label == null &&
-                        webExportQrCode == null &&
                         webImportQrCode == null &&
                         notificationGroupType == null
                 }
@@ -276,7 +268,6 @@ sealed class BaseDeepLink {
                         note == null &&
                         xnote == null &&
                         label == null &&
-                        webExportQrCode == null &&
                         webImportQrCode == null &&
                         notificationGroupType == null
                 }
@@ -302,42 +293,8 @@ sealed class BaseDeepLink {
             override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
                 return with(rawDeepLink) {
                     accountAddress != null && transactionStatus != null &&
-                        webExportQrCode == null &&
                         webImportQrCode == null &&
                         notificationGroupType == null
-                }
-            }
-        }
-    }
-
-    class WebExportQrCodeDeepLink(
-        val webExportQrCode: WebExportQrCode
-    ) : BaseDeepLink() {
-
-        companion object : DeepLinkCreator {
-            override fun createDeepLink(rawDeeplink: RawDeepLink): BaseDeepLink {
-                return WebExportQrCodeDeepLink(
-                    webExportQrCode = rawDeeplink.webExportQrCode ?: WebExportQrCode(
-                        DEFAULT_WEBEXPORT_BACKUPID,
-                        DEFAULT_WEBEXPORT_MODIFICATIONKEY,
-                        DEFAULT_WEBEXPORT_ENCRYPTIONKEY
-                    )
-                )
-            }
-
-            override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
-                return with(rawDeepLink) {
-                    webExportQrCode != null &&
-                        accountAddress == null &&
-                        assetId == null &&
-                        amount == null &&
-                        walletConnectUrl == null &&
-                        note == null &&
-                        xnote == null &&
-                        label == null &&
-                        notificationGroupType == null &&
-                        webImportQrCode == null &&
-                        mnemonic == null
                 }
             }
         }
@@ -368,7 +325,6 @@ sealed class BaseDeepLink {
                         xnote == null &&
                         label == null &&
                         notificationGroupType == null &&
-                        webExportQrCode == null &&
                         mnemonic == null
                 }
             }
@@ -417,7 +373,6 @@ sealed class BaseDeepLink {
                         note == null &&
                         xnote == null &&
                         label == null &&
-                        webExportQrCode == null &&
                         webImportQrCode == null
                 }
             }

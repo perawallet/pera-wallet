@@ -32,7 +32,6 @@ class RecoverOptionsBottomSheet : DaggerBaseBottomSheet(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.scanQrButton.setOnClickListener { onOptionClick(OptionResult.SCAN_QR) }
         binding.pasteButton.setOnClickListener { onOptionClick(OptionResult.PASTE) }
         binding.learnMoreButton.setOnClickListener { context?.openUrl(RECOVER_INFO_URL) }
     }
@@ -43,7 +42,6 @@ class RecoverOptionsBottomSheet : DaggerBaseBottomSheet(
     }
 
     enum class OptionResult {
-        SCAN_QR,
         PASTE
     }
 

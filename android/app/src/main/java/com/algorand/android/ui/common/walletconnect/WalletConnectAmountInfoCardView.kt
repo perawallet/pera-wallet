@@ -20,10 +20,11 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectAmountInfoCardBinding
+import com.algorand.android.models.ArbitraryDataRequestAmountInfo
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.TransactionRequestAmountInfo
-import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
+import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -56,6 +57,14 @@ class WalletConnectAmountInfoCardView(
             initReserveAccount(reserveAccount)
             initFreezeAccount(freezeAccount)
             initClawbackAccount(clawbackAccount)
+        }
+    }
+
+    fun initAmountInfo(amountInfo: ArbitraryDataRequestAmountInfo?) {
+        if (amountInfo == null) return
+        with(amountInfo) {
+            initAmount(amount, ALGO_DECIMALS, ALGO_SHORT_NAME)
+            initFee(fee, false)
         }
     }
 

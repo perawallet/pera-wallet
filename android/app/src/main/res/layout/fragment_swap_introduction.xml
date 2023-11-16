@@ -124,7 +124,7 @@
         android:text="@string/powered_by"
         android:textAppearance="@style/TextAppearance.Footnote.Sans"
         android:textColor="@color/text_gray_lighter"
-        app:drawableEndCompat="@drawable/powered_by_tinyman"
+        app:drawableEndCompat="@drawable/ic_vestige"
         app:layout_constraintBottom_toTopOf="@id/introductionStartSwappingButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

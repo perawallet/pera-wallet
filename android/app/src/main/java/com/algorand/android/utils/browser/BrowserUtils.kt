@@ -53,7 +53,7 @@ const val PERA_SUPPORT_URL = "https://perawallet.app/support/"
 private const val DISPENSER_URL = "https://dispenser.testnet.aws.algodev.network/"
 const val ASA_VERIFICATION_URL = "https://explorer.perawallet.app/asa-verification/"
 const val BASE_TWITTER_URL = "https://twitter.com/"
-private const val TINYMAN_TERMS_OF_SERVICE_URL = "https://tinyman.org/terms-of-service/"
+private const val VESTIGE_TERMS_OF_SERVICE_URL = "https://about.vestige.fi/disclaimer/terms-of-service"
 const val BLANK_URL = "about:blank"
 private const val TINYMAN_FAQ_PRICE_IMPACT_URL = "https://docs.tinyman.org/faq#what-is-a-price-impact"
 const val ASB_SUPPORT_URL = "https://perawallet.app/support/asb"
@@ -169,8 +169,8 @@ fun Context.openASAVerificationUrl() {
     openUrl(ASA_VERIFICATION_URL)
 }
 
-fun Context.openTinymanTermsOfServiceUrl() {
-    openUrl(TINYMAN_TERMS_OF_SERVICE_URL)
+fun Context.openVestigeTermsOfServiceUrl() {
+    openUrl(VESTIGE_TERMS_OF_SERVICE_URL)
 }
 
 fun Context.openGroupTransactionInAlgoExplorer(groupId: String?, networkSlug: String?) {

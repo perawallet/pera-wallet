@@ -25,7 +25,6 @@ sealed class WalletConnectTransactionListItem : Parcelable, RecyclerListItem {
 
     enum class ItemType {
         APP_PREVIEW,
-        TITLE,
         MULTIPLE_TXN,
         SINGLE_TXN,
         GROUP_ID
@@ -48,23 +47,6 @@ sealed class WalletConnectTransactionListItem : Parcelable, RecyclerListItem {
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
             return other is AppPreviewItem && peerMeta == other.peerMeta && message == message
-        }
-    }
-
-    @Parcelize
-    data class TitleItem(
-        val transactionCount: Int
-    ) : WalletConnectTransactionListItem() {
-
-        override val getItemType: ItemType
-            get() = ItemType.TITLE
-
-        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-            return other is TitleItem && transactionCount == other.transactionCount
-        }
-
-        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-            return other is TitleItem && transactionCount == other.transactionCount
         }
     }
 

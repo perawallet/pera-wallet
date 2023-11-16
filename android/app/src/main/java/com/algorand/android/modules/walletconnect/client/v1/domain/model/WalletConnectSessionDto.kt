@@ -18,6 +18,5 @@ data class WalletConnectSessionDto(
     val wcSession: WalletConnectSessionMetaDto,
     val dateTimeStamp: Long,
     val isConnected: Boolean = false,
-    val isSubscribed: Boolean = false,
     val fallbackBrowserGroupResponse: String? = null
 )
