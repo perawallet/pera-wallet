@@ -24,6 +24,7 @@ final class AccountListItemView:
     ViewModelBindable,
     ListReusable {
     private lazy var iconView = ImageView()
+    private lazy var iconBottomRightBadgeView = UIImageView()
     private lazy var contentAndAccessoryContextView = UIView()
     private lazy var contentView = UIView()
     private lazy var titleView = PrimaryTitleView()
@@ -52,6 +53,7 @@ final class AccountListItemView:
         _ viewModel: AccountListItemViewModel?
     ) {
         iconView.load(from: viewModel?.icon)
+        iconBottomRightBadgeView.image = viewModel?.iconBottomRightBadge?.uiImage
         titleView.bindData(viewModel?.title)
         primaryAccessoryView.editText = viewModel?.primaryAccessory
         secondaryAccessoryView.editText = viewModel?.secondaryAccessory
@@ -106,6 +108,18 @@ extension AccountListItemView {
             $0.centerY == 0
             $0.leading == 0
             $0.fitToSize(theme.iconSize)
+        }
+
+        addIconBottomRightBadge(theme)
+    }
+
+    private func addIconBottomRightBadge(
+        _ theme: AccountListItemViewTheme
+    ) {
+        addSubview(iconBottomRightBadgeView)
+        iconBottomRightBadgeView.snp.makeConstraints {
+            $0.top == iconView.snp.top + theme.iconBottomRightBadgePaddings.top
+            $0.leading == theme.iconBottomRightBadgePaddings.leading
         }
     }
 

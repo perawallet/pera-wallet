@@ -121,8 +121,8 @@ extension HomeQuickActionsView {
             $0.trailing <= 0
         }
 
-        addBuySellAction(theme)
         addSwapAction(theme)
+        addBuySellAction(theme)
         addSendAction(theme)
         addScanAction(theme)
     }

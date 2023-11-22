@@ -26,16 +26,16 @@ final class WCArbitraryDataViewController: BaseScrollViewController {
     private lazy var dappMessageModalTransition = BottomSheetTransition(presentingViewController: self)
 
     private let data: WCArbitraryData
-    private let wcSession: WCSession?
+    private let wcSession: WCSessionDraft
     private let account: Account?
 
     init(
         data: WCArbitraryData,
-        wcRequest: WalletConnectRequest,
+        wcSession: WCSessionDraft,
         configuration: ViewControllerConfiguration
     ) {
         self.data = data
-        self.wcSession = configuration.walletConnector.getWalletConnectSession(for: wcRequest.url.topic)
+        self.wcSession = wcSession
 
         if let address = data.signer {
             self.account = configuration.sharedDataController.accountCollection[address]?.value

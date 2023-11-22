@@ -18,8 +18,7 @@
 import UIKit
 import MacaroonUIKit
 
-class WCGroupTransactionItemView: TripleShadowView {
-
+final class WCGroupTransactionItemView: TripleShadowView {
     private let layout = Layout<LayoutConstants>()
 
     private lazy var senderStackView: HStackView = {

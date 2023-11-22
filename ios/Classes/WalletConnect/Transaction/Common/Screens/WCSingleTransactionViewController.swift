@@ -19,7 +19,6 @@ import UIKit
 import MagpieCore
 
 class WCSingleTransactionViewController: BaseScrollViewController {
-    
     private let layout = Layout<LayoutConstants>()
 
     var transactionView: WCSingleTransactionView? {
@@ -30,13 +29,18 @@ class WCSingleTransactionViewController: BaseScrollViewController {
 
     private(set) var transaction: WCTransaction
     private(set) var account: Account?
-    private(set) var transactionRequest: WalletConnectRequest
-    private let wcSession: WCSession?
+    private(set) var transactionRequest: WalletConnectRequestDraft
+    private let wcSession: WCSessionDraft?
 
-    init(transaction: WCTransaction, transactionRequest: WalletConnectRequest, configuration: ViewControllerConfiguration) {
+    init(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        session: WCSessionDraft,
+        configuration: ViewControllerConfiguration
+    ) {
         self.transaction = transaction
         self.transactionRequest = transactionRequest
-        self.wcSession = configuration.walletConnector.getWalletConnectSession(for: transactionRequest.url.topic)
+        self.wcSession = session
         if let address = transaction.transactionDetail?.sender {
             self.account = configuration.sharedDataController.accountCollection[address]?.value
         }

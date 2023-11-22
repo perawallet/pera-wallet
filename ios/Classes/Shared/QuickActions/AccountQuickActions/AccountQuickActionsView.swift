@@ -120,9 +120,9 @@ extension AccountQuickActionsView {
             $0.bottom == 0
             $0.trailing <= 0
         }
-
-        addBuySellAction(theme)
+        
         addSwapAction(theme)
+        addBuySellAction(theme)
         addSendAction(theme)
         addMoreAction(theme)
     }

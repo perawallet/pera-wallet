@@ -22,13 +22,16 @@ import UIKit
 final class DeepLinkParser {
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
+    private let peraConnect: PeraConnect
     
     init(
         api: ALGAPI,
-        sharedDataController: SharedDataController
+        sharedDataController: SharedDataController,
+        peraConnect: PeraConnect
     ) {
         self.api = api
         self.sharedDataController = sharedDataController
+        self.peraConnect = peraConnect
     }
 }
 
@@ -536,10 +539,14 @@ extension DeepLinkParser {
         let urlComponents =
             URLComponents(url: walletConnectSessionRequest, resolvingAgainstBaseURL: true)
         let queryItems = urlComponents?.queryItems
-        let maybeWalletConnectSessionKey = queryItems?.first(matching: (\.name, "uri"))?.value
-        return maybeWalletConnectSessionKey
-            .unwrap(where: \.isWalletConnectConnection)
-            .unwrap({ .success($0) })
+        guard let maybeWalletConnectSessionKey = queryItems?.first(matching: (\.name, "uri"))?.value.unwrap(or: "") else {
+            return nil
+        }
+        
+        return
+            peraConnect.isValidSession(maybeWalletConnectSessionKey) ?
+            .success(maybeWalletConnectSessionKey) :
+            nil
     }
     
     func discover(
@@ -560,16 +567,6 @@ extension DeepLinkParser {
         }
 
         return .success(.wcMainArbitraryDataScreen(draft: draft))
-    }
-    
-    func discoverBuyAlgoWithMoonPay(
-        draft: MoonPayDraft
-    ) -> Result? {
-        if !sharedDataController.isAvailable {
-            return .failure(.waitingForAccountsToBeAvailable)
-        }
-        
-        return .success(.buyAlgoWithMoonPay(draft: draft))
     }
 }
 
@@ -607,7 +604,6 @@ extension DeepLinkParser {
         )
         case wcMainTransactionScreen(draft: WalletConnectTransactionSignRequestDraft)
         case wcMainArbitraryDataScreen(draft: WalletConnectArbitraryDataSignRequestDraft)
-        case buyAlgoWithMoonPay(draft: MoonPayDraft)
         case accountSelect(asset: AssetID)
         case externalInAppBrowser(destination: DiscoverExternalDestination)
     }

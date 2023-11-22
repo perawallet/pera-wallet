@@ -17,9 +17,12 @@
 
 import UIKit
 
-let algorandWalletConnectChainID = 4160
-let algorandWalletConnectMainNetChainID = 416001
-let algorandWalletConnectTestNetChainID = 416002
+let algorandWalletConnectV1ChainID = 4160
+let algorandWalletConnectV1MainNetChainID = 416001
+let algorandWalletConnectV1TestNetChainID = 416002
+
+let algorandWalletConnectV2MainNetChainReference = "wGHE2Pwdvd7S12BL5FaOP20EGYesN73k"
+let algorandWalletConnectV2TestNetChainReference = "SGO1GKSzyE7IEPItTxCByw9x8FmnrCDe"
 
 extension WalletConnectSession {
     func getClientMeta() -> ClientMeta {
@@ -69,9 +72,9 @@ extension WalletConnectSession {
     func chainId(for network: ALGAPI.Network) -> Int {
         switch network {
         case .testnet:
-            return dAppInfo.chainId ?? algorandWalletConnectTestNetChainID
+            return dAppInfo.chainId ?? algorandWalletConnectV1TestNetChainID
         case .mainnet:
-            return dAppInfo.chainId ?? algorandWalletConnectMainNetChainID
+            return dAppInfo.chainId ?? algorandWalletConnectV1MainNetChainID
         }
     }
 }

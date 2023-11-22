@@ -73,6 +73,7 @@ extension TransactionOptionsContextView {
 
         actionView.customize(theme)
         actionView.bindData(action.viewModel)
+        actionView.isEnabled = action.isEnabled
 
         addArrangedSubview(actionView)
 

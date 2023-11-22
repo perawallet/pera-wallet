@@ -135,6 +135,8 @@ final class WCGroupTransactionItemViewModel {
             }
         case .assetConfig:
             break
+        case .keyReg:
+            break
         }
     }
 

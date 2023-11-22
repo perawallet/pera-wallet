@@ -12,6 +12,8 @@
 	<string>$(SARDINE_PROD_API_KEY)</string>
 	<key>TRANSAK_PROD_API_KEY</key>
 	<string>$(TRANSAK_PROD_API_KEY)</string>
+	<key>WC_V2_PROJECT_ID</key>
+	<string>$(WC_V2_PROJECT_ID)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

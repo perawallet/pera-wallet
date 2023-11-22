@@ -172,7 +172,6 @@ extension AssetListViewAPIDataController {
         completion: @escaping (AssetListResult) -> Void
     ) {
         var endpointDraft = AssetSearchQuery()
-        endpointDraft.type = .standard
         endpointDraft.query = draft.query
         endpointDraft.cursor = draft.cursor
 

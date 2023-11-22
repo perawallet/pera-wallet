@@ -33,15 +33,13 @@ final class WCArbitraryDataSigner {
 
     func signData(
         _ data: WCArbitraryData,
-        with wcRequest: WalletConnectRequest,
         for account: Account
     ) {
-        if let signature = api.session.privateData(for: account.signerAddress) {
+        if let signature = api.session.privateData(for: account.address) {
             sign(
                 signature,
                 signer: SDKArbitraryDataSigner(),
-                for: data,
-                with: wcRequest
+                for: data
             )
         }
     }
@@ -51,8 +49,7 @@ extension WCArbitraryDataSigner {
     private func sign(
         _ signature: Data?,
         signer: TransactionSigner,
-        for data: WCArbitraryData,
-        with request: WalletConnectRequest
+        for data: WCArbitraryData
     ) {
         signer.delegate = self
 

@@ -28,6 +28,7 @@ struct WCTransactionRequestSDKErrorEvent: ALGAnalyticsEvent {
         self.name = .wcTransactionRequestSDKError
         
         var metadata: ALGAnalyticsMetadata = [
+            .wcVersion: WalletConnectProtocolID.v1.rawValue,
             .wcRequestURL: Self.regulate(url.absoluteString)
         ]
         if let error {

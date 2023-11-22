@@ -19,8 +19,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 
-class WCTransactionDappMessageView: BaseView {
-
+final class WCTransactionDappMessageView: BaseView {
     private let layout = Layout<LayoutConstants>()
 
     weak var delegate: WCTransactionDappMessageViewDelegate?

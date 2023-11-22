@@ -42,6 +42,10 @@ final class AccountDetailViewController: PageContainer {
         configuration: configuration
     )
 
+    private lazy var backupAccountFlowCoordinator = BackUpAccountFlowCoordinator(
+        presentingScreen: self,
+        api: api!
+    )
     private lazy var removeAccountFlowCoordinator = RemoveAccountFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
@@ -194,6 +198,8 @@ extension AccountDetailViewController {
             switch event {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
+            case .backUpAccount:
+                openBackUpAccount()
             case .manageAssets(let isWatchAccount):
                 self.assetListScreen.endEditing()
 
@@ -289,6 +295,26 @@ extension AccountDetailViewController: TransactionOptionsScreenDelegate {
 }
 
 extension AccountDetailViewController {
+    private func openBackUpAccount() {
+        backupAccountFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+            
+            switch event {
+            case .didBackUpAccount(let account):
+                self.accountHandle = account
+          
+                self.assetListScreen.reloadData()
+
+                self.eventHandler?(.didBackUp)
+            }
+        }
+
+        backupAccountFlowCoordinator.launch(accountHandle)
+    }
+}
+
+extension AccountDetailViewController {
     private func openAssetManagementOptions(isWatchAccount: Bool) {
         analytics.track(.recordAccountDetailScreen(type: .manageAssets))
 
@@ -313,12 +339,6 @@ extension AccountDetailViewController {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
-            case .performBuyAlgoWithMoonPay:
-                self.dismiss(animated: true) {
-                    [weak self] in
-                    guard let self else { return }
-                    self.openBuyAlgoWithMoonPay()
-                }
             case .performBuyAlgoWithSardine:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -344,14 +364,6 @@ extension AccountDetailViewController {
             .buySellOptions(eventHandler: eventHandler),
             by: .presentWithoutNavigationController
         )
-    }
-
-    private func openBuyAlgoWithMoonPay() {
-        analytics.track(.recordAccountDetailScreen(type: .buyAlgo))
-
-        let draft = MoonPayDraft()
-        draft.address = accountHandle.value.address
-        moonPayFlowCoordinator.launch(draft: draft)
     }
 
     private func openBuyAlgoWithSardine() {
@@ -813,5 +825,6 @@ extension AccountDetailViewController {
     enum Event {
         case didEdit
         case didRemove
+        case didBackUp
     }
 }

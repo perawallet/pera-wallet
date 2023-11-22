@@ -55,12 +55,12 @@ class Environment {
     lazy var testNetIndexerHost = "indexer-testnet.chain.perawallet.app"
     lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)/v2"
     lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)/v2"
-    
+
     lazy var mainNetAlgodHost = "node-mainnet.chain.perawallet.app"
     lazy var mainNetIndexerHost = "indexer-mainnet.chain.perawallet.app"
     lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)/v2"
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
-    
+
     lazy var serverHost: String = {
         switch target {
         case .staging:
@@ -133,7 +133,16 @@ class Environment {
             return "https://discover-mobile.perawallet.app/"
         }
     }()
-    
+
+    lazy var discoverBrowserURL: String = {
+        switch target {
+        case .staging:
+            return "https://discover-mobile-staging.perawallet.app/main/browser"
+        case .prod:
+            return "https://discover-mobile.perawallet.app/main/browser"
+        }
+    }()
+
     private let target: AppTarget
     
     private init() {
@@ -161,7 +170,7 @@ enum AlgorandWeb: String {
     case governence = "https://governance.algorand.foundation/"
     case peraBlogLaunchAnnouncement = "https://perawallet.app/blog/launch-announcement/"
     case asaVerificationSupport = "https://explorer.perawallet.app/asa-verification/"
-    case tinymanTermsOfService = "https://tinyman.org/terms-of-service"
+    case vestigeTermsOfService = "https://about.vestige.fi/disclaimer/terms-of-service"
     case tinymanSwapMain = "https://app.tinyman.org/#/swap?asset_in=0"
     case rekey = "https://perawallet.app/support/rekey/"
     case tinymanSwap = "https://perawallet.app/support/swap/"

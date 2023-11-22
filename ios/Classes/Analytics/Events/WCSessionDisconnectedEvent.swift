@@ -23,16 +23,18 @@ struct WCSessionDisconnectedEvent: ALGAnalyticsEvent {
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
+        version: WalletConnectProtocolID,
         dappName: String,
         dappURL: String,
         address: String?
     ) {
         var metadata: ALGAnalyticsMetadata = [:]
-        metadata[.dappName] = dappName
-        metadata[.dappURL] = dappURL
+        metadata[.wcVersion] = version.rawValue
+        metadata[.dappName] = Self.regulate(dappName)
+        metadata[.dappURL] = Self.regulate(dappURL)
 
         if let address = address {
-            metadata[.accountAddress] = address
+            metadata[.accountAddress] = Self.regulate(address)
         }
 
         self.name = .wcSessionDisconnected
@@ -42,11 +44,13 @@ struct WCSessionDisconnectedEvent: ALGAnalyticsEvent {
 
 extension AnalyticsEvent where Self == WCSessionDisconnectedEvent {
     static func wcSessionDisconnected(
+        version: WalletConnectProtocolID,
         dappName: String,
         dappURL: String,
         address: String?
     ) -> Self {
         return WCSessionDisconnectedEvent(
+            version: version,
             dappName: dappName,
             dappURL: dappURL,
             address: address

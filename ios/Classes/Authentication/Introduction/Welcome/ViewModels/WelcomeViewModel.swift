@@ -20,8 +20,9 @@ import MacaroonUIKit
 
 struct WelcomeViewModel: ViewModel {
     private(set) var title: String?
-    private(set) var addAccountViewModel: AccountTypeViewModel?
-    private(set) var recoverAccountViewModel: AccountTypeViewModel?
+    private(set) var createAccountViewModel: AccountTypeViewModel?
+    private(set) var importAccountViewModel: AccountTypeViewModel?
+    private(set) var watchAccountViewModel: AccountTypeViewModel?
 
     init(
         with flow: AccountSetupFlow
@@ -33,25 +34,33 @@ struct WelcomeViewModel: ViewModel {
 extension WelcomeViewModel {
     private mutating func bind(_ flow: AccountSetupFlow) {
         bindTitle(flow)
-        bindAddAccountViewModel()
-        bindRecoverAccountViewModel()
+        bindCreateAccountViewModel()
+        bindImportAccountViewModel()
+        bindWatchAccountViewModel()
     }
 
     private mutating func bindTitle(_ flow: AccountSetupFlow) {
         switch flow {
-        case .none, .initializeAccount:
+        case .initializeAccount,
+             .none:
             title = "account-welcome-wallet-title".localized
         case .addNewAccount:
             title = "account-welcome-add-account-title".localized
+        case .backUpAccount:
+            title = nil
         }
     }
 
-    private mutating func bindAddAccountViewModel() {
-        addAccountViewModel = AccountTypeViewModel(.add(type: .none))
+    private mutating func bindCreateAccountViewModel() {
+        createAccountViewModel = AccountTypeViewModel(.add)
     }
 
-    private mutating func bindRecoverAccountViewModel() {
-        recoverAccountViewModel = AccountTypeViewModel(.recover(type: .none))
+    private mutating func bindImportAccountViewModel() {
+        importAccountViewModel = AccountTypeViewModel(.recover(type: .none))
+    }
+    
+    private mutating func bindWatchAccountViewModel() {
+        watchAccountViewModel = AccountTypeViewModel(.watch)
     }
 }
 

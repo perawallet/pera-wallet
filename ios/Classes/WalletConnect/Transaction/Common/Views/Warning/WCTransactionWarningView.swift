@@ -17,8 +17,7 @@
 
 import UIKit
 
-class WCTransactionWarningView: BaseView {
-
+final class WCTransactionWarningView: BaseView {
     private let layout = Layout<LayoutConstants>()
 
     private lazy var imageView = UIImageView(image: img("icon-red-warning"))

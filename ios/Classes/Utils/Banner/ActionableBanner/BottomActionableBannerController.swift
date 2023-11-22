@@ -222,23 +222,27 @@ extension BottomActionableBannerController {
         contentBottomPadding: LayoutMetric
     ) -> ActionableBannerView {
         let view = ActionableBannerView()
-        view.customize(
-            ActionableBannerViewTheme(
-                .current,
-                contentBottomPadding: contentBottomPadding
-            )
+      
+        let theme = ActionableBannerViewTheme(
+            .current,
+            contentBottomPadding: contentBottomPadding
         )
+        view.customize(theme)
+      
         let draft = ActionableBannerDraft(
             icon: icon,
             title: title,
             message: message,
             actionTitle: actionTitle
         )
-
-        view.bindData(FetchErrorActionableBannerViewModel(draft))
+        let viewModel = FetchErrorActionableBannerViewModel(draft)
+        view.bindData(viewModel)
 
         if let actionHandler = actionHandler {
-            view.startObserving(event: .performAction, using: actionHandler)
+            view.startObserving(
+                event: .performAction,
+                using: actionHandler
+            )
         }
 
         return view

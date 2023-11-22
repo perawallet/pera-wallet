@@ -40,7 +40,8 @@ final class LedgerAccountSelectionViewController: BaseViewController {
             default:
                 return true
             }
-        case .none:
+        case .backUpAccount,
+             .none:
             return false
         }
     }
@@ -173,7 +174,8 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
             }
         case .initializeAccount:
             openAccountVerification()
-        case .none:
+        case .backUpAccount,
+             .none:
             break
         }
     }

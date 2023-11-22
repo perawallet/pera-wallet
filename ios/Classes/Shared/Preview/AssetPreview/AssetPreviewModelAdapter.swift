@@ -51,7 +51,7 @@ enum AssetPreviewModelAdapter {
             primaryAccessory: algoAssetViewModel.amount,
             secondaryAccessory: algoAssetViewModel.valueInCurrency,
             currencyAmount: algoAssetViewModel.valueInUSD,
-            asset: nil
+            asset: item.asset
         )
     }
 }

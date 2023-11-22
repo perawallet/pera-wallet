@@ -25,7 +25,7 @@ final class WCArbitraryDataViewModel {
     private(set) var dataInformationViewModel: TransactionTextInformationViewModel?
 
     init(
-        wcSession: WCSession?,
+        wcSession: WCSessionDraft,
         data: WCArbitraryData,
         senderAccount: Account?,
         currency: CurrencyProvider,
@@ -78,11 +78,16 @@ final class WCArbitraryDataViewModel {
     }
 
     private func setToInformationViewModel(
-        wcSession: WCSession?
+        wcSession: WCSessionDraft
     ) {
-        guard let wcSession else { return }
-        
-        let dAppName = wcSession.peerMeta.name
+        let dAppName =
+            wcSession.wcV1Session?.peerMeta.name ??
+            wcSession.wcV2Session?.peer.name
+        guard let dAppName else {
+            self.toInformationViewModel = nil
+            return
+        }
+
         let titledInformation = TitledInformation(
             title: "transaction-detail-to".localized,
             detail: dAppName

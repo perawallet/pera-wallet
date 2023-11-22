@@ -17,8 +17,7 @@
 
 import Foundation
 
-class WCGroupTransactionSupplementaryHeaderView: BaseSupplementaryView<WCGroupTransactionHeaderView> {
-
+final class WCGroupTransactionSupplementaryHeaderView: BaseSupplementaryView<WCGroupTransactionHeaderView> {
     func bind(_ viewModel: WCGroupTransactionHeaderViewModel) {
         contextView.bind(viewModel)
     }

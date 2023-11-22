@@ -23,18 +23,20 @@ struct WCTransactionDeclinedEvent: ALGAnalyticsEvent {
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
+        version: WalletConnectProtocolID,
         transactionCount: Int,
         dappName: String,
         dappURL: String,
         address: String?
     ) {
         var metadata: ALGAnalyticsMetadata = [:]
+        metadata[.wcVersion] = version.rawValue
         metadata[.transactionCount] = transactionCount
-        metadata[.dappName] = dappName
-        metadata[.dappURL] = dappURL
+        metadata[.dappName] = Self.regulate(dappName)
+        metadata[.dappURL] = Self.regulate(dappURL)
 
         if let address = address {
-            metadata[.accountAddress] = address
+            metadata[.accountAddress] = Self.regulate(address)
         }
 
         self.name = .wcTransactionDeclined
@@ -44,12 +46,14 @@ struct WCTransactionDeclinedEvent: ALGAnalyticsEvent {
 
 extension AnalyticsEvent where Self == WCTransactionDeclinedEvent {
     static func wcTransactionDeclined(
+        version: WalletConnectProtocolID,
         transactionCount: Int,
         dappName: String,
         dappURL: String,
         address: String?
     ) -> Self {
         return WCTransactionDeclinedEvent(
+            version: version,
             transactionCount: transactionCount,
             dappName: dappName,
             dappURL: dappURL,

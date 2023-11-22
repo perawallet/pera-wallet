@@ -378,6 +378,7 @@ extension Colors {
             Color {
             case gray400 = "Other/Global/gray400"
             case gray800 = "Other/Global/gray800"
+            case yellow600 = "Other/Global/yellow600"
         }
     }
 }

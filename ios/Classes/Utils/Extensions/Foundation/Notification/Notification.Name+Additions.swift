@@ -18,14 +18,6 @@
 import Foundation
 
 extension Notification.Name {
-    static var AuthenticatedUserUpdate: Notification.Name {
-        return .init(rawValue: "com.algorand.algorand.notification.authenticated.user.update")
-    }
-
-    static var ApplicationWillEnterForeground: Notification.Name {
-        return .init(rawValue: "com.algorand.algorand.notification.application.WillEnterForeground")
-    }
-
     static var ContactAddition: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.contact.addition")
     }
@@ -56,10 +48,6 @@ extension Notification.Name {
 
     static var didRedirectFromMoonPay: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.moonpay.redirect")
-    }
-    
-    static var didEditNote: Notification.Name {
-        return .init(rawValue: "com.algorand.algorand.notification.note.edit")
     }
 
     static var newNotificationReceieved: Notification.Name {

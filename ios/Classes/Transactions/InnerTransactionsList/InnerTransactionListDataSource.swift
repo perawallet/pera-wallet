@@ -60,6 +60,12 @@ final class InnerTransactionListDataSource:
                     viewModel: item.viewModel,
                     at: indexPath
                 )
+            case .keyRegTransaction(let item):
+                return Self.makeInnerTransactionPreviewCell(
+                    collectionView,
+                    viewModel: item.viewModel,
+                    at: indexPath
+                )
             }
         }
 

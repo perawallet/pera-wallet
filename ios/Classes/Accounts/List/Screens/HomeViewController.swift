@@ -46,6 +46,10 @@ final class HomeViewController:
         api: api!
     )
 
+    private lazy var backupAccountFlowCoordinator = BackUpAccountFlowCoordinator(
+        presentingScreen: self,
+        api: api!
+    )
     private lazy var removeAccountFlowCoordinator = RemoveAccountFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
@@ -62,12 +66,6 @@ final class HomeViewController:
         analytics: analytics
     )
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
-
-    private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
-        presentingScreen: self,
-        api: api!,
-        session: session!
-    )
 
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
         draft: SwapAssetFlowDraft(),
@@ -494,7 +492,17 @@ extension HomeViewController {
             self.triggerBannerCTA(item: item)
         }
     }
-    
+
+    private func linkInteractors(
+        _ cell: AccountNotBackedUpWarningCell
+    ) {
+        cell.startObserving(event: .performBackup) {
+            [weak self] in
+            guard let self else { return }
+            openBackUpAccount()
+        }
+    }
+
     private func linkInteractors(
         _ cell: GovernanceAnnouncementCell,
         for item: AnnouncementViewModel
@@ -582,16 +590,29 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
+    private func openBackUpAccount() {
+        backupAccountFlowCoordinator.eventHandler = {
+            [weak self] event in
+            guard let self else { return }
+
+            switch event {
+            case .didBackUpAccount:
+                self.dataController.reload()
+            }
+        }
+
+        let notBackedUpAccounts = sharedDataController.accountCollection.filter {
+            return !$0.value.isBackedUp
+        }
+        backupAccountFlowCoordinator.launch(notBackedUpAccounts)
+    }
+}
+
+extension HomeViewController {
     private func openBuySellOptions() {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
-            case .performBuyAlgoWithMoonPay:
-                self.dismiss(animated: true) {
-                    [weak self] in
-                    guard let self else { return }
-                    self.openBuyAlgoWithMoonPay()
-                }
             case .performBuyAlgoWithSardine:
                 self.dismiss(animated: true) {
                     [weak self] in
@@ -621,12 +642,6 @@ extension HomeViewController {
 
     private func openBuyAlgoWithSardine() {
         sardineFlowCoordinator.launch()
-    }
-
-    private func openBuyAlgoWithMoonPay() {
-        analytics.track(.recordHomeScreen(type: .buyAlgo))
-
-        moonPayFlowCoordinator.launch()
     }
 
     private func openBuyWithTransak() {
@@ -778,6 +793,8 @@ extension HomeViewController {
 
                 linkInteractors(cell)
             }
+        case .accountNotBackedUpWarning:
+            linkInteractors(cell as! AccountNotBackedUpWarningCell)
         case .announcement(let item):
             if item.isGeneric {
                 linkInteractors(cell as! GenericAnnouncementCell, for: item)
@@ -853,6 +870,8 @@ extension HomeViewController {
                     self,
                     animated: true
                 )
+                self.dataController.reload()
+            case .didBackUp:
                 self.dataController.reload()
             }
         }

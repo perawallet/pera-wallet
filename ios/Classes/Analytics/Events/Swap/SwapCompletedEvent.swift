@@ -32,12 +32,12 @@ struct SwapCompletedEvent: ALGAnalyticsEvent {
 
         self.metadata = [
             .inputASAID: params.inputASAID,
-            .inputASAName: params.inputASAName,
+            .inputASAName: Self.regulate(params.inputASAName),
             .inputAmountAsASA: params.inputAmountAsASA,
             .inputAmountAsUSD: params.inputAmountAsUSD,
             .inputAmountAsAlgo: params.inputAmountAsAlgo,
             .outputASAID: params.outputASAID,
-            .outputASAName: params.outputASAName,
+            .outputASAName: Self.regulate(params.outputASAName),
             .outputAmountAsASA: params.outputAmountAsASA,
             .outputAmountAsUSD: params.outputAmountAsUSD,
             .outputAmountAsAlgo: params.outputAmountAsAlgo,

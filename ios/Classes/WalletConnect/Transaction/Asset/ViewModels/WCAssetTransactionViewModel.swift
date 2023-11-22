@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WCAssetTransactionViewModel {
+final class WCAssetTransactionViewModel {
     private(set) var fromInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var toInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var balanceViewModel: TransactionAmountInformationViewModel?

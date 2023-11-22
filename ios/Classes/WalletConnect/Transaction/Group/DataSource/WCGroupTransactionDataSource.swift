@@ -18,22 +18,18 @@
 import UIKit
 import MacaroonUtils
 
-class WCGroupTransactionDataSource: NSObject {
-
+final class WCGroupTransactionDataSource: NSObject {
     private let sharedDataController: SharedDataController
     private let transactions: [WCTransaction]
-    private let walletConnector: WalletConnector
     private let currencyFormatter: CurrencyFormatter
 
     init(
         sharedDataController: SharedDataController,
         transactions: [WCTransaction],
-        walletConnector: WalletConnector,
         currencyFormatter: CurrencyFormatter
     ) {
         self.sharedDataController = sharedDataController
         self.transactions = transactions
-        self.walletConnector = walletConnector
         self.currencyFormatter = currencyFormatter
 
         super.init()

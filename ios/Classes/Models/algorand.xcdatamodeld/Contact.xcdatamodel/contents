@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F82" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ApplicationConfiguration" representedClassName="ApplicationConfiguration" syncable="YES">
         <attribute name="authenticatedUserData" optional="YES" attributeType="Binary"/>
         <attribute name="isDefaultNodeActive" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
@@ -24,11 +24,7 @@
     <entity name="WCSessionList" representedClassName="WCSessionList" syncable="YES">
         <attribute name="sessions" optional="YES" attributeType="Binary"/>
     </entity>
-    <elements>
-        <element name="ApplicationConfiguration" positionX="-54" positionY="45" width="128" height="90"/>
-        <element name="Contact" positionX="-63" positionY="-18" width="128" height="43"/>
-        <element name="Node" positionX="-54" positionY="27" width="128" height="120"/>
-        <element name="WCSessionList" positionX="-54" positionY="54" width="128" height="44"/>
-        <element name="WCSessionHistory" positionX="-54" positionY="54" width="128" height="44"/>
-    </elements>
+    <entity name="WCv2SessionList" representedClassName="WCv2SessionList" syncable="YES">
+        <attribute name="sessions" optional="YES" attributeType="Binary"/>
+    </entity>
 </model>

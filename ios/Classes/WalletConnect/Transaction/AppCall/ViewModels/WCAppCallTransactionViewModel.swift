@@ -17,7 +17,7 @@
 
 import Foundation
 
-class WCAppCallTransactionViewModel {
+final class WCAppCallTransactionViewModel {
     private(set) var senderInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var idInformationViewModel: TransactionTextInformationViewModel?
     private(set) var onCompletionInformationViewModel: TransactionTextInformationViewModel?

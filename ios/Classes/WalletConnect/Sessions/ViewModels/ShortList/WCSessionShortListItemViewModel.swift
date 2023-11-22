@@ -25,42 +25,87 @@ final class WCSessionShortListItemViewModel: PairedViewModel {
     private(set) var name: String?
     private(set) var description: String?
 
-    init(_ session: WCSession) {
-        bindImage(session)
-        bindName(session)
-        bindDescription(session)
+    init(_ draft: WCSessionDraft) {
+        if let wcV1Session = draft.wcV1Session {
+            bindImage(wcV1Session)
+            bindName(wcV1Session)
+            bindDescription(wcV1Session)
+            return
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            bindImage(wcV2Session)
+            bindName(wcV2Session)
+            bindDescription(wcV2Session)
+            return
+        }
     }
 }
 
 extension WCSessionShortListItemViewModel {
-    private func bindImage(_ session: WCSession) {
+    private func bindImage(_ wcV1Session: WCSession) {
         let placeholderImages: [Image] = [
             "icon-session-placeholder-1",
             "icon-session-placeholder-2",
             "icon-session-placeholder-3",
             "icon-session-placeholder-4"
         ]
+        let placeholderImage = placeholderImages.randomElement()!
+        let placeholderAsset = AssetImageSource(asset: placeholderImage.uiImage)
+        let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
 
+        let imageSize = CGSize(width: 40, height: 40)
         image = DefaultURLImageSource(
-            url: session.peerMeta.icons.first,
-            color: nil,
-            size: .resize(CGSize(width: 40, height: 40), .aspectFit),
+            url: wcV1Session.peerMeta.icons.first,
+            size: .resize(imageSize, .aspectFit),
             shape: .circle,
-            placeholder: ImagePlaceholder(image: AssetImageSource(asset:  placeholderImages.randomElement()?.uiImage), text: nil),
-            forceRefresh: false
+            placeholder: placeholder
         )
     }
 
-    private func bindName(_ session: WCSession) {
-        name = session.peerMeta.name
+    private func bindName(_ wcV1Session: WCSession) {
+        name = wcV1Session.peerMeta.name
     }
 
-    private func bindDescription(_ session: WCSession) {
-        if let connectedAccount = session.walletMeta?.accounts?.first {
-            description = "wallet-connect-session-connected-with-account".localized(params: connectedAccount.shortAddressDisplay)
-            return
-        }
+    private func bindDescription(_ wcV1Session: WCSession) {
+        let dateFormat = "MMM d, yyyy, h:mm a"
+        let connectedOnDate = wcV1Session.date.toFormat(dateFormat)
+        description =
+            "wallet-connect-session-connected-on-date"
+                .localized(connectedOnDate)
+    }
+}
 
-        description = "wallet-connect-session-connected".localized
+extension WCSessionShortListItemViewModel {
+    private func bindImage(_ wcV2Session: WalletConnectV2Session) {
+        let placeholderImages: [Image] = [
+            "icon-session-placeholder-1",
+            "icon-session-placeholder-2",
+            "icon-session-placeholder-3",
+            "icon-session-placeholder-4"
+        ]
+        let placeholderImage = placeholderImages.randomElement()!
+        let placeholderAsset = AssetImageSource(asset: placeholderImage.uiImage)
+        let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
+
+        let imageSize = CGSize(width: 40, height: 40)
+        image = DefaultURLImageSource(
+            url: wcV2Session.peer.icons.first.toURL(),
+            size: .resize(imageSize, .aspectFit),
+            shape: .circle,
+            placeholder: placeholder
+        )
+    }
+
+    private func bindName(_ wcV2Session: WalletConnectV2Session) {
+        name = wcV2Session.peer.name
+    }
+
+    private func bindDescription(_ wcV2Session: WalletConnectV2Session) {
+        let dateFormat = "MMM d, yyyy, h:mm a"
+        let validUntilDate = wcV2Session.expiryDate.toFormat(dateFormat)
+        description =
+            "wallet-connect-v2-session-expires-on-date"
+                .localized(validUntilDate)
     }
 }

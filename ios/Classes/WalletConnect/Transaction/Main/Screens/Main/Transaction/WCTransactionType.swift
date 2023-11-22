@@ -23,6 +23,7 @@ enum WCTransactionType {
     case possibleAssetAddition
     case appCall
     case assetConfig(type: AssetConfigType)
+    case keyReg
 }
 
 enum AssetConfigType {

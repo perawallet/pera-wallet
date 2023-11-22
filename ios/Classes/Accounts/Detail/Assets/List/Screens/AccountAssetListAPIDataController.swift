@@ -32,6 +32,8 @@ final class AccountAssetListAPIDataController:
     private lazy var assetAmountFormatter = createAssetAmountFormatter()
     private lazy var minBalanceCalculator = createMinBalanceCalculator()
 
+    private var accountNotBackedUpWarningViewModel: AccountDetailAccountNotBackedUpWarningModel?
+
     private var nextQuery: AccountAssetListQuery?
     private var lastQuery: AccountAssetListQuery?
     private var lastSnapshot: Snapshot?
@@ -144,7 +146,7 @@ extension AccountAssetListAPIDataController {
         }
     }
 
-    private func reload() {
+    func reload() {
         let task = AsyncTask {
             [weak self] completionBlock in
             guard let self else { return }
@@ -200,6 +202,7 @@ extension AccountAssetListAPIDataController {
 
     private func makeUpdatesForLoading(for operation: Updates.Operation) -> Updates {
         var snapshot = Snapshot()
+        appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForPortfolio(into: &snapshot)
         appendSectionsIfNeededForQuickActions(into: &snapshot)
         appendSectionsForAssetsLoading(into: &snapshot)
@@ -228,6 +231,7 @@ extension AccountAssetListAPIDataController {
         for operation: Updates.Operation
     ) -> Updates {
         var snapshot = Snapshot()
+        appendSectionsForAccountNotBackedUpWarningIfNeeded(into: &snapshot)
         appendSectionsForPortfolio(into: &snapshot)
         appendSectionsIfNeededForQuickActions(into: &snapshot)
         appendSectionsForAssets(
@@ -239,6 +243,17 @@ extension AccountAssetListAPIDataController {
 }
 
 extension AccountAssetListAPIDataController {
+    private func appendSectionsForAccountNotBackedUpWarningIfNeeded(into snapshot: inout Snapshot) {
+        guard !account.value.isBackedUp else { return }
+
+        let items = makeItemsForAccountNotBackedUpWarning()
+        snapshot.appendSections([ .accountNotBackedUpWarning ])
+        snapshot.appendItems(
+            items,
+            toSection: .accountNotBackedUpWarning
+        )
+    }
+
     private func appendSectionsForPortfolio(into snapshot: inout Snapshot) {
         let items = makeItemsForPortfolio()
         snapshot.appendSections([ .portfolio ])
@@ -298,6 +313,18 @@ extension AccountAssetListAPIDataController {
 }
 
 extension AccountAssetListAPIDataController {
+    private func makeItemsForAccountNotBackedUpWarning() -> [AccountAssetsItem] {
+        let viewModel: AccountDetailAccountNotBackedUpWarningModel
+      
+        if let accountNotBackedUpWarningViewModel {
+            viewModel = accountNotBackedUpWarningViewModel
+        } else {
+            viewModel = .init()
+        }
+
+        return [ .accountNotBackedUpWarning(viewModel) ]
+    }
+
     private func makeItemsForPortfolio() -> [AccountAssetsItem] {
         if account.value.authorization.isWatch {
             return makeItemsForWatchAccountPortfolio()

@@ -21,14 +21,13 @@ import Foundation
 
 struct AccountTypeViewModel: PairedViewModel {
     private(set) var image: UIImage?
-    private(set) var title: String?
-    private(set) var detail: String?
+    private(set) var title: EditText?
+    private(set) var detail: EditText?
     private(set) var badge: String?
     
     init(_ model: AccountSetupMode) {
         bindImage(model)
         bindTitle(model)
-        bindBadge(model)
         bindDetail(model)
     }
 }
@@ -36,13 +35,8 @@ struct AccountTypeViewModel: PairedViewModel {
 extension AccountTypeViewModel {
     private mutating func bindImage(_ mode: AccountSetupMode) {
         switch mode {
-        case let .add(type):
-            switch type {
-            case .watch:
-                image = img("icon-add-watch-account")
-            case .none, .create:
-                image = img("icon-add-account")
-            }
+        case .add:
+            image = img("icon-add-account")
         case let .recover(type):
             switch type {
             case .none, .passphrase:
@@ -51,7 +45,11 @@ extension AccountTypeViewModel {
                 image = img("icon-pair-ledger-account")
             case .importFromWeb:
                 image = img("icon-import-from-web")
+            case .qr:
+                image = img("icon-recover-qr")
             }
+        case .watch:
+            image = img("icon-add-watch-account")
         case .rekey,
              .none:
             break
@@ -59,72 +57,64 @@ extension AccountTypeViewModel {
     }
     
     private mutating func bindTitle(_ mode: AccountSetupMode) {
+        var attributes = Typography.bodyMediumAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Text.main))
+        var titleText: String = ""
+        
         switch mode {
-        case let .add(type):
-            switch type {
-            case .create:
-                title = "account-type-selection-create".localized
-            case .watch:
-                title = "account-type-selection-watch".localized
-            case .none:
-                title = "account-type-selection-add".localized
-            }
+        case .add:
+            titleText = "account-type-selection-create".localized
         case let .recover(type):
             switch type {
             case .passphrase:
-                title = "account-type-selection-passphrase".localized
+                titleText = "account-type-selection-passphrase".localized
             case .ledger:
-                title = "account-type-selection-ledger".localized
+                titleText = "account-type-selection-ledger".localized
             case .importFromWeb:
-                title = "account-type-selection-import-web".localized
+                titleText = "account-type-selection-import-web".localized
+            case .qr:
+                titleText = "account-type-selection-qr".localized
             case .none:
-                title = "account-type-selection-recover".localized
+                titleText = "account-type-selection-recover".localized
             }
+        case .watch:
+            titleText = "account-type-selection-watch".localized
         case .rekey,
              .none:
             break
         }
-    }
-
-    private mutating func bindBadge(_ mode: AccountSetupMode) {
-        switch mode {
-        case let .recover(type):
-            switch type {
-            case .importFromWeb:
-                badge = "title-new-uppercased".localized
-            default:
-                break
-            }
-        default:
-            break
-        }
+        
+        title = .attributedString(titleText.attributed(attributes))
     }
 
     private mutating func bindDetail(_ mode: AccountSetupMode) {
+        var attributes = Typography.footnoteRegularAttributes(lineBreakMode: .byTruncatingTail)
+        attributes.insert(.textColor(Colors.Text.gray))
+        var detailText: String = ""
+        
         switch mode {
-        case let .add(type):
-            switch type {
-            case .create:
-                detail = "account-type-selection-add-detail".localized
-            case .watch:
-                detail = "account-type-selection-watch-detail".localized
-            case .none:
-                detail = "account-type-selection-create-detail".localized
-            }
+        case .add:
+            detailText = "account-type-selection-add-detail".localized
         case let .recover(type):
             switch type {
             case .passphrase:
-                detail = "account-type-selection-passphrase-detail".localized
+                detailText = "account-type-selection-passphrase-detail".localized
             case .ledger:
-                detail = "account-type-selection-ledger-detail".localized
+                detailText = "account-type-selection-ledger-detail".localized
             case .importFromWeb:
-                detail = "account-type-selection-import-web-detail".localized
+                detailText = "account-type-selection-import-web-detail".localized
+            case .qr:
+                detailText = "account-type-selection-qr-detail".localized
             case .none:
-                detail = "account-type-selection-recover-detail".localized
+                detailText = "account-type-selection-recover-detail".localized
             }
+        case .watch:
+            detailText = "account-type-selection-watch-detail".localized
         case .rekey,
              .none:
             break
         }
+        
+        detail = .attributedString(detailText.attributed(attributes))
     }
 }

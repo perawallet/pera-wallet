@@ -18,24 +18,28 @@ import Foundation
 import UIKit
 
 final class WCMainArbitraryDataDataSource: NSObject {
+    let wcSession: WCSessionDraft
+
     private let sharedDataController: SharedDataController
     private let data: [WCArbitraryData]
-    private(set) var wcRequest: WalletConnectRequest
-    private let walletConnector: WalletConnector
+    private let wcRequest: WalletConnectRequestDraft
+    private let peraConnect: PeraConnect
     private let currencyFormatter: CurrencyFormatter
 
     init(
         sharedDataController: SharedDataController,
         data: [WCArbitraryData],
-        wcRequest: WalletConnectRequest,
-        walletConnector: WalletConnector,
+        wcSession: WCSessionDraft,
+        wcRequest: WalletConnectRequestDraft,
+        peraConnect: PeraConnect,
         currencyFormatter: CurrencyFormatter
     ) {
         self.sharedDataController = sharedDataController
-        self.walletConnector = walletConnector
-        self.wcRequest = wcRequest
-        self.currencyFormatter = currencyFormatter
         self.data = data
+        self.wcSession = wcSession
+        self.wcRequest = wcRequest
+        self.peraConnect = peraConnect
+        self.currencyFormatter = currencyFormatter
 
         super.init()
     }
@@ -43,11 +47,43 @@ final class WCMainArbitraryDataDataSource: NSObject {
 
 extension WCMainArbitraryDataDataSource {
     func rejectTransaction(reason: WCTransactionErrorResponse = .rejected(.user)) {
-        walletConnector.rejectTransactionRequest(wcRequest, with: reason)
+        if let wcV1TransactionRequest = wcRequest.wcV1Request {
+            let params = WalletConnectV1RejectTransactionRequestParams(
+                v1Request: wcV1TransactionRequest,
+                error: reason
+            )
+            peraConnect.rejectTransactionRequest(params)
+            return
+        }
+
+        if let wcV2TransactionRequest = wcRequest.wcV2Request {
+            let params = WalletConnectV2RejectTransactionRequestParams(
+                error: reason,
+                v2Request: wcV2TransactionRequest
+            )
+            peraConnect.rejectTransactionRequest(params)
+            return
+        }
     }
 
     func signTransactionRequest(signature: [Data?]) {
-        walletConnector.signTransactionRequest(wcRequest, with: signature)
+        if let wcV1TransactionRequest = wcRequest.wcV1Request {
+            let params = WalletConnectV1ApproveTransactionRequestParams(
+                v1Request: wcV1TransactionRequest,
+                signature: signature
+            )
+            peraConnect.approveTransactionRequest(params)
+            return
+        }
+
+        if let wcV2TransactionRequest = wcRequest.wcV2Request {
+            let params = WalletConnectV2ApproveTransactionRequestParams(
+                v2Request: wcV2TransactionRequest,
+                response: WalletConnectV2CodableResult(signature)
+            )
+            peraConnect.approveTransactionRequest(params)
+            return
+        }
     }
 }
 

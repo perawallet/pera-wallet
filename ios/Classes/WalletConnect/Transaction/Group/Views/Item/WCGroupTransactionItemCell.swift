@@ -17,8 +17,7 @@
 
 import Foundation
 
-class WCGroupTransactionItemCell: BaseCollectionViewCell<WCGroupTransactionItemView> {
-
+final class WCGroupTransactionItemCell: BaseCollectionViewCell<WCGroupTransactionItemView> {
     func bind(_ viewModel: WCGroupTransactionItemViewModel) {
         contextView.bind(viewModel)
     }

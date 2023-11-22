@@ -20,12 +20,14 @@ import MacaroonUIKit
 import UIKit
 
 struct AccountSelectionViewTheme: StyleSheet, LayoutSheet {
+    let accountImageTypeBottomRightBadgePaddings: LayoutPaddings
     let title: TextStyle
     let secondaryTitle: TextStyle
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.accountImageTypeBottomRightBadgePaddings = (20, 20, .noMetric, .noMetric)
         self.title = [
             .textAlignment(.left),
             .textOverflow(SingleLineText()),

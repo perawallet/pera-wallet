@@ -26,15 +26,45 @@ struct WCTransactionRequestDidLoadEvent: ALGAnalyticsEvent {
     ) {
         self.name = .wcTransactionRequestDidLoad
         self.metadata = [
+            .wcVersion: WalletConnectProtocolID.v1.rawValue,
             .wcRequestID: transactionRequest.id ?? "",
             .wcRequestURL: Self.regulate(transactionRequest.url.absoluteString)
+        ]
+    }
+
+    fileprivate init(
+        transactionRequest: WalletConnectV2Request
+    ) {
+        self.name = .wcTransactionRequestDidLoad
+        self.metadata = [
+            .wcVersion: WalletConnectProtocolID.v2.rawValue,
+            .wcSessionTopic: transactionRequest.topic,
+            .wcRequestID: transactionRequest.id.string
         ]
     }
 }
 
 extension AnalyticsEvent where Self == WCTransactionRequestDidLoadEvent {
     static func wcTransactionRequestDidLoad(
+        transactionRequest: WalletConnectRequestDraft
+    ) -> Self {
+        if let wcV1Request = transactionRequest.wcV1Request {
+            return .wcTransactionRequestDidLoad(transactionRequest: wcV1Request)
+        }
+
+        return .wcTransactionRequestDidLoad(transactionRequest: transactionRequest.wcV2Request!)
+    }
+
+    static func wcTransactionRequestDidLoad(
         transactionRequest: WalletConnectRequest
+    ) -> Self {
+        return WCTransactionRequestDidLoadEvent(
+            transactionRequest: transactionRequest
+        )
+    }
+
+    static func wcTransactionRequestDidLoad(
+        transactionRequest: WalletConnectV2Request
     ) -> Self {
         return WCTransactionRequestDidLoadEvent(
             transactionRequest: transactionRequest

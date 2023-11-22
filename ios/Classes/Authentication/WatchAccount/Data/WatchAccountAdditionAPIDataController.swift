@@ -142,7 +142,8 @@ extension WatchAccountAdditionAPIDataController {
             address: address,
             name: name,
             isWatchAccount: true,
-            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(), 
+            isBackedUp: true
         )
         let user: User
 

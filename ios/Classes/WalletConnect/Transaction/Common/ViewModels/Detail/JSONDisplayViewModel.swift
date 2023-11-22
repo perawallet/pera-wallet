@@ -17,7 +17,7 @@
 
 import UIKit
 
-class JSONDisplayViewModel {
+final class JSONDisplayViewModel {
     private(set) var jsonText: String?
 
     init(json: Data) {

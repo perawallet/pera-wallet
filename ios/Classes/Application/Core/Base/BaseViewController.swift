@@ -237,7 +237,7 @@ extension BaseViewController {
         return configuration.api
     }
 
-    var walletConnector: WalletConnector {
+    var walletConnector: WalletConnectV1Protocol {
         return configuration.walletConnector
     }
 
@@ -267,6 +267,10 @@ extension BaseViewController {
 
     var launchController: AppLaunchController {
         return configuration.launchController
+    }
+    
+    var peraConnect: PeraConnect {
+        return configuration.peraConnect
     }
 }
 

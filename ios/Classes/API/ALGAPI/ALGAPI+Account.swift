@@ -32,7 +32,25 @@ extension ALGAPI {
         return EndpointBuilder(api: self)
             .base(.indexer(network))
             .path(.accountDetail, args: draft.publicKey)
-            .query(AccountQuery(includesAll: includesClosedAccounts))
+            .query(AccountQuery(excludesAll: false, includesAll: includesClosedAccounts))
+            .method(.get)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
+            .completionHandler(handler)
+            .responseDispatcher(queue)
+            .execute()
+    }
+
+    @discardableResult
+    func fetchAccountFromNode(
+        _ draft: AccountFetchDraft,
+        queue: DispatchQueue,
+        ignoreResponseOnCancelled: Bool,
+        onCompleted handler: @escaping (Response.ModelResult<Account>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.algod(network))
+            .path(.accountDetail, args: draft.publicKey)
+            .query(AccountQuery(excludesAll: true, includesAll: false))
             .method(.get)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
@@ -55,29 +73,6 @@ extension ALGAPI {
     }
 
     @discardableResult
-    func exportAccounts(
-        _ draft: EncryptedExportAccountDraft,
-        onCompleted handler: @escaping (Response.Result<NoAPIModel, HIPAPIError>) -> Void
-    ) -> EndpointOperatable {
-        let modificationHeader: Headers
-
-        if let modificationKey = draft.qrBackupParameters.modificationKey {
-            modificationHeader = [ModificationHeader(modificationKey)]
-        } else {
-            modificationHeader = []
-        }
-
-        return EndpointBuilder(api: self)
-            .base(.mobileV1(network))
-            .path(.backups, args: draft.qrBackupParameters.id)
-            .method(.put)
-            .headers(modificationHeader)
-            .body(draft)
-            .completionHandler(handler)
-            .execute()
-    }
-
-    @discardableResult
     func fetchBackupDetail(
         _ backupID: String,
         onCompleted handler: @escaping (Response.Result<Backup, HIPAPIError>) -> Void
@@ -87,6 +82,23 @@ extension ALGAPI {
             .path(.backups, args: backupID)
             .method(.get)
             .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
+    func fetchAccountAssetFromNode(
+        _ draft: AccountAssetFetchDraft,
+        queue: DispatchQueue,
+        ignoreResponseOnCancelled: Bool,
+        onCompleted handler: @escaping (Response.ModelResult<AccountAssetInformation>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.algod(network))
+            .path(.accountAsset, args: draft.publicKey, String(draft.assetID))
+            .method(.get)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
+            .completionHandler(handler)
+            .responseDispatcher(queue)
             .execute()
     }
 }

@@ -30,10 +30,14 @@ protocol AppStoreReviewer: AnyObject {
 
 extension AppStoreReviewer {
     func requestReviewIfAppropriate() {
+        guard let scene = UIApplication.shared.windowScene else {
+            return
+        }
+
         startAppStoreReviewRequestContidition()
 
         if !isCurrentVersionAskedForAppStoreReview() && canAskForAppStoreReview() {
-            SKStoreReviewController.requestReview()
+            SKStoreReviewController.requestReview(in: scene)
             updateLatestVersionForAppStoreReview()
             updateAppStoreReviewConditionAfterRequest()
         }

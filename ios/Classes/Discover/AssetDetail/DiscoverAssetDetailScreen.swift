@@ -85,16 +85,12 @@ extension DiscoverAssetDetailScreen {
 
         switch params.action {
         case .buyAlgo:
-            navigateToBuyAlgo()
+            break
         default:
             navigateToSwap(with: params)
         }
 
         sendAnalyticsEvent(with: params)
-    }
-
-    private func navigateToBuyAlgo() {
-        moonPayFlowCoordinator.launch()
     }
 
     private func navigateToSwap(with parameters: DiscoverSwapParameters) {

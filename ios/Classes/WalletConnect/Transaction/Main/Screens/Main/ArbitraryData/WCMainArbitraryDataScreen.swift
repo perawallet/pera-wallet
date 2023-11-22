@@ -36,6 +36,10 @@ final class WCMainArbitraryDataScreen:
         return false
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return api!.isTestNet ? .darkContent : .lightContent
+    }
+
     private lazy var theme = Theme()
 
     private lazy var dappMessageView = WCTransactionDappMessageView()
@@ -53,8 +57,9 @@ final class WCMainArbitraryDataScreen:
     private lazy var dataSource = WCMainArbitraryDataDataSource(
         sharedDataController: sharedDataController,
         data: data,
+        wcSession: wcSession,
         wcRequest: wcRequest,
-        walletConnector: walletConnector,
+        peraConnect: peraConnect,
         currencyFormatter: currencyFormatter
     )
 
@@ -70,8 +75,8 @@ final class WCMainArbitraryDataScreen:
     private var isViewLayoutLoaded = false
 
     private let data: [WCArbitraryData]
-    private let wcRequest: WalletConnectRequest
-    private let wcSession: WCSession?
+    private let wcRequest: WalletConnectRequestDraft
+    private let wcSession: WCSessionDraft
 
     init(
         draft: WalletConnectArbitraryDataSignRequestDraft,
@@ -79,7 +84,8 @@ final class WCMainArbitraryDataScreen:
     ) {
         self.data = draft.arbitraryData
         self.wcRequest = draft.request
-        self.wcSession = configuration.walletConnector.getWalletConnectSession(for: wcRequest.url.topic)
+        self.wcSession = draft.session
+
         super.init(configuration: configuration)
     }
 
@@ -114,7 +120,8 @@ extension WCMainArbitraryDataScreen {
 
             validateArbitraryData(
                 data: data,
-                api: api!
+                api: api!,
+                session: session!
             )
 
             stopLoading()
@@ -193,9 +200,6 @@ extension WCMainArbitraryDataScreen {
 
 extension WCMainArbitraryDataScreen {
     private func bindDappInfo() {
-        let wcSession = walletConnector.allWalletConnectSessions.first(matching: (\.urlMeta.wcURL, dataSource.wcRequest.url))
-        guard let wcSession else { return }
-
         let viewModel = WCTransactionDappMessageViewModel(
             session: wcSession,
             imageSize: CGSize(width: 48.0, height: 48.0)
@@ -261,7 +265,6 @@ extension WCMainArbitraryDataScreen: WCArbitraryDataSignerDelegate {
         if let signerAccount = data.requestedSigner.account {
             wcDataSigner.signData(
                 data,
-                with: dataSource.wcRequest,
                 for: signerAccount
             )
         } else {
@@ -289,7 +292,6 @@ extension WCMainArbitraryDataScreen: WCArbitraryDataSignerDelegate {
             if let signerAccount = nextData.requestedSigner.account {
                 wcDataSigner.signData(
                     nextData,
-                    with: dataSource.wcRequest,
                     for: signerAccount
                 )
             } else {
@@ -318,7 +320,7 @@ extension WCMainArbitraryDataScreen: WCArbitraryDataSignerDelegate {
 
             self.delegate?.wcMainArbitraryDataScreen(
                 self,
-                didSigned: dataSource.wcRequest,
+                didSigned: wcRequest,
                 in: wcSession
             )
         }
@@ -431,7 +433,7 @@ extension WCMainArbitraryDataScreen {
 
             stopLoading()
 
-            delegate?.wcMainArbitraryDataScreen(self, didRejected: dataSource.wcRequest)
+            delegate?.wcMainArbitraryDataScreen(self, didRejected: wcRequest)
         }
     }
 }
@@ -463,11 +465,11 @@ extension WCMainArbitraryDataScreen {
 protocol WCMainArbitraryDataScreenDelegate: AnyObject {
     func wcMainArbitraryDataScreen(
         _ wcMainArbitraryDataScreen: WCMainArbitraryDataScreen,
-        didSigned request: WalletConnectRequest,
-        in session: WCSession?
+        didSigned request: WalletConnectRequestDraft,
+        in session: WCSessionDraft
     )
     func wcMainArbitraryDataScreen(
         _ wcMainArbitraryDataScreen: WCMainArbitraryDataScreen,
-        didRejected request: WalletConnectRequest
+        didRejected request: WalletConnectRequestDraft
     )
 }

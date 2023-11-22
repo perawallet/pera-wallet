@@ -23,6 +23,7 @@ struct WCSessionApprovedEvent: ALGAnalyticsEvent {
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
+        version: WalletConnectProtocolID,
         topic: String,
         dappName: String,
         dappURL: String,
@@ -31,10 +32,11 @@ struct WCSessionApprovedEvent: ALGAnalyticsEvent {
     ) {
         self.name = .wcSessionApproved
         self.metadata = [
+            .wcVersion: version.rawValue,
             .wcSessionTopic: topic,
-            .dappName: dappName,
-            .dappURL: dappURL,
-            .accountAddress: address,
+            .dappName: Self.regulate(dappName),
+            .dappURL: Self.regulate(dappURL),
+            .accountAddress: Self.regulate(address),
             .totalAccount: totalAccount
         ]
     }
@@ -42,6 +44,7 @@ struct WCSessionApprovedEvent: ALGAnalyticsEvent {
 
 extension AnalyticsEvent where Self == WCSessionApprovedEvent {
     static func wcSessionApproved(
+        version: WalletConnectProtocolID,
         topic: String,
         dappName: String,
         dappURL: String,
@@ -49,6 +52,7 @@ extension AnalyticsEvent where Self == WCSessionApprovedEvent {
         totalAccount: Int
     ) -> Self {
         return WCSessionApprovedEvent(
+            version: version,
             topic: topic,
             dappName: dappName,
             dappURL: dappURL,

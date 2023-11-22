@@ -17,8 +17,7 @@
 
 import UIKit
 
-class WCGroupTransactionAccountInformationView: BaseView {
-
+final class WCGroupTransactionAccountInformationView: BaseView {
     private let layout = Layout<LayoutConstants>()
 
     private lazy var accountNameView = WCAccountInformationNameView()

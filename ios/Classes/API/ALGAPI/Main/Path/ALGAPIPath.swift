@@ -40,7 +40,6 @@ enum ALGAPIPath: String {
     case deviceDetail = "/devices/%@/"
     case devices = "/devices/"
     case nameServicesSearch = "/name-services/search/"
-    case subscribeToWalletConnectSession = "/devices/wallet-connect-subscriptions/"
     case exportTransactions = "/accounts/%@/export-history/"
     case trendingAssets = "/discover/assets/trending/"
     case notifications = "/devices/%@/notifications/"
@@ -56,6 +55,7 @@ enum ALGAPIPath: String {
     case transactions = "/transactions"
     case verifiedAssets = "/verified-assets/"
     case waitForBlock = "/status/wait-for-block-after/%@"
+    case accountAsset = "/accounts/%@/assets/%@"
 }
 
 extension EndpointBuilder {

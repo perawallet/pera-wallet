@@ -24,11 +24,11 @@ struct UISheetActionScreenImageTheme:
     let image: ImageStyle
     let imageLayoutOffset: LayoutOffset
     let title: TextStyle
-    let spacingBetweenTitleAndBody: LayoutMetric
+    var spacingBetweenTitleAndBody: LayoutMetric
     let body: TextStyle
     let spacingBetweenBodyAndInfo: LayoutMetric
-    let infoIcon: ImageStyle
-    let spacingBetweeenInfoIconAndInfoMessage: LayoutMetric
+    var infoIcon: ImageStyle
+    var spacingBetweeenInfoIconAndInfoMessage: LayoutMetric
     let infoMessage: TextStyle
     let actionSpacing: LayoutMetric
     let actionsEdgeInsets: LayoutPaddings

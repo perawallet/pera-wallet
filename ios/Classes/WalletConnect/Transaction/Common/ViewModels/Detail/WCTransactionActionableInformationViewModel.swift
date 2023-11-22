@@ -17,7 +17,7 @@
 
 import Foundation
 
-class WCTransactionActionableInformationViewModel {
+final class WCTransactionActionableInformationViewModel {
     private(set) var title: String?
     private(set) var detail: String?
     private(set) var isSeparatorHidden: Bool = false

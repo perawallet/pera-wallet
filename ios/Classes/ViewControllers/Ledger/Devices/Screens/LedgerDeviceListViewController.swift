@@ -128,7 +128,10 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
         
         selectedDevice = ledgerDevices[indexPath.item]
 
-        let oneTimeDisplayStorage = OneTimeDisplayStorage()
+        /// <note>
+        /// Ledger pairing tutorial is temporarily disabled due to its association with connection issues on Ledger devices. We can re-enable it once the underlying issue has been resolved. Date: 27.09.2023
+        ///
+//        let oneTimeDisplayStorage = OneTimeDisplayStorage()
         let bleState = ledgerAccountFetchOperation.bleConnectionManager.state
         let isBLEPoweredOn = bleState == .poweredOn
         if !isBLEPoweredOn {
@@ -136,20 +139,20 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
             return
         }
 
-        if oneTimeDisplayStorage.isDisplayedOnce(for: .ledgerPairingWarning) {
+//        if oneTimeDisplayStorage.isDisplayedOnce(for: .ledgerPairingWarning) {
             ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
             selectedDevice = nil
-            return
-        }
+//            return
+//        }
 
-        oneTimeDisplayStorage.setDisplayedOnce(for: .ledgerPairingWarning)
-
-        initialPairingWarningTransition.perform(
-            .ledgerPairWarning(delegate: self),
-            by: .presentWithoutNavigationController
-        )
-        
-        ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
+//        oneTimeDisplayStorage.setDisplayedOnce(for: .ledgerPairingWarning)
+//
+//        initialPairingWarningTransition.perform(
+//            .ledgerPairWarning(delegate: self),
+//            by: .presentWithoutNavigationController
+//        )
+//
+//        ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
     }
 
     private func presentBLEError(_ state: CBManagerState) {

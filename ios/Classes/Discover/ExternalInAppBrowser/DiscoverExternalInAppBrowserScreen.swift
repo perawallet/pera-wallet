@@ -146,6 +146,8 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
     }
 
     private func addNavigation() {
+        hidesCloseBarButtonItem = true
+
         navigationTitleView.customize(DiscoverExternalInAppBrowserNavigationViewTheme())
 
         navigationItem.titleView = navigationTitleView
@@ -154,7 +156,15 @@ class DiscoverExternalInAppBrowserScreen: InAppBrowserScreen<DiscoverExternalInA
     }
 
     private func addNavigationBarButtonItems() {
+        self.leftBarButtonItems = [ makeCloseNavigationBarButtonItem() ]
         self.rightBarButtonItems = [ makeReloadBarButtonItem() ]
+    }
+    
+    private func makeCloseNavigationBarButtonItem() -> ALGBarButtonItem {
+        return ALGBarButtonItem(kind: .close(Colors.Text.main.uiColor)) {
+            [unowned self] in
+            self.eventHandler?(.goBack)
+        }
     }
 
     private func makeReloadBarButtonItem() -> ALGBarButtonItem {

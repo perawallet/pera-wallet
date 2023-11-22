@@ -63,14 +63,12 @@ final class QRScannerOverlayView: View {
         addOverlayImageView(theme)
         addTitleLabel(theme)
         addCancelButton(theme)
-        if configuration.showsConnectedAppsButton { addConnectedAppsButton(theme) }
+        addConnectedAppsButton(theme)
     }
 
     func setListeners() {
         cancelButton.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
-        if configuration.showsConnectedAppsButton {
-            connectedAppsButton.addTarget(self, action: #selector(didTapConnectedAppsButton), for: .touchUpInside)
-        }
+        connectedAppsButton.addTarget(self, action: #selector(didTapConnectedAppsButton), for: .touchUpInside)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
@@ -175,14 +173,16 @@ extension QRScannerOverlayView {
         connectedAppsButtonContainerVisualEffectView.draw(corner: theme.connectedAppsButtonCorner)
         connectedAppsButtonContainerVisualEffectView.contentView.addSubview(connectedAppsButton)
         connectedAppsButton.pinToSuperview()
+
+        connectedAppsButtonContainerVisualEffectView.isHidden = true
     }
 }
 
 extension QRScannerOverlayView: ViewModelBindable {
     func bindData(_ viewModel: QRScannerOverlayViewModel?) {
-        if configuration.showsConnectedAppsButton,
-           let title = viewModel?.connectedAppsButtonTitle {
+        if let title = viewModel?.connectedAppsButtonTitle {
             connectedAppsButton.setTitle(title, for: .normal)
+            connectedAppsButtonContainerVisualEffectView.isHidden = false
         } else {
             connectedAppsButtonContainerVisualEffectView.isHidden = true
         }

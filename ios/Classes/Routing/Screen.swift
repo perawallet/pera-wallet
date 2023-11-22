@@ -30,11 +30,10 @@ indirect enum Screen {
         eventHandler: ASADiscoveryScreen.EventHandler? = nil
     )
     case welcome(flow: AccountSetupFlow)
-    case addAccount(flow: AccountSetupFlow)
     case recoverAccount(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
     case passphraseView(flow: AccountSetupFlow, address: String)
-    case passphraseVerify(flow: AccountSetupFlow)
+    case passphraseVerify(flow: AccountSetupFlow, address: String)
     case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, nameServiceName: String? = nil, accountAddress: PublicKey)
     case accountRecover(
         flow: AccountSetupFlow,
@@ -65,6 +64,10 @@ indirect enum Screen {
     )
     case appCallAssetList(
         dataController: AppCallAssetListDataController
+    )
+    case keyRegTransactionDetail(
+        account: Account,
+        transaction: Transaction
     )
     case addAsset(account: Account)
     case removeAsset(dataController: ManageAssetListDataController)
@@ -114,21 +117,55 @@ indirect enum Screen {
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions(delegate: AccountRecoverOptionsViewControllerDelegate)
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
-    case wcConnection(
-        walletConnectSession: WalletConnectSession,
-        completion: WalletConnectSessionConnectionCompletionHandler
-    )
+    case wcConnection(draft: WCSessionConnectionDraft)
     case walletConnectSessionList
     case walletConnectSessionShortList
     case wcTransactionFullDappDetail(configurator: WCTransactionFullDappDetailConfigurator)
-    case wcAlgosTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcAssetTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcAssetAdditionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcGroupTransaction(transactions: [WCTransaction], transactionRequest: WalletConnectRequest)
-    case wcAppCall(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcAssetCreationTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcAssetReconfigurationTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
-    case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
+    case wcAlgosTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAssetTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAssetAdditionTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcGroupTransaction(
+        transactions: [WCTransaction],
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAppCall(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAssetCreationTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAssetReconfigurationTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcAssetDeletionTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
+    case wcKeyRegTransaction(
+        transaction: WCTransaction,
+        transactionRequest: WalletConnectRequestDraft,
+        wcSession: WCSessionDraft
+    )
     case jsonDisplay(jsonData: Data, title: String)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case sortAccountList(
@@ -161,12 +198,7 @@ indirect enum Screen {
         draft: WalletConnectArbitraryDataSignRequestDraft,
         delegate: WCMainArbitraryDataScreenDelegate
     )
-    case wcArbitraryDataScreen(data: WCArbitraryData, wcRequest: WalletConnectRequest)
-    case wcSingleTransactionScreen(
-        transactions: [WCTransaction],
-        transactionRequest: WalletConnectRequest,
-        transactionOption: WCTransactionOption?
-    )
+    case wcArbitraryDataScreen(data: WCArbitraryData, wcSession: WCSessionDraft)
     case asaVerificationInfo(EventHandler<AsaVerificationInfoEvent>)
     case sortCollectibleList(
         dataController: SortCollectibleListDataController,
@@ -276,17 +308,6 @@ indirect enum Screen {
         draft: InsufficientAlgoBalanceDraft,
         eventHandler: InsufficientAlgoBalanceScreen.EventHandler
     )
-    case exportAccountList(
-        eventHandler: ExportAccountListScreen.EventHandler
-    )
-    case exportAccountsDomainConfirmation(
-        hasSingularAccount: Bool,
-        eventHandler: ExportAccountsDomainConfirmationScreen.EventHandler
-    )
-    case exportAccountsConfirmationList(
-        selectedAccounts: [Account],
-        eventHandler: ExportAccountsConfirmationListScreen.EventHandler
-    )
     case selectAsset(
         dataController: SelectAssetDataController,
         coordinator: SwapAssetFlowCoordinator?,
@@ -309,10 +330,6 @@ indirect enum Screen {
     case editSwapSlippage(
         dataStore: SwapSlippageTolerancePercentageStore & SwapMutableSlippageTolerancePercentageStore,
         eventHandler: EditSwapSlippageScreen.EventHandler
-    )
-    case exportAccountsResult(
-        accounts: [Account],
-        eventHandler: ExportsAccountsResultScreen.EventHandler
     )
     case discoverSearch(DiscoverSearchScreen.EventHandler)
     case discoverAssetDetail(DiscoverAssetParameters)
@@ -377,11 +394,27 @@ indirect enum Screen {
         eventHandler: RemoveAccountSheet.EventHandler
     )
     case externalInAppBrowser(destination: DiscoverExternalDestination)
+    case extendWCSessionValidity(
+        wcV2Session: WalletConnectV2Session,
+        eventHandler: ExtendWCSessionValiditySheet.EventHandler
+    )
+    case wcAdvancedPermissionsInfo(eventHandler: WCAdvancedPermissionsInfoSheet.EventHandler)
+    case wcSessionDetail(draft: WCSessionDraft)
+    case wcSessionConnectionSuccessful(
+        draft: WCSessionDraft,
+        eventHandler: WCSessionConnectionSuccessfulSheet.EventHandler
+    )
+    case wcTransactionSignSuccessful(
+        draft: WCSessionDraft,
+        eventHandler: WCTransactionSignSuccessfulSheet.EventHandler
+    )
+    case backUpAccountSelection(
+        eventHandler: AccountSelectionListScreen<BackUpAccountSelectionListLocalDataController>.EventHandler
+    )
 }
 
 extension Screen {
-    enum Transition {
-    }
+    enum Transition { }
 }
 
 extension Screen.Transition {

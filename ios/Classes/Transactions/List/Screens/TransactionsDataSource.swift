@@ -51,6 +51,10 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
                 let cell = collectionView.dequeue(TransactionHistoryCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
+            case .keyRegTransaction(let item):
+                let cell = collectionView.dequeue(TransactionHistoryCell.self, at: indexPath)
+                cell.bindData(item)
+                return cell
             case .assetConfigTransaction(let item):
                 let cell = collectionView.dequeue(TransactionHistoryCell.self, at: indexPath)
                 cell.bindData(item)

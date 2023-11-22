@@ -17,8 +17,7 @@
 
 import UIKit
 
-class WCAssetAdditionTransactionView: WCSingleTransactionView {
-
+final class WCAssetAdditionTransactionView: WCSingleTransactionView {
     weak var delegate: WCAssetAdditionTransactionViewDelegate?
 
     private lazy var theme = Theme()

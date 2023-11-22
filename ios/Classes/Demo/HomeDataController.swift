@@ -37,6 +37,7 @@ enum HomeSectionIdentifier:
     Hashable {
     case empty
     case portfolio
+    case accountNotBackedUpWarning
     case announcement
     case accounts
 }
@@ -44,6 +45,7 @@ enum HomeSectionIdentifier:
 enum HomeItemIdentifier: Hashable {
     case empty(HomeEmptyItemIdentifier)
     case portfolio(HomePortfolioItemIdentifier)
+    case accountNotBackedUpWarning(AccountNotBackedUpWarningViewModel)
     case announcement(AnnouncementViewModel)
     case account(HomeAccountItemIdentifier)
 }

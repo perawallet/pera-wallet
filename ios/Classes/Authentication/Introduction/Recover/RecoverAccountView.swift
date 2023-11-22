@@ -26,6 +26,7 @@ final class RecoverAccountView:
     private lazy var titleLabel = UILabel()
     private lazy var stackView = UIStackView()
     private lazy var recoverWithPassphraseView = AccountTypeView()
+    private lazy var recoverWithQRView = AccountTypeView()
     private lazy var recoverWithLedgerView = AccountTypeView()
     private lazy var importFromWebView = AccountTypeView()
 
@@ -46,6 +47,12 @@ final class RecoverAccountView:
             action: #selector(notifyDelegateToRecoverWithPassphrase),
             for: .touchUpInside
         )
+        
+        recoverWithQRView.addTarget(
+            self,
+            action: #selector(notifyDelegateToRecoverWithQR),
+            for: .touchUpInside
+        )
 
         recoverWithLedgerView.addTarget(
             self,
@@ -62,6 +69,7 @@ final class RecoverAccountView:
 
     func bindData(_ viewModel: RecoverAccountViewModel?) {
         recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseViewModel)
+        recoverWithQRView.bindData(viewModel?.recoverWithQRViewModel)
         recoverWithLedgerView.bindData(viewModel?.recoverWithLedgerViewModel)
         importFromWebView.bindData(viewModel?.importFromWebViewModel)
     }
@@ -71,6 +79,11 @@ extension RecoverAccountView {
     @objc
     private func notifyDelegateToRecoverWithPassphrase() {
         delegate?.recoverAccountView(self, didSelect: .passphrase)
+    }
+    
+    @objc
+    private func notifyDelegateToRecoverWithQR() {
+        delegate?.recoverAccountView(self, didSelect: .qr)
     }
 
     @objc
@@ -109,6 +122,8 @@ extension RecoverAccountView {
 
         recoverWithPassphraseView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(recoverWithPassphraseView)
+        recoverWithQRView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(recoverWithQRView)
         recoverWithLedgerView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(recoverWithLedgerView)
         importFromWebView.customize(theme.accountTypeViewTheme)

@@ -34,7 +34,7 @@ final class UISheetActionScreen:
     private lazy var imageView = ImageView()
     private lazy var titleView = Label()
     private lazy var bodyView = ALGActiveLabel()
-    private lazy var infoIconView = UIImageView()
+    private lazy var infoIconView = ImageView()
     private lazy var infoMessageView = UILabel()
     private lazy var actionsContextView = MacaroonUIKit.VStackView()
 
@@ -179,8 +179,10 @@ extension UISheetActionScreen {
 
         contextView.addSubview(infoIconView)
         infoIconView.fitToIntrinsicSize()
+        infoIconView.contentEdgeInsets.y = theme.spacingBetweenBodyAndInfo
+        infoIconView.contentMode = .bottom
         infoIconView.snp.makeConstraints {
-            $0.top == bodyView.snp.bottom + theme.spacingBetweenBodyAndInfo
+            $0.top == bodyView.snp.bottom
             $0.leading == 0
         }
     }
@@ -191,7 +193,7 @@ extension UISheetActionScreen {
         contextView.addSubview(infoMessageView)
         infoMessageView.snp.makeConstraints {
             $0.height >= infoIconView
-            $0.top == infoIconView
+            $0.top == bodyView.snp.bottom + theme.spacingBetweenBodyAndInfo
             $0.leading == infoIconView.snp.trailing + theme.spacingBetweeenInfoIconAndInfoMessage
             $0.bottom == 0
             $0.trailing == 0

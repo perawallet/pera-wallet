@@ -51,11 +51,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
     private let socialMediaDeeplinkParser = DiscoverSocialMediaRouter()
 
     deinit {
-        if #available(iOS 14, *) {
-            userContentController.removeAllScriptMessageHandlers()
-        } else {
-            userContentController.removeScriptMessageHandlers(forMessages: ScriptMessage.allCases)
-        }
+        userContentController.removeAllScriptMessageHandlers()
     }
 
     override func viewDidLoad() {

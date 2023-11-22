@@ -43,13 +43,6 @@ final class BidaliDappDetailScreen:
     }
 
     deinit {
-        /// <note>
-        /// Super deinit handles else condition.
-        if #unavailable(iOS 14) {
-            let messages = BidaliDappDetailScriptMessage.allCases
-            userContentController.removeScriptMessageHandlers(forMessages: messages)
-        }
-
         sharedDataController.remove(self)
     }
 

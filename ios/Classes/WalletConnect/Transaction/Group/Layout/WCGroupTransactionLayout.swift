@@ -17,8 +17,7 @@
 
 import UIKit
 
-class WCGroupTransactionLayout: NSObject {
-
+final class WCGroupTransactionLayout: NSObject {
     private let layout = Layout<LayoutConstants>()
 
     weak var delegate: WCGroupTransactionLayoutDelegate?

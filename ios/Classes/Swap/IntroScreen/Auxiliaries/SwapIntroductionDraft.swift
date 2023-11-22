@@ -24,9 +24,9 @@ struct SwapIntroductionDraft {
         let icon: Image
         let termsOfServiceLink: URL?
 
-        static let tinyman = Provider(
-            icon: "swap-provider-tinyman",
-            termsOfServiceLink: AlgorandWeb.tinymanTermsOfService.link
+        static let vestige = Provider(
+            icon: "swap-provider-vestige",
+            termsOfServiceLink: AlgorandWeb.vestigeTermsOfService.link
         )
     }
 }

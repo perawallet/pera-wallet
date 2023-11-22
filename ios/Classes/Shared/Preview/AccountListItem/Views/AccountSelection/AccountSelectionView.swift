@@ -21,6 +21,7 @@ import SnapKit
 
 final class AccountSelectionView: View {
     private lazy var typeImageView = UIImageView()
+    private lazy var typeImageBottomRightBadgeView = UIImageView()
     private lazy var nameLabel = UILabel()
     private lazy var detailLabel = UILabel()
     private lazy var checkmarkImageView = UIImageView()
@@ -43,6 +44,16 @@ extension AccountSelectionView {
             $0.leading.equalToSuperview()
             $0.centerY.equalToSuperview()
             $0.top.bottom.equalToSuperview().inset(theme.verticalInset)
+        }
+
+        addTypeImageBottomRightBadge(theme)
+    }
+
+    private func addTypeImageBottomRightBadge( _ theme: AccountSelectionViewTheme) {
+        addSubview(typeImageBottomRightBadgeView)
+        typeImageBottomRightBadgeView.snp.makeConstraints {
+            $0.top == typeImageView.snp.top + theme.accountImageTypeBottomRightBadgePaddings.top
+            $0.leading == theme.accountImageTypeBottomRightBadgePaddings.leading
         }
     }
 
@@ -74,6 +85,7 @@ extension AccountSelectionView {
 extension AccountSelectionView: ViewModelBindable {
     func bindData(_ viewModel: AccountCellViewModel?) {
         typeImageView.image = viewModel?.accountImageTypeImage
+        typeImageBottomRightBadgeView.image = viewModel?.accountImageTypeBottomRightBadge
         nameLabel.text = viewModel?.name
         detailLabel.text = viewModel?.detail ?? viewModel?.attributedDetail?.string
     }

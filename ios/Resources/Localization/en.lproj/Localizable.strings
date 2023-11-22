@@ -136,16 +136,20 @@
 "title-rekeyed-to-with-param" = "Rekeyed to %@";
 "title-failed-to-fetch-rekeyed-accounts" = "Failed to fetch rekeyed accounts";
 "title-deleted-with-parantheses" = "(Deleted)";
+"title-extend" = "Extend";
+"title-active" = "Active";
+"tite-pinging" = "Pinging";
+"title-action-required" = "ACTION REQUIRED";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
-"account-type-selection-add-detail" = "I want to create a new Algorand account with a new address and recovery passphrase";
+"account-type-selection-add-detail" = "Create a new Algorand account with a new address and recovery passphrase";
 "account-type-selection-create" = "Create a new account";
 "account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
-"account-type-selection-watch" = "Add watch account";
-"account-type-selection-watch-detail" = "I want to monitor an Algorand account that's held in cold storage";
-"account-type-selection-recover" = "I already have an account";
-"account-type-selection-recover-detail" = "Import an existing Algorand account\nvia recovery passphrase or pair your Ledger";
+"account-type-selection-watch" = "Watch an account";
+"account-type-selection-watch-detail" = "Monitor an Algorand account by providing its address";
+"account-type-selection-recover" = "Import an account";
+"account-type-selection-recover-detail" = "Import an existing Algorand account\nvia various methods or pair your Ledger";
 "account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to recover an Algorand account\nthat is backed by my Ledger hardware wallet";
 "account-type-selection-import-web" = "Import from Pera Web";
@@ -153,6 +157,8 @@
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-type-selection-passphrase" = "Recover an account";
 "account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
+"account-type-selection-qr" = "Recover an account with QR code";
+"account-type-selection-qr-detail" = "I want to recover an Algorand account using a QR code";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-welcome-add-account-title" = "Add an account";
 "title-arbitrary-data" = "Arbitrary Data";
@@ -161,7 +167,7 @@
 // MARK: Introduction
 
 "introduction-add-account-text" = "I want to create\nan Algorand account";
-"introduction-recover-account-text" = "I already have an account";
+"introduction-recover-account-text" = "Import an account";
 "introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
 
 // MARK: Password Setting
@@ -505,6 +511,7 @@
 
 // MARK: Transaction Detail
 "transaction-detail-title" = "Transaction Detail";
+"transaction-details-title" = "Transaction Details";
 "transaction-detail-status" = "Status";
 "transaction-detail-amount" = "Amount";
 "transaction-detail-reward" = "Reward";
@@ -849,15 +856,21 @@
 "wallet-connect-session-error-no-account" = "You don't have any account that WalletConnect can connect.";
 "wallet-connect-session-list-empty" = "You haven't connected any apps yet.";
 "wallet-connect-session-disconnect-message" = "Would you like to disconnect from %@?";
-"wallet-connect-session-disconnect-all-action" = "Disconnect All Sessions";
-"wallet-connect-session-disconnect-all-message" = "Would you like to disconnect all sessions?";
+"wallet-connect-session-disconnect-all-action" = "Delete All Sessions";
+"wallet-connect-session-disconnect-all-message" = "Would you like to delete all sessions?";
 "wallet-connect-session-connected" = "Connected";
+"wallet-connect-session-disconnected" = "Disconnected";
+"wallet-connect-session-disconnected-successfully-message" = "Session deleted successfully";
+"wallet-connect-v2-session-expires-on-date" = "Expires on %@";
+"wallet-connect-session-connected-on-date" = "Connected on %@";
 "wallet-connect-session-connected-with-account" = "Connected with %@";
 "wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
 "wallet-connect-session-invalid-qr-message" = "Couldn't create a session on WalletConnect. Please try with a valid QR.";
 "wallet-connect-session-error-not-reachable" = "WalletConnect is not reachable at the moment. Please try again later.";
-"wallet-connect-session-connection-approved-title" = "You are Connected to %@";
+"wallet-connect-session-connection-approved-title" = "You are connected to %@";
 "wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
+"wallet-connect-v2-session-valid-until-date" = "This session is valid until:\n%@.";
+"wallet-connect-v2-session-connection-approved-description" = "Its validity will be automatically extended, whenever used, until %@. If needed, you can manually extend inactive sessions validity from the dedicated Settings page. Sessions will be automatically deleted, once expired.\n\nPlease return to %@ to complete your operation.";
 "wallet-connect-select-accounts" = "Select Accounts";
 "wallet-connect-session-limit-warning-message" = "Maximum number of WalletConnect sessions exceeded. Your oldest session was automatically disconnected.";
 "wallet-connect-session-limit-info-title" = "Sessions are limited to 50";
@@ -865,8 +878,8 @@
 
 // MARK: Wallet Connect Transaction Warning
 "wallet-connect-transaction-warning-rekey" = "This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.";
-"wallet-connect-transaction-warning-close-algos" = "This transaction is sending your full Algo balance.";
-"wallet-connect-transaction-warning-close-asset" = "This transaction is sending your full %@ balance. It'll opt-out and remove the %@ asset from your account.";
+"wallet-connect-transaction-warning-close-algos" = "This transaction is sending the full Algo balance.";
+"wallet-connect-transaction-warning-close-asset" = "This transaction is sending the full %@ balance. It'll opt-out and remove the %@ asset from the account.";
 "wallet-connect-transaction-warning-rekey-title" = "Rekey To";
 "wallet-connect-transaction-warning-close-asset-title" = "Close Asset To";
 "wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
@@ -924,28 +937,36 @@
 "wallet-connect-transaction-error-unauthorized" = "The requested operation and/or account has not been authorized by the user.";
 "wallet-connect-transaction-error-unsupported" = "The wallet does not support the requested operation.";
 "wallet-connect-transaction-error-invalid" = "The input provided is invalid.";
+"wallet-connect-no-session-for-topic-error-message" = "Pera Wallet couldn't locate the WalletConnect session used by this dApp. Please disconnect and try again.";
+"wallet-connect-unsupported-methods-error-message" = "Unsupported WC_Method: Pera Wallet currently does not support one or more of the WalletConnect Methods requested by this dApp.";
+"wallet-connect-unsupported-chains-error-message" = "Unsupported WC_Chain: Pera Wallet currently does not support one or more of the WalletConnect Chains requested by this dApp.";
+
+"wallet-connect-v2-unauthorized-chain-error-message" = "Unauthorized WC_Chain: the connected session does not have permission to sign transaction requests in: %@.";
+"wallet-connect-v2-unauthorized-method-error-message" = "Unauthorized WC_Method: The connected session does not have permission to sign transaction requests with Method type: %@.";
+"wallet-connect-unsupported-namespace-error-message" = "Unsupported Blockchain: Pera Wallet currently supports only the Algorand blockchain.";
 "wallet-connect-raw-transaction-title" = "Raw Transaction";
 "wallet-connect-request-error-rejected-user" = "Request Rejected: The User has rejected the request.";
 "wallet-connect-transaction-error-group-validation" = "Transaction Request Rejected: The transaction group has failed validation by the Algorand SDK.";
-"wallet-connect-transaction-error-already-displayed" = "Transaction Request Rejected: The User currently has another transaction request that is in progress.";
-"wallet-connect-request-error-already-displayed" = "Request Rejected: The User currently has another request that is in progress.";
+"wallet-connect-transaction-error-already-displayed" = "Transaction Request Pending: The User currently has another transaction request that is in progress.";
+"wallet-connect-request-error-already-displayed" = "Request Pending: The User currently has another request that is in progress.";
 "wallet-connect-transaction-error-group-unauthorized-user" = "The requested operation and/or account has not been authorized by the user.";
-"wallet-connect-transaction-error-transaction-size" = "Invalid Input: Transaction request contains more than 1000 transactions";
-"wallet-connect-data-error-data-size" = "Invalid Input: Transaction request contains more than 1000 data";
-"wallet-connect-transaction-error-invalid-signer" = "Signing Error: A transaction in the transaction request requires a private key (signer) that does not exist in the connected Wallet.";
-"wallet-connect-data-error-invalid-signer" = "Signing Error: Request requires a private key (signer) that does not exist in the connected Wallet.";
-"wallet-connect-transaction-error-node" = "Signing Error: Network mismatch between dApp and Wallet. For example, Wallet is connected to TestNet and dApp connected to MainNet (or vice versa).";
-"wallet-connect-transaction-error-group" = "Invalid Input: Group transaction does not need to be signed by Wallet user.";
-"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";
-"wallet-connect-transaction-error-account-not-exist" = "Invalid Input: The requested signer is not in the User Wallet";
+"wallet-connect-transaction-error-transaction-size" = "Transaction limit: This transaction request contains 1000 transactions, exceeding Pera Wallet transactions limit.";
+"wallet-connect-data-error-data-size" = "Data limit: This data request contains 1000 data, exceeding Pera Wallet data limit.";
+"wallet-connect-transaction-error-invalid-signer" = "Missing private key(s): Pera Wallet is missing one or more private keys, needed to sign the transaction request.";
+"wallet-connect-data-error-invalid-signer" = "Missing private key(s): Pera Wallet is missing one or more private keys, needed to sign the data request.";
+"wallet-connect-transaction-error-node" = "Network mismatch error: This dApp and Pera Wallet are currently operating on different networks. Please make sure that they both run on either Mainnet or Testnet";
+"wallet-connect-v2-user-rejected-chains-error-message" = "User_Rejected_Chain: This dApp is trying to connect to your account on %@, but Pera Wallet is set on %@.";
+"wallet-connect-transaction-error-group" = "Transaction group is missing signer account(s): One or more transaction groups don't require to be signed by Pera Wallet.";
+"wallet-connect-transaction-error-invalid-group" = "Missing transaction(s): This transaction request is missing one or more transactions. For your own safety, Pera Wallet won't allow you to sign requests that do not display the complete transaction group. To rectify this issue, please contact the dApp.";
+"wallet-connect-transaction-error-account-not-exist" = "Missing signer account(s): Pera Wallet is missing one or more accounts needed to sign the transaction request.";
 "wallet-connect-transaction-error-session-not-found" = "No valid WalletConnect session found. Please try reconnecting your wallet to the dApp";
-"wallet-connect-transaction-error-unsupported-type" = "The transaction request contains an Unsupported Transaction Type";
-"wallet-connect-transaction-error-parse" = "Invalid Input: Unable to parse transaction";
-"wallet-connect-data-error-parse" = "Invalid Input: Unable to parse data";
-"wallet-connect-transaction-error-invalid-key" = "Invalid Input: Invalid Public Key";
-"wallet-connect-transaction-error-invalid-asset" = "Invalid Input: Invalid Asset";
-"wallet-connect-transaction-error-multisig" = "The transaction request contains an Unsupported Transaction Type: Multi-sig";
-"wallet-connect-transaction-error-unable-sign" = "Invalid Input: Unable to be signed";
+"wallet-connect-transaction-error-unsupported-type" = "Unsupported transaction type: This transaction request contains one or more unsupported transaction types.";
+"wallet-connect-transaction-error-parse" = "Invalid request format: Pera Wallet is unable to parse the transaction request.";
+"wallet-connect-data-error-parse" = "Invalid request format: Pera Wallet is unable to parse the data request.";
+"wallet-connect-transaction-error-invalid-key" = "Invalid public key(s): The transaction request contains one or more invalid account addresses.";
+"wallet-connect-transaction-error-invalid-asset" = "Invalid asset ID: The transaction request contains one or more invalid asset ID.";
+"wallet-connect-transaction-error-multisig" = "Multi-sig required: This transaction request requires a multisig type signature, currently unsupported by Pera Wallet.";
+"wallet-connect-transaction-error-unable-sign" = "Invalid input: Pera Wallet is unable to sign the transaction request.";
 "wallet-connect-transaction-error-unable-fetch-asset" = "We couldn't fetch asset details and the transaction was cancelled. Please check your network connection and try again.";
 
 "wallet-connect-transaction-group-algos-title" = "Payment to %@";
@@ -960,6 +981,7 @@
 
 "wc-transaction-request-signed-warning-title" = "Your transaction is being processed!";
 "wc-transaction-request-signed-warning-message" = "The transaction has been signed and sent to %@. Please visit %@ for the remaining process.";
+"wc-transaction-request-signed-warning-info" = "This WalletConnect session is approaching its maximal validity, which cannot be extended beyond: %@\n\nAfter this date, the session will be automatically disconnected and you'll have to reconnect again.";
 
 "wc-arbitrary-data-request-signed-warning-title" = "Your data is being processed!";
 "wc-arbitrary-data-request-signed-warning-message" = "The data has been signed and sent to %@. Please visit %@ for the remaining process.";
@@ -1198,6 +1220,8 @@
 "transaction-option-list-more-subtitle" = "Show more actions";
 "transaction-option-list-add-asset-title" = "Add Asset";
 "transaction-option-list-add-asset-subtitle" = "Opt-in to an ASA or NFT from this account";
+"transaction-option-list-browse-dapps-title" = "Browse dApps";
+"transaction-option-list-browse-dapps-subtitle" = "Use browser to interact with dApps";
 
 // MARK: Sort Account List
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
@@ -1436,6 +1460,7 @@ FAQ section.";
 "buy-sell-options-buy-algo-with-sardine-option-subtitle" = "Use Instant ACH with your US bank account";
 "buy-sell-options-buy-usdc-with-transak-option-title" = "Buy USDC with Transak";
 "buy-sell-options-buy-usdc-with-transak-option-subtitle" = "Use credit cards or bank transfers from 150+ countries";
+"buy-sell-options-buy-not-available-description" = "Buying Algo through Pera Wallet is not available at the moment.";
 "buy-sell-options-sell-header-title" = "Sell crypto";
 "buy-sell-options-buy-gift-cards-with-moonpay-option-title" = "Buy gift cards with Bidali";
 "buy-sell-options-buy-gift-cards-with-moonpay-option-subtitle" = "You can use your Algo, USDC or USDt balance";
@@ -1558,3 +1583,52 @@ FAQ section.";
 // MARK: Undo Rekey Success Result
 "undo-rekey-success-result-title" = "Rekey successfully undone";
 "undo-rekey-success-result-body" = "The account %@ has been reverted to its original state.";
+
+// MARK: Extend WC Session Validity
+"extend-wc-session-validity-title" = "Extend validity to %@";
+"extend-wc-session-validity-body" = "You can extend the expiration date of this session by 1 more week, but not beyond %@.";
+"wc-session-extended-successfully-message" = "Session extended successfully";
+
+// MARK: WC Advanced Permissions Info
+"wc-advanced-permissions-info-title" = "WalletConnect Advanced Permissions";
+"wc-advanced-permissions-info-body" = "WalletConnect is a communications protocol for web3, enabling wallets and dApps to securely connect and interact. With each new version, WalletConnect introduces new ways to handle, sign and/or display transaction requests coming from third party projects.";
+
+// MARK: WC Session Detail
+"wc-session-connection-date" = "Connection date";
+"wc-session-expiration-date" = "Expiration date";
+"wc-session-status" = "Session status";
+"wc-session-check-status" = "Check status";
+"wc-session-connected-with" = "Connected with";
+"wc-session-advanced-permissions" = "Advanced permissions";
+"wc-session-supported-methods" = "Supported methods";
+"wc-session-supported-events" = "Supported events";
+"wc-session-extend-validty" = "Extend session validity";
+"wc-session-wcv1-info" = "This session is using WalletConnect V1";
+
+/// MARK: WC Session Connection
+"wc-session-connection-network" = "Network";
+"wc-session-connection-wc-events" = "WalletConnect events";
+"wc-session-connection-wc-methods" = "WalletConnect methods";
+"wc-session-connection-requested-permissions" = "REQUESTED PERMISSIONS";
+
+// MARK: Account Not Backed Up Warning
+"account-not-backed-up-warning-title" = "You need to backup the passphrase";
+"account-not-backed-up-warning-action-title" = "Backup now";
+"account-not-backed-up-warning-subtitle" = "You need to backup the passphrase of your account";
+
+/// MARK: Key Registration Transactions
+"key-reg-title" = "KeyReg";
+"vote-key-title" = "Vote Key";
+"selection-key-title" = "Selection Key";
+"state-proof-key-title" = "State Proof Key";
+"valid-first-round-title" = "Valid First Round";
+"valid-last-round-title" = "Valid Last Round";
+"vote-key-dilution-title" = "Vote Key Dilution";
+"participation-status-title" = "Participation Status";
+"participating-title" = "Participating";
+"not-participating-title" = "Not Participating";
+"online-title" = "Online";
+"offline-title" = "Offline";
+
+/// MARK: Back Up Account Selection
+"back-up-account-selection-header-title" = "You have multiple accounts that you didn't back-up its passphrase. Select an account to proceed";

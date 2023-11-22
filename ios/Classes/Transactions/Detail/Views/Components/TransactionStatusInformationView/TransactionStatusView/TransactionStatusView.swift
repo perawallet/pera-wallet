@@ -50,7 +50,7 @@ extension TransactionStatusView: ViewModelBindable {
             backgroundColor = .clear
             draw(border: Border(color: Colors.Text.grayLighter.uiColor, width: 1))
         } else {
-            backgroundColor = viewModel?.backgroundColor?.uiColor.withAlphaComponent(0.1)
+            backgroundColor = viewModel?.backgroundColor?.uiColor.withAlphaComponent(0.5)
         }
     }
 }

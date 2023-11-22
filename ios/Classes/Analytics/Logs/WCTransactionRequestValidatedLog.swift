@@ -25,8 +25,20 @@ struct WCTransactionRequestValidatedLog: ALGAnalyticsLog {
     ) {
         self.name = .walletConnectTransactionRequestValidated
         self.metadata = [
+            .wcVersion: WalletConnectProtocolID.v1.rawValue,
             .wcRequestID: transactionRequest.id.unwrap(or: ""),
             .wcRequestURL: Self.regulate(transactionRequest.url.absoluteString)
+        ]
+    }
+
+    fileprivate init(
+        transactionRequest: WalletConnectV2Request
+    ) {
+        self.name = .walletConnectTransactionRequestValidated
+        self.metadata = [
+            .wcVersion: WalletConnectProtocolID.v2.rawValue,
+            .wcSessionTopic: transactionRequest.topic,
+            .wcRequestID: transactionRequest.id.string
         ]
     }
 }
@@ -34,6 +46,14 @@ struct WCTransactionRequestValidatedLog: ALGAnalyticsLog {
 extension ALGAnalyticsLog where Self == WCTransactionRequestValidatedLog {
     static func wcTransactionRequestValidated(
         transactionRequest: WalletConnectRequest
+    ) -> Self {
+        return WCTransactionRequestValidatedLog(
+            transactionRequest: transactionRequest
+        )
+    }
+
+    static func wcTransactionRequestValidated(
+        transactionRequest: WalletConnectV2Request
     ) -> Self {
         return WCTransactionRequestValidatedLog(
             transactionRequest: transactionRequest

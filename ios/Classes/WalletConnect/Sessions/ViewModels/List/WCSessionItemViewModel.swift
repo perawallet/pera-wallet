@@ -23,83 +23,101 @@ import Foundation
 
 struct WCSessionItemViewModel: ViewModel {
     private(set) var image: ImageSource?
-    private(set) var name: EditText?
-    private(set) var description: EditText?
-    private(set) var date: EditText?
-    private(set) var accounts: [WCSessionAccountStatusViewModel?]?
-    
-    init(
-        peermeta: WCPeerMeta,
-        sessionDate: Date,
-        accountList: [Account]
-    ) {
-        bindImage(peermeta)
-        bindName(peermeta)
-        bindDescription(peermeta)
-        bindDate(sessionDate)
-        bindAccounts(accountList)
+    private(set) var name: TextProvider?
+    private(set) var wcV1Badge: TextProvider?
+    private(set) var description: TextProvider?
+
+    init(_ draft: WCSessionDraft) {
+        if let wcV1Session = draft.wcV1Session {
+            bindImage(wcV1Session)
+            bindName(wcV1Session)
+            bindWCv1Badge()
+            bindDescription(wcV1Session)
+            return
+        }
+
+        if let wcV2Session = draft.wcV2Session {
+            bindImage(wcV2Session)
+            bindName(wcV2Session)
+            bindDescription(wcV2Session)
+            return
+        }
     }
 }
 
 extension WCSessionItemViewModel {
-    private mutating func bindImage(_ peerMeta: WCPeerMeta) {
+    private mutating func bindImage(_ wcV1Session: WCSession) {
         let placeholderImages: [Image] = [
             "icon-session-placeholder-1",
             "icon-session-placeholder-2",
             "icon-session-placeholder-3",
             "icon-session-placeholder-4"
         ]
+        let placeholderImage = placeholderImages.randomElement()!
+        let placeholderAsset = AssetImageSource(asset: placeholderImage.uiImage)
+        let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
 
-        let placeholder = ImagePlaceholder(
-            image: AssetImageSource(asset: placeholderImages.randomElement()!.uiImage)
-        )
-
+        let imageSize = CGSize(width: 40, height: 40)
         image = DefaultURLImageSource(
-            url: peerMeta.icons.first,
-            size: .resize(CGSize(width: 40, height: 40), .aspectFit),
+            url: wcV1Session.peerMeta.icons.first,
+            size: .resize(imageSize, .aspectFit),
             shape: .circle,
             placeholder: placeholder
         )
     }
 
-    private mutating func bindName(_ peerMeta: WCPeerMeta) {
-        name = .attributedString(
-            peerMeta.name
-                .bodyMedium(
-                    lineBreakMode: .byTruncatingTail
-                )
+    private mutating func bindName(_ wcV1Session: WCSession) {
+        name = wcV1Session.peerMeta.name.bodyMedium(lineBreakMode: .byTruncatingTail)
+    }
+
+    private mutating func bindWCv1Badge() {
+        wcV1Badge = "WCV1".footnoteMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail
         )
     }
 
-    private mutating func bindDescription(_ peerMeta: WCPeerMeta) {
-        guard let aDescription = peerMeta.description,
-              !aDescription.isEmptyOrBlank else {
-            return
-        }
+    private mutating func bindDescription(_ wcV1Session: WCSession) {
+        let dateFormat = "MMM d, yyyy, h:mm a"
+        let connectedOnDate = wcV1Session.date.toFormat(dateFormat)
+        description =
+            "wallet-connect-session-connected-on-date"
+                .localized(connectedOnDate)
+                .footnoteRegular(lineBreakMode: .byWordWrapping)
+    }
+}
 
-        description = .attributedString(
-            aDescription
-                .footnoteRegular()
+extension WCSessionItemViewModel {
+    private mutating func bindImage(_ wcV2Session: WalletConnectV2Session) {
+        let placeholderImages: [Image] = [
+            "icon-session-placeholder-1",
+            "icon-session-placeholder-2",
+            "icon-session-placeholder-3",
+            "icon-session-placeholder-4"
+        ]
+        let placeholderImage = placeholderImages.randomElement()!
+        let placeholderAsset = AssetImageSource(asset: placeholderImage.uiImage)
+        let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
+
+        let imageSize = CGSize(width: 40, height: 40)
+        image = DefaultURLImageSource(
+            url: wcV2Session.peer.icons.first.toURL(),
+            size: .resize(imageSize, .aspectFit),
+            shape: .circle,
+            placeholder: placeholder
         )
     }
 
-    private mutating func bindDate(_ sessionDate: Date) {
-        let formattedDate = sessionDate.toFormat("MMMM dd, yyyy - HH:mm")
-
-        self.date = .attributedString(
-            formattedDate
-                .footnoteRegular(
-                    lineBreakMode: .byTruncatingTail
-                )
-        )
+    private mutating func bindName(_ wcV2Session: WalletConnectV2Session) {
+        name = wcV2Session.peer.name.bodyMedium(lineBreakMode: .byTruncatingTail)
     }
-    
-    private mutating func bindAccounts(_ accountList: [Account]) {
-        accounts = []
-        
-        accountList.forEach {
-            let accountStatusViewModel = WCSessionAccountStatusViewModel(account: $0)
-            accounts?.append(accountStatusViewModel)
-        }
+
+    private mutating func bindDescription(_ wcV2Session: WalletConnectV2Session) {
+        let dateFormat = "MMM d, yyyy, h:mm a"
+        let validUntilDate = wcV2Session.expiryDate.toFormat(dateFormat)
+        description =
+            "wallet-connect-v2-session-expires-on-date"
+                .localized(validUntilDate)
+                .footnoteRegular(lineBreakMode: .byWordWrapping)
     }
 }

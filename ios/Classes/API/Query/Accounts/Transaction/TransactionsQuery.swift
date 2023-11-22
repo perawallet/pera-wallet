@@ -52,19 +52,18 @@ struct TransactionsQuery: ObjectQuery {
 }
 
 struct AccountQuery: ObjectQuery {
+    let excludesAll: Bool
     let includesAll: Bool
 
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
 
-        let excludeParams = "created-assets,created-apps"
-        
         if includesAll {
             params.append(.init(.includesAll, includesAll))
         }
 
+        let excludeParams = excludesAll ? "all" : "created-assets,created-apps"
         params.append(.init(.exclude, excludeParams))
-
         return params
     }
 }

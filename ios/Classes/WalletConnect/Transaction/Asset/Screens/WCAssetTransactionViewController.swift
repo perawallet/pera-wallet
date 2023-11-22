@@ -17,8 +17,7 @@
 
 import UIKit
 
-class WCAssetTransactionViewController: WCSingleTransactionViewController {
-
+final class WCAssetTransactionViewController: WCSingleTransactionViewController {
     private lazy var assetTransactionView = WCAssetTransactionView()
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -31,11 +30,13 @@ class WCAssetTransactionViewController: WCSingleTransactionViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
+        
         title = "wallet-connect-transaction-title-asset".localized
     }
 
     override func linkInteractors() {
         super.linkInteractors()
+
         assetTransactionView.delegate = self
     }
 

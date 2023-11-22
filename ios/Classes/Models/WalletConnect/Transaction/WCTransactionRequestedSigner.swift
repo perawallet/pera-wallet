@@ -39,7 +39,11 @@ final class WCTransactionRequestedSigner {
     ) {
         if let authAddress = authAddress {
             address = authAddress
-            account = findAccount(authAddress, in: accountCollection, on: session)
+            account = findAccount(
+                transactionAuthAddress: authAddress,
+                in: accountCollection,
+                on: session
+            )
             return
         }
 
@@ -47,13 +51,21 @@ final class WCTransactionRequestedSigner {
         case .sender:
             if let sender = transactionDetail?.sender {
                 address = sender
-                account = findAccount(sender, in: accountCollection, on: session)
+                account = findAccount(
+                    sender,
+                    in: accountCollection,
+                    on: session
+                )
                 return
             }
         case let .current(address):
             if let address = address {
                 self.address = address
-                account = findAccount(address, in: accountCollection, on: session)
+                account = findAccount(
+                    address,
+                    in: accountCollection,
+                    on: session
+                )
                 return
             }
         case .multisig:
@@ -63,32 +75,30 @@ final class WCTransactionRequestedSigner {
         }
     }
 
-    func findSignerAccount(
-        in accountCollection: AccountCollection,
-        on session: Session,
-        signer: WCTransaction.Signer
-    ) {
-        switch signer {
-        case let .current(address):
-            guard let address else { return }
-
-            self.address = address
-            self.account = findAccount(
-                address,
-                in: accountCollection,
-                on: session
-            )
-        default:
-            break
-        }
-    }
-
     private func findAccount(
-        _ address: String,
+        _ address: String? = nil,
+        transactionAuthAddress: String? = nil,
         in accountCollection: AccountCollection,
         on session: Session
     ) -> Account? {
-        guard let account = accountCollection.account(for: address),
+        if let transactionAuthAddress {
+            guard let account = accountCollection.account(for: transactionAuthAddress) else {
+                return nil
+            }
+
+            if account.hasLedgerDetail() {
+                return account
+            }
+
+            if session.privateData(for: transactionAuthAddress) != nil {
+                return account
+            }
+
+            return nil
+        }
+
+        guard let address,
+              let account = accountCollection.account(for: address),
               account.authorization.isAuthorized else {
             return nil
         }
@@ -126,5 +136,41 @@ final class WCTransactionRequestedSigner {
             
             return account
         }
+    }
+}
+
+/// <note> Arbitrary Data
+extension WCTransactionRequestedSigner {
+    func findSignerAccount(
+        signer: String,
+        in accountCollection: AccountCollection,
+        on session: Session
+    ) {
+        self.address = signer
+        self.account = findAccount(
+            signer: signer,
+            in: accountCollection,
+            on: session
+        )
+    }
+
+    private func findAccount(
+        signer: String,
+        in accountCollection: AccountCollection,
+        on session: Session
+    ) -> Account? {
+        guard let account = accountCollection.account(for: signer) else {
+            return nil
+        }
+
+        if account.hasLedgerDetail() {
+            return account
+        }
+
+        if session.privateData(for: signer) != nil {
+            return account
+        }
+
+        return nil
     }
 }

@@ -18,7 +18,7 @@ import Foundation
 
 final class ALGProgress {
     let totalUnitCount: Int
-    private(set) var currentUnitCount: Int
+    var currentUnitCount: Int
 
     init(
         totalUnitCount: Int,

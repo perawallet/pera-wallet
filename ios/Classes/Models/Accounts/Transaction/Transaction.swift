@@ -49,6 +49,7 @@ final class Transaction:
     let assetConfig: AssetConfigTransaction?
     let assetTransfer: AssetTransferTransaction?
     let applicationCall: AppCallTransaction?
+    let keyRegTransaction: KeyRegTransaction?
     let date: Date?
     let transactionSignature: TransactionSignature?
     let groupKey: String?
@@ -80,6 +81,7 @@ final class Transaction:
         self.assetFreeze = apiModel.assetFreezeTransaction
         self.assetConfig = apiModel.assetConfigTransaction
         self.applicationCall = apiModel.applicationCall
+        self.keyRegTransaction = apiModel.keyRegTransaction
         self.assetTransfer = apiModel.assetTransferTransaction.unwrap(AssetTransferTransaction.init)
         self.date = apiModel.roundTime.unwrap { Date(timeIntervalSince1970: $0) }
         self.transactionSignature = apiModel.signature
@@ -104,6 +106,7 @@ final class Transaction:
         apiModel.assetFreezeTransaction = assetFreeze
         apiModel.assetConfigTransaction = assetConfig
         apiModel.applicationCall = applicationCall
+        apiModel.keyRegTransaction = keyRegTransaction
         apiModel.assetTransferTransaction = assetTransfer?.encode()
         apiModel.roundTime = date?.timeIntervalSince1970
         apiModel.signature = transactionSignature
@@ -254,6 +257,7 @@ extension Transaction {
         var assetConfigTransaction: AssetConfigTransaction?
         var assetTransferTransaction: AssetTransferTransaction.APIModel?
         var applicationCall: AppCallTransaction?
+        var keyRegTransaction: KeyRegTransaction?
         var roundTime: Double?
         var signature: TransactionSignature?
         var group: String?
@@ -277,6 +281,7 @@ extension Transaction {
             self.assetConfigTransaction = nil
             self.assetTransferTransaction = nil
             self.applicationCall = nil
+            self.keyRegTransaction = nil
             self.roundTime = nil
             self.signature = nil
             self.group = nil
@@ -301,6 +306,7 @@ extension Transaction {
             case assetConfigTransaction = "asset-config-transaction"
             case assetTransferTransaction = "asset-transfer-transaction"
             case applicationCall = "application-transaction"
+            case keyRegTransaction = "keyreg-transaction"
             case roundTime = "round-time"
             case signature
             case group

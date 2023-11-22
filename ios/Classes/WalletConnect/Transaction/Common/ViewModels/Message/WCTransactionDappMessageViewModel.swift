@@ -25,51 +25,123 @@ final class WCTransactionDappMessageViewModel {
     private(set) var message: String?
     private(set) var isReadMoreHidden = true
 
-    private let placeholderImages = [
-        img("icon-session-placeholder-1"),
-        img("icon-session-placeholder-2"),
-        img("icon-session-placeholder-3"),
-        img("icon-session-placeholder-4")
-    ]
+    init(
+        session: WCSessionDraft,
+        imageSize: CGSize,
+        transactionOption: WCTransactionOption?,
+        transaction: WCTransaction?
+    ) {
+        if let wcV1Session = session.wcV1Session {
+            setImage(
+                from: wcV1Session,
+                and: imageSize
+            )
+            setName(from: wcV1Session)
+            setMessage(
+                option: transactionOption,
+                transaction: transaction
+            )
+            setIsReadMoreHidden()
+            return
+        }
 
-    init(session: WCSession, imageSize: CGSize, transactionOption: WCTransactionOption?, transaction: WCTransaction?) {
-        setImage(from: session, and: imageSize)
-        setName(from: session)
-        setMessage(from: session, option: transactionOption, transaction: transaction)
-        setIsReadMoreHidden()
+        if let wcV2Session = session.wcV2Session {
+            setImage(
+                from: wcV2Session,
+                and: imageSize
+            )
+            setName(from: wcV2Session)
+            setMessage(
+                option: transactionOption,
+                transaction: transaction
+            )
+            setIsReadMoreHidden()
+            return
+        }
     }
 
     init(
-        session: WCSession,
+        session: WCSessionDraft,
         imageSize: CGSize
     ) {
-        setImage(
-            from: session,
-            and: imageSize
-        )
-        setName(from: session)
-    }
+        if let wcV1Session = session.wcV1Session {
+            setImage(
+                from: wcV1Session,
+                and: imageSize
+            )
+            setName(from: wcV1Session)
+            return
+        }
 
-    private func setImage(from session: WCSession, and imageSize: CGSize) {
-        let randomIndex = Int.random(in: 0..<placeholderImages.count)
-        let placeholderImage = placeholderImages[randomIndex]
+        if let wcV2Session = session.wcV2Session {
+            setImage(
+                from: wcV2Session,
+                and: imageSize
+            )
+            setName(from: wcV2Session)
+            return
+        }
+    }
+}
+
+extension WCTransactionDappMessageViewModel {
+    private func setImage(
+        from session: WCSession,
+        and imageSize: CGSize
+    ) {
+        let placeholderImages: [Image] = [
+            "icon-session-placeholder-1",
+            "icon-session-placeholder-2",
+            "icon-session-placeholder-3",
+            "icon-session-placeholder-4"
+        ]
+        let placeholderImage = placeholderImages.randomElement()!
+        let placeholderAsset = AssetImageSource(asset: placeholderImage.uiImage)
+        let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
 
         image = DefaultURLImageSource(
             url: session.peerMeta.icons.first,
-            color: nil,
             size: .resize(imageSize, .aspectFit),
             shape: .circle,
-            placeholder: ImagePlaceholder(image: AssetImageSource(asset: placeholderImage), text: nil),
-            forceRefresh: false
+            placeholder: placeholder
         )
     }
 
     private func setName(from session: WCSession) {
         name = session.peerMeta.name
     }
+}
 
+extension WCTransactionDappMessageViewModel {
+    private func setImage(
+        from session: WalletConnectV2Session,
+        and imageSize: CGSize
+    ) {
+        let placeholderImages: [Image] = [
+            "icon-session-placeholder-1",
+            "icon-session-placeholder-2",
+            "icon-session-placeholder-3",
+            "icon-session-placeholder-4"
+        ]
+        let placeholderImage = placeholderImages.randomElement()!
+        let placeholderAsset = AssetImageSource(asset: placeholderImage.uiImage)
+        let placeholder = ImagePlaceholder(image: placeholderAsset, text: nil)
+
+        image = DefaultURLImageSource(
+            url: session.peer.icons.first.toURL(),
+            size: .resize(imageSize, .aspectFit),
+            shape: .circle,
+            placeholder: placeholder
+        )
+    }
+
+    private func setName(from session: WalletConnectV2Session) {
+        name = session.peer.name
+    }
+}
+
+extension WCTransactionDappMessageViewModel {
     private func setMessage(
-        from session: WCSession,
         option: WCTransactionOption?,
         transaction: WCTransaction?
     ) {

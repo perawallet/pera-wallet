@@ -63,7 +63,7 @@ extension NotificationsViewModel {
         let url = PrismURL(baseURL: notificationIconURL)?
             .setExpectedImageSize(size)
             .build()
-        let placeholder = ImagePlaceholder(image: .init(asset: "asset-image-placeholder-border".uiImage))
+        let placeholder = ImagePlaceholder(image: .init(asset: "notification-icon-default".uiImage))
         
         icon = DefaultURLImageSource(
             url: url,
@@ -74,6 +74,7 @@ extension NotificationsViewModel {
 
     private func bindTitle(notification: NotificationMessage) {
         guard let aTitle = notification.message else {
+            title = nil
             return
         }
 
@@ -83,6 +84,8 @@ extension NotificationsViewModel {
     private func bindTime(notification: NotificationMessage) {
         if let notificationDate = notification.date {
             time = (Date() - notificationDate).ago.toRelative(style: RelativeFormatter.defaultStyle(), locale: Locales.autoUpdating)
+        } else {
+            time = nil
         }
     }
 

@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WCGroupTransactionHeaderViewModel {
+final class WCGroupTransactionHeaderViewModel {
     private(set) var title: String?
     private(set) var groupID: String?
 

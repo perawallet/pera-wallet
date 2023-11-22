@@ -66,19 +66,38 @@ extension ALGAPI {
         case testnet = "testnet"
         case mainnet = "mainnet"
 
+        /// WC v1
         var allowedChainIDs: [Int] {
             switch self {
             case .testnet:
                 return [
-                    algorandWalletConnectChainID,
-                    algorandWalletConnectTestNetChainID
+                    algorandWalletConnectV1ChainID,
+                    algorandWalletConnectV1TestNetChainID
                 ]
             case .mainnet:
                 return [
-                    algorandWalletConnectChainID,
-                    algorandWalletConnectMainNetChainID
+                    algorandWalletConnectV1ChainID,
+                    algorandWalletConnectV1MainNetChainID
                 ]
             }
+        }
+
+        /// WC v2
+        var allowedChainReference: String {
+            switch self {
+            case .testnet:
+                return algorandWalletConnectV2TestNetChainReference
+            case .mainnet:
+                return algorandWalletConnectV2MainNetChainReference
+            }
+        }
+
+        var isMainnet: Bool {
+            return self == .mainnet
+        }
+        
+        var isTestnet: Bool {
+            return self == .testnet
         }
     }
 }

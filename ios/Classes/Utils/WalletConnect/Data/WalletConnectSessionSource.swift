@@ -17,7 +17,7 @@
 
 import Foundation
 
-class WalletConnectSessionSource {
+final class WalletConnectSessionSource {
     static let sessionLimit = 30
 
     var sessions: [String: WCSession]? {
@@ -119,7 +119,6 @@ extension WalletConnectSessionSource {
     func resetAllSessions() {
         wcSessionList = nil
         WCSessionList.clear(entity: WCSessionList.entityName)
-        WCSessionHistory.clear(entity: WCSessionHistory.entityName)
     }
 
     private func syncSessions() {

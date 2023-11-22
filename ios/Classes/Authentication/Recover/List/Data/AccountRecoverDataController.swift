@@ -17,8 +17,7 @@
 
 import Foundation
 
-class AccountRecoverDataController: NSObject {
-
+final class AccountRecoverDataController: NSObject {
     weak var delegate: AccountRecoverDataControllerDelegate?
 
     private let sharedDataController: SharedDataController
@@ -79,7 +78,8 @@ class AccountRecoverDataController: NSObject {
                     isWatchAccount: false,
                     ledgerDetail: sameAccount.ledgerDetail,
                     rekeyDetail: sameAccount.rekeyDetail,
-                    preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+                    preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+                    isBackedUp: true
                 )
             } else {
                 delegate?.accountRecoverDataController(self, didFailRecoveringWith: .alreadyExist)
@@ -90,7 +90,8 @@ class AccountRecoverDataController: NSObject {
                 address: address,
                 name: address.shortAddressDisplay,
                 isWatchAccount: false,
-                preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
+                preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+                isBackedUp: true
             )
         }
     }

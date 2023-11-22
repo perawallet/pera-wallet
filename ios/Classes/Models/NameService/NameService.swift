@@ -67,7 +67,8 @@ final class NameService:
         let localAccount = AccountInformation(
             address: address,
             name: name,
-            isWatchAccount: false
+            isWatchAccount: false,
+            isBackedUp: true
         )
         let aRawAccount = Account(localAccount: localAccount)
         return AccountHandle(

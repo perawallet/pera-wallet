@@ -30,16 +30,11 @@ where ScriptMessage: InAppBrowserScriptMessage {
         return [ currentUserAgent, versionUserAgent ].compound(" ")
     }
 
-    private let destination: DiscoverDestination
+    var destination: DiscoverDestination {
+        didSet { loadPeraURL() }
+    }
 
     deinit {
-        /// <note>
-        /// Super deinit handles else condition.
-        if #unavailable(iOS 14) {
-            let messages = DiscoverInAppBrowserScriptMessage.allCases
-            userContentController.removeScriptMessageHandlers(forMessages: messages)
-        }
-
         stopObservingNotifications()
     }
 
@@ -218,6 +213,8 @@ extension DiscoverInAppBrowserScreen {
             guard let self else { return }
 
             switch event {
+            case .goBack:
+                self.popScreen()
             case .addToFavorites(let dappDetails):
                 self.addToFavorites(dappDetails)
             case .removeFromFavorites(let dappDetails):

@@ -87,7 +87,7 @@ extension Formatter {
     }
 
     static func decimalFormatter(
-        maximumFractionDigits: Int,
+        maximumFractionDigits: Int = 0,
         groupingSeparator: String? = nil
     ) -> NumberFormatter {
         let formatter = NumberFormatter()

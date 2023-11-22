@@ -40,6 +40,6 @@ enum AppLaunchUIState {
         error: DeepLinkParser.Error? = nil
     )
     case deeplink(DeepLinkParser.Screen)
-    case walletConnectSessionRequest(WalletConnectorPreferences)
+    case walletConnectSessionRequest(WalletConnectSessionCreationPreferences)
     case bottomWarning(BottomWarningViewConfigurator)
 }

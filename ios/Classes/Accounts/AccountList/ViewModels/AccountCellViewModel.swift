@@ -19,6 +19,7 @@ import UIKit
 
 final class AccountCellViewModel {
     private(set) var accountImageTypeImage: UIImage?
+    private(set) var accountImageTypeBottomRightBadge: UIImage?
     private(set) var name: String?
     private(set) var detail: String?
     private(set) var attributedDetail: NSAttributedString?
@@ -85,5 +86,16 @@ extension AccountCellViewModel {
 
     private func bindAccountImageTypeImage(_ account: Account) {
         accountImageTypeImage = account.typeImage
+
+        bindAccountImageTypeBottomRightBadge(account)
+    }
+
+    private func bindAccountImageTypeBottomRightBadge(_ account: Account) {
+        guard !account.isBackedUp else {
+            accountImageTypeBottomRightBadge = nil
+            return
+        }
+
+        accountImageTypeBottomRightBadge = "circle-badge-warning".uiImage
     }
 }

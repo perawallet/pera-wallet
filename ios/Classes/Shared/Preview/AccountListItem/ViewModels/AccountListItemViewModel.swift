@@ -24,11 +24,12 @@ struct AccountListItemViewModel:
     PortfolioViewModel,
     BindableViewModel,
     Hashable {
-
     private(set) var address: String?
     private(set) var authorization: AccountAuthorization?
+    private(set) var isBackedUp: Bool?
 
     private(set) var icon: ImageSource?
+    private(set) var iconBottomRightBadge: Image?
     private(set) var title: AccountPreviewTitleViewModel?
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
@@ -51,6 +52,7 @@ extension AccountListItemViewModel {
             address = accountPortfolioItem.accountValue.value.address
             authorization = accountPortfolioItem.accountValue.value.authorization
             currencyFormatter = accountPortfolioItem.currencyFormatter
+            isBackedUp = accountPortfolioItem.accountValue.value.isBackedUp
 
             bindIcon(accountPortfolioItem)
             bindTitle(accountPortfolioItem)
@@ -111,6 +113,16 @@ extension AccountListItemViewModel {
             bindIcon(nameServiceAccountListItem)
             bindTitle(nameServiceAccountListItem)
         }
+
+        if let wcSessionDetailConnectedAccountItem = model as? WCSessionDetailConnectedAccountItem {
+            address = wcSessionDetailConnectedAccountItem.account.value.address
+            isBackedUp = wcSessionDetailConnectedAccountItem.account.value.isBackedUp
+
+            bindIcon(wcSessionDetailConnectedAccountItem)
+            bindTitle(wcSessionDetailConnectedAccountItem)
+            bindAccessory(wcSessionDetailConnectedAccountItem)
+            bindAccessoryIcon(wcSessionDetailConnectedAccountItem)
+        }
     }
 }
 
@@ -120,7 +132,7 @@ extension AccountListItemViewModel {
     ) {
         bindIcon(accountPortfolioItem.accountValue.value)
     }
-    
+
     mutating func bindTitle(
         _ accountPortfolioItem: AccountPortfolioItem
     ) {
@@ -173,6 +185,8 @@ extension AccountListItemViewModel {
         _ account: Account
     ) {
         icon = account.typeImage
+
+        bindIconBottomRightBadge(account)
     }
     
     mutating func bindPrimaryAccessory(
@@ -233,7 +247,11 @@ extension AccountListItemViewModel {
     mutating func bindIcon(
         _ iconWithShortAddressDraft: IconWithShortAddressDraft
     ) {
-        icon = iconWithShortAddressDraft.account.typeImage
+        let account = iconWithShortAddressDraft.account
+
+        icon = account.typeImage
+
+        bindIconBottomRightBadge(account)
     }
 
     mutating func bindTitle(
@@ -249,7 +267,11 @@ extension AccountListItemViewModel {
     mutating func bindIcon(
         _ accountOrderingDraft: AccountOrderingDraft
     ) {
-        icon = accountOrderingDraft.account.typeImage
+        let account = accountOrderingDraft.account
+        
+        icon = account.typeImage
+
+        bindIconBottomRightBadge(account)
     }
 
     mutating func bindTitle(
@@ -266,6 +288,15 @@ extension AccountListItemViewModel {
 }
 
 extension AccountListItemViewModel {
+    mutating func bindIconBottomRightBadge(_ account: Account) {
+        guard !account.isBackedUp else {
+            iconBottomRightBadge = nil
+            return
+        }
+
+        iconBottomRightBadge = "circle-badge-warning"
+    }
+
     mutating func bindTitle(
         _ account: Account
     ) {
@@ -313,9 +344,9 @@ extension AccountListItemViewModel {
 
 extension AccountListItemViewModel {
     mutating func bindIcon(
-        _ mameServiceAccountListItem: NameServiceAccountListItem
+        _ nameServiceAccountListItem: NameServiceAccountListItem
     ) {
-        icon = mameServiceAccountListItem.icon
+        icon = nameServiceAccountListItem.icon
     }
 
     mutating func bindTitle(
@@ -325,6 +356,105 @@ extension AccountListItemViewModel {
             primaryTitle: nameServiceAccountListItem.title,
             secondaryTitle: nameServiceAccountListItem.subtitle
         )
+    }
+}
+
+extension AccountListItemViewModel {
+    mutating func bindIcon(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        bindIcon(wcSessionDetailConnectedAccountItem.account.value)
+    }
+
+    mutating func bindTitle(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        bindTitle(wcSessionDetailConnectedAccountItem.account.value)
+    }
+
+    mutating func bindAccessory(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        let sessionDraft = wcSessionDetailConnectedAccountItem.session
+
+        var networkForPrimaryAccessory: ALGAPI.Network?
+        var networkForSecondaryAccessory: ALGAPI.Network?
+
+        if let wcV1Session = sessionDraft.wcV1Session {
+            let chainID = wcV1Session.walletMeta?.chainId
+
+            switch chainID {
+            case algorandWalletConnectV1ChainID:
+                networkForPrimaryAccessory = .mainnet
+                networkForSecondaryAccessory = .testnet
+            case algorandWalletConnectV1TestNetChainID:
+                networkForPrimaryAccessory = .testnet
+            case algorandWalletConnectV1MainNetChainID:
+                networkForPrimaryAccessory = .mainnet
+            default: break
+            }
+        }
+
+        if let wcV2Session = sessionDraft.wcV2Session {
+            let networks = wcV2Session.accounts.compactMap { account in
+                if account.address == wcSessionDetailConnectedAccountItem.account.value.address {
+                    let chainReference = account.reference
+                    return ALGAPI.Network(chainReference: chainReference)
+                }
+
+                return nil
+            }
+
+            if networks.isNonEmpty {
+                if networks.isSingular {
+                    let network = networks.first!
+                    networkForPrimaryAccessory = network
+                    networkForSecondaryAccessory = nil
+                } else {
+                    networkForPrimaryAccessory = .mainnet
+                    networkForSecondaryAccessory = .testnet
+                }
+            }
+        }
+
+        primaryAccessory = getAccessory(for: networkForPrimaryAccessory)
+        secondaryAccessory = getAccessory(for: networkForSecondaryAccessory)
+    }
+
+    private func getAccessory(for network: ALGAPI.Network?) ->  EditText? {
+        switch network {
+        case .mainnet: return getMainnetAccessory()
+        case .testnet: return getTestnetAccessory()
+        default: return nil
+        }
+    }
+
+    private func getMainnetAccessory() -> EditText {
+        var attributes = Typography.captionBoldAttributes(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+        attributes.insert(.textColor(Colors.Helpers.positive))
+
+        let text =  "• MAINNET".attributed(attributes)
+        return .attributedString(text)
+    }
+
+    private func getTestnetAccessory() -> EditText {
+        var attributes = Typography.captionBoldAttributes(
+            alignment: .right,
+            lineBreakMode: .byTruncatingTail
+        )
+        attributes.insert(.textColor(Colors.Other.Global.yellow600))
+
+        let text =  "• TESTNET".attributed(attributes)
+        return .attributedString(text)
+    }
+
+    private mutating func bindAccessoryIcon(
+        _ wcSessionDetailConnectedAccountItem: WCSessionDetailConnectedAccountItem
+    ) {
+        bindAccessoryIcon(isValid: wcSessionDetailConnectedAccountItem.account.isAvailable)
     }
 }
 
@@ -353,6 +483,7 @@ extension AccountListItemViewModel {
     ) -> Bool {
         return
             lhs.address == rhs.address &&
+            lhs.isBackedUp == rhs.isBackedUp &&
             lhs.authorization == rhs.authorization &&
             lhs.title == rhs.title &&
             lhs.primaryAccessory == rhs.primaryAccessory &&
@@ -384,7 +515,7 @@ struct CustomAccountListItem {
     }
 
     /// <todo>
-    /// We should check & remove `AccountNameViewModel` & `AuthAccountNameViewModel`.
+    /// We should check & remove `AccountNameViewModel`.
     init(
         _ viewModel: AccountNameViewModel,
         address: String?
@@ -393,18 +524,6 @@ struct CustomAccountListItem {
 
         icon = viewModel.image
         title = viewModel.name
-        subtitle = nil
-        accessory = nil
-    }
-    
-    init(
-        _ viewModel: AuthAccountNameViewModel,
-        address: String?
-    ) {
-        self.address = address
-
-        icon = viewModel.image
-        title = viewModel.address
         subtitle = nil
         accessory = nil
     }
@@ -445,4 +564,9 @@ struct NameServiceAccountListItem {
         self.title = title
         self.subtitle = subtitle
     }
+}
+
+struct WCSessionDetailConnectedAccountItem {
+    let account: AccountHandle
+    let session: WCSessionDraft
 }

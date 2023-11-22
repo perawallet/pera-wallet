@@ -34,7 +34,8 @@ final class NotificationsViewController: BaseViewController {
 
     private lazy var deeplinkParser = DeepLinkParser(
         api: api!,
-        sharedDataController: sharedDataController
+        sharedDataController: sharedDataController,
+        peraConnect: peraConnect
     )
 
     override func viewDidLoad() {

@@ -20,8 +20,11 @@ import UIKit
 enum AccountSetupFlow: Equatable {
     case initializeAccount(mode: AccountSetupMode)
     case addNewAccount(mode: AccountSetupMode)
+    case backUpAccount(needsAccountSelection: Bool)
     case none
-    
+}
+
+extension AccountSetupFlow {
     var rekeyingAccount: Account? {
         switch self {
         case .addNewAccount(let mode):
@@ -34,21 +37,27 @@ enum AccountSetupFlow: Equatable {
     }
 }
 
-enum AccountSetupMode: Equatable {
-    case add(type: AccountAdditionType)
-    case recover(type: RecoverType)
-    case rekey(account: Account)
-    case none
+extension AccountSetupFlow {
+    var isBackUpAccount: Bool {
+        if case .backUpAccount = self {
+            return true
+        }
+
+        return false
+    }
 }
 
-enum AccountAdditionType {
-    case create
+enum AccountSetupMode: Equatable {
+    case add
+    case recover(type: RecoverType)
+    case rekey(account: Account)
     case watch
     case none
 }
 
 enum RecoverType: Equatable {
     case passphrase
+    case qr
     case ledger
     case importFromWeb
     case none

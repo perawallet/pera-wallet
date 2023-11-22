@@ -23,6 +23,19 @@ enum WCTransactionErrorResponse: Error {
     case unsupported(Support)
     case invalidInput(Invalid)
 
+    /// <mark>: WC v2
+    case unauthorizedChain(String)
+    case unauthorizedMethod(String)
+    case unsupportedNamespace
+    case unsupportedChains
+    case unsupportedMethods
+    case noSessionForTopic
+    case userRejectedChains(
+        requestedNetwork: String,
+        expectedNetwork: String
+    )
+    case generic(Error)
+
     var message: String {
         switch self {
         case let .rejected(type):
@@ -85,6 +98,24 @@ enum WCTransactionErrorResponse: Error {
             case .none:
                 return "wallet-connect-transaction-error-invalid".localized
             }
+        case .unauthorizedChain(let chain):
+            return "wallet-connect-v2-unauthorized-chain-error-message".localized(params: chain)
+        case .unauthorizedMethod(let method):
+            return "wallet-connect-v2-unauthorized-method-error-message".localized(params: method)
+        case .unsupportedNamespace:
+            return "wallet-connect-unsupported-namespace-error-message".localized
+        case .unsupportedChains:
+            return "wallet-connect-unsupported-chains-error-message".localized
+        case .unsupportedMethods:
+            return "wallet-connect-unsupported-methods-error-message".localized
+        case .noSessionForTopic:
+            return "wallet-connect-no-session-for-topic-error-message".localized
+        case .userRejectedChains(let requestedNetwork, let expectedNetwork):
+            return "wallet-connect-v2-user-rejected-chains-error-message".localized(
+                params: requestedNetwork, expectedNetwork
+            )
+        case .generic(let error):
+            return error.localizedDescription
         }
     }
 }
@@ -117,6 +148,22 @@ extension WCTransactionErrorResponse: RawRepresentable {
             return 4200
         case .invalidInput:
             return 4300
+        case .noSessionForTopic:
+            return 7001
+        case .unauthorizedChain:
+            return 3005
+        case .unauthorizedMethod:
+            return 3001
+        case .unsupportedNamespace:
+            return 5104
+        case .unsupportedChains:
+            return 5100
+        case .unsupportedMethods:
+            return 5101
+        case .userRejectedChains:
+            return 5001
+        case .generic:
+            return 9999
         }
     }
 }

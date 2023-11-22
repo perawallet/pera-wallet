@@ -21,6 +21,7 @@ import MacaroonURLImage
 
 final class AccountNameViewModel {
     private(set) var image: ImageSource?
+    private(set) var imageBottomRightBadge: Image?
     private(set) var name: String?
     
     init(account: Account, hasImage: Bool = true) {
@@ -42,20 +43,36 @@ final class AccountNameViewModel {
 extension AccountNameViewModel {
     private func bindImage(from account: Account, with hasImage: Bool) {
         if !hasImage {
+            image = nil
+            imageBottomRightBadge = nil
             return
         }
 
         image = account.typeImage
+
+        bindImageBottomRightBadge(from: account)
     }
 
     private func bindImage(from contact: Contact, with hasImage: Bool) {
+        imageBottomRightBadge = nil
+
         if !hasImage {
+            image = nil
             return
         }
 
         image = ContactImageProcessor(
             data: contact.image
         ).process()
+    }
+
+    private func bindImageBottomRightBadge(from account: Account) {
+        guard !account.isBackedUp else {
+            imageBottomRightBadge = nil
+            return
+        }
+
+        imageBottomRightBadge = "circle-badge-warning"
     }
 
     private func bindName(from account: Account, with hasImage: Bool) {
@@ -89,5 +106,6 @@ extension AccountNameViewModel {
 
     private func bindImage(from nameService: NameService) {
         image = DefaultURLImageSource(url: URL(string: nameService.service.logo))
+        imageBottomRightBadge = nil
     }
 }

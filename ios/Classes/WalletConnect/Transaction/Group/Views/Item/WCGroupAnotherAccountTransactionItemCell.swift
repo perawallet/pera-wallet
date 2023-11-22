@@ -17,10 +17,10 @@
 
 import Foundation
 
-class WCGroupAnotherAccountTransactionItemCell: BaseCollectionViewCell<WCGroupTransactionItemView> {
-
+final class WCGroupAnotherAccountTransactionItemCell: BaseCollectionViewCell<WCGroupTransactionItemView> {
     override func prepareLayout() {
         super.prepareLayout()
+
         contextView.removeAccountInformation()
     }
 

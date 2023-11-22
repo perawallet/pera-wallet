@@ -214,6 +214,7 @@ extension DiscoverDappDetailScreen {
 // MARK: Events
 extension DiscoverExternalInAppBrowserScreen {
     enum Event {
+        case goBack
         case addToFavorites(DiscoverFavouriteDappDetails)
         case removeFromFavorites(DiscoverFavouriteDappDetails)
     }

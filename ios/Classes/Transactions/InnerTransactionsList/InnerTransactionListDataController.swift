@@ -47,6 +47,9 @@ enum InnerTransactionListItem: Hashable {
     case appCallTransaction(
         InnerTransactionContainer<AppCallInnerTransactionPreviewViewModel>
     )
+    case keyRegTransaction(
+        InnerTransactionContainer<KeyRegInnerTransactionPreviewViewModel>
+    )
 }
 
 enum InnerTransactionListDataControllerEvent {

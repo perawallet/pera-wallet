@@ -163,6 +163,8 @@ extension InnerTransactionListViewController {
             openTransactionDetail(item.transaction)
         case .assetConfigTransaction(let item):
             openTransactionDetail(item.transaction)
+        case .keyRegTransaction(let item):
+            openKeyRegTransactionDetail(item.transaction)
         default:
             break
         }
@@ -178,6 +180,18 @@ extension InnerTransactionListViewController {
                 transaction: transaction,
                 transactionTypeFilter: draft.type,
                 assets: getAssetDetailForTransactionType(transaction)
+            ),
+            by: .present
+        )
+    }
+
+    private func openKeyRegTransactionDetail(
+        _ transaction: Transaction
+    ) {
+        open(
+            .keyRegTransactionDetail(
+                account: dataController.draft.account,
+                transaction: transaction
             ),
             by: .present
         )

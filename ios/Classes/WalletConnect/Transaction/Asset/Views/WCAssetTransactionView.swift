@@ -18,8 +18,7 @@
 import UIKit
 import MacaroonUIKit
 
-class WCAssetTransactionView: WCSingleTransactionView {
-
+final class WCAssetTransactionView: WCSingleTransactionView {
     weak var delegate: WCAssetTransactionViewDelegate?
 
     private lazy var theme = Theme()

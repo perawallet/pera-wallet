@@ -109,8 +109,8 @@ extension ASADetailQuickActionsView {
             $0.trailing == 0
         }
 
-        addBuyAction(theme)
         addSwapAction(theme)
+        addBuyAction(theme)
         addSendAction(theme)
         addReceiveAction(theme)
     }

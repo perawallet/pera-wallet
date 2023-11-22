@@ -125,8 +125,12 @@ extension TransactionDetailViewModel {
             closeToViewIsHidden = true
             transactionAmountViewMode = nil
             bindReward(for: transaction)
+        } else if transaction.keyRegTransaction != nil {
+            closeAmountViewIsHidden = true
+            closeToViewIsHidden = true
+            transactionAmountViewMode = nil
+            bindReward(for: transaction)
         }
-
 
         bindTransactionIDTitle(transaction)
         transactionID = transaction.id ?? transaction.parentID
@@ -203,6 +207,10 @@ extension TransactionDetailViewModel {
             closeToViewIsHidden = true
             bindReward(for: transaction)
         } else if transaction.applicationCall != nil {
+            closeAmountViewIsHidden = true
+            closeToViewIsHidden = true
+            bindReward(for: transaction)
+        } else if transaction.keyRegTransaction != nil {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
             bindReward(for: transaction)

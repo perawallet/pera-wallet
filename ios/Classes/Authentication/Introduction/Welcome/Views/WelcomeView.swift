@@ -27,8 +27,9 @@ final class WelcomeView:
     private lazy var titleLabel = UILabel()
     private lazy var stackView = UIStackView()
     private lazy var termsAndConditionsTextView = UITextView()
-    private lazy var addAccountView = AccountTypeView()
-    private lazy var recoverAccountView = AccountTypeView()
+    private lazy var createAccountView = AccountTypeView()
+    private lazy var importAccountView = AccountTypeView()
+    private lazy var watchAccountView = AccountTypeView()
 
     func customize(_ theme: WelcomeViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -43,15 +44,21 @@ final class WelcomeView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func setListeners() {
-        addAccountView.addTarget(
+        createAccountView.addTarget(
             self,
-            action: #selector(notifyDelegateToAddAccount),
+            action: #selector(notifyDelegateToCreateAccount),
             for: .touchUpInside
         )
 
-        recoverAccountView.addTarget(
+        importAccountView.addTarget(
             self,
-            action: #selector(notifyDelegateToRecoverAccount),
+            action: #selector(notifyDelegateToImportAccount),
+            for: .touchUpInside
+        )
+        
+        watchAccountView.addTarget(
+            self,
+            action: #selector(notifyDelegateToWatchAccount),
             for: .touchUpInside
         )
     }
@@ -62,20 +69,26 @@ final class WelcomeView:
 
     func bindData(_ viewModel: WelcomeViewModel?) {
         titleLabel.text = viewModel?.title
-        addAccountView.bindData(viewModel?.addAccountViewModel)
-        recoverAccountView.bindData(viewModel?.recoverAccountViewModel)
+        createAccountView.bindData(viewModel?.createAccountViewModel)
+        importAccountView.bindData(viewModel?.importAccountViewModel)
+        watchAccountView.bindData(viewModel?.watchAccountViewModel)
     }
 }
 
 extension WelcomeView {
     @objc
-    private func notifyDelegateToAddAccount() {
-        delegate?.welcomeViewDidSelectAdd(self)
+    private func notifyDelegateToCreateAccount() {
+        delegate?.welcomeViewDidSelectCreate(self)
     }
 
     @objc
-    private func notifyDelegateToRecoverAccount() {
-        delegate?.welcomeViewDidSelectRecover(self)
+    private func notifyDelegateToImportAccount() {
+        delegate?.welcomeViewDidSelectImport(self)
+    }
+    
+    @objc
+    private func notifyDelegateToWatchAccount() {
+        delegate?.welcomeViewDidSelectWatch(self)
     }
 }
 
@@ -120,10 +133,12 @@ extension WelcomeView {
             $0.bottom.lessThanOrEqualTo(termsAndConditionsTextView.snp.top).offset(-theme.verticalInset)
         }
 
-        addAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(addAccountView)
-        recoverAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(recoverAccountView)
+        createAccountView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(createAccountView)
+        importAccountView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(importAccountView)
+        watchAccountView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(watchAccountView)
     }
 }
 
@@ -140,7 +155,8 @@ extension WelcomeView: UITextViewDelegate {
 }
 
 protocol WelcomeViewDelegate: AnyObject {
-    func welcomeViewDidSelectAdd(_ welcomeView: WelcomeView)
-    func welcomeViewDidSelectRecover(_ welcomeView: WelcomeView)
+    func welcomeViewDidSelectCreate(_ welcomeView: WelcomeView)
+    func welcomeViewDidSelectImport(_ welcomeView: WelcomeView)
+    func welcomeViewDidSelectWatch(_ welcomeView: WelcomeView)
     func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL)
 }

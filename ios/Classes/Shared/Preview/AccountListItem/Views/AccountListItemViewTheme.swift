@@ -24,6 +24,7 @@ struct AccountListItemViewTheme:
     LayoutSheet {
     var icon: ImageStyle
     var iconSize: LayoutSize
+    var iconBottomRightBadgePaddings: LayoutPaddings
     var horizontalPadding: LayoutMetric
     var contentMinWidthRatio: LayoutMetric
     var title: PrimaryTitleViewTheme
@@ -37,6 +38,7 @@ struct AccountListItemViewTheme:
             .contentMode(.scaleAspectFit)
         ]
         self.iconSize = (40, 40)
+        self.iconBottomRightBadgePaddings = (20, 20, .noMetric, .noMetric)
         self.horizontalPadding = 16
         self.contentMinWidthRatio = 0.25
         self.title = AccountPreviewPrimaryTitleViewTheme(family)

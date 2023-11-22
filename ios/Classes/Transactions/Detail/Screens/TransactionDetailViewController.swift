@@ -239,43 +239,6 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 }
 
-enum TransferType {
-    case sent
-    case received
-}
-
-enum AlgoExplorerType {
-    case algoexplorer
-    case goalseeker
-
-    func transactionURL(with id: String, in network: ALGAPI.Network) -> URL? {
-        switch network {
-        case .testnet:
-            return testNetTransactionURL(with: id)
-        case .mainnet:
-            return mainNetTransactionURL(with: id)
-        }
-    }
-
-    private func testNetTransactionURL(with id: String) -> URL? {
-        switch self {
-        case .algoexplorer:
-            return URL(string: "https://testnet.algoexplorer.io/tx/\(id)")
-        case .goalseeker:
-            return URL(string: "https://goalseeker.purestake.io/algorand/testnet/transaction/\(id)")
-        }
-    }
-
-    private func mainNetTransactionURL(with id: String) -> URL? {
-        switch self {
-        case .algoexplorer:
-            return URL(string: "https://algoexplorer.io/tx/\(id)")
-        case .goalseeker:
-            return URL(string: "https://goalseeker.purestake.io/algorand/mainnet/transaction/\(id)")
-        }
-    }
-}
-
 extension TransactionDetailViewController {
     private final class TooltipDisplayStore: Storable {
         typealias Object = Any

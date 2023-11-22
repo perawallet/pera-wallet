@@ -24,12 +24,14 @@ protocol AccountAssetListDataController: AnyObject {
     var account: AccountHandle { get }
 
     func load(query: AccountAssetListQuery?)
+    func reload()
     func reloadIfNeededForPendingAssetRequests()
 }
 
 enum AccountAssetsSection:
     Int,
     Hashable {
+    case accountNotBackedUpWarning
     case portfolio
     case quickActions
     case assets
@@ -37,6 +39,7 @@ enum AccountAssetsSection:
 }
 
 enum AccountAssetsItem: Hashable {
+    case accountNotBackedUpWarning(AccountDetailAccountNotBackedUpWarningModel)
     case portfolio(AccountPortfolioViewModel)
     case watchPortfolio(WatchAccountPortfolioViewModel)
     case search

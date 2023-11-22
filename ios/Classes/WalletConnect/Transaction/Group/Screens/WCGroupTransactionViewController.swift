@@ -17,14 +17,12 @@
 
 import UIKit
 
-class WCGroupTransactionViewController: BaseViewController {
-
+final class WCGroupTransactionViewController: BaseViewController {
     private lazy var groupTransactionView = WCGroupTransactionView()
 
     private lazy var dataSource = WCGroupTransactionDataSource(
         sharedDataController: sharedDataController,
         transactions: transactions,
-        walletConnector: walletConnector,
         currencyFormatter: currencyFormatter
     )
 
@@ -37,15 +35,18 @@ class WCGroupTransactionViewController: BaseViewController {
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private let transactions: [WCTransaction]
-    private let transactionRequest: WalletConnectRequest
+    private let transactionRequest: WalletConnectRequestDraft
+    private let wcSession: WCSessionDraft
 
     init(
         transactions: [WCTransaction],
-        transactionRequest: WalletConnectRequest,
+        transactionRequest: WalletConnectRequestDraft,
+        session: WCSessionDraft,
         configuration: ViewControllerConfiguration
     ) {
         self.transactions = transactions
         self.transactionRequest = transactionRequest
+        self.wcSession = session
         super.init(configuration: configuration)
         setupObserver()
     }
@@ -99,7 +100,11 @@ extension WCGroupTransactionViewController: WCGroupTransactionLayoutDelegate {
         _ wcGroupTransactionLayout: WCGroupTransactionLayout,
         didSelect transaction: WCTransaction
     ) {
-        presentSingleWCTransaction(transaction, with: transactionRequest)
+        presentSingleWCTransaction(
+            transaction,
+            with: transactionRequest,
+            wcSession: wcSession
+        )
     }
 }
 

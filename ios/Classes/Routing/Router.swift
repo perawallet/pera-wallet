@@ -20,12 +20,12 @@ import MacaroonUIKit
 import MacaroonUtils
 import UIKit
 
-class Router:
+final class Router:
     AssetActionConfirmationViewControllerDelegate,
     NotificationObserver,
     SelectAccountViewControllerDelegate,
     TransactionControllerDelegate,
-    WalletConnectorDelegate
+    PeraConnectObserver
     {
     var notificationObservations: [NSObjectProtocol] = []
     
@@ -198,7 +198,7 @@ class Router:
                     self.route(
                         to: .watchAccountAddition(
                             flow: .addNewAccount(
-                                mode: .add(type: .watch)
+                                mode: .watch
                             ),
                             address: address
                         ),
@@ -375,12 +375,6 @@ class Router:
             queue.asyncAfter(deadline: time) {
                 task()
             }
-        case .buyAlgoWithMoonPay(let draft):
-            route(
-                to: .moonPayIntroduction(draft: draft, delegate: self),
-                from: findVisibleScreen(over: self.rootViewController),
-                by: .present
-            )
         case .accountSelect(let asset):
             launch(tab: .home)
 
@@ -611,8 +605,6 @@ class Router:
             viewController = aViewController
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
-        case let .addAccount(flow):
-            viewController = AddAccountViewController(flow: flow, configuration: configuration)
         case let .recoverAccount(flow):
             viewController = RecoverAccountViewController(flow: flow, configuration: configuration)
         case let .choosePassword(mode, flow):
@@ -622,9 +614,17 @@ class Router:
                 configuration: configuration
             )
         case let .passphraseView(flow, address):
-            viewController = PassphraseBackUpViewController(flow: flow, address: address, configuration: configuration)
-        case let .passphraseVerify(flow):
-            viewController = PassphraseVerifyViewController(flow: flow, configuration: configuration)
+            viewController = PassphraseBackUpViewController(
+                flow: flow,
+                address: address,
+                configuration: configuration
+            )
+        case let .passphraseVerify(flow, address):
+            viewController = PassphraseVerifyViewController(
+                address: address,
+                flow: flow,
+                configuration: configuration
+            )
         case let .accountNameSetup(flow, mode, nameServiceName, accountAddress):
             viewController = AccountNameSetupViewController(
                 flow: flow,
@@ -640,7 +640,10 @@ class Router:
                 configuration: configuration
             )
         case let .qrScanner(canReadWCSession):
-            viewController = QRScannerViewController(canReadWCSession: canReadWCSession, configuration: configuration)
+            viewController = QRScannerViewController(
+                canReadWCSession: canReadWCSession,
+                configuration: configuration
+            )
         case let .qrGenerator(title, draft, isTrackable):
             let qrCreationController = QRCreationViewController(
                 draft: draft,
@@ -709,6 +712,15 @@ class Router:
         case .appCallAssetList(let dataController):
             viewController = AppCallAssetListViewController(
                 dataController: dataController,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                ),
+                configuration: configuration
+            )
+        case .keyRegTransactionDetail(let account, let transaction):
+            viewController = KeyRegTransactionDetailViewController(
+                account: account,
+                transaction: transaction,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
@@ -960,22 +972,22 @@ class Router:
                 selectedAccounts: selectedAccounts,
                 configuration: configuration
             )
-        case let .wcConnection(walletConnectSession, completion):
-            let dataController = WCConnectionAccountListLocalDataController(
+        case let .wcConnection(draft):
+            let dataController = WCSessionConnectionLocalDataController(
+                draft: draft,
                 sharedDataController: appConfiguration.sharedDataController
             )
-            let screen = WCConnectionScreen(
-                walletConnectSession: walletConnectSession,
-                walletConnectSessionConnectionCompletionHandler: completion,
+            let screen = WCSessionConnectionScreen(
+                draft: draft,
                 dataController: dataController,
                 configuration: configuration
             )
             viewController = screen
         case .walletConnectSessionList:
             let dataController = WCSessionListLocalDataController(
-                configuration.sharedDataController,
+                sharedDataController: configuration.sharedDataController,
                 analytics: configuration.analytics,
-                walletConnector: configuration.walletConnector
+                peraConnect: configuration.peraConnect
             )
             viewController = WCSessionListViewController(
                 dataController: dataController,
@@ -988,52 +1000,67 @@ class Router:
                 viewModel,
                 configuration: configuration
             )
-        case let .wcAlgosTransaction(transaction, transactionRequest):
+        case let .wcAlgosTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAlgosTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAssetTransaction(transaction, transactionRequest):
+        case let .wcAssetTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAssetTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAssetAdditionTransaction(transaction, transactionRequest):
+        case let .wcAssetAdditionTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAssetAdditionTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcGroupTransaction(transactions, transactionRequest):
+        case let .wcGroupTransaction(transactions, transactionRequest, wcSession):
             viewController = WCGroupTransactionViewController(
                 transactions: transactions,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAppCall(transaction, transactionRequest):
+        case let .wcAppCall(transaction, transactionRequest, wcSession):
             viewController = WCAppCallTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAssetCreationTransaction(transaction, transactionRequest):
+        case let .wcAssetCreationTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAssetCreationTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAssetReconfigurationTransaction(transaction, transactionRequest):
+        case let .wcAssetReconfigurationTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAssetReconfigurationTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
-        case let .wcAssetDeletionTransaction(transaction, transactionRequest):
+        case let .wcAssetDeletionTransaction(transaction, transactionRequest, wcSession):
             viewController = WCAssetDeletionTransactionViewController(
                 transaction: transaction,
                 transactionRequest: transactionRequest,
+                session: wcSession,
+                configuration: configuration
+            )
+        case let .wcKeyRegTransaction(transaction, transactionRequest, wcSession):
+            viewController = WCKeyRegTransactionViewController(
+                transaction: transaction,
+                transactionRequest: transactionRequest,
+                session: wcSession,
                 configuration: configuration
             )
         case let .jsonDisplay(jsonData, title):
@@ -1121,27 +1148,11 @@ class Router:
             )
             aViewController.delegate = delegate
             viewController = aViewController
-        case let .wcArbitraryDataScreen(data, wcRequest):
+        case let .wcArbitraryDataScreen(data, wcSession):
             viewController = WCArbitraryDataViewController(
                 data: data,
-                wcRequest: wcRequest,
+                wcSession: wcSession,
                 configuration: configuration
-            )
-        case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
-            let currencyFormatter = CurrencyFormatter()
-            let dataSource = WCMainTransactionDataSource(
-                sharedDataController: configuration.sharedDataController,
-                transactions: transactions,
-                transactionRequest: transactionRequest,
-                transactionOption: transactionOption,
-                walletConnector: configuration.walletConnector,
-                currencyFormatter: currencyFormatter
-            )
-            dataSource.load()
-            viewController = WCSingleTransactionRequestScreen(
-                dataSource: dataSource,
-                configuration: configuration,
-                currencyFormatter: currencyFormatter
             )
         case .asaVerificationInfo(let eventHandler):
             let aViewController = AsaVerificationInfoScreen(api: configuration.api)
@@ -1446,33 +1457,6 @@ class Router:
                 eventHandler: eventHandler,
                 api: configuration.api
             )
-        case .exportAccountList(let eventHandler):
-            let dataController = ExportAccountListLocalDataController(
-                sharedDataController: appConfiguration.sharedDataController
-            )
-            let screen = ExportAccountListScreen(
-                dataController: dataController,
-                configuration: configuration
-            )
-            screen.eventHandler = eventHandler
-            viewController = screen
-        case .exportAccountsDomainConfirmation(let hasSingularAccount, let eventHandler):
-            let screen = ExportAccountsDomainConfirmationScreen(
-                theme: .init(hasSingularAccount: hasSingularAccount, .current),
-                api: configuration.api
-            )
-            screen.eventHandler = eventHandler
-            viewController = screen
-        case .exportAccountsConfirmationList(let selectedAccounts, let eventHandler):
-            let dataController = ExportAccountsConfirmationListLocalDataController(
-                selectedAccounts: selectedAccounts
-            )
-            let screen = ExportAccountsConfirmationListScreen(
-                dataController: dataController,
-                configuration: configuration
-            )
-            screen.eventHandler = eventHandler
-            viewController = screen
         case .selectAsset(let dataController, let coordinator, let title, let theme):
             let aViewController = SelectAssetScreen(
                 dataController: dataController,
@@ -1513,10 +1497,6 @@ class Router:
             aViewController.eventHandler = eventHandler
 
             viewController = aViewController
-        case .exportAccountsResult(let accounts, let eventHandler):
-            let screen = ExportsAccountsResultScreen(configuration: configuration, accounts: accounts)
-            screen.eventHandler = eventHandler
-            viewController = screen
         case .discoverSearch(let eventHandler):
             let screen = DiscoverSearchScreen(
                 dataController: DiscoverSearchAPIDataController(
@@ -1886,11 +1866,11 @@ class Router:
             )
         case let .removeAccount(account, eventHandler):
             let sharedDataController = appConfiguration.sharedDataController
-            let walletConnector = appConfiguration.walletConnector
+            let peraConnect = appConfiguration.peraConnect
             let uiSheet = RemoveAccountSheet(
                 account: account,
                 sharedDataController: sharedDataController,
-                walletConnector: walletConnector,
+                peraConnect: peraConnect,
                 eventHandler: eventHandler
             )
             viewController = UISheetActionScreen(
@@ -1903,8 +1883,124 @@ class Router:
                 destination: destination,
                 configuration: configuration
             )
-        }
+        case let .extendWCSessionValidity(wcV2Session, eventHandler):
+            let uiSheet = ExtendWCSessionValiditySheet(
+                wcV2Session: wcV2Session,
+                eventHandler: eventHandler
+            )
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenImageTheme(),
+                api: configuration.api
+            )
+        case let .wcAdvancedPermissionsInfo(eventHandler):
+            let uiSheet = WCAdvancedPermissionsInfoSheet(eventHandler: eventHandler)
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: UISheetActionScreenCommonTheme(),
+                api: configuration.api
+            )
+        case let .wcSessionDetail(draft):
+            let wcV2Protocol =
+                configuration.peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol
+            let dataController = WCSessionDetailLocalDataController(
+                sharedDataController: appConfiguration.sharedDataController,
+                walletConnectV2Protocol: wcV2Protocol,
+                draft: draft
+            )
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = WCSessionDetailScreen(
+                dataController: dataController,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
+        case let .wcSessionConnectionSuccessful(draft, eventHandler):
+            let pairExpiryDate = draft.wcV2Session.unwrap {
+                let wcV2Protocol =
+                    configuration.peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol
+                let pairing = wcV2Protocol.getPairing(for: $0.pairingTopic)
+                return pairing?.expiryDate
+            }
+            let uiSheet = WCSessionConnectionSuccessfulSheet(
+                draft: draft,
+                pairExpiryDate: pairExpiryDate,
+                eventHandler: eventHandler
+            )
+            var theme = UISheetActionScreenImageTheme()
+            theme.spacingBetweenTitleAndBody = 12
+            theme.infoIcon = []
+            theme.spacingBetweeenInfoIconAndInfoMessage = 0
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: theme,
+                api: configuration.api
+            )
+        case let .wcTransactionSignSuccessful(draft, eventHandler):
+            let pairExpiryDate = draft.wcV2Session.unwrap {
+                let wcV2Protocol =
+                    configuration.peraConnect.walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol
+                let pairing = wcV2Protocol.getPairing(for: $0.pairingTopic)
+                return pairing?.expiryDate
+            }
+            let uiSheet = WCTransactionSignSuccessfulSheet(
+                draft: draft,
+                pairExpiryDate: pairExpiryDate,
+                eventHandler: eventHandler
+            )
+            var theme = UISheetActionScreenImageTheme()
+            theme.spacingBetweenTitleAndBody = 12
+            theme.infoIcon = []
+            theme.spacingBetweeenInfoIconAndInfoMessage = 0
+            viewController = UISheetActionScreen(
+                sheet: uiSheet,
+                theme: theme,
+                api: configuration.api
+            )
+        case let .backUpAccountSelection(eventHandler):
+            var theme = AccountSelectionListScreenTheme()
+            theme.listContentTopInset = 16
 
+            let listView: UICollectionView = {
+                let collectionViewLayout = BackUpAccountSelectionListLayout.build()
+                let collectionView = UICollectionView(
+                    frame: .zero,
+                    collectionViewLayout: collectionViewLayout
+                )
+                collectionView.showsVerticalScrollIndicator = false
+                collectionView.showsHorizontalScrollIndicator = false
+                collectionView.alwaysBounceVertical = true
+                collectionView.backgroundColor = .clear
+                return collectionView
+            }()
+
+            let dataController = BackUpAccountSelectionListLocalDataController(sharedDataController: configuration.sharedDataController)
+
+            let dataSource = BackUpAccountSelectionListDataSource(dataController)
+            let diffableDataSource = UICollectionViewDiffableDataSource<BackUpAccountSelectionListSectionIdentifier, BackUpAccountSelectionListItemIdentifier>(
+                collectionView: listView,
+                cellProvider: dataSource.getCellProvider()
+            )
+            diffableDataSource.supplementaryViewProvider = dataSource.getSupplementaryViewProvider(diffableDataSource)
+            dataSource.registerSupportedCells(listView)
+            dataSource.registerSupportedSupplementaryViews(listView)
+
+            viewController = AccountSelectionListScreen(
+                navigationBarTitle: "title-select-account".localized,
+                listView: listView,
+                dataController: dataController,
+                listLayout: BackUpAccountSelectionListLayout(
+                    dataSource: diffableDataSource,
+                    itemDataSource: dataController
+                ),
+                listDataSource: diffableDataSource,
+                theme: theme,
+                eventHandler: eventHandler,
+                configuration: configuration
+            )
+
+        }
         return viewController as? T
     }
     // swiftlint:enable function_body_length
@@ -2017,10 +2113,97 @@ extension Router {
 }
 
 extension Router {
-    func walletConnector(
-        _ walletConnector: WalletConnector,
+    private func startObservingNotifications() {
+        startObservingPeraConnectEvents()
+        startObservingWCSessionConnectionRequestNotification()
+    }
+
+    private func startObservingPeraConnectEvents() {
+        appConfiguration.peraConnect.add(self)
+    }
+
+    private func startObservingWCSessionConnectionRequestNotification() {
+        observe(notification: ALGPeraConnect.didReceiveSessionRequestNotification) {
+            [weak self] notification in
+            guard let self else { return }
+
+            let preferencesKey = ALGPeraConnect.sessionRequestPreferencesKey
+            let preferences = notification.userInfo?[preferencesKey] as? WalletConnectSessionCreationPreferences
+            guard let preferences else { return }
+
+            let peraConnect = self.appConfiguration.peraConnect
+            peraConnect.connectToSession(with: preferences)
+        }
+    }
+}
+
+extension Router {
+    private func publishQRScannerScreenResetNotification(_ preferences: WalletConnectSessionCreationPreferences) {
+        NotificationCenter.default.post(
+            name: QRScannerViewController.didReset,
+            object: nil,
+            userInfo: [ ALGPeraConnect.sessionRequestPreferencesKey: preferences ]
+        )
+    }
+
+    private func publishQRScannerWCSessionConnectionSuccessfulNotification(_ preferences: WalletConnectSessionCreationPreferences) {
+        NotificationCenter.default.post(
+            name: QRScannerViewController.didConnectWCSessionSuccessfully,
+            object: nil,
+            userInfo: [ ALGPeraConnect.sessionRequestPreferencesKey: preferences ]
+        )
+    }
+}
+
+/// <mark>:  PeraConnectObserver
+extension Router {
+    func peraConnect(
+        _ peraConnect: PeraConnect,
+        didPublish event: PeraConnectEvent
+    ) {
+        switch event {
+        case .shouldStartV1(let session, let preferences, let completion):
+            peraConnectShouldStartV1Session(
+                peraConnect,
+                shouldStart: session,
+                with: preferences,
+                then: completion
+            )
+        case .didConnectToV1(let session, let preferences):
+            peraConnectDidConnectToV1Session(
+                peraConnect,
+                didConnectTo: session,
+                with: preferences
+            )
+        case .didFailToConnectV1(let error, let preferences):
+            peraConnectDidFailToConnectV1(
+                with: error,
+                preferences: preferences
+            )
+        case .didCreateV2SessionFail(let preferences),
+             .didConnectV2SessionFail(let preferences):
+            peraConnectDidFailToConnectV2(preferences)
+        case .proposeSessionV2(let proposal, let preferences):
+            proposeSession(
+                proposal,
+                with: preferences
+            )
+        case .settleSessionV2(let session, let preferences):
+            peraConnectDidSettleSessionV2(
+                session,
+                with: preferences
+            )
+        default: break
+        }
+    }
+}
+
+/// <mark>: WC v1
+extension Router {
+    private func peraConnectShouldStartV1Session(
+        _ peraConnect: PeraConnect,
         shouldStart session: WalletConnectSession,
-        with preferences: WalletConnectorPreferences?,
+        with preferences: WalletConnectSessionCreationPreferences,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         let bannerController = appConfiguration.bannerController
@@ -2029,132 +2212,526 @@ extension Router {
         let sessionChainId = session.chainId(for: api.network)
 
         if !api.network.allowedChainIDs.contains(sessionChainId) {
-            asyncMain { [weak bannerController] in
-                bannerController?.presentErrorBanner(
+            appConfiguration.analytics.track(
+                .wcSessionRejected(
+                    version: .v1,
+                    topic: session.url.topic,
+                    dappName: session.dAppInfo.peerMeta.name,
+                    dappURL: session.dAppInfo.peerMeta.url.absoluteString
+                )
+            )
+            
+            asyncMain {
+                [weak bannerController, weak self] in
+                guard
+                    let bannerController,
+                    let self
+                else {
+                    return
+                }
+
+                bannerController.presentErrorBanner(
                     title: "title-error".localized,
                     message: "wallet-connect-transaction-error-node".localized
+                )
+
+                completion(
+                    session.getDeclinedWalletConnectionInfo(on: api.network)
+                )
+
+                self.publishQRScannerScreenResetNotification(preferences)
+            }
+            return
+        }
+
+        let sharedDataController = appConfiguration.sharedDataController
+        let hasAuthorizedAccount = 
+            sharedDataController.accountCollection.contains(where: \.value.authorization.isAuthorized)
+        if !hasAuthorizedAccount {
+            appConfiguration.analytics.track(
+                .wcSessionRejected(
+                    version: .v1,
+                    topic: session.url.topic,
+                    dappName: session.dAppInfo.peerMeta.name,
+                    dappURL: session.dAppInfo.peerMeta.url.absoluteString
+                )
+            )
+
+            asyncMain {
+                [weak bannerController, weak self] in
+                guard
+                    let bannerController,
+                    let self
+                else {
+                    return
+                }
+                bannerController.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-session-error-no-account".localized
                 )
                 
                 completion(
                     session.getDeclinedWalletConnectionInfo(on: api.network)
                 )
+
+                self.publishQRScannerScreenResetNotification(preferences)
             }
             return
         }
-        
-        let sharedDataController = appConfiguration.sharedDataController
-
-
-        let hasAuthorizedAccount = sharedDataController.accountCollection.contains {
-            $0.value.authorization.isAuthorized
-        }
-
-        if !hasAuthorizedAccount {
-            asyncMain { [weak bannerController] in
-                bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "wallet-connect-session-error-no-account".localized
-                )
-            }
-            return
-        }
-
-        let shouldShowConnectionApproval = preferences?.prefersConnectionApproval ?? true
 
         asyncMain { [weak self] in
             guard let self = self else { return }
-            
+
             let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
-            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-            
+            let transition = BottomSheetTransition(
+                presentingViewController: visibleScreen,
+                interactable: false
+            )
+            let draft = WCSessionConnectionDraft(session: session)
+
             let screen = transition.perform(
-                .wcConnection(
-                    walletConnectSession: session,
-                    completion: completion
-                ),
+                .wcConnection(draft: draft),
                 by: .present
-            ) as? WCConnectionScreen
-            
+            ) as? WCSessionConnectionScreen
+
             screen?.eventHandler = {
                 [weak self, weak screen] event in
-                guard let self,
-                      let screen else {
+                guard
+                    let self,
+                    let screen
+                else {
                     return
                 }
-                
+
                 switch event {
                 case .performCancel:
-                    screen.dismissScreen()
-                case .performConnect:
-                    screen.dismissScreen {
-                        [weak self] in
-                        guard let self = self else { return }
+                    self.appConfiguration.analytics.track(
+                        .wcSessionRejected(
+                            version: .v1,
+                            topic: session.url.topic,
+                            dappName: session.dAppInfo.peerMeta.name,
+                            dappURL: session.dAppInfo.peerMeta.url.absoluteString
+                        )
+                    )
 
-                        if !shouldShowConnectionApproval { return }
+                    asyncMain {
+                        [weak self, weak screen] in
+                        guard
+                            let self,
+                            let screen
+                        else {
+                            return
+                        }
 
-                        let dappName = screen.walletConnectSession.dAppInfo.peerMeta.name
-                        self.presentWCSessionsApprovedModal(dAppName: dappName)
+                        completion(
+                            session.getDeclinedWalletConnectionInfo(on: appConfiguration.api.network)
+                        )
+
+                        screen.dismissScreen()
+
+                        self.publishQRScannerScreenResetNotification(preferences)
+                    }
+                case .performConnect(let accounts):
+                    self.appConfiguration.analytics.track(
+                        .wcSessionApproved(
+                            version: .v1,
+                            topic: session.url.topic,
+                            dappName: session.dAppInfo.peerMeta.name,
+                            dappURL: session.dAppInfo.peerMeta.url.absoluteString,
+                            address: accounts.joined(separator: ","),
+                            totalAccount: accounts.count
+                        )
+                    )
+
+                    asyncMain {
+                        [weak self, weak screen] in
+                        guard
+                            let self,
+                            let screen
+                        else {
+                            return
+                        }
+
+                        completion(
+                            session.getApprovedWalletConnectionInfo(
+                                for: accounts,
+                                on: appConfiguration.api.network
+                            )
+                        )
+
+                        screen.dismiss(animated: true)
+
+                        self.publishQRScannerScreenResetNotification(preferences)
                     }
                 }
             }
-            
+
             self.ongoingTransitions.append(transition)
         }
     }
 
-    func walletConnector(
-        _ walletConnector: WalletConnector,
-        didConnectTo session: WCSession
+    private func peraConnectDidFailToConnectV1(
+        with error: WalletConnectV1Protocol.WCError,
+        preferences: WalletConnectSessionCreationPreferences
     ) {
-        walletConnector.saveConnectedWCSession(session)
-        walletConnector.clearExpiredSessionsIfNeeded()
+        switch error {
+        case .failedToConnect,
+             .failedToCreateSession:
+            asyncMain { [weak self] in
+                guard let self else { return }
+               
+                self.publishQRScannerScreenResetNotification(preferences)
+
+                appConfiguration.bannerController.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-session-invalid-qr-message".localized
+                )
+            }
+        default:
+            break
+        }
+    }
+
+    private func peraConnectDidConnectToV1Session(
+        _ peraConnect: PeraConnect,
+        didConnectTo session: WCSession,
+        with preferences: WalletConnectSessionCreationPreferences
+    ) {
+        let shouldShowConnectionApproval = preferences.prefersConnectionApproval
+        if shouldShowConnectionApproval {
+            let draft = WCSessionDraft(wcV1Session: session)
+
+            /// <note>
+            /// Refactor
+            /// This delay should be removed after refactoring the router.
+            /// A delay has been added to ensure that the screen is not presented
+            /// before the top view controller's view is added to the window's hierarchy.
+            /// If the top view controller's view is not in the hierarchy, UIKit will not
+            /// present the WC Connection Successful screen.
+            /// Error: Attempt to present <*> on <*> (from <*>) whose view is not in the window hierarchy.
+            asyncMain(afterDuration: 0.3) {
+                [weak self] in
+                guard let self else { return }
+                self.openWCSessionConnectionSuccessful(
+                    draft: draft,
+                    preferences: preferences
+                )
+            }
+        }
+
+        appConfiguration.walletConnector.clearExpiredSessionsIfNeeded()
+    }
+}
+
+/// <mark>: WC v2
+extension Router {
+    private func proposeSession(
+        _ sessionProposal: WalletConnectV2SessionProposal,
+        with preferences: WalletConnectSessionCreationPreferences
+    ) {
+        let requiredNamespaces = sessionProposal.requiredNamespaces[WalletConnectNamespaceKey.algorand]
+        let requestedChains = requiredNamespaces?.chains ?? []
+        guard let requiredNamespaces,
+              requestedChains.allSatisfy({ $0.namespace == WalletConnectNamespaceKey.algorand }) else {
+            appConfiguration.analytics.track(
+                .wcSessionRejected(
+                    version: .v2,
+                    topic: sessionProposal.pairingTopic,
+                    dappName: sessionProposal.proposer.name,
+                    dappURL: sessionProposal.proposer.url
+                )
+            )
+
+            publishQRScannerScreenResetNotification(preferences)
+
+            let params = WalletConnectV2RejectSessionConnectionParams(
+                proposalId: sessionProposal.id,
+                reason: .userRejected
+            )
+            appConfiguration.peraConnect.rejectSessionConnection(params)
+            return
+        }
+
+        let hasNetworkMatch = requestedChains.contains { allowedChainReference in
+            return appConfiguration.api.network.allowedChainReference == allowedChainReference.reference
+        }
+        guard hasNetworkMatch else {
+            appConfiguration.analytics.track(
+                .wcSessionRejected(
+                    version: .v2,
+                    topic: sessionProposal.pairingTopic,
+                    dappName: sessionProposal.proposer.name,
+                    dappURL: sessionProposal.proposer.url
+                )
+            )
+
+            asyncMain { [weak self] in
+                guard let self else { return }
+
+                let requestedNetworks = requestedChains.map {
+                    let network = ALGAPI.Network(blockchain: $0)
+                    let networkTitle = network.unwrap(\.rawValue.capitalized) ?? $0.reference
+                    return networkTitle
+                }
+
+                let requestedNetworksTitle = requestedNetworks.joined(separator: ", ")
+                let expectedNetworkTitle = appConfiguration.api.network.rawValue.capitalized
+
+                let error: WCTransactionErrorResponse = .userRejectedChains(
+                    requestedNetwork: requestedNetworksTitle,
+                    expectedNetwork: expectedNetworkTitle
+                )
+
+                appConfiguration.bannerController.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: error.message
+                )
+
+                publishQRScannerScreenResetNotification(preferences)
+
+                let params = WalletConnectV2RejectSessionConnectionParams(
+                    proposalId: sessionProposal.id,
+                    reason: .userRejectedChains
+                )
+                appConfiguration.peraConnect.rejectSessionConnection(params)
+            }
+            return
+        }
+
+        let requestedMethods = requiredNamespaces.methods 
+        let supportsRequestedMethods = WalletConnectMethod.allCases.contains {
+            return requestedMethods.contains($0.rawValue)
+        }
+        guard supportsRequestedMethods else {
+            appConfiguration.analytics.track(
+                .wcSessionRejected(
+                    version: .v2,
+                    topic: sessionProposal.pairingTopic,
+                    dappName: sessionProposal.proposer.name,
+                    dappURL: sessionProposal.proposer.url
+                )
+            )
+
+            publishQRScannerScreenResetNotification(preferences)
+
+            let params = WalletConnectV2RejectSessionConnectionParams(
+                proposalId: sessionProposal.id,
+                reason: .userRejectedMethods
+            )
+            appConfiguration.peraConnect.rejectSessionConnection(params)
+            return
+        }
+
+        let accounts = appConfiguration.sharedDataController.accountCollection
+        guard accounts.contains(where: { $0.value.authorization.isAuthorized }) else {
+            appConfiguration.analytics.track(
+                .wcSessionRejected(
+                    version: .v2,
+                    topic: sessionProposal.pairingTopic,
+                    dappName: sessionProposal.proposer.name,
+                    dappURL: sessionProposal.proposer.url
+                )
+            )
+            
+            asyncMain { [weak self] in
+                guard let self else { return }
+
+                appConfiguration.bannerController.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-session-error-no-account".localized
+                )
+
+                publishQRScannerScreenResetNotification(preferences)
+
+                let params = WalletConnectV2RejectSessionConnectionParams(
+                    proposalId: sessionProposal.id,
+                    reason: .userRejected
+                )
+                appConfiguration.peraConnect.rejectSessionConnection(params)
+            }
+            return
+        }
+
+        let draft = WCSessionConnectionDraft(sessionProposal: sessionProposal)
+
+        asyncMain {
+            [weak self] in
+            guard let self = self else { return }
+
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+            let wcConnectionScreen = transition.perform(
+                .wcConnection(draft: draft),
+                by: .present
+            ) as? WCSessionConnectionScreen
+            wcConnectionScreen?.eventHandler = {
+                [weak self, weak wcConnectionScreen] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .performCancel:
+                    appConfiguration.analytics.track(
+                        .wcSessionRejected(
+                            version: .v2,
+                            topic: sessionProposal.pairingTopic,
+                            dappName: sessionProposal.proposer.name,
+                            dappURL: sessionProposal.proposer.url
+                        )
+                    )
+
+                    asyncMain {
+                        [weak self, weak wcConnectionScreen] in
+                        guard let self else { return }
+
+                        let params = WalletConnectV2RejectSessionConnectionParams(
+                            proposalId: sessionProposal.id,
+                            reason: .userRejected
+                        )
+                        appConfiguration.peraConnect.rejectSessionConnection(params)
+
+                        wcConnectionScreen?.dismissScreen()
+
+                        publishQRScannerScreenResetNotification(preferences)
+                    }
+                case .performConnect(let selectedAccounts):
+                    appConfiguration.analytics.track(
+                        .wcSessionApproved(
+                            version: .v2,
+                            topic: sessionProposal.pairingTopic,
+                            dappName: sessionProposal.proposer.name,
+                            dappURL: sessionProposal.proposer.url,
+                            address: selectedAccounts.joined(separator: ","),
+                            totalAccount: selectedAccounts.count
+                        )
+                    )
+
+                    var sessionNamespaces = SessionNamespaces()
+                    sessionProposal.requiredNamespaces.forEach {
+                        let caip2Namespace = $0.key
+                        guard caip2Namespace == WalletConnectNamespaceKey.algorand else {
+                            return
+                        }
+
+                        let proposalNamespace = $0.value
+
+                        let requestedChains = proposalNamespace.chains
+                        guard let requestedChains else { return }
+                        let chains = requestedChains.filter { allowedChainReference in
+                            return
+                                algorandWalletConnectV2TestNetChainReference == allowedChainReference.reference ||
+                                algorandWalletConnectV2MainNetChainReference == allowedChainReference.reference
+                        }
+
+                        let accounts = Set(
+                            chains.compactMap { chain in
+                                selectedAccounts.compactMap { account in
+                                    return WalletConnectV2Account(
+                                        "\(chain.absoluteString):\(account)"
+                                    )
+                                }
+                            }
+                        ).flatMap { $0 }
+
+                        let supportedMethods = WalletConnectMethod.allCases.map(\.rawValue)
+                        let requestedMethods = proposalNamespace.methods
+                        let methods = requestedMethods.filter {
+                            return supportedMethods.contains($0)
+                        }
+                        let sessionNamespace = WalletConnectV2SessionNamespace(
+                            accounts: Set(accounts),
+                            methods: methods,
+                            events: proposalNamespace.events
+                        )
+
+                        sessionNamespaces[caip2Namespace] = sessionNamespace
+                    }
+
+                    let params = WalletConnectV2ApproveSessionConnectionParams(
+                        proposalId: sessionProposal.id,
+                        namespaces: sessionNamespaces
+                    )
+                    appConfiguration.peraConnect.approveSessionConnection(params)
+
+                    wcConnectionScreen?.dismiss(animated: true)
+
+                    publishQRScannerScreenResetNotification(preferences)
+                }
+
+                ongoingTransitions.append(transition)
+            }
+        }
+    }
+
+    func peraConnectDidSettleSessionV2(
+        _ session: WalletConnectV2Session,
+        with preferences: WalletConnectSessionCreationPreferences
+    ) {
+        if preferences.prefersConnectionApproval {
+            let draft = WCSessionDraft(wcV2Session: session)
+
+            /// <note>
+            /// Refactor
+            /// This delay should be removed after refactoring the router.
+            /// A delay has been added to ensure that the screen is not presented
+            /// before the top view controller's view is added to the window's hierarchy.
+            /// If the top view controller's view is not in the hierarchy, UIKit will not
+            /// present the WC Connection Successful screen.
+            /// Error: Attempt to present <*> on <*> (from <*>) whose view is not in the window hierarchy.
+            asyncMain(afterDuration: 0.3) {
+                [weak self] in
+                guard let self else { return }
+                self.openWCSessionConnectionSuccessful(
+                    draft: draft,
+                    preferences: preferences
+                )
+            }
+        }
+    }
+
+    private func peraConnectDidFailToConnectV2(_ preferences: WalletConnectSessionCreationPreferences) {
+        asyncMain { [weak self] in
+            guard let self else { return }
+
+            publishQRScannerScreenResetNotification(preferences)
+
+            appConfiguration.bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: "wallet-connect-session-invalid-qr-message".localized
+            )
+        }
     }
 }
 
 extension Router {
-    private func presentWCSessionsApprovedModal(
-        dAppName: String
+    private func openWCSessionConnectionSuccessful(
+        draft: WCSessionDraft,
+        preferences: WalletConnectSessionCreationPreferences
     ) {
-        let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
+        let visibleScreen = findVisibleScreen(over: rootViewController)
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
+        let eventHandler: WCSessionConnectionSuccessfulSheet.EventHandler = {
+            [weak visibleScreen] event in
+            guard let visibleScreen else { return }
+            switch event {
+            case .didClose:
+                visibleScreen.presentedViewController?.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self else { return }
+                    publishQRScannerWCSessionConnectionSuccessfulNotification(preferences)
+                }
+            }
+        }
         transition.perform(
-            .bottomWarning(
-                configurator:
-                    BottomWarningViewConfigurator(
-                        image: "icon-approval-check".uiImage,
-                        title: "wallet-connect-session-connection-approved-title".localized(dAppName),
-                        description: .plain(
-                            "wallet-connect-session-connection-approved-description".localized(dAppName)
-                        ),
-                        secondaryActionButtonTitle: "title-close".localized
-                    )
+            .wcSessionConnectionSuccessful(
+                draft: draft,
+                eventHandler: eventHandler
             ),
             by: .presentWithoutNavigationController
         )
-        
+
         ongoingTransitions.append(transition)
-    }
-}
-
-extension Router {
-    private func startObservingNotifications() {
-        observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
-            [weak self] notification in
-            guard let self = self else { return }
-
-            let preferencesKey = WalletConnector.sessionRequestPreferencesKey
-            let preferences = notification.userInfo?[preferencesKey] as? WalletConnectorPreferences
-
-            guard let preferences else {
-                return
-            }
-            
-            let walletConnector = self.appConfiguration.walletConnector
-            
-            walletConnector.delegate = self
-            walletConnector.connect(with: preferences)
-        }
     }
 }
 
@@ -2372,7 +2949,6 @@ extension Router {
         visibleScreen.dismiss(animated: true)
     }
 }
-
 
 extension Router: MoonPayIntroductionScreenDelegate {
     func moonPayIntroductionScreen(

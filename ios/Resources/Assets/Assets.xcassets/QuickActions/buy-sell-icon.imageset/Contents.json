@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "buy-sell-icon.pdf",
+      "filename" : "icon-transaction-option-list-buy-sell.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "buy-sell-icon-dark.pdf",
+      "filename" : "icon-transaction-option-list-buy-sell-dark.pdf",
       "idiom" : "universal"
     }
   ],

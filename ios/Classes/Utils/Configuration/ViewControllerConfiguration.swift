@@ -21,25 +21,27 @@ final class ViewControllerConfiguration {
     let api: ALGAPI?
     var session: Session?
     let sharedDataController: SharedDataController
-    let walletConnector: WalletConnector
+    let walletConnector: WalletConnectV1Protocol
     let loadingController: LoadingController?
     let bannerController: BannerController?
     let toastPresentationController: ToastPresentationController?
     let lastSeenNotificationController: LastSeenNotificationController?
     let analytics: ALGAnalytics
     let launchController: AppLaunchController
+    let peraConnect: PeraConnect
     
     init(
         api: ALGAPI?,
         session: Session?,
         sharedDataController: SharedDataController,
-        walletConnector: WalletConnector,
+        walletConnector: WalletConnectV1Protocol,
         loadingControlller: LoadingController?,
         bannerController: BannerController?,
         toastPresentationController: ToastPresentationController?,
         lastSeenNotificationController: LastSeenNotificationController?,
         analytics: ALGAnalytics,
-        launchController: AppLaunchController
+        launchController: AppLaunchController,
+        peraConnect: PeraConnect
     ) {
         self.api = api
         self.session = session
@@ -51,5 +53,6 @@ final class ViewControllerConfiguration {
         self.lastSeenNotificationController = lastSeenNotificationController
         self.analytics = analytics
         self.launchController = launchController
+        self.peraConnect = peraConnect
     }
 }

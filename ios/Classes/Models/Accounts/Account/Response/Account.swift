@@ -52,6 +52,7 @@ final class Account: ALGEntityModel {
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
+    var isBackedUp: Bool
 
     var algo: Algo
     private(set) var standardAssets: [StandardAsset]?
@@ -97,6 +98,7 @@ final class Account: ALGEntityModel {
         preferredOrder = AccountInformation.invalidOrder
         totalCreatedApps = apiModel.totalCreatedApps
         algo = Algo(amount: apiModel.amount)
+        isBackedUp = true
     }
 
     init(
@@ -121,6 +123,7 @@ final class Account: ALGEntityModel {
         self.preferredOrder = preferredOrder
         self.totalCreatedApps = 0
         self.algo = Algo(amount: 0)
+        self.isBackedUp = true
     }
     
     init(
@@ -139,6 +142,7 @@ final class Account: ALGEntityModel {
         self.preferredOrder = localAccount.preferredOrder
         self.totalCreatedApps = 0
         self.algo = Algo(amount: 0)
+        self.isBackedUp = localAccount.isBackedUp
     }
 
     func encode() -> APIModel {
@@ -485,6 +489,7 @@ extension Account {
         receivesNotification = localAccount.receivesNotification
         rekeyDetail = localAccount.rekeyDetail
         preferredOrder = localAccount.preferredOrder
+        isBackedUp = localAccount.isBackedUp
     }
 
     func update(with account: Account) {
@@ -512,6 +517,7 @@ extension Account {
         appsTotalExtraPages = account.appsTotalExtraPages
         appsTotalSchema = account.appsTotalSchema
         preferredOrder = account.preferredOrder
+        isBackedUp = account.isBackedUp
 
         if let updatedName = account.name {
             name = updatedName

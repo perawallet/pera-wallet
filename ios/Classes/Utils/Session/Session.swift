@@ -68,7 +68,6 @@ class Session: Storable {
             
             Cache.configuration = nil
             Cache.configuration = applicationConfiguration
-            NotificationCenter.default.post(name: .AuthenticatedUserUpdate, object: self, userInfo: nil)
         }
     }
     

@@ -45,6 +45,7 @@ enum TransactionsItem: Hashable {
     case assetTransaction(AssetTransactionItemViewModel)
     case assetConfigTransaction(AssetConfigTransactionItemViewModel)
     case appCallTransaction(AppCallTransactionItemViewModel)
+    case keyRegTransaction(KeyRegTransactionItemViewModel)
     case pendingTransaction(PendingTransactionItemViewModel)
     case title(TransactionHistoryTitleContextViewModel)
     case empty(EmptyState)

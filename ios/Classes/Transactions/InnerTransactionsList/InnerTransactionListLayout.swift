@@ -87,9 +87,10 @@ extension InnerTransactionListLayout {
                 sizeForHeaderItem: item
             )
         case .algoTransaction,
-                .assetTransaction,
-                .assetConfigTransaction,
-                .appCallTransaction:
+             .assetTransaction,
+             .assetConfigTransaction,
+             .appCallTransaction,
+             .keyRegTransaction:
             return listView(
                 collectionView,
                 layout: collectionViewLayout,

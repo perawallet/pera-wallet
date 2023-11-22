@@ -25,10 +25,10 @@ struct DiscoverDappDetailEvent: ALGAnalyticsEvent {
         self.name = .discoverDappDetail
 
         var tempMetadata: ALGAnalyticsMetadata = [:]
-        tempMetadata[.dappURL] = dappParameters.url
+        tempMetadata[.dappURL] = Self.regulate(dappParameters.url.absoluteString)
 
         if let dappName = dappParameters.name {
-            tempMetadata[.dappName] = dappName
+            tempMetadata[.dappName] = Self.regulate(dappName)
         }
 
         self.metadata = tempMetadata

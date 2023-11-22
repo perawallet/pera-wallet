@@ -8,6 +8,8 @@
 	<string>$(STAGING_API_KEY)</string>
 	<key>BIDALI_PROD_API_KEY</key>
 	<string>$(BIDALI_PROD_API_KEY)</string>
+	<key>WC_V2_PROJECT_ID</key>
+	<string>$(WC_V2_PROJECT_ID)</string>
 	<key>BIDALI_STAGING_API_KEY</key>
 	<string>$(BIDALI_STAGING_API_KEY)</string>
 	<key>SARDINE_PROD_API_KEY</key>

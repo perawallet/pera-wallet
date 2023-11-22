@@ -17,8 +17,7 @@
 
 import UIKit
 
-class WCAccountInformationNameView: BaseView {
-
+final class WCAccountInformationNameView: BaseView {
     private let layout = Layout<LayoutConstants>()
 
     private lazy var imageView = UIImageView()

@@ -155,6 +155,16 @@ extension InnerTransactionListLocalDataController {
                 )
             )
             return item
+        case .keyReg:
+            let viewModel = KeyRegInnerTransactionPreviewViewModel(transaction)
+
+            let item: InnerTransactionListItem = .keyRegTransaction(
+                InnerTransactionContainer(
+                    transaction: transaction,
+                    viewModel: viewModel
+                )
+            )
+            return item
         default:
             break
         }

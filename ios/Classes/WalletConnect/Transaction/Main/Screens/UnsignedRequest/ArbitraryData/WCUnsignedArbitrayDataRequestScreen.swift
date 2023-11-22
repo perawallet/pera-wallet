@@ -125,7 +125,7 @@ extension WCUnsignedArbitrayDataRequestScreen: WCMainArbitraryDataLayoutDelegate
         open(
             .wcArbitraryDataScreen(
                 data: data,
-                wcRequest: dataSource.wcRequest
+                wcSession: dataSource.wcSession
             ),
             by: .push
         )

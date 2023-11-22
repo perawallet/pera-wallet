@@ -47,7 +47,12 @@ extension TransactionsListLayout {
             switch itemIdentifier {
             case .filter:
                 return CGSize(theme.transactionHistoryFilterCellSize)
-            case .algoTransaction, .assetTransaction, .appCallTransaction, .assetConfigTransaction, .pendingTransaction:
+            case .algoTransaction,
+                 .assetTransaction,
+                 .appCallTransaction,
+                 .keyRegTransaction,
+                 .assetConfigTransaction,
+                 .pendingTransaction:
                 return CGSize(theme.transactionHistoryCellSize)
             case .title:
                 return CGSize(theme.transactionHistoryTitleCellSize)
@@ -62,7 +67,6 @@ extension TransactionsListLayout {
                         sizeForNoContent: TransactionHistoryNoContentViewModel()
                     )
                 }
-
             case .nextList:
                 return CGSize((collectionView.bounds.width, 100))
             }

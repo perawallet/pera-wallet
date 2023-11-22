@@ -23,26 +23,30 @@ struct WCTransactionConfirmedEvent: ALGAnalyticsEvent {
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
+        version: WalletConnectProtocolID,
         transactionID: String,
         dappName: String,
         dappURL: String
     ) {
         self.name = .wcTransactionConfirmed
         self.metadata = [
+            .wcVersion: version.rawValue,
             .transactionID: transactionID,
-            .dappName: dappName,
-            .dappURL: dappURL
+            .dappName: Self.regulate(dappName),
+            .dappURL: Self.regulate(dappURL)
         ]
     }
 }
 
 extension AnalyticsEvent where Self == WCTransactionConfirmedEvent {
     static func wcTransactionConfirmed(
+        version: WalletConnectProtocolID,
         transactionID: String,
         dappName: String,
         dappURL: String
     ) -> Self {
         return WCTransactionConfirmedEvent(
+            version: version,
             transactionID: transactionID,
             dappName: dappName,
             dappURL: dappURL

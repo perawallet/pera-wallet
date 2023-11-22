@@ -23,12 +23,14 @@ protocol ImageWithTitleViewTheme: StyleSheet, LayoutSheet {
     var titleLabel: TextStyle { get }
     var horizontalPadding: LayoutMetric { get }
     var imageSize: LayoutSize { get }
+    var imageBottomRightBadgePaddings: LayoutPaddings { get }
 }
 
 struct SwitchAccountNameViewTheme: ImageWithTitleViewTheme {
     let horizontalPadding: LayoutMetric
     let imageSize: LayoutSize
-    
+    let imageBottomRightBadgePaddings: LayoutPaddings
+
     var titleLabel: TextStyle {
         return [
             .textOverflow(SingleLineText()),
@@ -41,12 +43,14 @@ struct SwitchAccountNameViewTheme: ImageWithTitleViewTheme {
     init(_ family: LayoutFamily) {
         self.imageSize = (40, 40)
         self.horizontalPadding = 16
+        self.imageBottomRightBadgePaddings = (20, 20, .noMetric, .noMetric)
     }
 }
 
 struct WCAccountNameViewSmallTheme: ImageWithTitleViewTheme {
     let horizontalPadding: LayoutMetric
     let imageSize: LayoutSize
+    let imageBottomRightBadgePaddings: LayoutPaddings
 
     var titleLabel: TextStyle {
         return [
@@ -60,5 +64,6 @@ struct WCAccountNameViewSmallTheme: ImageWithTitleViewTheme {
     init(_ family: LayoutFamily) {
         self.imageSize = (24, 24)
         self.horizontalPadding = 12
+        self.imageBottomRightBadgePaddings = (10, 10, .noMetric, .noMetric)
     }
 }

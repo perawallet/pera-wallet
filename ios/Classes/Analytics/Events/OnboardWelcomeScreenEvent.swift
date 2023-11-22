@@ -33,6 +33,7 @@ extension OnboardWelcomeScreenEvent {
     enum `Type` {
         case create
         case recover
+        case watch
 
         var rawValue: ALGAnalyticsEventName {
             switch self {
@@ -40,6 +41,8 @@ extension OnboardWelcomeScreenEvent {
                 return .onboardWelcomeScreenAccountRecover
             case .create:
                 return .onboardWelcomeScreenAccountCreate
+            case .watch:
+                return .onboardWatchAccountCreate
             }
         }
     }

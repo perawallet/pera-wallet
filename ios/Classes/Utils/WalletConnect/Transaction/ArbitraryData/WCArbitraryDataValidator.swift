@@ -17,7 +17,8 @@
 protocol WCArbitraryDataValidator {
     func validateArbitraryData(
         data: [WCArbitraryData],
-        api: ALGAPI
+        api: ALGAPI,
+        session: Session
     )
     func rejectArbitraryDataRequest(with error: WCTransactionErrorResponse)
 }
@@ -25,7 +26,8 @@ protocol WCArbitraryDataValidator {
 extension WCArbitraryDataValidator {
     func validateArbitraryData(
         data: [WCArbitraryData],
-        api: ALGAPI
+        api: ALGAPI,
+        session: Session
     ) {
         if !hasValidNetwork(for: data, api: api) {
             rejectArbitraryDataRequest(with: .unauthorized(.nodeMismatch))
@@ -37,7 +39,12 @@ extension WCArbitraryDataValidator {
             return
         }
 
-        if !containsSignerInTheWallet(for: data) {
+        if requiresLedgerSigning(for: data) {
+            rejectArbitraryDataRequest(with: .unsupported(.none))
+            return
+        }
+
+        if !containsSignerInTheWallet(for: data, session: session) {
             rejectArbitraryDataRequest(with: .unauthorized(.dataSignerNotFound))
             return
         }
@@ -57,14 +64,29 @@ extension WCArbitraryDataValidator {
         return data.count <= supportedArbitraryDataCount
     }
 
-    private func containsSignerInTheWallet(for data: [WCArbitraryData]) -> Bool {
+    private func containsSignerInTheWallet(
+        for data: [WCArbitraryData],
+        session: Session
+    ) -> Bool {
         for datum in data {
-            if !datum.requestedSigner.containsSignerInTheWallet {
+            let requestedSigner = datum.requestedSigner
+            if !requestedSigner.containsSignerInTheWallet {
                 return false
             }
         }
 
         return true
+    }
+
+    private func requiresLedgerSigning(for data: [WCArbitraryData]) -> Bool {
+        for datum in data {
+            if let signerAccount = datum.requestedSigner.account,
+               signerAccount.hasLedgerDetail() {
+                return true
+            }
+        }
+
+        return false
     }
 }
 

@@ -20,7 +20,8 @@ import MacaroonUIKit
 final class ActionableBannerView:
     View,
     ViewModelBindable,
-    UIInteractable {
+    UIInteractable,
+    ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .performAction: TargetActionInteraction()
     ]
@@ -60,6 +61,38 @@ final class ActionableBannerView:
             actionView.removeFromSuperview()
         }
     }
+
+    static func calculatePreferredSize(
+        _ viewModel: ActionableBannerViewModel?,
+        for theme: ActionableBannerViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let width = size.width
+        let titleFittingWidth =
+            (width * theme.contentWidthRatio) -
+            theme.iconContentEdgeInsets.x -
+            (viewModel.icon?.uiImage.width ?? .zero)
+        let titleSize = viewModel.title?.boundingSize(
+            multiline: true,
+            fittingSize: CGSize((titleFittingWidth, .greatestFiniteMagnitude))
+        ) ?? .zero
+        let messageSize = viewModel.message?.boundingSize(
+            multiline: true,
+            fittingSize:  CGSize((titleFittingWidth, .greatestFiniteMagnitude))
+        ) ?? .zero
+        let preferredHeight =
+            theme.contentPaddings.top +
+            titleSize.height +
+            theme.messageContentEdgeInsets.top +
+            messageSize.height +
+            theme.messageContentEdgeInsets.bottom +
+            theme.contentPaddings.bottom
+        return CGSize((width, min(preferredHeight.ceil(), size.height)))
+    }
 }
 
 extension ActionableBannerView {
@@ -67,6 +100,10 @@ extension ActionableBannerView {
         _ theme: ActionableBannerViewTheme
     ) {
         customizeAppearance(theme.background)
+
+        if let corner = theme.corner {
+            draw(corner: corner)
+        }
     }
 
     private func addContent(
@@ -75,14 +112,12 @@ extension ActionableBannerView {
         addSubview(contentView)
 
         contentView.snp.makeConstraints {
-            $0.width >= self * theme.contentMinWidthRatio
+            $0.width == self * theme.contentWidthRatio
             $0.trailing
                 .equalToSuperview()
                 .inset(theme.actionHorizontalPaddings.trailing)
                 .priority(.medium)
-            $0.setPaddings(
-                theme.contentPaddings
-            )
+            $0.setPaddings(theme.contentPaddings)
         }
 
         addIcon(theme)
@@ -144,7 +179,7 @@ extension ActionableBannerView {
         actionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
         actionView.fitToIntrinsicSize()
         actionView.snp.makeConstraints {
-            $0.leading == contentView.snp.trailing + theme.actionHorizontalPaddings.leading
+            $0.leading >= contentView.snp.trailing + theme.actionHorizontalPaddings.leading
             $0.trailing == theme.actionHorizontalPaddings.trailing
             $0.centerY == contentView
         }

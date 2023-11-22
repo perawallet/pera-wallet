@@ -74,7 +74,10 @@ final class WCSingleTransactionRequestMiddleViewModel {
         _ transaction: WCTransaction,
         for account: Account?
     ) {
-        guard let type = transaction.transactionDetail?.transactionType(for: account) else {
+        guard
+            let transactionDetail = transaction.transactionDetail,
+            let type = transactionDetail.transactionType(for: account)
+        else {
             return
         }
 
@@ -234,6 +237,12 @@ final class WCSingleTransactionRequestMiddleViewModel {
                     self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
                 }
             }
+        case .keyReg:
+            self.title = "key-reg-title".localized
+            self.subtitle =
+                transactionDetail.isOnlineKeyRegTransaction
+                ? "online-title".localized
+                : "offline-title".localized
         }
     }
 

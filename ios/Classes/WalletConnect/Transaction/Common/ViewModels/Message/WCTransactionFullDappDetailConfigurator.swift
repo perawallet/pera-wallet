@@ -35,12 +35,18 @@ final class WCTransactionFullDappDetailConfigurator {
     ]
 
     init(
-        from session: WCSession,
+        from session: WCSessionDraft,
         option: WCTransactionOption?,
         transaction: WCTransaction?,
         primaryAction: (() -> Void)? = nil
     ) {
-        setup(from: session)
+        if let wcV1Session = session.wcV1Session {
+            setup(from: wcV1Session)
+        }
+
+        if let wcV2Session = session.wcV2Session {
+            setup(from: wcV2Session)
+        }
 
         if let option = option {
             setup(from: option)
@@ -53,23 +59,13 @@ final class WCTransactionFullDappDetailConfigurator {
         self.primaryActionButtonTitle = "title-close".localized
         self.primaryAction = primaryAction
     }
+}
 
+extension WCTransactionFullDappDetailConfigurator {
     private func setup(from session: WCSession) {
         title = session.peerMeta.name
 
         setupImage(from: session)
-    }
-
-    private func setup(from option: WCTransactionOption) {
-        if let message = option.message {
-            description = message
-        }
-    }
-
-    private func setup(from transaction: WCTransaction) {
-        if let message = transaction.message {
-            description = message
-        }
     }
 
     private func setupImage(from session: WCSession) {
@@ -83,5 +79,40 @@ final class WCTransactionFullDappDetailConfigurator {
             placeholder: ImagePlaceholder(image: AssetImageSource(asset: placeholderImage), text: nil),
             forceRefresh: false
         )
+    }
+}
+
+extension WCTransactionFullDappDetailConfigurator {
+    private func setup(from session: WalletConnectV2Session) {
+        title = session.peer.name
+
+        setupImage(from: session)
+    }
+
+    private func setupImage(from session: WalletConnectV2Session) {
+        let randomIndex = Int.random(in: 0..<placeholderImages.count)
+        let placeholderImage = placeholderImages[randomIndex]
+        image = DefaultURLImageSource(
+            url: session.peer.icons.first.toURL(),
+            color: nil,
+            size: .resize(CGSize(width: 48.0, height: 48.0), .aspectFit),
+            shape: .circle,
+            placeholder: ImagePlaceholder(image: AssetImageSource(asset: placeholderImage), text: nil),
+            forceRefresh: false
+        )
+    }
+}
+
+extension WCTransactionFullDappDetailConfigurator {
+    private func setup(from option: WCTransactionOption) {
+        if let message = option.message {
+            description = message
+        }
+    }
+
+    private func setup(from transaction: WCTransaction) {
+        if let message = transaction.message {
+            description = message
+        }
     }
 }

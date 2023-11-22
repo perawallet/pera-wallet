@@ -153,7 +153,7 @@ extension WCSingleArbitraryDataRequestScreen: WCSingleTransactionRequestViewDele
         open(
             .wcArbitraryDataScreen(
                 data: data,
-                wcRequest: dataSource.wcRequest
+                wcSession: dataSource.wcSession
             ),
             by: .push
         )

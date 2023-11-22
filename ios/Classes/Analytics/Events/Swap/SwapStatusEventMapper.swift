@@ -107,7 +107,6 @@ extension SwapStatusEventMapper {
 
         return algoToUSDValue * algoValue
     }
-
 }
 
 extension SwapStatusEventMapper {

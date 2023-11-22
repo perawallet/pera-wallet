@@ -29,7 +29,7 @@ class RekeyConfirmationViewModelTests: XCTestCase {
 //    }
 
     func testOldTransitionTitle() {
-        let viewModel = RekeyConfirmationViewModel(account: account, ledgerName: "Ledger Name 1")
+        let viewModel = RekeyConfirmationViewModel(account: account, ledgerName: "Ledger Name 1", newAuthAddress: "")
         XCTAssertEqual(viewModel.oldTransitionTitle, "Passphrase")
     }
 
@@ -39,7 +39,7 @@ class RekeyConfirmationViewModelTests: XCTestCase {
 //    }
 
     func testNewTransitionValue() {
-        let viewModel = RekeyConfirmationViewModel(account: account, ledgerName: "Ledger Name 1")
+        let viewModel = RekeyConfirmationViewModel(account: account, ledgerName: "Ledger Name 1", newAuthAddress: "")
         XCTAssertEqual(viewModel.newTransitionValue, "Ledger Name 1")
     }
 }

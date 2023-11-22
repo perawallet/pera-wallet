@@ -17,8 +17,7 @@
 
 import UIKit
 
-class WCAppCallTransactionViewController: WCSingleTransactionViewController {
-
+final class WCAppCallTransactionViewController: WCSingleTransactionViewController {
     private lazy var appCallTransactionView = WCAppCallTransactionView()
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -40,6 +39,7 @@ class WCAppCallTransactionViewController: WCSingleTransactionViewController {
 
     override func linkInteractors() {
         super.linkInteractors()
+
         appCallTransactionView.delegate = self
     }
 

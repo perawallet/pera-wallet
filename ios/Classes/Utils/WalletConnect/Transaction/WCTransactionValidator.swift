@@ -22,7 +22,6 @@ protocol WCTransactionValidator {
         _ transactions: [WCTransaction],
         with transactionGroups: [Int64: [WCTransaction]],
         sharedDataController: SharedDataController
-
     )
     func rejectTransactionRequest(with error: WCTransactionErrorResponse)
 }
@@ -58,7 +57,7 @@ extension WCTransactionValidator {
             return
         }
 
-        if !containsTransactionAuthAddressInTheWallet(for: transactions, sharedDataController: sharedDataController) {
+        if !containsTransactionAuthInTheWallet(for: transactions) {
             rejectTransactionRequest(with: .unauthorized(.transactionSignerNotFound))
             return
         }
@@ -110,14 +109,10 @@ extension WCTransactionValidator {
         return true
     }
 
-    private func containsTransactionAuthAddressInTheWallet(
-        for transactions: [WCTransaction],
-        sharedDataController: SharedDataController
-    ) -> Bool {
-        for transaction in transactions {
-            if let authAddress = transaction.authAddress {
-                let account = sharedDataController.accountCollection[authAddress]?.value
-                return account?.authorization.isAuthorized ?? false
+    private func containsTransactionAuthInTheWallet(for transactions: [WCTransaction]) -> Bool {
+        for transaction in transactions where transaction.authAddress != nil {
+            if !transaction.requestedSigner.containsSignerInTheWallet {
+                return false
             }
         }
 

@@ -19,19 +19,10 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-protocol WCUnsignedRequestScreenDelegate: AnyObject {
-    func wcUnsignedRequestScreenDidConfirm(
-        _ wcUnsignedRequestScreen: WCUnsignedRequestScreen
-    )
-    func wcUnsignedRequestScreenDidReject(
-        _ wcUnsignedRequestScreen: WCUnsignedRequestScreen
-    )
-}
-
 final class WCUnsignedRequestScreen: BaseViewController {
     weak var delegate: WCUnsignedRequestScreenDelegate?
 
-    lazy var scrollView: UIScrollView = UIScrollView()
+    private lazy var scrollView: UIScrollView = UIScrollView()
 
     private lazy var theme = Theme()
     private lazy var unsignedRequestView = WCUnsignedRequestView()
@@ -43,7 +34,7 @@ final class WCUnsignedRequestScreen: BaseViewController {
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    let dataSource: WCMainTransactionDataSource
+    private let dataSource: WCMainTransactionDataSource
 
     init(
         dataSource: WCMainTransactionDataSource,
@@ -163,15 +154,33 @@ extension WCUnsignedRequestScreen: WCMainTransactionLayoutDelegate {
     ) {
         if transactions.count == 1 {
             if let transaction = transactions.first {
-                presentSingleWCTransaction(transaction, with: dataSource.transactionRequest)
+                presentSingleWCTransaction(
+                    transaction,
+                    with: dataSource.transactionRequest,
+                    wcSession: dataSource.wcSession
+                )
             }
-
             return
         }
 
-
-        open(.wcGroupTransaction(transactions: transactions, transactionRequest: dataSource.transactionRequest), by: .push)
+        open(
+            .wcGroupTransaction(
+                transactions: transactions,
+                transactionRequest: dataSource.transactionRequest,
+                wcSession: dataSource.wcSession
+            ),
+            by: .push
+        )
     }
 }
 
 extension WCUnsignedRequestScreen: WalletConnectSingleTransactionRequestPresentable { }
+
+protocol WCUnsignedRequestScreenDelegate: AnyObject {
+    func wcUnsignedRequestScreenDidConfirm(
+        _ wcUnsignedRequestScreen: WCUnsignedRequestScreen
+    )
+    func wcUnsignedRequestScreenDidReject(
+        _ wcUnsignedRequestScreen: WCUnsignedRequestScreen
+    )
+}

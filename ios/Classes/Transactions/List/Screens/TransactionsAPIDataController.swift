@@ -597,6 +597,19 @@ extension TransactionsAPIDataController {
                             transactionItems.append(.appCallTransaction(viewModel))
                             addedItemIDs[transactionID] = true
                         }
+                    case .keyReg:
+                        let draftComposer = KeyRegTransactionItemDraftComposer(draft: draft)
+
+                        guard let viewModelDraft = draftComposer.composeTransactionItemPresentationDraft(from: transaction) else {
+                            continue
+                        }
+
+                        let viewModel = KeyRegTransactionItemViewModel(viewModelDraft)
+
+                        if addedItemIDs[transactionID] == nil {
+                            transactionItems.append(.keyRegTransaction(viewModel))
+                            addedItemIDs[transactionID] = true
+                        }
                     default:
                         break
                     }

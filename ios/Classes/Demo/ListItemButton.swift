@@ -28,7 +28,15 @@ final class ListItemButton:
     private lazy var titleView = Label()
     private lazy var subtitleView = Label()
     private lazy var accessoryView = ImageView()
-    
+
+    override var isEnabled: Bool {
+        didSet {
+            if oldValue != isEnabled {
+                updateUIForState(enabled: isEnabled)
+            }
+        }
+    }
+
     func customize(
         _ theme: ListItemButtonTheme
     ) {
@@ -173,6 +181,13 @@ extension ListItemButton {
             $0.leading == contentView.snp.trailing
             $0.trailing == 0
         }
+    }
+}
+
+extension ListItemButton {
+    private func updateUIForState(enabled: Bool) {
+        isEnabled = enabled
+        alpha = enabled ? 1 : 0.5
     }
 }
 

@@ -29,6 +29,13 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
             collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
+            case .accountNotBackedUpWarning(let item):
+                let cell = collectionView.dequeue(
+                    AccountDetailAccountNotBackedUpWarningCell.self,
+                    at: indexPath
+                )
+                cell.bindData(item)
+                return cell
             case let .portfolio(item):
                 let cell = collectionView.dequeue(
                     AccountPortfolioCell.self,
@@ -122,6 +129,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
         }
 
         [
+            AccountDetailAccountNotBackedUpWarningCell.self,
             AccountPortfolioCell.self,
             WatchAccountPortfolioCell.self,
             ManagementItemWithSecondaryActionCell.self,

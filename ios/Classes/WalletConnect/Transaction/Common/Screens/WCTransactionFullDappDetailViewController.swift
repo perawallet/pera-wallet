@@ -32,6 +32,7 @@ final class WCTransactionFullDappDetailViewController: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
+
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 

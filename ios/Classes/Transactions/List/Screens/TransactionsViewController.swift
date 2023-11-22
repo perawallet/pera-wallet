@@ -262,6 +262,10 @@ class TransactionsViewController:
             if let transaction = dataController[item.id] {
                 openTransactionDetail(transaction)
             }
+        case .keyRegTransaction(let item):
+            if let transaction = dataController[item.id] {
+                openTransactionDetail(transaction)
+            }
         default:
             break
         }
@@ -370,7 +374,19 @@ extension TransactionsViewController {
 
             return
         }
-        
+
+        if transaction.keyRegTransaction != nil {
+            open(
+                .keyRegTransactionDetail(
+                    account: accountHandle.value,
+                    transaction: transaction
+                ),
+                by: .present
+            )
+
+            return
+        }
+
         open(
             .transactionDetail(
                 account: accountHandle.value,

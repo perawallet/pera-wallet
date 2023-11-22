@@ -209,8 +209,10 @@ extension WCAppCallTransactionView {
 
         if let feeInformationViewModel = viewModel.feeInformationViewModel {
             feeView.bindData(feeInformationViewModel)
+            showTransactionInformationStackView(true)
         } else {
             feeView.hideViewInStack()
+            showTransactionInformationStackView(false)
         }
 
         if let feeWarningViewModel = viewModel.feeWarningViewModel {

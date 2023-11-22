@@ -20,27 +20,62 @@ import UIKit
 final class WCSessionShortListDataSource: NSObject {
     weak var delegate: WCSessionShortListDataSourceDelegate?
 
-    private let walletConnector: WalletConnector
+    private let walletConnectCoordinator: WalletConnectCoordinator
 
-    private var sessions: [WCSession]
+    private var sessions: [WCSessionDraft]
 
-    init(walletConnector: WalletConnector) {
-        self.walletConnector = walletConnector
-        self.sessions = walletConnector.allWalletConnectSessions
+    init(walletConnectCoordinator: WalletConnectCoordinator) {
+        self.walletConnectCoordinator = walletConnectCoordinator
+        self.sessions = Self.getSortedSessions(walletConnectCoordinator)
+
         super.init()
     }
 }
 
+extension WCSessionShortListDataSource {
+    private static func getSortedSessions(_ walletConnectCoordinator: WalletConnectCoordinator) -> [WCSessionDraft] {
+        func getConnectionDate(session: WCSessionDraft) -> Date? {
+            if let wcV1SessionDate = session.wcV1Session?.date {
+                return wcV1SessionDate
+            } else if let wcV2SessionTopic = session.wcV2Session?.topic {
+                return wcV2SessionConnectionDates[wcV2SessionTopic]
+            }
+
+            return nil
+        }
+
+        let sessions = walletConnectCoordinator.getSessions()
+        let wcV2SessionConnectionDates =
+            walletConnectCoordinator.walletConnectProtocolResolver.walletConnectV2Protocol.getConnectionDates()
+        let sortedSessionsByDescendingConnectionDate = sessions.sorted { firstSession, secondSession in
+            guard let firstConnectionDate = getConnectionDate(session: firstSession),
+                  let secondConnectionDate = getConnectionDate(session: secondSession) else {
+                return false
+            }
+
+            return firstConnectionDate > secondConnectionDate
+        }
+        return sortedSessionsByDescendingConnectionDate
+    }
+}
+
 extension WCSessionShortListDataSource: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         return sessions.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         let cell = collectionView.dequeue(WCSessionShortListItemCell.self, at: indexPath)
 
         if let session = sessions[safe: indexPath.item] {
-            cell.bindData(WCSessionShortListItemViewModel(session))
+            let viewModel = WCSessionShortListItemViewModel(session)
+            cell.bindData(viewModel)
         }
 
         cell.delegate = self
@@ -49,15 +84,29 @@ extension WCSessionShortListDataSource: UICollectionViewDataSource {
 }
 
 extension WCSessionShortListDataSource {
-    func session(at index: Int) -> WCSession? {
+    func session(at index: Int) -> WCSessionDraft? {
         return sessions[safe: index]
     }
 
-    func disconnectFromSession(_ session: WCSession) {
-        walletConnector.disconnectFromSession(session)
+    func session(for topic: WalletConnectTopic) -> WCSessionDraft? {
+        return sessions.first(matching: (\.topic, topic))
     }
 
-    func updateSessions(_ updatedSessions: [WCSession]) {
+    func disconnectFromSession(_ session: WCSessionDraft) {
+        if let wcV1Session = session.wcV1Session {
+            let params = WalletConnectV1SessionDisconnectionParams(session: wcV1Session)
+            walletConnectCoordinator.disconnectFromSession(params)
+            return
+        }
+
+        if let wcV2Session = session.wcV2Session {
+            let params = WalletConnectV2SessionDisconnectionParams(session: wcV2Session)
+            walletConnectCoordinator.disconnectFromSession(params)
+            return
+        }
+    }
+
+    func updateSessions(_ updatedSessions: [WCSessionDraft]) {
         sessions = updatedSessions
     }
 }
@@ -69,5 +118,14 @@ extension WCSessionShortListDataSource: WCSessionShortListItemCellDelegate {
 }
 
 protocol WCSessionShortListDataSourceDelegate: AnyObject {
-    func wcSessionShortListDataSource(_ wcSessionShortListDataSource: WCSessionShortListDataSource, didOpenDisconnectMenuFrom cell: WCSessionShortListItemCell)
+    func wcSessionShortListDataSource(
+        _ wcSessionShortListDataSource: WCSessionShortListDataSource,
+        didOpenDisconnectMenuFrom cell: WCSessionShortListItemCell
+    )
+}
+
+fileprivate extension WCSessionDraft {
+    var topic: WalletConnectTopic? {
+        return wcV1Session?.urlMeta.topic ?? wcV2Session?.topic
+    }
 }

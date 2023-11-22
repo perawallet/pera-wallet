@@ -17,8 +17,7 @@
 
 import UIKit
 
-class WCGroupTransactionHeaderView: BaseView {
-
+final class WCGroupTransactionHeaderView: BaseView {
     private let layout = Layout<LayoutConstants>()
 
     private lazy var groupIDLabel: UILabel = {

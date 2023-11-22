@@ -235,7 +235,7 @@ extension AccountNameSetupViewController {
                 break
             }
 
-            if case .add(type: .watch) = self.mode {
+            if self.mode == .watch {
                 self.openAccountVerifiedTutorial()
                 return
             }
@@ -256,7 +256,7 @@ extension AccountNameSetupViewController {
                 break
             }
             
-            if case .add(type: .watch) = self.mode {
+            if self.mode == .watch {
                 self.openAccountVerifiedTutorial()
                 return
             }

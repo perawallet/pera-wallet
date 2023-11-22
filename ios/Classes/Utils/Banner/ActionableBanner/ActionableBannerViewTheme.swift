@@ -19,21 +19,16 @@ import MacaroonUIKit
 import UIKit
 
 struct ActionableBannerViewTheme: LayoutSheet, StyleSheet {
-    let contentMinWidthRatio: LayoutMetric
-    let contentPaddings: LayoutPaddings
-
     var background: ViewStyle
-
-    let icon: ImageStyle
-    let iconContentEdgeInsets: LayoutOffset
-    let iconSize: LayoutSize
-
+    var corner: Corner?
+    let contentWidthRatio: LayoutMetric
+    var contentPaddings: LayoutPaddings
+    var icon: ImageStyle
+    var iconContentEdgeInsets: LayoutOffset
     var title: TextStyle
-
     var message: TextStyle
-    let messageContentEdgeInsets: LayoutPaddings
-
-    let actionHorizontalPaddings: LayoutHorizontalPaddings
+    var messageContentEdgeInsets: LayoutPaddings
+    var actionHorizontalPaddings: LayoutHorizontalPaddings
     let action: ButtonStyle
     let actionCorner: Corner
     let actionContentEdgeInsets: LayoutPaddings
@@ -42,19 +37,16 @@ struct ActionableBannerViewTheme: LayoutSheet, StyleSheet {
         _ family: LayoutFamily,
         contentBottomPadding: LayoutMetric = 20
     ) {
-        contentMinWidthRatio = 0.5
+        corner = nil
+        contentWidthRatio = 0.6
         contentPaddings = (20, 24, contentBottomPadding, .noMetric)
-
         background = [
             .backgroundColor(Colors.Helpers.negative)
         ]
-
         icon = [
             .contentMode(.bottomLeft),
         ]
         iconContentEdgeInsets = (12, 12)
-        iconSize = (24, 24)
-
         title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Defaults.background)
@@ -64,11 +56,10 @@ struct ActionableBannerViewTheme: LayoutSheet, StyleSheet {
             .textColor(Colors.Defaults.background)
         ]
         messageContentEdgeInsets = (4, 0, 0, 0)
-
-        actionHorizontalPaddings = (20, 24)
+        actionHorizontalPaddings = (0, 24)
         action = [
             .titleColor([.normal(Colors.Button.Primary.text)]),
-            .backgroundColor(UIColor(red: 1, green: 1, blue: 1, alpha: 0.12))
+            .backgroundColor(Colors.Defaults.background.uiColor.withAlphaComponent(0.12))
         ]
         actionCorner = Corner(radius: 4)
         actionContentEdgeInsets = (8, 16, 8, 16)

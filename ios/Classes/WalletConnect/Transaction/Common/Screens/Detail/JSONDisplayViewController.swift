@@ -17,8 +17,7 @@
 
 import UIKit
 
-class JSONDisplayViewController: BaseScrollViewController {
-
+final class JSONDisplayViewController: BaseScrollViewController {
     private let layout = Layout<LayoutConstants>()
 
     private lazy var separatorView = LineSeparatorView()
@@ -49,12 +48,14 @@ class JSONDisplayViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
+
         view.backgroundColor = Colors.Defaults.background.uiColor
         title = screenTitle
     }
 
     override func prepareLayout() {
         super.prepareLayout()
+
         setupseparatorViewLayout()
         setupJSONDisplayViewLayout()
     }

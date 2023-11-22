@@ -64,6 +64,7 @@ extension WelcomeViewController {
 
             addSkipBarButtonItem()
         case .addNewAccount,
+             .backUpAccount,
              .none:
             break
         }
@@ -80,14 +81,19 @@ extension WelcomeViewController {
 }
 
 extension WelcomeViewController: WelcomeViewDelegate {
-    func welcomeViewDidSelectAdd(_ welcomeView: WelcomeView) {
+    func welcomeViewDidSelectCreate(_ welcomeView: WelcomeView) {
         analytics.track(.onboardWelcomeScreen(type: .create))
-        open(.addAccount(flow: flow), by: .push)
+        open(.tutorial(flow: flow, tutorial: .backUp(flow: flow, address: "temp")), by: .push)
     }
-
-    func welcomeViewDidSelectRecover(_ welcomeView: WelcomeView) {
+    
+    func welcomeViewDidSelectImport(_ welcomeView: WelcomeView) {
         analytics.track(.onboardWelcomeScreen(type: .recover))
         open(.recoverAccount(flow: flow), by: .push)
+    }
+    
+    func welcomeViewDidSelectWatch(_ welcomeView: WelcomeView) {
+        analytics.track(.onboardWelcomeScreen(type: .watch))
+        open(.tutorial(flow: flow, tutorial: .watchAccount), by: .push)
     }
 
     func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL) {

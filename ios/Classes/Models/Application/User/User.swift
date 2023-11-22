@@ -136,6 +136,8 @@ extension User {
         accounts[index].receivesNotification = account.receivesNotification
         accounts[index].rekeyDetail = account.rekeyDetail
         accounts[index].preferredOrder = account.preferredOrder
+        accounts[index].isBackedUp = account.isBackedUp
+        
         syncronize()
     }
 
@@ -153,6 +155,7 @@ extension User {
         accounts[localAccountIndex].receivesNotification = updatedAccount.receivesNotification
         accounts[localAccountIndex].rekeyDetail = updatedAccount.rekeyDetail
         accounts[localAccountIndex].preferredOrder = updatedAccount.preferredOrder
+        accounts[localAccountIndex].isBackedUp = updatedAccount.isBackedUp
 
         if syncChangesImmediately {
             syncronize()

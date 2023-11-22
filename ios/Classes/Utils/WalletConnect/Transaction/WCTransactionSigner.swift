@@ -18,8 +18,7 @@
 import Foundation
 import MagpieHipo
 
-class WCTransactionSigner {
-
+final class WCTransactionSigner {
     weak var delegate: WCTransactionSignerDelegate?
 
     private lazy var ledgerTransactionOperation =
@@ -33,7 +32,6 @@ class WCTransactionSigner {
 
     private var account: Account?
     private var transaction: WCTransaction?
-    private var transactionRequest: WalletConnectRequest?
 
     init(
         api: ALGAPI,
@@ -45,21 +43,20 @@ class WCTransactionSigner {
         self.analytics = analytics
     }
 
-    func signTransaction(_ transaction: WCTransaction, with transactionRequest: WalletConnectRequest, for account: Account) {
+    func signTransaction(_ transaction: WCTransaction, for account: Account) {
         if let signerAddress = transaction.authAddress,
            let account = sharedDataController.accountCollection[signerAddress]?.value {
             signTransactionForTransactionAuthAddress(
                 transaction,
-                with: transactionRequest,
                 for: account
             )
             return
         }
 
         if account.requiresLedgerConnection() {
-            signLedgerTransaction(transaction, with: transactionRequest, for: account)
+            signLedgerTransaction(transaction, for: account)
         } else {
-            signStandardTransaction(transaction, with: transactionRequest, for: account)
+            signStandardTransaction(transaction, for: account)
         }
     }
 
@@ -73,17 +70,11 @@ class WCTransactionSigner {
 extension WCTransactionSigner {
     private func signTransactionForTransactionAuthAddress(
         _ transaction: WCTransaction,
-        with transactionRequest: WalletConnectRequest,
         for account: Account
     ) {
-        guard account.authorization.isAuthorized else {
-            return
-        }
-
-        if account.authorization.isLedger {
+        if account.hasLedgerDetail() {
             signLedgerTransaction(
                 transaction,
-                with: transactionRequest,
                 for: account
             )
             return
@@ -94,14 +85,16 @@ extension WCTransactionSigner {
         sign(
             signature,
             signer: SDKTransactionSigner(),
-            for: transaction,
-            with: transactionRequest
+            for: transaction
         )
     }
 }
 
 extension WCTransactionSigner {
-    private func signLedgerTransaction(_ transaction: WCTransaction, with transactionRequest: WalletConnectRequest, for account: Account) {
+    private func signLedgerTransaction(
+        _ transaction: WCTransaction,
+        for account: Account
+    ) {
         guard let unsignedTransaction = transaction.unparsedTransactionDetail else {
             delegate?.wcTransactionSigner(self, didFailedWith: .missingUnparsedTransactionDetail)
             return
@@ -109,9 +102,9 @@ extension WCTransactionSigner {
 
         self.account = account
         self.transaction = transaction
-        self.transactionRequest = transactionRequest
 
         ledgerTransactionOperation.setTransactionAccount(account)
+        ledgerTransactionOperation.setTransaction(transaction)
         ledgerTransactionOperation.delegate = self
         startTimer()
         ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransaction)
@@ -138,7 +131,6 @@ extension WCTransactionSigner {
 
     private func signStandardTransaction(
         _ transaction: WCTransaction,
-        with request: WalletConnectRequest,
         for account: Account
     ) {
         let signerAddress = account.signerAddress
@@ -147,16 +139,14 @@ extension WCTransactionSigner {
         sign(
             signature,
             signer: SDKTransactionSigner(),
-            for: transaction,
-            with: request
+            for: transaction
         )
     }
 
     private func sign(
         _ signature: Data?,
         signer: TransactionSigner,
-        for transaction: WCTransaction,
-        with request: WalletConnectRequest
+        for transaction: WCTransaction
     ) {
         signer.delegate = self
 
@@ -179,8 +169,7 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
         didReceiveSignature data: Data
     ) {
         guard let account,
-              let transaction,
-              let transactionRequest else {
+              let transaction else {
             return
         }
 
@@ -188,8 +177,7 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
         sign(
             data,
             signer: LedgerTransactionSigner(signerAddress: signerAddress),
-            for: transaction,
-            with: transactionRequest
+            for: transaction
         )
     }
 

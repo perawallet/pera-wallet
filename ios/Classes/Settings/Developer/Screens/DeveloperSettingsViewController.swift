@@ -120,17 +120,17 @@ extension DeveloperSettingsViewController: UICollectionViewDelegateFlowLayout {
         case .nodeSettings:
             openNodeSettings()
         case .dispenser:
-            let nonWatchAccountFilterAlgorithm = NonWatchAccountListFilterAlgorithm()
-            let nonWatchAccounts =
+            let authorizedAccountListFilterAlgorithm = AuthorizedAccountListFilterAlgorithm()
+            let authorizedAccounts =
                 sharedDataController
                     .accountCollection
-                    .filter(nonWatchAccountFilterAlgorithm.getFormula)
+                    .filter(authorizedAccountListFilterAlgorithm.getFormula)
 
-            if nonWatchAccounts.count > 1 {
+            if authorizedAccounts.count > 1 {
                 openAccountSelection()
             } else {
                 openDispenser(
-                    for: nonWatchAccounts.first?.value,
+                    for: authorizedAccounts.first?.value,
                     from: self
                 )
             }

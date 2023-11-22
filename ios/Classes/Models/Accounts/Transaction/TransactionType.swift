@@ -25,7 +25,7 @@ enum TransactionType:
     case assetConfig
     case assetFreeze
     case assetTransfer
-    case keyreg
+    case keyReg
     case payment
     case unsupported(String)
 
@@ -35,7 +35,7 @@ enum TransactionType:
         case .assetConfig: return "acfg"
         case .assetFreeze: return "afrz"
         case .assetTransfer: return "axfer"
-        case .keyreg: return "keyreg"
+        case .keyReg: return "keyreg"
         case .payment: return "pay"
         case .unsupported(let someType): return someType
         }
@@ -46,7 +46,7 @@ enum TransactionType:
         .assetConfig,
         .assetFreeze,
         .assetTransfer,
-        .keyreg,
+        .keyReg,
         .payment
     ]
 

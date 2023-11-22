@@ -53,6 +53,8 @@ final class ImportQRScannerScreen: BaseViewController, NotificationObserver {
     private lazy var cameraResetHandler: EmptyHandler = {
         if self.captureSession?.isRunning == false {
             self.captureSessionQueue.async {
+                [weak self] in
+                guard let self else { return }
                 self.captureSession?.startRunning()
             }
         }
@@ -99,6 +101,8 @@ extension ImportQRScannerScreen {
     private func enableCapturingIfNeeded() {
         if self.captureSession?.isRunning == false && UIApplication.shared.authStatus == .ready {
             self.captureSessionQueue.async {
+                [weak self] in
+                guard let self else { return }
                 self.captureSession?.startRunning()
             }
         }
@@ -107,6 +111,8 @@ extension ImportQRScannerScreen {
     private func disableCapturingIfNeeded() {
         if captureSession?.isRunning == true {
             captureSessionQueue.async {
+                [weak self] in
+                guard let self else { return }
                 self.captureSession?.stopRunning()
             }
         }
@@ -126,7 +132,9 @@ extension ImportQRScannerScreen {
     }
 
     private func configureScannerViewWithVideoAccess() {
-        AVCaptureDevice.requestAccess(for: .video) { isGranted in
+        AVCaptureDevice.requestAccess(for: .video) { 
+            [weak self] isGranted in
+            guard let self else { return }
             asyncMain { [weak self] in
                 guard let self else {
                     return
@@ -223,7 +231,8 @@ extension ImportQRScannerScreen {
         view.layer.addSublayer(previewLayer)
 
         captureSessionQueue.async {
-            captureSession.startRunning()
+            [weak captureSession] in
+            captureSession?.startRunning()
         }
     }
 
@@ -248,6 +257,8 @@ extension ImportQRScannerScreen: AVCaptureMetadataOutputObjectsDelegate {
         from connection: AVCaptureConnection
     ) {
         captureSessionQueue.async {
+            [weak self] in
+            guard let self else { return }
             self.captureSession?.stopRunning()
         }
 

@@ -28,9 +28,3 @@ final class MoonPayFlowCoordinator {
         self.presentingScreen = presentingScreen
     }
 }
-
-extension MoonPayFlowCoordinator {
-    func launch(draft: MoonPayDraft = .init()) {
-        presentingScreen.launchBuyAlgoWithMoonPay(draft: draft)
-    }
-}

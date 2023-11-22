@@ -61,6 +61,13 @@ extension AccountAssetListLayout {
         }
         
         switch itemIdentifier {
+        case .accountNotBackedUpWarning(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAccountNotBackedUpItem: item,
+                atSection: indexPath.section
+            )
         case .portfolio(let item):
             return listView(
                 collectionView,
@@ -156,6 +163,33 @@ extension AccountAssetListLayout {
 }
 
 extension AccountAssetListLayout {
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAccountNotBackedUpItem item: AccountDetailAccountNotBackedUpWarningModel,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = AccountDetailAccountNotBackedUpWarningCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = AccountDetailAccountNotBackedUpWarningCell.calculatePreferredSize(
+            item,
+            for: AccountDetailAccountNotBackedUpWarningCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
     private func sizeForQuickActionsItem(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
@@ -172,7 +206,7 @@ extension AccountAssetListLayout {
             forSectionAt: section
         )
         let newSize = AccountQuickActionsCell.calculatePreferredSize(
-            for: AccountQuickActionsViewTheme(),
+            for: AccountQuickActionsCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -197,7 +231,7 @@ extension AccountAssetListLayout {
             forSectionAt: section
         )
         let newSize = WatchAccountQuickActionsCell.calculatePreferredSize(
-            for: WatchAccountQuickActionsViewTheme(),
+            for: WatchAccountQuickActionsCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

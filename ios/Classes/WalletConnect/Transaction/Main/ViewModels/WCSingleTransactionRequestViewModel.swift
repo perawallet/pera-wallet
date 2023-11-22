@@ -105,6 +105,8 @@ final class WCSingleTransactionRequestViewModel {
             case .delete:
                 self.title = "wallet-connect-asset-deletion-title".localized
             }
+        case .keyReg:
+            self.title = "wallet-connect-transaction-title-transaction".localized
         }
 
         if self.title == nil {

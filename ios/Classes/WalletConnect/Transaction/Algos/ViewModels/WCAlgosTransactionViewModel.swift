@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WCAlgosTransactionViewModel {
+final class WCAlgosTransactionViewModel {
     private(set) var fromInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var toInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var balanceViewModel: TransactionAmountInformationViewModel?
@@ -33,7 +33,6 @@ class WCAlgosTransactionViewModel {
 
     private(set) var noteInformationViewModel: TransactionTextInformationViewModel?
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
-
 
     init(
         transaction: WCTransaction,

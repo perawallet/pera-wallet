@@ -17,13 +17,16 @@
 import Foundation
 
 final class TransactionOptionListAction {
+    let isEnabled: Bool
     let viewModel: TransactionOptionListItemButtonViewModel
     let handler: Handler
 
     init(
+        isEnabled: Bool = true,
         viewModel: TransactionOptionListItemButtonViewModel,
         handler: @escaping Handler
     ) {
+        self.isEnabled = isEnabled
         self.viewModel = viewModel
         self.handler = handler
     }

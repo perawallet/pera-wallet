@@ -19,30 +19,29 @@ import MacaroonUIKit
 import UIKit
 
 struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
-    let horizontalPadding: LayoutMetric
-    
     let image: URLImageViewStyleLayoutSheet
     let imageSize: LayoutSize
     let imageBorder: Border
     let imageCorner: Corner
-    
     let name: TextStyle
     let nameHorizontalPadding: LayoutMetric
-    
-    let optionsAction: ButtonStyle
-    
+    let spacingBetweenWCv1BadgeAndName: LayoutMetric
+    let wcV1Badge: TextStyle
+    let wcV1BadgeContentEdgeInsets: LayoutPaddings
+    let wcV1BadgeCorner: Corner
     let descriptionTopPadding: LayoutMetric
     let description: TextStyle
-    
-    let dateTopPadding: LayoutMetric
-    let date: TextStyle
-    
-    let accountStatusTopPadding: LayoutMetric
-    let spacingBetweenAccounts: LayoutMetric
+    let spacingBetweeenDescriptionAndStatus: LayoutMetric
+    let pingingStatus: TextStyle
+    let connectedStatus: TextStyle
+    let disconnectedStatus: TextStyle
+    let statusCorner: Corner
+    let statusContentEdgeInsets: LayoutPaddings
+    let spacingBetweenContentAndDisclosureIcon: LayoutMetric
+    let disclosureIconTopPadding: LayoutMetric
+    let disclosureIcon: ImageStyle
 
     init(_ family: LayoutFamily) {
-        self.horizontalPadding = 24
-        
         self.image = URLImageViewNoStyleLayoutSheet()
         self.imageSize = (40, 40)
         self.imageBorder = Border(
@@ -50,30 +49,97 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
             width: 1
         )
         self.imageCorner = Corner(radius: imageSize.h / 2)
-        
         self.name = [
             .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main)
         ]
         self.nameHorizontalPadding = 16
-        
+        self.spacingBetweenWCv1BadgeAndName = 6
+        self.wcV1Badge = [
+            .textColor(Colors.Text.gray),
+            .textAlignment(.center),
+            .textOverflow(SingleLineText()),
+            .backgroundColor(Colors.Layer.grayLighter)
+        ]
+        self.wcV1BadgeContentEdgeInsets =  (2, 8, 2, 8)
+        self.wcV1BadgeCorner = Corner(radius: 13)
         self.description = [
             .textOverflow(FittingText()),
+            .textColor(Colors.Text.grayLighter),
+        ]
+        self.descriptionTopPadding = 4
+        self.spacingBetweeenDescriptionAndStatus = 8
+        self.pingingStatus = Self.getPingingStatus()
+        self.connectedStatus = Self.getConnectedStatus()
+        self.disconnectedStatus = Self.getDisconnectedStatus()
+        self.statusCorner = Corner(radius: 13)
+        self.statusContentEdgeInsets = (2, 8, 2, 8)
+        self.spacingBetweenContentAndDisclosureIcon = 16
+        self.disclosureIconTopPadding = 8
+        self.disclosureIcon = [
+            .image("icon-list-arrow"),
+            .contentMode(.scaleAspectFit)
+        ]
+    }
+
+    subscript (status: WCSessionStatus) -> TextStyle {
+        switch status {
+        case .active: return connectedStatus
+        case .failed: return disconnectedStatus
+        default: return pingingStatus
+        }
+    }
+}
+
+extension WCSessionItemViewTheme {
+    private static func getPingingStatus() -> TextStyle {
+        let text =
+            "tite-pinging"
+                .localized
+                .footnoteMedium(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
+        return [
+            .text(text),
             .textColor(Colors.Text.gray),
-        ]
-        self.descriptionTopPadding = 8
-        
-        self.optionsAction = [
-            .icon([ .normal("icon-options") ])
-        ]
-        
-        self.date = [
+            .textAlignment(.center),
             .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.grayLighter)
+            .backgroundColor(Colors.Layer.grayLighter.uiColor)
         ]
-        self.dateTopPadding = 12
-        
-        self.accountStatusTopPadding = 8
-        self.spacingBetweenAccounts = 6
+    }
+
+    private static func getConnectedStatus() -> TextStyle {
+        let text =
+            "wallet-connect-session-connected"
+                .localized
+                .footnoteMedium(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
+        return [
+            .text(text),
+            .textColor(Colors.Helpers.positive),
+            .textAlignment(.center),
+            .textOverflow(SingleLineText()),
+            .backgroundColor(Colors.Helpers.positiveLighter.uiColor.withAlphaComponent(0.5))
+        ]
+    }
+
+    private static func getDisconnectedStatus() -> TextStyle {
+        let text =
+            "wallet-connect-session-disconnected"
+                .localized
+                .footnoteMedium(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
+        return [
+            .text(text),
+            .textColor(Colors.Helpers.negative),
+            .textAlignment(.center),
+            .textOverflow(SingleLineText()),
+            .backgroundColor(Colors.Helpers.negativeLighter.uiColor.withAlphaComponent(0.5))
+        ]
     }
 }

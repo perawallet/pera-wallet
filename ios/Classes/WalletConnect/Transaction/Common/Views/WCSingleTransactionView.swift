@@ -18,7 +18,6 @@
 import UIKit
 
 class WCSingleTransactionView: BaseView {
-
     private let layout = Layout<LayoutConstants>()
     
     private lazy var mainStackView: VStackView = {
@@ -133,6 +132,16 @@ extension WCSingleTransactionView {
 
     func addButton(_ view: UIView) {
         buttonsStackView.addArrangedSubview(view)
+    }
+
+    func showTransactionInformationStackView(_ isShown: Bool) {
+        if isShown {
+            transactionInformationStackView.showViewInStack()
+            transactionInformationSeparator.showViewInStack()
+        } else {
+            transactionInformationStackView.hideViewInStack()
+            transactionInformationSeparator.hideViewInStack()
+        }
     }
 
     func showNoteStackView(_ isShown: Bool) {

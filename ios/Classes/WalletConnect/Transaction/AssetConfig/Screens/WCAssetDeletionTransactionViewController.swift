@@ -17,8 +17,7 @@
 
 import UIKit
 
-class WCAssetDeletionTransactionViewController: WCSingleTransactionViewController {
-    
+final class WCAssetDeletionTransactionViewController: WCSingleTransactionViewController {
     private lazy var assetDeletionTransactionView = WCAssetDeletionTransactionView()
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -31,11 +30,13 @@ class WCAssetDeletionTransactionViewController: WCSingleTransactionViewControlle
 
     override func configureAppearance() {
         super.configureAppearance()
+
         title = "wallet-connect-asset-deletion-title".localized
     }
 
     override func linkInteractors() {
         super.linkInteractors()
+
         assetDeletionTransactionView.delegate = self
     }
 

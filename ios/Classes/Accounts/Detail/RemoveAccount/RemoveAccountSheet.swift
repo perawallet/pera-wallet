@@ -21,18 +21,18 @@ final class RemoveAccountSheet: UISheet {
 
     private let account: Account
     private let sharedDataController: SharedDataController
-    private let walletConnector: WalletConnector
+    private let peraConnect: PeraConnect
     private let eventHandler: EventHandler
 
     init(
         account: Account,
         sharedDataController: SharedDataController,
-        walletConnector: WalletConnector,
+        peraConnect: PeraConnect,
         eventHandler: @escaping EventHandler
     ) {
         self.account = account
         self.sharedDataController = sharedDataController
-        self.walletConnector = walletConnector
+        self.peraConnect = peraConnect
         self.eventHandler = eventHandler
 
         let title =
@@ -72,7 +72,7 @@ extension RemoveAccountSheet {
 
     private func removeAccount() {
         sharedDataController.resetPollingAfterRemoving(account)
-        walletConnector.updateSessionsWithRemovingAccount(account)
+        peraConnect.updateSessionsWithRemovingAccount(account)
     }
 
     private func makeCancelAction() -> UISheetAction {

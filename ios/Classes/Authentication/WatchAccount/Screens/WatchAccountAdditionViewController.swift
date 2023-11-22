@@ -625,7 +625,7 @@ extension WatchAccountAdditionViewController {
         open(
             .accountNameSetup(
                 flow: accountSetupFlow,
-                mode: .add(type: .watch),
+                mode: .watch,
                 nameServiceName: selectedNameService?.name,
                 accountAddress: account.address
             ),

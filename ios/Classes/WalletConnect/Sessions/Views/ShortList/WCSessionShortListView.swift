@@ -21,7 +21,7 @@ import MacaroonUIKit
 final class WCSessionShortListView: View {
     weak var delegate: WCSessionShortListViewDelegate?
 
-    private lazy var theme = WCSessionShortListViewTheme()
+    lazy var theme = WCSessionShortListViewTheme()
 
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()

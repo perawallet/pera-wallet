@@ -70,7 +70,6 @@ extension BuySellOptionsScreen {
 
         addBuyContextHeader()
         addBuyContext()
-
         addSellContextHeader()
         addSellContext()
     }
@@ -97,21 +96,21 @@ extension BuySellOptionsScreen {
             $0.trailing == 0
         }
 
-        addBuyOptions()
+        addBuyOptionsIfPossible()
     }
 
-    private func addBuyOptions() {
-        addBuyAlgoWithMoonPayOption()
-        addBuyAlgoWithSardineOption()
-        addBuyWithTransakOption()
+    private func addBuyOptionsIfPossible() {
+        /// <note> Buy options are temporarily disabled. Date: 20.11.2023
+        addBuyOptionsNotAvailableContent()
+
+        // addBuyWithTransakOption()
     }
 
-    private func addBuyAlgoWithMoonPayOption() {
-        addOption(
-            viewModel: BuyAlgoWithMoonPayOptionViewModel(),
-            selector: #selector(performBuyAlgoWithMoonPay),
-            to: buyContextView
-        )
+    private func addBuyOptionsNotAvailableContent() {
+        let contentView = UILabel()
+        contentView.customizeAppearance(theme.buyOptionsNotAvailable)
+       
+        buyContextView.addArrangedSubview(contentView)
     }
 
     private func addBuyAlgoWithSardineOption() {
@@ -132,11 +131,6 @@ extension BuySellOptionsScreen {
 }
 
 extension BuySellOptionsScreen {
-    @objc
-    private func performBuyAlgoWithMoonPay() {
-        eventHandler?(.performBuyAlgoWithMoonPay)
-    }
-
     @objc
     private func performBuyAlgoWithSardine() {
         eventHandler?(.performBuyAlgoWithSardine)
@@ -214,7 +208,6 @@ extension BuySellOptionsScreen {
 
  extension BuySellOptionsScreen {
      enum Event {
-         case performBuyAlgoWithMoonPay
          case performBuyAlgoWithSardine
          case performBuyWithTransak
          case performBuyGiftCardsWithBidali

@@ -34,8 +34,25 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
         }
 
         guard let assetId = transactionDetail.assetId ?? transactionDetail.assetIdBeingConfigured else {
-            walletConnector.rejectTransactionRequest(transactionRequest, with: .invalidInput(.asset))
-            completion()
+            if let wcV1Request = transactionRequest.wcV1Request {
+                let params = WalletConnectV1RejectTransactionRequestParams(
+                    v1Request: wcV1Request,
+                    error: .invalidInput(.asset)
+                )
+                configuration.peraConnect.rejectTransactionRequest(params)
+                completion()
+                return
+            }
+
+            if let wcV2Request = transactionRequest.wcV2Request {
+                let params = WalletConnectV2RejectTransactionRequestParams(
+                    error: .invalidInput(.asset),
+                    v2Request: wcV2Request
+                )
+                configuration.peraConnect.rejectTransactionRequest(params)
+                completion()
+                return
+            }
             return
         }
 
@@ -46,8 +63,25 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
             }
 
             guard let assetDetail = assetDetail else {
-                self.walletConnector.rejectTransactionRequest(self.transactionRequest, with: .invalidInput(.unableToFetchAsset))
-                completion()
+                if let wcV1Request = transactionRequest.wcV1Request {
+                    let params = WalletConnectV1RejectTransactionRequestParams(
+                        v1Request: wcV1Request,
+                        error: .invalidInput(.unableToFetchAsset)
+                    )
+                    configuration.peraConnect.rejectTransactionRequest(params)
+                    completion()
+                    return
+                }
+
+                if let wcV2Request = transactionRequest.wcV2Request {
+                    let params = WalletConnectV2RejectTransactionRequestParams(
+                        error: .invalidInput(.unableToFetchAsset),
+                        v2Request: wcV2Request
+                    )
+                    configuration.peraConnect.rejectTransactionRequest(params)
+                    completion()
+                    return
+                }
                 return
             }
 

@@ -97,8 +97,8 @@ extension AccountTypeView {
 extension AccountTypeView: ViewModelBindable {
     func bindData(_ viewModel: AccountTypeViewModel?) {
         imageView.image = viewModel?.image
-        titleLabel.text = viewModel?.title
-        detailLabel.text = viewModel?.detail
+        titleLabel.editText = viewModel?.title
+        detailLabel.editText = viewModel?.detail
         badgeView.text = viewModel?.badge
     }
 }

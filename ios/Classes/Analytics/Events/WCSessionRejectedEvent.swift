@@ -23,26 +23,30 @@ struct WCSessionRejectedEvent: ALGAnalyticsEvent {
     let metadata: ALGAnalyticsMetadata
 
     fileprivate init(
+        version: WalletConnectProtocolID,
         topic: String,
         dappName: String,
         dappURL: String
     ) {
         self.name = .wcSessionRejected
         self.metadata = [
+            .wcVersion: version.rawValue,
             .wcSessionTopic: topic,
-            .dappName: dappName,
-            .dappURL: dappURL
+            .dappName: Self.regulate(dappName),
+            .dappURL: Self.regulate(dappURL)
         ]
     }
 }
 
 extension AnalyticsEvent where Self == WCSessionRejectedEvent {
     static func wcSessionRejected(
+        version: WalletConnectProtocolID,
         topic: String,
         dappName: String,
         dappURL: String
     ) -> Self {
         return WCSessionRejectedEvent(
+            version: version,
             topic: topic,
             dappName: dappName,
             dappURL: dappURL

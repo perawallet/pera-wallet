@@ -26,27 +26,32 @@ final class WCTransactionDetail: Codable {
     let note: Data?
 
     private(set) var sender: String?
+   
     let type: TransactionType?
 
     private let algosAmount: UInt64?
     private let assetAmount: UInt64?
+    
     var amount: UInt64 {
         return assetAmount ?? algosAmount ?? 0
     }
 
     private var assetReceiver: String?
     private var algosReceiver: String?
+   
     var receiver: String? {
         return assetReceiver ?? algosReceiver
     }
 
     private var assetCloseAddress: String?
     private var algosCloseAddress: String?
+    
     var closeAddress: String? {
         return assetCloseAddress ?? algosCloseAddress
     }
 
     private(set) var rekeyAddress: String?
+   
     let assetId: Int64?
 
     let appCallArguments: [String]?
@@ -61,16 +66,27 @@ final class WCTransactionDetail: Codable {
     let assetConfigParams: WCAssetConfigParameters?
     let transactionGroupId: String?
 
+    /// <mark> KeyReg txn
+    let votePublicKey: String?
+    let selectionPublicKey: String?
+    let stateProofPublicKey: String?
+    let voteFirstValidRound: UInt64?
+    let voteLastValidRound: UInt64?
+    let voteKeyDilution: UInt64?
+    let nonParticipation: Bool
+
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         fee = try container.decodeIfPresent(UInt64.self, forKey: .fee)
         firstValidRound = try container.decodeIfPresent(UInt64.self, forKey: .firstValidRound)
         lastValidRound = try container.decodeIfPresent(UInt64.self, forKey: .lastValidRound)
+       
         if let genesisHashBase64String = try container.decodeIfPresent(String.self, forKey: .genesisHash) {
             genesisHashData = Data(base64Encoded: genesisHashBase64String)
         } else {
             genesisHashData = nil
         }
+
         genesisId = try container.decodeIfPresent(String.self, forKey: .genesisId)
         note = try container.decodeIfPresent(Data.self, forKey: .note)
         type = try container.decodeIfPresent(TransactionType.self, forKey: .type)
@@ -121,6 +137,14 @@ final class WCTransactionDetail: Codable {
         if let rekeyAddressMsgpack = try container.decodeIfPresent(Data.self, forKey: .rekeyAddress) {
             rekeyAddress = rekeyAddressMsgpack.getAlgorandAddressFromPublicKey()
         }
+
+        votePublicKey = try container.decodeIfPresent(String.self, forKey: .votePublicKey)
+        selectionPublicKey = try container.decodeIfPresent(String.self, forKey: .selectionPublicKey)
+        stateProofPublicKey = try container.decodeIfPresent(String.self, forKey: .stateProofPublicKey)
+        voteFirstValidRound = try container.decodeIfPresent(UInt64.self, forKey: .voteFirstValidRound)
+        voteLastValidRound = try container.decodeIfPresent(UInt64.self, forKey: .voteLastValidRound)
+        voteKeyDilution = try container.decodeIfPresent(UInt64.self, forKey: .voteKeyDilution)
+        nonParticipation = (try container.decodeIfPresent(Bool.self, forKey: .nonParticipation)) ?? Self.nonParticipationDefaultValue
     }
 
     func encode(to encoder: Encoder) throws {
@@ -152,6 +176,13 @@ final class WCTransactionDetail: Codable {
         try container.encodeIfPresent(assetIdBeingConfigured, forKey: .assetIdBeingConfigured)
         try container.encodeIfPresent(assetConfigParams, forKey: .assetConfigParams)
         try container.encodeIfPresent(transactionGroupId, forKey: .transactionGroupId)
+        try container.encodeIfPresent(votePublicKey, forKey: .votePublicKey)
+        try container.encodeIfPresent(selectionPublicKey, forKey: .selectionPublicKey)
+        try container.encodeIfPresent(stateProofPublicKey, forKey: .stateProofPublicKey)
+        try container.encodeIfPresent(voteFirstValidRound, forKey: .voteFirstValidRound)
+        try container.encodeIfPresent(voteLastValidRound, forKey: .voteLastValidRound)
+        try container.encodeIfPresent(voteKeyDilution, forKey: .voteKeyDilution)
+        try container.encodeIfPresent(nonParticipation, forKey: .nonParticipation)
     }
 }
 
@@ -190,6 +221,10 @@ extension WCTransactionDetail {
             if isAssetDeletionTransaction {
                 return .assetConfig(type: .delete)
             }
+        }
+
+        if isKeyregTransaction {
+            return .keyReg
         }
 
         return nil
@@ -234,6 +269,10 @@ extension WCTransactionDetail {
      var isAssetDeletionTransaction: Bool {
          return type == .assetConfig && assetConfigParams == nil && assetIdBeingConfigured != 0
      }
+
+    var isKeyregTransaction: Bool {
+        return type == .keyReg
+    }
 
     var hasRekeyOrCloseAddress: Bool {
         return isRekeyTransaction || isCloseTransaction
@@ -360,6 +399,13 @@ extension WCTransactionDetail {
         case assetIdBeingConfigured = "caid"
         case assetConfigParams = "apar"
         case transactionGroupId = "grp"
+        case votePublicKey = "votekey"
+        case selectionPublicKey = "selkey"
+        case stateProofPublicKey = "sprfkey"
+        case voteFirstValidRound = "votefst"
+        case voteLastValidRound = "votelst"
+        case voteKeyDilution = "votekd"
+        case nonParticipation = "nonpart"
     }
 }
 
@@ -375,7 +421,7 @@ extension WCTransactionDetail: Equatable {
     }
 }
 
-class WCTransactionAppSchema: Codable {
+final class WCTransactionAppSchema: Codable {
     let numberOfBytes: Int?
     let numberofInts: Int?
 
@@ -396,4 +442,27 @@ extension WCTransactionAppSchema {
         case numberOfBytes = "nbs"
         case numberofInts = "nui"
     }
+}
+
+/// <note>
+/// Key Registration Transaction
+extension WCTransactionDetail {
+    var isOnlineKeyRegTransaction: Bool {
+        guard
+            let votePublicKey,
+            let selectionPublicKey,
+            voteKeyDilution != nil,
+            voteFirstValidRound != nil,
+            voteLastValidRound != nil
+        else {
+            return false
+        }
+
+        return !votePublicKey.isEmptyOrBlank && !selectionPublicKey.isEmptyOrBlank
+    }
+
+    /// <note>
+    /// All new Algorand accounts are participating by default.
+    /// https://developer.algorand.org/docs/get-details/transactions/transactions/?from_query=key%20registration#key-registration-transaction
+    private static let nonParticipationDefaultValue = false
 }

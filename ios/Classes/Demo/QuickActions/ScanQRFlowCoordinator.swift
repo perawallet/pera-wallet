@@ -24,11 +24,6 @@ final class ScanQRFlowCoordinator:
     SelectAccountViewControllerDelegate,
     TransactionControllerDelegate {
     private lazy var currencyFormatter = CurrencyFormatter()
-    private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
-        presentingScreen: presentingScreen,
-        api: api,
-        session: session
-    )
     private lazy var accountImportCoordinator = AccountImportFlowCoordinator(
         presentingScreen: presentingScreen
     )
@@ -152,8 +147,6 @@ extension ScanQRFlowCoordinator {
         }
 
         switch qrBackupParameters.action {
-        case .export:
-            accountExportCoordinator.launch(qrBackupParameters: qrBackupParameters)
         case .import:
             controller.dismissScreen {
                 [weak self] in
@@ -713,11 +706,7 @@ extension ScanQRFlowCoordinator {
         }
 
         let screen: Screen = .watchAccountAddition(
-            flow: .addNewAccount(
-                mode: .add(
-                    type: .watch
-                )
-            ),
+            flow: .addNewAccount(mode: .watch),
             address: address
         )
 

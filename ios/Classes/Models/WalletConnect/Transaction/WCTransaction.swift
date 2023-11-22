@@ -152,12 +152,10 @@ extension WCTransaction {
         return addresses
     }
 
-    var hasSignerAccount: Bool {
-        return requestedSigner.account != nil
-    }
-
     func isInTheSameNetwork(with params: TransactionParams) -> Bool {
-        return transactionDetail?.genesisId == params.genesisId && transactionDetail?.genesisHashData == params.genesisHashData
+        return
+            transactionDetail?.genesisId == params.genesisId &&
+            transactionDetail?.genesisHashData == params.genesisHashData
     }
 
     func isFutureTransaction(with params: TransactionParams) -> Bool {

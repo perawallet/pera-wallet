@@ -31,13 +31,7 @@ final class WCArbitraryData:
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         chainID = try container.decodeIfPresent(Int.self, forKey: .chaindID)
-
-        if let rawData = try container.decodeIfPresent([String: UInt8].self, forKey: .data) {
-            self.data = Data(rawData.values)
-        } else {
-            self.data = nil
-        }
-
+        data = try container.decodeIfPresent(Data.self, forKey: .data)
         message = try container.decodeIfPresent(String.self, forKey: .message)
         signer = try container.decodeIfPresent(String.self, forKey: .signer)
     }
@@ -76,10 +70,12 @@ extension WCArbitraryData {
         in accountCollection: AccountCollection,
         on session: Session
     ) {
+        guard let signer else { return }
+
         requestedSigner.findSignerAccount(
+            signer: signer,
             in: accountCollection,
-            on: session,
-            signer: .current(address: signer)
+            on: session
         )
     }
 }

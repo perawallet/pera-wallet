@@ -101,6 +101,14 @@ extension NSAttributedString {
     }
 }
 
+extension Array where Element == NSAttributedString {
+    public func compound(
+        _ separator: String = " "
+    ) -> NSAttributedString {
+        return self.joined(separator: separator)
+    }
+}
+
 extension Array where Element == NSAttributedString? {
     public func compound(
         _ separator: String = " "

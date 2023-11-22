@@ -37,7 +37,8 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     
     private let api: ALGAPI
     private let analytics: ALGAnalytics
-    
+
+    private var transaction: WCTransaction?
     private var account: Account?
     private var unsignedTransactionData: Data?
     
@@ -58,6 +59,10 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     
     func setUnsignedTransactionData(_ unsignedTransaction: Data?) {
         self.unsignedTransactionData = unsignedTransaction
+    }
+
+    func setTransaction(_ transaction: WCTransaction) {
+        self.transaction = transaction
     }
     
     func setTransactionAccount(_ account: Account) {
@@ -108,7 +113,15 @@ extension LedgerTransactionOperation {
     }
     
     func handleDiscoveryResults(_ peripherals: [CBPeripheral]) {
-        guard let savedPeripheralId = account?.currentLedgerDetail?.id,
+        let savedPeripheralId: UUID?
+
+        if transaction?.authAddress != nil {
+            savedPeripheralId = account?.ledgerDetail?.id
+        } else {
+            savedPeripheralId = account?.currentLedgerDetail?.id
+        }
+
+        guard let savedPeripheralId,
               let savedPeripheral = peripherals.first(where: { $0.identifier == savedPeripheralId }) else {
             return
         }
@@ -196,7 +209,11 @@ extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
         }
         
         if let index = accounts.firstIndex(where: { account -> Bool in
-            transactionAccount.authAddress.unwrap(or: transactionAccount.address) == account.address
+            if let transactionAuthAddress = transaction?.authAddress {
+                return transactionAuthAddress == account.address
+            }
+
+            return transactionAccount.authAddress.unwrap(or: transactionAccount.address) == account.address
         }) {
             ledgerAccountIndex = index
             isCorrectLedgerAddressFetched = true

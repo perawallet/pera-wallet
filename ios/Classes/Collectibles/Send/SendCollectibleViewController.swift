@@ -256,9 +256,12 @@ extension SendCollectibleViewController {
 
         sendCollectibleActionView.startLoading()
 
-        ongoingFetchAccountsEnpoint =
-        api?.fetchAccount(
-            AccountFetchDraft(publicKey: receiverAddress),
+        let draft = AccountAssetFetchDraft(
+            publicKey: receiverAddress,
+            assetID: draft.collectibleAsset.id
+        )
+        ongoingFetchAccountsEnpoint = api?.fetchAccountAssetFromNode(
+            draft,
             queue: .main,
             ignoreResponseOnCancelled: true
         ) {
@@ -267,20 +270,13 @@ extension SendCollectibleViewController {
             self.sendCollectibleActionView.stopLoading()
 
             switch response {
-            case .success(let accountResponse):
-                let fetchedAccount = accountResponse.account
+            case let .success(accountAssetInformation):
+                self.draft.toAccount = Account(address: receiverAddress)
 
-                if !fetchedAccount.isSameAccount(with: receiverAddress) {
-                    self.bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "send-algos-receiver-address-validation".localized
-                    )
-                    return
+                let isNotOwned = accountAssetInformation.amount == 0
+                if isNotOwned {
+                    composeCollectibleAssetTransactionData(isOptingOut: false)
                 }
-
-                self.sendTransaction(
-                    to: fetchedAccount
-                )
             case .failure(let error, _):
                 if error.isHttpNotFound {
                     self.draft.toAccount = Account(address: receiverAddress)

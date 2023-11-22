@@ -108,8 +108,51 @@ extension RecoverAccountViewController: RecoverAccountViewDelegate {
                 }
             }
             accountImportCoordinator.launch(qrBackupParameters: nil)
+        case .qr:
+            openQRScanner()
         default:
             break
         }
+    }
+    
+    private func openQRScanner() {
+        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+            displaySimpleAlertWith(
+                title: "qr-scan-error-title".localized,
+                message: "qr-scan-error-message".localized
+            )
+            return
+        }
+
+        let controller = open(.qrScanner(canReadWCSession: false), by: .push) as? QRScannerViewController
+        controller?.delegate = self
+    }
+}
+
+extension RecoverAccountViewController: QRScannerViewControllerDelegate {
+    func qrScannerViewController(
+        _ controller: QRScannerViewController,
+        didRead qrText: QRText,
+        completionHandler: EmptyHandler?
+    ) {
+        guard qrText.mode == .mnemonic,
+            let mnemonics = qrText.mnemonic else {
+            displaySimpleAlertWith(
+                title: "title-error".localized,
+                message: "qr-scan-should-scan-mnemonics-message".localized
+            ) { _ in
+                completionHandler?()
+            }
+
+            return
+        }
+
+        open(
+            .accountRecover(
+                flow: flow,
+                initialMnemonic: mnemonics
+            ),
+            by: .push
+        )
     }
 }

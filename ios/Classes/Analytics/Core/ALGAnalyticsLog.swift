@@ -41,6 +41,12 @@ enum ALGAnalyticsLogName:
     case walletConnectTransactionRequestReceived = "WCTransactionRequestReceived"
     case walletConnectTransactionRequestSDKError = "WCTransactionRequestSDKError"
     case walletConnectTransactionRequestValidated = "WCTransactionRequestValidated"
+    case walletConnectV2SessionConnectionApprovalFailed = "WCv2SessionConnectionApprovalFailed"
+    case walletConnectV2SessionConnectionFailed = "WCv2SessionConnectionFailed"
+    case walletConnectV2SessionConnectionRejectionFailed = "WCv2SessionConnectionRejectionFailed"
+    case walletConnectV2SessionDisconnectionFailed = "WCv2SessionDisconnectionFailed"
+    case walletConnectV2TransactionRequestApprovalFailed = "WCv2TransactionRequestApprovalFailed"
+    case walletConnectV2TransactionRequestRejectionFailed = "WCv2TransactionRequestRejectionFailed"
 }
 
 extension ALGAnalyticsLogName {
@@ -56,6 +62,12 @@ extension ALGAnalyticsLogName {
         case .walletConnectTransactionRequestSDKError: return 7
         case .ledgerAccountSelectionScreenFetchingRekeyingAccountsFailed: return 8
         case .recoverAccountWithPassphraseScreenFetchingRekeyingAccountsFailed: return 9
+        case .walletConnectV2SessionConnectionApprovalFailed: return 10
+        case .walletConnectV2SessionConnectionFailed: return 11
+        case .walletConnectV2SessionConnectionRejectionFailed: return 12
+        case .walletConnectV2SessionDisconnectionFailed: return 13
+        case .walletConnectV2TransactionRequestApprovalFailed: return 14
+        case .walletConnectV2TransactionRequestRejectionFailed: return 15
         }
     }
 }

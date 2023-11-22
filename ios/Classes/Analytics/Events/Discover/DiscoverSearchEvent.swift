@@ -33,7 +33,7 @@ struct DiscoverSearchEvent: ALGAnalyticsEvent {
 
         self.metadata = [
             .assetID: String(assetID),
-            .query: query
+            .query: Self.regulate(query)
         ]
     }
 }

@@ -26,6 +26,7 @@ struct BuySellOptionsScreenTheme:
     var option: ListItemButtonTheme
     var spacingBetweenOptions: LayoutMetric
     var buyContextHeader: TextStyle
+    var buyOptionsNotAvailable: TextStyle
     var spacingBetweenBuyContextHeaderAndBuyContext: LayoutMetric
     var spacingBetweenBuyAndSellContext: LayoutMetric
     var sellContextHeader: TextStyle
@@ -51,7 +52,19 @@ struct BuySellOptionsScreenTheme:
             .textColor(Colors.Text.gray),
             .textOverflow(SingleLineText()),
         ]
-        self.spacingBetweenBuyAndSellContext = 40
+        let buyOptionsNotAvailableText =
+            "buy-sell-options-buy-not-available-description"
+                .localized
+                .footnoteRegular(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
+        self.buyOptionsNotAvailable = [
+            .text(buyOptionsNotAvailableText),
+            .textColor(Colors.Text.gray),
+            .textOverflow(FittingText()),
+        ]
+        self.spacingBetweenBuyAndSellContext = 12
         self.spacingBetweenBuyContextHeaderAndBuyContext = 12
         let sellContextHeaderText =
             "buy-sell-options-sell-header-title"

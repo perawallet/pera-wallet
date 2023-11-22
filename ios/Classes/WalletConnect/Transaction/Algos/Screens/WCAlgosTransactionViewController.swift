@@ -17,8 +17,7 @@
 
 import UIKit
 
-class WCAlgosTransactionViewController: WCSingleTransactionViewController {
-
+final class WCAlgosTransactionViewController: WCSingleTransactionViewController {
     private lazy var algosTransactionView = WCAlgosTransactionView()
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -29,6 +28,7 @@ class WCAlgosTransactionViewController: WCSingleTransactionViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
+
         title = "wallet-connect-transaction-title-transaction".localized
     }
 

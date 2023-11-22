@@ -34,6 +34,7 @@ struct AllTransactionListGrouping: TranactionListGrouping {
             transaction.type == .assetTransfer ||
             transaction.type == .payment ||
             transaction.type == .assetConfig ||
-            transaction.type == .applicationCall
+            transaction.type == .applicationCall ||
+            transaction.type == .keyReg
     }
 }

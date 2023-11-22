@@ -20,6 +20,7 @@ import MacaroonUIKit
 
 final class ImageWithTitleView: View {
     private lazy var imageView = UIImageView()
+    private lazy var imageBottomRightBadgeView = UIImageView()
     private lazy var titleLabel = UILabel()
 
     func customize(_ theme: ImageWithTitleViewTheme) {
@@ -39,8 +40,18 @@ extension ImageWithTitleView {
             $0.leading.bottom.top.equalToSuperview()
             $0.fitToSize(theme.imageSize)
         }
+
+        addImageBottomRightBadgeView(theme)
     }
-    
+
+    private func addImageBottomRightBadgeView(_ theme: ImageWithTitleViewTheme) {
+        addSubview(imageBottomRightBadgeView)
+        imageBottomRightBadgeView.snp.makeConstraints {
+            $0.top == imageView.snp.top + theme.imageBottomRightBadgePaddings.top
+            $0.leading == theme.imageBottomRightBadgePaddings.leading
+        }
+    }
+
     private func addTitleLabel(_ theme: ImageWithTitleViewTheme) {
         titleLabel.customizeAppearance(theme.titleLabel)
         
@@ -56,16 +67,7 @@ extension ImageWithTitleView {
 extension ImageWithTitleView {
     func bindData(_ viewModel: AccountNameViewModel?) {
         imageView.load(from: viewModel?.image)
+        imageBottomRightBadgeView.image = viewModel?.imageBottomRightBadge?.uiImage
         titleLabel.text = viewModel?.name
-    }
-}
-
-extension ImageWithTitleView {
-    func setAccountImage(_ image: UIImage?) {
-        imageView.image = image
-    }
-    
-    func setAccountName(_ name: String?) {
-        titleLabel.text = name
     }
 }

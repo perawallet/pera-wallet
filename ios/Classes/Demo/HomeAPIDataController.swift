@@ -27,7 +27,6 @@ final class HomeAPIDataController:
     private let session: Session
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
-    private let walletConnector: WalletConnector
 
     private var visibleAnnouncement: Announcement?
 
@@ -41,13 +40,11 @@ final class HomeAPIDataController:
     init(
         sharedDataController: SharedDataController,
         session: Session,
-        announcementDataController: AnnouncementAPIDataController,
-        walletConnector: WalletConnector
+        announcementDataController: AnnouncementAPIDataController
     ) {
         self.sharedDataController = sharedDataController
         self.session = session
         self.announcementDataController = announcementDataController
-        self.walletConnector = walletConnector
     }
     
     deinit {
@@ -175,7 +172,8 @@ extension HomeAPIDataController {
                 toSection: .portfolio
             )
 
-            /// note: If accounts empty which means there is no any authenticated account, quick actions will be hidden
+            /// <note>
+            /// If accounts empty which means there is no any authenticated account, quick actions will be hidden.
             if !accounts.isEmpty {
                 snapshot.appendItems(
                     [.portfolio(.quickActions)],
@@ -183,13 +181,18 @@ extension HomeAPIDataController {
                 )
             }
 
-            if let visibleAnnouncement = self.visibleAnnouncement {
-                snapshot.appendSections([.announcement])
-
-                let announcementItem = AnnouncementViewModel(visibleAnnouncement)
-                snapshot.appendItems([.announcement(announcementItem)], toSection: .announcement)
-            }
+            let shouldDisplayCriticalWarningForNotBackedUpAccounts = shouldDisplayCriticalWarningForNotBackedUpAccounts(accounts)
             
+            if shouldDisplayCriticalWarningForNotBackedUpAccounts {
+                appendAccountNotBackedUpItems(into: &snapshot)
+            }
+
+            /// <note>
+            /// If there is a critical warning, announcements section should not be displayed.
+            if !shouldDisplayCriticalWarningForNotBackedUpAccounts {
+                appendAnnouncementItemsIfNeeded(into: &snapshot)
+            }
+
             if !accounts.isEmpty {
                 let headerItem: HomeAccountItemIdentifier =
                     .header(ManagementItemViewModel(.account))
@@ -208,7 +211,7 @@ extension HomeAPIDataController {
             return (totalPortfolioItem, snapshot)
         }
     }
-    
+
     private func deliverNoContentUpdates() {
         deliverUpdates {
             var snapshot = Snapshot()
@@ -261,5 +264,61 @@ extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
         }
 
         self.visibleAnnouncement = announcementToDisplay
+    }
+}
+
+extension HomeAPIDataController {
+    private func appendAnnouncementItemsIfNeeded(
+        into snapshot: inout Snapshot
+    ) {
+        guard let visibleAnnouncement else { return  }
+
+        snapshot.appendSections([ .announcement ])
+
+        let viewModel = AnnouncementViewModel(visibleAnnouncement)
+        let items = [ HomeItemIdentifier.announcement(viewModel) ]
+        snapshot.appendItems(
+            items,
+            toSection: .announcement
+        )
+    }
+
+    private func appendAccountNotBackedUpItems(
+        into snapshot: inout Snapshot
+    ) {
+        snapshot.appendSections([ .accountNotBackedUpWarning ])
+
+        let viewModel = AccountNotBackedUpWarningViewModel()
+        let items = [ HomeItemIdentifier.accountNotBackedUpWarning(viewModel) ]
+        snapshot.appendItems(
+            items,
+            toSection: .accountNotBackedUpWarning
+        )
+    }
+
+    private func shouldDisplayCriticalWarningForNotBackedUpAccounts(_ accounts: [AccountHandle]) -> Bool {
+        let shouldDisplay = accounts.contains {
+            let account = $0.value
+            if account.isBackedUp {
+                return false
+            }
+
+            let rekeyedAccounts = getRekeyedAccounts(of: account)
+            let hasAnyRekeyedAccounts = rekeyedAccounts.isNonEmpty
+            if hasAnyRekeyedAccounts {
+                return true
+            }
+
+            if account.algo.amount > 0 {
+                return true
+            }
+
+            return false
+        }
+        return shouldDisplay
+    }
+
+    private func getRekeyedAccounts(of account: Account) -> [AccountHandle] {
+        return sharedDataController.rekeyedAccounts(of: account)
     }
 }

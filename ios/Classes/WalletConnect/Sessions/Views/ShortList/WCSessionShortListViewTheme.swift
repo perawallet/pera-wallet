@@ -33,7 +33,7 @@ struct WCSessionShortListViewTheme: LayoutSheet, StyleSheet {
         self.bottomInset = 16
 
         let buttonHeight: LayoutMetric = 52
-        let collectionViewBottomInset: LayoutMetric = 32
+        let collectionViewBottomInset: LayoutMetric = 8
         let buttonBottomPadding = UIApplication.shared.safeAreaBottom + bottomInset
         let collectionViewContentEdgeInsetBottom = buttonBottomPadding + buttonHeight + collectionViewBottomInset
         self.contentInset = (40, 0, collectionViewContentEdgeInsetBottom, 0)

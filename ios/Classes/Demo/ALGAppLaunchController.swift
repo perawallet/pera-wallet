@@ -39,22 +39,26 @@ final class ALGAppLaunchController:
     private let sharedDataController: SharedDataController
     private let authChecker: AppAuthChecker
     private let deeplinkParser: DeepLinkParser
-    private let walletConnector: WalletConnector
+    private let peraConnect: PeraConnect
     
     init(
         session: Session,
         api: ALGAPI,
         sharedDataController: SharedDataController,
         authChecker: AppAuthChecker,
-        walletConnector: WalletConnector,
+        peraConnect: PeraConnect,
         uiHandler: AppLaunchUIHandler
     ) {
         self.session = session
         self.api = api
         self.sharedDataController = sharedDataController
-        self.deeplinkParser = DeepLinkParser(api: api, sharedDataController: sharedDataController)
+        self.deeplinkParser = DeepLinkParser(
+            api: api,
+            sharedDataController: sharedDataController,
+            peraConnect: peraConnect
+        )
         self.authChecker = authChecker
-        self.walletConnector = walletConnector
+        self.peraConnect = peraConnect
         self.uiHandler = uiHandler
         
         sharedDataController.add(self)
@@ -111,18 +115,7 @@ final class ALGAppLaunchController:
         uiHandler.launchUI(.main(completion: completion))
         sharedDataController.startPolling()
     }
-    
-    func launchBuyAlgo(shouldStartPolling: Bool = false, draft: MoonPayDraft) {
-        authChecker.authorize()
-        uiHandler.launchUI(.main(completion: {
-            self.receive(deeplinkWithSource: .buyAlgoWithMoonPay(draft))
-        }))
-        
-        if shouldStartPolling {
-            sharedDataController.startPolling()
-        }
-    }
-    
+
     func launchMainAfterAuthorization(
         presented viewController: UIViewController
     ) {
@@ -225,7 +218,7 @@ extension ALGAppLaunchController {
     ) {
         switch event {
         case .didFinishRunning:
-            walletConnector.configureTransactionsIfNeeded()
+            peraConnect.configureIfNeeded()
             resumePendingDeeplink()
         default: break
         }
@@ -298,8 +291,6 @@ extension ALGAppLaunchController {
             result = determineUIStateIfPossible(forWalletConnectTransactionSignRequest: draft)
         case .walletConnectArbitraryDataSignRequest(let draft):
             result = determineUIStateIfPossible(forWalletConnectArbitraryDataSignRequest: draft)
-        case .buyAlgoWithMoonPay(let draft):
-            result = determineUIStateIfPossible(forMoonPay: draft)
         case .qrText(let qrText):
             result = determineUIStateIfPossible(forQRText: qrText)
         case .externalInAppBrowser(let destination):
@@ -394,7 +385,7 @@ extension ALGAppLaunchController {
         case .none:
             return nil
         case .success(let session):
-            let preferences = WalletConnectorPreferences(
+            let preferences = WalletConnectSessionCreationPreferences(
                 session: session,
                 prefersConnectionApproval: prefersConnectionApproval
             )
@@ -422,16 +413,6 @@ extension ALGAppLaunchController {
     ) -> DeeplinkResult {
         let parserResult = deeplinkParser.discover(walletConnectArbitraryDataSignRequest: draft)
 
-        switch parserResult {
-        case .none: return nil
-        case .success(let screen): return .success(.deeplink(screen))
-        case .failure(let error): return .failure(error)
-        }
-    }
-
-    private func determineUIStateIfPossible(forMoonPay draft: MoonPayDraft) -> DeeplinkResult {
-        let parserResult = deeplinkParser.discoverBuyAlgoWithMoonPay(draft: draft)
-        
         switch parserResult {
         case .none: return nil
         case .success(let screen): return .success(.deeplink(screen))

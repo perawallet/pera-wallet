@@ -215,7 +215,11 @@ extension WCSingleTransactionRequestScreen: WCSingleTransactionRequestViewDelega
             return
         }
 
-        presentSingleWCTransaction(transaction, with: dataSource.transactionRequest)
+        presentSingleWCTransaction(
+            transaction,
+            with: dataSource.transactionRequest,
+            wcSession: dataSource.wcSession
+        )
     }
 
     func wcSingleTransactionRequestViewDidOpenASADiscovery(

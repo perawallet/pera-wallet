@@ -469,11 +469,10 @@ extension ASADetailScreen {
 
             self.updateUIWhenViewLayoutDidChangeIfNeeded()
         }
-        quickActionsView.startObserving(event: .buy) {
-            [unowned self] in
-
-            self.navigateToBuyAlgoIfPossible()
-        }
+        /// <note> Buy action disabled temporarily. 18.11.2023
+//        quickActionsView.startObserving(event: .buy) {
+//            [unowned self] in
+//        }
         quickActionsView.startObserving(event: .swap) {
             [unowned self, unowned quickActionsView] in
 
@@ -950,18 +949,6 @@ extension ASADetailScreen {
 }
 
 extension ASADetailScreen {
-    private func navigateToBuyAlgoIfPossible() {
-        let account = dataController.account
-        if account.authorization.isNoAuth {
-            presentActionsNotAvailableForAccountBanner()
-            return
-        }
-        
-        let draft = MoonPayDraft()
-        draft.address = dataController.account.address
-        moonPayFlowCoordinator.launch(draft: draft)
-    }
-
     private func navigateToSwapAssetIfPossible() {
         let account = dataController.account
         if account.authorization.isNoAuth {
