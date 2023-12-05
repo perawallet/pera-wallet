@@ -1,3 +1,7 @@
-Sprint 1 - Store release
-- Arbitrary data signing
-- Change browser navigate back icon
+Sprint 2 - Internal Release
+
+PERA-130: Swap Screen Changes
+PERA-195: Remove 1 unit NFT send flow
+PERA-76: Users unable to send NFT to an acoount with more than 10.000 asas
+PERA-125: Reorder quick access menu
+PERA-157: UI issue of Swap Amount

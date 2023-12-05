@@ -90,9 +90,10 @@
     <string name="swap_amount_hint">0.00</string>
     <string name="formatted_percentage">%1$s%%</string>
 
-    <string name="zero_point_one_percent">0.1%</string>
     <string name="zero_point_five_percent">0.5%</string>
     <string name="one_percent">1%</string>
+    <string name="two_percent">2%</string>
+    <string name="five_percent">5%</string>
     <string name="twenty_five_percent">25%</string>
     <string name="fifty_percent">50%</string>
     <string name="seventy_five_percent">75%</string>

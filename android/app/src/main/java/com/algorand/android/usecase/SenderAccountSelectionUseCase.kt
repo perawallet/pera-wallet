@@ -15,14 +15,16 @@ package com.algorand.android.usecase
 
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.modules.accountasset.GetAccountAssetUseCase
 import com.algorand.android.utils.AccountCacheManager
 import javax.inject.Inject
 
 class SenderAccountSelectionUseCase @Inject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val transactionTipsUseCase: TransactionTipsUseCase,
-    accountInformationUseCase: AccountInformationUseCase
-) : BaseSendAccountSelectionUseCase(accountInformationUseCase) {
+    accountInformationUseCase: AccountInformationUseCase,
+    getAccountAssetUseCase: GetAccountAssetUseCase
+) : BaseSendAccountSelectionUseCase(accountInformationUseCase, getAccountAssetUseCase) {
 
     fun shouldShowTransactionTips(): Boolean {
         return transactionTipsUseCase.shouldShowTransactionTips()

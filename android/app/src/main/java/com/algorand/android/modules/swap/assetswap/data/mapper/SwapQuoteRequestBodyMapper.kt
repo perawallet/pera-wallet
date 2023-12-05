@@ -30,7 +30,7 @@ class SwapQuoteRequestBodyMapper @Inject constructor(
         fromAssetId: Long,
         toAssetId: Long,
         amount: BigInteger,
-        slippage: Float
+        slippage: Float?
     ): SwapQuoteRequestBody {
         return SwapQuoteRequestBody(
             providers = providersList,

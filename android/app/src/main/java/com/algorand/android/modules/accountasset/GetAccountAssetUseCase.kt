@@ -10,15 +10,12 @@
  * limitations under the License
  */
 
-package com.algorand.android.modules.swap.common.domain.repository
+package com.algorand.android.modules.accountasset
 
-interface SwapSlippageToleranceRepository {
+import com.algorand.android.models.Result
+import com.algorand.android.modules.accountasset.domain.model.AccountAssetDetail
 
-    suspend fun getSwapSlippageTolerance(defaultTolerance: Float): Float
+fun interface GetAccountAssetUseCase {
 
-    suspend fun setSwapSlippageTolerance(slippageTolerance: Float)
-
-    companion object {
-        const val INJECTION_NAME = "swap_slippage_tolerance_repository_injection_name"
-    }
+    suspend operator fun invoke(address: String, assetId: Long): Result<AccountAssetDetail>
 }

@@ -557,15 +557,11 @@
     <string name="we_don_t_support">我们尚不支持该NFT媒体类型。</string>
     <string name="we_can_t_display">我们暂时无法显示视觉效果。</string>
     <string name="transfer">转账</string>
-    <string name="send_your_nft">发送您的NFT</string>
-    <string name="paste_an_algorand_wallet_address">粘贴一个Algorand钱包地址</string>
     <string name="ask_recipient_to">要求接收人选择加入\n%1$s</string>
     <string name="you_cant_send">你不能发送<annotation replacement="nft_name">NFTNamePlaceHolder</annotation>到<annotation replacement="wallet_address">walletAddressPlaceholder</annotation>，因为钱包还未选择加入该资产。 <annotation font="dmsans_medium"><annotation custom="learn_more">了解更多关于选择加入的信息</annotation></annotation></string>
     <string name="information_about_opt">关于选择加入的信息</string>
     <string name="to_avoid_spammy">为了避免垃圾交易，Algorand区块链只允许用户发送和接收先前选择的资产的交易。</string>
     <string name="search_or_enter_wallet_address">搜索或输入钱包地址</string>
-    <string name="your_nft_transfer">您的NFT转账已确认！</string>
-    <string name="transactions_can_take">交易几分钟后才能最终确认。</string>
     <string name="got_it">明白了！</string>
     <string name="approve_transaction">同意交易</string>
     <string name="are_you_sure">您确定要继续吗？</string>
@@ -886,7 +882,6 @@
     <string name="error_while_opting_to_the">选择ASA时出错，请重试。</string>
     <string name="retry">重试</string>
     <string name="before_interacting_with">您必须在账户中选择加入该资产，才能与其进行交互。此举能够避免您收到未经授权的资产交易。</string>
-    <string name="you_already_own">您已拥有该资产了。</string>
     <string name="markets">市场</string>
     <string name="formatted_changed_percentage">%1$.2f %%</string>
     <string name="display_nfts_in_asset_list">在资产列表上显示NFT</string>

@@ -125,7 +125,7 @@ class ConfirmSwapFragment : BaseFragment(R.layout.fragment_confirm_swap) {
         }
     }
 
-    private val ledgerLoadingDialogListener = LedgerLoadingDialog.Listener { shouldStopResources ->
+    private val ledgerLoadingDialogListener = LedgerLoadingDialog.Listener {
         ledgerLoadingDialog = null
         confirmSwapViewModel.onLedgerDialogCancelled()
     }

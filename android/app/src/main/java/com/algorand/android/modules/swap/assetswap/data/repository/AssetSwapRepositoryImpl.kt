@@ -54,7 +54,7 @@ class AssetSwapRepositoryImpl @Inject constructor(
         swapType: SwapType,
         accountAddress: String,
         deviceId: String,
-        slippage: Float,
+        slippage: Float?,
         providers: List<SwapQuoteProvider>
     ): Flow<Result<SwapQuoteDTO>> = flow {
         val providersResponse = providers.map {

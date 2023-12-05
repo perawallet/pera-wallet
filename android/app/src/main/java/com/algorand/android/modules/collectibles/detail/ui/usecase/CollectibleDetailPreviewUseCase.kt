@@ -58,11 +58,7 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
     }
 
     fun getSendEventPreviewAccordingToNFTType(preview: NFTDetailPreview?): NFTDetailPreview? {
-        val isPureNFT = preview?.isPureNFT ?: false
-        return preview?.copy(
-            fractionalCollectibleSendEvent = if (!isPureNFT) Event(Unit) else null,
-            pureCollectibleSendEvent = if (isPureNFT) Event(Unit) else null
-        )
+        return preview?.copy(collectibleSendEvent = Event(Unit))
     }
 
     fun getAssetInformationOfGivenNFT(nftId: Long, accountAddress: String): AssetInformation? {

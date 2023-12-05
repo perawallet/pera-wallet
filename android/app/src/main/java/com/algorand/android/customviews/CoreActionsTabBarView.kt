@@ -39,6 +39,7 @@ class CoreActionsTabBarView @JvmOverloads constructor(
             buySellButton.setOnClickListener { listener?.onBuySellClick() }
             scanQrButton.setOnClickListener { listener?.onScanQRClick() }
             swapButton.setOnClickListener { listener?.onSwapClick() }
+            browseDAppsButton.setOnClickListener { listener?.onBrowseDappsClick() }
             backgroundColorView.setOnClickListener { startHidingAnimation() }
         }
     }
@@ -61,6 +62,10 @@ class CoreActionsTabBarView @JvmOverloads constructor(
 
     fun setCoreActionButtonEnabled(isEnabled: Boolean) {
         binding.coreActionsButton.isEnabled = isEnabled
+    }
+
+    fun setBrowseDappsEnabled(isEnabled: Boolean) {
+        binding.browseDAppsButton.isEnabled = isEnabled
     }
 
     private fun startHidingAnimation() {
@@ -102,5 +107,6 @@ class CoreActionsTabBarView @JvmOverloads constructor(
         fun onScanQRClick()
         fun onCoreActionsClick(isCoreActionsOpen: Boolean)
         fun onSwapClick()
+        fun onBrowseDappsClick()
     }
 }

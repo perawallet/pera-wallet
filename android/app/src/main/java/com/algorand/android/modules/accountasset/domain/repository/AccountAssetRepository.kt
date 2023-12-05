@@ -10,18 +10,12 @@
  * limitations under the License
  */
 
-package com.algorand.android.modules.swap.common.domain.usecase
+package com.algorand.android.modules.accountasset.domain.repository
 
-import com.algorand.android.modules.swap.common.domain.repository.SwapSlippageToleranceRepository
-import javax.inject.Inject
-import javax.inject.Named
+import com.algorand.android.models.Result
+import com.algorand.android.modules.accountasset.domain.model.AccountAssetDetail
 
-class SetSwapSlippageToleranceUseCase @Inject constructor(
-    @Named(SwapSlippageToleranceRepository.INJECTION_NAME)
-    private val swapSlippageToleranceRepository: SwapSlippageToleranceRepository
-) {
+interface AccountAssetRepository {
 
-    suspend operator fun invoke(newSlippageTolerance: Float) {
-        swapSlippageToleranceRepository.setSwapSlippageTolerance(newSlippageTolerance)
-    }
+    suspend fun getAccountAssetDetail(address: String, assetId: Long): Result<AccountAssetDetail>
 }

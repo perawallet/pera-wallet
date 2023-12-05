@@ -112,7 +112,7 @@ abstract class CoreMainActivity : BaseActivity() {
     private var isConnectedToTestNet: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
         if (oldValue != newValue) {
             handleStatusBarChanges(statusBarConfiguration)
-            handleBottomBarNavigationForChosenNetwork()
+            handleNavigationButtonsForChosenNetwork()
         }
     }
 
@@ -168,12 +168,9 @@ abstract class CoreMainActivity : BaseActivity() {
         window?.statusBarColor = ContextCompat.getColor(this, intendedStatusBarColor)
     }
 
-    fun handleBottomBarNavigationForChosenNetwork() {
-        binding.bottomNavigationView.menu.forEach { menuItem ->
-            if (menuItem.itemId == R.id.discoverNavigation) {
-                menuItem.isEnabled = isConnectedToTestNet.not()
-            }
-        }
+    fun handleNavigationButtonsForChosenNetwork() {
+        handleBottomBarNavigationForChosenNetwork()
+        handleCoreActionsTabBarForChosenNetwork()
     }
 
     private fun handleStatusBarIconColorChanges(
@@ -227,6 +224,18 @@ abstract class CoreMainActivity : BaseActivity() {
 
     fun hideProgress() {
         binding.progressBar.root.hide()
+    }
+
+    private fun handleBottomBarNavigationForChosenNetwork() {
+        binding.bottomNavigationView.menu.forEach { menuItem ->
+            if (menuItem.itemId == R.id.discoverNavigation) {
+                menuItem.isEnabled = isConnectedToTestNet.not()
+            }
+        }
+    }
+
+    private fun handleCoreActionsTabBarForChosenNetwork() {
+        binding.coreActionsTabBarView.setBrowseDappsEnabled(isConnectedToTestNet.not())
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
