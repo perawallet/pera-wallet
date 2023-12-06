@@ -45,6 +45,7 @@ class NFTDetailPreviewMapper @Inject constructor() {
         isOptOutButtonVisible: Boolean,
         globalErrorEvent: Event<String>? = null,
         fractionalCollectibleSendEvent: Event<Unit>? = null,
+        pureCollectibleSendEvent: Event<Unit>? = null,
         optOutNFTEvent: Event<AssetInformation>? = null
     ): NFTDetailPreview {
         return NFTDetailPreview(
@@ -65,7 +66,8 @@ class NFTDetailPreviewMapper @Inject constructor() {
             primaryWarningResId = primaryWarningResId,
             secondaryWarningResId = secondaryWarningResId,
             globalErrorEvent = globalErrorEvent,
-            collectibleSendEvent = fractionalCollectibleSendEvent,
+            fractionalCollectibleSendEvent = fractionalCollectibleSendEvent,
+            pureCollectibleSendEvent = pureCollectibleSendEvent,
             isOptOutButtonVisible = isOptOutButtonVisible,
             isSendButtonVisible = isSendButtonVisible,
             optOutNFTEvent = optOutNFTEvent

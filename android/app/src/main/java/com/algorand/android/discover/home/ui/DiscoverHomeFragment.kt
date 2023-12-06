@@ -36,7 +36,6 @@ import com.algorand.android.discover.home.ui.adapter.DiscoverAssetSearchAdapter
 import com.algorand.android.discover.home.ui.model.DiscoverAssetItem
 import com.algorand.android.discover.home.ui.model.DiscoverHomePreview
 import com.algorand.android.discover.utils.getDiscoverAuthHeader
-import com.algorand.android.discover.utils.getDiscoverCustomUrl
 import com.algorand.android.discover.utils.getDiscoverHomeUrl
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
@@ -47,7 +46,6 @@ import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.listenToNavigationResult
-import com.algorand.android.utils.preference.ThemePreference
 import com.algorand.android.utils.scrollToTop
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -88,11 +86,8 @@ class DiscoverHomeFragment : BaseDiscoverFragment(R.layout.fragment_discover_hom
                     navigateToSimpleUrlViewer(url)
                 }
             }
-            loadHomeEvent?.consume()?.run {
-                loadDiscoverHomepage(preview.themePreference)
-            }
-            loadCustomUrlEvent?.consume()?.let { url ->
-                loadCustomUrl(url, preview.themePreference)
+            reloadPageEvent?.consume()?.run {
+                loadDiscoverHomepage(preview)
             }
             scrollToTopEvent?.consume()?.run {
                 binding.searchRecyclerView.scrollToTop()
@@ -271,30 +266,20 @@ class DiscoverHomeFragment : BaseDiscoverFragment(R.layout.fragment_discover_hom
         }
     }
 
-    private fun loadDiscoverHomepage(themePreference: ThemePreference) {
-        val homeUrl = getDiscoverHomeUrl(
-            themePreference = getWebViewThemeFromThemePreference(themePreference),
-            currency = discoverViewModel.getPrimaryCurrencyId(),
-            locale = (activity as? BaseActivity)?.getCurrentLanguage()?.language
-                ?: Locale.getDefault().language
-        )
-        loadWebViewUrl(homeUrl)
-    }
-
-    private fun loadCustomUrl(url: String, themePreference: ThemePreference) {
-        val homeUrl = getDiscoverCustomUrl(
-            url = url,
-            themePreference = getWebViewThemeFromThemePreference(themePreference),
-            currency = discoverViewModel.getPrimaryCurrencyId(),
-            locale = (activity as? BaseActivity)?.getCurrentLanguage()?.language
-                ?: Locale.getDefault().language
-        )
-        loadWebViewUrl(homeUrl)
-    }
-
-    private fun loadWebViewUrl(url: String) {
-        binding.webView.post {
-            binding.webView.loadUrl(url, getDiscoverAuthHeader())
+    private fun loadDiscoverHomepage(preview: DiscoverHomePreview) {
+        with(binding) {
+            webView.post {
+                webView.loadUrl(
+                    // TODO Get locale from PeraLocaleProvider after merging TinymanSwapSprint2 branch
+                    getDiscoverHomeUrl(
+                        themePreference = getWebViewThemeFromThemePreference(preview.themePreference),
+                        currency = discoverViewModel.getPrimaryCurrencyId(),
+                        locale = (activity as? BaseActivity)?.getCurrentLanguage()?.language
+                            ?: Locale.getDefault().language
+                    ),
+                    getDiscoverAuthHeader()
+                )
+            }
         }
     }
 

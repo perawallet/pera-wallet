@@ -564,11 +564,15 @@
     <string name="we_don_t_support">Bu NFT medya türünü henüz desteklemiyoruz.</string>
     <string name="we_can_t_display">Görseli geçici olarak görüntüleyemiyoruz.</string>
     <string name="transfer">Transfer</string>
+    <string name="send_your_nft">NFT\'nizi gönderin</string>
+    <string name="paste_an_algorand_wallet_address">Bir Algorand cüzdan adresini yapıştırın</string>
     <string name="ask_recipient_to">Alıcıdan şuna katılmasını isteyin:\n%1$s</string>
     <string name="you_cant_send"><annotation replacement="nft_name">NFTNamePlaceHolder</annotation> varlığını <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> adresine gönderemezsiniz çünkü bu cüzdan henüz bu varlığa katılım sağlamamış. <annotation font="dmsans_medium"><annotation custom="learn_more">Katılım sağlama hakkında daha fazla bilgi edinin</annotation></annotation></string>
     <string name="information_about_opt">Katılım Hakkında Bilgiler</string>
     <string name="to_avoid_spammy">Algorand Blockchain, istenmeyen türde işlemlerin yapılmasını önlemek için yalnızca önceden katılım sağlanan varlıklarda gönderim ve alım yapmanızı sağlar.</string>
     <string name="search_or_enter_wallet_address">Cüzdan adresi arayın veya girin</string>
+    <string name="your_nft_transfer">NFT transferiniz onaylandı!</string>
+    <string name="transactions_can_take">İşlemlerin sonuçlanması birkaç dakika sürebilir.</string>
     <string name="got_it">Anladım!</string>
     <string name="approve_transaction">İşlemi Onayla</string>
     <string name="are_you_sure">Devam etmek istediğinizden emin misiniz?</string>
@@ -898,6 +902,7 @@
     <string name="error_while_opting_to_the">ASA\'yı katılım sağlanırken hata oluştu. Lütfen tekrar deneyin</string>
     <string name="retry">Yeniden Dene</string>
     <string name="before_interacting_with">Bir varlıkla etkileşimde bulunmadan önce, ona hesabınızdan katılmanız gerekir. Bu, yetkisiz varlık işlemlerinin size gönderilmesini önler.</string>
+    <string name="you_already_own">Zaten bu varlığa sahipsiniz</string>
     <string name="markets">Piyasalar</string>
     <string name="formatted_changed_percentage">%%%1$.2f</string>
     <string name="display_nfts_in_asset_list">NFT\'leri varlık listesinde göster</string>

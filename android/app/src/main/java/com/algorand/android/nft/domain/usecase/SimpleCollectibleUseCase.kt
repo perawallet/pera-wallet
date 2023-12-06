@@ -15,8 +15,9 @@ package com.algorand.android.nft.domain.usecase
 import com.algorand.android.models.SimpleCollectibleDetail
 import com.algorand.android.nft.data.repository.SimpleCollectibleRepository
 import com.algorand.android.utils.CacheResult
-import kotlinx.coroutines.flow.StateFlow
+import java.math.BigInteger
 import javax.inject.Inject
+import kotlinx.coroutines.flow.StateFlow
 
 class SimpleCollectibleUseCase @Inject constructor(
     private val collectibleRepository: SimpleCollectibleRepository
@@ -40,6 +41,12 @@ class SimpleCollectibleUseCase @Inject constructor(
 
     fun getCachedCollectibleById(nftAssetId: Long): CacheResult<SimpleCollectibleDetail>? {
         return collectibleRepository.getCachedCollectibleById(nftAssetId)
+    }
+
+    fun isCachedCollectiblePureIfExists(collectibleId: Long): Boolean? {
+        return getCachedCollectibleById(collectibleId)?.data?.let {
+            it.maxSupply != null && it.maxSupply == BigInteger.ONE && it.fractionDecimals == 0
+        }
     }
 
     suspend fun cacheCollectibleDetail(collectible: CacheResult.Success<SimpleCollectibleDetail>) {

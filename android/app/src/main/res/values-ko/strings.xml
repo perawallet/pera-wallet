@@ -546,11 +546,15 @@
     <string name="we_don_t_support">아직 지원하지 않는 NFT 미디어 유형입니다.</string>
     <string name="we_can_t_display">현재 임시로 시각적 개체를 표시할 수 없습니다.</string>
     <string name="transfer">전송</string>
+    <string name="send_your_nft">NFT 보내기</string>
+    <string name="paste_an_algorand_wallet_address">알고랜드 지갑 주소 붙여넣기</string>
     <string name="ask_recipient_to">받는 분께\n%1$s 옵트인 요청</string>
     <string name="you_cant_send"><annotation replacement="nft_name">NFTNamePlaceHolder</annotation>을(를) <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> 주소로 보낼 수 없습니다. 이 지갑은 아직 해당 자산을 옵트인 설정하지 않았습니다. <annotation font="dmsans_medium"><annotation custom="learn_more">옵트인에 대해 자세히 알아보세요</annotation></annotation></string>
     <string name="information_about_opt">옵트인 정보</string>
     <string name="to_avoid_spammy">스팸 트랜잭션을 방지하기 위해, 알고랜드 블록체인은 이전에 옵트인한 자산에 대해서만 트랜잭션을 보내고 받도록 허용합니다.</string>
     <string name="search_or_enter_wallet_address">지갑 주소를 검색하거나 입력하세요</string>
+    <string name="your_nft_transfer">NFT 전송이 확인되었습니다!</string>
+    <string name="transactions_can_take">트랜잭션을 완료하는 데 몇 분 정도 소요됩니다.</string>
     <string name="got_it">알겠습니다!</string>
     <string name="approve_transaction">트랜잭션 승인</string>
     <string name="are_you_sure">계속하시겠습니까?</string>
@@ -871,6 +875,7 @@
     <string name="error_while_opting_to_the">ASA를 선택하는 동안 오류가 발생했습니다. 다시 시도해 주십시오.</string>
     <string name="retry">재시도</string>
     <string name="before_interacting_with">자산을 사용하기 전에 계정에서 자산을 선택해야 합니다. 이렇게 하면 승인되지 않은 자산 거래가 전송되는 것을 방지할 수 있습니다.</string>
+    <string name="you_already_own">이미 보유 중인 자산입니다</string>
     <string name="markets">시장</string>
     <string name="formatted_changed_percentage">%1$.2f%%</string>
     <string name="display_nfts_in_asset_list">자산 목록에 NFT 표시</string>

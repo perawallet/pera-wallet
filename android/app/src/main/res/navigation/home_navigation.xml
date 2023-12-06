@@ -72,6 +72,8 @@
     <include app:graph="@navigation/swap_navigation" />
     <!-- Swap End -->
 
+    <include app:graph="@navigation/send_collectible_navigation" />
+
     <include app:graph="@navigation/wallet_connect_connection_navigation" />
 
     <include app:graph="@navigation/discover_navigation" />
@@ -120,16 +122,6 @@
         <argument
             android:name="accountAddress"
             app:argType="string" />
-    </action>
-
-    <action
-        android:id="@+id/action_global_discoverNavigation"
-        app:destination="@id/discoverNavigation">
-        <argument
-            android:name="url"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
     </action>
 
     <action
@@ -311,6 +303,17 @@
             android:name="isResultNeeded"
             android:defaultValue="false"
             app:argType="boolean" />
+    </action>
+
+    <action
+        android:id="@+id/action_global_sendCollectibleNavigation"
+        app:destination="@id/sendCollectibleNavigation">
+        <argument
+            android:name="accountAddress"
+            app:argType="string" />
+        <argument
+            android:name="nftId"
+            app:argType="long" />
     </action>
 
     <fragment

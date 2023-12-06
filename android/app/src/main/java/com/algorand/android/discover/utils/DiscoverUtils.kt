@@ -55,7 +55,7 @@ fun getDiscoverTokenDetailUrl(
         .build()
 }
 
-fun getDiscoverCustomUrl(
+fun getDiscoverNewScreenUrl(
     url: String,
     themePreference: WebViewTheme,
     currency: String,

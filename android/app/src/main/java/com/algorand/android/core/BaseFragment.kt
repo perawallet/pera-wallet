@@ -73,7 +73,7 @@ abstract class BaseFragment(
         if (isBottomBarVisible != null) {
             (activity as? CoreMainActivity)?.isBottomBarNavigationVisible = isBottomBarVisible
             if (isBottomBarVisible) {
-                (activity as? CoreMainActivity)?.handleNavigationButtonsForChosenNetwork()
+                (activity as? CoreMainActivity)?.handleBottomBarNavigationForChosenNetwork()
             }
         }
     }

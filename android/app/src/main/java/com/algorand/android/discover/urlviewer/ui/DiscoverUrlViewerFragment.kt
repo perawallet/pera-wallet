@@ -27,7 +27,7 @@ import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.discover.dapp.ui.DiscoverDappFragment
 import com.algorand.android.discover.home.domain.PeraMobileWebInterface
 import com.algorand.android.discover.urlviewer.ui.model.DiscoverUrlViewerPreview
-import com.algorand.android.discover.utils.getDiscoverCustomUrl
+import com.algorand.android.discover.utils.getDiscoverNewScreenUrl
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
@@ -148,7 +148,7 @@ class DiscoverUrlViewerFragment :
     private fun loadUrl(preview: DiscoverUrlViewerPreview) {
         binding.webView.loadUrl(
             // TODO Get locale from PeraLocaleProvider after merging TinymanSwapSprint2 branch
-            getDiscoverCustomUrl(
+            getDiscoverNewScreenUrl(
                 url = preview.url,
                 themePreference = getWebViewThemeFromThemePreference(preview.themePreference),
                 currency = discoverViewModel.getPrimaryCurrencyId(),

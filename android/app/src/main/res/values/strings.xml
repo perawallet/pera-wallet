@@ -632,12 +632,16 @@
     <string name="we_don_t_support">We don\'t support this NFT media type yet.</string>
     <string name="we_can_t_display">We can\'t display the visual temporarily.</string>
     <string name="transfer">Transfer</string>
+    <string name="send_your_nft">Send your NFT</string>
+    <string name="paste_an_algorand_wallet_address">Paste an Algorand wallet address</string>
     <string name="ask_recipient_to">Ask recipient to opt-in to\n%1$s</string>
     <string name="you_cant_send">You can\'t send <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> to <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> because this wallet didn\'t opt-in for this asset yet. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more about Opt-in</annotation></annotation></string>
     <string name="request_receiver_to">Request receiver to opt-in</string>
     <string name="information_about_opt">Information about Opt-in</string>
     <string name="to_avoid_spammy">To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.</string>
     <string name="search_or_enter_wallet_address">Search or enter wallet address</string>
+    <string name="your_nft_transfer">Your NFT transfer is confirmed!</string>
+    <string name="transactions_can_take">Transactions can take a few minutes to finalize.</string>
     <string name="got_it">Got it!</string>
     <string name="approve_transaction">Approve Transaction</string>
     <string name="are_you_sure">Are you sure you want to proceed?</string>
@@ -701,8 +705,6 @@
     <string name="algo_or_any_asa">Algo or any ASA to another account</string>
     <string name="view_or_copy">View or copy your account address</string>
     <string name="use_wallet_connect">Use WalletConnect or scan an account address </string>
-    <string name="browse_dapps">Browse dApps</string>
-    <string name="use_browser_to_interract_with">Use browser to interact with dApps</string>
     <string name="opt_out_from_the">Opt-out from the NFT</string>
     <string name="asset_configuration">Asset Configuration</string>
     <string name="scan_qr">Scan QR</string>
@@ -982,6 +984,7 @@
 
     <string name="before_interacting_with">Before interacting with an asset, you must opt-in to it from your account. This prevents unauthorized asset transactions to be sent to you.</string>
 
+    <string name="you_already_own">You already own this asset</string>
     <string name="markets">Markets</string>
     <string name="formatted_changed_percentage">%1$.2f%%</string>
     <string name="display_nfts_in_asset_list">Display NFTs in asset list</string>
@@ -1350,4 +1353,7 @@
     <string name="data">Data</string>
     <string name="your_data_is_being_processed">Your data is being processed!</string>
     <string name="the_data_has_been_signed">The data has been signed and sent to <annotation replacement="peer_name">peer_name_placeholder</annotation>. Please visit  <annotation replacement="peer_name">peer_name_placeholder</annotation> for the remaining process.</string>
+
+    <string name="buying_algo_through_pera_wallet">Buying Algo through Pera Wallet is not available at the
+        moment</string>
 </resources>

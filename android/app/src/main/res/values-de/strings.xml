@@ -554,11 +554,15 @@
     <string name="we_don_t_support">Dieser NFT-Medientyp wird von uns noch nicht unterstützt.</string>
     <string name="we_can_t_display">Wir können das Bildmaterial vorübergehend nicht anzeigen.</string>
     <string name="transfer">Übertragen</string>
+    <string name="send_your_nft">Senden Sie Ihren NFT</string>
+    <string name="paste_an_algorand_wallet_address">Algorand-Wallet-Adresse einfügen</string>
     <string name="ask_recipient_to">Empfänger um Opt-in bitten\n%1$s</string>
     <string name="you_cant_send">Sie können <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> nicht an <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> senden, da diese Wallet noch nicht für dieses Asset optiert hat. <annotation font="dmsans_medium"><annotation custom="learn_more">Erfahren Sie mehr über Opt-in</annotation></annotation></string>
     <string name="information_about_opt">Informationen zum Opt-in</string>
     <string name="to_avoid_spammy">Um Spam-Transaktionen zu vermeiden, erlaubt die Algorand-Blockchain nur das Senden und Empfangen von Transaktionen für Assets, für die zuvor ein Opt-in erteilt wurde.</string>
     <string name="search_or_enter_wallet_address">Wallet-Adresse suchen oder eingeben</string>
+    <string name="your_nft_transfer">Ihr NFT-Transfer ist bestätigt!</string>
+    <string name="transactions_can_take">Es kann einige Minuten dauern, bis die Transaktionen abgeschlossen sind.</string>
     <string name="got_it">Alles klar!</string>
     <string name="approve_transaction">Transaktion genehmigen</string>
     <string name="are_you_sure">Sind Sie sicher, dass Sie fortfahren möchten?</string>
@@ -889,6 +893,7 @@ das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
     <string name="error_while_opting_to_the">Fehler beim Opt-in für die ASA. Bitte erneut versuchen</string>
     <string name="retry">Erneut versuchen</string>
     <string name="before_interacting_with">Bevor Sie mit einem Asset interagieren, müssen Sie das Opt-in dafür von Ihrem Konto aus durchführen. Dadurch wird verhindert, dass Transaktionen mit nicht autorisierten Assets an Sie gesendet werden.</string>
+    <string name="you_already_own">Sie besitzen dieses Asset bereits</string>
     <string name="markets">Märkte</string>
     <string name="formatted_changed_percentage">%1$.2f%%</string>
     <string name="display_nfts_in_asset_list">NFTs in Asset-Liste anzeigen</string>

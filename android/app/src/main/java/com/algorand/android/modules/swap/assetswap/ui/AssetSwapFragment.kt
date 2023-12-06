@@ -217,7 +217,6 @@ class AssetSwapFragment : BaseFragment(R.layout.fragment_asset_swap) {
             fromAssetInputView.apply {
                 setChooseAssetButtonOnClickListener { navToFromAssetSelectionFragment() }
                 setOnTextChangedListener(onFromAmountChangeListener)
-                showKeyboard()
             }
             toAssetInputView.apply {
                 setChooseAssetButtonOnClickListener { navToToAssetSelectionFragment() }

@@ -16,6 +16,7 @@ package com.algorand.android.usecase
 import com.algorand.android.R
 import com.algorand.android.SendAlgoNavigationDirections
 import com.algorand.android.decider.AssetDrawableProviderDecider
+import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
@@ -24,8 +25,6 @@ import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.Result
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.User
-import com.algorand.android.modules.accountasset.GetAccountAssetUseCase
-import com.algorand.android.modules.accountasset.domain.model.AccountAssetDetail
 import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDrawableUseCase
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
@@ -39,11 +38,11 @@ import com.algorand.android.utils.exceptions.WarningException
 import com.algorand.android.utils.formatAsAlgoString
 import com.algorand.android.utils.isValidAddress
 import com.algorand.android.utils.validator.AccountTransactionValidator
+import java.math.BigInteger
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import java.math.BigInteger
-import javax.inject.Inject
 
 @Suppress("LongParameterList")
 class ReceiverAccountSelectionUseCase @Inject constructor(
@@ -57,9 +56,8 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
     private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
     private val assetDataProviderDecider: AssetDrawableProviderDecider, // TODO Remove decider after refactor AssetInfo
     private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase,
-    accountInformationUseCase: AccountInformationUseCase,
-    getAccountAssetUseCase: GetAccountAssetUseCase
-) : BaseSendAccountSelectionUseCase(accountInformationUseCase, getAccountAssetUseCase) {
+    accountInformationUseCase: AccountInformationUseCase
+) : BaseSendAccountSelectionUseCase(accountInformationUseCase) {
 
     fun getToAccountList(
         query: String,
@@ -157,7 +155,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
 
     @SuppressWarnings("ReturnCount", "LongMethod")
     suspend fun checkToAccountTransactionRequirements(
-        accountAssetDetail: AccountAssetDetail,
+        accountInformation: AccountInformation,
         assetId: Long,
         fromAccountAddress: String,
         amount: BigInteger,
@@ -170,12 +168,18 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
             return Result.Error(Exception())
         }
 
-        if (accountAssetDetail.assetDetail == null && assetId != ALGO_ID) {
+        val isSelectedAssetSupported = accountTransactionValidator.isSelectedAssetSupported(
+            accountInformation,
+            assetId
+        )
+        val selectedAsset = getAssetInformation(assetId = assetId, accountAddress = fromAccountAddress)
+
+        if (!isSelectedAssetSupported) {
             val nextDirection = ReceiverAccountSelectionFragmentDirections
                 .actionReceiverAccountSelectionFragmentToRequestOptInConfirmationNavigation(
                     RequestOptInConfirmationArgs(
                         fromAccountAddress,
-                        accountAssetDetail.address,
+                        accountInformation.address,
                         assetId,
                         getAssetOrCollectibleNameOrNull(assetId)
                     )
@@ -184,27 +188,27 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         }
 
         if (assetId == ALGO_ID) {
-            val minBalance = accountAssetDetail.minBalanceRequired
-            val toAccountAlgoBalance = accountAssetDetail.algoAmount
+            val minBalance = accountInformation.getMinAlgoBalance()
+            val toAccountSelectedAssetBalance = accountInformation.getBalance(assetId)
             val isSendingAmountValid = accountTransactionValidator.isSendingAmountLesserThanMinimumBalance(
-                toAccountAlgoBalance,
+                toAccountSelectedAssetBalance,
                 amount,
                 minBalance
             )
             if (isSendingAmountValid) {
                 val warningBodyMessage = AnnotatedString(
                     R.string.you_re_trying_to_send,
-                    listOf("amount" to (minBalance - toAccountAlgoBalance).formatAsAlgoString())
+                    listOf("amount" to (minBalance - toAccountSelectedAssetBalance).formatAsAlgoString())
                 )
                 return Result.Error(WarningException(R.string.warning, warningBodyMessage))
             }
         }
 
         val fromAccountCacheData = accountCacheManager.getCacheData(fromAccountAddress)
-        val selectedAsset = getAssetInformation(assetId = assetId, accountAddress = fromAccountAddress)
+
         val isSendingMaxAmountToSameAccount = accountTransactionValidator.isSendingMaxAmountToTheSameAccount(
             fromAccount = fromAccountAddress,
-            toAccount = accountAssetDetail.address,
+            toAccount = accountInformation.address,
             maxAmount = selectedAsset?.amount ?: BigInteger.ZERO,
             amount = amount,
             isAlgo = selectedAsset?.isAlgo() ?: false
@@ -216,7 +220,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
 
         val isCloseTransactionToSameAccount = accountTransactionValidator.isCloseTransactionToSameAccount(
             fromAccountCacheData,
-            accountAssetDetail.address,
+            accountInformation.address,
             selectedAsset,
             amount
         )
@@ -226,7 +230,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         }
 
         val isAccountNewlyOpenedAndBalanceInvalid = accountTransactionValidator.isAccountNewlyOpenedAndBalanceInvalid(
-            accountAssetDetail,
+            accountInformation,
             amount,
             assetId
         )
@@ -245,7 +249,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
             )
         }
 
-        val toAccountPublicKey = accountAssetDetail.address
+        val toAccountPublicKey = accountInformation.address
         val contact = getContactByAddressIfExists(toAccountPublicKey)
         val toAccountCacheData = accountCacheManager.getCacheData(toAccountPublicKey)
         val targetUser = TargetUser(

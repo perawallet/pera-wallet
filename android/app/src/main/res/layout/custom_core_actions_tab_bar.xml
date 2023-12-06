@@ -44,24 +44,23 @@
         tools:layout_height="wrap_content">
 
         <com.algorand.android.customviews.ListMenuItemView
-            android:id="@+id/swapButton"
+            android:id="@+id/buySellButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_xxxxlarge"
             android:layout_marginBottom="@dimen/spacing_large"
-            app:description="@string/convert_between_popular_asa_pairs"
-            app:icon="@drawable/ic_swap_quick_actions"
-            app:title="@string/swap" />
-
+            app:description="@string/see_all_options_to_buy"
+            app:icon="@drawable/ic_buy_sell"
+            app:title="@string/buy_sell" />
 
         <com.algorand.android.customviews.ListMenuItemView
-            android:id="@+id/buySellButton"
+            android:id="@+id/swapButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_large"
-            app:description="@string/see_all_options_to_buy"
-            app:icon="@drawable/ic_buy_sell_helper_button"
-            app:title="@string/buy_sell" />
+            app:description="@string/convert_between_popular_asa_pairs"
+            app:icon="@drawable/ic_swap_helper_button_bg_gray"
+            app:title="@string/swap" />
 
         <com.algorand.android.customviews.ListMenuItemView
             android:id="@+id/sendButton"
@@ -85,19 +84,10 @@
             android:id="@+id/scanQrButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_xxxxlarge"
             app:description="@string/use_wallet_connect"
             app:icon="@drawable/ic_qr_scan_helper_button"
             app:title="@string/scan_qr_code" />
-
-        <com.algorand.android.customviews.ListMenuItemView
-            android:id="@+id/browseDAppsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_xxxxlarge"
-            app:description="@string/use_browser_to_interract_with"
-            app:icon="@drawable/ic_browse_dapps_helper_button"
-            app:title="@string/browse_dapps" />
 
     </LinearLayout>
 

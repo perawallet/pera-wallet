@@ -7,22 +7,14 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License
+ *  limitations under the License
  */
 
-package com.algorand.android.modules.accountasset.domain.model
+package com.algorand.android.nft.ui.model
 
-import java.math.BigInteger
+import com.algorand.android.models.BaseAccountSelectionListItem
 
-data class AccountAssetDetail(
-    val address: String,
-    val algoAmount: BigInteger,
-    val minBalanceRequired: BigInteger,
-    val assetDetail: AssetDetail?
-) {
-
-    data class AssetDetail(
-        val assetId: Long,
-        val amount: BigInteger
-    )
-}
+data class CollectibleReceiverSelectionPreview(
+    val isLoading: Boolean,
+    val accountSelectionItems: List<BaseAccountSelectionListItem>
+)

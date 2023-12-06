@@ -80,9 +80,10 @@ class CollectibleDetailFragment : BaseCollectibleDetailFragment() {
             setShowOnPeraExplorer(peraExplorerUrl)
             setNFTTotalSupply(formattedTotalSupply)
             globalErrorEvent?.consume()?.run { if (this.isNotBlank()) showGlobalError(this) }
-            collectibleSendEvent?.consume()?.run {
-                navToSendAlgoNavigation(optedInAccountDisplayName.getRawAccountAddress(), nftId, isPureNFT)
+            fractionalCollectibleSendEvent?.consume()?.run {
+                navToSendAlgoNavigation(optedInAccountDisplayName.getRawAccountAddress(), nftId)
             }
+            pureCollectibleSendEvent?.consume()?.run { navToCollectibleSendFragment() }
             optOutNFTEvent?.consume()?.run { navToOptOutNavigation(this) }
         }
     }
@@ -114,12 +115,18 @@ class CollectibleDetailFragment : BaseCollectibleDetailFragment() {
         }
     }
 
-    private fun navToSendAlgoNavigation(ownerAccountAddress: String, nftId: Long, isPureNFT: Boolean) {
-        val assetTransaction = AssetTransaction(senderAddress = ownerAccountAddress, assetId = nftId)
+    private fun navToCollectibleSendFragment() {
         nav(
-            HomeNavigationDirections
-                .actionGlobalSendAlgoNavigation(assetTransaction, shouldPopulateAmountWithMax = isPureNFT)
+            HomeNavigationDirections.actionGlobalSendCollectibleNavigation(
+                accountAddress = baseCollectibleDetailViewModel.accountAddress,
+                nftId = baseCollectibleDetailViewModel.nftId
+            )
         )
+    }
+
+    private fun navToSendAlgoNavigation(ownerAccountAddress: String, nftId: Long) {
+        val assetTransaction = AssetTransaction(senderAddress = ownerAccountAddress, assetId = nftId)
+        nav(HomeNavigationDirections.actionGlobalSendAlgoNavigation(assetTransaction))
     }
 
     private fun setCollectibleAssetIdClickListener(collectibleAssetId: Long, address: String) {

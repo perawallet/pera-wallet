@@ -16,6 +16,7 @@ import com.algorand.android.modules.swap.assetswap.ui.mapper.SelectedAssetAmount
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.modules.swap.assetswap.ui.utils.SwapAmountUtils
 import com.algorand.android.modules.swap.common.SwapAppxValueParityHelper
+import com.algorand.android.modules.swap.common.domain.usecase.GetSwapSlippageToleranceUseCase
 import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.formatAsPercentage
 import com.algorand.android.utils.isEqualTo
@@ -28,6 +29,7 @@ class AssetSwapAmountUpdatedPreviewUseCase @Inject constructor(
     private val selectedAssetAmountDetailMapper: SelectedAssetAmountDetailMapper,
     private val assetSwapCreateQuotePreviewUseCase: AssetSwapCreateQuotePreviewUseCase,
     private val swapAppxValueParityHelper: SwapAppxValueParityHelper,
+    private val getSwapSlippageToleranceUseCase: GetSwapSlippageToleranceUseCase
 ) {
 
     fun getUpdatedPreview(
@@ -66,6 +68,7 @@ class AssetSwapAmountUpdatedPreviewUseCase @Inject constructor(
                 fromAssetId = fromAssetId,
                 toAssetId = toAssetId,
                 amount = amount,
+                slippage = getSwapSlippageToleranceUseCase(),
                 previousState = previousState,
                 swapTypeAssetDecimal = previousState.fromSelectedAssetDetail.assetDecimal,
                 isMaxAndPercentageButtonEnabled = true,

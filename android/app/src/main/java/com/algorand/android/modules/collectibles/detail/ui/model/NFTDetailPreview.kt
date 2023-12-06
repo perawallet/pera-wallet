@@ -39,6 +39,7 @@ data class NFTDetailPreview(
     val isSendButtonVisible: Boolean,
     val isOptOutButtonVisible: Boolean,
     val globalErrorEvent: Event<String>?,
-    val collectibleSendEvent: Event<Unit>?,
+    val fractionalCollectibleSendEvent: Event<Unit>?,
+    val pureCollectibleSendEvent: Event<Unit>?,
     val optOutNFTEvent: Event<AssetInformation>?
 )

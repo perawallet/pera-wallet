@@ -15,8 +15,8 @@ package com.algorand.android.network
 import com.algorand.android.models.AccountInformationResponse
 import com.algorand.android.models.AccountsResponse
 import com.algorand.android.models.AssetResponse
-import com.algorand.android.modules.transaction.detail.data.model.TransactionDetailResponse
 import com.algorand.android.modules.transactionhistory.data.model.PaginatedTransactionsResponse
+import com.algorand.android.modules.transaction.detail.data.model.TransactionDetailResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

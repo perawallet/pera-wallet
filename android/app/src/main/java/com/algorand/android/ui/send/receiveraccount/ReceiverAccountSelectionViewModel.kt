@@ -17,17 +17,18 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.AccountCacheData
+import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.Result
 import com.algorand.android.models.TargetUser
-import com.algorand.android.modules.accountasset.domain.model.AccountAssetDetail
 import com.algorand.android.usecase.ReceiverAccountSelectionUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -35,7 +36,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class ReceiverAccountSelectionViewModel @Inject constructor(
@@ -52,8 +52,8 @@ class ReceiverAccountSelectionViewModel @Inject constructor(
     private val _toAccountAddressValidationFlow = MutableStateFlow<Event<Resource<String>>?>(null)
     val toAccountAddressValidationFlow: StateFlow<Event<Resource<String>>?> = _toAccountAddressValidationFlow
 
-    private val _toAccountInformationFlow = MutableStateFlow<Event<Resource<AccountAssetDetail>>?>(null)
-    val toAccountInformationFlow: StateFlow<Event<Resource<AccountAssetDetail>>?> = _toAccountInformationFlow
+    private val _toAccountInformationFlow = MutableStateFlow<Event<Resource<AccountInformation>>?>(null)
+    val toAccountInformationFlow: StateFlow<Event<Resource<AccountInformation>>?> = _toAccountInformationFlow
 
     private val _toAccountTransactionRequirementsFlow = MutableStateFlow<Event<Resource<TargetUser>>?>(null)
     val toAccountTransactionRequirementsFlow: StateFlow<Event<Resource<TargetUser>>?> =
@@ -93,10 +93,7 @@ class ReceiverAccountSelectionViewModel @Inject constructor(
         nftDomainAddressServiceLogoPair = nftDomainAddress?.run { Pair(this, nftDomainServiceLogoUrl) }
         viewModelScope.launch {
             _toAccountInformationFlow.emit(Event(Resource.Loading))
-            val result = receiverAccountSelectionUseCase.fetchAccountInformationForAsset(
-                toAccountPublicKey,
-                assetTransaction.assetId
-            )
+            val result = receiverAccountSelectionUseCase.fetchAccountInformation(toAccountPublicKey, viewModelScope)
             when (result) {
                 is Result.Success -> _toAccountInformationFlow.emit(Event(Resource.Success(result.data)))
                 is Result.Error -> _toAccountInformationFlow.emit(Event(result.getAsResourceError()))
@@ -104,11 +101,11 @@ class ReceiverAccountSelectionViewModel @Inject constructor(
         }
     }
 
-    fun checkToAccountTransactionRequirements(accountAssetDetail: AccountAssetDetail) {
+    fun checkToAccountTransactionRequirements(accountInformation: AccountInformation) {
         viewModelScope.launch {
             _toAccountTransactionRequirementsFlow.emit(Event(Resource.Loading))
             val result = receiverAccountSelectionUseCase.checkToAccountTransactionRequirements(
-                accountAssetDetail,
+                accountInformation,
                 assetTransaction.assetId,
                 assetTransaction.senderAddress,
                 amount = assetTransaction.amount,

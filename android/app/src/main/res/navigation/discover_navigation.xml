@@ -21,11 +21,6 @@
         android:name="com.algorand.android.discover.home.ui.DiscoverHomeFragment"
         android:label="DiscoverHome"
         tools:layout="@layout/fragment_discover_home">
-        <argument
-            android:name="url"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
         <action
             android:id="@+id/action_discoverHomeFragment_to_discoverDappFragment"
             app:destination="@id/discoverDappFragment">

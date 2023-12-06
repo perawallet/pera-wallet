@@ -31,5 +31,5 @@ data class SwapQuoteRequestBody(
     @SerializedName("amount")
     val amount: BigInteger,
     @SerializedName("slippage")
-    val slippage: Float?
+    val slippage: Float
 )

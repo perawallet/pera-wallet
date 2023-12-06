@@ -21,7 +21,6 @@ import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.Result
-import com.algorand.android.modules.accountasset.domain.model.AccountAssetDetail
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetAccountMinimumBalanceUseCase
 import com.algorand.android.utils.MIN_FEE
@@ -100,12 +99,12 @@ class AccountTransactionValidator @Inject constructor(
     }
 
     fun isAccountNewlyOpenedAndBalanceInvalid(
-        accountAssetDetail: AccountAssetDetail,
+        receiverAccountInformation: AccountInformation,
         amount: BigInteger,
         assetId: Long
     ): Boolean {
         return assetId == ALGO_ID &&
-            accountAssetDetail.algoAmount isEqualTo BigInteger.ZERO &&
+            receiverAccountInformation.amount isEqualTo BigInteger.ZERO &&
             amount < minBalancePerAssetAsBigInteger
     }
 }

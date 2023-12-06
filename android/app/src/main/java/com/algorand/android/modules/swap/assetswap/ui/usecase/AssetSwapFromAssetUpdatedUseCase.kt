@@ -16,6 +16,7 @@ import com.algorand.android.modules.swap.assetswap.ui.mapper.SelectedAssetAmount
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.modules.swap.assetswap.ui.utils.SwapAmountUtils
 import com.algorand.android.modules.swap.common.SwapAppxValueParityHelper
+import com.algorand.android.modules.swap.common.domain.usecase.GetSwapSlippageToleranceUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.emptyString
 import javax.inject.Inject
@@ -26,6 +27,7 @@ class AssetSwapFromAssetUpdatedUseCase @Inject constructor(
     private val assetSwapCreateQuotePreviewUseCase: AssetSwapCreateQuotePreviewUseCase,
     private val selectedAssetAmountDetailMapper: SelectedAssetAmountDetailMapper,
     private val swapAppxValueParityHelper: SwapAppxValueParityHelper,
+    private val getSwapSlippageToleranceUseCase: GetSwapSlippageToleranceUseCase,
 ) {
 
     fun getFromAssetUpdatedPreview(
@@ -57,6 +59,7 @@ class AssetSwapFromAssetUpdatedUseCase @Inject constructor(
                 fromAssetId = fromAssetId,
                 toAssetId = toAssetId,
                 amount = amount,
+                slippage = getSwapSlippageToleranceUseCase(),
                 previousState = newState,
                 swapTypeAssetDecimal = fromSelectedAssetDetail.assetDecimal,
                 isMaxAndPercentageButtonEnabled = true,

@@ -23,6 +23,7 @@ import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuote
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuoteAssetDetail
 import com.algorand.android.modules.swap.assetswap.domain.usecase.GetSwapQuoteUseCase
 import com.algorand.android.modules.swap.common.SwapAppxValueParityHelper
+import com.algorand.android.modules.swap.common.domain.usecase.SetSwapSlippageToleranceUseCase
 import com.algorand.android.modules.swap.confirmswap.domain.SwapTransactionSignManager
 import com.algorand.android.modules.swap.confirmswap.domain.model.SwapQuoteTransaction
 import com.algorand.android.modules.swap.confirmswap.domain.usecase.CreateSwapQuoteTransactionsUseCase
@@ -68,6 +69,7 @@ class ConfirmSwapPreviewUseCase @Inject constructor(
     private val swapTransactionSignManager: SwapTransactionSignManager,
     private val swapPriceRatioProviderMapper: SwapPriceRatioProviderMapper,
     private val accountDetailSummaryUseCase: AccountDetailSummaryUseCase,
+    private val setSwapSlippageToleranceUseCase: SetSwapSlippageToleranceUseCase,
     private val swapAppxValueParityHelper: SwapAppxValueParityHelper,
     private val priceImpactWarningStatusDecider: ConfirmSwapPriceImpactWarningStatusDecider
 ) {
@@ -113,6 +115,7 @@ class ConfirmSwapPreviewUseCase @Inject constructor(
             ).collect {
                 it.useSuspended(
                     onSuccess = { newSwapQuote ->
+                        setSwapSlippageToleranceUseCase(slippageTolerance)
                         val newState = getConfirmSwapPreview(newSwapQuote).copy(
                             slippageToleranceUpdateSuccessEvent = Event(Unit)
                         )

@@ -120,6 +120,12 @@ class SlippageTolerancePreviewUseCase @Inject constructor(
             add(CUSTOM_OPTION_CHIP_INDEX, createCustomItem(resources, previousSelectedTolerance))
             add(
                 peraChipItemMapper.mapToPeraChipItem(
+                    labelText = resources.getString(R.string.zero_point_one_percent),
+                    value = ZERO_POINT_ONE_PERCENTAGE_SLIPPAGE
+                )
+            )
+            add(
+                peraChipItemMapper.mapToPeraChipItem(
                     labelText = resources.getString(R.string.zero_point_five_percent),
                     value = ZERO_POINT_FIVE_PERCENTAGE_SLIPPAGE
                 )
@@ -128,18 +134,6 @@ class SlippageTolerancePreviewUseCase @Inject constructor(
                 peraChipItemMapper.mapToPeraChipItem(
                     labelText = resources.getString(R.string.one_percent),
                     value = TEN_PERCENTAGE_SLIPPAGE
-                )
-            )
-            add(
-                peraChipItemMapper.mapToPeraChipItem(
-                    labelText = resources.getString(R.string.two_percent),
-                    value = TWENTY_PERCENTAGE_SLIPPAGE
-                )
-            )
-            add(
-                peraChipItemMapper.mapToPeraChipItem(
-                    labelText = resources.getString(R.string.five_percent),
-                    value = FIFTY_PERCENTAGE_SLIPPAGE
                 )
             )
         }
@@ -158,19 +152,17 @@ class SlippageTolerancePreviewUseCase @Inject constructor(
     }
 
     private fun isCustomInputAlsoPredefinedValue(customSlippageTolerance: Float): Boolean {
-        return customSlippageTolerance == ZERO_POINT_FIVE_PERCENTAGE_SLIPPAGE ||
-                customSlippageTolerance == TEN_PERCENTAGE_SLIPPAGE ||
-                customSlippageTolerance == TWENTY_PERCENTAGE_SLIPPAGE ||
-                customSlippageTolerance == FIFTY_PERCENTAGE_SLIPPAGE
+        return customSlippageTolerance == ZERO_POINT_ONE_PERCENTAGE_SLIPPAGE ||
+            customSlippageTolerance == ZERO_POINT_FIVE_PERCENTAGE_SLIPPAGE ||
+            customSlippageTolerance == TEN_PERCENTAGE_SLIPPAGE
     }
 
     companion object {
         private const val CUSTOM_OPTION_CHIP_INDEX = 0
         private const val CUSTOM_OPTION_DEFAULT_VALUE = -1f
-        private const val ZERO_POINT_FIVE_PERCENTAGE_SLIPPAGE = 0.005f
+        private const val ZERO_POINT_ONE_PERCENTAGE_SLIPPAGE: Float = 0.001f
+        private const val ZERO_POINT_FIVE_PERCENTAGE_SLIPPAGE: Float = 0.005f
         private const val TEN_PERCENTAGE_SLIPPAGE = 0.01f
-        private const val TWENTY_PERCENTAGE_SLIPPAGE = 0.02f
-        private const val FIFTY_PERCENTAGE_SLIPPAGE = 0.05f
         private const val SLIPPAGE_TOLERANCE_DIVIDER = 100f
     }
 }

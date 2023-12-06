@@ -15,13 +15,10 @@ package com.algorand.android.usecase
 
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.Result
-import com.algorand.android.modules.accountasset.GetAccountAssetUseCase
-import com.algorand.android.modules.accountasset.domain.model.AccountAssetDetail
 import kotlinx.coroutines.CoroutineScope
 
 open class BaseSendAccountSelectionUseCase(
-    private val accountInformationUseCase: AccountInformationUseCase,
-    private val getAccountAssetUseCase: GetAccountAssetUseCase
+    private val accountInformationUseCase: AccountInformationUseCase
 ) {
 
     suspend fun fetchAccountInformation(toAddress: String, coroutineScope: CoroutineScope): Result<AccountInformation> {
@@ -34,9 +31,5 @@ open class BaseSendAccountSelectionUseCase(
             is Result.Success -> Result.Success(accountInformationResult.data)
             is Result.Error -> Result.Error(accountInformationResult.exception)
         }
-    }
-
-    suspend fun fetchAccountInformationForAsset(toAddress: String, assetId: Long): Result<AccountAssetDetail> {
-        return getAccountAssetUseCase(toAddress, assetId)
     }
 }

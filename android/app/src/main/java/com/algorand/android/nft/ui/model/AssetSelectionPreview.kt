@@ -14,6 +14,7 @@ package com.algorand.android.nft.ui.model
 
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.BaseSelectAssetItem
+import com.algorand.android.modules.collectibles.detail.ui.model.CollectibleDetail
 import com.algorand.android.utils.Event
 
 data class AssetSelectionPreview(
@@ -23,5 +24,6 @@ data class AssetSelectionPreview(
     val globalErrorTextEvent: Event<String>?,
     val navigateToAssetTransferAmountFragmentEvent: Event<Long>?,
     val isAssetListLoadingVisible: Boolean,
-    val isReceiverAccountOptInCheckLoadingVisible: Boolean
+    val isReceiverAccountOptInCheckLoadingVisible: Boolean,
+    val navigateToCollectibleSendFragmentEvent: Event<CollectibleDetail>?
 )

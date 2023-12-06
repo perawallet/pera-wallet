@@ -20,12 +20,12 @@ sealed class QuickActionItem {
     abstract val labelResId: Int
 
     object BuySellButton : QuickActionItem() {
-        override val iconResId: Int = R.drawable.ic_buy_sell_quick_actions
+        override val iconResId: Int = R.drawable.ic_buy_sell
         override val labelResId: Int = R.string.buy_sell
     }
 
     data class SwapButton(val isSelected: Boolean) : QuickActionItem() {
-        override val iconResId: Int = R.drawable.ic_swap_quick_actions
+        override val iconResId: Int = R.drawable.ic_swap_helper_button_bg_ghost
         override val labelResId: Int = R.string.swap
     }
 

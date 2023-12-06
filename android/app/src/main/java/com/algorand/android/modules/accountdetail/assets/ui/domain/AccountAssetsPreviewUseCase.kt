@@ -121,9 +121,9 @@ class AccountAssetsPreviewUseCase @Inject constructor(
                 add(QuickActionItem.CopyAddressButton)
                 add(QuickActionItem.ShowAddressButton)
             } else {
+                add(QuickActionItem.BuySellButton)
                 val isSwapSelected = getSwapFeatureRedDotVisibilityUseCase.getSwapFeatureRedDotVisibility()
                 add(accountDetailAssetItemMapper.mapToSwapQuickActionItem(isSwapSelected))
-                add(QuickActionItem.BuySellButton)
                 add(QuickActionItem.SendButton)
             }
             add(QuickActionItem.MoreButton)

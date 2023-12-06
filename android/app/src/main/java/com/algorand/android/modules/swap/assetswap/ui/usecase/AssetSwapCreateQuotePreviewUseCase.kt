@@ -44,6 +44,7 @@ class AssetSwapCreateQuotePreviewUseCase @Inject constructor(
         fromAssetId: Long,
         toAssetId: Long,
         amount: String?,
+        slippage: Float,
         swapTypeAssetDecimal: Int,
         isMaxAndPercentageButtonEnabled: Boolean,
         formattedPercentageText: String,
@@ -55,7 +56,7 @@ class AssetSwapCreateQuotePreviewUseCase @Inject constructor(
             fromAssetId = fromAssetId,
             toAssetId = toAssetId,
             amount = amountAsBigInteger,
-            slippage = null,
+            slippage = slippage,
             accountAddress = accountAddress
         ).map {
             it.useSuspended(

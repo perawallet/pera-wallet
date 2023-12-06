@@ -14,6 +14,7 @@ package com.algorand.android.modules.swap.assetswap.ui.usecase
 
 import com.algorand.android.modules.swap.assetswap.ui.model.AssetSwapPreview
 import com.algorand.android.modules.swap.assetswap.ui.utils.SwapAmountUtils
+import com.algorand.android.modules.swap.common.domain.usecase.GetSwapSlippageToleranceUseCase
 import com.algorand.android.utils.emptyString
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.flow
 class AssetSwapAssetsSwitchUpdatePreviewUseCase @Inject constructor(
     private val assetSwapPreviewAssetDetailUseCase: AssetSwapPreviewAssetDetailUseCase,
     private val assetSwapCreateQuotePreviewUseCase: AssetSwapCreateQuotePreviewUseCase,
+    private val getSwapSlippageToleranceUseCase: GetSwapSlippageToleranceUseCase,
     private val assetSwapSwitchButtonStatusUseCase: AssetSwapSwitchButtonStatusUseCase
 ) {
 
@@ -64,6 +66,7 @@ class AssetSwapAssetsSwitchUpdatePreviewUseCase @Inject constructor(
                 fromAssetId = fromAssetId,
                 toAssetId = toAssetId,
                 amount = amount,
+                slippage = getSwapSlippageToleranceUseCase(),
                 previousState = newState,
                 swapTypeAssetDecimal = fromAssetDetail.assetDecimal,
                 isMaxAndPercentageButtonEnabled = true,

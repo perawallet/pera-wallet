@@ -17,6 +17,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentAssetSelectionBinding
@@ -24,8 +25,10 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.AssetSelectionPreview
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
+import com.algorand.android.nft.ui.nfttransferconfirmed.CollectibleTransferConfirmedFragment.Companion.SEND_PURE_COLLECTIBLE_RESULT_KEY
 import com.algorand.android.ui.send.assetselection.adapter.SelectSendingAssetAdapter
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.algorand.android.utils.useFragmentResultListenerValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,11 +60,22 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
         binding.assetsToSendRecyclerView.adapter = assetSelectionAdapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        initSavedStateListener()
+    }
+
     private fun initObservers() {
         viewLifecycleOwner.collectLatestOnLifecycle(
             assetSelectionViewModel.assetSelectionPreview,
             assetSelectionPreviewCollector
         )
+    }
+
+    private fun initSavedStateListener() {
+        useFragmentResultListenerValue<Boolean>(SEND_PURE_COLLECTIBLE_RESULT_KEY) { isSent ->
+            if (isSent) nav(AssetSelectionFragmentDirections.actionSendAlgoNavigationPop())
+        }
     }
 
     private fun updateUiWithPreview(assetSelectionPreview: AssetSelectionPreview) {
@@ -76,6 +90,9 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
             }
             navigateToAssetTransferAmountFragmentEvent?.consume()?.run {
                 navToAssetTransferAmountFragment(this)
+            }
+            navigateToCollectibleSendFragmentEvent?.consume()?.let {
+                navToCollectibleSendFragment(it.ownerAccountAddress.publicKey, it.collectibleId)
             }
         }
     }
@@ -112,6 +129,15 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
                     assetId = assetId,
                     assetName = assetSelectionViewModel.getAssetOrCollectibleNameOrNull(assetId)
                 )
+            )
+        )
+    }
+
+    private fun navToCollectibleSendFragment(senderAddress: String, nftId: Long) {
+        nav(
+            HomeNavigationDirections.actionGlobalSendCollectibleNavigation(
+                accountAddress = senderAddress,
+                nftId = nftId
             )
         )
     }

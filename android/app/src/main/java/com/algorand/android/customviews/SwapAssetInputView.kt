@@ -108,13 +108,7 @@ class SwapAssetInputView(context: Context, attrs: AttributeSet? = null) : Constr
         with(binding.amountEditText) {
             removeTextChangedListener(textChangeWatcher)
             setText(amount)
-            setSelection(
-                if (hasFocus()) {
-                    amount.length
-                } else {
-                    0
-                }
-            )
+            setSelection(amount.length)
             if (textChangeWatcher != null) {
                 addTextChangedListener(textChangeWatcher)
             }
@@ -206,12 +200,6 @@ class SwapAssetInputView(context: Context, attrs: AttributeSet? = null) : Constr
         }
     }
 
-    fun showKeyboard() {
-        with(binding.amountEditText) {
-            if (isFocusable) requestFocusAndShowKeyboard()
-        }
-    }
-
     fun interface TextChangeListener {
         fun onTextChanged(text: CharSequence?)
     }
@@ -238,7 +226,9 @@ class SwapAssetInputView(context: Context, attrs: AttributeSet? = null) : Constr
 
     private fun initRootClickListener() {
         binding.root.setOnClickListener {
-            showKeyboard()
+            with(binding.amountEditText) {
+                if (isVisible && isFocusable) requestFocusAndShowKeyboard()
+            }
         }
     }
 }
