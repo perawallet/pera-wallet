@@ -30249,7 +30249,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 87QL82XC78;
+				DEVELOPMENT_TEAM = K8YR4WT3S5;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
@@ -30262,7 +30262,7 @@
 				);
 				MARKETING_VERSION = 5.10.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION -D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yulz.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -30293,7 +30293,7 @@
 				);
 				MARKETING_VERSION = 5.10.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
-				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yulz.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.algorandllc.algorand";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -30450,7 +30450,7 @@
 				);
 				MARKETING_VERSION = 5.10.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
-				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yulz.algorand;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.algorandllc.algorand";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
