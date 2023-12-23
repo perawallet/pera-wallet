@@ -8,12 +8,6 @@
 	<string>$(PROD_API_KEY)</string>
 	<key>BIDALI_PROD_API_KEY</key>
 	<string>$(BIDALI_PROD_API_KEY)</string>
-	<key>SARDINE_PROD_API_KEY</key>
-	<string>$(SARDINE_PROD_API_KEY)</string>
-	<key>TRANSAK_PROD_API_KEY</key>
-	<string>$(TRANSAK_PROD_API_KEY)</string>
-	<key>WC_V2_PROJECT_ID</key>
-	<string>$(WC_V2_PROJECT_ID)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -96,6 +90,10 @@
 	<string>Pera will use Face ID to log you in securely.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Pera will save QR codes to your photo library.</string>
+	<key>SARDINE_PROD_API_KEY</key>
+	<string>$(SARDINE_PROD_API_KEY)</string>
+	<key>TRANSAK_PROD_API_KEY</key>
+	<string>$(TRANSAK_PROD_API_KEY)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>PublicSans-Bold.ttf</string>
@@ -129,10 +127,14 @@
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>WC_V2_PROJECT_ID</key>
+	<string>$(WC_V2_PROJECT_ID)</string>
 </dict>
 </plist>
