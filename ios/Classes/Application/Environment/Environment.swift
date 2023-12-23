@@ -56,8 +56,8 @@ class Environment {
     lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)/v2"
     lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)/v2"
 
-    lazy var mainNetAlgodHost = "node-mainnet.chain.perawallet.app"
-    lazy var mainNetIndexerHost = "indexer-mainnet.chain.perawallet.app"
+    lazy var mainNetAlgodHost = "mainnet-api.algonode.cloud"
+    lazy var mainNetIndexerHost = "mainnet-idx.algonode.cloud"
     lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)/v2"
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
 

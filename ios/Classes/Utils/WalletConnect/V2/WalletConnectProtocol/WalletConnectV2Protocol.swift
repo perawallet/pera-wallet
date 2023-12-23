@@ -68,7 +68,7 @@ extension WalletConnectV2Protocol {
         }
 
         Networking.configure(
-            projectId: projectID,
+            groupIdentifier: "", projectId: projectID,
             socketFactory: DefaultSocketFactory()
         )
         
