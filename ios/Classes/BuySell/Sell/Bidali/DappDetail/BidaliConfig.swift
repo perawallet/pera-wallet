@@ -39,7 +39,7 @@ struct BidaliConfig {
                 BidaliPaymentCurrencyProtocol.algo.getRawValue(in: network),
                 BidaliPaymentCurrencyProtocol.usdc.getRawValue(in: network)
             ]
-        case .mainnet:
+        case .mainnet, .localnet:
             let key = Bundle.main.infoDictionary?["BIDALI_PROD_API_KEY"] as? String ?? .empty
             self.key = key
             self.url = "https://commerce.bidali.com/dapp?key=\(key)"

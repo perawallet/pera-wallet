@@ -28,7 +28,16 @@ final class ALGAPIBase {
 
     func setupNetworkBase(_ network: ALGAPI.Network) -> String {
         self.network = network
-        let node = network == .mainnet ? mainNetNode : testNetNode
+       
+        var node: AlgorandNode!
+        if network == .testnet {
+            node = testNetNode
+        } else if network == .localnet {
+            node = localNetNode
+        } else {
+            node = mainNetNode
+        }
+        
         algodToken = node.algodToken
         indexerToken = node.indexerToken
         return node.algodAddress
@@ -64,6 +73,8 @@ extension ALGAPIBase {
             case let .algod(network):
                 if network == .testnet {
                     return Environment.current.testNetAlgodApi
+                } else if network == .localnet {
+                    return Environment.current.localMainNetAlgodApi
                 } else {
                     return Environment.current.mainNetAlgodApi
                 }
@@ -94,7 +105,9 @@ extension ALGAPIBase {
 
 fileprivate extension String {
     var isAlgodApiBase: Bool {
-        return self == Environment.current.testNetAlgodApi || self == Environment.current.mainNetAlgodApi
+        return self == Environment.current.testNetAlgodApi ||
+                self == Environment.current.mainNetAlgodApi ||
+                self == Environment.current.localMainNetAlgodApi
     }
 
     var isIndexerApiBase: Bool {

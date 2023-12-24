@@ -27,7 +27,7 @@ struct SardineConfig {
         switch network {
         case .testnet:
             self.url = "https://crypto.sandbox.sardine.ai/?fiat_amount=1000&fiat_currency=USD&fixed_asset_type=ALGO&fixed_network=algorand&address=\(address)"
-        case .mainnet:
+        case .mainnet, .localnet:
             let key = Bundle.main.infoDictionary?["SARDINE_PROD_API_KEY"] as? String ?? .empty
             self.url = "https://crypto.sardine.ai/?fiat_amount=1000&fiat_currency=USD&fixed_asset_type=ALGO&fixed_network=algorand&address=\(address)&client_id=\(key)"
         }

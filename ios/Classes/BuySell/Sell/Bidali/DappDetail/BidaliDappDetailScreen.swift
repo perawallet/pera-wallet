@@ -266,7 +266,7 @@ extension BidaliDappDetailScreen {
         switch api!.network {
         case .testnet:
             return makeBalancesForTestnet(account)
-        case .mainnet:
+        case .mainnet, .localnet:
             return makeBalancesForMainnet(account)
         }
     }

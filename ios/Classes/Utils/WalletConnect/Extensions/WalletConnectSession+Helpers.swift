@@ -73,7 +73,7 @@ extension WalletConnectSession {
         switch network {
         case .testnet:
             return dAppInfo.chainId ?? algorandWalletConnectV1TestNetChainID
-        case .mainnet:
+        case .mainnet, .localnet:
             return dAppInfo.chainId ?? algorandWalletConnectV1MainNetChainID
         }
     }

@@ -155,7 +155,7 @@ final class DiscoverURLGenerator {
         switch network {
         case .testnet:
             base = Environment.current.testNetMobileAPIV1
-        case .mainnet:
+        case .mainnet, .localnet:
             base = Environment.current.mainNetMobileAPIV1
         }
 

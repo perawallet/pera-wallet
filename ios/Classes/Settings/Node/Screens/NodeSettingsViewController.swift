@@ -31,7 +31,7 @@ final class NodeSettingsViewController: BaseViewController {
         return api?.network ?? .mainnet
     }
     
-    private let nodes = [mainNetNode, testNetNode]
+    private let nodes = [mainNetNode, testNetNode, localNetNode]
     
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
@@ -211,4 +211,13 @@ let testNetNode = AlgorandNode(
     indexerToken: Environment.current.indexerToken,
     name: "node-settings-default-test-node-name".localized,
     network: .testnet
+)
+
+let localNetNode = AlgorandNode(
+    algodAddress: Environment.current.localMainNetAlgodApi,
+    indexerAddress: Environment.current.mainNetAlgodHost,
+    algodToken: Environment.current.algodLocalToken,
+    indexerToken: Environment.current.indexerToken,
+    name: "node-settings-default-local-name".localized,
+    network: .localnet
 )

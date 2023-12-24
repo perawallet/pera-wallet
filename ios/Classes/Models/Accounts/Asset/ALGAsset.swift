@@ -86,14 +86,14 @@ extension ALGAsset {
 extension ALGAsset {
     static func usdcAssetID(_ network: ALGAPI.Network) -> AssetID {
         switch network {
-        case .mainnet: return 31566704
+        case .mainnet, .localnet: return 31566704
         case .testnet: return 10458941
         }
     }
 
     static func usdtAssetID(_ network: ALGAPI.Network) -> AssetID? {
         switch network {
-        case .mainnet: return 312769
+        case .mainnet, .localnet: return 312769
         case .testnet: return nil /// In the testnet, we don't have a verified USDt, so we assume there is none for now.
         }
     }

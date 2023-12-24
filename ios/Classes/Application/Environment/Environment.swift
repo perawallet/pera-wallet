@@ -37,9 +37,13 @@ class Environment {
     
     lazy var algodToken: String = {
         guard let token = Bundle.main.infoDictionary?["ALGOD_TOKEN"] as? String else {
-            return ""
+            return "n/a"
         }
-        return token
+        return "n/a"
+    }()
+    
+    lazy var algodLocalToken: String = {
+        return "8db04e743982824ad88192d99fa3e47f0a07ffa5823d7ff44d3c69c85987a32f"
     }()
 
     lazy var indexerToken: String = {
@@ -59,6 +63,7 @@ class Environment {
     lazy var mainNetAlgodHost = "mainnet-api.algonode.cloud"
     lazy var mainNetIndexerHost = "mainnet-idx.algonode.cloud"
     lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)/v2"
+    lazy var localMainNetAlgodApi = "http://192.168.86.24:4190/v2"
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
 
     lazy var serverHost: String = {

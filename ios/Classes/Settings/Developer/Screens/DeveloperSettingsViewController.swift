@@ -63,7 +63,7 @@ final class DeveloperSettingsViewController:
 extension DeveloperSettingsViewController {
     private func reload() {
         switch api?.network {
-        case .mainnet, .none:
+        case .mainnet, .localnet, .none:
             settings = [.nodeSettings]
         case .testnet:
             settings = [.nodeSettings, .dispenser]

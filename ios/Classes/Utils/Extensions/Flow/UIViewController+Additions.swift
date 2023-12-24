@@ -145,7 +145,7 @@ extension UIViewController {
         for network: ALGAPI.Network
     ) -> UIStatusBarStyle {
         switch network {
-        case .mainnet:
+        case .mainnet, .localnet:
             if presentingViewController != nil {
                 let srcViewController = navigationController ?? self
                 if srcViewController.modalPresentationStyle != .fullScreen {

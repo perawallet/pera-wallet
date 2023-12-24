@@ -505,8 +505,9 @@
 "node-settings-database-error-description" = "An error occured on system.";
 "node-settings-warning-message" = "This action will remove the node. Are you sure?";
 "node-settings-action-delete-title" = "Delete";
-"node-settings-default-node-name" = "Algorand MainNet Node";
-"node-settings-default-test-node-name" = "TestNet";
+"node-settings-default-node-name" = "MainNet Node";
+"node-settings-default-local-name" = "LocalNet Node";
+"node-settings-default-test-node-name" = "TestNet Node";
 "node-settings-health-problem-message" = "None of your active nodes are online. Please add or select another node";
 
 // MARK: Transaction Detail
