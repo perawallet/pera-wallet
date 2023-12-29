@@ -47,7 +47,7 @@ final class DiscoverHomeScreen:
 
     init(configuration: ViewControllerConfiguration) {
         super.init(
-            destination: .home,
+            destination: .browser,
             configuration: configuration
         )
     }
