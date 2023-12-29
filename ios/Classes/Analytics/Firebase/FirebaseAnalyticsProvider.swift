@@ -28,8 +28,9 @@ final class FirebaseAnalyticsProvider: ALGAnalyticsProvider {
     }
 
     func setup() {
-        FirebaseApp.configure()
-        instance.setAnalyticsCollectionEnabled(true)
+        // Disabling Firebase Analytics
+        //FirebaseApp.configure()
+        //instance.setAnalyticsCollectionEnabled(true)
     }
 
     func identify<T: AnalyticsUser>(
