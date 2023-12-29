@@ -16,6 +16,7 @@
 //  Environment.swift
 
 import Foundation
+import KeychainAccess
 
 private enum AppTarget {
     case staging, prod
@@ -37,13 +38,17 @@ class Environment {
     
     lazy var algodToken: String = {
         guard let token = Bundle.main.infoDictionary?["ALGOD_TOKEN"] as? String else {
-            return "n/a"
+            return ""
         }
-        return "n/a"
+        return ""
     }()
-    
-    lazy var algodLocalToken: String = {
-        return "8db04e743982824ad88192d99fa3e47f0a07ffa5823d7ff44d3c69c85987a32f"
+
+    var algodLocalToken: String = {
+        var keychain = KeychainAccess.Keychain(service: "com.algorand.algorand.token.private").accessibility(.whenUnlocked)
+        guard var token = keychain.string(for: "algodLocalToken") as? String else {
+            return ""
+        }
+        return token
     }()
 
     lazy var indexerToken: String = {
@@ -55,17 +60,23 @@ class Environment {
 
     lazy var apiKey: String? = Bundle.main["API_KEY"]
     
-    lazy var testNetAlgodHost = "node-testnet.chain.perawallet.app"
-    lazy var testNetIndexerHost = "indexer-testnet.chain.perawallet.app"
+    lazy var testNetAlgodHost = "testnet-api.algonode.cloud"
+    lazy var testNetIndexerHost = "testnet-idx.algonode.cloud"
     lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)/v2"
     lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)/v2"
 
     lazy var mainNetAlgodHost = "mainnet-api.algonode.cloud"
     lazy var mainNetIndexerHost = "mainnet-idx.algonode.cloud"
     lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)/v2"
-    lazy var localMainNetAlgodApi = "http://192.168.86.24:4190/v2"
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
 
+    var localMainNetAlgodApi: String = {
+        let url = UserDefaults.standard.string(forKey: "urlString") ?? ""
+        var port = UserDefaults.standard.string(forKey: "portString") ?? ""
+        port = port.isEmpty ? "" : ":\(port)"
+        return url + port + "/v2"
+    }()
+    
     lazy var serverHost: String = {
         switch target {
         case .staging:

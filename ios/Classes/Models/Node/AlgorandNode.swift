@@ -18,9 +18,9 @@
 import Foundation
 
 struct AlgorandNode {
-    let algodAddress: String
+    var algodAddress: String
     let indexerAddress: String
-    let algodToken: String
+    var algodToken: String
     let indexerToken: String
     let name: String
     let network: ALGAPI.Network

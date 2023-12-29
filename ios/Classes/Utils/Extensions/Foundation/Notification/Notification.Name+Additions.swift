@@ -53,4 +53,8 @@ extension Notification.Name {
     static var newNotificationReceieved: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.status.receieved")
     }
+    
+    static var updateLocalNetNotification: Notification.Name {
+        .init(rawValue: "updatedLocalNet")
+    }
 }

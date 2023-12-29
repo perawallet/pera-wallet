@@ -26,6 +26,7 @@ final class NodeSettingsViewController: BaseViewController {
     
     private lazy var theme = Theme()
     private lazy var nodeSettingsView = SingleSelectionListView()
+    private lazy var localNodeSettingsView = LocalNodeView()
     
     private var selectedNetwork: ALGAPI.Network {
         return api?.network ?? .mainnet
@@ -58,10 +59,23 @@ final class NodeSettingsViewController: BaseViewController {
 extension NodeSettingsViewController {
     private func addNodeSettingsView() {
         view.addSubview(nodeSettingsView)
+        view.addSubview(localNodeSettingsView)
         
-        nodeSettingsView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        nodeSettingsView.snp.makeConstraints { make in
+            make.top.equalTo(self.view.snp.top).offset(0)
+            make.leading.equalTo(12)
+            make.size.equalTo(400)
         }
+
+        localNodeSettingsView.snp.makeConstraints { make in
+            make.top.equalTo(nodeSettingsView.snp.bottom).offset(-172)
+            make.leading.equalTo(12)
+            make.size.equalTo(nodeSettingsView)
+        }
+        
+        localNodeSettingsView.alpha = selectedNetwork == .localnet ? 1.0 : 0.0
+        
+        view.bringSubviewToFront(localNodeSettingsView)
     }
 }
 
@@ -151,6 +165,8 @@ extension NodeSettingsViewController {
         
         let oldNetwork = selectedNetwork
         
+        localNodeSettingsView.alpha = node.network == .localnet ? 1.0 : 0.0
+        
         api?.setupNetworkBase(node.network)
         change()
         
@@ -158,7 +174,10 @@ extension NodeSettingsViewController {
             [weak self] error in
             guard let self = self else { return }
             
-            self.loadingController?.stopLoading()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.56) {
+                self.loadingController?.stopLoading()
+            }
+            
             
             guard let error = error else {
                 self.pushNotificationController.unregisterDevice(from: oldNetwork)
@@ -213,7 +232,7 @@ let testNetNode = AlgorandNode(
     network: .testnet
 )
 
-let localNetNode = AlgorandNode(
+var localNetNode = AlgorandNode(
     algodAddress: Environment.current.localMainNetAlgodApi,
     indexerAddress: Environment.current.mainNetAlgodHost,
     algodToken: Environment.current.algodLocalToken,

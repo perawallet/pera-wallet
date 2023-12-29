@@ -3463,6 +3463,9 @@
 		3AFAEE9B2B376B7A00051C99 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AFAEE992B376B7A00051C99 /* GoogleService-Info.plist */; };
 		3AFAEE9C2B376B7A00051C99 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AFAEE992B376B7A00051C99 /* GoogleService-Info.plist */; };
 		3AFAEE9D2B376B7A00051C99 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AFAEE992B376B7A00051C99 /* GoogleService-Info.plist */; };
+		3AFAEE9F2B38BDFF00051C99 /* LocalNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFAEE9E2B38BDFF00051C99 /* LocalNodeView.swift */; };
+		3AFAEEA02B38BDFF00051C99 /* LocalNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFAEE9E2B38BDFF00051C99 /* LocalNodeView.swift */; };
+		3AFAEEA12B38BDFF00051C99 /* LocalNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFAEE9E2B38BDFF00051C99 /* LocalNodeView.swift */; };
 		95004BB427BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95004BB327BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift */; };
 		95004BB527BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95004BB327BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift */; };
 		95004BB627BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95004BB327BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift */; };
@@ -8694,6 +8697,7 @@
 		2BFA924B29CCCE320097E1B1 /* OptInAssetNextListErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInAssetNextListErrorViewModel.swift; sourceTree = "<group>"; };
 		2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyDataSource.swift; sourceTree = "<group>"; };
 		3AFAEE992B376B7A00051C99 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3AFAEE9E2B38BDFF00051C99 /* LocalNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNodeView.swift; sourceTree = "<group>"; };
 		95004BB327BBC61400AB2D9A /* NoContentViewTopAttachedTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoContentViewTopAttachedTheme.swift; sourceTree = "<group>"; };
 		95004BB727BD37DD00AB2D9A /* TransactionSendController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSendController.swift; sourceTree = "<group>"; };
 		9501BBD62757BD7000E2C3A7 /* SelectAssetViewControllerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAssetViewControllerDataSource.swift; sourceTree = "<group>"; };
@@ -10164,6 +10168,7 @@
 			isa = PBXGroup;
 			children = (
 				0467677F2756A65F00C88F21 /* SingleSelectionListView.swift */,
+				3AFAEE9E2B38BDFF00051C99 /* LocalNodeView.swift */,
 				046767802756A65F00C88F21 /* SingleSelectionListViewTheme.swift */,
 			);
 			path = List;
@@ -24791,6 +24796,7 @@
 				D444EE922946BCED008AD374 /* HideAssetsWithNoBalanceInAssetListFilterItemViewModel.swift in Sources */,
 				2B69AAE328BE276300A8D65D /* SwapAssetAmountView.swift in Sources */,
 				D414083729F1A4650088CE68 /* UndoRekeyConfirmationSheet.swift in Sources */,
+				3AFAEEA12B38BDFF00051C99 /* LocalNodeView.swift in Sources */,
 				D4BC641126DE4844000CFD28 /* ButtonSecondaryTheme.swift in Sources */,
 				17BD4EED2292F1260003E49A /* ContactsView.swift in Sources */,
 				D454904529590D150095E0D1 /* CollectibleGalleryListLoadingCell.swift in Sources */,
@@ -26463,6 +26469,7 @@
 				2B61CF642A48D2C6004E229A /* WalletConnectSessionReconnectionParams.swift in Sources */,
 				D45C47F8277E0CE2001853A3 /* RangeSelectionViewTheme.swift in Sources */,
 				D4086987299990C400D5797D /* BidaliAccountSelectionListLocalDataController.swift in Sources */,
+				3AFAEEA02B38BDFF00051C99 /* LocalNodeView.swift in Sources */,
 				D499D28727C7DA7B00641FF5 /* CollectibleGridItemLoadingViewTheme.swift in Sources */,
 				2BCE8F9C284A5BA800C6FD6C /* RemoveAssetsListItemButtonViewModel.swift in Sources */,
 				17AC72A52871D209006919C3 /* ImageSource+Size.swift in Sources */,
@@ -28874,6 +28881,7 @@
 				17AC72A42871D209006919C3 /* ImageSource+Size.swift in Sources */,
 				2BCE8F9B284A5BA800C6FD6C /* RemoveAssetsListItemButtonViewModel.swift in Sources */,
 				D469E70A27A13DEC002D8342 /* AlgoPriceChartTimeFrameSelectionView.swift in Sources */,
+				3AFAEE9F2B38BDFF00051C99 /* LocalNodeView.swift in Sources */,
 				953DEE1F279EE40200D76957 /* WCAssetTransactionViewTheme.swift in Sources */,
 				F07DAA9F2909EEC000DDBCF2 /* SwapDataStoreObservation.swift in Sources */,
 				1783309129548D6900AD5B4E /* TelegramDeeplink.swift in Sources */,
