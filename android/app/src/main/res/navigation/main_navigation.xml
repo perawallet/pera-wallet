@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainNavigation"
+    app:startDestination="@id/enableLedgerBluetoothBottomSheet">
+
+    <include app:graph="@navigation/home_navigation" />
+
+    <include app:graph="@navigation/login_navigation" />
+
+    <include app:graph="@navigation/lock_preference_navigation" />
+
+    <include app:graph="@navigation/single_button_bottom_sheet_navigation" />
+
+    <include app:graph="@navigation/warning_confirmation_navigation" />
+
+    <include app:graph="@navigation/wallet_connect_transaction_request_navigation" />
+
+    <include app:graph="@navigation/wallet_connect_arbitrary_data_request_navigation" />
+
+    <action
+        android:id="@+id/action_global_walletConnectTransactionRequestNavigation"
+        app:destination="@id/walletConnectTransactionRequestNavigation"
+        app:popUpTo="@id/walletConnectTransactionRequestNavigation"
+        app:popUpToInclusive="true">
+        <argument
+            android:name="shouldSkipConfirmation"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </action>
+
+    <action
+        android:id="@+id/action_global_walletConnectArbitraryDataRequestNavigation"
+        app:destination="@id/walletConnectArbitraryDataRequestNavigation"
+        app:popUpTo="@id/walletConnectArbitraryDataRequestNavigation"
+        app:popUpToInclusive="true">
+        <argument
+            android:name="shouldSkipConfirmation"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </action>
+
+    <action
+        android:id="@+id/action_to_mainNavigation"
+        app:destination="@id/mainNavigation"
+        app:popUpTo="@id/mainNavigation"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_global_lockFragment_pop"
+        app:popUpTo="@id/lockFragment"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_newAccount"
+        app:destination="@id/loginNavigation">
+        <argument
+            android:name="isShowingCloseButton"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <argument
+            android:name="shouldNavToRegisterWatchAccount"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="mnemonic"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="accountAddress"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </action>
+
+    <action
+        android:id="@+id/action_to_lockPreferenceNavigation"
+        app:destination="@id/lockPreferenceNavigation" />
+
+    <action
+        android:id="@+id/action_global_howDoesLedgerWorkFragment"
+        app:destination="@id/howDoesLedgerWorkFragment" />
+
+    <action
+        android:id="@+id/action_global_ledgerTroubleshootFragment"
+        app:destination="@id/ledgerTroubleshootFragment" />
+
+    <action
+        android:id="@+id/action_global_lockFragment"
+        app:destination="@id/lockFragment"
+        app:launchSingleTop="true" />
+
+    <action
+        android:id="@+id/action_global_confirmationBottomSheet"
+        app:destination="@id/confirmationBottomSheet" />
+
+    <action
+        android:id="@+id/action_global_ledgerAccountInformationBottomSheet"
+        app:destination="@id/ledgerAccountInformationBottomSheet" />
+
+    <action
+        android:id="@+id/action_global_singleButtonBottomSheet"
+        app:destination="@id/singleButtonBottomSheetNavigation">
+        <argument
+            android:name="titleAnnotatedString"
+            app:argType="com.algorand.android.models.AnnotatedString" />
+        <argument
+            android:name="errorAnnotatedString"
+            android:defaultValue="@null"
+            app:argType="com.algorand.android.models.AnnotatedString"
+            app:nullable="true" />
+        <argument
+            android:name="descriptionAnnotatedString"
+            android:defaultValue="@null"
+            app:argType="com.algorand.android.models.AnnotatedString"
+            app:nullable="true" />
+        <argument
+            android:name="drawableResId"
+            android:defaultValue="0"
+            app:argType="reference" />
+        <argument
+            android:name="drawableTintResId"
+            android:defaultValue="0"
+            app:argType="reference" />
+        <argument
+            android:name="isResultNeeded"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="isDraggable"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </action>
+
+    <fragment
+        android:id="@+id/lockFragment"
+        android:name="com.algorand.android.modules.lock.ui.LockFragment"
+        android:label="LockFragment"
+        tools:layout="@layout/fragment_lock">
+        <action
+            android:id="@+id/action_lockFragment_to_warningConfirmationNavigation"
+            app:destination="@id/warningConfirmationNavigation">
+            <argument
+                android:name="warningConfirmation"
+                app:argType="com.algorand.android.models.WarningConfirmation" />
+        </action>
+        <action
+            android:id="@+id/action_lockFragment_pop"
+            app:popUpTo="@id/lockFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/howDoesLedgerWorkFragment"
+        android:name="com.algorand.android.modules.baseledgersearch.instruction.howdoesledgerwork.ui.HowDoesLedgerWorkFragment"
+        android:label="HowDoesLedgerWorkFragment"
+        tools:layout="@layout/layout_ledger_instructions">
+        <action
+            android:id="@+id/action_howDoesLedgerWorkFragment_to_enableLedgerBluetoothBottomSheet"
+            app:destination="@id/enableLedgerBluetoothBottomSheet" />
+        <action
+            android:id="@+id/action_howDoesLedgerWorkFragment_to_installAlgorandOntoLedgerBottomSheet"
+            app:destination="@id/installAlgorandOntoLedgerBottomSheet" />
+        <action
+            android:id="@+id/action_howDoesLedgerWorkFragment_to_openAppOnLedgerBottomSheet"
+            app:destination="@id/openAppOnLedgerBottomSheet" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ledgerTroubleshootFragment"
+        android:name="com.algorand.android.modules.baseledgersearch.instruction.ledgertroubleshoot.ui.LedgerTroubleshootFragment"
+        android:label="LedgerTroubleshootFragment"
+        tools:layout="@layout/layout_ledger_instructions">
+        <action
+            android:id="@+id/action_ledgerTroubleshootFragment_to_enableLedgerBluetoothBottomSheet"
+            app:destination="@id/enableLedgerBluetoothBottomSheet" />
+        <action
+            android:id="@+id/action_ledgerTroubleshootFragment_to_openAppOnLedgerBottomSheet"
+            app:destination="@id/openAppOnLedgerBottomSheet" />
+        <action
+            android:id="@+id/action_ledgerTroubleshootFragment_to_installAlgorandOntoLedgerBottomSheet"
+            app:destination="@id/installAlgorandOntoLedgerBottomSheet" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ledgerAccountInformationBottomSheet"
+        android:name="com.algorand.android.modules.baseledgeraccountselection.accountinformation.ui.LedgerAccountInformationBottomSheet"
+        android:label="LedgerInformationFragment"
+        tools:layout="@layout/bottom_sheet_ledger_information">
+        <argument
+            android:name="selectedLedgerAccountSelectionListItem"
+            app:argType="com.algorand.android.models.AccountSelectionListItem$AccountItem" />
+        <argument
+            android:name="authLedgerAccountSelectionListItem"
+            app:argType="com.algorand.android.models.AccountSelectionListItem$AccountItem"
+            app:nullable="true" />
+        <argument
+            android:name="rekeyedAccountSelectionListItem"
+            app:argType="com.algorand.android.models.AccountSelectionListItem$AccountItem[]"
+            app:nullable="true" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/enableLedgerBluetoothBottomSheet"
+        android:name="com.algorand.android.modules.baseledgersearch.instruction.step.enableledger.ui.EnableLedgerBluetoothBottomSheet"
+        android:label="EnableLedgerBluetoothInfoBottomSheet"
+        tools:layout="@layout/bottom_sheet_ledger_pair_info" />
+
+    <dialog
+        android:id="@+id/installAlgorandOntoLedgerBottomSheet"
+        android:name="com.algorand.android.modules.baseledgersearch.instruction.step.installalgorand.ui.InstallAlgorandOntoLedgerBottomSheet"
+        android:label="InstallAlgorandOntoLedgerInfoBottomSheet"
+        tools:layout="@layout/bottom_sheet_ledger_pair_info" />
+
+    <dialog
+        android:id="@+id/openAppOnLedgerBottomSheet"
+        android:name="com.algorand.android.modules.baseledgersearch.instruction.step.openapp.ui.OpenAppOnLedgerBottomSheet"
+        android:label="OpenAppOnLedgerInfoBottomSheet"
+        tools:layout="@layout/bottom_sheet_ledger_pair_info" />
+    <dialog
+        android:id="@+id/confirmationBottomSheet"
+        android:name="com.algorand.android.ui.confirmation.ConfirmationBottomSheet"
+        android:label="ConfirmationBottomSheet"
+        tools:layout="@layout/bottom_sheet_double_button">
+        <argument
+            android:name="parameters"
+            app:argType="com.algorand.android.models.ConfirmationBottomSheetParameters" />
+    </dialog>
+
+</navigation>

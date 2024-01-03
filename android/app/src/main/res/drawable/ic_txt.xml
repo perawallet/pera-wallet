@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="52dp"
+    android:height="60dp"
+    android:viewportWidth="52"
+    android:viewportHeight="60">
+    <path
+        android:fillColor="@color/layer_gray"
+        android:pathData="M0,6C0,2.686 2.686,0 6,0H34.245C35.891,0 37.465,0.676 38.598,1.871L50.353,14.264C51.411,15.379 52,16.857 52,18.393V54C52,57.314 49.314,60 46,60H6C2.686,60 0,57.314 0,54V6Z" />
+    <path
+        android:fillColor="@color/background"
+        android:pathData="M15.5,35L22.5,35A9.5,9.5 0,0 1,32 44.5L32,44.5A9.5,9.5 0,0 1,22.5 54L15.5,54A9.5,9.5 0,0 1,6 44.5L6,44.5A9.5,9.5 0,0 1,15.5 35z" />
+    <path
+        android:fillColor="@color/text_gray"
+        android:pathData="M11.199,48.066C10.979,48.066 10.796,47.996 10.649,47.857C10.51,47.71 10.44,47.538 10.44,47.34C10.44,47.135 10.51,46.962 10.649,46.823C10.796,46.676 10.979,46.603 11.199,46.603C11.419,46.603 11.599,46.676 11.738,46.823C11.877,46.962 11.947,47.135 11.947,47.34C11.947,47.538 11.877,47.71 11.738,47.857C11.599,47.996 11.419,48.066 11.199,48.066ZM15.41,48C14.874,48 14.449,47.872 14.134,47.615C13.818,47.351 13.661,46.885 13.661,46.218V43.523H12.726V42.544H13.661L13.804,41.158H14.827V42.544H16.367V43.523H14.827V46.218C14.827,46.519 14.889,46.728 15.014,46.845C15.146,46.955 15.369,47.01 15.685,47.01H16.312V48H15.41ZM17.041,48L18.977,45.272L17.041,42.544H18.284L19.747,44.634L21.199,42.544H22.453L20.517,45.272L22.453,48H21.199L19.747,45.91L18.284,48H17.041ZM25.69,48C25.155,48 24.729,47.872 24.414,47.615C24.099,47.351 23.941,46.885 23.941,46.218V43.523H23.006V42.544H23.941L24.084,41.158H25.107V42.544H26.647V43.523H25.107V46.218C25.107,46.519 25.169,46.728 25.294,46.845C25.426,46.955 25.65,47.01 25.965,47.01H26.592V48H25.69Z" />
+</vector>

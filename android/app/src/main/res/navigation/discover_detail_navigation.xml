@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/discoverDetailNavigation"
+    app:startDestination="@id/discoverDetailFragment">
+
+    <fragment
+        android:id="@+id/discoverDetailFragment"
+        android:name="com.algorand.android.discover.detail.ui.DiscoverDetailFragment"
+        android:label="DiscoverDetail"
+        tools:layout="@layout/fragment_discover_detail">
+        <argument
+            android:name="tokenDetail"
+            app:argType="com.algorand.android.discover.home.domain.model.TokenDetailInfo" />
+        <action
+            android:id="@+id/action_discoverDetailFragment_to_singleButtonBottomSheetNavigation"
+            app:destination="@id/singleButtonBottomSheetNavigation"
+            app:popUpTo="@id/discoverDetailFragment"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="titleAnnotatedString"
+                app:argType="com.algorand.android.models.AnnotatedString" />
+            <argument
+                android:name="descriptionAnnotatedString"
+                android:defaultValue="@null"
+                app:argType="com.algorand.android.models.AnnotatedString"
+                app:nullable="true" />
+            <argument
+                android:name="buttonStringResId"
+                android:defaultValue="@string/close"
+                app:argType="reference" />
+            <argument
+                android:name="drawableResId"
+                android:defaultValue="0"
+                app:argType="reference" />
+            <argument
+                android:name="drawableTintResId"
+                android:defaultValue="0"
+                app:argType="reference" />
+            <argument
+                android:name="shouldDescriptionHasLinkMovementMethod"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/action_discoverDetailFragment_to_moonpayNavigation"
+            app:destination="@id/moonpayNavigation" />
+        <action
+            android:id="@+id/action_discoverDetailFragment_to_swapAccountSelectionNavigation"
+            app:destination="@id/swapAccountSelectionNavigation">
+            <argument
+                android:name="fromAssetId"
+                android:defaultValue="-1L"
+                app:argType="long" />
+            <argument
+                android:name="toAssetId"
+                android:defaultValue="-1L"
+                app:argType="long" />
+        </action>
+        <action
+            android:id="@+id/action_discoverDetailFragment_to_swapIntroductionNavigation"
+            app:destination="@id/swapIntroductionNavigation">
+            <argument
+                android:name="fromAssetId"
+                android:defaultValue="-1L"
+                app:argType="long" />
+            <argument
+                android:name="toAssetId"
+                android:defaultValue="-1L"
+                app:argType="long" />
+        </action>
+    </fragment>
+
+</navigation>

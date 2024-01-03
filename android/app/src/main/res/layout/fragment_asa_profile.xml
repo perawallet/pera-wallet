@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<com.algorand.android.customviews.ProgressSaverMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/hero_bg"
+    app:layoutDescription="@xml/scene_fragment_asa_profile"
+    tools:context=".modules.assets.profile.asaprofile.base.BaseAsaProfileFragment">
+
+    <com.algorand.android.customviews.toolbar.CustomToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/default_toolbar_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/assetLogoImageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/assetNameAndBadgeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:layout_marginEnd="@dimen/spacing_xsmall"
+        android:drawablePadding="@dimen/spacing_xxsmall"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/text_gray"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/assetPriceTextView"
+        app:layout_constraintEnd_toStartOf="@id/interpunctTextView"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetLogoImageView"
+        app:layout_goneMarginEnd="@dimen/spacing_xlarge"
+        tools:drawableEndCompat="@drawable/ic_asa_verified"
+        tools:text="@tools:sample/lorem[1]" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/interpunctTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_xsmall"
+        android:maxLines="1"
+        android:text="@string/interpunct"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/text_gray"
+        app:layout_constraintBottom_toBottomOf="@id/assetNameAndBadgeTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/assetIdTextView"
+        app:layout_constraintStart_toEndOf="@id/assetNameAndBadgeTextView"
+        app:layout_constraintTop_toTopOf="@id/assetNameAndBadgeTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/assetIdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/text_gray"
+        app:layout_constraintBottom_toBottomOf="@id/interpunctTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/interpunctTextView"
+        app:layout_constraintTop_toTopOf="@id/interpunctTextView"
+        tools:text="@tools:sample/lorem[2]" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/assetPriceTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.Title2.Sans.Medium"
+        app:autoSizeMaxTextSize="@dimen/text_size_28"
+        app:autoSizeMinTextSize="@dimen/text_size_13"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetNameAndBadgeTextView"
+        tools:text="@tools:sample/lorem[1]" />
+
+    <include
+        android:id="@+id/marketInformationLayout"
+        layout="@layout/layout_asset_detail_market_information"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetPriceTextView" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/assetAboutFragmentContainerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/marketInformationLayout"
+        app:layout_goneMarginTop="@dimen/spacing_xxxxlarge"
+        tools:background="@color/background" />
+
+    <!--    TODO Missing shadow-->
+    <include
+        android:id="@+id/assetStatusConstraintLayout"
+        layout="@layout/layout_asa_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <include
+        android:id="@+id/loadingLayout"
+        layout="@layout/layout_loading" />
+
+</com.algorand.android.customviews.ProgressSaverMotionLayout>

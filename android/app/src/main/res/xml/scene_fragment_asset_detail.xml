@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        android:id="@+id/assetDetailMotionScene"
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@id/start">
+
+        <OnSwipe
+            app:dragDirection="dragUp"
+            app:moveWhenScrollAtTop="true"
+            app:touchAnchorId="@id/assetDetailViewPager"
+            app:touchAnchorSide="top" />
+
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+
+        <ConstraintOverride android:id="@id/toolbar" />
+
+        <Constraint android:id="@id/assetLogoImageView">
+            <Layout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="@dimen/spacing_xxxxlarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/assetNameAndBadgeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/assetPrimaryValueTextView"
+            app:layout_constraintEnd_toStartOf="@id/interpunctTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/assetLogoImageView"
+            app:layout_editor_absoluteX="84dp"
+            app:layout_editor_absoluteY="56dp"
+            app:layout_goneMarginEnd="@dimen/spacing_xlarge">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginEnd="@dimen/spacing_xsmall"
+                app:layout_goneMarginEnd="@dimen/spacing_xlarge" />
+        </Constraint>
+
+        <ConstraintOverride
+            android:id="@id/interpunctTextView"
+            app:visibilityMode="ignore" />
+
+        <ConstraintOverride
+            android:id="@id/assetIdTextView"
+            app:visibilityMode="ignore" />
+
+        <ConstraintOverride android:id="@id/assetPrimaryValueTextView">
+            <PropertySet android:alpha="1" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/assetSecondaryValueTextView"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="1" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/quickActionButtons"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="1" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/buyAlgoButton"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="1" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/swapButton"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="1" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/sendButton"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="1" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/receiveButton"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="1" />
+        </ConstraintOverride>
+
+        <Constraint android:id="@id/algorandTabLayout">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxxlarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/marketInformationLayout" />
+        </Constraint>
+
+        <ConstraintOverride
+            android:id="@id/assetDetailViewPager"
+            app:visibilityMode="ignore" />
+
+        <ConstraintOverride
+            android:id="@id/marketInformationLayout"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="1" />
+        </ConstraintOverride>
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+
+        <ConstraintOverride android:id="@id/toolbar" />
+
+        <Constraint android:id="@id/assetLogoImageView">
+            <Layout
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                app:layout_constraintBottom_toBottomOf="@id/assetNameAndBadgeTextView"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/assetNameAndBadgeTextView"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/assetNameAndBadgeTextView" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/assetNameAndBadgeTextView"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/algorandTabLayout"
+            app:layout_constraintEnd_toStartOf="@id/interpunctTextView"
+            app:layout_constraintStart_toEndOf="@id/assetLogoImageView"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginEnd="@dimen/spacing_xsmall"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_goneMarginEnd="@dimen/spacing_xlarge" />
+        </Constraint>
+
+        <ConstraintOverride
+            android:id="@id/interpunctTextView"
+            app:visibilityMode="ignore" />
+
+        <ConstraintOverride
+            android:id="@id/assetIdTextView"
+            app:visibilityMode="ignore" />
+
+        <ConstraintOverride
+            android:id="@id/assetPrimaryValueTextView"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="0" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/assetSecondaryValueTextView"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="0" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/quickActionButtons"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="0" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/buyAlgoButton"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="0" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/swapButton"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="0" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/sendButton"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="0" />
+        </ConstraintOverride>
+
+        <ConstraintOverride
+            android:id="@id/receiveButton"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="0" />
+        </ConstraintOverride>
+
+        <Constraint android:id="@id/algorandTabLayout">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/assetNameAndBadgeTextView" />
+        </Constraint>
+
+        <ConstraintOverride
+            android:id="@id/assetDetailViewPager"
+            app:visibilityMode="ignore" />
+
+        <ConstraintOverride
+            android:id="@id/marketInformationLayout"
+            app:visibilityMode="ignore">
+            <PropertySet android:alpha="0" />
+        </ConstraintOverride>
+
+    </ConstraintSet>
+
+</MotionScene>

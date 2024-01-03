@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/moonpayNavigation"
+    app:startDestination="@id/moonpayIntroFragment">
+
+    <fragment
+        android:id="@+id/moonpayIntroFragment"
+        android:name="com.algorand.android.modules.dapp.moonpay.ui.intro.MoonpayIntroFragment"
+        android:label="MoonpayIntroFragment"
+        tools:layout="@layout/fragment_moonpay_intro">
+        <argument
+            android:name="walletAddress"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_moonpayIntroFragment_to_moonpayAccountSelectionFragment"
+            app:destination="@id/moonpayAccountSelectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/moonpayAccountSelectionFragment"
+        android:name="com.algorand.android.modules.dapp.moonpay.ui.accountselection.MoonpayAccountSelectionFragment"
+        android:label="MoonpayAccountSelectionFragment"
+        tools:layout="@layout/fragment_base_account_selection" />
+
+</navigation>

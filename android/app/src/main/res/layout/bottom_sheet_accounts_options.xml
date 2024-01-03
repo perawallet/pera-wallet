@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/spacing_normal"
+        android:paddingBottom="@dimen/bottom_safe_area_margin"
+        tools:background="@color/secondary_background">
+
+        <View
+            style="@style/BottomSheetModalityLine"
+            android:layout_marginVertical="@dimen/spacing_small" />
+
+        <include
+            android:id="@+id/errorGroupLayout"
+            layout="@layout/layout_bottom_sheet_top_error" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/copyAddressLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:paddingVertical="@dimen/spacing_small">
+
+            <ImageView
+                android:id="@+id/copyIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_copy" />
+
+            <TextView
+                android:id="@+id/copyAddressLabel"
+                style="@style/TextAppearance.Body.Sans.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:text="@string/copy_address"
+                app:layout_constraintBottom_toTopOf="@id/addressTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/copyIcon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/addressTextView"
+                style="@style/TextAppearance.Caption.Mono.Description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_xxxsmall"
+                android:maxLines="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/copyIcon"
+                app:layout_constraintTop_toBottomOf="@id/copyAddressLabel"
+                tools:text="@tools:sample/lorem/random[10]" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/authAddressButton"
+            style="@style/Button.Text.Options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/auth_account_address"
+            android:visibility="gone"
+            app:icon="@drawable/ic_qr"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/viewPassphraseButton"
+            style="@style/Button.Text.Options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/view_passphrase"
+            android:visibility="gone"
+            app:icon="@drawable/ic_key"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/notificationButton"
+            style="@style/Button.Text.Options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mute_notifications"
+            android:visibility="gone"
+            app:icon="@drawable/ic_empty_notification"
+            tools:visibility="visible" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/showQrButton"
+            style="@style/Button.Text.Options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/show_qr_code"
+            app:icon="@drawable/ic_qr_scan" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/renameAccountButton"
+            style="@style/Button.Text.Options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rename_account"
+            android:visibility="gone"
+            app:icon="@drawable/ic_pen"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/rekeyButton"
+            style="@style/Button.Text.Options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rekey_account"
+            android:visibility="gone"
+            app:icon="@drawable/ic_rekey"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/removeAssetButton"
+            style="@style/Button.Text.Options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/remove_assets"
+            android:visibility="gone"
+            app:icon="@drawable/ic_trash"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/disconnectAccountButton"
+            style="@style/Button.Text.Options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/remove_account"
+            android:textColor="@color/error_tint_color"
+            android:visibility="gone"
+            app:icon="@drawable/ic_unlink"
+            app:iconTint="@color/error_tint_color"
+            app:rippleColor="@color/error_tint_color"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+</ScrollView>

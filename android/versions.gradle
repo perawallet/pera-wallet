@@ -1,0 +1,62 @@
+ext {
+    targets = [
+            compileSdkVersion: 33,
+            minSdkVersion    : 24,
+            targetSdkVersion : 33
+    ]
+
+    application = [
+            applicationId: 'com.algorand.android'
+    ]
+
+    libVersions = [
+            coroutines      : '1.7.3',
+            material        : '1.9.0',
+            appCompat       : '1.6.1',
+            legacySupport   : '1.0.0',
+            lifecycle       : '2.6.1',
+            lifecycleExt    : '2.2.0',
+            constraintLayout: '2.1.4',
+            fragment        : '1.6.1',
+            coreKtx         : '1.10.1',
+            navigation      : '2.6.0',
+            paging          : '3.2.0',
+            retrofit        : '2.9.0',
+            okhttp          : '4.10.0',
+            hiltCompiler    : '1.0.0',
+            biometric       : '1.1.0',
+            flexbox         : '2.0.1',
+            zxing           : '4.3.0',
+            room            : '2.5.2',
+            glide           : '4.16.0',
+            multidex        : '2.0.1',
+            tink            : '1.10.0',
+            mpChart         : '3.1.0',
+            browser         : '1.5.0',
+            playcore        : '1.10.3',
+            ble             : '2.6.1',
+            lottie          : '6.1.0',
+            desugar         : '2.0.3',
+            localization    : '1.2.11',
+            hipoexceptions  : '1.0.0',
+            mpAndroidChart  : '3.1.0',
+            javaWebSocket   : '1.5.4',
+            khex            : '1.1.2',
+            moshi           : '1.15.0',
+            walletConnectBom: '1.15.0',
+            exoPlayer       : '2.19.0',
+            firebaseBom     : '32.2.2',
+            algoSdk         : '2.2.0'
+    ]
+
+    discoverVersions = [
+            staging: 4,
+            prod   : 4
+    ]
+
+    testLibVersions = [
+            junit   : '4.13.2',
+            runner  : '1.5.2',
+            espresso: '3.5.1'
+    ]
+}

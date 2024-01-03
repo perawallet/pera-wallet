@@ -1,0 +1,25 @@
+<!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@color/text_main"
+        android:pathData="M24,3C24,4.6568 22.6569,6 21,6C19.3431,6 18,4.6568 18,3C18,1.3432 19.3431,0 21,0C22.6569,0 24,1.3432 24,3Z" />
+    <path
+        android:fillColor="@color/text_main"
+        android:fillType="evenOdd"
+        android:pathData="M9.5001,5C8.3956,5 7.5002,5.8954 7.5002,7C7.5002,8.1046 8.3956,9 9.5001,9C10.6047,9 11.5001,8.1046 11.5001,7C11.5001,5.8954 10.6047,5 9.5001,5ZM2.9999,7.9002H5.6019C6.0102,9.6758 7.6005,11 9.5001,11C11.7093,11 13.5001,9.2091 13.5001,7C13.5001,4.7909 11.7093,3 9.5001,3C7.6004,3 6.01,4.3244 5.6018,6.1002H2.9999C2.5029,6.1002 2.1,6.5031 2.1,7.0002C2.1,7.4973 2.5029,7.9002 2.9999,7.9002ZM15.9996,6.0996H16.5776C17.1207,6.873 17.8615,7.4975 18.7267,7.8996H15.9996C15.5025,7.8996 15.0996,7.4967 15.0996,6.9996C15.0996,6.5026 15.5025,6.0996 15.9996,6.0996ZM18.3739,18.0002C17.9299,19.7254 16.3638,21.0002 14.5,21.0002C12.2908,21.0002 10.5,19.2093 10.5,17.0002C10.5,14.7911 12.2908,13.0002 14.5,13.0002C16.3638,13.0002 17.9299,14.275 18.3739,16.0002H20.9998C21.552,16.0002 21.9998,16.4479 21.9998,17.0002C21.9998,17.5525 21.552,18.0002 20.9998,18.0002H18.3739ZM1.9998,17.0002C1.9998,16.4479 2.4475,16.0002 2.9998,16.0002H7.9998C8.552,16.0002 8.9998,16.4479 8.9998,17.0002C8.9998,17.5525 8.552,18.0002 7.9998,18.0002H2.9998C2.4475,18.0002 1.9998,17.5525 1.9998,17.0002ZM12.5,17.0002C12.5,15.8956 13.3954,15.0002 14.5,15.0002C15.6045,15.0002 16.5,15.8956 16.5,17.0002C16.5,18.1048 15.6045,19.0002 14.5,19.0002C13.3954,19.0002 12.5,18.1048 12.5,17.0002Z" />
+</vector>

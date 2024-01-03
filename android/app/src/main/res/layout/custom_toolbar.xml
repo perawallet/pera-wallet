@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:layout_height="@dimen/default_toolbar_height"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/startImageButton"
+        style="?attr/toolbarNavigationButtonStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/spacing_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_left_arrow" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/textStartImageView"
+        android:layout_width="@dimen/toolbar_title_drawable_size"
+        android:layout_height="@dimen/toolbar_title_drawable_size"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarSubtitleTextView"
+        app:layout_constraintEnd_toStartOf="@id/titleLeftBarrier"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/startImageButton"
+        app:layout_constraintTop_toTopOf="@id/toolbarTitleTextView"
+        tools:srcCompat="@drawable/ic_algo_sign"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/centerImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_algo_round"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/toolbarTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/spacing_xxsmall"
+        app:autoSizeMaxTextSize="@dimen/text_size_15"
+        app:autoSizeMinTextSize="@dimen/text_size_11"
+        app:autoSizeTextType="uniform"
+        app:layout_goneMarginBottom="@dimen/spacing_xxsmall"
+        android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/toolbarSubtitleTextView"
+        app:layout_constraintEnd_toEndOf="@id/parentEndGuideline"
+        app:layout_constraintStart_toStartOf="@id/parentStartGuideline"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/lorem[25]" />
+
+    <TextView
+        android:id="@+id/toolbarSubtitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:drawablePadding="@dimen/spacing_xxsmall"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/spacing_xxsmall"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_15"
+        app:autoSizeMinTextSize="@dimen/text_size_11"
+        app:autoSizeTextType="uniform"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/secondary_text_color"
+        android:visibility="gone"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/parentEndGuideline"
+        app:layout_constraintStart_toStartOf="@id/parentStartGuideline"
+        app:layout_constraintTop_toBottomOf="@id/toolbarTitleTextView"
+        tools:text="@tools:sample/lorem[25]"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/textEndImageView"
+        android:layout_width="@dimen/toolbar_title_drawable_size"
+        android:layout_height="@dimen/toolbar_title_drawable_size"
+        android:layout_marginStart="@dimen/spacing_small"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarSubtitleTextView"
+        app:layout_constraintEnd_toStartOf="@id/buttonContainerView"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/titleRightBarrier"
+        app:layout_constraintTop_toTopOf="@id/toolbarTitleTextView"
+        tools:srcCompat="@drawable/ic_algo_sign"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/titleLeftBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="toolbarSubtitleTextView, toolbarTitleTextView" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/titleRightBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="toolbarSubtitleTextView, toolbarTitleTextView" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/parentEndGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.87" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/parentStartGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.13" />
+
+    <com.algorand.android.customviews.toolbar.buttoncontainer.ToolbarButtonContainerView
+        android:id="@+id/buttonContainerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</merge>

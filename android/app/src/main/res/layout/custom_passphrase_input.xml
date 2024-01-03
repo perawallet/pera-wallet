@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2022 Pera Wallet, LDA
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_height="wrap_content"
+    tools:layout_width="match_parent"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <TextView
+        android:id="@+id/passphraseIndexTextView"
+        style="@style/TextAppearance.Description"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:autoSizeMaxTextSize="14sp"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="end|center"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1" />
+
+    <com.algorand.android.customviews.PasteAwareEditText
+        android:id="@+id/passphraseInputEditText"
+        style="@style/TextAppearance.Body.Sans"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xsmall"
+        android:background="@null"
+        android:inputType="textVisiblePassword"
+        android:maxLines="1"
+        android:paddingVertical="@dimen/spacing_small"
+        android:paddingStart="0dp"
+        android:paddingEnd="@dimen/spacing_small"
+        android:saveEnabled="false"
+        android:textColor="@color/error_text_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/passphraseIndexTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="marble" />
+
+    <View
+        android:id="@+id/passphraseInputLine"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/passphrase_input_bottom_line_unfocused"
+        android:layout_marginBottom="@dimen/spacing_xxsmall"
+        android:background="@color/unfocused_line_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/passphraseInputEditText"
+        app:layout_constraintStart_toStartOf="@id/passphraseInputEditText" />
+
+</merge>

@@ -1,0 +1,28 @@
+<!--
+  ~  Copyright 2022 Pera Wallet, LDA
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="16dp"
+    android:height="16dp"
+    android:viewportWidth="16"
+    android:viewportHeight="16">
+    <path
+        android:fillColor="@color/trusted_icon_bg"
+        android:pathData="M6.765,0.186L2.703,1.69C1.767,2.034 1.002,3.122 1.002,4.099V10.043C1.002,10.987 1.637,12.227 2.41,12.796L5.91,15.364C7.058,16.212 8.946,16.212 10.094,15.364L13.594,12.796C14.367,12.227 15.002,10.987 15.002,10.043V4.099C15.002,3.114 14.237,2.026 13.301,1.682L9.239,0.186C8.547,-0.062 7.44,-0.062 6.765,0.186Z" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M5,8.753L6.635,11L11,5"
+        android:strokeWidth="1.5"
+        android:strokeColor="@color/trusted_icon_inline"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

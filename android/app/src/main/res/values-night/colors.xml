@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<resources>
+    <!-- region App Color Palette -->
+
+    <!-- Main -->
+    <color name="background">@color/gray_900</color>
+    <color name="system_elements">@color/white</color>
+
+    <!-- Text -->
+    <color name="text_main">@color/gray_100</color>
+    <color name="text_gray">@color/gray_400</color>
+    <color name="text_gray_lighter">@color/gray_500</color>
+
+    <!-- Layer -->
+    <color name="layer_gray_lightest">@color/gray_800</color>
+    <color name="layer_gray_lighter">@color/gray_800</color>
+    <color name="layer_gray">@color/gray_700</color>
+
+    <!-- Link -->
+    <color name="link_icon">@color/gray_100</color>
+    <color name="link_primary">@color/yellow_400</color>
+
+    <!-- Primary Button -->
+    <color name="button_primary_bg">@color/yellow_400</color>
+    <color name="button_primary_focus_bg">@color/yellow_500</color>
+    <color name="button_primary_disabled_bg">@color/gray_800</color>
+    <color name="button_primary_text">@color/gray_900</color>
+    <color name="button_primary_disabled_text">@color/gray_500</color>
+
+    <!-- Secondary Button -->
+    <color name="button_secondary_bg">@color/gray_800</color>
+    <color name="button_secondary_focus_bg">@color/gray_900</color>
+    <color name="button_secondary_disabled_bg">@color/gray_800</color>
+    <color name="button_secondary_text">@color/gray_100</color>
+    <color name="button_secondary_disabled_text">@color/gray_500</color>
+
+    <!-- Ghost Button -->
+    <color name="button_ghost_bg">@color/gray_900</color>
+    <color name="button_ghost_focus_bg">@color/gray_800</color>
+    <color name="button_ghost_disabled_bg">@color/gray_900</color>
+    <color name="button_ghost_text">@color/gray_100</color>
+    <color name="button_ghost_disabled_text">@color/gray_500</color>
+
+    <!-- Float Button -->
+    <color name="button_float_bg">@color/white</color>
+    <color name="button_float_focus_bg">@color/gray_100</color>
+    <color name="button_float_icon_main">@color/gray_900</color>
+    <color name="button_float_icon_lighter">@color/gray_900</color>
+
+    <!-- Helper Button -->
+    <color name="button_helper_bg">@color/yellow_400_alpha_10</color>
+    <color name="button_helper_focus_bg">@color/yellow_400_alpha_20</color>
+    <color name="button_helper_disabled_bg">@color/yellow_400_alpha_5</color>
+    <color name="button_helper_icon">@color/yellow_400</color>
+    <color name="button_helper_disabled_icon">@color/yellow_400_alpha_50</color>
+    <color name="button_helper_pera_icon">@color/yellow_400</color>
+
+    <!-- Square Button -->
+    <color name="button_square_bg">@color/turquoise_700_alpha_12</color>
+    <color name="button_square_focus_bg">@color/turquoise_700_alpha_28</color>
+    <color name="button_square_secondary_bg">@color/gray_800</color>
+    <color name="button_square_icon">@color/turquoise_600</color>
+    <color name="button_square_secondary_icon">@color/gray_500</color>
+
+    <!-- Helpers -->
+    <color name="negative">@color/salmon_500</color>
+    <color name="negative_lighter">@color/salmon_500_alpha_12</color>
+    <color name="positive">@color/turquoise_600</color>
+    <color name="positive_lighter">@color/turquoise_500_alpha_12</color>
+    <color name="success">@color/yellow_400</color>
+    <color name="success_checkmark">@color/gray_900</color>
+    <color name="hero_bg">#1D1D21</color>
+
+    <!-- Banner -->
+    <color name="banner_bg">@color/gray_800</color>
+    <color name="banner_button">@color/white_alpha_12</color>
+    <color name="banner_text">@color/gray_100</color>
+
+    <!-- Wallets -->
+    <color name="wallet_1">@color/blush_600</color>
+    <color name="wallet_1_icon">#9B0C48</color>
+    <color name="wallet_2">@color/salmon_500</color>
+    <color name="wallet_2_icon">#FFEAC2</color>
+    <color name="wallet_3">@color/purple_500</color>
+    <color name="wallet_3_icon">#FFAEE3</color>
+    <color name="wallet_4">@color/turquoise_300</color>
+    <color name="wallet_4_icon">@color/turquoise_800</color>
+    <color name="wallet_5">@color/salmon_400</color>
+    <color name="wallet_5_icon">#424F76</color>
+    <color name="wallet_placeholder">@color/gray_800</color>
+    <color name="wallet_placeholder_icon">@color/gray_400</color>
+
+    <!--  Governor  -->
+    <color name="wallet_1_icon_governor">#9B1F69</color>
+    <color name="wallet_3_icon_governor">@color/purple_500</color>
+    <color name="wallet_4_icon_governor">@color/turquoise_800</color>
+
+    <!-- Tab Bar -->
+    <color name="tab_bar_button">@color/gray_800</color>
+    <color name="tab_bar_background">@color/gray_900</color>
+    <color name="tab_bar_icon_active">@color/gray_50</color>
+    <color name="tab_bar_icon_non_active">@color/gray_500</color>
+    <color name="tab_bar_icon_disabled">@color/gray_500_alpha_50</color>
+
+    <!-- Bottom Sheet -->
+    <color name="bottom_sheet_line">#E6E7E9</color>
+
+    <!-- Modality -->
+    <color name="modality_bg">@color/black</color>
+
+    <!-- Switches -->
+    <color name="switch_bg">@color/yellow_500</color>
+    <color name="switch_off_bg">@color/gray_800</color>
+
+    <!-- NFT Icons -->
+    <color name="nft_icon_bg">@color/gray_900_alpha_60</color>
+    <color name="nft_icon">@color/white</color>
+
+    <!-- Moonpay -->
+    <color name="moonpay">#7D01FF</color>
+
+    <!-- Algorand Standart Assets (ASA) Tiers -->
+    <color name="trusted_icon_bg">@color/turquoise_600</color>
+    <color name="trusted_icon_inline">@color/gray_900</color>
+    <color name="trusted_icon_bg_opacity_16">#291A304A</color>
+
+    <color name="verified_icon_bg">#1A304A</color>
+    <color name="verified_icon_inline">#48A7FE</color>
+    <color name="verified_icon_bg_opacity_80">#CC1A304A</color>
+
+    <color name="suspicious_icon_bg">@color/salmon_500</color>
+    <color name="suspicious_icon_inline">@color/gray_900</color>
+    <color name="suspicious_icon_bg_opacity_16">#29FF6D5F</color>
+
+    <!-- Toast Message -->
+    <color name="toast_background">@color/gray_600_alpha_92</color>
+    <color name="toast_title">@color/white</color>
+    <color name="toast_description">@color/white_alpha_60</color>
+
+    <!-- Testnet Badge -->
+    <color name="testnet_bg">@color/yellow_500</color>
+    <color name="testnet_text">@color/gray_900</color>
+
+    <!-- Algo Icon -->
+    <color name="algo_icon_bg">@color/black</color>
+    <color name="algo_icon">@color/white</color>
+
+    <color name="button_stroke_color">@color/gray_800</color>
+
+    <!-- endregion App Color Palette -->
+    <color name="colorPrimary">@color/turquoise_700</color>
+    <color name="colorPrimaryVariant">@color/turquoise_800</color>
+
+    <!-- Background Colors -->
+    <color name="secondary_background">@color/gray_900</color>
+    <color name="tertiary_background">@color/gray_900</color>
+    <color name="surface_on_background">@color/gray_900</color>
+    <color name="toolbar_button_color">@color/gray_800</color>
+    <color name="primary_background_ripple_color">@color/gray_900</color>
+    <color name="passphrase_background_color">@color/gray_800</color>
+
+    <!-- Icon Tint Color -->
+    <color name="algo_default_icon_tint_color">@color/gray_500</color>
+
+    <color name="chart_time_frame_button_color">@color/gray_800</color>
+    <color name="chart_time_frame_default_text_color">@color/gray_500</color>
+
+    <color name="wallet_connect_account_selection_border_color">@color/gray_800</color>
+    <color name="wallet_connect_dapp_icon_background_color">@color/gray_800</color>
+    <color name="wallet_connect_dapp_icon_border_color">@color/transparent</color>
+
+    <color name="primary_background">@color/gray_900</color>
+
+    <color name="primary_icon_tint_color">@color/gray_100</color>
+    <color name="secondary_icon_tint_color">@color/gray_400</color>
+
+    <color name="primary_text_color">@color/gray_100</color>
+    <color name="secondary_text_color">@color/gray_400</color>
+    <color name="tertiary_text_color">@color/gray_500</color>
+    <color name="error_text_color">@color/salmon_500</color>
+    <color name="error_tint_color">@color/salmon_500</color>
+    <color name="info_tint_color">@color/turquoise_600</color>
+
+    <color name="verified_icon_color">@color/turquoise_600</color>
+
+    <color name="text_button_text">@color/gray_100</color>
+    <color name="text_button_disabled_text">@color/gray_500</color>
+    <color name="text_button_ripple">@color/gray_800</color>
+
+    <color name="dialpad_ripple_color">@color/gray_800</color>
+
+    <color name="unfilled_password_digit_icon_tint_color">@color/gray_700</color>
+
+    <color name="text_field_typing_color">@color/gray_100</color>
+
+    <!--  Passphrase Input  -->
+    <color name="focused_line_color">@color/gray_100</color>
+    <color name="unfocused_line_color">@color/gray_700</color>
+
+    <color name="search_bar_view_icon_color">@color/gray_500</color>
+
+    <color name="transaction_confirmed_text_color">@color/turquoise_600</color>
+    <color name="transaction_amount_positive_color">@color/turquoise_600</color>
+    <color name="transaction_amount_negative_color">@color/salmon_500</color>
+
+    <color name="governance_banner_icon_color">@color/white</color>
+
+    <!--  Verification Info Badge  -->
+    <color name="verification_badge_bg_gradient_start_color">#252529</color>
+
+    <!--  Bottom Fade Gradient View  -->
+    <!--Before merging to 5.3.0 let's remove "gradient_bg_view_start_color" and use this one-->
+    <color name="bottom_fade_gradient_start_color">@color/gray_900</color>
+
+    <color name="text_field_default_background">@color/gray_700</color>
+
+    <!-- Discover -->
+    <color name="discover_helper_purple">#AC8EFF</color>
+    <color name="discover_helper_purple_alpha_35">#59AC8EFF</color>
+    <color name="discover_helper_text">#1A1A1A</color>
+    <color name="discover_warning">#FF6E41</color>
+
+    <color name="negative_market_value_background_color">@color/salmon_600_alpha_10</color>
+    <color name="positive_market_value_background">@color/turquoise_500_alpha_24</color>
+
+    <!-- Notification -->
+    <color name="notification_icon_placeholder_tint_color">@color/gray_400</color>
+    <color name="notification_icon_placeholder_border_color">@color/gray_800</color>
+
+    <color name="connected_node_testnet_text_color">@color/yellow_600</color>
+</resources>

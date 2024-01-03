@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/rekey_confirmation_bottom_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:textAppearance="@style/TextAppearance.Title.Sans.Medium"
+                tools:text="@string/confirm_rekeying" />
+
+            <TextView
+                android:id="@+id/descriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:textAppearance="@style/TextAppearance.Body.Sans"
+                android:textColor="@color/text_gray"
+                tools:text="@tools:sample/lorem[20]" />
+
+            <TextView
+                android:id="@+id/subtitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xxxxlarge"
+                android:textAppearance="@style/TextAppearance.Body.Sans"
+                tools:text="@string/summary_of_rekey" />
+
+            <com.algorand.android.customviews.accountandassetitem.accountitem.AccountItemView
+                android:id="@+id/rekeyedAccountItemView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xsmall" />
+
+            <ImageView
+                android:id="@+id/rekeyWayImageView"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="@dimen/spacing_xxlarge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rekeyedAccountItemView"
+                app:srcCompat="@drawable/ic_arrow_down_line"
+                app:tint="@color/text_gray_lighter" />
+
+            <com.algorand.android.customviews.accountandassetitem.accountitem.AccountItemView
+                android:id="@+id/authAccountItemView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/currentlyRekeyedAccountLabelTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/spacing_xlarge"
+        android:text="@string/currently_rekeyed"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        android:textColor="@color/text_gray"
+        app:layout_constraintBottom_toTopOf="@id/transactionFeeLabelTextView"
+        app:layout_constraintEnd_toEndOf="@id/rekeySummaryGuideline"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/currentlyRekeyedAccountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:drawablePadding="@dimen/spacing_xsmall"
+        android:ellipsize="end"
+        android:gravity="end|center_vertical"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        app:drawableStartCompat="@drawable/ic_pera"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/currentlyRekeyedAccountLabelTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="@id/rekeySummaryGuideline"
+        app:layout_constraintTop_toTopOf="@id/currentlyRekeyedAccountLabelTextView"
+        app:layout_constraintVertical_bias="1"
+        tools:text="@tools:sample/lorem[12]" />
+
+    <TextView
+        android:id="@+id/transactionFeeLabelTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/spacing_xlarge"
+        android:text="@string/transacting_fee"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        android:textColor="@color/text_gray"
+        app:layout_constraintBottom_toTopOf="@id/confirmRekeyButton"
+        app:layout_constraintEnd_toEndOf="@id/rekeySummaryGuideline"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/transactionFeeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:gravity="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        app:layout_constraintBottom_toBottomOf="@id/transactionFeeLabelTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/rekeySummaryGuideline"
+        app:layout_constraintTop_toTopOf="@id/transactionFeeLabelTextView"
+        tools:text="@tools:sample/lorem[1]" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirmRekeyButton"
+        style="@style/Button.Primary.Icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        android:text="@string/confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/currentlyRekeyedGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="currentlyRekeyedAccountLabelTextView, currentlyRekeyedAccountTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/transactionFeeGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="transactionFeeLabelTextView, transactionFeeTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rekeySummaryGuideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@integer/rekey_summary_label_percentage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,35 @@
+<!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <group>
+    <clip-path
+        android:pathData="M0,0h40v40h-40z"/>
+    <group>
+      <clip-path
+          android:pathData="M0,0h40v40h-40z"/>
+      <path
+          android:pathData="M40,34C40,37.314 37.314,40 34,40H6C2.686,40 0,37.314 0,34V6C0,2.686 2.686,0 6,0H34C37.314,0 40,2.686 40,6V34Z"
+          android:fillColor="#2DC100"/>
+      <path
+          android:pathData="M26.774,14.917C23.545,15.085 20.739,16.064 18.459,18.275C16.155,20.509 15.104,23.246 15.392,26.64C14.13,26.483 12.981,26.312 11.825,26.214C11.425,26.181 10.952,26.229 10.614,26.419C9.493,27.053 8.416,27.768 7.141,28.565C7.374,27.506 7.526,26.579 7.795,25.688C7.992,25.032 7.901,24.669 7.297,24.242C3.422,21.506 1.789,17.411 3.011,13.195C4.141,9.296 6.918,6.93 10.693,5.698C15.845,4.014 21.633,5.731 24.766,9.821C25.896,11.298 26.59,12.957 26.774,14.917ZM11.915,13.603C11.946,12.832 11.277,12.138 10.483,12.114C9.67,12.09 9.003,12.71 8.979,13.512C8.955,14.323 9.576,14.974 10.394,14.995C11.205,15.016 11.885,14.394 11.915,13.603ZM19.667,12.114C18.87,12.128 18.198,12.806 18.211,13.581C18.226,14.382 18.886,15.011 19.705,15.002C20.526,14.992 21.15,14.357 21.142,13.538C21.136,12.734 20.478,12.099 19.667,12.114Z"
+          android:fillColor="#ffffff"/>
+      <path
+          android:pathData="M34.027,35.043C33.005,34.589 32.067,33.906 31.069,33.802C30.074,33.698 29.029,34.272 27.989,34.378C24.819,34.702 21.979,33.819 19.639,31.653C15.186,27.534 15.823,21.219 20.973,17.843C25.552,14.843 32.267,15.843 35.494,20.006C38.312,23.638 37.981,28.459 34.541,31.51C33.546,32.394 33.187,33.12 33.826,34.285C33.946,34.501 33.958,34.773 34.027,35.043ZM22.39,23.778C23.042,23.778 23.578,23.269 23.602,22.626C23.627,21.946 23.08,21.374 22.399,21.371C21.723,21.368 21.159,21.947 21.183,22.618C21.205,23.259 21.744,23.776 22.39,23.778ZM29.891,21.374C29.259,21.37 28.723,21.886 28.698,22.525C28.67,23.206 29.2,23.768 29.875,23.77C30.528,23.771 31.045,23.278 31.067,22.629C31.094,21.944 30.563,21.379 29.891,21.374Z"
+          android:fillColor="#ffffff"/>
+    </group>
+  </group>
+</vector>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_height="wrap_content"
+    tools:layout_width="match_parent"
+    tools:padding="@dimen/spacing_large"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/voteKeyLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/vote_key"
+        app:layout_constraintBottom_toBottomOf="@id/voteKeyTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/voteKeyTextView" />
+
+    <TextView
+        android:id="@+id/voteKeyTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/lorem[5]" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/voteKeyBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="voteKeyLabelTextView, voteKeyTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/selectionKeyLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/selection_key"
+        app:layout_constraintBottom_toBottomOf="@id/selectionKeyTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/selectionKeyTextView" />
+
+    <TextView
+        android:id="@+id/selectionKeyTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/voteKeyBarrier"
+        tools:text="@tools:sample/lorem[5]" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/selectionKeyBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="selectionKeyLabelTextView, selectionKeyTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/stateProofKeyLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/state_proof_key"
+        app:layout_constraintBottom_toBottomOf="@id/stateProofKeyTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/stateProofKeyTextView" />
+
+    <TextView
+        android:id="@+id/stateProofKeyTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/selectionKeyBarrier"
+        tools:text="@tools:sample/lorem[5]" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/stateProofKeyBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="stateProofKeyLabelTextView, stateProofKeyTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/validFirstRoundLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/valid_first_round"
+        app:layout_constraintBottom_toBottomOf="@id/validFirstRoundTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/validFirstRoundTextView" />
+
+    <TextView
+        android:id="@+id/validFirstRoundTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/stateProofKeyBarrier"
+        tools:text="@tools:sample/lorem[1]" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/validFirstRoundBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="validFirstRoundLabelTextView, validFirstRoundTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/validLastRoundLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/valid_last_round"
+        app:layout_constraintBottom_toBottomOf="@id/validLastRoundTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/validLastRoundTextView" />
+
+    <TextView
+        android:id="@+id/validLastRoundTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/validFirstRoundBarrier"
+        tools:text="@tools:sample/lorem[1]" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/validLastRoundBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="validLastRoundLabelTextView, validLastRoundTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/voteKeyDilutionLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/vote_key_dilution"
+        app:layout_constraintBottom_toBottomOf="@id/voteKeyDilutionTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/voteKeyDilutionTextView" />
+
+    <TextView
+        android:id="@+id/voteKeyDilutionTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/validLastRoundBarrier"
+        tools:text="@tools:sample/lorem[1]" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/labelGuideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@integer/label_percentage" />
+
+</merge>

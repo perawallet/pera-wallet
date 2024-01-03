@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary_background">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/TextAppearance.Title.Sans.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxxsmall"
+            android:text="@string/import_an_account"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.algorand.android.customviews.RegisterTypeSelectionItem
+            android:id="@+id/recoverAnAccountSelectionItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/recoverAnAccountWithQrSelectionItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleTextView"
+            app:layout_constraintVertical_bias="0.4"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:typeSelectionDescriptionText="@string/i_want_to_recover"
+            app:typeSelectionIcon="@drawable/ic_key"
+            app:typeSelectionTitleText="@string/recover_an_account" />
+
+        <com.algorand.android.customviews.RegisterTypeSelectionItem
+            android:id="@+id/recoverAnAccountWithQrSelectionItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/pairLedgerSelectionItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recoverAnAccountSelectionItem"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:typeSelectionDescriptionText="@string/i_want_to_recover_qr"
+            app:typeSelectionIcon="@drawable/ic_qr"
+            app:typeSelectionTitleText="@string/recover_an_account_with_qr" />
+
+        <com.algorand.android.customviews.RegisterTypeSelectionItem
+            android:id="@+id/pairLedgerSelectionItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/importFromWebSelectionItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recoverAnAccountWithQrSelectionItem"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:typeSelectionDescriptionText="@string/i_want_to_recover_an"
+            app:typeSelectionIcon="@drawable/ic_ledger"
+            app:typeSelectionTitleText="@string/pair_Ledger_device" />
+
+        <com.algorand.android.customviews.RegisterTypeSelectionItem
+            android:id="@+id/importFromWebSelectionItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/algorandSecureBackupSelectionItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pairLedgerSelectionItem"
+            app:typeSelectionDescriptionText="@string/i_want_to_import_algorand"
+            app:typeSelectionIcon="@drawable/ic_global"
+            app:typeSelectionTitleText="@string/import_from_pera_web" />
+
+        <com.algorand.android.customviews.RegisterTypeSelectionItem
+            android:id="@+id/algorandSecureBackupSelectionItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/importFromWebSelectionItem"
+            app:typeSelectionDescriptionText="@string/i_want_to_restore_my"
+            app:typeSelectionIcon="@drawable/ic_backup"
+            app:typeSelectionTitleText="@string/algorand_secure_backup" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

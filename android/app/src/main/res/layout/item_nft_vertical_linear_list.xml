@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/spacing_xlarge">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/nftStartIconImageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginVertical="@dimen/spacing_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/AccountAssetItemStartImageShapeAppearance"
+        tools:srcCompat="@drawable/ic_algo_green_round" />
+
+    <ProgressBar
+        android:id="@+id/nftStartIconProgressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_progress_button"
+        android:padding="@dimen/spacing_xsmall"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/nftStartIconImageView"
+        app:layout_constraintStart_toStartOf="@id/nftStartIconImageView"
+        app:layout_constraintTop_toTopOf="@id/nftStartIconImageView"
+        tools:visibility="gone" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/nftStartSmallIconImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:visibility="gone"
+        app:layout_constraintCircle="@id/nftStartIconImageView"
+        app:layout_constraintCircleAngle="@integer/governor_icon_angle"
+        app:layout_constraintCircleRadius="20dp"
+        tools:backgroundTint="@color/background"
+        tools:srcCompat="@drawable/ic_crown_filled"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/nftNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/nftCollectionTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/nftStartIconImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@tools:sample/lorem[2]"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/nftCollectionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/text_gray_lighter"
+        android:visibility="gone"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/nftAmountTextView"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@id/nftNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/nftNameTextView"
+        tools:text="@tools:sample/lorem[3]"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/nftAmountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/text_gray_lighter"
+        android:visibility="gone"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/firstColumnBarrier"
+        app:layout_constraintTop_toBottomOf="@id/nftNameTextView"
+        app:layout_constraintVertical_bias="0"
+        tools:text="@tools:sample/lorem[2]"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/firstColumnBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="nftCollectionTextView, nftStartIconImageView"
+        app:layout_goneMarginStart="@dimen/spacing_normal" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
