@@ -40,6 +40,7 @@ where ScriptMessage: InAppBrowserScriptMessage {
     private(set) lazy var userContentController = createUserContentController()
 
     private(set) var userAgent: String? = nil
+    private(set) var fakeUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
 
     private var sourceURL: URL?
 
@@ -205,9 +206,17 @@ where ScriptMessage: InAppBrowserScriptMessage {
         preferences: WKWebpagePreferences,
         decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
     ) {
-        guard let url = navigationAction.request.url else {
+        guard var url = navigationAction.request.url else {
             decisionHandler(.cancel, preferences)
             return
+        }
+       
+        url = URL(string: url.absoluteString.replacingOccurrences(of: "defly-wc:", with: "algorand-wc:")) ?? url
+
+        if !url.absoluteString.contains("discover-mobile.perawallet.app") {
+            webView.customUserAgent = fakeUserAgent
+        } else {
+            webView.customUserAgent = userAgent
         }
 
         let policy: WKNavigationActionPolicy

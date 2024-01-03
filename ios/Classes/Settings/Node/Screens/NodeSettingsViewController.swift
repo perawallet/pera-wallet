@@ -64,13 +64,15 @@ extension NodeSettingsViewController {
         nodeSettingsView.snp.makeConstraints { make in
             make.top.equalTo(self.view.snp.top).offset(0)
             make.leading.equalTo(12)
-            make.size.equalTo(400)
+            make.width.equalTo(self.view.frame.width - 40)
+            make.height.equalTo(400)
         }
 
         localNodeSettingsView.snp.makeConstraints { make in
             make.top.equalTo(nodeSettingsView.snp.bottom).offset(-172)
             make.leading.equalTo(12)
-            make.size.equalTo(nodeSettingsView)
+            make.width.equalTo(self.view.frame.width - 40)
+            make.height.equalTo(400)
         }
         
         localNodeSettingsView.alpha = selectedNetwork == .localnet ? 1.0 : 0.0
