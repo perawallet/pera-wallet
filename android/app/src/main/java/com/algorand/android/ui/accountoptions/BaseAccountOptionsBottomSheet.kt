@@ -35,7 +35,7 @@ abstract class BaseAccountOptionsBottomSheet : DaggerBaseBottomSheet(
 
     abstract fun navToShowQrFragment(title: String, publicKey: String)
 
-    abstract fun navToViewPassphraseBottomSheet()
+    abstract fun navToViewPassphraseNavigation()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,7 +64,7 @@ abstract class BaseAccountOptionsBottomSheet : DaggerBaseBottomSheet(
         if (accountOptionsViewModel.canDisplayPassphrases()) {
             binding.viewPassphraseButton.apply {
                 show()
-                setOnClickListener { navToViewPassphraseBottomSheet() }
+                setOnClickListener { navToViewPassphraseNavigation() }
             }
         }
     }

@@ -15,18 +15,18 @@ package com.algorand.android.ui.register
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.algorand.algosdk.sdk.Sdk
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
+import com.algorand.android.customviews.toolbar.buttoncontainer.model.TextButton
 import com.algorand.android.databinding.FragmentBackupPassphraseBinding
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountCreation
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.analytics.CreationType
+import com.algorand.android.ui.register.BackupPassphraseFragmentDirections.Companion.actionBackupPassphraseFragmentToCreateAccountNameRegistrationFragment
 import com.algorand.android.utils.disableScreenCapture
 import com.algorand.android.utils.enableScreenCapture
-import com.algorand.android.utils.getSafeParcelable
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,13 +47,19 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
 
     private val backupPassphraseViewModel: BackupPassphraseViewModel by viewModels()
 
-    private val accountCreation: AccountCreation?
-        get() = arguments?.getSafeParcelable(ACCOUNT_CREATION_KEY)
+    private val args: BackupPassphraseFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        customizeToolbar()
         setupPassphrase()
         binding.nextButton.setOnClickListener { onNextClick() }
+    }
+
+    private fun customizeToolbar() {
+        if (args.accountCreation != null) {
+            getAppToolbar()?.setEndButton(button = TextButton(R.string.skip, onClick = ::onSkipClick))
+        }
     }
 
     override fun onResume() {
@@ -68,40 +74,41 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
         }
     }
 
-    // TODO move this into util class
-    private fun getMnemonicString(): String? {
-        try {
-            val secretKeyByteArray: ByteArray?
-            if (accountCreation?.tempAccount?.getSecretKey() == null) {
-                secretKeyByteArray = Sdk.generateSK()
-                val publicKey = Sdk.generateAddressFromSK(secretKeyByteArray)
-                val tempAccount = Account.create(
-                    publicKey = publicKey,
-                    detail = Account.Detail.Standard(secretKeyByteArray)
-                )
-                arguments?.putParcelable(ACCOUNT_CREATION_KEY, AccountCreation(tempAccount, CreationType.CREATE))
-            } else {
-                secretKeyByteArray = accountCreation?.tempAccount?.getSecretKey()
-            }
-            return Sdk.mnemonicFromPrivateKey(secretKeyByteArray)
-        } catch (exception: Exception) {
-            navBack()
-        }
-        return null
-    }
-
     private fun setupPassphrase() {
-        getMnemonicString()?.let { mnemonicString -> binding.passphraseBoxView.setPassphrases(mnemonicString) }
+        val secretKey = (args.accountCreation?.tempAccount?.detail as? Account.Detail.Standard)?.secretKey
+            ?: backupPassphraseViewModel.getAccountSecretKey(args.publicKeyOfAccountToBackup)
+        secretKey?.let {
+            try {
+                val mnemonic = Sdk.mnemonicFromPrivateKey(it) ?: throw Exception("Mnemonic cannot be null.")
+                binding.passphraseBoxView.setPassphrases(mnemonic)
+            } catch (exception: Exception) {
+                navBack()
+            }
+        } ?: run { navBack() }
     }
 
     private fun onNextClick() {
-        backupPassphraseViewModel.logOnboardingNextClickEvent()
-        accountCreation?.let { tempAccountCreation ->
-            nav(BackupPassphraseFragmentDirections.actionBackupPassphraseToPassphraseQuestion(tempAccountCreation))
-        }
+        navToPassphraseValidaitonFragment()
     }
 
-    companion object {
-        private const val ACCOUNT_CREATION_KEY = "accountCreation"
+    private fun onSkipClick() {
+        navToCreateAccountNameRegistrationFragment()
+    }
+
+    private fun navToPassphraseValidaitonFragment() {
+        backupPassphraseViewModel.logOnboardingNextClickEvent()
+        nav(
+            BackupPassphraseFragmentDirections.actionBackupPassphraseFragmentToPassphraseValidationFragment(
+                args.publicKeyOfAccountToBackup,
+                args.accountCreation
+            )
+        )
+    }
+
+    private fun navToCreateAccountNameRegistrationFragment() {
+        backupPassphraseViewModel.logOnboardingNextClickEvent()
+        args.accountCreation?.let { accountCreation ->
+            nav(actionBackupPassphraseFragmentToCreateAccountNameRegistrationFragment(accountCreation))
+        }
     }
 }

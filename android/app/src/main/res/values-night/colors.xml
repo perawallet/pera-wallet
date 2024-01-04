@@ -84,8 +84,8 @@
 
     <!-- Banner -->
     <color name="banner_bg">@color/gray_800</color>
-    <color name="banner_button">@color/white_alpha_12</color>
-    <color name="banner_text">@color/gray_100</color>
+    <color name="banner_button">@color/gray_900_alpha_12</color>
+    <color name="banner_text">@color/gray_900</color>
 
     <!-- Wallets -->
     <color name="wallet_1">@color/blush_600</color>
@@ -239,4 +239,11 @@
     <color name="notification_icon_placeholder_border_color">@color/gray_800</color>
 
     <color name="connected_node_testnet_text_color">@color/yellow_600</color>
+
+    <!-- Backup -->
+    <color name="backup_banner_title">@color/black_alpha_64</color>
+    <color name="backup_banner_description">@color/background</color>
+    <color name="backup_banner_icon">@color/background</color>
+    <color name="backup_banner_icon_bg">@color/salmon_850_alpha20</color>
+
 </resources>

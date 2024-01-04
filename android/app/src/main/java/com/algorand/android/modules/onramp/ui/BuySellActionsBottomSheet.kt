@@ -35,16 +35,12 @@ class BuySellActionsBottomSheet : BaseBottomSheet(
     private fun initUi() {
         with(binding) {
             // TODO add logging?
-            moonpayButton.setOnClickListener { navToMoonpayNavigation() }
             sardineButton.setOnClickListener { navToSardineNavigation() }
             transakButton.setOnClickListener { navToTransakNavigation() }
             bidaliButton.setOnClickListener { navToBidaliNavigation() }
         }
     }
 
-    private fun navToMoonpayNavigation() {
-        nav(BuySellActionsBottomSheetDirections.actionBuySellActionsBottomSheetToMoonpayNavigation(args.accountAddress))
-    }
     private fun navToSardineNavigation() {
         nav(BuySellActionsBottomSheetDirections.actionBuySellActionsBottomSheetToSardineNavigation(args.accountAddress))
     }

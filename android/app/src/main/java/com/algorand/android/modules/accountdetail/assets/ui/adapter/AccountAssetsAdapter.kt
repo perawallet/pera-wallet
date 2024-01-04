@@ -23,6 +23,7 @@ import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailA
 import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.ACCOUNT_PORTFOLIO
 import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.ASSET
 import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.ASSETS_LIST_TITLE
+import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.BACKUP_WARNING
 import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.NFT
 import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.NO_ASSET_FOUND
 import com.algorand.android.modules.accountdetail.assets.ui.model.AccountDetailAssetsItem.ItemType.PENDING_ASSET
@@ -102,6 +103,12 @@ class AccountAssetsAdapter(
         }
     }
 
+    private val backupWarningListener = object : BackupWarningViewHolder.Listener {
+        override fun onBackupNowClick() {
+            listener.onBackupNowClick()
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
         return getItem(position).itemType.ordinal
     }
@@ -118,6 +125,7 @@ class AccountAssetsAdapter(
             REQUIRED_MINIMUM_BALANCE.ordinal -> createRequiredMinimumBalanceViewHolder(parent)
             NFT.ordinal -> createOwnedNFTViewHolder(parent)
             PENDING_NFT.ordinal -> createPendingNFTViewHolder(parent)
+            BACKUP_WARNING.ordinal -> createBackupWarningViewHolder(parent)
             else -> throw IllegalArgumentException("$logTag : Item View Type is Unknown.")
         }
     }
@@ -173,6 +181,10 @@ class AccountAssetsAdapter(
         return PendingNFTViewHolder.create(parent)
     }
 
+    private fun createBackupWarningViewHolder(parent: ViewGroup): BackupWarningViewHolder {
+        return BackupWarningViewHolder.create(parent, backupWarningListener)
+    }
+
     interface Listener {
         fun onSearchQueryUpdated(query: String) {}
         fun onAssetClick(assetId: Long)
@@ -188,6 +200,7 @@ class AccountAssetsAdapter(
         fun onRequiredMinimumBalanceClick()
         fun onCopyAddressClick()
         fun onShowAddressClick()
+        fun onBackupNowClick()
     }
 
     companion object {

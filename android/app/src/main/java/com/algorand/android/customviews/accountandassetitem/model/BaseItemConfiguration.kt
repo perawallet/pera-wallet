@@ -49,7 +49,8 @@ sealed class BaseItemConfiguration {
         val governorIconResource: GovernorIconResource? = null,
         val accountDisplayName: AccountDisplayName? = null,
         val accountType: Account.Type? = null,
-        val accountAssetCount: Int? = null
+        val accountAssetCount: Int? = null,
+        val startSmallIconResource: Int? = null
     ) : BaseItemConfiguration()
 
     sealed class BaseAssetItemConfiguration : BaseItemConfiguration() {

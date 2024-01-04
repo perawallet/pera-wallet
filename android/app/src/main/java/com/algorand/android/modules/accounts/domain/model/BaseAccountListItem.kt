@@ -26,7 +26,8 @@ sealed class BaseAccountListItem : RecyclerListItem {
         HEADER,
         QUICK_ACTIONS,
         GOVERNANCE_BANNER,
-        GENERIC_BANNER
+        GENERIC_BANNER,
+        BACKUP_BANNER
     }
 
     data class QuickActionsItem(
@@ -104,6 +105,21 @@ sealed class BaseAccountListItem : RecyclerListItem {
         }
     }
 
+    data class BackupBannerItem(
+        val accounts: List<String>
+    ) : BaseAccountListItem() {
+
+        override val itemType: ItemType = ItemType.BACKUP_BANNER
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is BackupBannerItem
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is BackupBannerItem && other == this
+        }
+    }
+
     data class HeaderItem(@StringRes val titleResId: Int) : BaseAccountListItem() {
 
         override val itemType: ItemType = ItemType.HEADER
@@ -131,10 +147,10 @@ sealed class BaseAccountListItem : RecyclerListItem {
 
             override fun areItemsTheSame(other: RecyclerListItem): Boolean {
                 return other is AccountItem &&
-                    other.accountListItem.itemConfiguration.accountAddress ==
-                    accountListItem.itemConfiguration.accountAddress &&
-                    other.accountListItem.itemConfiguration.primaryValue ==
-                    accountListItem.itemConfiguration.primaryValue
+                        other.accountListItem.itemConfiguration.accountAddress ==
+                        accountListItem.itemConfiguration.accountAddress &&
+                        other.accountListItem.itemConfiguration.primaryValue ==
+                        accountListItem.itemConfiguration.primaryValue
             }
 
             override fun areContentsTheSame(other: RecyclerListItem): Boolean {
@@ -151,8 +167,8 @@ sealed class BaseAccountListItem : RecyclerListItem {
 
             override fun areItemsTheSame(other: RecyclerListItem): Boolean {
                 return other is AccountErrorItem &&
-                    other.accountListItem.itemConfiguration.accountAddress ==
-                    accountListItem.itemConfiguration.accountAddress
+                        other.accountListItem.itemConfiguration.accountAddress ==
+                        accountListItem.itemConfiguration.accountAddress
             }
 
             override fun areContentsTheSame(other: RecyclerListItem): Boolean {

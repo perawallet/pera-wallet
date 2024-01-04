@@ -126,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_xxxxlarge"
-        app:constraint_referenced_ids="buyAlgoButton,swapButton, sendButton, receiveButton"
+        app:constraint_referenced_ids="swapButton, buyAlgoButton, sendButton, receiveButton"
         app:flow_horizontalGap="@dimen/spacing_xxlarge"
         android:visibility="gone"
         tools:visibility="visible"
@@ -152,7 +152,7 @@
         android:layout_height="wrap_content"
         android:text="@string/swap"
         android:visibility="gone"
-        app:icon="@drawable/ic_swap_helper_button_bg_ghost"
+        app:icon="@drawable/ic_swap_quick_actions"
         tools:visibility="visible" />
 
     <com.google.android.material.button.MaterialButton

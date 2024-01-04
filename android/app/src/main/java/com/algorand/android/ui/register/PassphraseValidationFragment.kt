@@ -23,6 +23,7 @@ import com.algorand.android.customviews.PassphraseValidationGroupView
 import com.algorand.android.databinding.FragmentPassphraseValidationBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.ui.register.PassphraseValidationFragmentDirections.Companion.actionPassphraseValidationFragmentToPassphraseVerifiedInfoFragment
 import com.algorand.android.utils.singleVibrate
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,8 +60,9 @@ class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passph
     }
 
     private fun getPassphraseWords(): List<String> {
-        val tempAccountSecretKey = args.accountCreation.tempAccount.getSecretKey()
-        return Sdk.mnemonicFromPrivateKey(tempAccountSecretKey).split(" ")
+        val secretKey = args.accountCreation?.tempAccount?.getSecretKey() ?: passphraseValidationViewModel
+            .getAccountSecretKey(args.publicKeyOfAccountToBackup)
+        return Sdk.mnemonicFromPrivateKey(secretKey).split(" ")
     }
 
     private fun setupPassphraseValidationView() {
@@ -70,14 +72,19 @@ class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passph
     private fun onNextClick() {
         passphraseValidationViewModel.logOnboardingNextClickEvent()
         if (binding.passphraseValidationGroupView.isValidated()) {
-            nav(
-                PassphraseValidationFragmentDirections
-                    .actionPassphraseQuestionFragmentToPassphraseVerifiedInfoFragment(args.accountCreation)
+            passphraseValidationViewModel.updateAccountBackupState(
+                args.publicKeyOfAccountToBackup,
+                isBackedUp = true
             )
+            navToPassphraseVerifiedInfoFragment()
         } else {
             showGlobalError(errorMessage = getString(R.string.selected_words_are))
             binding.passphraseValidationGroupView.recreateUI(getPassphraseWords())
             context?.singleVibrate()
         }
+    }
+
+    private fun navToPassphraseVerifiedInfoFragment() {
+        nav(actionPassphraseValidationFragmentToPassphraseVerifiedInfoFragment(args.accountCreation))
     }
 }

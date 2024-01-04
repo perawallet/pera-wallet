@@ -21,6 +21,7 @@ import com.algorand.android.R
 import com.algorand.android.core.BaseActivity
 import com.algorand.android.databinding.FragmentDiscoverDetailBinding
 import com.algorand.android.discover.common.ui.BaseDiscoverFragment
+import com.algorand.android.discover.common.ui.model.PeraWebChromeClient
 import com.algorand.android.discover.common.ui.model.PeraWebViewClient
 import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.discover.detail.ui.model.DiscoverDetailPreview
@@ -157,6 +158,7 @@ class DiscoverDetailFragment :
             val peraWebInterface = PeraMobileWebInterface.create(this@DiscoverDetailFragment)
             webView.addJavascriptInterface(peraWebInterface, WEB_INTERFACE_NAME)
             webView.webViewClient = PeraWebViewClient(peraWebViewClientListener)
+            webView.webChromeClient = PeraWebChromeClient(peraWebViewClientListener)
         }
     }
 

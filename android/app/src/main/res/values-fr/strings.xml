@@ -552,15 +552,11 @@
     <string name="we_don_t_support">Nous ne prenons pas encore en charge ce type de média NFT.</string>
     <string name="we_can_t_display">Nous ne pouvons pas afficher le visuel temporairement.</string>
     <string name="transfer">Transfert</string>
-    <string name="send_your_nft">Envoyer votre NFT</string>
-    <string name="paste_an_algorand_wallet_address">Coller une adresse de portefeuille Algorand</string>
     <string name="ask_recipient_to">Demander au destinataire d\'ajouter\n %1$s</string>
     <string name="you_cant_send">Vous ne pouvez pas envoyer <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> à <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> car ce portefeuille n\'a pas encore ajouté cet actif. <annotation font="dmsans_medium"><annotation custom="learn_more">En savoir plus sur l\'ajout</annotation></annotation></string>
     <string name="information_about_opt">Informations sur l\'activation</string>
     <string name="to_avoid_spammy">Pour éviter les transactions spammées, la Blockchain Algorand vous permet uniquement d\'envoyer et de recevoir des transactions pour des actifs qui ont déjà été activés.</string>
     <string name="search_or_enter_wallet_address">Rechercher ou saisir l\'adresse du portefeuille</string>
-    <string name="your_nft_transfer">Votre transfert NFT est confirmé!</string>
-    <string name="transactions_can_take">Les transactions peuvent prendre quelques minutes pour être finalisées.</string>
     <string name="got_it">J\'ai compris!</string>
     <string name="approve_transaction">Approuver la transaction</string>
     <string name="are_you_sure">Êtes-vous sûr de vouloir continuer?</string>
@@ -890,7 +886,6 @@
     <string name="error_while_opting_to_the">Erreur lors du choix de l\'ASA. Veuillez réessayer</string>
     <string name="retry">Réessayer</string>
     <string name="before_interacting_with">Avant d\'interagir avec un actif, vous devez l\'ajouter depuis votre compte. Cela empêche que des transactions d\'actifs non autorisées vous soient envoyées.</string>
-    <string name="you_already_own">Vous possédez déjà cet actif</string>
     <string name="markets">Marchés</string>
     <string name="formatted_changed_percentage">%1$.2f %%</string>
     <string name="display_nfts_in_asset_list">Afficher les NFTs dans la liste des actifs</string>

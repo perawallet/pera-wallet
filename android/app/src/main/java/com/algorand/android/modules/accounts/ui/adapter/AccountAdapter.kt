@@ -14,6 +14,7 @@ package com.algorand.android.modules.accounts.ui.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import com.algorand.android.banner.ui.viewholder.BackupBannerViewHolder
 import com.algorand.android.banner.ui.viewholder.BaseBannerViewHolder
 import com.algorand.android.banner.ui.viewholder.GenericBannerViewHolder
 import com.algorand.android.banner.ui.viewholder.GovernanceBannerViewHolder
@@ -22,6 +23,7 @@ import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem.ItemType.ACCOUNT_ERROR
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem.ItemType.ACCOUNT_SUCCESS
+import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem.ItemType.BACKUP_BANNER
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem.ItemType.GENERIC_BANNER
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem.ItemType.GOVERNANCE_BANNER
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem.ItemType.HEADER
@@ -85,6 +87,12 @@ class AccountAdapter(
         }
     }
 
+    private val backupBannerListener = object : BackupBannerViewHolder.Listener {
+        override fun onActionButtonClick() {
+            accountAdapterListener.onBackupBannerActionButtonClick()
+        }
+    }
+
     private val accountsQuickActionsListener = object : AccountsQuickActionsViewHolder.AccountsQuickActionsListener {
         override fun onBuySellClick() {
             accountAdapterListener.onBuySellClick()
@@ -114,6 +122,7 @@ class AccountAdapter(
             ACCOUNT_ERROR.ordinal -> AccountErrorItemViewHolder.create(parent, accountErrorClickListener)
             GOVERNANCE_BANNER.ordinal -> GovernanceBannerViewHolder.create(governanceBaseBannerListener, parent)
             GENERIC_BANNER.ordinal -> GenericBannerViewHolder.create(baseBannerListener, parent)
+            BACKUP_BANNER.ordinal -> BackupBannerViewHolder.create(parent, backupBannerListener)
             QUICK_ACTIONS.ordinal -> AccountsQuickActionsViewHolder.create(parent, accountsQuickActionsListener)
             else -> throw Exception("$logTag: Item View Type is Unknown.")
         }
@@ -129,6 +138,7 @@ class AccountAdapter(
         fun onAccountItemLongPressed(publicKey: String)
         fun onBannerCloseButtonClick(bannerId: Long)
         fun onBannerActionButtonClick(url: String, isGovernance: Boolean)
+        fun onBackupBannerActionButtonClick()
         fun onBuySellClick()
         fun onSendClick()
         fun onSwapClick()

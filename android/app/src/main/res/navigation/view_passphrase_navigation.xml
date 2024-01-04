@@ -14,31 +14,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/viewPassphraseNavigation"
-    app:startDestination="@id/viewPassphraseLockBottomSheet">
+    app:startDestination="@id/viewPassphraseFragment">
 
-    <dialog
-        android:id="@+id/viewPassphraseLockBottomSheet"
-        android:name="com.algorand.android.ui.accounts.ViewPassphraseLockBottomSheet"
-        android:label="ViewPassphraseLockBottomSheet"
-        tools:layout="@layout/bottom_sheet_view_passphrase_lock">
+    <fragment
+        android:id="@+id/viewPassphraseFragment"
+        android:name="com.algorand.android.ui.accounts.ViewPassphraseFragment"
+        android:label="ViewPassphraseFragment"
+        tools:layout="@layout/fragment_view_passphrase">
         <argument
             android:name="publicKey"
             app:argType="string" />
-        <action
-            android:id="@+id/action_viewPassphraseLockBottomSheet_to_viewPassphraseBottomSheet"
-            app:destination="@id/viewPassphraseBottomSheet"
-            app:popUpTo="@id/viewPassphraseLockBottomSheet"
-            app:popUpToInclusive="true" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/viewPassphraseBottomSheet"
-        android:name="com.algorand.android.ui.accounts.ViewPassphraseBottomSheet"
-        android:label="ViewPassphraseBottomSheet"
-        tools:layout="@layout/dialog_view_passphrase">
-        <argument
-            android:name="accountPublicKey"
-            app:argType="string" />
-    </dialog>
+    </fragment>
 
 </navigation>

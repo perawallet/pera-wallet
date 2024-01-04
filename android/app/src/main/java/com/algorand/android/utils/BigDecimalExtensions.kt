@@ -38,6 +38,14 @@ infix fun BigDecimal.isEqualTo(other: BigDecimal): Boolean {
     return this.compareTo(other) == 0
 }
 
+infix fun BigDecimal.isEqualOrGreaterThan(other: BigDecimal): Boolean {
+    return this.compareTo(other) >= 0
+}
+
+infix fun BigDecimal.isEqualOrLesserThan(other: BigDecimal): Boolean {
+    return this.compareTo(other) <= 0
+}
+
 fun String?.toBigDecimalOrZero(): BigDecimal {
     return this?.toBigDecimalOrNull() ?: ZERO
 }

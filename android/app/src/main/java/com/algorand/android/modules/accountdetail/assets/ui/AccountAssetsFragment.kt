@@ -115,6 +115,10 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
         override fun onShowAddressClick() {
             listener?.onShowAddressClick()
         }
+
+        override fun onBackupNowClick() {
+            listener?.onBackupNowClick()
+        }
     }
 
     private val accountAssetsAdapter = AccountAssetsAdapter(accountAssetListener)
@@ -181,6 +185,7 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
         fun onMinimumBalanceInfoClick()
         fun onCopyAddressClick()
         fun onShowAddressClick()
+        fun onBackupNowClick()
     }
 
     companion object {

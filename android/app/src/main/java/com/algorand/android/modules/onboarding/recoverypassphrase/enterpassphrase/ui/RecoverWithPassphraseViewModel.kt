@@ -86,7 +86,8 @@ class RecoverWithPassphraseViewModel @Inject constructor(
         }
         accountRecoveryJob = viewModelScope.launch(Dispatchers.IO) {
             recoverWithPassphrasePreviewUseCase.validateEnteredMnemonics(
-                preview = _recoverWithPassphrasePreviewFlow.value
+                preview = _recoverWithPassphrasePreviewFlow.value,
+                isQrRecovery()
             ).collectLatest { preview ->
                 _recoverWithPassphrasePreviewFlow.emit(preview)
             }
@@ -97,6 +98,8 @@ class RecoverWithPassphraseViewModel @Inject constructor(
         accountRecoveryJob?.cancel()
         accountRecoveryJob = null
     }
+
+    fun isQrRecovery() = mnemonic != null
 
     private fun createInitialPreview(): RecoverWithPassphrasePreview {
         return recoverWithPassphrasePreviewUseCase.getRecoverWithPassphraseInitialPreview()

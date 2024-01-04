@@ -16,11 +16,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.customviews.WarningTextView
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
+import com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragmentDirections.Companion.actionWriteDownInfoFragmentToBackupAccountSelectionFragment
+import com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragmentDirections.Companion.actionWriteDownInfoFragmentToBackupPassphraseFragment
+import com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragmentDirections.Companion.actionWriteDownInfoFragmentToCreateAccountNameRegistrationFragment
 import com.algorand.android.utils.extensions.show
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +42,8 @@ class WriteDownInfoFragment : BaseInfoFragment() {
     )
 
     private val writeDownInfoViewModel: WriteDownInfoViewModel by viewModels()
+
+    private val args: WriteDownInfoFragmentArgs by navArgs()
 
     override fun setImageView(imageView: ImageView) {
         val icon = R.drawable.ic_pen
@@ -62,12 +68,51 @@ class WriteDownInfoFragment : BaseInfoFragment() {
 
     override fun setFirstButton(materialButton: MaterialButton) {
         val buttonText = R.string.im_ready_to_begin
-        materialButton.setText(buttonText)
-        materialButton.setOnClickListener { navigateToBackupPassphraseFragment() }
+        materialButton.apply {
+            setText(buttonText)
+            setOnClickListener { onFirstButtonClicked() }
+        }
     }
 
-    private fun navigateToBackupPassphraseFragment() {
-        writeDownInfoViewModel.logOnboardingReadyToBeginClickEvent()
-        nav(WriteDownInfoFragmentDirections.actionWriteDownInfoFragmentToBackupPassphrasesNavigation())
+    override fun setSecondButton(materialButton: MaterialButton) {
+        if (args.publicKeysOfAccountsToBackup.isEmpty()) {
+            val buttonText = R.string.skip_for_now
+            materialButton.apply {
+                setText(buttonText)
+                setOnClickListener { onSecondButtonClicked() }
+                show()
+            }
+        }
+    }
+
+    private fun onFirstButtonClicked() {
+        if (args.publicKeysOfAccountsToBackup.size > 1) {
+            navToBackupAccountSelectionFragment()
+        } else {
+            navToBackupPassphraseFragment()
+        }
+    }
+
+    private fun onSecondButtonClicked() {
+        navToCreateAccountNameRegistrationFragment()
+    }
+
+    private fun navToBackupAccountSelectionFragment() {
+        nav(actionWriteDownInfoFragmentToBackupAccountSelectionFragment(args.publicKeysOfAccountsToBackup))
+    }
+
+    private fun navToBackupPassphraseFragment() {
+        nav(
+            actionWriteDownInfoFragmentToBackupPassphraseFragment(
+                args.publicKeysOfAccountsToBackup.firstOrNull().orEmpty(),
+                accountCreation = args.accountCreation
+            )
+        )
+    }
+
+    private fun navToCreateAccountNameRegistrationFragment() {
+        args.accountCreation?.let { accountCreation ->
+            nav(actionWriteDownInfoFragmentToCreateAccountNameRegistrationFragment(accountCreation))
+        }
     }
 }

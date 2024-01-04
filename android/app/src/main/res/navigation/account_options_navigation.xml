@@ -22,11 +22,13 @@
 
     <include app:graph="@navigation/rekey_undo_navigation" />
 
-    <include app:graph="@navigation/view_passphrase_navigation" />
-
     <include app:graph="@navigation/rename_account_navigation" />
 
     <include app:graph="@navigation/show_qr_navigation" />
+
+    <include app:graph="@navigation/in_app_pin_navigation" />
+
+    <include app:graph="@navigation/view_passphrase_navigation" />
 
     <dialog
         android:id="@+id/accountOptionsBottomSheet"
@@ -44,15 +46,6 @@
             <argument
                 android:name="name"
                 app:argType="string" />
-            <argument
-                android:name="publicKey"
-                app:argType="string" />
-        </action>
-        <action
-            android:id="@+id/action_accountOptionsBottomSheet_to_viewPassphraseNavigation"
-            app:destination="@id/viewPassphraseNavigation"
-            app:popUpTo="@id/accountOptionsBottomSheet"
-            app:popUpToInclusive="true">
             <argument
                 android:name="publicKey"
                 app:argType="string" />
@@ -94,6 +87,20 @@
             app:popUpToInclusive="true">
             <argument
                 android:name="accountAddress"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_accountOptionsBottomSheet_to_InAppPinNavigation"
+            app:destination="@id/inAppPinNavigation"
+            app:popUpTo="@id/accountOptionsBottomSheet"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_accountOptionsBottomSheet_to_viewPassphraseNavigation"
+            app:destination="@id/viewPassphraseNavigation"
+            app:popUpTo="@id/accountOptionsBottomSheet"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="publicKey"
                 app:argType="string" />
         </action>
     </dialog>

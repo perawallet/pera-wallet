@@ -18,13 +18,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
+import com.algorand.algosdk.sdk.Sdk
 import com.algorand.android.R
-import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.customviews.toolbar.buttoncontainer.model.IconButton
+import com.algorand.android.models.Account
+import com.algorand.android.models.AccountCreation
+import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
+import com.algorand.android.ui.common.warningconfirmation.BackupInfoFragmentDirections.Companion.actionBackupInfoFragmentToCreateAccountNameRegistrationFragment
 import com.algorand.android.ui.common.warningconfirmation.BackupInfoFragmentDirections.Companion.actionBackupInfoFragmentToWriteDownInfoFragment
+import com.algorand.android.utils.analytics.CreationType
 import com.algorand.android.utils.browser.openRecoveryPassphraseSupportUrl
+import com.algorand.android.utils.extensions.show
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +46,8 @@ class BackupInfoFragment : BaseInfoFragment() {
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
     private val backupInfoViewModel: BackupInfoViewModel by viewModels()
+
+    private val args: BackupInfoFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,12 +73,39 @@ class BackupInfoFragment : BaseInfoFragment() {
     override fun setFirstButton(materialButton: MaterialButton) {
         val buttonText = R.string.i_understand
         materialButton.setText(buttonText)
-        materialButton.setOnClickListener { navigateToWriteDownFragment() }
+        materialButton.setOnClickListener { navToWriteDownFragment() }
     }
 
-    private fun navigateToWriteDownFragment() {
+    override fun setSecondButton(materialButton: MaterialButton) {
+        if (args.publicKeysOfAccountsToBackup.isEmpty()) {
+            val buttonText = R.string.skip_for_now
+            materialButton.setText(buttonText)
+            materialButton.setOnClickListener { navToCreateAccountNameRegistrationFragment() }
+            materialButton.show()
+        }
+    }
+
+    private fun navToWriteDownFragment() {
+        val accountCreation = if (args.publicKeysOfAccountsToBackup.isEmpty()) {
+            getAccountCreation()
+        } else {
+            null
+        }
+
         backupInfoViewModel.logOnboardingIUnderstandClickEvent()
-        nav(actionBackupInfoFragmentToWriteDownInfoFragment())
+        nav(
+            actionBackupInfoFragmentToWriteDownInfoFragment(
+                args.publicKeysOfAccountsToBackup,
+                accountCreation
+            )
+        )
+    }
+
+    private fun navToCreateAccountNameRegistrationFragment() {
+        val accountCreation = getAccountCreation()
+        accountCreation?.let {
+            nav(actionBackupInfoFragmentToCreateAccountNameRegistrationFragment(it))
+        }
     }
 
     private fun configureToolbar() {
@@ -78,5 +114,27 @@ class BackupInfoFragment : BaseInfoFragment() {
 
     private fun onInfoClick() {
         context?.openRecoveryPassphraseSupportUrl()
+    }
+
+    // TODO move this into util class
+    private fun getAccountCreation(): AccountCreation? {
+        try {
+            val secretKeyByteArray: ByteArray?
+            secretKeyByteArray = Sdk.generateSK()
+            val publicKey = Sdk.generateAddressFromSK(secretKeyByteArray)
+            val tempAccount = Account.create(
+                publicKey = publicKey,
+                detail = Account.Detail.Standard(secretKeyByteArray),
+                isBackedUp = false
+            )
+            return AccountCreation(tempAccount, CreationType.CREATE)
+        } catch (exception: Exception) {
+            navBack()
+        }
+        return null
+    }
+
+    companion object {
+        private const val ACCOUNT_CREATION_KEY = "accountCreation"
     }
 }

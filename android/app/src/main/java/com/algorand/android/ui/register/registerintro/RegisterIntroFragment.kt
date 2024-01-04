@@ -70,7 +70,11 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
 
     private fun navToBackupInfoFragment() {
         registerIntroViewModel.logOnboardingWelcomeAccountCreateClickEvent()
-        nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToBackupInfoFragment())
+        nav(
+            RegisterIntroFragmentDirections.actionRegisterIntroFragmentToPassphraseBackupNavigation(
+                publicKeysOfAccountsToBackup = emptyArray()
+            )
+        )
     }
 
     private fun navToAccountRecoveryTypeSelectionFragment() {

@@ -145,6 +145,41 @@ class GetSortedAccountsByPreferenceUseCase @Inject constructor(
         return sortingPreferences.sort(accountListItems)
     }
 
+    fun getFilteredSortedAccountListWhichNotBackedUp(
+        sortingPreferences: AccountSortingType,
+        accountFilterAssetId: Long?,
+        excludedAccountTypes: List<Account.Type>? = null,
+        onLoadedAccountConfiguration: AccountDetail.() -> BaseItemConfiguration.AccountItemConfiguration,
+        onFailedAccountConfiguration: Account?.() -> BaseItemConfiguration.AccountItemConfiguration?
+    ): List<BaseAccountAndAssetListItem.AccountListItem> {
+        val localAccounts = getSortedLocalAccountsUseCase.getSortedLocalAccounts()
+        val accountListItems = localAccounts.mapIndexedNotNull { index, account ->
+            val isAccountTypeValid = isAccountTypeValid(excludedAccountTypes, account.type)
+            if (
+                isAccountTypeValid &&
+                accountStateHelperUseCase.hasAccountAuthority(account.address) &&
+                !account.isBackedUp
+            ) {
+                val accountDetail = accountDetailUseCase.getCachedAccountDetail(account.address)?.data
+                val assetIdValid = isAssetIdValid(accountDetail, accountFilterAssetId)
+                if (assetIdValid) {
+                    val accountItemConfiguration = configureListItem(
+                        accountDetail = accountDetail,
+                        account = localAccounts.getOrNull(index),
+                        onLoadedAccountConfiguration = onLoadedAccountConfiguration,
+                        onFailedAccountConfiguration = onFailedAccountConfiguration
+                    ) ?: return@mapIndexedNotNull null
+                    baseAccountAndAssetListItemMapper.mapToAccountListItem(accountItemConfiguration)
+                } else {
+                    null
+                }
+            } else {
+                null
+            }
+        }
+        return sortingPreferences.sort(accountListItems)
+    }
+
     private fun isAssetIdValid(accountDetail: AccountDetail?, filteredAssetId: Long?): Boolean {
         return filteredAssetId == null || filteredAssetId == ALGO_ID || accountDetail?.hasAsset(filteredAssetId) == true
     }

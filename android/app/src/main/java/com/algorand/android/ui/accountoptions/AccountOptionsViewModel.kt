@@ -20,6 +20,7 @@ import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.usecase.AccountDeletionUseCase
 import com.algorand.android.usecase.AccountOptionsUseCase
+import com.algorand.android.usecase.SecurityUseCase
 import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +35,7 @@ class AccountOptionsViewModel @Inject constructor(
     private val notificationRepository: NotificationRepository,
     private val accountOptionsUseCase: AccountOptionsUseCase,
     private val accountDeletionUseCase: AccountDeletionUseCase,
+    private val securityUseCase: SecurityUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -104,6 +106,10 @@ class AccountOptionsViewModel @Inject constructor(
 
     fun isUndoRekeyPossible(): Boolean {
         return accountOptionsUseCase.isUndoRekeyPossible(publicKey)
+    }
+
+    fun isPinCodeEnabled(): Boolean {
+        return securityUseCase.isPinCodeEnabled()
     }
 
     companion object {

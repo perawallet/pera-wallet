@@ -18,6 +18,8 @@ import com.algorand.android.models.NodeAssetDetailResponse
 import com.algorand.android.models.SendTransactionResponse
 import com.algorand.android.models.TotalAlgoSupply
 import com.algorand.android.models.TransactionParams
+import com.algorand.android.modules.accountasset.data.model.AccountAssetDetailResponse
+import com.algorand.android.modules.accountasset.data.model.AccountDetailWithoutAssetsResponse
 import com.algorand.android.modules.transactionhistory.data.model.PendingTransactionsResponse
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -52,4 +54,15 @@ interface AlgodApi {
     suspend fun getAssetDetail(
         @Path("asset_id") assetId: Long
     ): Response<NodeAssetDetailResponse>
+
+    @GET("/v2/accounts/{address}/assets/{asset_id}")
+    suspend fun getAccountAssetDetail(
+        @Path("address") address: String,
+        @Path("asset_id") assetId: Long
+    ): Response<AccountAssetDetailResponse>
+
+    @GET("/v2/accounts/{address}?exclude=all")
+    suspend fun getAccountDetailWithoutAssets(
+        @Path("address") address: String
+    ): Response<AccountDetailWithoutAssetsResponse>
 }

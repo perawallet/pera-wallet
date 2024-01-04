@@ -50,12 +50,14 @@ class AccountDeserializer : JsonDeserializer<Account> {
         val name = jsonObject.get("accountName").asString
         val publicKey = jsonObject.get("publicKey").asString
         val accountIndex = jsonObject.get("index")?.asString?.toIntOrNull() ?: NOT_INITIALIZED_ACCOUNT_INDEX
+        val isBackedUp = jsonObject.get("isBackedUp")?.asBoolean ?: true
 
         return Account.create(
             publicKey = publicKey,
             detail = detail,
             accountName = name,
-            index = accountIndex
+            index = accountIndex,
+            isBackedUp = isBackedUp,
         )
     }
 
@@ -67,15 +69,19 @@ class AccountDeserializer : JsonDeserializer<Account> {
             Account.Type.STANDARD -> {
                 deserialize<Account.Detail.Standard>(detailJsonObject, Account.Detail.Standard::class.java)
             }
+
             Account.Type.LEDGER -> {
                 deserialize<Account.Detail.Ledger>(detailJsonObject, Account.Detail.Ledger::class.java)
             }
+
             Account.Type.REKEYED -> {
                 deserialize<Account.Detail.Rekeyed>(detailJsonObject, Account.Detail.Rekeyed::class.java)
             }
+
             Account.Type.WATCH -> {
                 deserialize<Account.Detail.Watch>(detailJsonObject, Account.Detail.Watch::class.java)
             }
+
             Account.Type.REKEYED_AUTH -> deserializeRekeyedAuth(detailJsonObject)
         }
     }

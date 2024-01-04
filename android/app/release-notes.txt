@@ -1,2 +1,6 @@
-Store release
-- Disable onramp feature
+Sprint 4 release
+- Pera-54 | Ability to skip the backup passphrase flow
+- Pera-233 | In-App Browser - Opening PactFi causes an error message
+- Pera-112 | Rekeyed to Ledger accounts report frequent problems
+- Pera-116 | Allow users to review their passphrase with biometric auth
+- Pera-103 | Swap minimum balance check improvement if out asset is algo

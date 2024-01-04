@@ -72,7 +72,7 @@ class ManageAssetsBottomSheet : DaggerBaseBottomSheet(
     private fun navToRemoveAssetsFragment() {
         nav(
             ManageAssetsBottomSheetDirections.actionManageAssetsBottomSheetToRemoveAssetsFragment(
-                accountPublicKey = manageAssetsViewModel.accountAddress
+                publicKey = manageAssetsViewModel.publicKey
             )
         )
     }

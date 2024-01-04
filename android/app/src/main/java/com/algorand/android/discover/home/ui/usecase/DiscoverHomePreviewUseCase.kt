@@ -29,10 +29,10 @@ import com.algorand.android.discover.home.ui.model.DiscoverHomePreview
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.preference.getSavedThemePreference
 import com.google.gson.Gson
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class DiscoverHomePreviewUseCase @Inject constructor(
     private val discoverSearchAssetUseCase: DiscoverSearchAssetUseCase,
@@ -77,13 +77,14 @@ class DiscoverHomePreviewUseCase @Inject constructor(
         discoverSearchAssetUseCase.searchAsset(assetSearchQuery)
     }
 
-    fun getInitialStatePreview() = DiscoverHomePreview(
+    fun getInitialStatePreview(url: String?) = DiscoverHomePreview(
         themePreference = sharedPreferences.getSavedThemePreference(),
         isLoading = true,
         tokenDetailScreenRequestEvent = null,
         dappViewerScreenRequestEvent = null,
         urlElementRequestEvent = null,
-        reloadPageEvent = Event(Unit)
+        loadHomeEvent = if (url.isNullOrBlank()) Event(Unit) else null,
+        loadCustomUrlEvent = if (!url.isNullOrBlank()) Event(url) else null
     )
 
     fun getPreviewWithHandleQueryChangeForScrollEvent(previousPreview: DiscoverHomePreview) = previousPreview.copy(
@@ -117,7 +118,7 @@ class DiscoverHomePreviewUseCase @Inject constructor(
 
     fun requestLoadHomepage(previousState: DiscoverHomePreview) = previousState.copy(
         isLoading = true,
-        reloadPageEvent = Event(Unit)
+        loadHomeEvent = Event(Unit)
     )
 
     fun onPageRequestedShouldOverrideUrlLoading(previousState: DiscoverHomePreview) = previousState.copy(

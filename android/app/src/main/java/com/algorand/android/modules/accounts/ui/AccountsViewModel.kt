@@ -132,6 +132,10 @@ class AccountsViewModel @Inject constructor(
         // TODO add logging?
     }
 
+    fun getNotBackedUpAccounts(): List<String> {
+        return accountsPreviewUseCase.getNotBackedUpAccounts()
+    }
+
     private suspend fun updatePreviewForSwapNavigation() {
         with(_accountPreviewFlow) {
             val newState = accountsPreviewUseCase.getSwapNavigationUpdatedPreview(value ?: return@with)

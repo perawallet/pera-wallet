@@ -13,11 +13,11 @@
 
 package com.algorand.android.ui.accounts
 
-import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.algorand.android.core.AccountManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @HiltViewModel
 class ViewPassphraseViewModel @Inject constructor(
@@ -25,13 +25,13 @@ class ViewPassphraseViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val accountPublicKeyArg by lazy { savedStateHandle.get<String>(ACCOUNT_PUBLIC_KEY).orEmpty() }
+    private val accountPublicKeyArg by lazy { savedStateHandle.get<String>(PUBLIC_KEY).orEmpty() }
 
     fun getAccountSecretKey(): ByteArray? {
         return accountManager.getAccount(accountPublicKeyArg)?.getSecretKey()
     }
 
     companion object {
-        private const val ACCOUNT_PUBLIC_KEY = "accountPublicKey"
+        private const val PUBLIC_KEY = "publicKey"
     }
 }

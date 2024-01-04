@@ -35,7 +35,7 @@ class RemoveAssetsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    val accountAddress = savedStateHandle.getOrThrow<String>(ACCOUNT_PUBLIC_KEY)
+    val accountAddress = savedStateHandle.getOrThrow<String>(PUBLIC_KEY)
 
     private val _removeAssetsPreviewFlow = MutableStateFlow<RemoveAssetsPreview?>(null)
     val removeAssetsPreviewFlow: StateFlow<RemoveAssetsPreview?> = _removeAssetsPreviewFlow
@@ -60,7 +60,7 @@ class RemoveAssetsViewModel @Inject constructor(
     }
 
     companion object {
-        private const val ACCOUNT_PUBLIC_KEY = "accountPublicKey"
+        private const val PUBLIC_KEY = "publicKey"
         private const val QUERY_DEBOUNCE = 300L
     }
 }

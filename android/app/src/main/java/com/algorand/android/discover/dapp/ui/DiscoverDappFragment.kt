@@ -20,6 +20,7 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.databinding.FragmentDiscoverDappBinding
 import com.algorand.android.discover.common.ui.BaseDiscoverFragment
+import com.algorand.android.discover.common.ui.model.PeraWebChromeClient
 import com.algorand.android.discover.common.ui.model.PeraWebViewClient
 import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.discover.dapp.ui.model.DiscoverDappPreview
@@ -141,6 +142,7 @@ class DiscoverDappFragment :
         with(binding) {
             tryAgainButton.setOnClickListener { discoverViewModel.reloadPage() }
             webView.webViewClient = PeraWebViewClient(peraWebViewClientListener)
+            webView.webChromeClient = PeraWebChromeClient(peraWebViewClientListener)
             bottomDappNavigation.apply {
                 homeNavButton.setOnClickListener {
                     discoverViewModel.onHomeNavButtonClicked()

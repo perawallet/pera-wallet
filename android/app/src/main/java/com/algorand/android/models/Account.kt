@@ -23,14 +23,15 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Account constructor(
+data class Account(
     @SerializedName("publicKey")
     val address: String,
     @SerializedName("accountName")
     var name: String = "",
     val type: Type? = null,
     val detail: Detail? = null,
-    var index: Int = NOT_INITIALIZED_ACCOUNT_INDEX
+    var index: Int = NOT_INITIALIZED_ACCOUNT_INDEX,
+    var isBackedUp: Boolean
 ) : Parcelable {
 
     fun isRegistrationCompleted(): Boolean {
@@ -120,7 +121,8 @@ data class Account constructor(
             publicKey: String,
             detail: Detail,
             accountName: String = publicKey.toShortenedAddress(),
-            index: Int = NOT_INITIALIZED_ACCOUNT_INDEX
+            index: Int = NOT_INITIALIZED_ACCOUNT_INDEX,
+            isBackedUp: Boolean = true
         ): Account {
             val type = when (detail) {
                 is Detail.Standard -> STANDARD
@@ -135,7 +137,8 @@ data class Account constructor(
                 name = accountName,
                 type = type,
                 detail = detail,
-                index = index
+                index = index,
+                isBackedUp = isBackedUp
             )
         }
     }

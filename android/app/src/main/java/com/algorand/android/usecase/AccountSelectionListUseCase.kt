@@ -33,6 +33,16 @@ class AccountSelectionListUseCase @Inject constructor(
         )
     }
 
+    suspend fun createAccountSelectionListAccountItemsWhichNotBackedUp(
+        showHoldings: Boolean,
+        showFailedAccounts: Boolean
+    ): List<BaseAccountSelectionListItem.BaseAccountItem> {
+        return getAccountSelectionAccountsItemUseCase.getAccountSelectionAccountsWhichNotBackedUp(
+            showHoldings = showHoldings,
+            showFailedAccounts = showFailedAccounts
+        )
+    }
+
     suspend fun createAccountSelectionListAccountItemsWhichCanSignTransaction(
         showHoldings: Boolean,
         showFailedAccounts: Boolean,

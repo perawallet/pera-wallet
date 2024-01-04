@@ -44,7 +44,7 @@ class AccountErrorOptionsBottomSheet : BaseAccountOptionsBottomSheet() {
         nav(AccountErrorOptionsBottomSheetDirections.actionGlobalShowQrNavigation(title, publicKey))
     }
 
-    override fun navToViewPassphraseBottomSheet() {
+    override fun navToViewPassphraseNavigation() {
         nav(
             AccountErrorOptionsBottomSheetDirections
                 .actionAccountErrorOptionsBottomSheetToViewPassphraseNavigation(publicKey)

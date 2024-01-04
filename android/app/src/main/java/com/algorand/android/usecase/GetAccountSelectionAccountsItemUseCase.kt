@@ -76,6 +76,38 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
     }
 
     // TODO: 11.03.2022 Use flow here to get realtime updates
+    suspend fun getAccountSelectionAccountsWhichNotBackedUp(
+        showHoldings: Boolean,
+        showFailedAccounts: Boolean,
+    ): List<BaseAccountSelectionListItem.BaseAccountItem> {
+        val selectedCurrencySymbol = parityUseCase.getPrimaryCurrencySymbolOrEmpty()
+        val sortedAccountListItems = getSortedAccountsByPreferenceUseCase
+            .getFilteredSortedAccountListWhichNotBackedUp(
+                sortingPreferences = accountSortPreferenceUseCase.getAccountSortPreference(),
+                accountFilterAssetId = null,
+                excludedAccountTypes = null,
+                onLoadedAccountConfiguration = {
+                    createLoadedAccountConfiguration(
+                        accountDetail = this,
+                        account = account,
+                        showHoldings = showHoldings,
+                        selectedCurrencySymbol = selectedCurrencySymbol
+                    )
+                },
+                onFailedAccountConfiguration = {
+                    createNotLoadedAccountConfiguration(account = this)
+                }
+            )
+        return sortedAccountListItems.map { accountListItem ->
+            if (accountListItem.itemConfiguration.showWarning == true) {
+                accountSelectionListItemMapper.mapToErrorAccountItem(accountListItem)
+            } else {
+                accountSelectionListItemMapper.mapToAccountItem(accountListItem)
+            }
+        }.filter {
+            if (showFailedAccounts) true else it !is BaseAccountSelectionListItem.BaseAccountItem.AccountErrorItem
+        }
+    }
     suspend fun getAccountSelectionAccountsWhichCanSignTransaction(
         showHoldings: Boolean,
         showFailedAccounts: Boolean,

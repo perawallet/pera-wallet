@@ -555,15 +555,11 @@ amountPlaceholder</annotation> Algo.</string>
     <string name="we_don_t_support">Non supportiamo ancora questo tipo d supporto NFT.</string>
     <string name="we_can_t_display">Non possiamo visualizzare temporaneamente l\'oggetto visivo.</string>
     <string name="transfer">Trasferimento</string>
-    <string name="send_your_nft">Invia il tuo NFT</string>
-    <string name="paste_an_algorand_wallet_address">Incolla un indirizzo di wallet Algorand</string>
     <string name="ask_recipient_to">Chiedi al destinatario di aderire a\n %1$s</string>
     <string name="you_cant_send">Non è possibile inviare <annotation replacement="nft_name">NFTNamePlaceHolder</annotation> a <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> perché questo wallet non ha ancora effettuato l\'adesione (opt-in) per questa risorsa. <annotation font="dmsans_medium"><annotation custom="learn_more">Per saperne di più sull\'adesione (opt-in)</annotation></annotation></string>
     <string name="information_about_opt">Informazioni sull\'adesione (Opt-in)</string>
     <string name="to_avoid_spammy">Per evitare transazioni di spam, Algorand Blockchain ti consente di inviare e ricevere transazioni solo per le risorse che sono state precedentemente attivate (opt-in).</string>
     <string name="search_or_enter_wallet_address">Cerca o inserisci l\'indirizzo del wallet</string>
-    <string name="your_nft_transfer">Il tuo trasferimento NFT è confermato!</string>
-    <string name="transactions_can_take">La finalizzazione delle transazioni può richiedere alcuni minuti.</string>
     <string name="got_it">Capito!</string>
     <string name="approve_transaction">Approva transazione</string>
     <string name="are_you_sure">Sei sicuro di voler procedere?</string>
@@ -893,7 +889,6 @@ amountPlaceholder</annotation> Algo.</string>
     <string name="error_while_opting_to_the">Errore durante la scelta dell\'ASA. Per favore riprova</string>
     <string name="retry">Riprova</string>
     <string name="before_interacting_with">Prima di interagire con una risorsa, devi attivarla dal tuo conto. Ciò impedisce l\'invio di transazioni di risorse non autorizzate.</string>
-    <string name="you_already_own">Possiedi già questa risorsa</string>
     <string name="markets">Mercati</string>
     <string name="formatted_changed_percentage">%1$.2f%%</string>
     <string name="display_nfts_in_asset_list">Visualizza gli NFT nell\'elenco delle risorse</string>

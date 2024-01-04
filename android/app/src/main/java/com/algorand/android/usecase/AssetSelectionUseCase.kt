@@ -23,19 +23,16 @@ import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseO
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData
 import com.algorand.android.models.BaseSelectAssetItem
-import com.algorand.android.modules.collectibles.detail.ui.usecase.CollectibleDetailItemUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.modules.sorting.assetsorting.ui.usecase.AssetItemSortUseCase
-import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.nft.mapper.AssetSelectionPreviewMapper
 import com.algorand.android.nft.ui.model.AssetSelectionPreview
 import com.algorand.android.utils.Event
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 @SuppressWarnings("LongParameterList")
 class AssetSelectionUseCase @Inject constructor(
@@ -47,9 +44,7 @@ class AssetSelectionUseCase @Inject constructor(
     private val assetSelectionPreviewMapper: AssetSelectionPreviewMapper,
     private val accountInformationUseCase: AccountInformationUseCase,
     private val assetItemConfigurationMapper: AssetItemConfigurationMapper,
-    private val assetItemSortUseCase: AssetItemSortUseCase,
-    private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
-    private val collectibleDetailItemUseCase: CollectibleDetailItemUseCase
+    private val assetItemSortUseCase: AssetItemSortUseCase
 ) {
     fun getAssetSelectionListFlow(publicKey: String): Flow<List<BaseSelectAssetItem>> {
         return combine(
@@ -130,7 +125,11 @@ class AssetSelectionUseCase @Inject constructor(
                         if (!isReceiverOptedInToAsset) {
                             emit(loadingFinishedStatePreview.copy(navigateToOptInEvent = Event(assetId)))
                         } else {
-                            emitAll(getSendAssetNavigationUpdatedPreviewFlow(assetId, loadingFinishedStatePreview))
+                            emit(
+                                loadingFinishedStatePreview.copy(
+                                    navigateToAssetTransferAmountFragmentEvent = Event(assetId)
+                                )
+                            )
                         }
                     },
                     onFailed = { errorDataResource ->
@@ -144,26 +143,6 @@ class AssetSelectionUseCase @Inject constructor(
                     }
                 )
             }
-        } ?: emitAll(getSendAssetNavigationUpdatedPreviewFlow(assetId, loadingFinishedStatePreview))
-    }
-
-    private suspend fun getSendAssetNavigationUpdatedPreviewFlow(
-        assetId: Long,
-        loadingFinishedStatePreview: AssetSelectionPreview
-    ) = flow {
-        val senderAddress = loadingFinishedStatePreview.assetTransaction.senderAddress
-        val isPureCollectible = simpleCollectibleUseCase.isCachedCollectiblePureIfExists(assetId)
-        if (isPureCollectible == true) {
-            collectibleDetailItemUseCase.getCollectibleDetailItemFlow(assetId, senderAddress).use(
-                onSuccess = {
-                    emit(loadingFinishedStatePreview.copy(navigateToCollectibleSendFragmentEvent = Event(it)))
-                },
-                onFailed = { _, _ ->
-                    emit(loadingFinishedStatePreview.copy(navigateToAssetTransferAmountFragmentEvent = Event(assetId)))
-                }
-            )
-        } else {
-            emit(loadingFinishedStatePreview.copy(navigateToAssetTransferAmountFragmentEvent = Event(assetId)))
-        }
+        } ?: emit(loadingFinishedStatePreview.copy(navigateToAssetTransferAmountFragmentEvent = Event(assetId)))
     }
 }

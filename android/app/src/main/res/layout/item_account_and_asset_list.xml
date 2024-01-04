@@ -65,11 +65,11 @@
         android:id="@+id/startSmallIconImageView"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:background="@drawable/bg_white_oval"
         android:visibility="gone"
         app:layout_constraintCircle="@id/startIconImageView"
         app:layout_constraintCircleAngle="@integer/governor_icon_angle"
         app:layout_constraintCircleRadius="20dp"
-        tools:backgroundTint="@color/background"
         tools:srcCompat="@drawable/ic_crown_filled"
         tools:visibility="visible" />
 

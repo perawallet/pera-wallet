@@ -34,7 +34,8 @@ sealed class AccountDetailAssetsItem : RecyclerListItem {
         NFT,
         PENDING_NFT,
         NO_ASSET_FOUND,
-        REQUIRED_MINIMUM_BALANCE
+        REQUIRED_MINIMUM_BALANCE,
+        BACKUP_WARNING
     }
 
     abstract val itemType: ItemType
@@ -54,6 +55,22 @@ sealed class AccountDetailAssetsItem : RecyclerListItem {
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
             return other is AccountPortfolioItem && this == other
+        }
+    }
+
+    data class BackupWarningItem(
+        val isBackedUp: Boolean
+    ) : AccountDetailAssetsItem() {
+
+        override val itemType: ItemType
+            get() = ItemType.BACKUP_WARNING
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is BackupWarningItem
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is BackupWarningItem && this == other
         }
     }
 
@@ -309,7 +326,8 @@ sealed class AccountDetailAssetsItem : RecyclerListItem {
             ItemType.SEARCH.ordinal,
             ItemType.QUICK_ACTIONS.ordinal,
             ItemType.NO_ASSET_FOUND.ordinal,
-            ItemType.REQUIRED_MINIMUM_BALANCE.ordinal
+            ItemType.REQUIRED_MINIMUM_BALANCE.ordinal,
+            ItemType.BACKUP_WARNING.ordinal
         )
     }
 }

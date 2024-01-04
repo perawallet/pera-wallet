@@ -36,7 +36,7 @@ class AccountTypeUpdateHelper @Inject constructor(
                     accountManager.changeAccountType(account.address, newType, newDetail)
                     copy(account = account.copy(type = newType, detail = newDetail))
                 }
-                account.type == Account.Type.REKEYED && !isRekeyed -> {
+                (account.type == Account.Type.REKEYED || account.type == Account.Type.REKEYED_AUTH) && !isRekeyed -> {
                     val newType = Account.Type.STANDARD
                     val newDetail = Account.Detail.Standard(account.getSecretKey() ?: byteArrayOf())
                     accountManager.changeAccountType(account.address, newType, newDetail)

@@ -22,11 +22,11 @@
 
     <include app:graph="@navigation/register_watch_account_navigation" />
 
-    <include app:graph="@navigation/backup_passphrases_navigation" />
-
     <include app:graph="@navigation/web_import_navigation" />
 
     <include app:graph="@navigation/asb_import_navigation" />
+
+    <include app:graph="@navigation/passphrase_backup_navigation" />
 
     <action
         android:id="@+id/action_global_to_homeNavigation"
@@ -45,26 +45,59 @@
             app:argType="boolean" />
     </action>
 
+
     <fragment
-        android:id="@+id/backupInfoFragment"
-        android:name="com.algorand.android.ui.common.warningconfirmation.BackupInfoFragment"
-        android:label="fragment_backup_info"
-        tools:layout="@layout/fragment_base_info">
+        android:id="@+id/registerIntroFragment"
+        android:name="com.algorand.android.ui.register.registerintro.RegisterIntroFragment"
+        android:label="RegisterIntroFragment"
+        tools:layout="@layout/fragment_register_type_selection">
+        <argument
+            android:name="isShowingCloseButton"
+            app:argType="boolean" />
         <action
-            android:id="@+id/action_backupInfoFragment_to_writeDownInfoFragment"
-            app:destination="@id/writeDownInfoFragment" />
+            android:id="@+id/action_registerIntroFragment_to_accountRecoveryTypeSelectionFragment"
+            app:destination="@id/accountRecoveryTypeSelectionFragment" />
+        <action
+            android:id="@+id/action_registerIntroFragment_to_watchAccountInfoFragment"
+            app:destination="@id/watchAccountInfoFragment" />
+        <action
+            android:id="@+id/action_registerIntroFragment_to_registerWatchAccountFragment"
+            app:destination="@id/registerWatchAccountFragment"
+            app:popUpTo="@id/registerIntroFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_registerIntroFragment_to_asbImportNavigation"
+            app:destination="@id/asbImportNavigation" />
+        <action
+            android:id="@+id/action_registerIntroFragment_to_passphraseBackupNavigation"
+            app:destination="@id/passphraseBackupNavigation">
+            <argument
+                android:name="publicKeysOfAccountsToBackup"
+                app:argType="string[]" />
+        </action>
     </fragment>
 
     <fragment
-        android:id="@+id/writeDownInfoFragment"
-        android:name="com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragment"
-        android:label="fragment_write_down_info"
-        tools:layout="@layout/fragment_base_info">
+        android:id="@+id/accountRecoveryTypeSelectionFragment"
+        android:name="com.algorand.android.ui.register.recoveraccounttypeselection.AccountRecoveryTypeSelectionFragment"
+        android:label="RecoverAccountTypeSelectionFragment"
+        tools:layout="@layout/fragment_account_recovery_type_selection">
         <action
-            android:id="@+id/action_writeDownInfoFragment_to_backup_passphrases_navigation"
-            app:destination="@id/backupPassphrasesNavigation" />
+            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_recoverAccountInfoFragment"
+            app:destination="@id/recoverAccountInfoFragment" />
+        <action
+            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_pairLedgerNavigation"
+            app:destination="@id/pairLedgerNavigation" />
+        <action
+            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_webImportNavigation"
+            app:destination="@id/webImportNavigation" />
+        <action
+            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_asbImportNavigation"
+            app:destination="@id/asbImportNavigation" />
+        <action
+            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_recoverWithPassphraseQrScannerFragment"
+            app:destination="@id/recoverWithPassphraseQrScannerFragment" />
     </fragment>
-
 
     <fragment
         android:id="@+id/recoverAccountInfoFragment"
@@ -99,51 +132,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/registerIntroFragment"
-        android:name="com.algorand.android.ui.register.registerintro.RegisterIntroFragment"
-        android:label="RegisterIntroFragment"
-        tools:layout="@layout/fragment_register_type_selection">
-        <argument
-            android:name="isShowingCloseButton"
-            app:argType="boolean" />
-        <action
-            android:id="@+id/action_registerIntroFragment_to_backupInfoFragment"
-            app:destination="@id/backupInfoFragment" />
-        <action
-            android:id="@+id/action_registerIntroFragment_to_accountRecoveryTypeSelectionFragment"
-            app:destination="@id/accountRecoveryTypeSelectionFragment" />
-        <action
-            android:id="@+id/action_registerIntroFragment_to_watchAccountInfoFragment"
-            app:destination="@id/watchAccountInfoFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/accountRecoveryTypeSelectionFragment"
-        android:name="com.algorand.android.ui.register.recoveraccounttypeselection.AccountRecoveryTypeSelectionFragment"
-        android:label="RecoverAccountTypeSelectionFragment"
-        tools:layout="@layout/fragment_account_recovery_type_selection">
-        <action
-            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_recoverAccountInfoFragment"
-            app:destination="@id/recoverAccountInfoFragment" />
-        <action
-            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_recoverWithPassphraseQrScannerFragment"
-            app:destination="@id/recoverWithPassphraseQrScannerFragment" />
-        <action
-            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_pairLedgerNavigation"
-            app:destination="@id/pairLedgerNavigation" />
-        <action
-            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_webImportNavigation"
-            app:destination="@id/webImportNavigation" />
-        <action
-            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_asbImportNavigation"
-            app:destination="@id/asbImportNavigation" />
-    </fragment>
-
-    <fragment
         android:id="@+id/recoverWithPassphraseQrScannerFragment"
         android:name="com.algorand.android.modules.onboarding.recoverypassphrase.qrscanner.ui.RecoverWithPassphraseQrScannerFragment"
         android:label="RecoverWithPassphraseQrScannerFragment"
-        tools:layout="@layout/fragment_qr_code_scanner" >
+        tools:layout="@layout/fragment_qr_code_scanner">
         <action
             android:id="@+id/action_recoverWithPassphraseQrScannerFragment_to_recoverWithPassphraseNavigation"
             app:destination="@id/recoverWithPassphraseNavigation">
@@ -154,6 +146,5 @@
                 app:nullable="true" />
         </action>
     </fragment>
-
 
 </navigation>

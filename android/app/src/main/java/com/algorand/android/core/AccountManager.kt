@@ -94,6 +94,18 @@ class AccountManager(
         }
     }
 
+    fun updateAccountBackupState(accountPublicKey: String?, isBackedUp: Boolean) {
+        if (accountPublicKey.isNullOrBlank()) return
+
+        val accounts = getAccounts()
+        val accountToUpdate = accounts.find { it.address == accountPublicKey }
+
+        accountToUpdate?.let {
+            it.isBackedUp = isBackedUp
+            sharedPref.saveAlgorandAccounts(gson, accounts, aead)
+        }
+    }
+
     suspend fun changeAccountType(accountPublicKey: String, newType: Account.Type, newDetail: Account.Detail? = null) {
         accountTypeChangeMutex.withLock {
             val updatedAccountList = getAccounts().map { accountFromList ->

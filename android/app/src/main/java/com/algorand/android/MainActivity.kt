@@ -36,6 +36,7 @@ import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
+import com.algorand.android.HomeNavigationDirections.Companion.actionGlobalDiscoverNavigation
 import com.algorand.android.core.TransactionManager
 import com.algorand.android.customviews.CoreActionsTabBarView
 import com.algorand.android.customviews.LedgerLoadingDialog
@@ -640,11 +641,15 @@ class MainActivity :
                 binding.bottomNavigationView.menu.forEach { menuItem ->
                     menuItem.isEnabled = isCoreActionsOpen.not()
                 }
-                handleBottomBarNavigationForChosenNetwork()
+                handleNavigationButtonsForChosenNetwork()
             }
 
             override fun onSwapClick() {
                 mainViewModel.onSwapActionButtonClick()
+            }
+
+            override fun onBrowseDappsClick() {
+                handleBrowseDappsClick()
             }
         })
     }
@@ -765,6 +770,14 @@ class MainActivity :
         hideProgress()
         ledgerLoadingDialog?.dismissAllowingStateLoss()
         ledgerLoadingDialog = null
+    }
+
+    private fun handleBrowseDappsClick() {
+        binding.apply {
+            coreActionsTabBarView.hideWithAnimation()
+            bottomNavigationView.menu.findItem(R.id.discoverNavigation).isChecked = true
+            navController.navigateSafe(actionGlobalDiscoverNavigation(BuildConfig.DISCOVER_BROWSE_DAPP_URL))
+        }
     }
 
     private fun showLedgerLoadingDialog(ledgerName: String?) {

@@ -46,6 +46,7 @@ import com.algorand.android.modules.accountdetail.collectibles.ui.AccountCollect
 import com.algorand.android.modules.accountdetail.haveyoubackedupconfirmation.ui.HaveYouBackedUpAccountConfirmationBottomSheet.Companion.HAVE_YOU_BACKED_UP_ACCOUNT_CONFIRMATION_KEY
 import com.algorand.android.modules.accountdetail.history.ui.AccountHistoryFragment
 import com.algorand.android.modules.accountdetail.removeaccount.ui.RemoveAccountConfirmationBottomSheet.Companion.ACCOUNT_REMOVE_CONFIRMATION_KEY
+import com.algorand.android.modules.inapppin.pin.ui.InAppPinFragment
 import com.algorand.android.modules.transaction.detail.ui.model.TransactionDetailEntryPoint
 import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem
 import com.algorand.android.ui.accountoptions.AccountOptionsBottomSheet.Companion.ACCOUNT_REMOVE_ACTION_KEY
@@ -210,6 +211,10 @@ class AccountDetailFragment :
         navToShowQrFragment()
     }
 
+    override fun onBackupNowClick() {
+        navToPassphraseBackupNavigation()
+    }
+
     override fun onImageItemClick(nftAssetId: Long) {
         navToCollectibleDetailFragment(nftAssetId)
     }
@@ -279,6 +284,12 @@ class AccountDetailFragment :
                 navBack()
             }
         }
+        useFragmentResultListenerValue<Boolean>(InAppPinFragment.IN_APP_PIN_CONFIRMATION_KEY) { isConfirmed ->
+            if (isConfirmed) {
+                navToViewPassphraseNavigation(accountDetailViewModel.accountPublicKey)
+            }
+        }
+
         startSavedStateListener(R.id.accountDetailFragment) {
             useSavedStateValue<Boolean>(RenameAccountBottomSheet.RENAME_ACCOUNT_KEY) { isNameChanged ->
                 if (isNameChanged) {
@@ -415,12 +426,28 @@ class AccountDetailFragment :
         )
     }
 
+    private fun navToViewPassphraseNavigation(publicKey: String) {
+        nav(
+            AccountDetailFragmentDirections
+                .actionAccountDetailFragmentToViewPassphraseNavigation(publicKey)
+        )
+    }
+
     private fun navToShowQrFragment() {
         nav(
             AccountDetailFragmentDirections
                 .actionGlobalShowQrNavigation(
                     title = getString(R.string.qr_code),
                     qrText = accountDetailViewModel.accountPublicKey
+                )
+        )
+    }
+
+    private fun navToPassphraseBackupNavigation() {
+        nav(
+            AccountDetailFragmentDirections
+                .actionAccountDetailFragmentToPassphraseBackupNavigation(
+                    publicKeysOfAccountsToBackup = arrayOf(args.publicKey)
                 )
         )
     }

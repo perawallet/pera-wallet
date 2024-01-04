@@ -22,12 +22,12 @@ import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.exceptions.InsufficientAlgoBalance
 import com.algorand.android.utils.isLesserThan
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class GetPercentageCalculatedBalanceForSwapUseCase @Inject constructor(
     private val accountAssetDataUseCase: AccountAssetDataUseCase,
@@ -37,6 +37,7 @@ class GetPercentageCalculatedBalanceForSwapUseCase @Inject constructor(
 
     suspend fun getBalanceForSelectedPercentage(
         fromAssetId: Long,
+        toAssetId: Long,
         percentage: Float,
         accountAddress: String
     ): Flow<DataResource<BigDecimal>> {
@@ -47,11 +48,12 @@ class GetPercentageCalculatedBalanceForSwapUseCase @Inject constructor(
             getBalancePercentageForAlgo(accountAlgoBalance, minRequiredBalance, percentageAsBigDecimal)
         } else {
             getBalancePercentageForAsset(
-                accountAlgoBalance,
-                minRequiredBalance,
-                accountAddress,
-                fromAssetId,
-                percentageAsBigDecimal
+                accountAlgoBalance = accountAlgoBalance,
+                minRequiredBalance = minRequiredBalance,
+                accountAddress = accountAddress,
+                fromAssetId = fromAssetId,
+                percentage = percentageAsBigDecimal,
+                toAssetId = toAssetId
             )
         }
     }
@@ -97,8 +99,9 @@ class GetPercentageCalculatedBalanceForSwapUseCase @Inject constructor(
         accountAlgoBalance: BigInteger,
         minRequiredBalance: BigInteger,
         accountAddress: String,
-        assetId: Long,
-        percentage: BigDecimal
+        fromAssetId: Long,
+        percentage: BigDecimal,
+        toAssetId: Long
     ): Flow<DataResource<BigDecimal>> = flow {
 
         val calculatedAlgoBalance = accountAlgoBalance
@@ -111,7 +114,7 @@ class GetPercentageCalculatedBalanceForSwapUseCase @Inject constructor(
             emit(DataResource.Error.Local<BigDecimal>(InsufficientAlgoBalance()))
         } else {
             val accountAssetData = accountAssetDataUseCase.getAccountOwnedAssetData(accountAddress, includeAlgo = false)
-                .first { it.id == assetId }
+                .first { it.id == fromAssetId }
 
             val assetDecimal = accountAssetData.decimals
 
@@ -121,17 +124,21 @@ class GetPercentageCalculatedBalanceForSwapUseCase @Inject constructor(
                 .multiply(percentage)
                 .divide(percentageDivider, assetDecimal, RoundingMode.DOWN)
 
-            getPeraFeeUseCase.getPeraFee(assetId, percentageCalculatedBalance, assetDecimal).useSuspended(
-                onSuccess = {
-                    val feeDeductedAmount = calculatedAlgoBalance.minus(it)
-                    if (feeDeductedAmount isLesserThan BigDecimal.ZERO) {
-                        emit(DataResource.Error.Local<BigDecimal>(InsufficientAlgoBalance()))
-                    } else {
-                        emit(DataResource.Success(percentageCalculatedBalance))
-                    }
-                },
-                onFailed = { emit(it) }
-            )
+            if (toAssetId == ALGO_ID) {
+                emit(DataResource.Success(percentageCalculatedBalance))
+            } else {
+                getPeraFeeUseCase.getPeraFee(fromAssetId, percentageCalculatedBalance, assetDecimal).useSuspended(
+                    onSuccess = {
+                        val feeDeductedAmount = calculatedAlgoBalance.minus(it)
+                        if (feeDeductedAmount isLesserThan BigDecimal.ZERO) {
+                            emit(DataResource.Error.Local<BigDecimal>(InsufficientAlgoBalance()))
+                        } else {
+                            emit(DataResource.Success(percentageCalculatedBalance))
+                        }
+                    },
+                    onFailed = { emit(it) }
+                )
+            }
         }
     }
 

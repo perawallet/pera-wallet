@@ -56,7 +56,7 @@ class GetSwapQuoteUseCase @Inject constructor(
         toAssetId: Long,
         amount: BigInteger,
         accountAddress: String,
-        slippage: Float
+        slippage: Float?
     ) = flow<DataResource<SwapQuote>> {
         emit(DataResource.Loading())
         val safeFromAssetId = getSafeAssetIdForRequest(fromAssetId)

@@ -46,13 +46,6 @@ class CreateAccountResultInfoFragment : BaseInfoFragment() {
 
     override fun setFirstButton(materialButton: MaterialButton) {
         with(materialButton) {
-            setText(createAccountResultInfoViewModel.getPreviewFirstButtonText())
-            setOnClickListener { navToMoonpayNavigation() }
-        }
-    }
-
-    override fun setSecondButton(materialButton: MaterialButton) {
-        with(materialButton) {
             setText(createAccountResultInfoViewModel.getPreviewSecondButtonText())
             show()
             setOnClickListener { onStartUsingPeraClick() }
@@ -78,10 +71,5 @@ class CreateAccountResultInfoFragment : BaseInfoFragment() {
                 shouldNavigateHome = true
             )
         )
-    }
-
-    private fun navToMoonpayNavigation() {
-        createAccountResultInfoViewModel.logOnboardingBuyAlgoClickEvent()
-        nav(CreateAccountResultInfoFragmentDirections.actionCreateAccountResultInfoFragmentToMoonpayNavigation())
     }
 }

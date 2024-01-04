@@ -22,12 +22,12 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentReceiverAccountSelectionBinding
-import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
+import com.algorand.android.modules.accountasset.domain.model.AccountAssetDetail
 import com.algorand.android.ui.accountselection.AccountSelectionAdapter
 import com.algorand.android.ui.send.receiveraccount.ReceiverAccountSelectionQrScannerFragment.Companion.ACCOUNT_ADDRESS_SCAN_RESULT_KEY
 import com.algorand.android.utils.Event
@@ -92,7 +92,7 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
         )
     }
 
-    private val toAccountInformationCollector: suspend (Event<Resource<AccountInformation>>?) -> Unit = {
+    private val toAccountInformationCollector: suspend (Event<Resource<AccountAssetDetail>>?) -> Unit = {
         it?.consume()?.use(
             onSuccess = { receiverAccountSelectionViewModel.checkToAccountTransactionRequirements(it) },
             onFailed = { handleError(it, binding.root) },

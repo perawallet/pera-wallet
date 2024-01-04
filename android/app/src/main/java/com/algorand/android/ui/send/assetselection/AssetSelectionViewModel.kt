@@ -13,7 +13,6 @@
 
 package com.algorand.android.ui.send.assetselection
 
-import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,6 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class AssetSelectionViewModel @Inject constructor(
@@ -61,10 +61,6 @@ class AssetSelectionViewModel @Inject constructor(
 
     fun shouldShowTransactionTips(): Boolean {
         return assetSelectionUseCase.shouldShowTransactionTips()
-    }
-
-    fun isReceiverAccountSet(): Boolean {
-        return assetTransaction.receiverUser != null
     }
 
     fun updatePreviewWithSelectedAsset(assetId: Long) {

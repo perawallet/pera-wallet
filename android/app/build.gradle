@@ -102,6 +102,7 @@ android {
             buildConfigField "String", "DISCOVER_WEBVIEW_PASSWORD", apiKeyProps["DISCOVER_WEBVIEW_PASSWORD"]
             buildConfigField "String", "DISCOVER_VERSION", "\"${discoverVersions.staging}\""
             buildConfigField "String", "DISCOVER_URL", '"https://discover-mobile-staging.perawallet.app/"'
+            buildConfigField "String", "DISCOVER_BROWSE_DAPP_URL", '"https://discover-mobile-staging.perawallet.app/main/browser"'
         }
 
         prod {
@@ -119,6 +120,7 @@ android {
             buildConfigField "String", "DISCOVER_WEBVIEW_PASSWORD", apiKeyProps["DISCOVER_WEBVIEW_PASSWORD"]
             buildConfigField "String", "DISCOVER_VERSION", "\"${discoverVersions.prod}\""
             buildConfigField "String", "DISCOVER_URL", '"https://discover-mobile.perawallet.app/"'
+            buildConfigField "String", "DISCOVER_BROWSE_DAPP_URL", '"https://discover-mobile.perawallet.app/main/browser"'
         }
     }
 

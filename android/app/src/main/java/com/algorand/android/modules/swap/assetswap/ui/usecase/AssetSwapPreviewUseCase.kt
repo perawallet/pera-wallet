@@ -105,6 +105,7 @@ class AssetSwapPreviewUseCase @Inject constructor(
     suspend fun getBalanceForSelectedPercentage(
         previousAmount: String,
         fromAssetId: Long,
+        toAssetId: Long,
         percentage: Float,
         onLoadingChange: (isLoading: Boolean) -> Unit,
         onSuccess: (amount: String) -> Unit,
@@ -112,23 +113,27 @@ class AssetSwapPreviewUseCase @Inject constructor(
         accountAddress: String
     ) {
         onLoadingChange(true)
-        getPercentageCalculatedForSwapUseCase.getBalanceForSelectedPercentage(fromAssetId, percentage, accountAddress)
-            .collect {
-                it.useSuspended(
-                    onSuccess = { updatedAmount ->
-                        if (previousAmount == updatedAmount.toString()) onLoadingChange(false)
-                        onSuccess(updatedAmount.stripTrailingZeros().toPlainString())
-                    },
-                    onFailed = {
-                        val errorEvent = if (it.exception is InsufficientAlgoBalance) {
-                            Event(ErrorResource.LocalErrorResource.Local(R.string.account_does_not_have_algo))
-                        } else {
-                            Event(ErrorResource.Api(it.exception?.message.orEmpty()))
-                        }
-                        onFailure(errorEvent)
+        getPercentageCalculatedForSwapUseCase.getBalanceForSelectedPercentage(
+            fromAssetId = fromAssetId,
+            toAssetId = toAssetId,
+            percentage = percentage,
+            accountAddress = accountAddress
+        ).collect {
+            it.useSuspended(
+                onSuccess = { updatedAmount ->
+                    if (previousAmount == updatedAmount.toString()) onLoadingChange(false)
+                    onSuccess(updatedAmount.stripTrailingZeros().toPlainString())
+                },
+                onFailed = {
+                    val errorEvent = if (it.exception is InsufficientAlgoBalance) {
+                        Event(ErrorResource.LocalErrorResource.Local(R.string.account_does_not_have_algo))
+                    } else {
+                        Event(ErrorResource.Api(it.exception?.message.orEmpty()))
                     }
-                )
-            }
+                    onFailure(errorEvent)
+                }
+            )
+        }
     }
 
     fun getSwapButtonClickUpdatedPreview(previousState: AssetSwapPreview): AssetSwapPreview {

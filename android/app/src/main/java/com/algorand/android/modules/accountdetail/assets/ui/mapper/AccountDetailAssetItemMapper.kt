@@ -97,6 +97,12 @@ class AccountDetailAssetItemMapper @Inject constructor(
         return AccountDetailAssetsItem.SearchViewItem(query = query)
     }
 
+    fun mapToBackupWarningItem(
+        isBackedUp: Boolean
+    ): AccountDetailAssetsItem.BackupWarningItem {
+        return AccountDetailAssetsItem.BackupWarningItem(isBackedUp)
+    }
+
     fun mapToTitleItem(titleRes: Int, isAddAssetButtonVisible: Boolean): AccountDetailAssetsItem.TitleItem {
         return AccountDetailAssetsItem.TitleItem(titleRes, isAddAssetButtonVisible)
     }

@@ -170,10 +170,18 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
         nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToShowQrNavigation(title, publicKey))
     }
 
+    private fun onViewPassphraseClicked() {
+        if (accountOptionsViewModel.isPinCodeEnabled()) {
+            navToInAppPinNavigation()
+        } else {
+            navToViewPassphraseNavigation()
+        }
+    }
+
     private fun setupViewPassphraseButton() {
         if (accountOptionsViewModel.canDisplayPassphrases()) {
             binding.viewPassphraseButton.apply {
-                setOnClickListener { navToViewPassphraseBottomSheet() }
+                setOnClickListener { onViewPassphraseClicked() }
                 show()
             }
         }
@@ -194,12 +202,22 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
         binding.showQrButton.setOnClickListener { navToShowQrBottomSheet(getString(R.string.qr_code), publicKey) }
     }
 
-    private fun navToViewPassphraseBottomSheet() {
-        nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToViewPassphraseNavigation(publicKey))
-    }
-
     private fun navToUndoRekeyNavigation() {
         nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRekeyUndoNavigation(publicKey))
+    }
+
+    private fun navToInAppPinNavigation() {
+        nav(
+            AccountOptionsBottomSheetDirections
+                .actionAccountOptionsBottomSheetToInAppPinNavigation()
+        )
+    }
+
+    private fun navToViewPassphraseNavigation() {
+        nav(
+            AccountOptionsBottomSheetDirections
+                .actionAccountOptionsBottomSheetToViewPassphraseNavigation(publicKey)
+        )
     }
 
     companion object {

@@ -45,15 +45,31 @@ class PassphraseVerifiedInfoFragment : BaseInfoFragment() {
 
     override fun setFirstButton(materialButton: MaterialButton) {
         with(materialButton) {
-            setText(R.string.next)
+            setText(
+                if (args.accountCreation != null) {
+                    R.string.next
+                } else {
+                    R.string.done
+                }
+            )
             setOnClickListener { handleNextNavigation() }
         }
     }
 
     private fun handleNextNavigation() {
-        nav(
-            PassphraseVerifiedInfoFragmentDirections
-                .actionPassphraseVerifiedInfoFragmentToCreateAccountNameRegistrationFragment(args.accountCreation)
-        )
+        args.accountCreation?.let { accountCreation ->
+            nav(
+                PassphraseVerifiedInfoFragmentDirections
+                    .actionPassphraseVerifiedInfoFragmentToCreateAccountNameRegistrationFragment(
+                        accountCreation.copy(
+                            tempAccount = accountCreation.tempAccount.copy(isBackedUp = true)
+                        )
+                    )
+            )
+        } ?: navToHomeNavigation()
+    }
+
+    private fun navToHomeNavigation() {
+        nav(PassphraseVerifiedInfoFragmentDirections.actionPassphraseVerifiedInfoFragmentToHomeNavigation())
     }
 }

@@ -42,11 +42,11 @@ import com.algorand.android.usecase.GetFormattedAccountMinimumBalanceUseCase
 import com.algorand.android.utils.formatAsAlgoAmount
 import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.isGreaterThan
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 @SuppressWarnings("LongParameterList")
 class AccountAssetsPreviewUseCase @Inject constructor(
@@ -62,7 +62,7 @@ class AccountAssetsPreviewUseCase @Inject constructor(
     private val shouldDisplayOptedInNFTInAssetsPreferenceUseCase: ShouldDisplayOptedInNFTInAssetsPreferenceUseCase,
     private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase,
     private val accountStateHelperUseCase: AccountStateHelperUseCase,
-    private val accountAssetsPreviewMapper: AccountAssetsPreviewMapper
+    private val accountAssetsPreviewMapper: AccountAssetsPreviewMapper,
 ) {
 
     fun fetchAccountDetail(accountAddress: String, query: String): Flow<AccountAssetsPreview> {
@@ -99,6 +99,10 @@ class AccountAssetsPreviewUseCase @Inject constructor(
                 add(requiredMinimumBalanceItem)
                 add(createQuickActionItemList(isWatchAccount))
                 val hasAccountAuthority = accountStateHelperUseCase.hasAccountAuthority(accountAddress)
+                val isBackedUp = accountDetail?.account?.isBackedUp ?: true
+                if (!isBackedUp) {
+                    add(accountDetailAssetItemMapper.mapToBackupWarningItem(isBackedUp))
+                }
                 add(accountDetailAssetItemMapper.mapToTitleItem(R.string.assets, hasAccountAuthority))
                 add(accountDetailAssetItemMapper.mapToSearchViewItem(query))
                 addAll(assetItemSortUseCase.sortAssets(assetItemList + collectibleItemList))
@@ -121,9 +125,9 @@ class AccountAssetsPreviewUseCase @Inject constructor(
                 add(QuickActionItem.CopyAddressButton)
                 add(QuickActionItem.ShowAddressButton)
             } else {
-                add(QuickActionItem.BuySellButton)
                 val isSwapSelected = getSwapFeatureRedDotVisibilityUseCase.getSwapFeatureRedDotVisibility()
                 add(accountDetailAssetItemMapper.mapToSwapQuickActionItem(isSwapSelected))
+                add(QuickActionItem.BuySellButton)
                 add(QuickActionItem.SendButton)
             }
             add(QuickActionItem.MoreButton)
@@ -158,8 +162,8 @@ class AccountAssetsPreviewUseCase @Inject constructor(
         return if (shouldHideZeroBalanceAssetsPreferenceUseCase()) {
             accountAssetData.filter {
                 it.isAlgo ||
-                    it is BaseAccountAssetData.PendingAssetData ||
-                    (it is BaseAccountAssetData.BaseOwnedAssetData && it.amount > BigInteger.ZERO)
+                        it is BaseAccountAssetData.PendingAssetData ||
+                        (it is BaseAccountAssetData.BaseOwnedAssetData && it.amount > BigInteger.ZERO)
             }
         } else {
             accountAssetData
@@ -214,8 +218,8 @@ class AccountAssetsPreviewUseCase @Inject constructor(
         val trimmedQuery = query.trim()
         with(asset) {
             return id.toString().contains(trimmedQuery, ignoreCase = true) ||
-                shortName?.contains(trimmedQuery, ignoreCase = true) == true ||
-                name?.contains(trimmedQuery, ignoreCase = true) == true
+                    shortName?.contains(trimmedQuery, ignoreCase = true) == true ||
+                    name?.contains(trimmedQuery, ignoreCase = true) == true
         }
     }
 

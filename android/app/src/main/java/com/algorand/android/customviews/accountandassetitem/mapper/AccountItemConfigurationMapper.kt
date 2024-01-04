@@ -34,7 +34,8 @@ class AccountItemConfigurationMapper @Inject constructor() {
         accountSecondaryValue: BigDecimal? = null,
         accountAssetCount: Int? = null,
         showWarningIcon: Boolean? = null,
-        dragButtonConfiguration: ButtonConfiguration? = null
+        dragButtonConfiguration: ButtonConfiguration? = null,
+        startSmallIconResource: Int? = null
     ): BaseItemConfiguration.AccountItemConfiguration {
         return BaseItemConfiguration.AccountItemConfiguration(
             accountAddress = accountAddress,
@@ -47,7 +48,8 @@ class AccountItemConfigurationMapper @Inject constructor() {
             showWarning = showWarningIcon,
             dragButtonConfiguration = dragButtonConfiguration,
             accountType = accountType,
-            accountAssetCount = accountAssetCount
+            accountAssetCount = accountAssetCount,
+            startSmallIconResource = startSmallIconResource
         )
     }
 }

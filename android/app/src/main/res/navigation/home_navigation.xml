@@ -72,8 +72,6 @@
     <include app:graph="@navigation/swap_navigation" />
     <!-- Swap End -->
 
-    <include app:graph="@navigation/send_collectible_navigation" />
-
     <include app:graph="@navigation/wallet_connect_connection_navigation" />
 
     <include app:graph="@navigation/discover_navigation" />
@@ -102,6 +100,10 @@
 
     <include app:graph="@navigation/remove_account_confirmation_navigation" />
 
+    <include app:graph="@navigation/in_app_pin_navigation" />
+
+    <include app:graph="@navigation/passphrase_backup_navigation" />
+
     <action
         android:id="@+id/action_global_showQrNavigation"
         app:destination="@id/showQrNavigation">
@@ -122,6 +124,16 @@
         <argument
             android:name="accountAddress"
             app:argType="string" />
+    </action>
+
+    <action
+        android:id="@+id/action_global_discoverNavigation"
+        app:destination="@id/discoverNavigation">
+        <argument
+            android:name="url"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
     </action>
 
     <action
@@ -305,17 +317,6 @@
             app:argType="boolean" />
     </action>
 
-    <action
-        android:id="@+id/action_global_sendCollectibleNavigation"
-        app:destination="@id/sendCollectibleNavigation">
-        <argument
-            android:name="accountAddress"
-            app:argType="string" />
-        <argument
-            android:name="nftId"
-            app:argType="long" />
-    </action>
-
     <fragment
         android:id="@+id/collectiblesFragment"
         android:name="com.algorand.android.nft.ui.nftlisting.collectibles.CollectiblesFragment"
@@ -460,9 +461,6 @@
             android:id="@+id/action_accountsFragment_to_accountErrorOptionsBottomSheet"
             app:destination="@id/accountErrorOptionsBottomSheet" />
         <action
-            android:id="@+id/action_accountsFragment_to_viewPassphraseBottomSheet"
-            app:destination="@id/viewPassphraseBottomSheet" />
-        <action
             android:id="@+id/action_accountsFragment_to_accountDetailFragment"
             app:destination="@id/accountDetailFragment" />
         <action
@@ -493,6 +491,13 @@
         <action
             android:id="@+id/action_accountsFragment_to_bannerFragment"
             app:destination="@id/bannerFragment" />
+        <action
+            android:id="@+id/action_accountsFragment_to_passphraseBackupNavigation"
+            app:destination="@id/passphraseBackupNavigation">
+            <argument
+                android:name="publicKeysOfAccountsToBackup"
+                app:argType="string[]" />
+        </action>
     </fragment>
 
     <fragment
@@ -511,7 +516,7 @@
         android:label="fragment_remove_assets"
         tools:layout="@layout/fragment_remove_assets">
         <argument
-            android:name="accountPublicKey"
+            android:name="publicKey"
             app:argType="string" />
         <action
             android:id="@+id/action_removeAssetsFragment_to_receiverAccountSelectionFragment"
@@ -918,6 +923,16 @@
         <action
             android:id="@+id/action_accountDetailFragment_to_haveYouBackedUpAccountConfirmationBottomSheet"
             app:destination="@id/haveYouBackedUpAccountConfirmationBottomSheet" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_passphraseBackupNavigation"
+            app:destination="@id/passphraseBackupNavigation">
+            <argument
+                android:name="publicKeysOfAccountsToBackup"
+                app:argType="string[]" />
+        </action>
+        <action
+            android:id="@+id/action_accountDetailFragment_to_inAppPinNavigation"
+            app:destination="@id/inAppPinNavigation" />
     </fragment>
 
     <fragment
@@ -975,16 +990,6 @@
             android:name="showBackButton"
             android:defaultValue="false"
             app:argType="boolean" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/viewPassphraseBottomSheet"
-        android:name="com.algorand.android.ui.accounts.ViewPassphraseBottomSheet"
-        android:label="ViewPassphraseBottomSheet"
-        tools:layout="@layout/dialog_view_passphrase">
-        <argument
-            android:name="accountPublicKey"
-            app:argType="string" />
     </dialog>
 
     <dialog
@@ -1254,7 +1259,7 @@
         android:label="ManageAssetsBottomSheet"
         tools:layout="@layout/bottom_sheet_manage_assets">
         <argument
-            android:name="accountAddress"
+            android:name="publicKey"
             app:argType="string" />
         <action
             android:id="@+id/action_manageAssetsBottomSheet_to_removeAssetsFragment"

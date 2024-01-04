@@ -12,6 +12,7 @@
 
 package com.algorand.android.discover.home.ui
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.algorand.android.assetsearch.domain.pagination.AssetSearchPagerBuilder
@@ -23,7 +24,6 @@ import com.algorand.android.discover.home.ui.usecase.DiscoverHomeUseCase
 import com.algorand.android.modules.tracking.discover.home.DiscoverHomeEventTracker
 import com.algorand.android.utils.preference.ThemePreference
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,12 +32,14 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class DiscoverHomeViewModel @Inject constructor(
     private val discoverHomePreviewUseCase: DiscoverHomePreviewUseCase,
     private val discoverHomeEventTracker: DiscoverHomeEventTracker,
     private val discoverHomeUseCase: DiscoverHomeUseCase,
+    private val savedStateHandle: SavedStateHandle
 ) : BaseDiscoverViewModel() {
 
     private val assetSearchPagerBuilder = AssetSearchPagerBuilder.create()
@@ -54,7 +56,7 @@ class DiscoverHomeViewModel @Inject constructor(
         get() = searchPaginationFlow
 
     private val _discoverHomePreviewFlow = MutableStateFlow(
-        discoverHomePreviewUseCase.getInitialStatePreview(),
+        discoverHomePreviewUseCase.getInitialStatePreview(savedStateHandle.get<String?>(URL_KEY)),
     )
     val discoverHomePreviewFlow: StateFlow<DiscoverHomePreview>
         get() = _discoverHomePreviewFlow
@@ -219,5 +221,6 @@ class DiscoverHomeViewModel @Inject constructor(
 
     companion object {
         private const val QUERY_DEBOUNCE = 400L
+        private const val URL_KEY = "url"
     }
 }

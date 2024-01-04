@@ -45,24 +45,12 @@ class VerifyLedgerInfoFragment : BaseInfoFragment() {
     override fun setDescriptionText(textView: TextView) {
         textView.setText(verifyLedgerInfoViewModel.getPreviewDescription())
     }
-
     override fun setFirstButton(materialButton: MaterialButton) {
-        with(materialButton) {
-            setText(verifyLedgerInfoViewModel.getPreviewFirstButtonText())
-            setOnClickListener { navToMoonpayNavigation() }
-        }
-    }
-
-    override fun setSecondButton(materialButton: MaterialButton) {
         with(materialButton) {
             setText(verifyLedgerInfoViewModel.getPreviewSecondButtonText())
             show()
             setOnClickListener { onStartUsingPeraClick() }
         }
-    }
-
-    private fun navToMoonpayNavigation() {
-        nav(VerifyLedgerInfoFragmentDirections.actionVerifyLedgerInfoFragmentToMoonpayNavigation())
     }
 
     private fun onStartUsingPeraClick() {

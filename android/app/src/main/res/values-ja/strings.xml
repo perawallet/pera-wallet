@@ -547,15 +547,11 @@
     <string name="we_don_t_support">このNFTメディアタイプはまだサポートされていません。</string>
     <string name="we_can_t_display">一時的にビジュアルを表示できません。</string>
     <string name="transfer">転送</string>
-    <string name="send_your_nft">NFTを送信する</string>
-    <string name="paste_an_algorand_wallet_address">Algorandウォレットアドレスを貼り付ける</string>
     <string name="ask_recipient_to">受信者に%1$sのオプトインをリクエストする</string>
     <string name="you_cant_send">このウォレットはまだこの資産をオプトインしていないため、<annotation replacement="nft_name">NFTNamePlaceHolder</annotation>を<annotation replacement="wallet_address">walletAddressPlaceholder</annotation>に送信できません。<annotation font="dmsans_medium"><annotation custom="learn_more">オプトインについて詳しく知る</annotation></annotation></string>
     <string name="information_about_opt">オプトインに関する情報</string>
     <string name="to_avoid_spammy">スパム的なトランザクションを避けるため、Algorand Blockchainでは事前にオプトインされた資産のみ、トランザクションの送受信が可能です。</string>
     <string name="search_or_enter_wallet_address">検索またはウォレットアドレスを入力</string>
-    <string name="your_nft_transfer">NFTの転送が確認されました！</string>
-    <string name="transactions_can_take">トランザクションの完了まで数分かかることがあります。</string>
     <string name="got_it">了解！</string>
     <string name="approve_transaction">トランザクションの承認</string>
     <string name="are_you_sure">続行してよろしいですか？</string>
@@ -876,7 +872,6 @@
     <string name="error_while_opting_to_the">ASAへのオプトイン中にエラーが発生しました。再試行してください</string>
     <string name="retry">再試行</string>
     <string name="before_interacting_with">資産の取引をする前に、アカウントからオプトインする必要があります。 これにより、不正な資産のトランザクションが送信されるのを防ぐことができます。</string>
-    <string name="you_already_own">すでにこの資産を所有しています</string>
     <string name="markets">市場</string>
     <string name="formatted_changed_percentage">%1$.2f%%</string>
     <string name="display_nfts_in_asset_list">資産リストのNFTを表示する</string>

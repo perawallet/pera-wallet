@@ -57,6 +57,8 @@
 
     <!-- Salmon -->
     <color name="salmon_900">#7A1128</color>
+    <color name="salmon_850">#A91413</color>
+    <color name="salmon_850_alpha20">#33A91413</color>
     <color name="salmon_800">#931D2D</color>
     <color name="salmon_700">#B72D37</color>
     <color name="salmon_600">#DB4645</color>
@@ -86,6 +88,7 @@
     <color name="gray_900">#18181B</color>
     <color name="gray_900_alpha_60">#9918181B</color>
     <color name="gray_900_alpha_90">#E518181B</color>
+    <color name="gray_900_alpha_12">#1F18181B</color>
     <color name="gray_800">#27272A</color>
     <color name="gray_700">#3F3F46</color>
     <color name="gray_600">#52525B</color>
@@ -374,4 +377,10 @@
     <color name="notification_icon_placeholder_border_color">@color/gray_100</color>
 
     <color name="connected_node_testnet_text_color">@color/yellow_600</color>
+
+    <!-- Backup -->
+    <color name="backup_banner_title">@color/white_alpha_60</color>
+    <color name="backup_banner_description">@color/background</color>
+    <color name="backup_banner_icon">@color/background</color>
+    <color name="backup_banner_icon_bg">@color/salmon_850_alpha20</color>
 </resources>

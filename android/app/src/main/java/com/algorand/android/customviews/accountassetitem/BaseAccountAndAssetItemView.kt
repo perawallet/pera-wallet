@@ -111,11 +111,8 @@ abstract class BaseAccountAndAssetItemView @JvmOverloads constructor(
 
     fun setStartSmallIconDrawableResource(@DrawableRes drawableResId: Int?) {
         binding.startSmallIconImageView.apply {
-            if (drawableResId == null) {
-                setImageDrawable(null)
-            } else {
-                setImageResource(drawableResId)
-            }
+            isVisible = drawableResId != null
+            drawableResId?.let { setImageResource(it) }
         }
     }
 

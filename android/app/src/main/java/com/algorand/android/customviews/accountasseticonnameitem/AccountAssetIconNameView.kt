@@ -112,6 +112,7 @@ class AccountAssetIconNameView @JvmOverloads constructor(
 
     fun setStartSmallIconDrawableResource(@DrawableRes drawableResId: Int?) {
         binding.startSmallIconImageView.apply {
+            isVisible = drawableResId != null
             if (drawableResId == null) {
                 setImageDrawable(null)
             } else {

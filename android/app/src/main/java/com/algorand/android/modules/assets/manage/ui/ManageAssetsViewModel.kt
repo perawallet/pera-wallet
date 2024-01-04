@@ -25,9 +25,9 @@ class ManageAssetsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val navArgs = ManageAssetsBottomSheetArgs.fromSavedStateHandle(savedStateHandle)
-    val accountAddress = navArgs.accountAddress
+    val publicKey = navArgs.publicKey
 
     fun hasAccountAuthority(): Boolean {
-        return manageAssetsPreviewUseCase.hasAccountAuthority(accountAddress)
+        return manageAssetsPreviewUseCase.hasAccountAuthority(publicKey)
     }
 }

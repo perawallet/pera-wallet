@@ -71,10 +71,19 @@ class SwapBalanceErrorProvider @Inject constructor(
         with(swapQuote) {
             val userAlgoBalance = getUserBalance(ALGO_ID, accountAddress)
             val minBalanceUserNeedsToKeep = getUserMinRequiredBalance(accountAddress)
-            val requiredBalance = if (isFromAssetAlgo) {
-                fromAssetAmount.movePointLeft(ALGO_DECIMALS).add(minBalanceUserNeedsToKeep)
-            } else {
-                minBalanceUserNeedsToKeep
+
+            val requiredBalance = when {
+                isFromAssetAlgo -> {
+                    fromAssetAmount.movePointLeft(ALGO_DECIMALS)
+                        .add(minBalanceUserNeedsToKeep)
+                }
+                isToAssetAlgo -> {
+                    val incomingAlgoAmount = swapQuote.toAssetAmountWithSlippage.movePointLeft(ALGO_DECIMALS)
+                    minBalanceUserNeedsToKeep.minus(incomingAlgoAmount)
+                }
+                else -> {
+                    minBalanceUserNeedsToKeep
+                }
             }.add(peraFeeAmount).add(swapFeePadding)
 
             return requiredBalance isLesserThan userAlgoBalance || requiredBalance isEqualTo userAlgoBalance

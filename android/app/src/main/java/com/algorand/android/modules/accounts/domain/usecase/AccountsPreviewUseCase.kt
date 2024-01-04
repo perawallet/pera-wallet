@@ -87,7 +87,8 @@ class AccountsPreviewUseCase @Inject constructor(
     private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase,
     private val assetCacheManagerUseCase: AssetCacheManagerUseCase,
     private val getAskNotificationPermissionEventFlowUseCase: GetAskNotificationPermissionEventFlowUseCase,
-    private val peraConnectivityManager: PeraConnectivityManager
+    private val peraConnectivityManager: PeraConnectivityManager,
+    private val accountBackupStatusUseCase: AccountBackupStatusUseCase
 ) {
 
     suspend fun dismissTutorial(tutorialId: Int) {
@@ -135,11 +136,13 @@ class AccountsPreviewUseCase @Inject constructor(
                         notificationPermissionEvent = notificationPermissionEvent?.data
                     )
                 }
+
                 is CacheResult.Error -> getAlgoPriceErrorState(
                     selectedCurrencyDetailCache = selectedCurrencyParityCache,
                     previousState = lastState,
                     isTestnetBadgeVisible = isTestnetBadgeVisible
                 )
+
                 else -> accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
             }.also { lastState = it }
         }
@@ -173,6 +176,10 @@ class AccountsPreviewUseCase @Inject constructor(
                 AccountsFragmentDirections.actionAccountsFragmentToBidaliNavigation()
             )
         )
+    }
+
+    fun getNotBackedUpAccounts(): List<String> {
+        return accountBackupStatusUseCase.getNotBackedUpAccounts()
     }
 
     private suspend fun getAlgoPriceErrorState(
@@ -255,6 +262,9 @@ class AccountsPreviewUseCase @Inject constructor(
                 val bannerItem = getBannerItemOrNull(baseBanner = banner)
                 // TODO: Remove test banner
                 insertQuickActionsItem(this)
+                getBackupBannerOrNull()?.also { backupBanner ->
+                    add(BANNER_ITEM_INDEX, backupBanner)
+                }
                 if (bannerItem != null) add(BANNER_ITEM_INDEX, bannerItem)
             }
             val isThereAnyErrorInAccountCache =
@@ -300,6 +310,15 @@ class AccountsPreviewUseCase @Inject constructor(
         )
     }
 
+    private fun getBackupBannerOrNull(): BaseAccountListItem.BackupBannerItem? {
+        val accounts = accountBackupStatusUseCase.getNotBackedUpAccounts()
+        return if (accounts.isNotEmpty()) {
+            BaseAccountListItem.BackupBannerItem(accounts)
+        } else {
+            null
+        }
+    }
+
     private fun getBannerItemOrNull(baseBanner: BaseBanner?): BaseAccountListItem.BaseBannerItem? {
         return baseBanner?.let { banner ->
             val isButtonVisible = !banner.buttonTitle.isNullOrBlank() && !banner.buttonUrl.isNullOrBlank()
@@ -310,6 +329,7 @@ class AccountsPreviewUseCase @Inject constructor(
                     is GovernanceBanner -> {
                         mapToGovernanceBannerItem(banner, isButtonVisible, isTitleVisible, isDescriptionVisible)
                     }
+
                     is GenericBanner -> {
                         mapToGenericBannerItem(banner, isButtonVisible, isTitleVisible, isDescriptionVisible)
                     }
@@ -334,6 +354,7 @@ class AccountsPreviewUseCase @Inject constructor(
                         onAccountValueCalculated.invoke(accountValue)
                     }
                 }
+                val isBackedUp = account.isBackedUp
                 accountItemConfigurationMapper.mapTo(
                     accountAddress = account.address,
                     accountDisplayName = getAccountDisplayNameUseCase.invoke(account.address),
@@ -350,7 +371,8 @@ class AccountsPreviewUseCase @Inject constructor(
                         isFiat = !isSecondaryCurrencyAlgo
                     ),
                     accountPrimaryValue = accountBalance.primaryAccountValue,
-                    accountSecondaryValue = accountBalance.secondaryAccountValue
+                    accountSecondaryValue = accountBalance.secondaryAccountValue,
+                    startSmallIconResource = if (isBackedUp) null else R.drawable.ic_error_negative
                 )
             }, onFailedAccountConfiguration = {
                 this?.run {

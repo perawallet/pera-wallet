@@ -22,12 +22,13 @@ import com.algorand.android.core.BaseActivity
 import com.algorand.android.databinding.FragmentDiscoverUrlViewerBinding
 import com.algorand.android.discover.common.ui.BaseDiscoverFragment
 import com.algorand.android.discover.common.ui.model.DappFavoriteElement
+import com.algorand.android.discover.common.ui.model.PeraWebChromeClient
 import com.algorand.android.discover.common.ui.model.PeraWebViewClient
 import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.discover.dapp.ui.DiscoverDappFragment
 import com.algorand.android.discover.home.domain.PeraMobileWebInterface
 import com.algorand.android.discover.urlviewer.ui.model.DiscoverUrlViewerPreview
-import com.algorand.android.discover.utils.getDiscoverNewScreenUrl
+import com.algorand.android.discover.utils.getDiscoverCustomUrl
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
@@ -132,6 +133,7 @@ class DiscoverUrlViewerFragment :
             val peraWebInterface = PeraMobileWebInterface.create(this@DiscoverUrlViewerFragment)
             webView.addJavascriptInterface(peraWebInterface, PeraMobileWebInterface.WEB_INTERFACE_NAME)
             webView.webViewClient = PeraWebViewClient(peraWebViewClientListener)
+            webView.webChromeClient = PeraWebChromeClient(peraWebViewClientListener)
         }
     }
 
@@ -148,7 +150,7 @@ class DiscoverUrlViewerFragment :
     private fun loadUrl(preview: DiscoverUrlViewerPreview) {
         binding.webView.loadUrl(
             // TODO Get locale from PeraLocaleProvider after merging TinymanSwapSprint2 branch
-            getDiscoverNewScreenUrl(
+            getDiscoverCustomUrl(
                 url = preview.url,
                 themePreference = getWebViewThemeFromThemePreference(preview.themePreference),
                 currency = discoverViewModel.getPrimaryCurrencyId(),
