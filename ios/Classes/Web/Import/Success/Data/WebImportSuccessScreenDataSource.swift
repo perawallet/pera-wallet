@@ -47,6 +47,17 @@ final class WebImportSuccessScreenDataSource: UICollectionViewDiffableDataSource
                     )
                 )
                 return cell
+            case .asbHeader(let item):
+                let cell = collectionView.dequeue(
+                    WebImportSuccessHeaderView.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    AlgorandSecureBackupImportSuccessHeaderViewModel(
+                        importedAccountCount: item.importedAccountCount
+                    )
+                )
+                return cell
             case .missingAccounts(let item):
                 let cell = collectionView.dequeue(
                     WebImportSuccessInfoBoxCell.self,
@@ -58,7 +69,18 @@ final class WebImportSuccessScreenDataSource: UICollectionViewDiffableDataSource
                     )
                 )
                 return cell
-                
+            case .asbMissingAccounts(let item):
+                let cell = collectionView.dequeue(
+                    WebImportSuccessInfoBoxCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    AlgorandSecureBackupImportSuccessInfoBoxViewModel(
+                        unimportedAccountCount: item.unimportedAccountCount,
+                        unsupportedAccountCount: item.unsupportedAccountCount
+                    )
+                )
+                return cell
             }
         }
 

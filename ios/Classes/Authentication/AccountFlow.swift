@@ -57,6 +57,7 @@ enum AccountSetupMode: Equatable {
 
 enum RecoverType: Equatable {
     case passphrase
+    case importFromSecureBackup
     case qr
     case ledger
     case importFromWeb

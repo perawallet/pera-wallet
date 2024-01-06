@@ -69,14 +69,15 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSectionId
                 cell.bindData(item)
                 return cell
             case .announcement(let item):
-                if item.isGeneric {
+                switch item.type {
+                case .generic, .backup:
                     let cell = collectionView.dequeue(
                         GenericAnnouncementCell.self,
                         at: indexPath
                     )
                     cell.bindData(item)
                     return cell
-                } else {
+                case .governance:
                     let cell = collectionView.dequeue(
                         GovernanceAnnouncementCell.self,
                         at: indexPath

@@ -15,6 +15,7 @@
 //
 //  Router.swift
 
+import CoreServices
 import Foundation
 import MacaroonUIKit
 import MacaroonUtils
@@ -69,7 +70,7 @@ final class Router:
         }
         
         route(
-            to: .choosePassword(mode: .login, flow: nil),
+            to: .choosePassword(mode: .login(flow: .app), flow: nil),
             from: findVisibleScreen(over: rootViewController),
             by: .customPresent(
                 presentationStyle: .fullScreen,
@@ -1544,10 +1545,9 @@ final class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
-        case .importAccountSuccess(let importedAccounts, let unimportedAccounts, let eventHandler):
+        case let .importAccountSuccess(result, eventHandler):
             let dataController = WebImportSuccessScreenLocalDataController(
-                importedAccounts: importedAccounts,
-                unimportedAccounts: unimportedAccounts
+                result: result
             )
             let screen = WebImportSuccessScreen(
                 dataController: dataController,
@@ -1555,6 +1555,76 @@ final class Router:
             )
             screen.eventHandler = eventHandler
             viewController = screen
+        case .algorandSecureBackupInstructions(let eventHandler):
+            let screen = AlgorandSecureBackupInstructionsScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .algorandSecureBackupAccountList(let eventHandler):
+            let dataController = AlgorandSecureBackupAccountListLocalDataController(
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let screen = AlgorandSecureBackupAccountExportListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case let .algorandSecureBackupMnemonic(accounts, eventHandler):
+            let screen = AlgorandSecureBackupMnemonicsScreen(accounts: accounts, configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case let .algorandSecureBackupSuccess(backup, eventHandler):
+            let screen = AlgorandSecureBackupSuccessScreen(backup: backup, configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .algorandSecureBackupError(let eventHandler):
+            let screen = AlgorandSecureBackupErrorScreen(api: configuration.api)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .algorandSecureBackupImportBackup(let eventHandler):
+            let screen = AlgorandSecureBackupImportBackupScreen(configuration: configuration)
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case let .algorandSecureBackupImportSuccess(accountImportParameters, selectedAccounts, eventHandler):
+            let dataController = AlgorandSecureBackupImportSuccessScreenLocalDataController(
+                configuration: configuration,
+                accountImportParameters: accountImportParameters,
+                selectedAccounts: selectedAccounts
+            )
+            let screen = WebImportSuccessScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case let .algorandSecureBackupRestoreAccountList(accountImportParameters, eventHandler):
+            let dataController = AlgorandSecureBackupRestoreAccountListLocalDataController(
+                accountImportParameters: accountImportParameters
+            )
+            let screen = AlgorandSecureBackupAccountRecoverListScreen(
+                dataController: dataController,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .algorandSecureBackupRecoverMnemonic(let backup, let eventHandler):
+            let screen = AlgorandSecureBackupRecoverMnemonicScreen(
+                backup: backup,
+                configuration: configuration
+            )
+            screen.eventHandler = eventHandler
+            viewController = screen
+        case .importTextDocumentPicker(let delegate):
+            let documentPicker: UIDocumentPickerViewController
+            if #available(iOS 14.0, *) {
+                documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.text, .plainText])
+            } else {
+                documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeText as String, kUTTypePlainText as String], in: .import)
+            }
+            documentPicker.allowsMultipleSelection = false
+            documentPicker.shouldShowFileExtensions = true
+            documentPicker.delegate = delegate
+            viewController = documentPicker
         case .buySellOptions(let eventHandler):
             let screen = BuySellOptionsScreen(configuration: configuration)
             screen.eventHandler = eventHandler

@@ -19,8 +19,8 @@ import MacaroonUIKit
 
 struct ReceiveCollectibleAssetListSearchNoContentViewModel: NoContentViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
 
     init() {
         bindTitle()
@@ -29,12 +29,11 @@ struct ReceiveCollectibleAssetListSearchNoContentViewModel: NoContentViewModel {
 
 extension ReceiveCollectibleAssetListSearchNoContentViewModel {
     private mutating func bindTitle() {
-        title = .attributedString(
+        title =
             "collectibles-receive-asset-list-search-no-content"
                 .localized
                 .bodyLargeMedium(
                     alignment: .center
                 )
-        )
     }
 }

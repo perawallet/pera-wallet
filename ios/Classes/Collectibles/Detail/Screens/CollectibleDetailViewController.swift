@@ -501,55 +501,29 @@ extension CollectibleDetailViewController {
                   let asset = self.account[self.asset.id] as? CollectibleAsset else {
                 return
             }
-
-            if !asset.isPure {
-                let draft = SendTransactionDraft(
-                    from: self.account,
-                    transactionMode: .asset(asset)
-                )
-
-                let controller = self.open(
-                    .sendTransaction(draft: draft),
-                    by: .present
-                ) as? SendTransactionScreen
-
-                controller?.eventHandler = {
-                    [weak self] event in
-                    guard let self = self else { return }
-                    switch event {
-                    case .didCompleteTransaction:
-                        self.popScreen()
-                    }
-                }
-                return
+            
+            var assetAmount: Decimal?
+            if asset.isPure {
+                assetAmount = 1
             }
-
-            let draft = SendCollectibleDraft(
-                fromAccount: self.account,
-                collectibleAsset: asset,
-                image: self.mediaPreviewController.getExistingImage()
+            
+            let draft = SendTransactionDraft(
+                from: self.account,
+                amount: assetAmount,
+                transactionMode: .asset(asset)
             )
 
             let controller = self.open(
-                .sendCollectible(
-                    draft: draft
-                ),
-                by: .customPresent(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: .crossDissolve,
-                    transitioningDelegate: nil
-                ),
-                animated: false
-            ) as? SendCollectibleViewController
+                .sendTransaction(draft: draft),
+                by: .present
+            ) as? SendTransactionScreen
 
             controller?.eventHandler = {
-                [weak controller] event in
+                [weak self] event in
+                guard let self = self else { return }
                 switch event {
                 case .didCompleteTransaction:
-                    controller?.dismissScreen(animated: false) {
-                        [weak self] in
-                        self?.popScreen(animated: false)
-                    }
+                    self.popScreen()
                 }
             }
         }

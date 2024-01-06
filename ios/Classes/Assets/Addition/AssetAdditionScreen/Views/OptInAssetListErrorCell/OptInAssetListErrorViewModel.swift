@@ -21,8 +21,8 @@ struct OptInAssetListErrorViewModel: NoContentWithActionViewModel {
     typealias Error = OptInAssetList.ErrorItem
 
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
     private(set) var primaryAction: Action?
     private(set) var secondaryAction: Action?
 
@@ -42,13 +42,13 @@ extension OptInAssetListErrorViewModel {
 
     mutating func bindTitle(error: Error) {
         title = error.title.unwrap {
-            .attributedString($0.bodyMedium(alignment: .center))
+            $0.bodyMedium(alignment: .center)
         }
     }
 
     mutating func bindBody(error: Error) {
         body = error.body.unwrap {
-            .attributedString($0.footnoteRegular(alignment: .center))
+            $0.footnoteRegular(alignment: .center)
         }
     }
 

@@ -22,12 +22,12 @@ final class ALGSwapController: SwapController {
 
     var account: Account
     let swapType: SwapType = .fixedInput /// <note> Swap type won't change for now.
-    let providers: [SwapProvider] = [.tinyman, .tinymanV2, .vestige] /// <note> Only provider is Tinyman for now.
+    let providers: [SwapProvider] = [.tinyman, .tinymanV2, .vestige]
 
     var userAsset: Asset
     var quote: SwapQuote?
     var poolAsset: Asset?
-    var slippage: Decimal = PresetSwapSlippageTolerancePercentage.defaultPercentage().value
+    var slippage: Decimal?
 
     private(set) var parsedTransactions: [ParsedSwapTransaction] = []
     

@@ -20,26 +20,46 @@ import MacaroonUIKit
 
 struct SettingsDetailViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
-    let name: TextStyle
+    let title: PrimaryTitleViewTheme
     let detail: ImageStyle
     
     let imageSize: LayoutSize
-    let nameOffset: LayoutMetric
+    let titleOffset: LayoutMetric
+    let titleInset: LayoutMetric
     let horizontalInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
-        self.name = [
-            .textColor(Colors.Text.main),
-            .textOverflow(FittingText()),
-            .font(Fonts.DMSans.regular.make(15))
-        ]
+        self.title = SettingsTitleViewTheme(family)
         self.detail = [
             .image("icon-list-arrow")
         ]
         
         self.imageSize = (24, 24)
-        self.nameOffset = 16
+        self.titleOffset = 16
+        self.titleInset = 9
         self.horizontalInset = 24
+    }
+}
+
+struct SettingsTitleViewTheme: PrimaryTitleViewTheme {
+    let primaryTitle: TextStyle
+    let primaryTitleAccessory: ImageStyle
+    let primaryTitleAccessoryContentEdgeInsets: LayoutOffset
+    let secondaryTitle: TextStyle
+    let spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.primaryTitle = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.main)
+        ]
+        self.primaryTitleAccessory = []
+        self.primaryTitleAccessoryContentEdgeInsets = (0, 0)
+        self.secondaryTitle = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.grayLighter)
+        ]
+        self.spacingBetweenPrimaryAndSecondaryTitles = 0
     }
 }

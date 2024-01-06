@@ -75,9 +75,7 @@ final class AnnouncementView:
         }
 
         let actionTitle = viewModel?.ctaTitle
-        let shouldDisplayAction =
-            actionTitle != nil &&
-            viewModel?.ctaUrl != nil
+        let shouldDisplayAction = viewModel?.shouldDisplayAction ?? false
 
         if shouldDisplayAction {
             actionView.showViewInStack()
@@ -118,9 +116,7 @@ final class AnnouncementView:
             preferredHeight += size.height.ceil() + theme.stackViewItemSpacing
         }
 
-        let shouldDisplayAction =
-            viewModel.ctaTitle != nil &&
-            viewModel.ctaUrl != nil
+        let shouldDisplayAction = viewModel.shouldDisplayAction
 
         if shouldDisplayAction {
             preferredHeight += theme.stackViewButtonSpacing + theme.actionHeight

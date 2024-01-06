@@ -135,6 +135,12 @@ final class SwapAssetScreen:
         addSwapAction()
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        beginEditing()
+    }
+
     override func addFooter() {
         super.addFooter()
 
@@ -167,6 +173,12 @@ final class SwapAssetScreen:
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateUIWhenViewDidLayoutSubviews()
+    }
+}
+
+extension SwapAssetScreen {
+    private func beginEditing() {
+        userAssetView.beginEditing()
     }
 }
 

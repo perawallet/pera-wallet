@@ -20,22 +20,24 @@ import MacaroonUIKit
 
 protocol ResultViewModel: ViewModel {
     var icon: Image? { get }
-    var title: EditText? { get }
-    var body: EditText? { get }
+    var title: TextProvider? { get }
+    var body: TextProvider? { get }
 }
 
 extension ResultViewModel where Self: Hashable {
     func hash(
         into hasher: inout Hasher
     ) {
-        hasher.combine(title)
+        hasher.combine(title?.string)
+        hasher.combine(body?.string)
     }
 
     static func == (
         lhs: Self,
         rhs: Self
     ) -> Bool {
-        return lhs.title == rhs.title &&
-        lhs.body == rhs.body
+        return
+            lhs.title?.string == rhs.title?.string &&
+            lhs.body?.string == rhs.body?.string
     }
 }

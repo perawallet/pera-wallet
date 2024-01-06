@@ -28,7 +28,7 @@ final class ChoosePasswordViewController: BaseViewController {
     private lazy var choosePasswordView = ChoosePasswordView()
     private lazy var theme = Theme()
     
-    private let localAuthenticator = LocalAuthenticator()
+    private lazy var localAuthenticator = LocalAuthenticator(session: session!)
     
     private var pinLimitStore = PinLimitStore()
 
@@ -44,6 +44,12 @@ final class ChoosePasswordViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         displayPinLimitScreenIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        checkLoginFlow()
     }
 
     override func configureNavigationBarAppearance() {
@@ -90,24 +96,26 @@ extension ChoosePasswordViewController {
 
 extension ChoosePasswordViewController {
     private func displayPinLimitScreenIfNeeded() {
-        if shouldDisplayPinLimitScreen(isFirstLaunch: true) && mode == .login {
+        if shouldDisplayPinLimitScreen(isFirstLaunch: true), case .login = mode {
             displayPinLimitScreen()
-        } else {
-            checkLoginFlow()
         }
     }
 
     private func checkLoginFlow() {
-        if mode == .login {
-            if localAuthenticator.localAuthenticationStatus == .allowed {
-                localAuthenticator.authenticate { error in
-                    guard error == nil else {
-                        return
+        if case let .login(flow) = mode {
+            if localAuthenticator.hasAuthentication() {
+                do {
+                    try localAuthenticator.authenticate()
+
+                    switch flow {
+                    case .app:
+                        self.launchHome()
+                    case .feature:
+                        self.delegate?.choosePasswordViewController(self, didConfirmPassword: true)
                     }
-                    self.launchHome()
-                }
+                } catch {}
+                return
             }
-            return
         }
     }
     
@@ -148,8 +156,8 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             openVerifyPassword(with: value)
         case let .verify(previousPassword):
             verifyPassword(with: value, and: previousPassword)
-        case .login:
-            login(with: value)
+        case .login(let flow):
+            login(with: value, flow: flow)
         case .deletePassword:
             deletePassword(with: value)
         case .resetPassword(let flow):
@@ -218,12 +226,18 @@ extension ChoosePasswordViewController {
         }
     }
 
-    private func login(with value: NumpadButton.NumpadKey) {
+    private func login(with value: NumpadButton.NumpadKey, flow: Mode.LoginFlow) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if session?.isPasswordMatching(with: password) ?? false {
                 choosePasswordView.numpadView.isUserInteractionEnabled = false
                 pinLimitStore.resetPinAttemptCount()
-                launchHome()
+
+                switch flow {
+                case .app:
+                    launchHome()
+                case .feature:
+                    delegate?.choosePasswordViewController(self, didConfirmPassword: true)
+                }
             } else {
                 pinLimitStore.increasePinAttemptCount()
                 handleInvalidPassword()
@@ -315,14 +329,9 @@ extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
             guard let self = self else {
                 return
             }
-            
-            pinLimitViewController.dismissScreen()
 
             if isCompleted {
-                self.closeScreen(by: .dismiss) {
-                    self.launchOnboarding()
-                }
-                
+                AppDelegate.shared?.launchOnboarding()
                 return
             }
 
@@ -338,12 +347,21 @@ extension ChoosePasswordViewController {
     enum Mode: Equatable {
         case setup
         case verify(password: String)
-        case login
+        case login(flow: LoginFlow)
         case deletePassword
         case verifyOld
         case resetPassword(flow: ResetFlow)
         case resetVerify(password: String, flow: ResetFlow)
         case confirm(flow: ConfirmFlow)
+
+        /// <todo>: Will be changed when this screen refactored
+        /// LoginFlow is created for separating launch logics
+        /// For some features, we should ask the authorization to user but it shouldn't invoke the launch operation
+        /// If developer use feature-specific login, feature case should be used.
+        enum LoginFlow {
+            case app
+            case feature
+        }
 
         enum ResetFlow {
             case fromVerifyOld

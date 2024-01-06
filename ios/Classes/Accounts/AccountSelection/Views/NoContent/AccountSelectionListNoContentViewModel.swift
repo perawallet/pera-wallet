@@ -19,8 +19,8 @@ import MacaroonUIKit
 
 struct AccountSelectionListNoContentViewModel: NoContentViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
 
     init() {
         bindTitle()
@@ -32,10 +32,9 @@ extension AccountSelectionListNoContentViewModel {
         var attributes = Typography.bodyLargeMediumAttributes(alignment: .center)
         attributes.insert(.textColor(Colors.Text.main))
 
-        title = .attributedString(
+        title =
             "account-select-search-empty-title"
                 .localized
                 .attributed(attributes)
-        )
     }
 }

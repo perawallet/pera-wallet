@@ -18,11 +18,8 @@ import Foundation
 import WebKit
 
 final class InAppBrowserUserContentController: WKUserContentController {
-    /// <warning>
-    /// It isn't enough to guarantee that there won't be a memory leak because of a retain cycle
-    /// between the user content controller and the script message handler; thus, the message
-    /// handlers should be removed just in case in `deinit` of the scrip message handler, which is
-    /// probably a view controller.
+    private var handlers: [String: InAppBrowserSecureScriptMessageHandler] = [:]
+
     func add<T>(
         secureScriptMessageHandler: WKScriptMessageHandler,
         forMessage msg: T
@@ -33,16 +30,12 @@ final class InAppBrowserUserContentController: WKUserContentController {
         )
     }
 
-    /// <warning>
-    /// It isn't enough to guarantee that there won't be a memory leak because of a retain cycle
-    /// between the user content controller and the script message handler; thus, the message
-    /// handlers should be removed just in case in `deinit` of the scrip message handler, which is
-    /// probably a view controller.
     func add(
         secureScriptMessageHandler: WKScriptMessageHandler,
         forName name: String
     ) {
         let handler = InAppBrowserSecureScriptMessageHandler(handler: secureScriptMessageHandler)
+        handlers[name] = handler
         add(
             handler,
             name: name
@@ -56,6 +49,7 @@ final class InAppBrowserUserContentController: WKUserContentController {
 
     func removeScriptMessageHandler<T>(forMessage msg: T)
     where T: InAppBrowserScriptMessage {
+        handlers[msg.rawValue] = nil
         removeScriptMessageHandler(forName: msg.rawValue)
     }
 }
@@ -64,6 +58,16 @@ protocol InAppBrowserScriptMessage:
     RawRepresentable,
     CaseIterable
 where RawValue == String {}
+
+struct NoInAppBrowserScriptMessage: InAppBrowserScriptMessage {
+    var rawValue: String = ""
+
+    static var allCases: [NoInAppBrowserScriptMessage] = []
+
+    init?(rawValue: String) {
+        return nil
+    }
+}
 
 final class InAppBrowserSecureScriptMessageHandler:
     NSObject,
@@ -84,15 +88,5 @@ final class InAppBrowserSecureScriptMessageHandler:
             userContentController,
             didReceive: message
         )
-    }
-}
-
-struct NoInAppBrowserScriptMessage: InAppBrowserScriptMessage {
-    var rawValue: String = ""
-
-    static var allCases: [NoInAppBrowserScriptMessage] = []
-
-    init?(rawValue: String) {
-        return nil
     }
 }

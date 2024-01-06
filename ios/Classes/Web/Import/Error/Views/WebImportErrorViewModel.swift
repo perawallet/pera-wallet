@@ -19,8 +19,8 @@ import MacaroonUIKit
 
 struct WebImportErrorViewModel: ResultViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
 
     init(error: ImportAccountScreenError) {
         bindIcon()
@@ -35,7 +35,7 @@ extension WebImportErrorViewModel {
     }
 
     private mutating func bindTitle() {
-        title = .attributedString("title-generic-error".localized.titleMedium())
+        title = "title-generic-error".localized.titleMedium()
     }
 
     private mutating func bindBody(with error: ImportAccountScreenError) {
@@ -53,14 +53,13 @@ extension WebImportErrorViewModel {
     }
 
     private mutating func bindUnsupportedVersionBody(_ qrVersion: String) {
-        body = .attributedString(
+        body =
             "web-import-error-unsupported-version-body"
                 .localized(qrVersion)
                 .bodyRegular()
-        )
     }
 
     private mutating func bindGenericBody() {
-        body = .attributedString("web-import-error-body".localized.bodyRegular())
+        body = "web-import-error-body".localized.bodyRegular()
     }
 }

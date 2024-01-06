@@ -106,6 +106,7 @@
 "title-select-account" = "Select account";
 "title-to" = "To";
 "title-try-again" = "Try Again";
+"title-start" = "Start";
 "filter" = "Filter";
 "title-choose-account-to-proceed-with" = "Choose an account to proceed with";
 "opt-in-to-usdc" = "Opt-in to USDC";
@@ -157,6 +158,8 @@
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-type-selection-passphrase" = "Recover an account";
 "account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
+"account-type-selection-import-secure-backup" = "Algorand Secure Backup";
+"account-type-selection-import-secure-backup-detail" = "I want to restore my accounts using an Algorand Secure Backup file and 12-word key";
 "account-type-selection-qr" = "Recover an account with QR code";
 "account-type-selection-qr-detail" = "I want to recover an Algorand account using a QR code";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
@@ -194,6 +197,7 @@
 "local-authentication-no" = "Do not use Face ID/Touch ID";
 "local-authentication-enabled-title" = "Biometric\nAuthentication\nEnabled";
 "local-authentication-enabled-subtitle" = "Your passcode has been verified. Your Algorand account is more secure now.";
+"local-authentication-disabled-error-message" = "Unable to disable Face ID/Touch ID, please try again later";
 "title-go-to-accounts" = "Go to Accounts";
 
 // MARK: Passphrase Back Up
@@ -473,6 +477,8 @@
 "settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
 "settings-support-title" = "Get Help";
 "settings-security-title" = "Security";
+"settings-secure-backup-title" = "Algorand Secure Backup";
+"settings-secure-backup-subtitle" = "Not backed up (%@)";
 "settings-wallet-connect-title" = "WalletConnect Sessions";
 
 // MARK: Security Settings
@@ -1304,7 +1310,7 @@
 "swap-asset-algo-min-balance-error" = "Algo balance is too low. The minimum balance should be %@.";
 "swap-asset-min-balance-error" = "%@ balance is not sufficient.";
 "swap-asset-fee-unavailable-error" = "Swap fee could not be fetched right now.";
-"swap-asset-min-balance-error-without-amount" = "Account doesn't have enough balance for this transaction.";
+"swap-asset-min-balance-error-without-amount" = "Account doesn't have enough Algo balance for this transaction.";
 "swap-asset-min-balance-error-fee" = "Account doesn't have enough Algo balance to cover transaction fees.";
 "swap-asset-not-opted-in-error" = "You are not opted in to source token. Pick another pool, or another eligible account to be able to swap.";
 
@@ -1450,6 +1456,107 @@ FAQ section.";
 "discover-error-fallback-body" = "We can't get that information right now.";
 "discover-error-connection-title" = "No Internet Connection";
 "discover-error-connection-body" = "You don’t seem to be connected to the internet. Please check your connection and try again.";
+"discover-error-favorites-max-limit" = "You cannot have more than 50 favourites.";
+
+// MARK: Algorand Secure Backup
+"algorand-secure-backup-instruction-title" = "Algorand Secure Backup";
+"algorand-secure-backup-instruction-header-title" = "Backup your accounts using the Algorand Secure Backup protocol. You will generate an encrypted text file representing your accounts and a 12-word key used to decrypt them in future.";
+"algorand-secure-backup-instruction-select-accounts-instruction-title" = "Select your accounts";
+"algorand-secure-backup-instruction-select-accounts-instruction-subtitle" = "Select one, some or all of your accounts to be included in your backup file.";
+"algorand-secure-backup-instruction-store-keys-instruction-title" = "Store your 12-word key";
+"algorand-secure-backup-instruction-store-keys-instruction-subtitle" = "Record or save your 12-word key securely. Learn more";
+"algorand-secure-backup-instruction-store-keys-instruction-subtitle-highlighted-text" = "Learn more";
+"algorand-secure-backup-instruction-save-backup-file-instruction-title" = "Save your backup file";
+"algorand-secure-backup-instruction-save-backup-file-instruction-subtitle" = "Download your backup to a secure location on your device.";
+"algorand-secure-backup-account-list-title" = "Choose accounts to backup";
+"algorand-secure-backup-account-list-restore-title" = "Choose accounts to restore";
+"algorand-secure-backup-account-list-action-title" = "Backup account";
+"algorand-secure-backup-account-list-action-title-singular" = "Backup account (1)";
+"algorand-secure-backup-account-list-action-title-plural" = "Backup accounts (%@)";
+"algorand-secure-backup-account-list-restore-action-title" = "Restore account";
+"algorand-secure-backup-account-list-restore-action-title-singular" = "Restore account (1)";
+"algorand-secure-backup-account-list-restore-action-title-plural" = "Restore accounts (%@)";
+"algorand-secure-backup-account-list-no-content-body" = "We couldn't find any accounts\neligible for backup.";
+"algorand-secure-backup-success-header-title" = "Your backup file is\nready";
+"algorand-secure-backup-success-header-body" = "Save your file somewhere secure, in a different place to your 12-word key. Learn more";
+"algorand-secure-backup-success-header-body-highlighted-text" = "Learn more";
+"algorand-secure-backup-success-save-action-title" = "Save backup file";
+"algorand-secure-backup-success-copy-action-message" = "Backup file copied to clipboard as text";
+"algorand-secure-backup-success-confirmation-title" = "Have you stored your backup file?";
+"algorand-secure-backup-success-confirmation-message" = "If you lose your Algorand Secure Backup file, you cannot restore your accounts.";
+
+"algorand-secure-backup-success-confirmation-primary-action-title" = "Yes, I stored my file";
+"algorand-secure-backup-success-confirmation-secondary-action-title" = "Show backup file again";
+
+"algorand-secure-backup-error-result-body" = "An error occurred while generating your Algorand Secure Backup. Please try again or contact support.";
+"algorand-secure-backup-error-result-body-highlighted-text" =  "contact support";
+"algorand-secure-backup-error-action-title" = "Try again";
+
+"algorand-secure-backup-banner-title" = "Backup your accounts";
+"algorand-secure-backup-banner-subtitle" = "You will lose access to your funds forever if your device is lost or stolen.";
+"algorand-secure-backup-banner-cta-title" = "Backup Now (~2min)";
+
+"algorand-secure-backup-mnemonics-title" = "Store your\n12-word key";
+"algorand-secure-backup-mnemonics-header" = "Your 12-word key is used decrypt any Algorand Secure Backup file generated by you.";
+"algorand-secure-backup-mnemonics-pera-learn" = "Store your 12-word key securely.\nFind out how with Pera Learn.";
+"alogrand-secure-backup-mnemonics-pera-learn-highlighted-text" = "Find out how";
+"algorand-secure-backup-mnemonics-second-backup-title" = "Review your\n12-word key";
+"algorand-secure-backup-mnemonics-second-backup-header" = "You stored your key during a previous backup. Review it now to ensure it is still stored securely.";
+"algorand-secure-backup-mnemonics-second-backup-pera-learn" = "Learn more with Pera Learn";
+"alogrand-secure-backup-mnemonics-second-backup-pera-learn-highlighted-text" = "Learn more";
+
+"algorand-secure-backup-mnemonics-store-action-title" = "I've stored my key";
+"algorand-secure-backup-mnemonics-copy-action-title" = "Copy to Clipboard";
+"algorand-secure-backup-mnemonics-copy-action-message" = "Key copied as text";
+"algorand-secure-backup-mnemonics-regenerate-action-title" = "Create New 12-Word Key";
+"algorand-secure-backup-mnemonics-regenerate-confirmation-title" = "Create new key";
+"algorand-secure-backup-mnemonics-regenerate-confirmation-message" = "You are about to reset your Algorand Secure Backup Key. You will generate a new 12-word key which will be used to encrypt and decrypt all future ASB files created from this device.\n\nYour previous ASB files remain encrypted with your old 12-word key. Ensure this is stored securely before proceeding.";
+"algorand-secure-backup-mnemonics-error-title" = "Wrong 12-word key";
+"algorand-secure-backup-mnemonics-error-message" = "Please try again by entering the correct 12-word key.";
+
+"algorand-secure-backup-mnemonics-regenerate-confirmation-primary-action-title" = "I understand, proceed";
+"algorand-secure-backup-mnemonics-regenerate-confirmation-secondary-action-title" = "Cancel";
+
+"algorand-secure-backup-mnemonics-confirmation-title" = "Have you stored your key?";
+"algorand-secure-backup-mnemonics-confirmation-message" = "Store your key somewhere secure, like a password manager. If you lose your key, you will lose access to your backup file forever.?";
+
+"algorand-secure-backup-mnemonics-confirmation-primary-action-title" = "Create backup file";
+"algorand-secure-backup-mnemonics-confirmation-secondary-action-title" = "Show key again";
+
+"algorand-secure-backup-import-backup-navigation-title" = "Select your\nbackup file";
+"algorand-secure-backup-import-backup-title" = "Select your backup file";
+"algorand-secure-backup-import-backup-action-title" = "Select File";
+"algorand-secure-backup-import-backup-action-replace-title" = "Replace File";
+"algorand-secure-backup-import-backup-header" = "To restore your wallet, select or paste your backup file.";
+"algorand-secure-backup-import-backup-paste" = "Paste backup file text";
+
+"algorand-secure-backup-import-backup-upload-successful-title" = "Upload Successful";
+"algorand-secure-backup-import-backup-upload-failed-title" = "Upload Failed";
+"algorand-secure-backup-import-backup-upload-failed-subtitle" = "This file type isn’t supported";
+"algorand-secure-backup-import-backup-upload-failed-invalid-subtitle" = "This file doesn't contain valid data";
+"algorand-secure-backup-import-backup-clipboard-success-title" = "Backup file successfully pasted";
+"algorand-secure-backup-import-backup-clipboard-failed-title" = "Nothing to paste";
+"algorand-secure-backup-import-backup-clipboard-failed-subtitle" = "Nothing is copied from the clipboard. Make sure you have copied your backup file.";
+"algorand-secure-backup-import-backup-clipboard-json-failed-title" = "Unable to parse the backup file: JSON formatting error.";
+"algorand-secure-backup-import-backup-clipboard-version-failed-title" = "Backup file was generated with an unsupported version of Algorand Secure Backup Format.";
+"algorand-secure-backup-import-backup-clipboard-cipher-suite-failed-title" = "Unable to parse the backup file: Cipher Suite unknown";
+"algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title" = "Please allow Pera Wallet to access photos and media on your device to read your file.";
+"algorand-secure-backup-import-backup-clipboard-key-not-exist" = "Unable to parse the backup file: “%@” does not exist";
+
+"algorand-secure-backup-import-success-header-title" = "Accounts restored";
+"algorand-secure-backup-import-success-header-singular-title" = "Account restored";
+"algorand-secure-backup-import-success-header-body" = "%@ accounts were restored from backup file";
+"algorand-secure-backup-import-success-header-singular-body" = "%@ account was restored from backup file";
+"algorand-secure-backup-import-success-unimported-title" = "Unimported Accounts";
+"algorand-secure-backup-import-success-unimported-singular-title" = "Unimported Account";
+"algorand-secure-backup-import-success-unimported-body" = "%@ accounts were not restored because they already exist in your wallet";
+"algorand-secure-backup-import-success-unimported-singular-body" = "%@ account was not restored because they already exist in your wallet";
+"algorand-secure-backup-import-success-unsupported-body" = "%@ accounts were not restored because they have an unsupported account type";
+"algorand-secure-backup-import-success-unsupported-singular-body" = "%@ account was not restored because it has an unsupported account type";
+"algorand-secure-backup-import-success-unsupported-and-unimported-body" = "%@ accounts were not restored. They may already exist in your wallet or be unsupported account types";
+
+"algorand-secure-backup-import-recover-mnemonic-title" = "Enter 12-word key";
+
 "discover-error-favorites-max-limit" = "You cannot have more than 100 favourites.";
 
 // MARK: Buy / Sell Options

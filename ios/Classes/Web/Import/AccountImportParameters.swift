@@ -30,6 +30,20 @@ struct AccountImportParameters: ALGEntityModel {
         privateKey = nil
     }
 
+    init(account: Account, privateKey: Data?) {
+        self.address = account.address
+        self.name = account.name
+        self.accountType = .single
+        self.privateKey = privateKey
+    }
+
+    init(accountImportParameters: AccountImportParameters, privateKey: Data?) {
+        self.address = accountImportParameters.address
+        self.name = accountImportParameters.name
+        self.accountType = accountImportParameters.accountType
+        self.privateKey = privateKey
+    }
+
     init(
         _ apiModel: APIModel = APIModel()
     ) {
@@ -112,6 +126,20 @@ extension AccountImportParameters {
 
             self.init(stringRawValue: rawValue)
         }
+    }
+
+    func isImportable(using algorandSDK: AlgorandSDK) -> Bool {
+        guard let privateKey = privateKey else {
+            return false
+        }
+
+        guard accountType == .single else {
+            return false
+        }
+
+        var error: NSError?
+        let address = algorandSDK.addressFrom(privateKey, error: &error)
+        return address == self.address && algorandSDK.isValidAddress(self.address)
     }
 }
 

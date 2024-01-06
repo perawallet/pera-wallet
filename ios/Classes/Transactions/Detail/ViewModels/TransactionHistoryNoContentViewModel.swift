@@ -20,8 +20,8 @@ import MacaroonUIKit
 
 struct TransactionHistoryNoContentViewModel: NoContentViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
 
     init() {
         bindTitle()
@@ -31,22 +31,20 @@ struct TransactionHistoryNoContentViewModel: NoContentViewModel {
 
 extension TransactionHistoryNoContentViewModel {
     private mutating func bindTitle() {
-        title = .attributedString(
+        title =
             "accounts-tranaction-empty-text"
                 .localized
                 .bodyLargeMedium(
                     alignment: .center
                 )
-        )
     }
 
     private mutating func bindBody() {
-        body = .attributedString(
+        body =
             "accounts-tranaction-empty-detail"
                 .localized
                 .bodyRegular(
                     alignment: .center
                 )
-        )
     }
 }

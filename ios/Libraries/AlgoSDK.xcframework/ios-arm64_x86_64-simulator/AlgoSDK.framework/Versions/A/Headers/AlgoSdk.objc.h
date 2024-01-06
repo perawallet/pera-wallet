@@ -405,6 +405,10 @@ FOUNDATION_EXPORT NSData* _Nullable AlgoSdkAttachSignature(NSData* _Nullable sig
  */
 FOUNDATION_EXPORT NSData* _Nullable AlgoSdkAttachSignatureWithSigner(NSData* _Nullable signature, NSData* _Nullable encodedTx, NSString* _Nullable signer, NSError* _Nullable* _Nullable error);
 
+FOUNDATION_EXPORT NSString* _Nonnull AlgoSdkBackupMnemonicFromKey(NSData* _Nullable key, NSError* _Nullable* _Nullable error);
+
+FOUNDATION_EXPORT NSData* _Nullable AlgoSdkBackupMnemonicToKey(NSString* _Nullable mnemonic, NSError* _Nullable* _Nullable error);
+
 FOUNDATION_EXPORT AlgoSdkEncryption* _Nullable AlgoSdkDecrypt(NSData* _Nullable data, NSData* _Nullable sk);
 
 /**
@@ -435,15 +439,13 @@ the transactions at the same indexes in the input array are in the same atomic g
  */
 FOUNDATION_EXPORT AlgoSdkInt64Array* _Nullable AlgoSdkFindAndVerifyTxnGroups(AlgoSdkBytesArray* _Nullable txns, NSError* _Nullable* _Nullable error);
 
-FOUNDATION_EXPORT NSString* _Nonnull AlgoSdkFromKey(NSData* _Nullable key, NSError* _Nullable* _Nullable error);
-
 FOUNDATION_EXPORT NSString* _Nonnull AlgoSdkGenerateAddressFromPublicKey(NSData* _Nullable pk, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSString* _Nonnull AlgoSdkGenerateAddressFromSK(NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
 
-FOUNDATION_EXPORT NSData* _Nullable AlgoSdkGenerateCipherKey(NSString* _Nullable key, NSData* _Nullable input);
+FOUNDATION_EXPORT NSData* _Nullable AlgoSdkGenerateBackupCipherKey(NSString* _Nullable key, NSData* _Nullable input);
 
-FOUNDATION_EXPORT NSData* _Nullable AlgoSdkGeneratePrivateKey(void);
+FOUNDATION_EXPORT NSData* _Nullable AlgoSdkGenerateBackupPrivateKey(void);
 
 FOUNDATION_EXPORT NSData* _Nullable AlgoSdkGenerateSK(void);
 
@@ -801,8 +803,6 @@ FOUNDATION_EXPORT NSData* _Nullable AlgoSdkSignMultisigTransaction(NSData* _Null
 bytes of a signed txn.
  */
 FOUNDATION_EXPORT NSData* _Nullable AlgoSdkSignTransaction(NSData* _Nullable sk, NSData* _Nullable encodedTx, NSError* _Nullable* _Nullable error);
-
-FOUNDATION_EXPORT NSData* _Nullable AlgoSdkToKey(NSString* _Nullable mnemonic, NSError* _Nullable* _Nullable error);
 
 /**
  * TransactionJsonToMsgpack converts a json-encoded Transaction to a

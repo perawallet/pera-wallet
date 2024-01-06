@@ -26,6 +26,7 @@ final class RecoverAccountView:
     private lazy var titleLabel = UILabel()
     private lazy var stackView = UIStackView()
     private lazy var recoverWithPassphraseView = AccountTypeView()
+    private lazy var importFromSecureBackupView = AccountTypeView()
     private lazy var recoverWithQRView = AccountTypeView()
     private lazy var recoverWithLedgerView = AccountTypeView()
     private lazy var importFromWebView = AccountTypeView()
@@ -54,6 +55,11 @@ final class RecoverAccountView:
             for: .touchUpInside
         )
 
+        importFromSecureBackupView.addTouch(
+            target: self,
+            action: #selector(notifyDelegateToImportFromSecureBackup)
+        )
+
         recoverWithLedgerView.addTarget(
             self,
             action: #selector(notifyDelegateToRecoverWithLedger),
@@ -69,6 +75,7 @@ final class RecoverAccountView:
 
     func bindData(_ viewModel: RecoverAccountViewModel?) {
         recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseViewModel)
+        importFromSecureBackupView.bindData(viewModel?.importFromSecureBackupViewModel)
         recoverWithQRView.bindData(viewModel?.recoverWithQRViewModel)
         recoverWithLedgerView.bindData(viewModel?.recoverWithLedgerViewModel)
         importFromWebView.bindData(viewModel?.importFromWebViewModel)
@@ -84,6 +91,11 @@ extension RecoverAccountView {
     @objc
     private func notifyDelegateToRecoverWithQR() {
         delegate?.recoverAccountView(self, didSelect: .qr)
+    }
+
+    @objc
+    private func notifyDelegateToImportFromSecureBackup() {
+        delegate?.recoverAccountView(self, didSelect: .importFromSecureBackup)
     }
 
     @objc
@@ -128,6 +140,8 @@ extension RecoverAccountView {
         stackView.addArrangedSubview(recoverWithLedgerView)
         importFromWebView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(importFromWebView)
+        importFromSecureBackupView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(importFromSecureBackupView)
     }
 }
 

@@ -17,11 +17,11 @@
 import Foundation
 
 protocol SwapSlippageTolerancePercentageStore: SwapDataStorePublisher {
-    var slippageTolerancePercentage: SwapSlippageTolerancePercentage { get }
+    var slippageTolerancePercentage: SwapSlippageTolerancePercentage? { get }
 }
 
 protocol SwapMutableSlippageTolerancePercentageStore: AnyObject {
-    var slippageTolerancePercentage: SwapSlippageTolerancePercentage { get set }
+    var slippageTolerancePercentage: SwapSlippageTolerancePercentage? { get set }
 }
 
 protocol SwapSlippageTolerancePercentageStoreObserver: SwapDataStoreObserver {

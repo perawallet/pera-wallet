@@ -20,17 +20,54 @@ import MacaroonUIKit
 struct AnnouncementViewModel:
     PairedViewModel,
     Hashable {
+    let type: AnnouncementType
     private(set) var title: String?
     private(set) var subtitle: String?
     private(set) var ctaTitle: String?
-    private(set) var isGeneric: Bool = false
     private(set) var ctaUrl: URL?
 
+    var shouldDisplayAction: Bool {
+        switch type {
+        case .backup:
+            return true
+        case .governance, .generic:
+            return ctaUrl != nil && ctaTitle != nil
+        }
+    }
+
     init(_ model: Announcement) {
-        title = model.title
-        subtitle = model.subtitle
-        ctaTitle = model.buttonLabel
-        isGeneric = model.type == .generic
-        ctaUrl = model.buttonUrl.toURL()
+        type = model.type
+
+        switch model.type {
+        case .backup:
+            configureForBackup()
+        case .generic:
+            configureForGeneric(model)
+        case .governance:
+            configureForGovernance(model)
+        }
+    }
+
+    private mutating func configureForBackup() {
+        title = "algorand-secure-backup-banner-title".localized
+        subtitle = "algorand-secure-backup-banner-subtitle".localized
+        ctaTitle = "algorand-secure-backup-banner-cta-title".localized
+        ctaUrl = nil
+    }
+
+    private mutating func configureForGovernance(_ announcement: Announcement) {
+        title = announcement.title
+        subtitle = announcement.subtitle
+        ctaTitle = announcement.buttonLabel
+        guard let buttonUrl = announcement.buttonUrl else { return }
+        ctaUrl = URL(string: buttonUrl)
+    }
+
+    private mutating func configureForGeneric(_ announcement: Announcement) {
+        title = announcement.title
+        subtitle = announcement.subtitle
+        ctaTitle = announcement.buttonLabel
+        guard let buttonUrl = announcement.buttonUrl else { return }
+        ctaUrl = URL(string: buttonUrl)
     }
 }

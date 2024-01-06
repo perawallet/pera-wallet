@@ -41,6 +41,8 @@ extension AccountTypeViewModel {
             switch type {
             case .none, .passphrase:
                 image = img("icon-recover-passphrase")
+            case .importFromSecureBackup:
+                image = img("icon-import-from-secure-backup")
             case .ledger:
                 image = img("icon-pair-ledger-account")
             case .importFromWeb:
@@ -68,6 +70,8 @@ extension AccountTypeViewModel {
             switch type {
             case .passphrase:
                 titleText = "account-type-selection-passphrase".localized
+            case .importFromSecureBackup:
+                titleText = "account-type-selection-import-secure-backup".localized
             case .ledger:
                 titleText = "account-type-selection-ledger".localized
             case .importFromWeb:
@@ -87,6 +91,20 @@ extension AccountTypeViewModel {
         title = .attributedString(titleText.attributed(attributes))
     }
 
+    private mutating func bindBadge(_ mode: AccountSetupMode) {
+        switch mode {
+        case let .recover(type):
+            switch type {
+            case .importFromWeb, .importFromSecureBackup:
+                badge = "title-new-uppercased".localized
+            default:
+                break
+            }
+        default:
+            break
+        }
+    }
+
     private mutating func bindDetail(_ mode: AccountSetupMode) {
         var attributes = Typography.footnoteRegularAttributes(lineBreakMode: .byTruncatingTail)
         attributes.insert(.textColor(Colors.Text.gray))
@@ -99,6 +117,8 @@ extension AccountTypeViewModel {
             switch type {
             case .passphrase:
                 detailText = "account-type-selection-passphrase-detail".localized
+            case .importFromSecureBackup:
+                detailText = "account-type-selection-import-secure-backup-detail".localized
             case .ledger:
                 detailText = "account-type-selection-ledger-detail".localized
             case .importFromWeb:

@@ -64,11 +64,25 @@ extension WebImportSuccessScreenListLayout: UICollectionViewDelegateFlowLayout {
                 sizeForHeaderItem: item,
                 at: indexPath
             )
+        case .asbHeader(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAsbHeaderItem: item,
+                at: indexPath
+            )
         case .missingAccounts(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForMissingAccountItem: item,
+                at: indexPath
+            )
+        case .asbMissingAccounts(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAsbMissingAccountItem: item,
                 at: indexPath
             )
         }
@@ -77,9 +91,16 @@ extension WebImportSuccessScreenListLayout: UICollectionViewDelegateFlowLayout {
 
 extension WebImportSuccessScreenListLayout {
     private func calculateContentWidth(
-        for listView: UICollectionView
+        for listView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
     ) -> LayoutMetric {
-        return listView.bounds.width
+        let sectionInset = collectionView(
+            listView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
+        )
+        return listView.bounds.width - sectionInset.horizontal
     }
 
     private func listView(
@@ -88,13 +109,11 @@ extension WebImportSuccessScreenListLayout {
         sizeForAccountItem item: WebImportSuccessListViewAccountItem,
         at indexPath: IndexPath
     ) -> CGSize {
-        let sectionInset = collectionView(
-            listView,
+        let width = calculateContentWidth(
+            for: listView,
             layout: listViewLayout,
             insetForSectionAt: indexPath.section
         )
-
-        let width = calculateContentWidth(for: listView) - sectionInset.horizontal
         let height = theme.listItemHeight
         return CGSize((width, height))
     }
@@ -105,15 +124,36 @@ extension WebImportSuccessScreenListLayout {
         sizeForHeaderItem item: WebImportSuccessListHeaderItem,
         at indexPath: IndexPath
     ) -> CGSize {
-        let sectionInset = collectionView(
-            listView,
+        let width = calculateContentWidth(
+            for: listView,
             layout: listViewLayout,
             insetForSectionAt: indexPath.section
         )
 
-        let width = calculateContentWidth(for: listView) - sectionInset.horizontal
-
         let viewModel = WebImportSuccessHeaderViewModel(
+            importedAccountCount: item.importedAccountCount
+        )
+
+        return WebImportSuccessHeaderView.calculatePreferredSize(
+            viewModel,
+            for: WebImportSuccessHeaderViewTheme(),
+            fittingIn: CGSize(width: width, height: .greatestFiniteMagnitude)
+        )
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAsbHeaderItem item: WebImportSuccessListHeaderItem,
+        at indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            for: listView,
+            layout: listViewLayout,
+            insetForSectionAt: indexPath.section
+        )
+
+        let viewModel = AlgorandSecureBackupImportSuccessHeaderViewModel(
             importedAccountCount: item.importedAccountCount
         )
 
@@ -130,16 +170,38 @@ extension WebImportSuccessScreenListLayout {
         sizeForMissingAccountItem item: WebImportSuccessListMissingAccountItem,
         at indexPath: IndexPath
     ) -> CGSize {
-        let sectionInset = collectionView(
-            listView,
+        let width = calculateContentWidth(
+            for: listView,
             layout: listViewLayout,
             insetForSectionAt: indexPath.section
         )
 
-        let width = calculateContentWidth(for: listView) - sectionInset.horizontal
-
         let viewModel = WebImportSuccessInfoBoxViewModel(
             unimportedAccountCount: item.unimportedAccountCount
+        )
+
+        return WebImportSuccessInfoBoxCell.calculatePreferredSize(
+            viewModel,
+            for: WebImportSuccessInfoBoxTheme(),
+            fittingIn: CGSize(width: width, height: .greatestFiniteMagnitude)
+        )
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAsbMissingAccountItem item: WebImportSuccessListMissingAccountItem,
+        at indexPath: IndexPath
+    ) -> CGSize {
+        let width = calculateContentWidth(
+            for: listView,
+            layout: listViewLayout,
+            insetForSectionAt: indexPath.section
+        )
+
+        let viewModel = AlgorandSecureBackupImportSuccessInfoBoxViewModel(
+            unimportedAccountCount: item.unimportedAccountCount,
+            unsupportedAccountCount: item.unsupportedAccountCount
         )
 
         return WebImportSuccessInfoBoxCell.calculatePreferredSize(

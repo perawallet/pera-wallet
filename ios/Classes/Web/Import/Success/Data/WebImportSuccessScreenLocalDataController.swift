@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUtils
 
-final class WebImportSuccessScreenLocalDataController:
+class WebImportSuccessScreenLocalDataController:
     WebImportSuccessScreenDataController {
 
     var eventHandler: ((WebImportSuccessScreenDataControllerEvent) -> Void)?
@@ -32,9 +32,7 @@ final class WebImportSuccessScreenLocalDataController:
     private var accountModelsCache: [String: Account] = [:]
     private var accountViewModelsCache: [String: AccountListItemViewModel] = [:]
 
-
-    private let importedAccounts: [Account]
-    private let unimportedAccounts: [Account]
+    private let result: ImportAccountScreen.Result
 
     subscript(address: String) -> Account? {
         findModel(for: address)
@@ -44,13 +42,28 @@ final class WebImportSuccessScreenLocalDataController:
         findViewModel(for: address)
     }
 
-    init(
-        importedAccounts: [Account],
-        unimportedAccounts: [Account]
-    ) {
-        self.importedAccounts = importedAccounts
-        self.unimportedAccounts = unimportedAccounts
+    init(result: ImportAccountScreen.Result) {
+        self.result = result
     }
+
+    func createHeaderItem(importedAccountCount: Int) -> [WebImportSuccessListViewItem]{
+        return [.header(.init(importedAccountCount: importedAccountCount))]
+    }
+
+    func createMissingAccountItem(
+        unimportedAccountCount: Int,
+        unsupportedAccountCount: Int
+    ) -> [WebImportSuccessListViewItem] {
+        return [
+            .missingAccounts(
+                .init(
+                    unimportedAccountCount: unimportedAccountCount,
+                    unsupportedAccountCount: unsupportedAccountCount
+                )
+            )
+        ]
+    }
+
 }
 
 extension WebImportSuccessScreenLocalDataController {
@@ -82,15 +95,26 @@ extension WebImportSuccessScreenLocalDataController {
 
             snapshot.appendSections([.accounts])
 
-            let importedAccountCount = self.importedAccounts.count
-            let unimportedAccountCount = self.unimportedAccounts.count
+            let importedAccounts = self.result.importedAccounts
+            let importedAccountCount = importedAccounts.count
+            let unimportedAccountCount = self.result.unimportedAccounts.count
+            let algorandSDK = AlgorandSDK()
+            let unsupportedAccountCount = self.result.parameters.filter {
+                !$0.isImportable(using: algorandSDK)
+            }.count
 
-            snapshot.appendItems([.header(.init(importedAccountCount: importedAccountCount))])
-            if unimportedAccountCount > 0 {
-                snapshot.appendItems([.missingAccounts(.init(unimportedAccountCount: unimportedAccountCount))])
+            snapshot.appendItems(self.createHeaderItem(importedAccountCount: importedAccountCount))
+
+            if unimportedAccountCount > 0 || unsupportedAccountCount > 0 {
+                snapshot.appendItems(
+                    self.createMissingAccountItem(
+                        unimportedAccountCount: unimportedAccountCount,
+                        unsupportedAccountCount: unsupportedAccountCount
+                    )
+                )
             }
 
-            snapshot.appendItems(self.createAccountListItems(accounts: self.importedAccounts))
+            snapshot.appendItems(self.createAccountListItems(accounts: importedAccounts))
 
             return snapshot
         }

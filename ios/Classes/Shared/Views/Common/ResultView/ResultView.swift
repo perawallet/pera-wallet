@@ -51,8 +51,19 @@ final class ResultView:
             iconView.removeFromSuperview()
         }
 
-        titleView.editText = viewModel?.title
-        bodyView.editText = viewModel?.body
+        if let title = viewModel?.title {
+            title.load(in: titleView)
+        } else {
+            titleView.text = nil
+            titleView.attributedText = nil
+        }
+
+        if let body = viewModel?.body {
+            body.load(in: bodyView)
+        } else {
+            bodyView.text = nil
+            bodyView.attributedText = nil
+        }
     }
 
     class func calculatePreferredSize(
@@ -66,13 +77,15 @@ final class ResultView:
 
         let iconSize = theme.iconSize ?? (viewModel.icon?.uiImage.size ?? .zero)
         let titleSize =
-            viewModel.title.boundingSize(
+            viewModel.title?.boundingSize(
+                multiline: true,
                 fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
-            )
+            ) ?? .zero
         let bodySize =
-            viewModel.body.boundingSize(
+            viewModel.body?.boundingSize(
+                multiline: true,
                 fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
-            )
+            ) ?? .zero
         var preferredHeight =
             iconSize.height +
             titleSize.height +

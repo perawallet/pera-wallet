@@ -20,4 +20,5 @@ import UIKit
 protocol Settings {
     var image: UIImage? { get }
     var name: String { get }
+    var subtitle: String? { get }
 }

@@ -20,8 +20,8 @@ import MacaroonUIKit
 
 struct ListErrorViewModel: NoContentWithActionViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
     private(set) var primaryAction: Action?
     private(set) var secondaryAction: Action?
 
@@ -39,11 +39,11 @@ extension ListErrorViewModel {
     }
 
     private mutating func bindTitle() {
-        title = .string("transaction-filter-error-title".localized)
+        title = "transaction-filter-error-title".localized
     }
 
     private mutating func bindBody() {
-        body = .string("transaction-filter-error-subtitle".localized)
+        body = "transaction-filter-error-subtitle".localized
     }
 
     private mutating func bindActionTitle() {

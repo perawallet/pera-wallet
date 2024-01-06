@@ -57,6 +57,24 @@ extension AlgorandSDK {
 }
 
 extension AlgorandSDK {
+    func generateBackupPrivateKey() -> Data? {
+        return AlgoSdkGenerateBackupPrivateKey()
+    }
+
+    func generateBackupCipherKey(data: Data) -> Data? {
+        return AlgoSdkGenerateBackupCipherKey("Algorand export 1.0", data)
+    }
+
+    func backupMnemnoic(fromPrivateKey privateKey: Data, error: inout NSError?) -> String {
+        return AlgoSdkBackupMnemonicFromKey(privateKey, &error)
+    }
+
+    func backupPrivateKey(fromMnemonic mnemonic: String, error: inout NSError?) -> Data? {
+        return AlgoSdkBackupMnemonicToKey(mnemonic, &error)
+    }
+}
+
+extension AlgorandSDK {
     func sendAlgos(with draft: AlgosTransactionDraft, error: inout NSError?) -> Data? {
         let toAddress = draft.toAccount.trimmingCharacters(in: .whitespacesAndNewlines)
         return AlgoSdkMakePaymentTxn(

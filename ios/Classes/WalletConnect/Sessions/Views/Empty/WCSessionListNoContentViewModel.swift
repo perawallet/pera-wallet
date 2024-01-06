@@ -19,8 +19,8 @@ import MacaroonUIKit
 
 struct WCSessionListNoContentViewModel: NoContentWithActionViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
     private(set) var primaryAction: Action?
     private(set) var secondaryAction: Action?
 
@@ -32,13 +32,12 @@ struct WCSessionListNoContentViewModel: NoContentWithActionViewModel {
 
 extension WCSessionListNoContentViewModel {
     private mutating func bindTitle() {
-        title =  .attributedString(
+        title =
             "wallet-connect-session-list-empty"
                 .localized
                 .bodyLargeMedium(
                     alignment: .center
                 )
-        )
     }
 
     private mutating func bindActionTitle() {

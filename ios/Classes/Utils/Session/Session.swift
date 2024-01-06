@@ -24,7 +24,8 @@ import SwiftDate
 
 class Session: Storable {
     typealias Object = Any
-    
+
+    private let biometricStorageKey = "com.algorand.algorand.biometric.storage"
     private let privateStorageKey = "com.algorand.algorand.token.private"
     private let privateKey = "com.algorand.algorand.token.private.key"
     private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
@@ -37,10 +38,17 @@ class Session: Storable {
     private let currencyPreferenceKey = "com.algorand.algorand.currency.preference"
     private let userInterfacePrefenceKey = "com.algorand.algorand.interface.preference"
     private let announcementStateKey = "com.algorand.algorand.announcement.state"
+    private let backupsKey = "com.algorand.algorand.secure.backups"
+    private let backupPrivateKey = "com.algorand.algorand.secure.backup.privateKey"
     private let lastSeenNotificationIDKey = "com.algorand.algorand.lastseen.notification.id"
+    private let hasBiometricAuthenticationKey = "com.algorand.algorand.biometric.authentication"
     
     let algorandSDK = AlgorandSDK()
-    
+
+    private var biometricStorage: KeychainAccess.Keychain {
+        return KeychainAccess.Keychain(service: biometricStorageKey).accessibility(.whenUnlockedThisDeviceOnly, authenticationPolicy: [.biometryAny])
+    }
+
     private var privateStorage: KeychainAccess.Keychain {
         return KeychainAccess.Keychain(service: privateStorageKey).accessibility(.whenUnlocked)
     }
@@ -175,6 +183,30 @@ class Session: Storable {
         }
     }
 
+    var backups: [String: BackupMetadata] {
+        get {
+            guard let data = data(with: backupsKey, to: .defaults) else {
+                return [:]
+            }
+
+            do {
+                return try [String: BackupMetadata].decoded(data, using: JSONDecodingStrategy())
+            } catch {
+                return [:]
+            }
+        }
+        set {
+            do {
+                /// <todo>: It may be saved as object instead of data to make it more efficient
+                let data = try newValue.encoded()
+                save(data, for: backupsKey, to: .defaults)
+                NotificationCenter.default.post(name: .backupCreated, object: self)
+            } catch {
+                return
+            }
+        }
+    }
+
     var lastSeenNotificationID: Int? {
         get {
             return userDefaults.integer(forKey: lastSeenNotificationIDKey)
@@ -246,6 +278,10 @@ extension Session {
 }
 
 extension Session {
+    var legacyLocalAuthenticationStatus: String? {
+        return string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults)
+    }
+
     func accountInformation(from address: String) -> AccountInformation? {
         return applicationConfiguration?.authenticatedUser()?.accounts.first { account -> Bool in
             account.address == address
@@ -254,6 +290,70 @@ extension Session {
 
     func createUser(with accounts: [AccountInformation] = []) {
         authenticatedUser = User(accounts: accounts)
+    }
+}
+
+extension Session {
+    func setBiometricPassword() throws {
+        guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
+            throw LAError.passwordNotSet
+        }
+
+        do {
+            try biometricStorage.set(passwordOnKeychain, key: passwordKey)
+            // Note: To trigger Biometric Auth Dialog, we need to get it from biometric storage
+            let _ = try biometricStorage.get(passwordKey)
+            try setBiometricPasswordEnabled()
+        } catch {
+            try removeBiometricPassword()
+            throw error
+        }
+    }
+
+    func setBiometricPasswordSilently() throws {
+        guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
+            throw LAError.passwordNotSet
+        }
+
+        do {
+            try biometricStorage.set(passwordOnKeychain, key: passwordKey)
+            try setBiometricPasswordEnabled()
+        } catch {
+            try removeBiometricPassword()
+            throw error
+        }
+    }
+
+    func checkBiometricPassword() throws {
+        guard hasBiometricPassword() else {
+            throw LAError.biometricNotSet
+        }
+
+        guard let passwordOnKeychain = privateStorage.string(for: passwordKey) else {
+            throw LAError.passwordNotSet
+        }
+
+        do {
+            let passwordOnBiometricStorage = try biometricStorage.get(passwordKey)
+            if passwordOnKeychain != passwordOnBiometricStorage {
+                throw LAError.passwordMismatch
+            }
+        } catch {
+            throw LAError.unexpected(error)
+        }
+    }
+
+    func removeBiometricPassword() throws {
+        privateStorage.remove(for: hasBiometricAuthenticationKey)
+        try biometricStorage.remove(passwordKey)
+    }
+
+    func hasBiometricPassword() -> Bool {
+        (try? privateStorage.contains(hasBiometricAuthenticationKey)) ?? false
+    }
+
+    func setBiometricPasswordEnabled() throws {
+        try privateStorage.set("ok", key: hasBiometricAuthenticationKey)
     }
 }
 
@@ -275,6 +375,22 @@ extension Session {
     
     func hasPrivateData(for account: PublicKey) -> Bool {
         return privateData(for: account) != nil
+    }
+}
+
+extension Session {
+    func hasAlreadyCreatedBackupPrivateKey() -> Bool {
+        privateDataForBackup() != nil
+    }
+
+    func privateDataForBackup() -> Data? {
+        privateData(for: backupPrivateKey)
+    }
+
+    /// <note>: It overrides the existing backup mnemonics private key every time when function called.
+    /// It doesn't cause any issue because this private key generated by 12-word mnemonic
+    func saveBackupPrivateData(_ data: Data) {
+        savePrivate(data, for: backupPrivateKey)
     }
 }
 

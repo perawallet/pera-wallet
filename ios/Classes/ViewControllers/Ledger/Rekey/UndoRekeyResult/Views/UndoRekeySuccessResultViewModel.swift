@@ -19,8 +19,8 @@ import MacaroonUIKit
 
 struct UndoRekeySuccessResultViewModel: ResultViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
 
     init(sourceAccount: Account) {
         bindIcon()
@@ -39,7 +39,7 @@ extension UndoRekeySuccessResultViewModel {
             "undo-rekey-success-result-title"
                 .localized
                 .titleMedium()
-        title = .attributedString(aTitle)
+        title = aTitle
     }
 
     private mutating func bindBody(_ account: Account) {
@@ -55,6 +55,6 @@ extension UndoRekeySuccessResultViewModel {
             newAttributes: highlightedTextAttributes
         )
 
-        body = .attributedString(aBody)
+        body = aBody
     }
 }

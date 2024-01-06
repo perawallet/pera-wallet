@@ -97,13 +97,11 @@ extension AccountImportFlowCoordinator {
     }
 
     private func continueSuccessScreen(
-        importedAccounts: [Account],
-        unimportedAccounts: [Account],
+        result: ImportAccountScreen.Result,
         from screen: UIViewController
     ) {
         let successScreen = Screen.importAccountSuccess(
-            importedAccounts: importedAccounts,
-            unimportedAccounts: unimportedAccounts
+            result: result
         ) { [weak self] event, successScreen in
             guard let self else {
                 return
@@ -147,10 +145,16 @@ extension AccountImportFlowCoordinator {
             }
 
             switch event {
-            case let .didCompleteImport(importedAccounts, unimportedAccounts):
+            case let .didCompleteImport(result):
+                let importedAccounts = result.importedAccounts
+                
+                if importedAccounts.isEmpty {
+                    self.continueErrorScreen(error: .notImportableAccountFound, from: importAccountScreen)
+                    return
+                }
+
                 self.continueSuccessScreen(
-                    importedAccounts: importedAccounts,
-                    unimportedAccounts: unimportedAccounts,
+                    result: result,
                     from: importAccountScreen
                 )
             case .didFailToImport(let error):

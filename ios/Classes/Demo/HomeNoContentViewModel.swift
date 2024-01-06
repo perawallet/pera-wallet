@@ -19,8 +19,8 @@ import MacaroonUIKit
 
 struct HomeNoContentViewModel: NoContentWithActionViewModel, NoContentViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
     private(set) var primaryAction: Action?
     private(set) var secondaryAction: Action?
 
@@ -38,23 +38,21 @@ extension HomeNoContentViewModel {
     }
 
     private mutating func bindTitle() {
-        title = .attributedString(
+        title =
             "empty-accounts-title"
                 .localized
                 .bodyLargeMedium(
                     alignment: .center
                 )
-        )
     }
 
     private mutating func bindBody() {
-        body = .attributedString(
+        body =
             "empty-accounts-detail"
                 .localized
                 .bodyRegular(
                     alignment: .center
                 )
-        )
     }
 
     private mutating func bindActionTitle() {

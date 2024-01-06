@@ -329,16 +329,17 @@ extension HomeListLayout {
             forSectionAt: section
         )
 
-        if item.isGeneric {
-            return GenericAnnouncementCell.calculatePreferredSize(
-                item,
-                for: GenericAnnouncementCell.theme,
-                fittingIn: CGSize((width, .greatestFiniteMagnitude))
-            )
-        } else {
+        switch item.type {
+        case .governance:
             return GovernanceAnnouncementCell.calculatePreferredSize(
                 item,
                 for: GovernanceAnnouncementCell.theme,
+                fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            )
+        case .generic, .backup:
+            return GenericAnnouncementCell.calculatePreferredSize(
+                item,
+                for: GenericAnnouncementCell.theme,
                 fittingIn: CGSize((width, .greatestFiniteMagnitude))
             )
         }

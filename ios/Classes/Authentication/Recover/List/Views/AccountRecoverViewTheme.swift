@@ -19,7 +19,17 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountRecoverViewTheme: StyleSheet, LayoutSheet {
+protocol AccountRecoverViewTheme: StyleSheet, LayoutSheet {
+    var title: TextStyle { get }
+
+    var horizontalStackViewTopInset: LayoutMetric { get }
+    var horizontalStackViewSpacing: LayoutMetric { get }
+    var horizontalInset: LayoutMetric { get }
+    var topInset: LayoutMetric { get }
+    var verticalStackViewSpacing: LayoutMetric { get }
+}
+
+struct AccountRecoverViewCommonTheme: AccountRecoverViewTheme {
     let title: TextStyle
 
     let horizontalStackViewTopInset: LayoutMetric

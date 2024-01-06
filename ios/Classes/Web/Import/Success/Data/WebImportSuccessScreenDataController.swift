@@ -42,7 +42,9 @@ enum WebImportSuccessListViewSection:
 
 enum WebImportSuccessListViewItem: Hashable {
     case header(WebImportSuccessListHeaderItem)
+    case asbHeader(WebImportSuccessListHeaderItem)
     case missingAccounts(WebImportSuccessListMissingAccountItem)
+    case asbMissingAccounts(WebImportSuccessListMissingAccountItem)
     case account(WebImportSuccessListViewAccountItem)
 }
 
@@ -52,6 +54,7 @@ struct WebImportSuccessListHeaderItem: Hashable {
 
 struct WebImportSuccessListMissingAccountItem: Hashable {
     let unimportedAccountCount: Int
+    let unsupportedAccountCount: Int
 }
 
 struct WebImportSuccessListViewAccountItem: Hashable {

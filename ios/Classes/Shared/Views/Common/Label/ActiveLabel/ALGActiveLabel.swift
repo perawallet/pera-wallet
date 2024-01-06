@@ -16,6 +16,7 @@
 
 import ActiveLabel
 import MacaroonUIKit
+import UIKit
 
 final class ALGActiveLabel: ActiveLabel {
     override func layoutSubviews() {
@@ -43,7 +44,7 @@ enum ALGActiveType {
         case .hashtag: return .hashtag
         case .url: return .url
         case .email: return .email
-        case .word(let word): return .custom(pattern: "\\s\(word)\\b") /// <note> Regex that looks for `word`
+        case .word(let word): return .custom(pattern: "\(word)\\b") /// <note> Regex that looks for `word`
         case .custom(let pattern): return .custom(pattern: pattern)
         }
     }

@@ -38,4 +38,8 @@ enum DeveloperSettings: Settings {
             return "settings-developer-dispenser".localized
         }
     }
+
+    var subtitle: String? {
+        return nil
+    }
 }

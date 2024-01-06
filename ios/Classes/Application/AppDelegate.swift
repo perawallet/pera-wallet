@@ -402,6 +402,9 @@ extension AppDelegate {
 
         let passwordMigration = PasswordMigration(session: session)
         passwordMigration.migratePasswordToKeychain()
+
+        let biometricAuthenticationMigration = BiometricAuthenticationMigration(session: session)
+        biometricAuthenticationMigration.migratePasswordToKeychain()
     }
 }
 

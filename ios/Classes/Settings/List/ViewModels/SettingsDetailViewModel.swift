@@ -15,22 +15,36 @@
 //
 //  SettingsDetailViewModel.swift
 
+import Foundation
 import UIKit
+import MacaroonUIKit
 
-final class SettingsDetailViewModel {
-    private(set) var image: UIImage?
-    private(set) var title: String?
-    
-    init(setting: Settings) {
-        setImage(setting)
-        setTitle(setting)
+struct SettingsDetailViewModel:
+    PrimaryTitleViewModel,
+    Hashable {
+    private(set) var primaryTitleAccessory: MacaroonUIKit.Image?
+
+    private(set) var image: ImageProvider?
+    private(set) var primaryTitle: TextProvider?
+    private(set) var secondaryTitle: TextProvider?
+
+    init(settingsItem: Settings) {
+        bindImage(settingsItem: settingsItem)
+        bindPrimaryTitle(settingsItem: settingsItem)
+        bindSecondaryTitle(settingsItem: settingsItem)
     }
-    
-    private func setImage(_ settings: Settings) {
-        self.image = settings.image
+}
+
+extension SettingsDetailViewModel {
+    private mutating func bindImage(settingsItem: Settings) {
+        image = settingsItem.image
     }
-    
-    private func setTitle(_ settings: Settings) {
-        self.title = settings.name
+
+    private mutating func bindPrimaryTitle(settingsItem: Settings) {
+        primaryTitle = settingsItem.name.bodyRegular(lineBreakMode: .byTruncatingTail)
+    }
+
+    private mutating func bindSecondaryTitle(settingsItem: Settings) {
+        secondaryTitle = settingsItem.subtitle?.footnoteRegular(lineBreakMode: .byTruncatingTail)
     }
 }

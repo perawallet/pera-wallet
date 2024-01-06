@@ -20,8 +20,8 @@ import MacaroonUIKit
 
 struct OptInAssetListNotFoundViewModel: NoContentViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
 
     init() {
         bindIcon()
@@ -36,13 +36,12 @@ extension OptInAssetListNotFoundViewModel {
     }
 
     mutating func bindTitle() {
-        title = .attributedString(
+        title =
             "asset-not-found-title"
                 .localized
                 .bodyLargeMedium(
                     alignment: .center
                 )
-        )
     }
 
     mutating func bindBody() {

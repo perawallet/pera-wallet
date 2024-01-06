@@ -22,13 +22,6 @@ protocol SwapSlippageTolerancePercentage {
     var isPreset: Bool { get }
 }
 
-extension SwapSlippageTolerancePercentage where Self == PresetSwapSlippageTolerancePercentage {
-    static func defaultPercentage() -> SwapSlippageTolerancePercentage {
-        let store = SlippageToleranceStore()
-        return store.slippageTolerance
-    }
-}
-
 struct CustomSwapSlippageTolerancePercentage: SwapSlippageTolerancePercentage {
     let value: Decimal
     let title: String

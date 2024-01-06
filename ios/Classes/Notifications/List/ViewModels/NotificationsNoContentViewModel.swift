@@ -19,8 +19,8 @@ import MacaroonUIKit
 
 struct NotificationsNoContentViewModel: NoContentViewModel {
     private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var title: TextProvider?
+    private(set) var body: TextProvider?
 
     init() {
         bindImage()
@@ -35,10 +35,10 @@ extension NotificationsNoContentViewModel {
     }
 
     private mutating func bindTitle() {
-        title = .string("notifications-empty-title".localized)
+        title = "notifications-empty-title".localized
     }
 
     private mutating func bindBody() {
-        body = .string("notifications-empty-subtitle".localized)
+        body = "notifications-empty-subtitle".localized
     }
 }

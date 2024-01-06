@@ -29,9 +29,10 @@ struct SwapSlippageTolerancePercentageInputViewModel: AdjustableSingleSelectionI
             value: 0,
             customTitle: "swap-slippage-percentage-custom".localized
         ),
-        PresetSwapSlippageTolerancePercentage(value: SlippageToleranceStore.slippagePresetPointOnePercent),
-        PresetSwapSlippageTolerancePercentage(value: SlippageToleranceStore.defaultSlippage),
-        PresetSwapSlippageTolerancePercentage(value: SlippageToleranceStore.slippagePresetOnePercent)
+        PresetSwapSlippageTolerancePercentage(value: SlippageTolerancePercentage.halfPercent),
+        PresetSwapSlippageTolerancePercentage(value: SlippageTolerancePercentage.onePercent),
+        PresetSwapSlippageTolerancePercentage(value: SlippageTolerancePercentage.twoPercent),
+        PresetSwapSlippageTolerancePercentage(value: SlippageTolerancePercentage.fivePercent)
     ]
 
     init(percentage: SwapSlippageTolerancePercentage?) {

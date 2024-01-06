@@ -30,7 +30,7 @@ extension AccountRecoverViewController {
         let inputViewHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            self.accountRecoverViewTheme = AccountRecoverViewTheme()
+            self.accountRecoverViewTheme = AccountRecoverViewCommonTheme()
             self.backgroundColor = Colors.Defaults.background
 
             self.horizontalPadding = 24

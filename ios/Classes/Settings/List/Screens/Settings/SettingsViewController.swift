@@ -31,11 +31,19 @@ final class SettingsViewController:
         session: session!,
         api: api!
     )
+
+    private lazy var algorandSecureBackupFlowCoordinator = AlgorandSecureBackupFlowCoordinator(
+        configuration: configuration,
+        presentingScreen: self
+    )
     
     private lazy var theme = Theme()
     private lazy var settingsView = SettingsView()
 
-    private lazy var dataSource = SettingsDataSource(session: session)
+    private lazy var dataSource = SettingsDataSource(
+        sharedDataController: sharedDataController,
+        session: session
+    )
 
     deinit {
         stopObservingNotifications()
@@ -56,6 +64,12 @@ final class SettingsViewController:
     }
     
     override func setListeners() {
+        observe(notification: .backupCreated) { [weak self] _ in
+            guard let self else { return }
+            self.dataSource.updateAccountSettings()
+            self.settingsView.collectionView.reloadData()
+        }
+
         observeWhenApplicationWillEnterForeground {
             [weak self] _ in
             guard let self else { return }
@@ -130,9 +144,31 @@ extension SettingsViewController {
             }
         }
     }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let loadingCell = cell as? SettingsLoadingCell {
+            loadingCell.startAnimating()
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let loadingCell = cell as? SettingsLoadingCell {
+            loadingCell.stopAnimating()
+        }
+    }
     
     private func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
         switch setting {
+        case .secureBackup:
+            algorandSecureBackupFlowCoordinator.launch(by: .push)
         case .security:
             open(.securitySettings, by: .push)
         case .contacts:
@@ -141,6 +177,8 @@ extension SettingsViewController {
             open(.notificationFilter, by: .push)
         case .walletConnect:
             open(.walletConnectSessionList, by: .push)
+        case .secureBackupLoading:
+            break
         }
     }
     
@@ -186,6 +224,10 @@ extension SettingsViewController: SettingsDataSourceDelegate {
         _ settingsFooterSupplementaryView: SettingsFooterSupplementaryView
     ) {
         presentLogoutAlert()
+    }
+
+    func settingsDataSourceDidReloadAccounts(_ settingsDataSource: SettingsDataSource) {
+        self.settingsView.collectionView.reloadData()
     }
     
     private func presentLogoutAlert() {

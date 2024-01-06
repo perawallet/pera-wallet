@@ -43,4 +43,8 @@ enum SecuritySettings: Settings {
             return "security-settings-localAuthentication".localized
         }
     }
+
+    var subtitle: String? {
+        return nil
+    }
 }

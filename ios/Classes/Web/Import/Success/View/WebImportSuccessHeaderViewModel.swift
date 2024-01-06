@@ -19,8 +19,8 @@ import MacaroonUIKit
 
 struct WebImportSuccessHeaderViewModel: NoContentViewModel {
     var icon: Image?
-    var title: EditText?
-    var body: EditText?
+    var title: TextProvider?
+    var body: TextProvider?
 
     init(importedAccountCount: Int) {
         bindIcon()
@@ -37,12 +37,12 @@ extension WebImportSuccessHeaderViewModel {
     private mutating func bindTitle(for importedAccountCount: Int) {
         let isSingular = importedAccountCount == 1
         let resultTitle = isSingular ? "web-import-success-header-singular-title".localized : "web-import-success-header-title".localized
-        title = .attributedString(resultTitle.titleMedium())
+        title = resultTitle.titleMedium()
     }
 
     private mutating func bindBody(for importedAccountCount: Int) {
         let isSingular = importedAccountCount == 1
         let resultBody = isSingular ? "web-import-success-header-singular-body".localized("\(importedAccountCount)") : "web-import-success-header-body".localized("\(importedAccountCount)")
-        body = .attributedString(resultBody.bodyRegular())
+        body = resultBody.bodyRegular()
     }
 }

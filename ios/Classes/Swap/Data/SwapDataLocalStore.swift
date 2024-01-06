@@ -23,14 +23,14 @@ final class SwapDataLocalStore:
     var amountPercentage: SwapAmountPercentage? {
         didSet { notifyForAmountPercentageChanges() }
     }
-    var slippageTolerancePercentage: SwapSlippageTolerancePercentage {
+    var slippageTolerancePercentage: SwapSlippageTolerancePercentage? {
         didSet { notifyForSlippageTolerancePercentageChanges() }
     }
 
     var observations: [ObjectIdentifier : SwapDataStoreObservation] = [:]
 
     init() {
-        self.slippageTolerancePercentage = .defaultPercentage()
+        self.slippageTolerancePercentage = nil
     }
 }
 
@@ -39,7 +39,7 @@ extension SwapDataLocalStore {
         invalidateObservers()
 
         amountPercentage = nil
-        slippageTolerancePercentage = .defaultPercentage()
+        slippageTolerancePercentage = nil
     }
 }
 

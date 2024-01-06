@@ -91,6 +91,10 @@ final class HomeViewController:
         session: session!,
         sharedDataController: sharedDataController
     )
+    private lazy var algorandSecureBackupFlowCoordinator = AlgorandSecureBackupFlowCoordinator(
+        configuration: configuration,
+        presentingScreen: self
+    )
 
     private let copyToClipboardController: CopyToClipboardController
 
@@ -523,6 +527,25 @@ extension HomeViewController {
             self.analytics.track(.recordHomeScreen(type: .visitGovernance))
         }
     }
+
+    private func linkBackupInteractors(
+        _ cell: GenericAnnouncementCell,
+        for item: AnnouncementViewModel
+    ) {
+        cell.startObserving(event: .close) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.dataController.hideAnnouncement()
+        }
+
+        cell.startObserving(event: .action) {
+            [weak self] in
+            guard let self else { return }
+
+            self.algorandSecureBackupFlowCoordinator.launch()
+        }
+    }
     
     private func linkInteractors(
         _ cell: HomeAccountsHeader,
@@ -796,10 +819,13 @@ extension HomeViewController {
         case .accountNotBackedUpWarning:
             linkInteractors(cell as! AccountNotBackedUpWarningCell)
         case .announcement(let item):
-            if item.isGeneric {
-                linkInteractors(cell as! GenericAnnouncementCell, for: item)
-            } else {
+            switch item.type {
+            case .governance:
                 linkInteractors(cell as! GovernanceAnnouncementCell, for: item)
+            case .generic:
+                linkInteractors(cell as! GenericAnnouncementCell, for: item)
+            case .backup:
+                linkBackupInteractors(cell as! GenericAnnouncementCell, for: item)
             }
         case .account(let item):
             switch item {
@@ -1002,30 +1028,18 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
                 return
             }
 
-            let localAuthenticator = LocalAuthenticator()
+            let localAuthenticator = LocalAuthenticator(session: session)
 
-            if localAuthenticator.localAuthenticationStatus != .allowed {
-                let controller = self.open(
-                    .choosePassword(
-                        mode: .confirm(flow: .viewPassphrase),
-                        flow: nil
-                    ),
-                    by: .present
-                ) as? ChoosePasswordViewController
-                controller?.delegate = self
+            if localAuthenticator.hasAuthentication() {
+                do {
+                    try localAuthenticator.authenticate()
+                    self.presentPassphraseView(accountHandle)
+                } catch {
+                    self.presentPasswordConfirmScreen()
+                }
                 return
             }
-
-            localAuthenticator.authenticate {
-                [weak self] error in
-
-                guard let self = self,
-                      error == nil else {
-                          return
-                      }
-
-                self.presentPassphraseView(accountHandle)
-            }
+            self.presentPasswordConfirmScreen()
         }
 
         uiInteractions.didTapCopyAddress = {
@@ -1053,6 +1067,17 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
         }
 
         return uiInteractions
+    }
+
+    private func presentPasswordConfirmScreen() {
+        let controller = self.open(
+            .choosePassword(
+                mode: .confirm(flow: .viewPassphrase),
+                flow: nil
+            ),
+            by: .present
+        ) as? ChoosePasswordViewController
+        controller?.delegate = self
     }
 
     func choosePasswordViewController(

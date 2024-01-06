@@ -44,6 +44,10 @@ final class PassphraseView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func reloadData() {
+        passphraseCollectionView.reloadData()
+    }
 }
 
 extension PassphraseView {

@@ -23,7 +23,7 @@ final class SettingsDetailView: View {
     
     private lazy var imageView = UIImageView()
     private lazy var detailImageView = UIImageView()
-    private lazy var nameLabel = UILabel()
+    private lazy var titleView = PrimaryTitleView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,7 +35,7 @@ final class SettingsDetailView: View {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
         addImageView()
-        addNameLabel()
+        addTitleView()
         addDetailImageView()
     }
     
@@ -43,7 +43,7 @@ final class SettingsDetailView: View {
     
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {
         addImageView()
-        addNameLabel()
+        addTitleView()
         addDetailImageView()
     }
 }
@@ -59,13 +59,14 @@ extension SettingsDetailView {
         }
     }
     
-    private func addNameLabel() {
-        nameLabel.customizeAppearance(theme.name)
-        addSubview(nameLabel)
+    private func addTitleView() {
+        titleView.customize(theme.title)
+        addSubview(titleView)
         
-        nameLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(imageView.snp.trailing).offset(theme.nameOffset)
+        titleView.snp.makeConstraints {
+            $0.top == theme.titleInset
+            $0.bottom == theme.titleInset
+            $0.leading.equalTo(imageView.snp.trailing).offset(theme.titleOffset)
         }
     }
     
@@ -83,7 +84,7 @@ extension SettingsDetailView {
 
 extension SettingsDetailView {
     func bindData(_ viewModel: SettingsDetailViewModel) {
-        nameLabel.text = viewModel.title
-        imageView.image = viewModel.image
+        titleView.bindData(viewModel)
+        viewModel.image?.load(in: imageView)
     }
 }
