@@ -30,8 +30,8 @@ import com.algorand.android.ui.common.walletconnect.WalletConnectAmountInfoCardV
 import com.algorand.android.ui.common.walletconnect.WalletConnectExtrasChipGroupView
 import com.algorand.android.ui.common.walletconnect.WalletConnectSenderCardView
 import com.algorand.android.ui.common.walletconnect.WalletConnectTransactionInfoCardView
-import com.algorand.android.utils.browser.openApplicationInAlgoExplorer
-import com.algorand.android.utils.browser.openAssetInAlgoExplorer
+import com.algorand.android.utils.browser.openApplicationInPeraExplorer
+import com.algorand.android.utils.browser.openAssetInPeraExplorer
 import com.algorand.android.utils.browser.openAssetUrl
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,14 +62,14 @@ class TransactionRequestDetailFragment : DaggerBaseFragment(
             )
         }
 
-        override fun onShowAssetInAlgoExplorerClick(assetId: Long) {
+        override fun onShowAssetInPeraExplorerClick(assetId: Long) {
             val networkSlug = transactionDetailViewModel.getNetworkSlug()
-            context?.openAssetInAlgoExplorer(assetId, networkSlug)
+            context?.openAssetInPeraExplorer(assetId, networkSlug)
         }
 
-        override fun onShowAppInAlgoExplorerClick(appId: Long) {
+        override fun onShowAppInPeraExplorerClick(appId: Long) {
             val networkSlug = transactionDetailViewModel.getNetworkSlug()
-            context?.openApplicationInAlgoExplorer(appId, networkSlug)
+            context?.openApplicationInPeraExplorer(appId, networkSlug)
         }
 
         override fun onAssetUrlClick(url: String) {

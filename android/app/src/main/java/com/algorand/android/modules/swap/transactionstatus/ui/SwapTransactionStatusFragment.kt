@@ -26,7 +26,7 @@ import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentSwapTransactionStatusBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.modules.swap.transactionstatus.ui.model.SwapTransactionStatusPreview
-import com.algorand.android.utils.browser.openGroupTransactionInAlgoExplorer
+import com.algorand.android.utils.browser.openGroupTransactionInPeraExplorer
 import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -110,7 +110,7 @@ class SwapTransactionStatusFragment : BaseFragment(R.layout.fragment_swap_transa
             with(preview) {
                 transactionDetailGroup.isVisible = isTransactionDetailGroupVisible
                 viewTransactionDetailButton.setOnClickListener {
-                    openTransactionInAlgoExplorer(urlEncodedTransactionGroupId)
+                    openTransactionInPeraExplorer(urlEncodedTransactionGroupId)
                 }
                 viewSwapSummaryButton.setOnClickListener { navToSwapSummary() }
             }
@@ -154,8 +154,8 @@ class SwapTransactionStatusFragment : BaseFragment(R.layout.fragment_swap_transa
         }
     }
 
-    private fun openTransactionInAlgoExplorer(transactionGroupId: String?) {
+    private fun openTransactionInPeraExplorer(transactionGroupId: String?) {
         val networkSlug = swapTransactionStatusViewModel.getNetworkSlug()
-        context?.openGroupTransactionInAlgoExplorer(groupId = transactionGroupId, networkSlug = networkSlug)
+        context?.openGroupTransactionInPeraExplorer(groupId = transactionGroupId, networkSlug = networkSlug)
     }
 }

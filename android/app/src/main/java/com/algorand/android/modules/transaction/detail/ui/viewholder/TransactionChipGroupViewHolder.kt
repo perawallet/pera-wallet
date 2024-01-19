@@ -31,9 +31,8 @@ class TransactionChipGroupViewHolder(
         if (item !is TransactionDetailItem.ChipGroupItem) return
         if (transactionIdsOfCreatedViews.contains(item.transactionId)) return
         binding.chipGroupView.apply {
-            initOpenInExplorerChips(
-                algoExplorerUrl = item.algoExplorerUrl,
-                goalSeekerUrl = item.goalSeekerUrl,
+            initOpenInExplorerChipsByUrl(
+                peraExplorerUrl = item.peraExplorerUrl,
                 padding = R.dimen.spacing_zero
             )
             setChipGroupListener(listener)

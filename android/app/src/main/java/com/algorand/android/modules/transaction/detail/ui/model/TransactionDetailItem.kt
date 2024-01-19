@@ -91,8 +91,7 @@ sealed class TransactionDetailItem : RecyclerListItem {
 
     data class ChipGroupItem(
         val transactionId: String,
-        val algoExplorerUrl: String,
-        val goalSeekerUrl: String
+        val peraExplorerUrl: String,
     ) : TransactionDetailItem() {
 
         override val itemType: ItemType = ItemType.CHIP_GROUP_ITEM

@@ -272,8 +272,6 @@
         <item quantity="one">Ausgewähltes Konto verifizieren</item>
         <item quantity="other">Ausgewählte Konten verifizieren</item>
     </plurals>
-    <string name="open_in_algoexplorer">Im AlgoExplorer öffnen</string>
-    <string name="open_in_goalseeker">In GoalSeeker öffnen</string>
     <string name="overwrite_existing_contract">Bestehenden Kontakt überschreiben</string>
     <string name="this_address_is_already_in_your_contract">Diese Adresse befindet sich bereits als %1$s in Ihren Kontakten. Möchten Sie diesen Kontakt ersetzen?</string>
     <string name="one_day_abbr">1D</string>
@@ -456,7 +454,6 @@
     <string name="group_id_formatted">ID: <annotation replacement="group_id">groupIdPlaceholder</annotation></string>
     <string name="app_id">App-ID</string>
     <string name="transaction_details">Transaktionsdetails</string>
-    <string name="show_algoexplorer">Algo-Explorer anzeigen</string>
     <string name="portfolio_value">Portfoliowert</string>
     <string name="algo_holdings">Algo-Guthaben</string>
     <string name="asset_holdings">Asset-Guthaben</string>
@@ -548,7 +545,6 @@
     <string name="collection_name">Name der Sammlung</string>
     <string name="properties">Eigenschaften</string>
     <string name="view_transaction">Transaktion anzeigen</string>
-    <string name="show_on_algoexplorer">Im Algoexplorer anzeigen</string>
     <string name="show_on_nftexplorer">Im NFTExplorer anzeigen</string>
     <string name="you_are_not_the_owner">Sie sind noch nicht Eigentümer dieses NFT, aber Sie haben das Opt-in dafür durchgeführt. Sie können es jetzt in Ihr Konto übertragen.</string>
     <string name="we_don_t_support">Dieser NFT-Medientyp wird von uns noch nicht unterstützt.</string>
@@ -805,7 +801,6 @@
         <item quantity="other">Transaktionen signieren</item>
     </plurals>
     <string name="signing_index_out_of_count">Abmeldung von %1$d von %2$d …</string>
-    <string name="view_transaction_detail_in_algoexplorer">Transaktionsdetails im AlgoExplorer anzeigen</string>
     <string name="go_to_homepage">Zu Startseite gehen</string>
     <string name="sending_the_transaction">Die Transaktion wird gesendet</string>
     <string name="you_will_receive_at_least">Sie erhalten mindestens <annotation replacement="amount_and_asset_name">amountAndAssetNamePlaceholder</annotation> oder die Transaktion wird rückgängig gemacht.</string>

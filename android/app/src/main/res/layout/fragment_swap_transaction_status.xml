@@ -69,7 +69,7 @@
         android:layout_marginBottom="@dimen/spacing_normal"
         android:gravity="start|center_vertical"
         android:minHeight="0dp"
-        android:text="@string/view_transaction_detail_in_algoexplorer"
+        android:text="@string/view_transaction_detail_in_pera_explorer"
         android:textColor="@color/positive"
         app:layout_constraintBottom_toTopOf="@id/transactionDetailDivider"
         app:layout_constraintEnd_toEndOf="parent"

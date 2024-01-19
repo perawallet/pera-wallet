@@ -27,8 +27,7 @@ import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.appendAssetName
-import com.algorand.android.utils.browser.getAlgoExplorerUrl
-import com.algorand.android.utils.browser.getGoalSeekerUrl
+import com.algorand.android.utils.browser.getPeraExplorerUrl
 import com.algorand.android.utils.decodeBase64IfUTF8
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.formatAsAlgoAmount
@@ -129,8 +128,7 @@ open class BaseTransactionDetailPreviewUseCase constructor(
         val networkSlug = getActiveNodeUseCase.getActiveNode()?.networkSlug
         return transactionDetailItemMapper.mapToChipGroupItem(
             transactionId = transactionId,
-            goalSeekerUrl = getGoalSeekerUrl(transactionId, networkSlug),
-            algoExplorerUrl = getAlgoExplorerUrl(transactionId, networkSlug)
+            peraExplorerUrl = getPeraExplorerUrl(transactionId, networkSlug)
         )
     }
 

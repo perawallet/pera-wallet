@@ -16,7 +16,6 @@ import com.algorand.android.BuildConfig
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDeserializer
 import com.algorand.android.network.AlgodApi
-import com.algorand.android.network.AlgodExplorerPriceApi
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.network.IndexerApi
 import com.algorand.android.network.IndexerInterceptor
@@ -210,20 +209,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @Named("algorandExplorerPriceInterface")
-    internal fun provideAlgodExplorerPriceInterface(
-        @Named("algodExplorerPriceHttpClient") algodExplorerPriceHttpClient: OkHttpClient,
-        gson: Gson
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BuildConfig.ALGO_EXPLORER_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(algodExplorerPriceHttpClient)
-            .build()
-    }
-
-    @Provides
-    @Singleton
     internal fun provideAlgodApi(
         @Named("algodRetrofitInterface") algodRetrofitInterface: Retrofit
     ): AlgodApi {
@@ -244,13 +229,5 @@ object NetworkModule {
         @Named("mobileAlgorandRetrofitInterface") mobileAlgorandRetrofitInterface: Retrofit
     ): MobileAlgorandApi {
         return mobileAlgorandRetrofitInterface.create(MobileAlgorandApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    internal fun provideAlgorandExplorerPriceApi(
-        @Named("algorandExplorerPriceInterface") algodExplorerPriceInterface: Retrofit
-    ): AlgodExplorerPriceApi {
-        return algodExplorerPriceInterface.create(AlgodExplorerPriceApi::class.java)
     }
 }

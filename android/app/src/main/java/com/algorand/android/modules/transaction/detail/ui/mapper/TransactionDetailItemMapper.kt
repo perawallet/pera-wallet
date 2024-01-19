@@ -213,13 +213,11 @@ class TransactionDetailItemMapper @Inject constructor() {
 
     fun mapToChipGroupItem(
         transactionId: String,
-        goalSeekerUrl: String,
-        algoExplorerUrl: String
+        peraExplorerUrl: String
     ): TransactionDetailItem.ChipGroupItem {
         return TransactionDetailItem.ChipGroupItem(
             transactionId = transactionId,
-            algoExplorerUrl = algoExplorerUrl,
-            goalSeekerUrl = goalSeekerUrl
+            peraExplorerUrl = peraExplorerUrl,
         )
     }
 

@@ -309,8 +309,6 @@
         <item quantity="one">Verify Selected Account</item>
         <item quantity="other">Verify Selected Accounts</item>
     </plurals>
-    <string name="open_in_algoexplorer">Open in AlgoExplorer</string>
-    <string name="open_in_goalseeker">Open in GoalSeeker</string>
     <string name="overwrite_existing_contract">Overwrite existing contact</string>
     <string name="this_address_is_already_in_your_contract">This address is already in your contacts as %1$s. Would you like to replace that contact?</string>
     <string name="one_day_abbr">1D</string>
@@ -522,7 +520,7 @@
     <string name="default_frozen">Default\nFrozen</string>
 
     <string name="transaction_details">Transaction Details</string>
-    <string name="show_algoexplorer">Show Algo Explorer</string>
+    <string name="show_pera_explorer">Show Pera Explorer</string>
     <string name="remainder_close_to">Remainder\nClose To</string>
 
     <string name="portfolio_value">Portfolio Value</string>
@@ -627,7 +625,6 @@
     <string name="collection_name">Collection name</string>
     <string name="properties">Properties</string>
     <string name="view_transaction">View Transaction</string>
-    <string name="show_on_algoexplorer">Show on Algoexplorer</string>
     <string name="show_on_nftexplorer">Show on NFTExplorer</string>
     <string name="we_don_t_support">We don\'t support this NFT media type yet.</string>
     <string name="we_can_t_display">We can\'t display the visual temporarily.</string>
@@ -886,7 +883,7 @@
         <item quantity="other">Sign Transactions</item>
     </plurals>
     <string name="signing_index_out_of_count">Signing %1$d out of %2$d…</string>
-    <string name="view_transaction_detail_in_algoexplorer">View Transaction detail in AlgoExplorer</string>
+    <string name="view_transaction_detail_in_pera_explorer">View Transaction detail in Pera Explorer</string>
     <string name="go_to_homepage">Go to Homepage</string>
 
     <string name="sending_the_transaction">Sending the transaction</string>
@@ -1358,4 +1355,5 @@
 
     <string name="buying_algo_through_pera_wallet">Buying Algo through Pera Wallet is not available at the
         moment</string>
+    <string name="open_in_pera_explorer">Open in Pera Explorer</string>
 </resources>

@@ -44,25 +44,16 @@ class WalletConnectExtrasChipGroupView(
         updatePadding(padding)
         with(transactionRequestExtrasInfo) {
             createRawTransactionChip(rawTransaction)
-            createShowAssetInAlgoExplorerChip(assetId)
-            createShowAppInAlgoExplorerChip(appId)
+            createShowAssetInPeraExplorerChip(assetId)
+            createShowAppInPeraExplorerChip(appId)
             createAssetUrlChip(assetUrl)
             createAssetMetadataChip(assetMetadata)
         }
     }
 
-    fun initOpenInExplorerChips(transactionIdWithoutPrefix: String?, @DimenRes padding: Int) {
+    fun initOpenInExplorerChipsByUrl(peraExplorerUrl: String, @DimenRes padding: Int) {
         updatePadding(padding)
-        transactionIdWithoutPrefix?.let {
-            createOpenInAlgoExplorerChip(it)
-            createOpenInGoalSeekerChip(it)
-        }
-    }
-
-    fun initOpenInExplorerChips(algoExplorerUrl: String, goalSeekerUrl: String, @DimenRes padding: Int) {
-        updatePadding(padding)
-        createOpenInAlgoExplorerChip(algoExplorerUrl)
-        createOpenInGoalSeekerChip(goalSeekerUrl)
+        createOpenInPeraExplorerChip(peraExplorerUrl)
     }
 
     private fun createRawTransactionChip(rawTransaction: WCAlgoTransactionRequest) {
@@ -73,18 +64,18 @@ class WalletConnectExtrasChipGroupView(
         }
     }
 
-    private fun createShowAssetInAlgoExplorerChip(assetId: Long?) {
+    private fun createShowAssetInPeraExplorerChip(assetId: Long?) {
         if (assetId != null) {
-            val showAssetInAlgoExplorerChip = createChip(R.string.show_algoexplorer)
-            showAssetInAlgoExplorerChip.setOnClickListener { listener?.onShowAssetInAlgoExplorerClick(assetId) }
-            addView(showAssetInAlgoExplorerChip)
+            val showAssetInPeraExplorerChip = createChip(R.string.show_pera_explorer)
+            showAssetInPeraExplorerChip.setOnClickListener { listener?.onShowAssetInPeraExplorerClick(assetId) }
+            addView(showAssetInPeraExplorerChip)
         }
     }
 
-    private fun createShowAppInAlgoExplorerChip(appId: Long?) {
+    private fun createShowAppInPeraExplorerChip(appId: Long?) {
         if (appId != null) {
-            val showAlgoAppInExplorerChip = createChip(R.string.show_algoexplorer)
-            showAlgoAppInExplorerChip.setOnClickListener { listener?.onShowAppInAlgoExplorerClick(appId) }
+            val showAlgoAppInExplorerChip = createChip(R.string.show_pera_explorer)
+            showAlgoAppInExplorerChip.setOnClickListener { listener?.onShowAppInPeraExplorerClick(appId) }
             addView(showAlgoAppInExplorerChip)
         }
     }
@@ -113,16 +104,10 @@ class WalletConnectExtrasChipGroupView(
         }
     }
 
-    private fun createOpenInAlgoExplorerChip(url: String) {
-        val showInAlgoExplorerChip = createChip(R.string.open_in_algoexplorer)
-        showInAlgoExplorerChip.setOnClickListener { listener?.onOpenInAlgoExplorerClick(url) }
-        addView(showInAlgoExplorerChip)
-    }
-
-    private fun createOpenInGoalSeekerChip(url: String) {
-        val showInGoalSeekerChip = createChip(R.string.open_in_goalseeker)
-        showInGoalSeekerChip.setOnClickListener { listener?.onOpenInGoalSeekerClick(url) }
-        addView(showInGoalSeekerChip)
+    private fun createOpenInPeraExplorerChip(url: String) {
+        val showInPeraExplorerChip = createChip(R.string.open_in_pera_explorer)
+        showInPeraExplorerChip.setOnClickListener { listener?.onOpenInPeraExplorerClick(url) }
+        addView(showInPeraExplorerChip)
     }
 
     private fun updatePadding(@DimenRes padding: Int) {
@@ -131,12 +116,11 @@ class WalletConnectExtrasChipGroupView(
 
     interface Listener {
         fun onRawTransactionClick(rawTransaction: WCAlgoTransactionRequest) {}
-        fun onShowAssetInAlgoExplorerClick(assetId: Long) {}
-        fun onShowAppInAlgoExplorerClick(appId: Long) {}
+        fun onShowAssetInPeraExplorerClick(assetId: Long) {}
+        fun onShowAppInPeraExplorerClick(appId: Long) {}
         fun onAssetUrlClick(url: String) {}
         fun onAssetMetadataClick(walletConnectTransactionAssetDetail: WalletConnectTransactionAssetDetail) {}
 
-        fun onOpenInAlgoExplorerClick(url: String) {}
-        fun onOpenInGoalSeekerClick(url: String) {}
+        fun onOpenInPeraExplorerClick(url: String) {}
     }
 }

@@ -54,12 +54,8 @@ class TransactionDetailAdapter(
 ) : ListAdapter<TransactionDetailItem, BaseViewHolder<TransactionDetailItem>>(BaseDiffUtil()) {
 
     private val chipGroupListener = object : WalletConnectExtrasChipGroupView.Listener {
-        override fun onOpenInAlgoExplorerClick(url: String) {
-            extrasExtrasClickListener?.onAlgoExplorerClick(url)
-        }
-
-        override fun onOpenInGoalSeekerClick(url: String) {
-            extrasExtrasClickListener?.onGoalSeekerClick(url)
+        override fun onOpenInPeraExplorerClick(url: String) {
+            extrasExtrasClickListener?.onPeraExplorerClick(url)
         }
     }
 
@@ -266,8 +262,7 @@ class TransactionDetailAdapter(
     }
 
     interface ExtrasClickListener {
-        fun onAlgoExplorerClick(url: String)
-        fun onGoalSeekerClick(url: String)
+        fun onPeraExplorerClick(url: String)
     }
 
     fun interface TooltipListener {

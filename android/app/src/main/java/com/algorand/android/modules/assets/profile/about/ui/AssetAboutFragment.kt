@@ -26,7 +26,7 @@ import com.algorand.android.databinding.FragmentAssetAboutBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.modules.assets.profile.about.ui.adapter.AssetAboutAdapter
 import com.algorand.android.modules.assets.profile.about.ui.model.AssetAboutPreview
-import com.algorand.android.utils.browser.openAccountAddressInAlgoExplorer
+import com.algorand.android.utils.browser.openAccountAddressInPeraExplorer
 import com.algorand.android.utils.browser.openUrl
 import com.algorand.android.utils.composeReportAssetEmail
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -66,7 +66,7 @@ class AssetAboutFragment : BaseFragment(R.layout.fragment_asset_about) {
         }
 
         override fun onCreatorAddressClick(creatorAddress: String) {
-            context?.openAccountAddressInAlgoExplorer(
+            context?.openAccountAddressInPeraExplorer(
                 accountAddress = creatorAddress,
                 networkSlug = assetAboutViewModel.getActiveNodeNetworkSlug()
             )

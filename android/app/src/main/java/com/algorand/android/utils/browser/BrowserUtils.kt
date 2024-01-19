@@ -38,8 +38,7 @@ import com.algorand.android.utils.recordException
 
 private const val PRIVACY_POLICY_URL = "https://perawallet.app/privacy-policy/"
 private const val TERMS_AND_SERVICES_URL = "https://perawallet.app/terms-and-services/"
-private const val GOAL_SEEKER_BASE_URL = "https://goalseeker.purestake.io/algorand"
-private const val ALGO_EXPLORER_URL = "algoexplorer.io"
+private const val PERA_EXPLORER_URL = "explorer.perawallet.app"
 private const val MARKET_PAGE_URL = "https://play.google.com/store/apps/details?id=com.algorand.android"
 private const val SUPPORT_CENTER_URL = "https://perawallet.app/support/"
 private const val TRANSACTION_INFO_URL = "https://perawallet.app/support/transactions/"
@@ -99,23 +98,19 @@ fun Context.openUrl(url: String) {
 }
 
 // TODO Refactor here
-fun Context.openTransactionInAlgoExplorer(transactionIdWithoutPrefix: String, networkSlug: String?) {
+fun Context.openTransactionInPeraExplorer(transactionIdWithoutPrefix: String, networkSlug: String?) {
     val subDomain = createSubDomainWithNetworkSlug(networkSlug)
-    openUrl("https://$subDomain$ALGO_EXPLORER_URL/tx/$transactionIdWithoutPrefix")
+    openUrl("https://$subDomain$PERA_EXPLORER_URL/tx/$transactionIdWithoutPrefix/")
 }
 
-fun Context.openTransactionInGoalSeeker(transactionIdWithoutPrefix: String, nodeSlug: String?) {
-    openUrl("$GOAL_SEEKER_BASE_URL/$nodeSlug/transaction/$transactionIdWithoutPrefix")
+fun Context.openAssetInPeraExplorer(assetId: Long?, networkSlug: String?) {
+    val subDomain = createSubDomainWithNetworkSlug(networkSlug)
+    openUrl("https://$subDomain$PERA_EXPLORER_URL/asset/$assetId/")
 }
 
-fun Context.openAssetInAlgoExplorer(assetId: Long?, networkSlug: String?) {
+fun Context.openAccountAddressInPeraExplorer(accountAddress: String, networkSlug: String?) {
     val subDomain = createSubDomainWithNetworkSlug(networkSlug)
-    openUrl("https://$subDomain$ALGO_EXPLORER_URL/asset/$assetId")
-}
-
-fun Context.openAccountAddressInAlgoExplorer(accountAddress: String, networkSlug: String?) {
-    val subDomain = createSubDomainWithNetworkSlug(networkSlug)
-    openUrl("https://$subDomain$ALGO_EXPLORER_URL/address/$accountAddress")
+    openUrl("https://$subDomain$PERA_EXPLORER_URL/address/$accountAddress/")
 }
 
 // TODO: 4.03.2022 The site is not supporting test net yet, so it's not tested on MainNet
@@ -124,9 +119,9 @@ fun Context.showAssetOnNftExplorer(assetId: Long, networkSlug: String?) {
     openUrl("https://www.nftexplorer.app/asset/$assetId")
 }
 
-fun Context.openApplicationInAlgoExplorer(applicationId: Long?, networkSlug: String?) {
+fun Context.openApplicationInPeraExplorer(applicationId: Long?, networkSlug: String?) {
     val subDomain = createSubDomainWithNetworkSlug(networkSlug)
-    openUrl("https://$subDomain$ALGO_EXPLORER_URL/application/$applicationId")
+    openUrl("https://$subDomain$PERA_EXPLORER_URL/application/$applicationId/")
 }
 
 fun Context.openAssetUrl(assetUrl: String?) {
@@ -173,22 +168,18 @@ fun Context.openVestigeTermsOfServiceUrl() {
     openUrl(VESTIGE_TERMS_OF_SERVICE_URL)
 }
 
-fun Context.openGroupTransactionInAlgoExplorer(groupId: String?, networkSlug: String?) {
+fun Context.openGroupTransactionInPeraExplorer(groupId: String?, networkSlug: String?) {
     val subDomain = createSubDomainWithNetworkSlug(networkSlug)
-    openUrl("https://$subDomain$ALGO_EXPLORER_URL/tx/group/$groupId")
+    openUrl("https://$subDomain$PERA_EXPLORER_URL/tx-group/$groupId/")
 }
 
 fun Context.openTinymanFaqPriceImpactUrl() {
     openUrl(TINYMAN_FAQ_PRICE_IMPACT_URL)
 }
 
-fun getGoalSeekerUrl(transactionId: String, nodeSlug: String?): String {
-    return "$GOAL_SEEKER_BASE_URL/$nodeSlug/transaction/$transactionId"
-}
-
-fun getAlgoExplorerUrl(transactionId: String, networkSlug: String?): String {
+fun getPeraExplorerUrl(transactionId: String, networkSlug: String?): String {
     val subDomain = createSubDomainWithNetworkSlug(networkSlug)
-    return "$HTTPS_PROTOCOL$subDomain$ALGO_EXPLORER_URL/tx/$transactionId"
+    return "$HTTPS_PROTOCOL$subDomain$PERA_EXPLORER_URL/tx/$transactionId/"
 }
 
 private fun createSubDomainWithNetworkSlug(networkSlug: String?): String {

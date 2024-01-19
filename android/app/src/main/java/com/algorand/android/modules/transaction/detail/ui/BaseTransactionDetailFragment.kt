@@ -21,8 +21,8 @@ import com.algorand.android.databinding.FragmentTransactionDetailBinding
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.transaction.detail.domain.model.TransactionDetailPreview
 import com.algorand.android.modules.transaction.detail.ui.adapter.TransactionDetailAdapter
-import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.browser.openUrl
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
 
 abstract class BaseTransactionDetailFragment : DaggerBaseFragment(R.layout.fragment_transaction_detail) {
@@ -44,11 +44,7 @@ abstract class BaseTransactionDetailFragment : DaggerBaseFragment(R.layout.fragm
     }
 
     protected val transactionDetailClickListener = object : TransactionDetailAdapter.ExtrasClickListener {
-        override fun onAlgoExplorerClick(url: String) {
-            context?.openUrl(url)
-        }
-
-        override fun onGoalSeekerClick(url: String) {
+        override fun onPeraExplorerClick(url: String) {
             context?.openUrl(url)
         }
     }
