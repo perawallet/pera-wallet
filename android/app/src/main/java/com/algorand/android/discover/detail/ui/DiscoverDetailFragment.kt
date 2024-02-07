@@ -31,6 +31,7 @@ import com.algorand.android.discover.utils.getDiscoverAuthHeader
 import com.algorand.android.discover.utils.getDiscoverTokenDetailUrl
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.browser.openExternalBrowserApp
 import com.algorand.android.utils.browser.openUrl
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
@@ -104,6 +105,12 @@ class DiscoverDetailFragment :
 
     override fun getDeviceId() {
         discoverViewModel.getDeviceId()
+    }
+
+    override fun openSystemBrowser(jsonEncodedPayload: String) {
+        discoverViewModel.getRedirectUrlFromJson(jsonEncodedPayload)?.let {
+            context?.openExternalBrowserApp(it)
+        }
     }
 
     private fun loadUrl(preview: DiscoverDetailPreview) {

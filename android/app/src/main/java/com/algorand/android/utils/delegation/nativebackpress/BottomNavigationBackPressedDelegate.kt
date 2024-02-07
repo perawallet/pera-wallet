@@ -43,6 +43,6 @@ class BottomNavigationBackPressedDelegate : BackPressedControllerComponent {
     }
 
     companion object {
-        private const val ACCOUNTS_FRAGMENT_NAVIGATION_ID = R.id.accountsFragment
+        private val ACCOUNTS_FRAGMENT_NAVIGATION_ID = R.id.accountsFragment
     }
 }

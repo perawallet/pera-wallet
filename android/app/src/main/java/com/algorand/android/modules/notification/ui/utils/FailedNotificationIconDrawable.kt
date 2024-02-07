@@ -35,8 +35,8 @@ class FailedNotificationIconDrawable {
 
     companion object {
         private const val DEFAULT_SIZE = 40
-        private const val BORDER_COLOR = R.color.error_tint_color
-        private const val BACKGROUND_COLOR = R.color.error_tint_color
-        private const val TINT_COLOR = R.color.background
+        private val BORDER_COLOR = R.color.error_tint_color
+        private val BACKGROUND_COLOR = R.color.error_tint_color
+        private val TINT_COLOR = R.color.background
     }
 }

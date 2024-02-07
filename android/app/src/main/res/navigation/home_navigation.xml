@@ -26,9 +26,7 @@
 
     <include app:graph="@navigation/warning_confirmation_navigation" />
 
-    <include app:graph="@navigation/moonpay_navigation" />
-
-    <include app:graph="@navigation/moonpay_result_navigation" />
+    <include app:graph="@navigation/meld_navigation" />
 
     <include app:graph="@navigation/contact_addition_navigation" />
 
@@ -89,10 +87,6 @@
     <include app:graph="@navigation/nft_card_viewer_navigation" />
 
     <include app:graph="@navigation/bidali_navigation" />
-
-    <include app:graph="@navigation/transak_navigation" />
-
-    <include app:graph="@navigation/sardine_navigation" />
 
     <include app:graph="@navigation/web_import_navigation" />
 
@@ -233,9 +227,6 @@
         app:destination="@id/receiveAccountSelectionFragment" />
 
     <action
-        android:id="@+id/action_global_moonpayNavigation"
-        app:destination="@id/moonpayNavigation" />
-    <action
         android:id="@+id/action_global_buySellActionsBottomSheet"
         app:destination="@id/buySellActionsBottomSheet" />
 
@@ -259,17 +250,6 @@
     <action
         android:id="@+id/action_global_accountsQrScannerFragment"
         app:destination="@id/accountsQrScannerFragment" />
-
-    <action
-        android:id="@+id/action_global_moonpayResultNavigation"
-        app:destination="@id/moonpayResultNavigation">
-        <argument
-            android:name="walletAddress"
-            app:argType="string" />
-        <argument
-            android:name="transactionStatus"
-            app:argType="com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus" />
-    </action>
 
     <action
         android:id="@+id/action_global_walletConnectTransactionRequestNavigation"
@@ -469,9 +449,6 @@
         <action
             android:id="@+id/action_accountsFragment_to_notificationCenterFragment"
             app:destination="@id/notificationCenterFragment" />
-        <action
-            android:id="@+id/action_accountsFragment_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation" />
         <action
             android:id="@+id/action_accountsFragment_to_buySellActionsBottomSheet"
             app:destination="@id/buySellActionsBottomSheet" />
@@ -829,13 +806,6 @@
         <action
             android:id="@+id/action_accountDetailFragment_to_manageAssetsBottomSheet"
             app:destination="@id/manageAssetsBottomSheet" />
-        <action
-            android:id="@+id/action_accountDetailFragment_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation">
-            <argument
-                android:name="walletAddress"
-                app:argType="string" />
-        </action>
         <action
             android:id="@+id/action_accountDetailFragment_to_buySellActionsBottomSheet"
             app:destination="@id/buySellActionsBottomSheet">
@@ -1304,13 +1274,6 @@
         android:label="AccountQuickActionsBottomSheet"
         tools:layout="@layout/bottom_sheet_account_quick_actions">
         <action
-            android:id="@+id/action_accountQuickActionsBottomSheet_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation">
-            <argument
-                android:name="walletAddress"
-                app:argType="string" />
-        </action>
-        <action
             android:id="@+id/action_accountQuickActionsBottomSheet_to_buySellActionsBottomSheet"
             app:destination="@id/buySellActionsBottomSheet">
             <argument
@@ -1446,8 +1409,8 @@
             app:argType="string"
             app:nullable="true" />
         <action
-            android:id="@+id/action_buySellActionsBottomSheet_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation">
+            android:id="@+id/action_buySellActionsBottomSheet_to_meldNavigation"
+            app:destination="@id/meldNavigation">
             <argument
                 android:name="walletAddress"
                 app:argType="string"
@@ -1456,22 +1419,6 @@
         <action
             android:id="@+id/action_buySellActionsBottomSheet_to_bidaliNavigation"
             app:destination="@id/bidaliNavigation">
-            <argument
-                android:name="accountAddress"
-                app:argType="string"
-                app:nullable="true" />
-        </action>
-        <action
-            android:id="@+id/action_buySellActionsBottomSheet_to_transakNavigation"
-            app:destination="@id/transakNavigation">
-            <argument
-                android:name="accountAddress"
-                app:argType="string"
-                app:nullable="true" />
-        </action>
-        <action
-            android:id="@+id/action_buySellActionsBottomSheet_to_sardineNavigation"
-            app:destination="@id/sardineNavigation">
             <argument
                 android:name="accountAddress"
                 app:argType="string"

@@ -17,6 +17,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.algorand.android.assetsearch.domain.mapper.AssetSearchQueryMapper
 import com.algorand.android.assetsearch.domain.pagination.AssetSearchPagerBuilder
+import com.algorand.android.discover.common.ui.model.OpenSystemBrowserRequest
 import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.discover.home.domain.model.DappInfo
 import com.algorand.android.discover.home.domain.model.TokenDetailInfo
@@ -27,6 +28,7 @@ import com.algorand.android.discover.home.ui.mapper.DiscoverDappFavoritesMapper
 import com.algorand.android.discover.home.ui.model.DiscoverAssetItem
 import com.algorand.android.discover.home.ui.model.DiscoverHomePreview
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.fromJson
 import com.algorand.android.utils.preference.getSavedThemePreference
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -173,4 +175,8 @@ class DiscoverHomePreviewUseCase @Inject constructor(
             gson.fromJson(data, TokenDetailInfo::class.java)
         )
     )
+
+    fun getOpenSystemBrowserRequestFromJson(json: String): OpenSystemBrowserRequest? {
+        return gson.fromJson<OpenSystemBrowserRequest>(json)
+    }
 }

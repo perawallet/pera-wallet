@@ -40,7 +40,7 @@ class AssetTransferPreviewUseCase @Inject constructor(
             currencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName(),
             note = transactionData.xnote ?: transactionData.note,
             isNoteEditable = transactionData.xnote == null,
-            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(transactionData.senderAccountName)
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(transactionData.senderAccountAddress)
         )
     }
 

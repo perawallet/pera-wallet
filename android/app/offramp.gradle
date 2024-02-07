@@ -17,8 +17,5 @@ android {
     defaultConfig {
         buildConfigField "String", "PROD_BIDALI_API_KEY", offrampApiKeyProps["PROD_BIDALI_API_KEY"]
         buildConfigField "String", "STAGING_BIDALI_API_KEY", offrampApiKeyProps["STAGING_BIDALI_API_KEY"]
-        buildConfigField "String", "PROD_TRANSAK_API_KEY", offrampApiKeyProps["PROD_TRANSAK_API_KEY"]
-        buildConfigField "String", "STAGING_TRANSAK_API_KEY", offrampApiKeyProps["STAGING_TRANSAK_API_KEY"]
-        buildConfigField "String", "SARDINE_API_KEY", offrampApiKeyProps["SARDINE_API_KEY"]
     }
 }

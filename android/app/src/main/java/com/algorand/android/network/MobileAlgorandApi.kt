@@ -41,6 +41,7 @@ import com.algorand.android.modules.parity.data.model.CurrencyDetailResponse
 import com.algorand.android.modules.swap.assetselection.toasset.data.model.AvailableSwapAssetListResponse
 import com.algorand.android.modules.swap.assetswap.data.model.PeraFeeRequestBody
 import com.algorand.android.modules.swap.assetswap.data.model.PeraFeeResponse
+import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteExceptionRequestBody
 import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteRequestBody
 import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteResultResponse
 import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsRequestBody
@@ -207,4 +208,10 @@ interface MobileAlgorandApi {
     suspend fun readAccountsNameServices(
         @Body fetchNameServicesRequestBody: FetchNameServicesRequestBody
     ): Response<FetchNameServicesResponse>
+
+    @PATCH("v1/dex-swap/quotes/{quote_id}/")
+    suspend fun putSwapQuoteException(
+        @Path("quote_id") quoteId: Long,
+        @Body swapQuoteExceptionRequestBody: SwapQuoteExceptionRequestBody
+    ): Response<Unit>
 }

@@ -55,8 +55,8 @@
                 app:argType="boolean" />
         </action>
         <action
-            android:id="@+id/action_discoverDetailFragment_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation" />
+            android:id="@+id/action_discoverDetailFragment_to_meldNavigation"
+            app:destination="@id/meldNavigation" />
         <action
             android:id="@+id/action_discoverDetailFragment_to_swapAccountSelectionNavigation"
             app:destination="@id/swapAccountSelectionNavigation">

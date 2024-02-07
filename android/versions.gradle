@@ -1,8 +1,8 @@
 ext {
     targets = [
-            compileSdkVersion: 33,
-            minSdkVersion    : 24,
-            targetSdkVersion : 33
+            compileSdkVersion: 34,
+            minSdkVersion    : 26,
+            targetSdkVersion : 34
     ]
 
     application = [
@@ -11,42 +11,42 @@ ext {
 
     libVersions = [
             coroutines      : '1.7.3',
-            material        : '1.9.0',
+            material        : '1.11.0',
             appCompat       : '1.6.1',
             legacySupport   : '1.0.0',
-            lifecycle       : '2.6.1',
+            lifecycle       : '2.7.0',
             lifecycleExt    : '2.2.0',
             constraintLayout: '2.1.4',
-            fragment        : '1.6.1',
-            coreKtx         : '1.10.1',
-            navigation      : '2.6.0',
-            paging          : '3.2.0',
+            fragment        : '1.6.2',
+            coreKtx         : '1.12.0',
+            navigation      : '2.7.6',
+            paging          : '3.2.1',
             retrofit        : '2.9.0',
-            okhttp          : '4.10.0',
-            hiltCompiler    : '1.0.0',
+            okhttp          : '4.12.0',
+            hiltCompiler    : '1.1.0',
             biometric       : '1.1.0',
-            flexbox         : '2.0.1',
+            flexbox         : '3.0.0',
             zxing           : '4.3.0',
-            room            : '2.5.2',
+            room            : '2.6.1',
             glide           : '4.16.0',
             multidex        : '2.0.1',
-            tink            : '1.10.0',
+            tink            : '1.12.0',
             mpChart         : '3.1.0',
-            browser         : '1.5.0',
+            browser         : '1.7.0',
             playcore        : '1.10.3',
-            ble             : '2.6.1',
-            lottie          : '6.1.0',
-            desugar         : '2.0.3',
+            ble             : '2.7.2',
+            lottie          : '6.3.0',
+            desugar         : '2.0.4',
             localization    : '1.2.11',
             hipoexceptions  : '1.0.0',
             mpAndroidChart  : '3.1.0',
-            javaWebSocket   : '1.5.4',
+            javaWebSocket   : '1.5.5',
             khex            : '1.1.2',
             moshi           : '1.15.0',
             walletConnectBom: '1.15.0',
-            exoPlayer       : '2.19.0',
-            firebaseBom     : '32.2.2',
-            algoSdk         : '2.2.0'
+            exoPlayer       : '2.19.1',
+            firebaseBom     : '32.7.1',
+            algoSdk         : '2.4.0'
     ]
 
     discoverVersions = [

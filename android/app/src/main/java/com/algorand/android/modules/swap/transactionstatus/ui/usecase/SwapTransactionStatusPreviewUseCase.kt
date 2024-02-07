@@ -25,18 +25,20 @@ import com.algorand.android.modules.swap.transactionstatus.ui.mapper.SwapTransac
 import com.algorand.android.modules.swap.transactionstatus.ui.model.SwapTransactionStatusPreview
 import com.algorand.android.modules.swap.transactionstatus.ui.model.SwapTransactionStatusType
 import com.algorand.android.usecase.NetworkSlugUseCase
+import com.algorand.android.usecase.UpdateSwapQuoteExceptionUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.extensions.encodeToURL
 import com.algorand.android.utils.formatAmount
+import kotlinx.coroutines.flow.channelFlow
 import java.math.BigInteger
 import javax.inject.Inject
-import kotlinx.coroutines.flow.channelFlow
 
 class SwapTransactionStatusPreviewUseCase @Inject constructor(
     private val swapTransactionStatusPreviewMapper: SwapTransactionStatusPreviewMapper,
     private val networkSlugUseCase: NetworkSlugUseCase,
     private val sendSwapTransactionsManager: SendSwapTransactionsManager,
-    private val swapTransactionEventTrackingUseCase: SwapTransactionEventTrackingUseCase
+    private val swapTransactionEventTrackingUseCase: SwapTransactionEventTrackingUseCase,
+    private val updateSwapQuoteExceptionUseCase: UpdateSwapQuoteExceptionUseCase
 ) {
 
     suspend fun getSwapTransactionStatusPreviewFlow(
@@ -58,6 +60,7 @@ class SwapTransactionStatusPreviewUseCase @Inject constructor(
                         swapQuote = swapQuote
                     )
                 )
+                updateSwapQuoteExceptionUseCase.updateSwapQuoteException(swapQuote.quoteId, it?.exception?.message)
                 logSwapFailureEvent(swapQuote)
             }
         )

@@ -24,7 +24,7 @@ class BuySellActionDestinationDecider @Inject constructor() {
 
     fun getBuySellActionDestination(discoverDetailAction: DiscoverDetailAction?): BuySellActionRequest.Destination? {
         return when (discoverDetailAction) {
-            BUY_ALGO -> BuySellActionRequest.Destination.MOONPAY
+            BUY_ALGO -> BuySellActionRequest.Destination.MELD
             SWAP_FROM_ALGO, SWAP_FROM_TOKEN, SWAP_TO_TOKEN -> BuySellActionRequest.Destination.SWAP
             else -> null
         }

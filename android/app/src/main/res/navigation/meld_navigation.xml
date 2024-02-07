@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/meldNavigation"
+    app:startDestination="@id/meldIntroFragment">
+
+    <fragment
+        android:id="@+id/meldIntroFragment"
+        android:name="com.algorand.android.modules.dapp.meld.ui.intro.MeldIntroFragment"
+        android:label="MeldIntroFragment"
+        tools:layout="@layout/fragment_meld_intro">
+        <argument
+            android:name="walletAddress"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_meldIntroFragment_to_meldAccountSelectionFragment"
+            app:destination="@id/meldAccountSelectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/meldAccountSelectionFragment"
+        android:name="com.algorand.android.modules.dapp.meld.ui.accountselection.MeldAccountSelectionFragment"
+        android:label="MeldAccountSelectionFragment"
+        tools:layout="@layout/fragment_base_account_selection" />
+
+</navigation>

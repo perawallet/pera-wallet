@@ -13,6 +13,9 @@
 <resources>
     <string name="app_name">Pera Algo Wallet</string>
 
+    <!--This value is required to fix this issue https://stackoverflow.com/questions/63325427/firebase-crashlytics-java-lang-illegalstateexception-the-crashlytics-build-id-->
+    <string name="com.crashlytics.android.build_id">1</string>
+
     <string name="version_format">Pera Algo Wallet v%1$s</string>
     <string name="min_seconds_template">%1$02d:%2$02d</string>
     <string name="hidden_passphrase">*************</string>

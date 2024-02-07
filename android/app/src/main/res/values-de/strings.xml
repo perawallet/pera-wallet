@@ -509,8 +509,6 @@
     <string name="confirm_transaction">Transaktion bestätigen</string>
     <string name="your_transaction_was">Ihre Transaktion wurde erfolgreich vom Algorand-Netzwerk empfangen.</string>
     <string name="buy_algo">ALGO kaufen</string>
-    <string name="moonpay_offers">MoonPay bietet die schnellste Möglichkeit, ALGO mit Ihrer lokalen Währung zu kaufen. Kaufen Sie Krypto mit Kreditkarte oder Banküberweisung. Es ist schnell, einfach und sicher.</string>
-    <string name="buy_algo_with">ALGO mit MoonPay kaufen</string>
     <string name="secured_by">Gesichert durch</string>
     <string name="your_algos_are">Ihre Algos sind auf dem Weg!</string>
     <string name="your_payment_is">Ihre Zahlung wird gerade bearbeitet. Es kann einige Minuten dauern, bis sie abgeschlossen ist.</string>
@@ -523,10 +521,8 @@
     <string name="looks_like_your">Es sieht so aus, als wäre Ihr Kauf fehlgeschlagen. Sie müssen es erneut versuchen.</string>
     <string name="email_address">E-Mail-Addresse</string>
     <string name="enter_your_email">Geben sie ihre E-Mail-Adresse ein</string>
-    <string name="continue_with_moonpay">Weiter mit MoonPay</string>
     <string name="i_agree_to_share">Ich bin damit einverstanden, dass meine E-Mail-Adresse an Pera weitergegeben wird und ich Updates zu den Wallet-Funktionen erhalte.</string>
     <string name="not_available">Nicht verfügbar</string>
-    <string name="you_can_not_purchase">Im TestNet können Sie nicht kaufen. Bitte wechseln Sie von den Einstellungen zurück zum MainNet, um MoonPay zu verwenden.</string>
     <string name="your_walletconnect_request_failed">Ihre WalletConnect-Anfrage ist mit folgendem Fehler fehlgeschlagen:\n\n<annotation replacement="error_message">errorMessagePlaceholder</annotation>\n\nBitte versuchen Sie es erneut, indem Sie zu der dApp zurückkehren, mit der Sie die Anfrage initiiert haben.</string>
     <string name="add_an_account">Konto hinzufügen</string>
     <string name="manage_assets">Assets verwalten</string>
@@ -1022,9 +1018,7 @@ das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
     <string name="buy_crypto">Krypto kaufen</string>
     <string name="sell_crypto">Krypto verkaufen</string>
     <string name="use_apple_pay_credit_cards">Verwenden Sie Apple Pay, Kreditkarten oder Banküberweisung</string>
-    <string name="buy_algo_with_sardine">ALGO mit Sardine kaufen</string>
     <string name="use_instant_ach">Nutzen Sie Instant ACH mit Ihrem US-Bankkonto</string>
-    <string name="buy_usdc_with_transak">USDC mit Transak kaufen</string>
     <string name="use_credit_card_bank_transfer">Verwenden Sie Kreditkarten oder Banküberweisungen aus über 150 Ländern</string>
     <string name="buy_gift_cards_with_bidali">Geschenkkarten mit Bidali kaufen</string>
     <string name="you_can_use_your_algo">Sie können Ihr Algo-, USDC- oder USDT-Guthaben verwenden</string>
@@ -1033,9 +1027,5 @@ das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
     <string name="you_can_use_your_algo_or">Sie können Ihr ALGO- oder USDC-Guthaben verwenden, um Geschenkkarten und Handyaufladungen von Tausenden von Marken weltweit zu kaufen!</string>
     <string name="you_can_not_purchase_bidali">Im TestNet können Sie nicht kaufen. Bitte wechseln Sie von den Einstellungen zurück zum MainNet, um Bidali zu verwenden.</string>
     <string name="buy_usdc">USDC kaufen</string>
-    <string name="transak_onboards_users_from_fiat">Transak bringt Nutzer von Fiat zu Krypto in über 800 Apps. Unterstützt Kreditkarten, Debitkarten oder Banküberweisungen in über 150 Ländern.</string>
-    <string name="you_can_not_purchase_transak">Im TestNet können Sie nicht kaufen. Bitte wechseln Sie von den Einstellungen zurück zum MainNet, um Transak zu verwenden.</string>
-    <string name="instant_settlement_and_lower">Sofortige Abrechnung und niedrigere Gebühren für Algo mit sofortigen ACH-Überweisungen. Sardine unterstützt auch lokale Bank- und Kartenzahlungen in über 180 Ländern, Apple Pay und GPay.</string>
-    <string name="you_can_not_purchase_sardine">Im TestNet können Sie nicht kaufen. Bitte wechseln Sie von den Einstellungen zurück zum MainNet, um Sardine zu verwenden.</string>
     <string name="choose_an_account_to_proceed">Wählen Sie ein Konto aus, mit dem Sie fortfahren möchten</string>
 </resources>

@@ -20,39 +20,40 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# ---------------- BEGIN KOTLIN -------------------
-
--keep public enum com.algorand.android.**{
-    *;
-}
--keep class com.algorand.android.models.** { *; }
+# ---------------- BEGIN PERA -------------------
+-keep public enum com.algorand.android.**{ *; }
+-keep class com.algorand.android.** { *; }
+-keep class androidx.** { *; }
 -keep class com.algorand.android.**.model.** { *; }
 
 -keep class com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem
+# ---------------- END PERA ---------------------
 
--keep class androidx.core.app.CoreComponentFactory { *; }
-
-# ---------------- END ENUM ---------------------
-
-# ---------------- BEGIN Glide -------------------
-
+# ---------------- BEGIN GLIDE -------------------
 -keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep class * extends com.bumptech.glide.module.AppGlideModule {
+ <init>(...);
+}
 -keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
   **[] $VALUES;
   public *;
 }
+-keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
+  *** rewind();
+}
+# ---------------- END GLIDE -------------------
 
-# ---------------- END Glide -------------------
 
-# ---------------- END Retrofit -------------------
-
-
-# ---------------- BEGIN Retrofit -------------------
-
+# ---------------- BEGIN RETROFIT -------------------
 # Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
 # EnclosingMethod is required to use InnerClasses.
 -keepattributes Signature, InnerClasses, EnclosingMethod
+
+# Retrofit does reflection on method and parameter annotations.
+-keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
+
+# Keep annotation default values (e.g., retrofit2.http.Field.encoded).
+-keepattributes AnnotationDefault
 
 # Retain service method parameters when optimizing.
 -keepclassmembers,allowshrinking,allowobfuscation interface * {
@@ -69,19 +70,35 @@
 -dontwarn kotlin.Unit
 
 # Top-level functions that can only be used by Kotlin.
--dontwarn retrofit2.-KotlinExtensions
+-dontwarn retrofit2.KotlinExtensions
+-dontwarn retrofit2.KotlinExtensions$*
 
--dontwarn okio.**
+# With R8 full mode, it sees no subtypes of Retrofit interfaces since they are created with a Proxy
+# and replaces all potential values with null. Explicitly keeping the interfaces prevents this.
+-if interface * { @retrofit2.http.* <methods>; }
+-keep,allowobfuscation interface <1>
 
--dontwarn com.squareup.okhttp.**
+# Keep inherited services.
+-if interface * { @retrofit2.http.* <methods>; }
+-keep,allowobfuscation interface * extends <1>
 
-# ---------------- END Retrofit -------------------
+# With R8 full mode generic signatures are stripped for classes that are not
+# kept. Suspend functions are wrapped in continuations where the type argument
+# is used.
+-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
-# ---------------- BEGIN Gson -------------------
+# R8 full mode strips generic signatures from return types if not kept.
+-if interface * { @retrofit2.http.* public *** *(...); }
+-keep,allowoptimization,allowshrinking,allowobfuscation class <3>
 
+# With R8 full mode generic signatures are stripped for classes that are not kept.
+-keep,allowobfuscation,allowshrinking class retrofit2.Response
+# ---------------- END RETR0FIT -------------------
+
+
+# ---------------- BEGIN GSON -------------------
 # Gson uses generic type information stored in a class file when working with fields. Proguard
 # removes such information by default, so configure it to keep all of it.
-
 -keepattributes Signature
 
 # For using GSON @Expose annotation
@@ -91,7 +108,10 @@
 -dontwarn sun.misc.**
 #-keep class com.google.gson.stream.** { *; }
 
-# Prevent proguard from stripping interface information from TypeAdapterFactory,
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.google.gson.examples.android.model.** { <fields>; }
+
+# Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
 # JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
 -keep class * extends com.google.gson.TypeAdapter
 -keep class * implements com.google.gson.TypeAdapterFactory
@@ -102,15 +122,10 @@
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
+# ---------------- END GSON -------------------
 
-# Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.
--keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
--keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
-# ---------------- END Gson -------------------
-
-# ---------------- BEGIN Firebase -------------------
-
+# ---------------- BEGIN FIREBASE -------------------
 -keep class com.firebase.** { *; }
 -keep class org.shaded.apache.** { *; }
 -keepnames class com.shaded.fasterxml.jackson.** { *; }
@@ -128,32 +143,47 @@
  -keep class org.codehaus.** { *; }
  -keepclassmembers public final enum org.codehaus.jackson.annotate.JsonAutoDetect$Visibility {
  public static final org.codehaus.jackson.annotate.JsonAutoDetect$Visibility *; }
+# ---------------- END FIREBASE -------------------
 
-# ---------------- END Firebase -------------------
 
+# ---------------- BEGIN CRASHLYTICS -------------------
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
 
-# ---------------- END Crashlytics -------------------
+# ---------------- END CRASHLYTICS -------------------
 
-# ---------------- BEGIN Dagger -------------------
 
+# ---------------- BEGIN DAGGER -------------------
 -dontwarn com.google.errorprone.annotations.*
-
-# ---------------- END Dagger -------------------
+-keep,allowobfuscation,allowshrinking @dagger.hilt.android.EarlyEntryPoint class *
+# ---------------- END DAGGER -------------------
 
 
 # ---------------- BEGIN AlgoSDK -------------------
-
 -keep class org.msgpack.core.buffer.** { *; }
-
 # ---------------- END AlgoSDK -------------------
 
-# ---------------- BEGIN WalletConnect v2 - Sign Client -------------------
+
+# ---------------- BEGIN WALLET CONNECT -------------------
+-keep class org.walletconnect.** { *; }
+-keep interface org.walletconnect.** { *; }
 
 -keep class com.walletconnect.** { *; }
 -keep interface com.walletconnect.** { *; }
+# ---------------- END WALLET CONNECT -------------------
 
-# ---------------- END WalletConnect v2 - Sign Client -------------------
+
+# ---------------- BEGIN OTHERS -------------------
+-keep class com.google.gson.examples.android.model.** { <fields>; }
+
+# Prevent R8 from leaving Data object members always null
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
+# ---------------- END OTHERS -------------------

@@ -36,11 +36,11 @@ import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.AlgoAssetInformationProvider
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Event
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
-import javax.inject.Inject
 
 @SuppressWarnings("LongParameterList")
 class AssetDetailPreviewUseCase @Inject constructor(
@@ -117,7 +117,7 @@ class AssetDetailPreviewUseCase @Inject constructor(
         return if (hasAccountAuthority) {
             preview?.copy(
                 onNavigationEvent = Event(
-                    AssetDetailFragmentDirections.actionAssetDetailFragmentToMoonpayNavigation(accountAddress)
+                    AssetDetailFragmentDirections.actionAssetDetailFragmentToMeldNavigation(accountAddress)
                 )
             )
         } else {

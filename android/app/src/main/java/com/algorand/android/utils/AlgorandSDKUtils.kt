@@ -145,7 +145,7 @@ fun TransactionParams.makeTx(
 }
 
 fun TransactionParams.getTxFee(signedTxData: ByteArray? = null): Long {
-    return ((signedTxData?.size ?: DATA_SIZE_FOR_MAX) * fee).coerceAtLeast(MIN_FEE)
+    return ((signedTxData?.size ?: DATA_SIZE_FOR_MAX) * fee).coerceAtLeast(minFee ?: MIN_FEE)
 }
 
 fun String?.isValidAddress(): Boolean {

@@ -15,9 +15,9 @@ package com.algorand.android.modules.walletconnect.client.v2.domain
 import android.util.Log
 import com.algorand.android.modules.walletconnect.client.v2.domain.repository.WalletConnectV2Repository
 import com.algorand.android.utils.launchIO
+import com.walletconnect.android.internal.common.exception.CannotFindSequenceForTopic
 import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
-import com.walletconnect.sign.common.exceptions.CannotFindSequenceForTopic
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton

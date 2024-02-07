@@ -46,10 +46,6 @@ sealed class DecodedQrCode : Parcelable {
 
             @Parcelize
             data class AddContact(val contactPublicKey: String, val contactName: String?) : Deeplink()
-
-            @Parcelize
-            data class MoonPayResult(val address: String, val transactionStatus: String, val transactionId: String?) :
-                Deeplink()
         }
     }
 

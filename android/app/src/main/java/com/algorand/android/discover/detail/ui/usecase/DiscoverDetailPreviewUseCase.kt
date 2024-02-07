@@ -15,6 +15,7 @@ package com.algorand.android.discover.detail.ui.usecase
 import android.content.SharedPreferences
 import androidx.navigation.NavDirections
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
+import com.algorand.android.discover.common.ui.model.OpenSystemBrowserRequest
 import com.algorand.android.discover.common.ui.model.WebViewError
 import com.algorand.android.discover.detail.domain.model.DetailActionRequest
 import com.algorand.android.discover.detail.ui.DiscoverDetailFragmentDirections
@@ -71,6 +72,10 @@ class DiscoverDetailPreviewUseCase @Inject constructor(
         loadingErrorEvent = Event(WebViewError.HTTP_ERROR)
     )
 
+    fun getOpenSystemBrowserRequestFromJson(json: String): OpenSystemBrowserRequest? {
+        return gson.fromJson<OpenSystemBrowserRequest>(json)
+    }
+
     suspend fun logTokenDetailActionButtonClick(jsonEncodedPayload: String) {
         val detailActionRequest = getDetailActionRequestFromJson(jsonEncodedPayload)
 
@@ -96,8 +101,8 @@ class DiscoverDetailPreviewUseCase @Inject constructor(
         )
         var swapNavDirection: NavDirections? = null
         when (buySellActionRequest.destination) {
-            BuySellActionRequest.Destination.MOONPAY -> {
-                swapNavDirection = DiscoverDetailFragmentDirections.actionDiscoverDetailFragmentToMoonpayNavigation()
+            BuySellActionRequest.Destination.MELD -> {
+                swapNavDirection = DiscoverDetailFragmentDirections.actionDiscoverDetailFragmentToMeldNavigation()
             }
             BuySellActionRequest.Destination.SWAP -> {
                 discoverSwapNavigationDestinationHelper.getSwapNavigationDestination(

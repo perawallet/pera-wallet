@@ -21,7 +21,7 @@ sealed class FileUploadState {
     abstract val uploadActionButtonTextResId: Int?
 
     object Initial : FileUploadState() {
-        const val uploadStatusTextResId: Int = R.string.select_your_backup_file
+        val uploadStatusTextResId: Int = R.string.select_your_backup_file
         override val uploadStatusIconResId: Int = R.drawable.ic_share
         override val uploadStatusIconTintResId: Int = R.color.text_main
         override val uploadActionButtonTextResId: Int? = null

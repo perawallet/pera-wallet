@@ -183,6 +183,10 @@ class DiscoverHomeViewModel @Inject constructor(
         }
     }
 
+    fun getRedirectUrlFromJson(openSystemBrowserRequestJson: String): String? {
+        return discoverHomePreviewUseCase.getOpenSystemBrowserRequestFromJson(openSystemBrowserRequestJson)?.url
+    }
+
     override fun onPageRequestedShouldOverrideUrlLoading(url: String): Boolean {
         viewModelScope.launch {
             _discoverHomePreviewFlow

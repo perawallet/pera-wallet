@@ -275,31 +275,6 @@ sealed class BaseDeepLink {
         }
     }
 
-    class MoonpayResultDeepLink(
-        val accountAddress: String,
-        val transactionStatus: String,
-        val transactionId: String?
-    ) : BaseDeepLink() {
-
-        companion object : DeepLinkCreator {
-            override fun createDeepLink(rawDeeplink: RawDeepLink): BaseDeepLink {
-                return MoonpayResultDeepLink(
-                    accountAddress = rawDeeplink.accountAddress ?: DEFAULT_ACCOUNT_ADDRESS,
-                    transactionStatus = rawDeeplink.transactionStatus ?: DEFAULT_TRANSACTION_STATUS,
-                    transactionId = rawDeeplink.transactionId
-                )
-            }
-
-            override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
-                return with(rawDeepLink) {
-                    accountAddress != null && transactionStatus != null &&
-                        webImportQrCode == null &&
-                        notificationGroupType == null
-                }
-            }
-        }
-    }
-
     class WebImportQrCodeDeepLink(
         val webImportQrCode: WebImportQrCode
     ) : BaseDeepLink() {

@@ -16,7 +16,7 @@
     android:id="@+id/pairLedgerNavigation"
     app:startDestination="@id/ledgerInstructionFragment">
 
-    <include app:graph="@navigation/moonpay_navigation" />
+    <include app:graph="@navigation/meld_navigation" />
 
     <fragment
         android:id="@+id/verifyLedgerAddressFragment"
@@ -80,8 +80,8 @@
             android:name="numberOfAccounts"
             app:argType="integer" />
         <action
-            android:id="@+id/action_verifyLedgerInfoFragment_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation"
+            android:id="@+id/action_verifyLedgerInfoFragment_to_meldNavigation"
+            app:destination="@id/meldNavigation"
             app:popUpTo="@id/loginNavigation"
             app:popUpToInclusive="true" />
     </fragment>

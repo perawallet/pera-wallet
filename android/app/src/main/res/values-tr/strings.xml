@@ -519,8 +519,6 @@
     <string name="confirm_transaction">İşlemi Onayla</string>
     <string name="your_transaction_was">İşleminiz Algorand ağı tarafından başarıyla alındı.</string>
     <string name="buy_algo">ALGO Alın</string>
-    <string name="moonpay_offers">MoonPay, yerel para biriminizle ALGO almanın en hızlı yolunu sunar. Kredi kartır veya banka transferiyle kripto alın. Hızlı, güvenli ve güvenilirdir.</string>
-    <string name="buy_algo_with">MoonPay ile ALGO Alın</string>
     <string name="secured_by">Koruma sağlayan:</string>
     <string name="your_algos_are">Algo\'larınız yolda!</string>
     <string name="your_payment_is">Ödemeniz işleniyor. Tamamlanması birkaç dakika sürebilir.</string>
@@ -533,10 +531,8 @@
     <string name="looks_like_your">Görünüşe göre satın alma işleminiz başarısız oldu. Tekrar denemeniz gerekiyor.</string>
     <string name="email_address">E-posta adresi</string>
     <string name="enter_your_email">E-postanızı girin</string>
-    <string name="continue_with_moonpay">MoonPay ile Devam Edin</string>
     <string name="i_agree_to_share">E-posta adresimi Pera ile paylaşmayı ve cüzdan özellikleriyle ilgili haberleri almayı kabul ediyorum.</string>
     <string name="not_available">Kullanılamıyor</string>
-    <string name="you_can_not_purchase">TestNet\'te satın alım gerçekleştiremezsiniz. MoonPay\'i kullanmak için lütfen Ayarlar\'dan MainNet\'e geçiş yapın.</string>
     <string name="your_walletconnect_request_failed">WalletConnect talebiniz şu hatayla başarısız oldu:\n\n<annotation replacement="error_message">errorMessagePlaceholder</annotation>\n\nLütfen talebi başlattığınız dApp\'e geri dönerek tekrar deneyin.</string>
     <string name="add_an_account">Bir Hesap Ekleyin</string>
     <string name="manage_assets">Varlıkları Yönet</string>
@@ -1031,9 +1027,7 @@
     <string name="buy_crypto">Kripto alın</string>
     <string name="sell_crypto">Kripto satın</string>
     <string name="use_apple_pay_credit_cards">Apple Pay\'i, kredi kartlarını veya banka transferi seçeneğini kullanın</string>
-    <string name="buy_algo_with_sardine">Sardine ile ALGO Alın</string>
     <string name="use_instant_ach">ABD banka hesabınızla Instant ACH\'yi kullanın</string>
-    <string name="buy_usdc_with_transak">Transak ile USDC Alın</string>
     <string name="use_credit_card_bank_transfer">150\'den fazla ülkede kredi kartlarını veya banka transferlerini kullanın</string>
     <string name="buy_gift_cards_with_bidali">Bidali ile hediye kartı alın</string>
     <string name="you_can_use_your_algo">Algo, USDC veya USDt bakiyenizi kullanabilirsiniz</string>
@@ -1042,9 +1036,5 @@
     <string name="you_can_use_your_algo_or">ALGO veya USDC bakiyenizi dünya çapında binlerce markadan hediye kartı ve mobil yükleme satın almak için kullanabilirsiniz!</string>
     <string name="you_can_not_purchase_bidali">TestNet\'te satın alma işlemi gerçekleştiremezsiniz. Bidali\'yi kullanmak için lütfen Ayarlar\'a giderek MainNet\'e geçiş yapın.</string>
     <string name="buy_usdc">USDC Alın</string>
-    <string name="transak_onboards_users_from_fiat">Transak, 800\'ü aşkın uygulama üzerinden kullanıcıların itibari paradan kriptoya geçmelerini sağlar. 150\'den fazla ülkede kredi kartlarını, banka kartlarını veya banka transferlerini destekler.</string>
-    <string name="you_can_not_purchase_transak">TestNet\'te satın alma işlemi gerçekleştiremezsiniz. Transak\'ı kullanmak için lütfen Ayarlar\'a giderek MainNet\'e geçiş yapın.</string>
-    <string name="instant_settlement_and_lower">Instant ACH transferlerini kullandığınızda Algo\'lar düşük işlem ücretleriyle anında hesaba geçer. Sardine, 180\'i aşkın ülkede yerel bankalar ile kart ödemelerini, Apple Pay ile GPay\'i de destekler.</string>
-    <string name="you_can_not_purchase_sardine">TestNet\'te satın alma işlemi gerçekleştiremezsiniz. Sardine\'i kullanmak için lütfen Ayarlar\'a giderek MainNet\'e geçiş yapın.</string>
     <string name="choose_an_account_to_proceed">İlerlemek için bir hesap seçin</string>
 </resources>

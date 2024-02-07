@@ -121,7 +121,7 @@ class ListConfigurationHeaderView(context: Context, attrs: AttributeSet? = null)
     }
 
     companion object {
-        private const val PRIMARY_BUTTON_ICON_DEFAULT_TINT = R.color.positive
-        private const val SECONDARY_BUTTON_ICON_DEFAULT_TINT = R.color.positive
+        private val PRIMARY_BUTTON_ICON_DEFAULT_TINT = R.color.positive
+        private val SECONDARY_BUTTON_ICON_DEFAULT_TINT = R.color.positive
     }
 }

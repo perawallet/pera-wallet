@@ -502,8 +502,6 @@
     <string name="confirm_transaction">トランザクションの確認</string>
     <string name="your_transaction_was">トランザクションはAlgorandネットワークによって正常に受信されました。</string>
     <string name="buy_algo">ALGOを購入する</string>
-    <string name="moonpay_offers">MoonPayは、お客様がお使いの通貨で最も素早くalgoを購入できる方法を提供します。クレジットカードや銀行振込で暗号通貨を購入できます。高速、シンプルで、安全です。</string>
-    <string name="buy_algo_with">MoonPayでALGOを購入する</string>
     <string name="secured_by">セキュリティ方式</string>
     <string name="your_algos_are">まもなくAlgoが届きます！</string>
     <string name="your_payment_is">お支払いの手続き中です。完了するまで数分かかる場合があります。</string>
@@ -516,10 +514,8 @@
     <string name="looks_like_your">購入に失敗したようです。もう一度やり直してください。</string>
     <string name="email_address">メールアドレス</string>
     <string name="enter_your_email">メールアドレスを入力</string>
-    <string name="continue_with_moonpay">MoonPayで続ける</string>
     <string name="i_agree_to_share">私は、メールアドレスをPeraと共有し、ウォレット機能に関する最新情報を受け取ることに同意します。</string>
     <string name="not_available">使用不可</string>
-    <string name="you_can_not_purchase">TestNetでは購入できません。MoonPayをご利用になるには、設定からMainNetに切り替えてください。</string>
     <string name="your_walletconnect_request_failed">WalletConnectのリクエストは、以下のエラーにより失敗しました:\n\n<annotation replacement="error_message">errorMessagePlaceholder</annotation>\n\nリクエストを開始したdAppに戻り、再度お試しください。</string>
     <string name="add_an_account">アカウントの追加</string>
     <string name="manage_assets">資産の管理</string>
@@ -998,9 +994,7 @@
     <string name="buy_crypto">仮想通貨の購入</string>
     <string name="sell_crypto">仮想通貨の売却</string>
     <string name="use_apple_pay_credit_cards">Apple Pay、クレジットカード、銀行振込を使用する</string>
-    <string name="buy_algo_with_sardine">SardineでALGOを購入する</string>
     <string name="use_instant_ach">米国の銀行口座でInstant ACHを使用する</string>
-    <string name="buy_usdc_with_transak">TransakでのUSDCの購入</string>
     <string name="use_credit_card_bank_transfer">クレジットカードや150カ国以上での銀行振込を使用可能</string>
     <string name="buy_gift_cards_with_bidali">Bidaliでギフトカードを購入する</string>
     <string name="you_can_use_your_algo">Algo、USDC、USDt残高を使用可能です</string>
@@ -1009,9 +1003,5 @@
     <string name="you_can_use_your_algo_or">ALGOやUSDCの残高を使って、世界中の数多くのブランドのギフトカードやモバイルトップアップを購入することができます！</string>
     <string name="you_can_not_purchase_bidali">TestNetでは購入できません。Bidaliをご利用になるには、設定からMainNetに切り替えてください。</string>
     <string name="buy_usdc">USDCを購入する</string>
-    <string name="transak_onboards_users_from_fiat">Transak は、800以上のアプリで法定通貨と仮想通貨の交換をサポートします。 150か国以上でクレジットカード、デビットカード、銀行振込を利用可能です。</string>
-    <string name="you_can_not_purchase_transak">TestNetでは購入できません。Transakをご利用になるには、設定からMainNetに切り替えてください。</string>
-    <string name="instant_settlement_and_lower">Instant ACH送金を使用したAlgoの即時決済を低料金で行えます。Sardineは、180か国以上の地元銀行でのカード決済、Apple PayやGPayに対応しています。</string>
-    <string name="you_can_not_purchase_sardine">TestNetでは購入できません。Sardineをご利用になるには、設定からMainNetに切り替えてください。</string>
     <string name="choose_an_account_to_proceed">手続きを行うアカウントを選択してください</string>
 </resources>

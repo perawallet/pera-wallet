@@ -49,6 +49,6 @@ enum class VerificationTierConfiguration(
     abstract fun toVerificationTier(): VerificationTier
 
     companion object {
-        const val DEFAULT_TEXT_COLOR_RES_ID = R.color.text_main
+        val DEFAULT_TEXT_COLOR_RES_ID = R.color.text_main
     }
 }

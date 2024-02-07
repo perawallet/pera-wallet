@@ -583,10 +583,8 @@
     <string name="your_transaction_sub">Your transaction was successfully submitted to the Algorand network.</string>
     <string name="confirm_transaction">Confirm Transaction</string>
 
-    <!--Moonpay-->
+    <!--Meld-->
     <string name="buy_algo">Buy ALGO</string>
-    <string name="moonpay_offers">MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It\'s fast, simple, and secure.</string>
-    <string name="buy_algo_with">Buy ALGO with MoonPay</string>
     <string name="secured_by">Secured by</string>
     <string name="your_algos_are">Your Algos are on their way!</string>
     <string name="your_payment_is">Your payment is being processed. It can take few minutes to be completed.</string>
@@ -600,10 +598,8 @@
 
     <string name="email_address">Email address</string>
     <string name="enter_your_email">Enter your email</string>
-    <string name="continue_with_moonpay">Continue with MoonPay</string>
     <string name="i_agree_to_share">I agree to share my e-mail address with Pera and receive updates on wallet features.</string>
     <string name="not_available">Not available</string>
-    <string name="you_can_not_purchase">You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.</string>
     <string name="your_walletconnect_request_failed">Your WalletConnect request failed with the following error:\n\n<annotation replacement="error_message">errorMessagePlaceholder</annotation>\n\nPlease try again by going back to the dApp where you initiated the request.</string>
     <string name="add_an_account">Add an Account</string>
     <string name="manage_assets">Manage Assets</string>
@@ -1215,9 +1211,7 @@
     <string name="sell_crypto">Sell crypto</string>
 
     <string name="use_apple_pay_credit_cards">Use Apple Pay, credit cards or bank transfer</string>
-    <string name="buy_algo_with_sardine">Buy ALGO with Sardine</string>
     <string name="use_instant_ach">Use Instant ACH with your US bank account</string>
-    <string name="buy_usdc_with_transak">Buy USDC with Transak</string>
     <string name="use_credit_card_bank_transfer">Use credit cards or bank transfers from 150+ countries</string>
     <string name="buy_gift_cards_with_bidali">Buy gift cards with Bidali</string>
     <string name="you_can_use_your_algo">You can use your Algo, USDC or USDt balance</string>
@@ -1228,11 +1222,7 @@
     <string name="you_can_not_purchase_bidali">You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Bidali.</string>
 
     <string name="buy_usdc">Buy USDC</string>
-    <string name="transak_onboards_users_from_fiat">Transak onboards users from fiat to crypto in over 800 apps. Supports credit cards, debit cards or bank transfers in over 150 countries.</string>
-    <string name="you_can_not_purchase_transak">You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Transak.</string>
 
-    <string name="instant_settlement_and_lower">Instant settlement and lower fees for Algo using Instant ACH transfers. Sardine also supports local bank and card payments across 180+ countries, Apple Pay and GPay.</string>
-    <string name="you_can_not_purchase_sardine">You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use Sardine.</string>
     <string name="choose_an_account_to_proceed">Choose an account to proceed with</string>
     <string name="use_another_account_s_private">Use another account\'s private key to sign transactions for this account. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
     <string name="remove_a_ledger_device_from">Remove a Ledger device from your account. <annotation font="dmsans_medium"><annotation custom="learn_more">Learn more</annotation></annotation></string>
@@ -1356,4 +1346,12 @@
     <string name="buying_algo_through_pera_wallet">Buying Algo through Pera Wallet is not available at the
         moment</string>
     <string name="open_in_pera_explorer">Open in Pera Explorer</string>
+    <string name="buy_algo_with_meld">Buy ALGO with Meld</string>
+    <string name="continue_with_meld">Continue with Meld</string>
+    <string name="meld_offers">Meld offers the fastest way to buy ALGO with your local currency. Buy crypto with
+        credit card or bank transfers. It\'s fast, simple, and secure.\n*Not available in the USA.</string>
+    <string name="you_can_not_purchase">You cannot purchase while on TestNet. Please switch back to MainNet from
+        Settings to use Meld.</string>
+    <string name="meld">MELD</string>
+
 </resources>

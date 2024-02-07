@@ -19,6 +19,7 @@ import com.algorand.android.modules.swap.assetswap.data.mapper.PeraFeeRequestBod
 import com.algorand.android.modules.swap.assetswap.data.mapper.SwapQuoteDTOMapper
 import com.algorand.android.modules.swap.assetswap.data.mapper.SwapQuoteRequestBodyMapper
 import com.algorand.android.modules.swap.assetswap.data.mapper.decider.SwapQuoteProviderResponseDecider
+import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteExceptionRequestBody
 import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteRequestBody
 import com.algorand.android.modules.swap.assetswap.domain.model.SwapQuoteProvider
 import com.algorand.android.modules.swap.assetswap.domain.model.dto.PeraFeeDTO
@@ -30,10 +31,10 @@ import com.algorand.android.modules.swap.confirmswap.domain.model.SwapQuoteTrans
 import com.algorand.android.network.MobileAlgorandApi
 import com.algorand.android.network.requestWithHipoErrorHandler
 import com.hipo.hipoexceptionsandroid.RetrofitErrorHandler
-import java.math.BigInteger
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.math.BigInteger
+import javax.inject.Inject
 
 class AssetSwapRepositoryImpl @Inject constructor(
     private val mobileAlgorandApi: MobileAlgorandApi,
@@ -131,5 +132,14 @@ class AssetSwapRepositoryImpl @Inject constructor(
             }
         )
         return result ?: Result.Error(NullPointerException())
+    }
+    override suspend fun updateSwapQuoteException(quoteId: Long, exceptionText: String?) {
+        requestWithHipoErrorHandler(hipoErrorHandler) {
+            mobileAlgorandApi.putSwapQuoteException(
+                quoteId, swapQuoteExceptionRequestBody = SwapQuoteExceptionRequestBody(
+                    exceptionText = exceptionText
+                )
+            )
+        }
     }
 }

@@ -13,14 +13,12 @@
 package com.algorand.android.modules.tracking.main
 
 import com.algorand.android.modules.tracking.bottomnavigation.BottomNavigationEventTracker
-import com.algorand.android.modules.tracking.moonpay.MoonpayEventTracker
 import com.algorand.android.modules.tracking.swap.quickaction.QuickActionSwapButtonClickEventTracker
 import javax.inject.Inject
 
 class MainActivityEventTracker @Inject constructor(
     private val quickActionSwapButtonClickEventTracker: QuickActionSwapButtonClickEventTracker,
     private val bottomNavigationEventTracker: BottomNavigationEventTracker,
-    private val moonpayEventTracker: MoonpayEventTracker
 ) {
 
     suspend fun logAccountsTapEvent() {
@@ -29,10 +27,6 @@ class MainActivityEventTracker @Inject constructor(
 
     suspend fun logBottomNavigationAlgoBuyTapEvent() {
         bottomNavigationEventTracker.logBottomNavigationAlgoBuyTapEvent()
-    }
-
-    suspend fun logMoonpayAlgoBuyCompletedEvent() {
-        moonpayEventTracker.logMoonpayAlgoBuyCompletedEvent()
     }
 
     suspend fun logQuickActionSwapButtonClickEvent() {

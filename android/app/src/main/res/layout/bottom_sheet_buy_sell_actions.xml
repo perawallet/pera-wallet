@@ -39,42 +39,13 @@
         android:text="@string/buy_crypto"/>
 
     <com.algorand.android.customviews.ListMenuItemView
-        android:id="@+id/moonpayButton"
+        android:id="@+id/meldButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_large"
-        android:visibility="gone"
         app:description="@string/use_apple_pay_credit_cards"
-        app:icon="@drawable/ic_moonpay_button"
-        app:title="@string/buy_algo_with" />
-
-    <com.algorand.android.customviews.ListMenuItemView
-        android:id="@+id/sardineButton"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_large"
-        app:description="@string/use_instant_ach"
-        app:icon="@drawable/ic_sardine_button_bg_gray"
-        app:title="@string/buy_algo_with_sardine" />
-
-    <com.algorand.android.customviews.ListMenuItemView
-        android:id="@+id/transakButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:description="@string/use_credit_card_bank_transfer"
-        app:icon="@drawable/ic_transak_button_bg_gray"
-        app:title="@string/buy_usdc_with_transak" />
-
-    <TextView
-        style="@style/TextAppearance.Footnote.Sans"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:gravity="center"
-        android:text="@string/buying_algo_through_pera_wallet"
-        android:textColor="@color/text_gray_lighter" />
+        app:icon="@drawable/ic_meld_button"
+        app:title="@string/buy_algo_with_meld" />
 
     <TextView
         android:id="@+id/sellCryptoTextView"

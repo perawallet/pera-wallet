@@ -18,7 +18,7 @@ data class BuySellActionRequest(
     val assetOutId: Long?
 ) {
     enum class Destination {
-        MOONPAY,
+        MELD,
         SWAP,
         ONRAMP
     }

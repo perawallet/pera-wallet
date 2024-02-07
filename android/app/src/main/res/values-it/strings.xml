@@ -510,8 +510,6 @@ amountPlaceholder</annotation> Algo.</string>
     <string name="confirm_transaction">Conferma transazione</string>
     <string name="your_transaction_was">La tua transazione è stata ricevuta con successo dalla rete Algorand.</string>
     <string name="buy_algo">Acquista ALGO</string>
-    <string name="moonpay_offers">MoonPay offre il modo più veloce per comprare ALGO con la tua valuta locale. Compra criptovalute con carta di credito o bonifici bancari. È veloce, semplice e sicuro.</string>
-    <string name="buy_algo_with">Acquista ALGO con MoonPay</string>
     <string name="secured_by">Protetto da</string>
     <string name="your_algos_are">I tuoi Algo sono in arrivo!</string>
     <string name="your_payment_is">Il pagamento è in fase di elaborazione. Il completamento può richiedere alcuni minuti.</string>
@@ -524,10 +522,8 @@ amountPlaceholder</annotation> Algo.</string>
     <string name="looks_like_your">Sembra che il tuo acquisto non sia riuscito. Dovrai riprovare.</string>
     <string name="email_address">Indirizzo email</string>
     <string name="enter_your_email">Inserisci la tua email</string>
-    <string name="continue_with_moonpay">Continua con MoonPay</string>
     <string name="i_agree_to_share">Accetto di condividere il mio indirizzo email con Pera e di ricevere aggiornamenti sulle funzionalità del wallet.</string>
     <string name="not_available">Non disponibile</string>
-    <string name="you_can_not_purchase">Non è possibile acquistare mentre si è su TestNet. Torna a MainNet da Impostazioni per utilizzare MoonPay.</string>
     <string name="your_walletconnect_request_failed">La tua richiesta di WalletConnect non è andata a buon fine con il seguente errore:\n\n<annotation replacement="error_message">errorMessagePlaceholder</annotation>\n\nRiprova tornando alla dApp dove hai iniziato la richiesta.</string>
     <string name="add_an_account">Aggiungi un conto</string>
     <string name="manage_assets">Gestisci le risorse</string>
@@ -1022,9 +1018,7 @@ amountPlaceholder</annotation> Algo.</string>
     <string name="buy_crypto">Acquistare criptovalute</string>
     <string name="sell_crypto">Vendere criptovalute</string>
     <string name="use_apple_pay_credit_cards">Usa Apple Pay, carte di credito o bonifico bancario</string>
-    <string name="buy_algo_with_sardine">Acquistare ALGO con Sardine</string>
     <string name="use_instant_ach">Usa Instant ACH con il tuo conto bancario negli Stati Uniti</string>
-    <string name="buy_usdc_with_transak">Acquistare USDC con Transak</string>
     <string name="use_credit_card_bank_transfer">Usa carte di credito o bonifici bancari da oltre 150 paesi</string>
     <string name="buy_gift_cards_with_bidali">Acquistare carte regalo con Bidali</string>
     <string name="you_can_use_your_algo">Puoi utilizzare il tuo saldo in Algo, USDC o USDt</string>
@@ -1033,9 +1027,5 @@ amountPlaceholder</annotation> Algo.</string>
     <string name="you_can_use_your_algo_or">Puoi utilizzare il tuo saldo in ALGO o USDC per acquistare ricariche mobili e carte regalo emessi da migliaia di marchi in tutto il mondo!</string>
     <string name="you_can_not_purchase_bidali">Non è possibile acquistare mentre si è su TestNet. Torna a MainNet da Impostazioni per utilizzare Bidali.</string>
     <string name="buy_usdc">Acquistare USDC</string>
-    <string name="transak_onboards_users_from_fiat">Transak consente agli utenti di passare dalla moneta unica alla criptovaluta in oltre 800 app. Supporta carte di credito, carte di debito o bonifici bancari in oltre 150 Paesi.</string>
-    <string name="you_can_not_purchase_transak">Non puoi acquistare mente sei su TestNet. Torna a MainNet da Impostazioni per utilizzare Transak.</string>
-    <string name="instant_settlement_and_lower">Regolamento istantaneo e commissioni inferiori in Algo utilizzando i trasferimenti ACH istantanei. Sardine supporta anche pagamenti con banche e carte locali in oltre 180 paesi, Apple Pay e GPay.</string>
-    <string name="you_can_not_purchase_sardine">Non puoi acquistare mente sei su TestNet. Torna a MainNet da Impostazioni per utilizzare Sardine.</string>
     <string name="choose_an_account_to_proceed">Scegli un conto con cui procedere</string>
 </resources>

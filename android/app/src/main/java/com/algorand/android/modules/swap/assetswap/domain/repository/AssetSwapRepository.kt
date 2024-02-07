@@ -43,6 +43,8 @@ interface AssetSwapRepository {
         quoteId: Long
     ): Flow<Result<List<SwapQuoteTransactionDTO>>>
 
+    suspend fun updateSwapQuoteException(quoteId: Long, exceptionText: String?)
+
     companion object {
         const val INJECTION_NAME = "assetSwapRepositoryInjectionName"
     }

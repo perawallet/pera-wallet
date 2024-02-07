@@ -16,7 +16,7 @@
     android:id="@+id/passphraseBackupNavigation"
     app:startDestination="@id/backupInfoFragment">
 
-    <include app:graph="@navigation/moonpay_navigation" />
+    <include app:graph="@navigation/meld_navigation" />
 
     <action
         android:id="@+id/action_to_lockPreferenceNavigation"
@@ -145,8 +145,8 @@
         android:label="CreateAccountResultInfoFragment"
         tools:layout="@layout/fragment_base_info">
         <action
-            android:id="@+id/action_createAccountResultInfoFragment_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation"
+            android:id="@+id/action_createAccountResultInfoFragment_to_meldNavigation"
+            app:destination="@id/meldNavigation"
             app:popUpTo="@id/backupInfoFragment"
             app:popUpToInclusive="true" />
         <action

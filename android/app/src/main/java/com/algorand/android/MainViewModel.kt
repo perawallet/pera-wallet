@@ -156,24 +156,30 @@ class MainViewModel @Inject constructor(
                         val assetActionResult = getAssetOperationResult(transaction)
                         assetOperationResultLiveData.postValue(Event(Resource.Success(assetActionResult)))
                     }
+
                     is DataResource.Error.Api -> {
                         assetOperationResultLiveData.postValue(Event(Resource.Error.Api(dataResource.exception)))
                     }
+
                     is DataResource.Error.Local -> {
                         // TODO add specific strings for exceptions
                         val errorResourceId = when (dataResource.exception) {
                             is AccountAlreadyOptedIntoAssetException -> {
                                 R.string.you_are_already
                             }
+
                             is TransactionConfirmationAwaitException -> {
                                 R.string.transaction_confirmation_timed_out
                             }
+
                             is TransactionIdNullException -> {
                                 R.string.an_error_occured
                             }
+
                             is AssetAlreadyPendingForRemovalException -> {
                                 R.string.this_asset_is
                             }
+
                             else -> {
                                 R.string.an_error_occured
                             }
@@ -191,6 +197,7 @@ class MainViewModel @Inject constructor(
                             )
                         )
                     }
+
                     else -> {
                         sendErrorLog("Unhandled else case in MainViewModel.sendSignedTransaction")
                     }
@@ -224,12 +231,6 @@ class MainViewModel @Inject constructor(
     fun logBottomNavigationBuyAlgoEvent() {
         viewModelScope.launch {
             mainActivityEventTracker.logBottomNavigationAlgoBuyTapEvent()
-        }
-    }
-
-    fun logMoonpayAlgoBuyCompletedEvent() {
-        viewModelScope.launch {
-            mainActivityEventTracker.logMoonpayAlgoBuyCompletedEvent()
         }
     }
 
@@ -276,6 +277,7 @@ class MainViewModel @Inject constructor(
                     assetId = transaction.assetInformation.assetId
                 )
             }
+
             is SignedTransactionDetail.AssetOperation.AssetRemoval -> {
                 AssetOperationResult.AssetRemovalOperationResult(
                     resultTitleResId = R.string.asset_successfully_opted_out_from_your,

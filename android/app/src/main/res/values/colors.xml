@@ -230,17 +230,11 @@
     <color name="nft_icon_bg">@color/gray_900_alpha_60</color>
     <color name="nft_icon">@color/white</color>
 
-    <!-- Moonpay -->
-    <color name="moonpay">#7D01FF</color>
+    <!-- Meld -->
+    <color name="meld">#171835</color>
 
     <!-- Bidali -->
     <color name="bidali">#6241E2</color>
-
-    <!-- Transak -->
-    <color name="transak">#2A6BE6</color>
-
-    <!-- Sardine -->
-    <color name="sardine">#2925CB</color>
 
     <!-- Algorand Standart Assets (ASA) Tiers -->
     <color name="trusted_icon_bg">@color/turquoise_600</color>
@@ -360,7 +354,6 @@
     <color name="verification_badge_bg_gradient_start_color">#E9F8F7</color>
 
     <!--  Bottom Fade Gradient View  -->
-    <!--Before merging to 5.3.0 let's remove "gradient_bg_view_start_color" and use this one-->
     <color name="bottom_fade_gradient_start_color">@color/white</color>
 
     <!-- Discover -->

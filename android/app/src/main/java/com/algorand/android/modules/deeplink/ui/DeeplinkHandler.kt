@@ -50,7 +50,6 @@ class DeeplinkHandler @Inject constructor(
             is BaseDeepLink.MnemonicDeepLink -> handleMnemonicDeepLink(baseDeeplink)
             is WalletConnectConnectionDeepLink -> handleWalletConnectConnectionDeepLink(baseDeeplink)
             is BaseDeepLink.UndefinedDeepLink -> handleUndefinedDeepLink(baseDeeplink)
-            is BaseDeepLink.MoonpayResultDeepLink -> handleMoonpayResultDeepLink(baseDeeplink)
             is BaseDeepLink.WebImportQrCodeDeepLink -> handleWebImportQrCodeDeepLink(baseDeeplink)
             is BaseDeepLink.NotificationDeepLink -> handleNotificationDeepLink(baseDeeplink)
         }
@@ -78,16 +77,6 @@ class DeeplinkHandler @Inject constructor(
 
     private fun handleUndefinedDeepLink(undefinedDeeplink: BaseDeepLink.UndefinedDeepLink): Boolean {
         return triggerListener { it.onUndefinedDeepLink(undefinedDeeplink); true }
-    }
-
-    private fun handleMoonpayResultDeepLink(moonpayResultDeepLink: BaseDeepLink.MoonpayResultDeepLink): Boolean {
-        return triggerListener {
-            it.onMoonpayResultDeepLink(
-                accountAddress = moonpayResultDeepLink.accountAddress,
-                txnStatus = moonpayResultDeepLink.transactionStatus,
-                txnId = moonpayResultDeepLink.transactionId
-            )
-        }
     }
 
     private fun handleWebImportQrCodeDeepLink(webImportQrCodeDeepLink: BaseDeepLink.WebImportQrCodeDeepLink): Boolean {
@@ -146,7 +135,6 @@ class DeeplinkHandler @Inject constructor(
         fun onAccountAddressDeeplink(accountAddress: String, label: String?): Boolean = false
         fun onWalletConnectConnectionDeeplink(wcUrl: String): Boolean = false
         fun onAssetTransferWithNotOptInDeepLink(assetId: Long): Boolean = false
-        fun onMoonpayResultDeepLink(accountAddress: String, txnStatus: String, txnId: String?): Boolean = false
         fun onWebImportQrCodeDeepLink(webImportQrCode: WebImportQrCode): Boolean = false
         fun onNotificationDeepLink(
             accountAddress: String,

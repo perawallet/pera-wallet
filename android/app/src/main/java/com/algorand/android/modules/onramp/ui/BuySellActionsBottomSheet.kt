@@ -35,18 +35,15 @@ class BuySellActionsBottomSheet : BaseBottomSheet(
     private fun initUi() {
         with(binding) {
             // TODO add logging?
-            sardineButton.setOnClickListener { navToSardineNavigation() }
-            transakButton.setOnClickListener { navToTransakNavigation() }
+            meldButton.setOnClickListener { navToMeldNavigation() }
             bidaliButton.setOnClickListener { navToBidaliNavigation() }
         }
     }
 
-    private fun navToSardineNavigation() {
-        nav(BuySellActionsBottomSheetDirections.actionBuySellActionsBottomSheetToSardineNavigation(args.accountAddress))
+    private fun navToMeldNavigation() {
+        nav(BuySellActionsBottomSheetDirections.actionBuySellActionsBottomSheetToMeldNavigation(args.accountAddress))
     }
-    private fun navToTransakNavigation() {
-        nav(BuySellActionsBottomSheetDirections.actionBuySellActionsBottomSheetToTransakNavigation(args.accountAddress))
-    }
+
     private fun navToBidaliNavigation() {
         nav(BuySellActionsBottomSheetDirections.actionBuySellActionsBottomSheetToBidaliNavigation(args.accountAddress))
     }

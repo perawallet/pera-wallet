@@ -254,7 +254,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
             account = toAccountCacheData,
             nftDomainAddress = nftDomainAddress,
             nftDomainServiceLogoUrl = nftDomainServiceLogoUrl,
-            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(fromAccountAddress)
+            accountIconDrawablePreview = createAccountIconDrawableUseCase.invoke(toAccountPublicKey)
         )
         return Result.Success(targetUser)
     }

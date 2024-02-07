@@ -29,7 +29,7 @@ class QRScannerShadowView @JvmOverloads constructor(
         resources.getDimensionPixelSize(R.dimen.qr_code_overlay_size)
     }
 
-    override fun dispatchDraw(canvas: Canvas?) {
+    override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
 
         val leftRightOutsideOverlayWidth: Float = ((width - overlaySize) / 2).toFloat()
@@ -41,14 +41,14 @@ class QRScannerShadowView @JvmOverloads constructor(
             color = ContextCompat.getColor(context, R.color.qr_code_outside_rectangle_transparency)
         }
 
-        canvas?.drawRect(
+        canvas.drawRect(
             0f,
             0f,
             leftRightOutsideOverlayWidth,
             height.toFloat(),
             shadowPaint
         )
-        canvas?.drawRect(
+        canvas.drawRect(
             overlayEndX,
             0f,
             width.toFloat(),
@@ -56,7 +56,7 @@ class QRScannerShadowView @JvmOverloads constructor(
             shadowPaint
         )
 
-        canvas?.drawRect(
+        canvas.drawRect(
             leftRightOutsideOverlayWidth,
             0f,
             overlayEndX,
@@ -64,7 +64,7 @@ class QRScannerShadowView @JvmOverloads constructor(
             shadowPaint
         )
 
-        canvas?.drawRect(
+        canvas.drawRect(
             leftRightOutsideOverlayWidth,
             overLayBottomY,
             overlayEndX,

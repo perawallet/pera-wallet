@@ -508,8 +508,6 @@
     <string name="confirm_transaction">Confirmar Transação</string>
     <string name="your_transaction_was">Sua transação foi recebida pela rede Algorand com sucesso.</string>
     <string name="buy_algo">Comprar ALGO</string>
-    <string name="moonpay_offers">MoonPay oferece a maneira mais rápida de comprar ALGO com sua moeda local. Compre criptomoedas com cartão de crédito ou transferência bancária. É rápido, simples e seguro.</string>
-    <string name="buy_algo_with">Compre ALGO com MoonPay</string>
     <string name="secured_by">Assegurado por</string>
     <string name="your_algos_are">Seus Algos estão a caminho!</string>
     <string name="your_payment_is">Seu pagamento está sendo processado. Pode levar alguns minutos para ser concluído.</string>
@@ -522,10 +520,8 @@
     <string name="looks_like_your">Parece que sua compra não foi processada. Tente novamente.</string>
     <string name="email_address">Endereço de e-mail</string>
     <string name="enter_your_email">Insira seu e-mail</string>
-    <string name="continue_with_moonpay">Prosseguir ao MoonPay</string>
     <string name="i_agree_to_share">Concordo em compartilhar meu endereço de e-mail com Pera e receber atualizações sobre características da carteira.</string>
     <string name="not_available">Não disponível</string>
-    <string name="you_can_not_purchase">Você não pode comprar enquanto estiver na TestNet. Retorne a Configurações na MainNet para utilizar o MoonPay.</string>
     <string name="your_walletconnect_request_failed">Sua solicitação à WalletConnect não foi concluída devido ao seguinte erro:\n\n<annotation replacement="error_message">errorMessagePlaceholder</annotation>\n\nTente novamente voltando à DApp que iniciou a solicitação.</string>
     <string name="add_an_account">Adicionar uma Conta</string>
     <string name="manage_assets">Gerir Ativos</string>
@@ -1020,9 +1016,7 @@
     <string name="buy_crypto">Comprar cripto</string>
     <string name="sell_crypto">Vender cripto</string>
     <string name="use_apple_pay_credit_cards">Utilizar Apple Pay, cartões de crédito ou transferência bancária</string>
-    <string name="buy_algo_with_sardine">Comprar ALGO com Sardine</string>
     <string name="use_instant_ach">Utilizar o Instant ACH com sua conta bancária nos EUA</string>
-    <string name="buy_usdc_with_transak">Compre USDC com Transak</string>
     <string name="use_credit_card_bank_transfer">Utilize cartões de crédito ou transferências bancárias de mais de 150 países</string>
     <string name="buy_gift_cards_with_bidali">Compre vales-presente com Bidali</string>
     <string name="you_can_use_your_algo">Você pode utilizar seu saldo de Algo, USDC ou USDt</string>
@@ -1031,9 +1025,5 @@
     <string name="you_can_use_your_algo_or">Você pode utilizar seu saldo Algo ou USDC para Comprar vales-presente e recargas de celular de milhares de marcas em todo o mundo!</string>
     <string name="you_can_not_purchase_bidali">Você não pode comprar enquanto estiver na TestNet. Volte para MainNet em Configurações para usar o Bidali.</string>
     <string name="buy_usdc">Comprar USDC</string>
-    <string name="transak_onboards_users_from_fiat">A Transak integra usuários de fiduciário a cripto em mais de 800 aplicativos. Suporta cartões de crédito, cartões de débito ou transferências bancárias em mais de 150 países.</string>
-    <string name="you_can_not_purchase_transak">Você não pode comprar enquanto estiver no TestNet. Volte para a MainNet em Configurações para usar o Transak.</string>
-    <string name="instant_settlement_and_lower">Liquidação instantânea e tarifas mais baixas para o Algo usando transferências ACH instantâneas. O Sardine também suporta pagamentos bancários e com cartão locais em mais de 180 países, Apple Pay e GPay.</string>
-    <string name="you_can_not_purchase_sardine">Você não pode comprar enquanto estiver na TestNet. Volte para a MainNet em Configurações para usar o Sardine.</string>
     <string name="choose_an_account_to_proceed">Escolha uma conta para prosseguir</string>
 </resources>

@@ -128,6 +128,16 @@ fun Context.openAssetUrl(assetUrl: String?) {
     openUrl(assetUrl.orEmpty())
 }
 
+fun Context.openExternalBrowserApp(url: String) {
+    try {
+        startActivity(
+            Intent(ACTION_VIEW, Uri.parse(url))
+        )
+    } catch (activityNotFoundException: ActivityNotFoundException) {
+        recordException(activityNotFoundException)
+    }
+}
+
 fun Context.openApplicationPageOnStore() {
     try {
         startActivity(

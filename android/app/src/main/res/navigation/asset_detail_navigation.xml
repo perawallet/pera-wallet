@@ -18,7 +18,7 @@
 
     <include app:graph="@navigation/send_algo_navigation" />
 
-    <include app:graph="@navigation/moonpay_navigation" />
+    <include app:graph="@navigation/meld_navigation" />
 
     <include app:graph="@navigation/show_qr_navigation" />
 
@@ -52,8 +52,8 @@
             android:defaultValue="true"
             app:argType="boolean" />
         <action
-            android:id="@+id/action_assetDetailFragment_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation">
+            android:id="@+id/action_assetDetailFragment_to_meldNavigation"
+            app:destination="@id/meldNavigation">
             <argument
                 android:name="walletAddress"
                 app:argType="string" />

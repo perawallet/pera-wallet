@@ -78,9 +78,9 @@ class CustomSnackbar private constructor() {
         applyParams: Snackbar.(CustomSnackbarViewBinding) -> Unit
     ): Snackbar {
         return createSnackbar(INITIAL_TEXT, rootView).apply {
-            with(view as? Snackbar.SnackbarLayout ?: return@apply) {
+            with(view as? ViewGroup ?: return@apply) {
                 setPadding(0, 0, 0, 0)
-                findViewById<android.widget.TextView>(com.algorand.android.R.id.snackbar_text).invisible()
+                findViewById<android.widget.TextView>(com.google.android.material.R.id.snackbar_text).invisible()
                 CustomSnackbarViewBinding.inflate(LayoutInflater.from(rootView.context), rootView, false).apply {
                     applyParams(this)
                 }.also {

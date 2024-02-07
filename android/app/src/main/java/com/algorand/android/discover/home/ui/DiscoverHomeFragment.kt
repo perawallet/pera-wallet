@@ -41,6 +41,7 @@ import com.algorand.android.discover.utils.getDiscoverCustomUrl
 import com.algorand.android.discover.utils.getDiscoverHomeUrl
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.browser.openExternalBrowserApp
 import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegation
 import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegationImpl
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
@@ -178,6 +179,12 @@ class DiscoverHomeFragment : BaseDiscoverFragment(R.layout.fragment_discover_hom
 
     override fun getDeviceId() {
         discoverViewModel.getDeviceId()
+    }
+
+    override fun openSystemBrowser(jsonEncodedPayload: String) {
+        discoverViewModel.getRedirectUrlFromJson(jsonEncodedPayload)?.let {
+            context?.openExternalBrowserApp(it)
+        }
     }
 
     private fun initSavedStateListener() {

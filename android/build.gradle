@@ -1,14 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.8.10'
-    ext.safeargs_gradle_version = '2.5.3'
-    ext.gradle_version = '7.4.2'
-    ext.firebase_crashlytics_version = '2.8.1'
-    ext.google_services_version = '4.3.15'
-    ext.dagger_gradle_version = '2.45'
+    ext.kotlin_version = '1.9.22'
+    ext.safeargs_gradle_version = '2.7.6'
+    ext.gradle_version = '8.2.1'
+    ext.firebase_crashlytics_version = '2.9.9'
+    ext.google_services_version = '4.4.0'
+    ext.dagger_gradle_version = '2.50'
     ext.firebase_performance_version = '1.4.2'
-    ext.detekt_version = '1.22.0'
+    ext.detekt_version = '1.23.4'
     repositories {
         google()
         mavenCentral()
@@ -32,12 +32,12 @@ apply from: 'versions.gradle'
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        jcenter()
     }
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }

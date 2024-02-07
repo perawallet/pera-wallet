@@ -47,10 +47,21 @@ class VerifyLedgerInfoFragment : BaseInfoFragment() {
     }
     override fun setFirstButton(materialButton: MaterialButton) {
         with(materialButton) {
+            setText(verifyLedgerInfoViewModel.getPreviewFirstButtonText())
+            setOnClickListener { navToMeldNavigation() }
+        }
+    }
+
+    override fun setSecondButton(materialButton: MaterialButton) {
+        with(materialButton) {
             setText(verifyLedgerInfoViewModel.getPreviewSecondButtonText())
             show()
             setOnClickListener { onStartUsingPeraClick() }
         }
+    }
+
+    private fun navToMeldNavigation() {
+        nav(VerifyLedgerInfoFragmentDirections.actionVerifyLedgerInfoFragmentToMeldNavigation())
     }
 
     private fun onStartUsingPeraClick() {

@@ -46,6 +46,13 @@ class RecoverAccountResultInfoFragment : BaseInfoFragment() {
 
     override fun setFirstButton(materialButton: MaterialButton) {
         with(materialButton) {
+            setText(recoverAccountResultInfoViewModel.getPreviewFirstButtonText())
+            setOnClickListener { navToMeldNavigation() }
+        }
+    }
+
+    override fun setSecondButton(materialButton: MaterialButton) {
+        with(materialButton) {
             setText(recoverAccountResultInfoViewModel.getPreviewSecondButtonText())
             show()
             setOnClickListener { onStartUsingPeraClick() }
@@ -70,5 +77,9 @@ class RecoverAccountResultInfoFragment : BaseInfoFragment() {
                 shouldNavigateHome = true
             )
         )
+    }
+
+    private fun navToMeldNavigation() {
+        nav(RecoverAccountResultInfoFragmentDirections.actionRecoverAccountResultInfoFragmentToMeldNavigation())
     }
 }

@@ -102,6 +102,7 @@ android {
             buildConfigField "String", "DISCOVER_VERSION", "\"${discoverVersions.staging}\""
             buildConfigField "String", "DISCOVER_URL", '"https://discover-mobile-staging.perawallet.app/"'
             buildConfigField "String", "DISCOVER_BROWSE_DAPP_URL", '"https://discover-mobile-staging.perawallet.app/main/browser"'
+            buildConfigField "String", "MELD_URL", '"https://mainnet.staging.api.perawallet.app/v1/onramp-services/meld/redirect-to-fluidmoney/?walletAddress="'
         }
 
         prod {
@@ -119,6 +120,7 @@ android {
             buildConfigField "String", "DISCOVER_VERSION", "\"${discoverVersions.prod}\""
             buildConfigField "String", "DISCOVER_URL", '"https://discover-mobile.perawallet.app/"'
             buildConfigField "String", "DISCOVER_BROWSE_DAPP_URL", '"https://discover-mobile.perawallet.app/main/browser"'
+            buildConfigField "String", "MELD_URL", '"https://mainnet.api.perawallet.app/v1/onramp-services/meld/redirect-to-fluidmoney/?walletAddress="'
         }
     }
 
@@ -146,6 +148,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        buildConfig = true
     }
     namespace application.applicationId
 }
@@ -156,7 +159,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${libVersions.coroutines}"
 
     implementation "com.google.android.material:material:${libVersions.material}"
-    implementation "com.google.android:flexbox:${libVersions.flexbox}"
+    implementation "com.google.android.flexbox:flexbox:${libVersions.flexbox}"
     implementation "androidx.appcompat:appcompat:${libVersions.appCompat}"
     implementation "androidx.legacy:legacy-support-v4:${libVersions.legacySupport}"
     implementation "androidx.lifecycle:lifecycle-extensions:${libVersions.lifecycleExt}"
@@ -167,10 +170,10 @@ dependencies {
 
     implementation platform("com.google.firebase:firebase-bom:${libVersions.firebaseBom}")
 
-    implementation "com.google.firebase:firebase-analytics-ktx"
-    implementation "com.google.firebase:firebase-messaging-ktx"
-    implementation "com.google.firebase:firebase-crashlytics-ktx"
-    implementation "com.google.firebase:firebase-perf-ktx"
+    implementation "com.google.firebase:firebase-analytics"
+    implementation "com.google.firebase:firebase-messaging"
+    implementation "com.google.firebase:firebase-crashlytics"
+    implementation "com.google.firebase:firebase-perf"
 
     implementation "androidx.biometric:biometric:${libVersions.biometric}"
 

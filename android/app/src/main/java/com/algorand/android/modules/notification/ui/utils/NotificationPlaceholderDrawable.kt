@@ -23,8 +23,8 @@ class NotificationPlaceholderDrawable {
 
     companion object {
         private const val DEFAULT_SIZE = 40
-        private const val BORDER_COLOR = R.color.notification_icon_placeholder_border_color
-        private const val BACKGROUND_COLOR = R.color.primary_background
-        private const val TINT_COLOR = R.color.notification_icon_placeholder_tint_color
+        private val BORDER_COLOR = R.color.notification_icon_placeholder_border_color
+        private val BACKGROUND_COLOR = R.color.primary_background
+        private val TINT_COLOR = R.color.notification_icon_placeholder_tint_color
     }
 }

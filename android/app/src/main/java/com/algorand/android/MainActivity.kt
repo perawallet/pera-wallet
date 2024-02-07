@@ -58,7 +58,6 @@ import com.algorand.android.models.WalletConnectRequest
 import com.algorand.android.models.WalletConnectRequest.WalletConnectArbitraryDataRequest
 import com.algorand.android.models.WalletConnectRequest.WalletConnectTransaction
 import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
-import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
 import com.algorand.android.modules.deeplink.DeepLinkParser
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
 import com.algorand.android.modules.deeplink.domain.model.NotificationGroupType
@@ -272,18 +271,6 @@ class MainActivity :
                 val assetAction = AssetAction(assetId = assetId)
                 navController.navigateSafe(
                     HomeNavigationDirections.actionGlobalUnsupportedAddAssetTryLaterBottomSheet(assetAction)
-                )
-            }
-        }
-
-        override fun onMoonpayResultDeepLink(accountAddress: String, txnStatus: String, txnId: String?): Boolean {
-            mainViewModel.logMoonpayAlgoBuyCompletedEvent()
-            return true.also {
-                navController.navigateSafe(
-                    HomeNavigationDirections.actionGlobalMoonpayResultNavigation(
-                        walletAddress = accountAddress,
-                        transactionStatus = MoonpayTransactionStatus.getByValueOrDefault(txnStatus)
-                    )
                 )
             }
         }

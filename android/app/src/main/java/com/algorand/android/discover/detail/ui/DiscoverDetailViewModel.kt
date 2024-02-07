@@ -101,6 +101,10 @@ class DiscoverDetailViewModel @Inject constructor(
         }
     }
 
+    fun getRedirectUrlFromJson(openSystemBrowserRequestJson: String): String? {
+        return discoverDetailPreviewUseCase.getOpenSystemBrowserRequestFromJson(openSystemBrowserRequestJson)?.url
+    }
+
     fun getDeviceId() {
         viewModelScope.launch {
             val webView = getWebView()

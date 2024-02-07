@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.tracking.accounts
 
-import com.algorand.android.modules.tracking.moonpay.AccountsFragmentAlgoBuyTapEventTracker
+import com.algorand.android.modules.tracking.meld.AccountsFragmentAlgoBuyTapEventTracker
 import com.algorand.android.modules.tracking.swap.accounts.AccountsSwapClickEventTracker
 import com.algorand.android.modules.tracking.swap.swaptutorial.SwapTutorialLaterClickEventTracker
 import com.algorand.android.modules.tracking.swap.swaptutorial.SwapTutorialTrySwapClickEventTracker

@@ -16,7 +16,7 @@
     android:id="@+id/recoverWithPassphraseNavigation"
     app:startDestination="@id/recoverWithPassphraseFragment">
 
-    <include app:graph="@navigation/moonpay_navigation" />
+    <include app:graph="@navigation/meld_navigation" />
 
     <fragment
         android:id="@+id/recoverWithPassphraseFragment"
@@ -60,8 +60,8 @@
         android:label="RecoverAccountResultInfoFragment"
         tools:layout="@layout/fragment_base_info">
         <action
-            android:id="@+id/action_recoverAccountResultInfoFragment_to_moonpayNavigation"
-            app:destination="@id/moonpayNavigation"
+            android:id="@+id/action_recoverAccountResultInfoFragment_to_meldNavigation"
+            app:destination="@id/meldNavigation"
             app:popUpTo="@id/recoverWithPassphraseNavigation"
             app:popUpToInclusive="true" />
         <action

@@ -41,12 +41,18 @@ class PeraMobileWebInterface private constructor(val listener: WebInterfaceListe
         listener.handleTokenDetailActionButtonClick(jsonEncodedPayload)
     }
 
+    @JavascriptInterface
+    fun openSystemBrowser(jsonEncodedPayload: String) {
+        listener.openSystemBrowser(jsonEncodedPayload)
+    }
+
     interface WebInterfaceListener {
         fun pushTokenDetailScreen(jsonEncodedPayload: String) {}
         fun pushDappViewerScreen(jsonEncodedPayload: String) {}
         fun pushNewScreen(jsonEncodedPayload: String) {}
         fun handleTokenDetailActionButtonClick(jsonEncodedPayload: String) {}
         fun getDeviceId() {}
+        fun openSystemBrowser(jsonEncodedPayload: String) {}
     }
 
     companion object {

@@ -501,8 +501,6 @@
     <string name="confirm_transaction">트랜잭션 확정</string>
     <string name="your_transaction_was">알고랜드 네트워크에서 트랜잭션을 성공적으로 수신했습니다.</string>
     <string name="buy_algo">알고 구매</string>
-    <string name="moonpay_offers">MoonPay는 국내 통화로 가장 빠르게 알고를 구매할 수 있는 수단을 제공합니다. 신용카드나 은행 송금으로 암호화폐를 구입하세요. 신속하고 간편하며 안전합니다.</string>
-    <string name="buy_algo_with">MoonPay로 알고 구매하기</string>
     <string name="secured_by">보안 제공:</string>
     <string name="your_algos_are">알고를 전송 중입니다!</string>
     <string name="your_payment_is">결제를 처리 중입니다. 완료하는 데 몇 분 정도 걸릴 수 있습니다.</string>
@@ -515,10 +513,8 @@
     <string name="looks_like_your">구매에 실패한 것 같습니다. 다시 시도해 주세요.</string>
     <string name="email_address">이메일 주소</string>
     <string name="enter_your_email">이메일을 입력하세요</string>
-    <string name="continue_with_moonpay">MoonPay로 계속하기</string>
     <string name="i_agree_to_share">내 이메일 주소를 Pera와 공유하고 지갑 기능의 업데이트 소식을 받는 데 동의합니다.</string>
     <string name="not_available">사용할 수 없습니다</string>
-    <string name="you_can_not_purchase">테스트넷에서는 구매할 수 없습니다. MoonPay를 사용하려면 설정에서 메인넷으로 다시 전환하십시오.</string>
     <string name="your_walletconnect_request_failed">다음 오류로 인해 WalletConnect 요청이 실패했습니다.\n\n<annotation replacement="error_message">errorMessagePlaceholder</annotation>\n\n요청을 시작한 디앱으로 돌아가서 다시 시도해 주십시오.</string>
     <string name="add_an_account">계정 추가</string>
     <string name="manage_assets">자산 관리</string>
@@ -997,9 +993,7 @@
     <string name="buy_crypto">암호화폐 구매</string>
     <string name="sell_crypto">암호화폐 판매</string>
     <string name="use_apple_pay_credit_cards">Apple Pay, 신용카드 또는 은행 계좌 이체를 사용하세요</string>
-    <string name="buy_algo_with_sardine">Sardine으로 알고 구매하기</string>
     <string name="use_instant_ach">미국 은행 계좌로 즉시 송금 ACH를 사용하세요</string>
-    <string name="buy_usdc_with_transak">Transak으로 USDC 구매하기</string>
     <string name="use_credit_card_bank_transfer">150여 개국에서 신용카드 또는 은행 계좌 이체를 사용하세요</string>
     <string name="buy_gift_cards_with_bidali">Bidali로 기프트 카드 구매하기</string>
     <string name="you_can_use_your_algo">알고, USDC, USDt 잔액을 사용할 수 있습니다.</string>
@@ -1008,9 +1002,5 @@
     <string name="you_can_use_your_algo_or">알고, USDC 잔액을 사용하여 전 세계 수천 개의 브랜드에서 기프트 카드를 구매하거나 모바일 기기를 충전할 수 있습니다!</string>
     <string name="you_can_not_purchase_bidali">테스트넷에서는 구매할 수 없습니다. Bidali를 사용하려면 설정에서 메인넷으로 다시 전환하십시오.</string>
     <string name="buy_usdc">USDC 구매</string>
-    <string name="transak_onboards_users_from_fiat">Transak을 통해 800개가 넘는 앱에서 법정화폐로 암호화폐를 이용할 수 있습니다. 150개 이상의 국가에서 신용카드, 직불카드 또는 은행 송금을 지원합니다.</string>
-    <string name="you_can_not_purchase_transak">테스트넷에서는 구매할 수 없습니다. Transak을 사용하려면 설정에서 메인넷으로 다시 전환하십시오.</string>
-    <string name="instant_settlement_and_lower">ACH 즉시 송금을 사용하여 알고 트랜잭션을 즉시 확정하고 저렴한 수수료 혜택을 누리세요. Sardine은 180여 개국에서 Apple Pay 및 GPay, 현지 은행 및 카드 결제를 지원합니다.</string>
-    <string name="you_can_not_purchase_sardine">테스트넷에서는 구매할 수 없습니다. Sardine을 사용하려면 설정에서 메인넷으로 다시 전환하십시오.</string>
     <string name="choose_an_account_to_proceed">진행할 계정 선택</string>
 </resources>

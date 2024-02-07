@@ -64,7 +64,7 @@ class AssetName private constructor(
 
     companion object {
 
-        const val DEFAULT_ASSET_NAME_RES_ID = R.string.unnamed
+        val DEFAULT_ASSET_NAME_RES_ID = R.string.unnamed
         private const val ASSET_AVATAR_MAX_LETTER_COUNT = 3
 
         fun create(assetName: String?): AssetName {

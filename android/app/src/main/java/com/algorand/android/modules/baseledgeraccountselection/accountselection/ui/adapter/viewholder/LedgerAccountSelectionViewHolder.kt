@@ -63,8 +63,8 @@ class LedgerAccountSelectionViewHolder(
     }
 
     companion object {
-        private const val SELECTED_ITEM_BACKGROUND = R.drawable.bg_selected_ledger_account
-        private const val UNSELECTED_ITEM_BACKGROUND = R.drawable.bg_rectangle_radius_12_stroke_1
+        private val SELECTED_ITEM_BACKGROUND = R.drawable.bg_selected_ledger_account
+        private val UNSELECTED_ITEM_BACKGROUND = R.drawable.bg_rectangle_radius_12_stroke_1
 
         fun create(parent: ViewGroup, listener: Listener): LedgerAccountSelectionViewHolder {
             val binding = ItemAccountSelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
