@@ -116,6 +116,23 @@ final class ALGAppLaunchController:
         sharedDataController.startPolling()
     }
 
+    func launchBuyAlgo(
+        shouldStartPolling: Bool = false,
+        draft: MeldDraft
+    ) {
+        authChecker.authorize()
+     
+        let completion = {
+            [unowned self] in
+            self.receive(deeplinkWithSource: .buyAlgoWithMeld(draft))
+        }
+        uiHandler.launchUI(.main(completion: completion))
+
+        if shouldStartPolling {
+            sharedDataController.startPolling()
+        }
+    }
+
     func launchMainAfterAuthorization(
         presented viewController: UIViewController
     ) {
@@ -295,6 +312,8 @@ extension ALGAppLaunchController {
             result = determineUIStateIfPossible(forQRText: qrText)
         case .externalInAppBrowser(let destination):
             result = determineUIStateIfPossible(forRedirectedDestination: destination)
+        case .buyAlgoWithMeld(let draft):
+            result = determineUIStateIfPossible(forMeld: draft)
         }
         
         switch result {
@@ -425,7 +444,17 @@ extension ALGAppLaunchController {
     ) -> DeeplinkResult {
         return .success(.deeplink(.externalInAppBrowser(destination: destination)))
     }
-    
+
+    private func determineUIStateIfPossible(forMeld draft: MeldDraft) -> DeeplinkResult {
+        let parserResult = deeplinkParser.discoverBuyAlgoWithMeld(draft: draft)
+
+        switch parserResult {
+        case .none: return nil
+        case .success(let screen): return .success(.deeplink(screen))
+        case .failure(let error): return .failure(error)
+        }
+    }
+
     private func suspend(
         deeplinkWithSource src: DeeplinkSource
     ) {

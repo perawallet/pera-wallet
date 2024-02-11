@@ -563,9 +563,6 @@
 "collectible-approve-transaction-to" = "Para";
 
 /* (No Comment) */
-"collectible-detail-algo-explorer" = "Exibir no Algoexplorer";
-
-/* (No Comment) */
 "collectible-detail-creator-account" = "Conta Criadora";
 
 /* (No Comment) */
@@ -2255,9 +2252,6 @@
 "swap-success-title" = "%@ swap concluído";
 
 /* (No Comment) */
-"swap-success-view-explorer" = "Visualizar Detalhes da Transação no AlgoExplorer";
-
-/* (No Comment) */
 "swap-success-view-summary" = "Ver Resumo de Swap";
 
 /* (No Comment) */
@@ -2748,12 +2742,6 @@
 
 /* (No Comment) */
 "transaction-filter-try-again" = "Tente novamente";
-
-/* (No Comment) */
-"transaction-id-open-algoexplorer" = "Abrir no AlgoExplorer";
-
-/* (No Comment) */
-"transaction-id-open-goalseeker" = "Abrir no GoalSeeker";
 
 /* (No Comment) */
 "transaction-item-app-id-title" = "ID do Aplicativo: %d";
@@ -3249,9 +3237,6 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-auth-address" = "Endereço de Autenticação";
-
-/* (No Comment) */
-"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-metadata" = "Metadados de Ativo";

@@ -32,7 +32,7 @@ final class WCAssetAdditionTransactionViewModel {
     private(set) var noteInformationViewModel: TransactionTextInformationViewModel?
 
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
-    private(set) var algoExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
+    private(set) var peraExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var urlInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var metadataInformationViewModel: WCTransactionActionableInformationViewModel?
 
@@ -60,7 +60,7 @@ final class WCAssetAdditionTransactionViewModel {
         setNoteInformationViewModel(from: transaction)
 
         setRawTransactionInformationViewModel(from: transaction, and: asset)
-        setAlgoExplorerInformationViewModel(from: asset)
+        setPeraExplorerInformationViewModel(from: asset)
         setUrlInformationViewModel(from: asset)
         setMetadataInformationViewModel(from: asset)
     }
@@ -224,12 +224,12 @@ final class WCAssetAdditionTransactionViewModel {
         )
     }
 
-    private func setAlgoExplorerInformationViewModel(from asset: Asset?) {
+    private func setPeraExplorerInformationViewModel(from asset: Asset?) {
         if asset == nil {
             return
         }
 
-        algoExplorerInformationViewModel = WCTransactionActionableInformationViewModel(information: .algoExplorer, isLastElement: false)
+        peraExplorerInformationViewModel = WCTransactionActionableInformationViewModel(information: .peraExplorer, isLastElement: false)
     }
 
     private func setUrlInformationViewModel(from asset: Asset?) {

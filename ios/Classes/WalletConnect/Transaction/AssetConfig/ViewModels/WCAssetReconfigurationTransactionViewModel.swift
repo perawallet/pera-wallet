@@ -38,7 +38,7 @@ class WCAssetReconfigurationTransactionViewModel {
 
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var assetURLInformationViewModel: WCTransactionActionableInformationViewModel?
-    private(set) var algoExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
+    private(set) var peraExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
 
     init(
         transaction: WCTransaction,
@@ -64,7 +64,7 @@ class WCAssetReconfigurationTransactionViewModel {
         setNoteInformationViewModel(from: transaction)
         setRawTransactionInformationViewModel(from: transaction)
         setAssetURLInformationViewModel(from: asset)
-        setAlgoExplorerInformationViewModel(from: transaction)
+        setPeraExplorerInformationViewModel(from: transaction)
     }
 
     private func setSenderInformationViewModel(
@@ -254,7 +254,7 @@ class WCAssetReconfigurationTransactionViewModel {
         }
     }
 
-    private func setAlgoExplorerInformationViewModel(from transaction: WCTransaction) {
-        algoExplorerInformationViewModel = WCTransactionActionableInformationViewModel(information: .algoExplorer, isLastElement: true)
+    private func setPeraExplorerInformationViewModel(from transaction: WCTransaction) {
+        peraExplorerInformationViewModel = WCTransactionActionableInformationViewModel(information: .peraExplorer, isLastElement: true)
     }
 }

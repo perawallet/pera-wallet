@@ -490,10 +490,18 @@ extension TransakFlowCoordinator {
         account: AccountHandle,
         from screen: UIViewController
     ) {
-        screen.open(
+        let dAppDetail = screen.open(
             .transakDappDetail(account: account),
             by: .push
-        )
+        ) as? DiscoverExternalInAppBrowserScreen
+        dAppDetail?.eventHandler = {
+            [weak dAppDetail] event in
+            switch event {
+            case .goBack:
+                dAppDetail?.dismiss(animated: true)
+            default: break
+            }
+        }
     }
 }
 

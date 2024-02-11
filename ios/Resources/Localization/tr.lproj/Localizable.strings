@@ -563,9 +563,6 @@
 "collectible-approve-transaction-to" = "Alıcı";
 
 /* (No Comment) */
-"collectible-detail-algo-explorer" = "Algoexplorer'da Göster";
-
-/* (No Comment) */
 "collectible-detail-creator-account" = "İçerik Oluşturucu Hesabı";
 
 /* (No Comment) */
@@ -2255,9 +2252,6 @@
 "swap-success-title" = "%@ takası tamamlandı";
 
 /* (No Comment) */
-"swap-success-view-explorer" = "İşlem Ayrıntılarını AlgoExplorer'da Görüntüleyin";
-
-/* (No Comment) */
 "swap-success-view-summary" = "Takas Özetini Görüntüle";
 
 /* (No Comment) */
@@ -2748,12 +2742,6 @@
 
 /* (No Comment) */
 "transaction-filter-try-again" = "Tekrar Dene";
-
-/* (No Comment) */
-"transaction-id-open-algoexplorer" = "AlgoExplorer'da Aç";
-
-/* (No Comment) */
-"transaction-id-open-goalseeker" = "GoalSeeker'da Aç";
 
 /* (No Comment) */
 "transaction-item-app-id-title" = "Uygulama Kimliği: %d";
@@ -3249,9 +3237,6 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-auth-address" = "Adresi Doğrula";
-
-/* (No Comment) */
-"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-metadata" = "Varlık Meta Verileri";

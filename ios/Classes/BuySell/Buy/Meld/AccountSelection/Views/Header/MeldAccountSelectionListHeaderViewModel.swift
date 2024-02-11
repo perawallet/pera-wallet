@@ -12,28 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SardineAccountSelectionListAccountListItemCell.swift
+//   MeldAccountSelectionListHeaderViewModel.swift
 
 import Foundation
-import UIKit
 import MacaroonUIKit
 
-final class SardineAccountSelectionListAccountListItemCell:
-    CollectionCell<AccountListItemView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return theme.contextEdgeInsets
-    }
-
-    static let theme = SardineAccountSelectionListAccountListItemCellTheme()
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-
-        contextView.customize(Self.theme.context)
-
-        separatorStyle = .single(Self.theme.separator)
-    }
+struct MeldAccountSelectionListHeaderViewModel: ViewModel {
+    let description: TextProvider =
+        "title-choose-account-to-proceed-with"
+            .localized
+            .bodyRegular()
 }

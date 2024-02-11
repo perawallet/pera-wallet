@@ -64,7 +64,7 @@ struct BuySellOptionsScreenTheme:
             .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
         ]
-        self.spacingBetweenBuyAndSellContext = 12
+        self.spacingBetweenBuyAndSellContext = 40
         self.spacingBetweenBuyContextHeaderAndBuyContext = 12
         let sellContextHeaderText =
             "buy-sell-options-sell-header-title"

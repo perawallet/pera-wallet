@@ -102,7 +102,7 @@ extension WCTransactionSignSuccessfulSheet {
     private static func makeBodyForWCv1(_ wcV1Session: WCSession) -> UISheetBodyTextProvider {
         let dAppName = wcV1Session.peerMeta.name
         let aBody = "wc-transaction-request-signed-warning-message"
-            .localized(dAppName, dAppName)
+            .localized(params: dAppName, dAppName)
             .bodyRegular(alignment: .center)
         return UISheetBodyTextProvider(text: aBody)
     }
@@ -110,7 +110,7 @@ extension WCTransactionSignSuccessfulSheet {
     private static func makeBodyForWCv2(_ wcV2Session: WalletConnectV2Session) -> UISheetBodyTextProvider {
         let dAppName = wcV2Session.peer.name
         let aBody = "wc-transaction-request-signed-warning-message"
-            .localized(dAppName, dAppName)
+            .localized(params: dAppName, dAppName)
             .bodyRegular(alignment: .left)
         return UISheetBodyTextProvider(text: aBody)
     }

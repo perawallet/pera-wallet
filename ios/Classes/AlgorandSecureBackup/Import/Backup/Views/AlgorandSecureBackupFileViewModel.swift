@@ -99,7 +99,7 @@ extension AlgorandSecureBackupFileViewModel {
         case .unauthorized:
             errorTitle = "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title".localized
         case .keyNotFound(let key):
-            errorTitle = "algorand-secure-backup-import-backup-clipboard-key-not-exist".localized(key)
+            errorTitle = "algorand-secure-backup-import-backup-clipboard-key-not-exist".localized(params: key)
         }
 
         title = errorTitle.bodyMedium(alignment: .center)

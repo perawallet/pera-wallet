@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SardineAccountSelectionListDataSource.swift
+//   MeldAccountSelectionListDataSource.swift
 
 import Foundation
 import UIKit
 
-final class SardineAccountSelectionListDataSource: AccountSelectionListDataSource {
-    typealias SectionIdentifierType = SardineAccountSelectionListSectionIdentifier
-    typealias ItemIdentifierType = SardineAccountSelectionListItemIdentifier
+final class MeldAccountSelectionListDataSource: AccountSelectionListDataSource {
+    typealias SectionIdentifierType = MeldAccountSelectionListSectionIdentifier
+    typealias ItemIdentifierType = MeldAccountSelectionListItemIdentifier
 
-    private unowned let itemDataSource: SardineAccountSelectionListItemDataSource
+    private unowned let itemDataSource: MeldAccountSelectionListItemDataSource
 
-    init(_ itemDataSource: SardineAccountSelectionListItemDataSource) {
+    init(_ itemDataSource: MeldAccountSelectionListItemDataSource) {
         self.itemDataSource = itemDataSource
     }
 
     var supportedCells: [UICollectionViewCell.Type] = [
         AccountSelectionListLoadingAccountItemCell.self,
         AccountSelectionListNoContentCell.self,
-        SardineAccountSelectionListAccountListItemCell.self
+        MeldAccountSelectionListAccountListItemCell.self
     ]
 
     func getCellProvider() -> CellProvider {
@@ -58,7 +58,7 @@ final class SardineAccountSelectionListDataSource: AccountSelectionListDataSourc
                 }
             case .account(let item):
                 let cell = collectionView.dequeue(
-                    SardineAccountSelectionListAccountListItemCell.self,
+                    MeldAccountSelectionListAccountListItemCell.self,
                     at: indexPath
                 )
                 let viewModel = self.itemDataSource.accountItems[item.accountAddress]
@@ -69,14 +69,14 @@ final class SardineAccountSelectionListDataSource: AccountSelectionListDataSourc
     }
 
     var supportedSupplementaryViews: [UICollectionReusableView.Type] = [
-        SardineAccountSelectionListHeader.self
+        MeldAccountSelectionListHeader.self
     ]
 
     func getSupplementaryViewProvider(_ dataSource: DataSource) -> SupplementaryViewProvider? {
         return { collectionView, elementKind, indexPath in
 
             let header = collectionView.dequeueHeader(
-                SardineAccountSelectionListHeader.self,
+                MeldAccountSelectionListHeader.self,
                 at: indexPath
             )
             let viewModel = self.itemDataSource.headerItem

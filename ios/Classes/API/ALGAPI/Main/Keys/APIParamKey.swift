@@ -48,6 +48,7 @@ enum APIParamKey: String, CodingKey {
     case deviceId = "device_id"
     case email = "email"
     case encryptedContent = "encrypted_content"
+    case exceptionText = "exception_text"
     case device = "device"
     case bridgeURL = "bridge_url"
     case topicID = "topic_id"

@@ -30,7 +30,7 @@ extension RekeyedAccountSelectionListHeaderViewModel {
         let aTitle =
             accounts.isSingular
             ? "rekeyed-account-selection-list-header-body-singular".localized
-            : "rekeyed-account-selection-list-header-body-plural".localized("\(accounts.count)")
+            : "rekeyed-account-selection-list-header-body-plural".localized(params: "\(accounts.count)")
 
         title = aTitle.bodyRegular()
     }

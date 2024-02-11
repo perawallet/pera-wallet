@@ -38,14 +38,14 @@ extension WebImportSuccessInfoBoxViewModel {
 
     private mutating func bindTitle(unimportedAccountCount: Int) {
         let isSingular = unimportedAccountCount == 1
-        let title = isSingular ? "web-import-success-unimported-singular-title".localized("\(unimportedAccountCount)") : "web-import-success-unimported-title".localized("\(unimportedAccountCount)")
+        let title = isSingular ? "web-import-success-unimported-singular-title".localized(params: "\(unimportedAccountCount)") : "web-import-success-unimported-title".localized(params: "\(unimportedAccountCount)")
 
         self.title = title.footnoteMedium()
     }
 
     private mutating func bindMessage(unimportedAccountCount: Int) {
         let isSingular = unimportedAccountCount == 1
-        let message = isSingular ? "web-import-success-unimported-singular-body".localized("\(unimportedAccountCount)") : "web-import-success-unimported-body".localized("\(unimportedAccountCount)")
+        let message = isSingular ? "web-import-success-unimported-singular-body".localized(params: "\(unimportedAccountCount)") : "web-import-success-unimported-body".localized(params: "\(unimportedAccountCount)")
 
         self.message = message.footnoteRegular()
     }

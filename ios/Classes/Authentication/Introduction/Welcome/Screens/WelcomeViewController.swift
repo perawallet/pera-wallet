@@ -93,7 +93,21 @@ extension WelcomeViewController: WelcomeViewDelegate {
     
     func welcomeViewDidSelectWatch(_ welcomeView: WelcomeView) {
         analytics.track(.onboardWelcomeScreen(type: .watch))
-        open(.tutorial(flow: flow, tutorial: .watchAccount), by: .push)
+
+        let routingScreen: Screen
+        let tutorial: Tutorial = .watchAccount
+
+        switch flow {
+        case .initializeAccount:
+            routingScreen = .tutorial(flow: .initializeAccount(mode: .watch), tutorial: tutorial)
+        default:
+            routingScreen = .tutorial(flow: .addNewAccount(mode: .watch), tutorial: tutorial)
+        }
+
+        open(
+            routingScreen,
+            by: .push
+        )
     }
 
     func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL) {

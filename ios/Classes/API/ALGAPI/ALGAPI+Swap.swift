@@ -77,4 +77,14 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+
+    @discardableResult
+    func updateSwapQuote(_ draft: UpdateSwapQuoteDraft) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.swapQuoteUpdate, args: String(draft.id))
+            .method(.patch)
+            .body(draft)
+            .execute()
+    }
 }

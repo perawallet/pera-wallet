@@ -441,7 +441,7 @@ extension RootViewController: WCMainArbitraryDataScreenDelegate {
             image: "icon-approval-check".uiImage,
             title: "wc-arbitrary-data-request-signed-warning-title".localized,
             description: .plain(
-                "wc-arbitrary-data-request-signed-warning-message".localized(dappName, dappName)
+                "wc-arbitrary-data-request-signed-warning-message".localized(params: dappName, dappName)
             ),
             primaryActionButtonTitle: nil,
             secondaryActionButtonTitle: "title-close".localized

@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SardineAccountSelectionListLayout.swift
+//   MeldAccountSelectionListLayout.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class SardineAccountSelectionListLayout: AccountSelectionListLayout {
-    typealias ListDataSource = SardineAccountSelectionListDataSource.DataSource
+final class MeldAccountSelectionListLayout: AccountSelectionListLayout {
+    typealias ListDataSource = MeldAccountSelectionListDataSource.DataSource
 
     private var sizeCache: [String: CGSize] = [:]
 
     private unowned let listDataSource: ListDataSource
-    private unowned let itemDataSource: SardineAccountSelectionListItemDataSource
+    private unowned let itemDataSource: MeldAccountSelectionListItemDataSource
 
     init(
         dataSource: ListDataSource,
-        itemDataSource: SardineAccountSelectionListItemDataSource
+        itemDataSource: MeldAccountSelectionListItemDataSource
     ) {
         self.listDataSource = dataSource
         self.itemDataSource = itemDataSource
@@ -113,11 +113,11 @@ final class SardineAccountSelectionListLayout: AccountSelectionListLayout {
     }
 }
 
-extension SardineAccountSelectionListLayout {
+extension MeldAccountSelectionListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForEmptyItem item: SardineAccountSelectionListEmptyItemIdentifier,
+        sizeForEmptyItem item: MeldAccountSelectionListEmptyItemIdentifier,
         atSection section: Int
     ) -> CGSize {
         let width = calculateContentWidth(
@@ -150,7 +150,7 @@ extension SardineAccountSelectionListLayout {
         sizeForAccountCellItem item: AccountListItemViewModel?,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = SardineAccountSelectionListAccountListItemCell.reuseIdentifier
+        let sizeCacheIdentifier = MeldAccountSelectionListAccountListItemCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -164,9 +164,9 @@ extension SardineAccountSelectionListLayout {
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
         )
         let sampleAccountItem = AccountListItemViewModel(sampleAccountListItem)
-        let newSize = SardineAccountSelectionListAccountListItemCell.calculatePreferredSize(
+        let newSize = MeldAccountSelectionListAccountListItemCell.calculatePreferredSize(
             sampleAccountItem,
-            for: SardineAccountSelectionListAccountListItemCell.theme.context,
+            for: MeldAccountSelectionListAccountListItemCell.theme.context,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -177,10 +177,10 @@ extension SardineAccountSelectionListLayout {
 
     private func listView(
         _ listView: UICollectionView,
-        sizeForHeaderItem item: SardineAccountSelectionListHeaderViewModel,
+        sizeForHeaderItem item: MeldAccountSelectionListHeaderViewModel,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = SardineAccountSelectionListHeader.reuseIdentifier
+        let sizeCacheIdentifier = MeldAccountSelectionListHeader.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -190,9 +190,9 @@ extension SardineAccountSelectionListLayout {
             for: listView,
             forSectionAt: section
         )
-        let newSize = SardineAccountSelectionListHeader.calculatePreferredSize(
+        let newSize = MeldAccountSelectionListHeader.calculatePreferredSize(
             item,
-            for: SardineAccountSelectionListHeader.theme,
+            for: MeldAccountSelectionListHeader.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -202,7 +202,7 @@ extension SardineAccountSelectionListLayout {
     }
 }
 
-extension SardineAccountSelectionListLayout {
+extension MeldAccountSelectionListLayout {
     private func calculateContentWidth(
         for listView: UICollectionView,
         forSectionAt section: Int

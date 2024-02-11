@@ -38,8 +38,7 @@ final class KeyRegTransactionDetailView:
     private lazy var voteKeyDilutionView = TransactionTextInformationView()
     private lazy var participationStatusView = TransactionTextInformationView()
     private lazy var noteView = TransactionTextInformationView()
-    private lazy var openInAlgoExplorerButton = UIButton()
-    private lazy var openInGoalSeekerButton = UIButton()
+    private lazy var openInPeraExplorerButton = UIButton()
 
     private lazy var userContextMenuInteraction = UIContextMenuInteraction(delegate: self)
     private lazy var idContextMenuInteraction = UIContextMenuInteraction(delegate: self)
@@ -52,14 +51,9 @@ final class KeyRegTransactionDetailView:
         idView.addInteraction(idContextMenuInteraction)
         noteView.addInteraction(noteContextMenuInteraction)
 
-        openInAlgoExplorerButton.addTarget(
+        openInPeraExplorerButton.addTarget(
             self,
-            action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside
-        )
-        openInGoalSeekerButton.addTarget(
-            self,
-            action: #selector(notifyDelegateToOpenGoalSeaker),
-            for: .touchUpInside
+            action: #selector(notifyDelegateToOpenPeraExplorer), for: .touchUpInside
         )
     }
 
@@ -82,8 +76,7 @@ final class KeyRegTransactionDetailView:
         addVoteKeyDilutionView(theme)
         addParticipationStatusView(theme)
         addNoteView(theme)
-        addOpenInAlgoExplorerButton(theme)
-        addOpenInGoalSeekerButton(theme)
+        addOpenInPeraExplorerButton(theme)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
@@ -215,41 +208,24 @@ extension KeyRegTransactionDetailView {
         noteView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-note".localized))
     }
 
-    private func addOpenInAlgoExplorerButton(_ theme: KeyRegTransactionDetailViewTheme) {
-        openInAlgoExplorerButton.customizeAppearance(theme.openInAlgoExplorerButton)
-        openInAlgoExplorerButton.layer.draw(corner: theme.buttonsCorner)
+    private func addOpenInPeraExplorerButton(_ theme: KeyRegTransactionDetailViewTheme) {
+        openInPeraExplorerButton.customizeAppearance(theme.openInPeraExplorerButton)
+        openInPeraExplorerButton.layer.draw(corner: theme.buttonsCorner)
 
-        addSubview(openInAlgoExplorerButton)
-        openInAlgoExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
-        openInAlgoExplorerButton.snp.makeConstraints {
+        addSubview(openInPeraExplorerButton)
+        openInPeraExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+        openInPeraExplorerButton.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
             $0.top.equalTo(verticalStackView.snp.bottom).offset(theme.spacingBetweenPropertiesAndActions)
             $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.bottomInset)
-        }
-    }
-
-    private func addOpenInGoalSeekerButton(_ theme: KeyRegTransactionDetailViewTheme) {
-        openInGoalSeekerButton.customizeAppearance(theme.openInGoalSeekerButton)
-        openInGoalSeekerButton.layer.draw(corner: theme.buttonsCorner)
-
-        addSubview(openInGoalSeekerButton)
-        openInGoalSeekerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
-        openInGoalSeekerButton.snp.makeConstraints {
-            $0.leading.equalTo(openInAlgoExplorerButton.snp.trailing).offset(theme.openInGoalSeekerButtonLeadingPadding)
-            $0.centerY.equalTo(openInAlgoExplorerButton)
         }
     }
 }
 
 extension KeyRegTransactionDetailView {
     @objc
-    func notifyDelegateToOpenAlgoExplorer() {
-        delegate?.transactionDetailView(self, didOpen: .algoexplorer)
-    }
-
-    @objc
-    func notifyDelegateToOpenGoalSeaker() {
-        delegate?.transactionDetailView(self, didOpen: .goalseeker)
+    func notifyDelegateToOpenPeraExplorer() {
+        delegate?.transactionDetailView(self, didOpen: .peraExplorer)
     }
 }
 

@@ -40,7 +40,7 @@ final class WCAssetAdditionTransactionView: WCSingleTransactionView {
     private lazy var topButtonsContainer = HStackView()
     private lazy var bottomButtonsContainer = HStackView()
     private lazy var rawTransactionButton = UIButton()
-    private lazy var algoExplorerButton = UIButton()
+    private lazy var peraExplorerButton = UIButton()
     private lazy var showUrlButton = UIButton()
     private lazy var showMetaDataButton = UIButton()
 
@@ -60,7 +60,7 @@ final class WCAssetAdditionTransactionView: WCSingleTransactionView {
 
     override func setListeners() {
         rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
-        algoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
+        peraExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenPeraExplorer), for: .touchUpInside)
         showUrlButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetURL), for: .touchUpInside)
         showMetaDataButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetMetadata), for: .touchUpInside)
 
@@ -107,9 +107,9 @@ extension WCAssetAdditionTransactionView {
         rawTransactionButton.layer.draw(corner: theme.buttonsCorner)
         rawTransactionButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
 
-        algoExplorerButton.customizeAppearance(theme.algoExplorerButtonStyle)
-        algoExplorerButton.layer.draw(corner: theme.buttonsCorner)
-        algoExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+        peraExplorerButton.customizeAppearance(theme.peraExplorerButtonStyle)
+        peraExplorerButton.layer.draw(corner: theme.buttonsCorner)
+        peraExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
 
         showUrlButton.customizeAppearance(theme.showUrlButtonStyle)
         showUrlButton.layer.draw(corner: theme.buttonsCorner)
@@ -124,7 +124,7 @@ extension WCAssetAdditionTransactionView {
         topButtonsContainer.spacing = theme.buttonSpacing
 
         topButtonsContainer.addArrangedSubview(rawTransactionButton)
-        topButtonsContainer.addArrangedSubview(algoExplorerButton)
+        topButtonsContainer.addArrangedSubview(peraExplorerButton)
 
         let spacer = UIView()
         spacer.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -150,8 +150,8 @@ extension WCAssetAdditionTransactionView {
     }
 
     @objc
-    private func notifyDelegateToOpenAlgoExplorer() {
-        delegate?.wcAssetAdditionTransactionViewDidOpenAlgoExplorer(self)
+    private func notifyDelegateToOpenPeraExplorer() {
+        delegate?.wcAssetAdditionTransactionViewDidOpenPeraExplorer(self)
     }
 
     @objc
@@ -245,10 +245,10 @@ extension WCAssetAdditionTransactionView {
             rawTransactionButton.hideViewInStack()
         }
 
-        if viewModel.algoExplorerInformationViewModel != nil {
-            algoExplorerButton.showViewInStack()
+        if viewModel.peraExplorerInformationViewModel != nil {
+            peraExplorerButton.showViewInStack()
         } else {
-            algoExplorerButton.hideViewInStack()
+            peraExplorerButton.hideViewInStack()
         }
 
         if topButtonsContainer.arrangedSubviews.isEmpty {
@@ -281,7 +281,7 @@ protocol WCAssetAdditionTransactionViewDelegate: AnyObject {
     func wcAssetAdditionTransactionViewDidOpenRawTransaction(
         _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
     )
-    func wcAssetAdditionTransactionViewDidOpenAlgoExplorer(
+    func wcAssetAdditionTransactionViewDidOpenPeraExplorer(
         _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
     )
     func wcAssetAdditionTransactionViewDidOpenAssetURL(

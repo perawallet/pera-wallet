@@ -96,14 +96,11 @@ extension BuySellOptionsScreen {
             $0.trailing == 0
         }
 
-        addBuyOptionsIfPossible()
+        addBuyOptions()
     }
 
-    private func addBuyOptionsIfPossible() {
-        /// <note> Buy options are temporarily disabled. Date: 20.11.2023
-        addBuyOptionsNotAvailableContent()
-
-        // addBuyWithTransakOption()
+    private func addBuyOptions() {
+        addBuyWithMeldOption()
     }
 
     private func addBuyOptionsNotAvailableContent() {
@@ -113,10 +110,10 @@ extension BuySellOptionsScreen {
         buyContextView.addArrangedSubview(contentView)
     }
 
-    private func addBuyAlgoWithSardineOption() {
+    private func addBuyWithMeldOption() {
         addOption(
-            viewModel: BuyAlgoWithSardineOptionViewModel(),
-            selector: #selector(performBuyAlgoWithSardine),
+            viewModel: BuyWithMeldOptionViewModel(),
+            selector: #selector(performBuyWithMeld),
             to: buyContextView
         )
     }
@@ -132,8 +129,8 @@ extension BuySellOptionsScreen {
 
 extension BuySellOptionsScreen {
     @objc
-    private func performBuyAlgoWithSardine() {
-        eventHandler?(.performBuyAlgoWithSardine)
+    private func performBuyWithMeld() {
+        eventHandler?(.performBuyWithMeld)
     }
 
     @objc
@@ -208,7 +205,7 @@ extension BuySellOptionsScreen {
 
  extension BuySellOptionsScreen {
      enum Event {
-         case performBuyAlgoWithSardine
+         case performBuyWithMeld
          case performBuyWithTransak
          case performBuyGiftCardsWithBidali
      }

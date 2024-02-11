@@ -246,6 +246,16 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
          assetTransactionDraft.asset = asset
          assetTransactionDraft.toNameService = draft.toNameService
 
+         if sendTransactionDraft.isOptingOut {
+            let closeTo =
+               draft.toAccount?.address ??
+               draft.toContact?.address ??
+               draft.toNameService?.address
+            if let closeTo {
+               assetTransactionDraft.assetCreator = closeTo
+            }
+         }
+
          transactionDraft = assetTransactionDraft
       }
 
@@ -272,6 +282,14 @@ extension SendTransactionPreviewScreen {
 
       let composedTransacation = composeTransaction()
       let transactionType = composedTransactionType(draft: composedTransacation)
+
+      if let sendTransactionDraft = draft as? SendTransactionDraft,
+         sendTransactionDraft.isOptingOut,
+         let asset = sendTransactionDraft.asset {
+         let monitor = sharedDataController.blockchainUpdatesMonitor
+         let request = OptOutBlockchainRequest(account: draft.from, asset: asset)
+         monitor.startMonitoringOptOutUpdates(request)
+      }
 
       transactionController.delegate = self
       transactionController.setTransactionDraft(composedTransacation)
@@ -377,12 +395,23 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       case let .inapp(transactionError):
          displayTransactionError(from: transactionError)
       }
+
+      cancelMonitoringOptOutUpdatesIfNeeded(for: transactionController)
    }
 
    func transactionController(
       _ transactionController: TransactionController,
       didComposedTransactionDataFor draft: TransactionSendDraft?
    ) {
+      if let draft = draft as? SendTransactionDraft,
+         draft.isOptingOut,
+         draft.asset is CollectibleAsset {
+         NotificationCenter.default.post(
+            name: CollectibleListLocalDataController.didRemoveCollectible,
+            object: self
+         )
+      }
+
       transactionController.uploadTransaction()
    }
 
@@ -430,6 +459,8 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       default:
          bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
       }
+
+      cancelMonitoringOptOutUpdatesIfNeeded(for: transactionController)
    }
 
    func transactionController(
@@ -454,6 +485,29 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       signWithLedgerProcessScreen = nil
 
       loadingController?.stopLoading()
+
+      cancelMonitoringOptOutUpdatesIfNeeded(for: transactionController)
+   }
+}
+
+extension SendTransactionPreviewScreen {
+   private func cancelMonitoringOptOutUpdatesIfNeeded(for transactionController: TransactionController) {
+      if let sendTransactionDraft = draft as? SendTransactionDraft,
+         sendTransactionDraft.isOptingOut,
+         let assetID = getAssetID(from: transactionController) {
+         let monitor = sharedDataController.blockchainUpdatesMonitor
+         let account = draft.from
+         monitor.cancelMonitoringOptOutUpdates(
+            forAssetID: assetID,
+            for: account
+         )
+      }
+   }
+
+   private func getAssetID(
+       from transactionController: TransactionController
+   ) -> AssetID? {
+       return transactionController.assetTransactionDraft?.assetIndex
    }
 }
 
@@ -512,6 +566,8 @@ extension SendTransactionPreviewScreen {
                 self.ledgerConnectionScreen = nil
 
                 self.loadingController?.stopLoading()
+
+               self.cancelMonitoringOptOutUpdatesIfNeeded(for: transactionController)
             }
         }
 
@@ -559,6 +615,7 @@ extension SendTransactionPreviewScreen {
                self.signWithLedgerProcessScreen = nil
 
                self.loadingController?.stopLoading()
+               self.cancelMonitoringOptOutUpdatesIfNeeded(for: transactionController)
             }
         }
         signWithLedgerProcessScreen = transitionToSignWithLedgerProcess.perform(

@@ -40,7 +40,7 @@ class WCAssetDeletionTransactionView: WCSingleTransactionView {
 
     private lazy var topButtonsContainer = HStackView()
     private lazy var rawTransactionButton = UIButton()
-    private lazy var algoExplorerButton = UIButton()
+    private lazy var peraExplorerButton = UIButton()
 
     override func configureAppearance() {
         super.configureAppearance()
@@ -58,7 +58,7 @@ class WCAssetDeletionTransactionView: WCSingleTransactionView {
 
     override func setListeners() {
         rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
-        algoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
+        peraExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenPeraExplorer), for: .touchUpInside)
 
         assetInformationView.startObserving(event: .performAction) {
             [weak self] in
@@ -102,16 +102,16 @@ extension WCAssetDeletionTransactionView {
         rawTransactionButton.layer.draw(corner: theme.buttonsCorner)
         rawTransactionButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
 
-        algoExplorerButton.customizeAppearance(theme.algoExplorerButtonStyle)
-        algoExplorerButton.layer.draw(corner: theme.buttonsCorner)
-        algoExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+        peraExplorerButton.customizeAppearance(theme.peraExplorerButtonStyle)
+        peraExplorerButton.layer.draw(corner: theme.buttonsCorner)
+        peraExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
 
         addButton(topButtonsContainer)
 
         topButtonsContainer.spacing = theme.buttonSpacing
 
         topButtonsContainer.addArrangedSubview(rawTransactionButton)
-        topButtonsContainer.addArrangedSubview(algoExplorerButton)
+        topButtonsContainer.addArrangedSubview(peraExplorerButton)
 
         let spacer = UIView()
         spacer.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -126,8 +126,8 @@ extension WCAssetDeletionTransactionView {
     }
 
     @objc
-    private func notifyDelegateToOpenAlgoExplorer() {
-        delegate?.wcAssetDeletionTransactionViewDidOpenAlgoExplorer(self)
+    private func notifyDelegateToOpenPeraExplorer() {
+        delegate?.wcAssetDeletionTransactionViewDidOpenPeraExplorer(self)
     }
 }
 
@@ -202,10 +202,10 @@ extension WCAssetDeletionTransactionView {
             rawTransactionButton.hideViewInStack()
         }
 
-        if viewModel.algoExplorerInformationViewModel != nil {
-            unhideViewAnimatedIfNeeded(algoExplorerButton)
+        if viewModel.peraExplorerInformationViewModel != nil {
+            unhideViewAnimatedIfNeeded(peraExplorerButton)
         } else {
-            algoExplorerButton.hideViewInStack()
+            peraExplorerButton.hideViewInStack()
         }
     }
 
@@ -222,7 +222,7 @@ protocol WCAssetDeletionTransactionViewDelegate: AnyObject {
     func wcAssetDeletionTransactionViewDidOpenRawTransaction(
         _ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView
     )
-    func wcAssetDeletionTransactionViewDidOpenAlgoExplorer(
+    func wcAssetDeletionTransactionViewDidOpenPeraExplorer(
         _ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView
     )
     func wcAssetDeletionTransactionViewDidOpenAssetDiscovery(

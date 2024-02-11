@@ -71,8 +71,6 @@ extension ALGAPIInterceptor {
             setMobileHeaders(endpoint)
         case .mobileV2:
             setMobileHeaders(endpoint)
-        case .algoExplorer:
-            break
         }
     }
 

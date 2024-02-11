@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-sardine-option.pdf",
+      "filename" : "icon-meld-option.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-sardine-option-dark.pdf",
+      "filename" : "icon-meld-option-dark.pdf",
       "idiom" : "universal"
     }
   ],

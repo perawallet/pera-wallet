@@ -111,7 +111,7 @@ extension WelcomeView {
         termsAndConditionsTextView.backgroundColor = .clear
         termsAndConditionsTextView.linkTextAttributes = theme.termsOfConditionsLinkAttributes.asSystemAttributes()
         termsAndConditionsTextView.bindHTML(
-            "introduction-title-terms-and-services".localized(AlgorandWeb.termsAndServices.rawValue, AlgorandWeb.privacyPolicy.rawValue),
+            "introduction-title-terms-and-services".localized(params: AlgorandWeb.termsAndServices.rawValue, AlgorandWeb.privacyPolicy.rawValue),
             attributes: theme.termsOfConditionsAttributes.asSystemAttributes()
         )
 

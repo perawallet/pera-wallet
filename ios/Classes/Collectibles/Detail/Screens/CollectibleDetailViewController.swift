@@ -168,7 +168,7 @@ final class CollectibleDetailViewController:
             case .didResponseFail(let message):
                 self.bottomBannerController.presentFetchError(
                     title: "title-generic-api-error".localized,
-                    message: "title-error-description".localized(message),
+                    message: "title-error-description".localized(params: message),
                     actionTitle: "title-retry".localized,
                     actionHandler: {
                         [unowned self] in
@@ -584,7 +584,7 @@ extension CollectibleDetailViewController {
         cell.startObserving(event: .didTapAccessory) {
             [unowned self] in
             let creator = self.asset.creator!.address
-            let source = AlgoExplorerExternalSource(
+            let source = PeraExplorerExternalSource(
                 address: creator,
                 network: self.api!.network
             )

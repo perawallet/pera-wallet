@@ -25,7 +25,7 @@ struct AsaReportListItemButtonViewModel: ListItemButtonViewModel {
     init(_ asset: Asset) {
         icon = "icon-asset-report"
         title = Self.getTitle(
-            "asa-verification-suspicious-report".localized(asset.naming.unitName ?? ""),
+            "asa-verification-suspicious-report".localized(params: asset.naming.unitName ?? ""),
             Colors.Helpers.negative
         )
         subtitle = nil

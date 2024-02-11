@@ -35,9 +35,15 @@ struct SwapAvailableBalanceQuoteValidator: SwapAvailableBalanceValidator {
     /// Returns the min balance for failure cases.
     func validateAvailableSwapBalance() {
         guard let assetIn = quote.assetIn else { return }
+        guard let assetOut = quote.assetOut else { return }
 
         if assetIn.isAlgo {
-            validateAvailableBalanceForAlgo()
+            validateAvailableBalanceForAlgoAmountIn()
+            return
+        }
+
+        if assetOut.isAlgo {
+            validateAvailableBalanceForAlgoAmountOut()
             return
         }
 
@@ -46,7 +52,7 @@ struct SwapAvailableBalanceQuoteValidator: SwapAvailableBalanceValidator {
 }
 
 extension SwapAvailableBalanceQuoteValidator {
-    private func validateAvailableBalanceForAlgo() {
+    private func validateAvailableBalanceForAlgoAmountIn() {
         guard var amountIn = quote.amountIn else {
             publishEvent(.failure(.amountInNotAvailable))
             return
@@ -58,6 +64,25 @@ extension SwapAvailableBalanceQuoteValidator {
 
         guard let remainingAlgoBalance = getRemainingAlgoBalance(from: amountIn) else {
             publishEvent(.failure(.insufficientAlgoBalance(amountIn)))
+            return
+        }
+
+        publishEvent(.validated(remainingAlgoBalance))
+    }
+
+    private func validateAvailableBalanceForAlgoAmountOut() {
+        guard var amountOut = quote.amountOut else {
+            publishEvent(.failure(.amountOutNotAvailable))
+            return
+        }
+
+        addMinBalance(to: &amountOut)
+        addPaddingForFee(to: &amountOut)
+        addPeraFee(to: &amountOut)
+        extractAmountOutWithSlippage(from: &amountOut)
+
+        guard let remainingAlgoBalance = getRemainingAlgoBalance(from: amountOut) else {
+            publishEvent(.failure(.insufficientAlgoBalance(amountOut)))
             return
         }
 
@@ -104,6 +129,14 @@ extension SwapAvailableBalanceQuoteValidator {
     ) {
         if let peraFee = quote.peraFee {
             amount += peraFee
+        }
+    }
+
+    private func extractAmountOutWithSlippage(
+        from amount: inout UInt64
+    ) {
+        if let amountOutWithSlippage = quote.amountOutWithSlippage {
+            amount -= amountOutWithSlippage
         }
     }
 

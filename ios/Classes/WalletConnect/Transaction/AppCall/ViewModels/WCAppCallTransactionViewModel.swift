@@ -36,7 +36,7 @@ final class WCAppCallTransactionViewModel {
     private(set) var noteInformationViewModel: TransactionTextInformationViewModel?
 
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
-    private(set) var algoExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
+    private(set) var peraExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
 
     init(
         transaction: WCTransaction,
@@ -62,7 +62,7 @@ final class WCAppCallTransactionViewModel {
         setFeeWarningViewModel(from: transaction)
         setNoteInformationViewModel(from: transaction)
         setRawTransactionInformationViewModel(from: transaction)
-        setAlgoExplorerInformationViewModel(from: transaction)
+        setPeraExplorerInformationViewModel(from: transaction)
     }
 
     private func setSenderInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
@@ -282,14 +282,14 @@ final class WCAppCallTransactionViewModel {
         )
     }
 
-    private func setAlgoExplorerInformationViewModel(from transaction: WCTransaction) {
+    private func setPeraExplorerInformationViewModel(from transaction: WCTransaction) {
         guard let transactionDetail = transaction.transactionDetail,
               !transactionDetail.isAppCreateTransaction else {
             return
         }
 
-        algoExplorerInformationViewModel = WCTransactionActionableInformationViewModel(
-            information: .algoExplorer,
+        peraExplorerInformationViewModel = WCTransactionActionableInformationViewModel(
+            information: .peraExplorer,
             isLastElement: true)
     }
 }

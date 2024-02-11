@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SardineAccountSelectionListHeader.swift
+//   MeldAccountSelectionListHeader.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class SardineAccountSelectionListHeader:
+final class MeldAccountSelectionListHeader:
     CollectionSupplementaryView<UILabel>,
     ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
         return theme.contextEdgeInsets
     }
 
-    static let theme = SardineAccountSelectionListHeaderTheme()
+    static let theme = MeldAccountSelectionListHeaderTheme()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,7 +32,7 @@ final class SardineAccountSelectionListHeader:
         contextView.customizeAppearance(Self.theme.context)
     }
 
-    func bindData(_ viewModel: SardineAccountSelectionListHeaderViewModel?) {
+    func bindData(_ viewModel: MeldAccountSelectionListHeaderViewModel?) {
         if let description = viewModel?.description {
             description.load(in: contextView)
         } else {
@@ -41,7 +41,7 @@ final class SardineAccountSelectionListHeader:
     }
 
     public static func calculatePreferredSize(
-        _ viewModel: SardineAccountSelectionListHeaderViewModel?,
+        _ viewModel: MeldAccountSelectionListHeaderViewModel?,
         for layoutSheet: LayoutSheet,
         fittingIn size: CGSize
     ) -> CGSize {

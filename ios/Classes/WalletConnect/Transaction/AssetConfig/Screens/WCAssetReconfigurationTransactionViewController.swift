@@ -83,7 +83,7 @@ extension WCAssetReconfigurationTransactionViewController: WCAssetReconfiguratio
         openAssetURL(asset)
     }
 
-    func wcAssetReconfigurationTransactionViewDidOpenAlgoExplorer(
+    func wcAssetReconfigurationTransactionViewDidOpenPeraExplorer(
         _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
     ) {
         openInExplorer(asset)

@@ -68,7 +68,7 @@ enum AccountSettings: Settings {
                 return nil
             }
             
-            return "settings-secure-backup-subtitle".localized("\(numberOfAccountsNotBackedUp)")
+            return "settings-secure-backup-subtitle".localized(params: "\(numberOfAccountsNotBackedUp)")
         default:
             return nil
         }

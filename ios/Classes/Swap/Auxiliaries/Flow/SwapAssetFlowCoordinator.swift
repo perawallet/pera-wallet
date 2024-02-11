@@ -298,7 +298,7 @@ extension SwapAssetFlowCoordinator {
                 }
 
                 self.openSwapSuccess(swapController)
-            case .didFailTransaction:
+            case .didFailTransaction(let txnID):
                 guard let quote = swapController.quote else { return }
 
                 if !(self.visibleScreen is LoadingScreen) {
@@ -308,11 +308,9 @@ extension SwapAssetFlowCoordinator {
                 swapController.clearTransactions()
                 self.stopLoading()
 
-                self.analytics.track(
-                    .swapFailed(
-                        quote: quote,
-                        currency: self.sharedDataController.currency
-                    )
+                logFailedSwap(
+                    quote: quote,
+                    txnID: txnID
                 )
 
                 let viewModel = SwapUnexpectedErrorViewModel(quote)
@@ -323,7 +321,8 @@ extension SwapAssetFlowCoordinator {
                     [weak self] in
                     guard let self = self else { return }
                     
-                    self.goBackToScreen(SwapAssetScreen.self)
+                    let screen = self.goBackToScreen(SwapAssetScreen.self)
+                    screen?.getSwapQuoteForCurrentInput()
                 }
             case .didFailNetwork(let error):
                 guard let quote = swapController.quote else { return }
@@ -335,28 +334,14 @@ extension SwapAssetFlowCoordinator {
                 swapController.clearTransactions()
                 self.stopLoading()
 
-                self.analytics.track(
-                    .swapFailed(
-                        quote: quote,
-                        currency: self.sharedDataController.currency
-                    )
+                logFailedSwap(
+                    quote: quote,
+                    error: error
                 )
-
-                let message: String
-                switch error {
-                case .client(_, let apiError):
-                    message = apiError?.message ?? apiError.debugDescription
-                case .server(_, let apiError):
-                    message = apiError?.message ?? apiError.debugDescription
-                case .connection:
-                    message = "title-internet-connection".localized
-                case .unexpected:
-                    message = "title-generic-api-error".localized
-                }
 
                 let viewModel = SwapAPIErrorViewModel(
                     quote: quote,
-                    message: message
+                    error: error
                 )
                 self.openError(
                     swapController,
@@ -365,7 +350,8 @@ extension SwapAssetFlowCoordinator {
                     [weak self] in
                     guard let self = self else { return }
 
-                    self.goBackToScreen(SwapAssetScreen.self)
+                    let screen = self.goBackToScreen(SwapAssetScreen.self)
+                    screen?.getSwapQuoteForCurrentInput()
                 }
             case .didCancelTransaction:
                 swapController.clearTransactions()
@@ -517,7 +503,7 @@ extension SwapAssetFlowCoordinator {
 
             switch event {
             case .didTapViewDetailAction:
-                self.openAlgoExplorerForSwapTransaction(swapController)
+                self.openPeraExplorerForSwapTransaction(swapController)
             case .didTapDoneAction:
                 self.visibleScreen.dismissScreen()
             case .didTapSummaryAction:
@@ -559,14 +545,16 @@ extension SwapAssetFlowCoordinator {
         }
     }
 
-    private func goBackToScreen<T: UIViewController>(_ screen: T.Type) {
-        guard var viewControllers = visibleScreen.navigationController?.viewControllers else { return }
+    private func goBackToScreen<T: UIViewController>(_ screen: T.Type) -> T? {
+        guard var viewControllers = visibleScreen.navigationController?.viewControllers else { return nil }
         let lastVC = viewControllers.removeLast()
 
         if !lastVC.isKind(of: screen) {
             visibleScreen.navigationController?.viewControllers = viewControllers
-            goBackToScreen(screen)
+            return goBackToScreen(screen)
         }
+
+        return lastVC as? T
     }
 }
 
@@ -896,12 +884,12 @@ extension SwapAssetFlowCoordinator {
         transitionToExchangeFeeInfo = transition
     }
 
-    private func openAlgoExplorerForSwapTransaction(
+    private func openPeraExplorerForSwapTransaction(
         _ swapController: SwapController
     ) {
         let transactionGroupID = swapController.parsedTransactions.first { !$0.groupID.isEmpty }?.groupID
         guard let formattedGroupID = transactionGroupID?.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
-              let url = AlgorandWeb.AlgoExplorer.group(
+              let url = AlgorandWeb.PeraExplorer.group(
                 isMainnet: api.network == .mainnet,
                 param: formattedGroupID
               ).link else {
@@ -1064,6 +1052,65 @@ extension SwapAssetFlowCoordinator {
     ) {
         analytics.track(.swapBannerLater())
         visibleScreen.dismiss(animated: true)
+    }
+}
+
+extension SwapAssetFlowCoordinator {
+    private func logFailedSwap(
+        quote: SwapQuote,
+        txnID: String
+    ) {
+        analytics.track(
+            .swapFailed(
+                quote: quote,
+                currency: sharedDataController.currency
+            )
+        )
+
+        updateSwapQuote(
+            quote,
+            exception: "didFailTransaction: \(txnID)"
+        )
+    }
+
+    private func logFailedSwap(
+        quote: SwapQuote,
+        error: SwapController.Error
+    ) {
+        analytics.track(
+            .swapFailed(
+                quote: quote,
+                currency: sharedDataController.currency
+            )
+        )
+
+        let message: String
+        switch error {
+        case .client(_, let apiError):
+            message = apiError?.message ?? apiError.debugDescription
+        case .server(_, let apiError):
+            message = apiError?.message ?? apiError.debugDescription
+        case .connection(let error):
+            message = error.debugDescription
+        case .unexpected(let error):
+            message = error.debugDescription
+        }
+
+        updateSwapQuote(
+            quote,
+            exception: message
+        )
+    }
+
+    private func updateSwapQuote(
+        _ quote: SwapQuote,
+        exception: String
+    ) {
+        let draft = UpdateSwapQuoteDraft(
+            id: quote.id,
+            exception: exception
+        )
+        api.updateSwapQuote(draft)
     }
 }
 

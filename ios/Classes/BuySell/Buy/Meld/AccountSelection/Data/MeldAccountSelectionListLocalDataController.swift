@@ -12,35 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SardineAccountSelectionListLocalDataController.swift
+//   MeldAccountSelectionListLocalDataController.swift
 
 import Foundation
 import MacaroonUtils
 
-protocol SardineAccountSelectionListItemDataSource: AnyObject {
+protocol MeldAccountSelectionListItemDataSource: AnyObject {
     var noContentItem: NoContentViewModel { get }
-    var headerItem: SardineAccountSelectionListHeaderViewModel { get }
+    var headerItem: MeldAccountSelectionListHeaderViewModel { get }
 
     typealias AccountAddress = String
     var accountItems: [AccountAddress: AccountListItemViewModel] { get }
 }
 
-final class SardineAccountSelectionListLocalDataController:
+final class MeldAccountSelectionListLocalDataController:
     AccountSelectionListDataController,
-    SardineAccountSelectionListItemDataSource {
-    typealias SectionIdentifierType = SardineAccountSelectionListSectionIdentifier
-    typealias ItemIdentifierType = SardineAccountSelectionListItemIdentifier
+    MeldAccountSelectionListItemDataSource,
+    SharedDataControllerObserver {
+    typealias SectionIdentifierType = MeldAccountSelectionListSectionIdentifier
+    typealias ItemIdentifierType = MeldAccountSelectionListItemIdentifier
 
     var eventHandler: ((Event) -> Void)?
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private let snapshotQueue = DispatchQueue(label: "sardineAccountSelectionListLocalDataController")
+    private let snapshotQueue = DispatchQueue(label: "meldAccountSelectionListLocalDataController")
 
     private var accounts: [AccountHandle] = []
 
     private(set) var noContentItem: NoContentViewModel = AccountSelectionListNoContentViewModel()
-    private(set) var headerItem = SardineAccountSelectionListHeaderViewModel()
+    private(set) var headerItem = MeldAccountSelectionListHeaderViewModel()
     private(set) var accountItems: [AccountAddress: AccountListItemViewModel] = [:]
 
     private let sharedDataController: SharedDataController
@@ -49,6 +50,8 @@ final class SardineAccountSelectionListLocalDataController:
 
     init(sharedDataController: SharedDataController) {
         self.sharedDataController = sharedDataController
+
+        sharedDataController.add(self)
     }
 
     subscript(indexPath: IndexPath) -> AccountHandle? {
@@ -60,9 +63,25 @@ final class SardineAccountSelectionListLocalDataController:
 
         return accounts[safe: indexPath.row]
     }
+
+    deinit {
+        sharedDataController.remove(self)
+    }
 }
 
-extension SardineAccountSelectionListLocalDataController {
+extension MeldAccountSelectionListLocalDataController {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        switch event {
+        case .didFinishRunning: load()
+        default: break
+        }
+    }
+}
+
+extension MeldAccountSelectionListLocalDataController {
     func load() {
         asyncBackground(qos: .userInitiated) {
             [weak self] in
@@ -86,13 +105,13 @@ extension SardineAccountSelectionListLocalDataController {
     }
 }
 
-extension SardineAccountSelectionListLocalDataController {
+extension MeldAccountSelectionListLocalDataController {
     private func deliverLoadingSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
             snapshot.appendSections([.loading])
 
-            let items: [SardineAccountSelectionListItemIdentifier] = [
+            let items: [MeldAccountSelectionListItemIdentifier] = [
                 .loading(.account(UUID())),
                 .loading(.account(UUID())),
                 .loading(.account(UUID()))
@@ -157,7 +176,7 @@ extension SardineAccountSelectionListLocalDataController {
         )
     }
 
-    private func makeAccountItem(_ account: AccountHandle) -> SardineAccountSelectionListItemIdentifier {
+    private func makeAccountItem(_ account: AccountHandle) -> MeldAccountSelectionListItemIdentifier {
         let currency = sharedDataController.currency
         let currencyFormatter = currencyFormatter
         let item = AccountPortfolioItem(
@@ -171,12 +190,12 @@ extension SardineAccountSelectionListLocalDataController {
 
         self.accountItems[aRawAccount.address] = viewModel
 
-        let itemIdentifier = SardineAccountSelectionListAccountItemIdentifier(aRawAccount)
+        let itemIdentifier = MeldAccountSelectionListAccountItemIdentifier(aRawAccount)
         return .account(itemIdentifier)
     }
 }
 
-extension SardineAccountSelectionListLocalDataController {
+extension MeldAccountSelectionListLocalDataController {
     private func deliverSnapshot(_ snapshot: @escaping () -> Snapshot?) {
         snapshotQueue.async {
             [weak self] in
@@ -205,27 +224,27 @@ extension SardineAccountSelectionListLocalDataController {
     }
 }
 
-enum SardineAccountSelectionListSectionIdentifier: Hashable {
+enum MeldAccountSelectionListSectionIdentifier: Hashable {
     case empty
     case loading
     case accounts
 }
 
-enum SardineAccountSelectionListItemIdentifier: Hashable {
-    case empty(SardineAccountSelectionListEmptyItemIdentifier)
-    case loading(SardineAccountSelectionListLoadingItemIdentifier)
-    case account(SardineAccountSelectionListAccountItemIdentifier)
+enum MeldAccountSelectionListItemIdentifier: Hashable {
+    case empty(MeldAccountSelectionListEmptyItemIdentifier)
+    case loading(MeldAccountSelectionListLoadingItemIdentifier)
+    case account(MeldAccountSelectionListAccountItemIdentifier)
 }
 
-enum SardineAccountSelectionListEmptyItemIdentifier: Hashable {
+enum MeldAccountSelectionListEmptyItemIdentifier: Hashable {
     case noContent
 }
 
-enum SardineAccountSelectionListLoadingItemIdentifier: Hashable {
+enum MeldAccountSelectionListLoadingItemIdentifier: Hashable {
     case account(UUID)
 }
 
-struct SardineAccountSelectionListAccountItemIdentifier: Hashable {
+struct MeldAccountSelectionListAccountItemIdentifier: Hashable {
     private(set) var accountAddress: String
 
     init(_ account: Account) {

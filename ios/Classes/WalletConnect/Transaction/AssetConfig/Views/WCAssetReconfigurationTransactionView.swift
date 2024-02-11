@@ -44,7 +44,7 @@ class WCAssetReconfigurationTransactionView: WCSingleTransactionView {
     private lazy var topButtonsContainer = HStackView()
     private lazy var bottomButtonsContainer = HStackView()
     private lazy var rawTransactionButton = UIButton()
-    private lazy var algoExplorerButton = UIButton()
+    private lazy var peraExplorerButton = UIButton()
     private lazy var showUrlButton = UIButton()
 
     override func configureAppearance() {
@@ -63,7 +63,7 @@ class WCAssetReconfigurationTransactionView: WCSingleTransactionView {
 
     override func setListeners() {
         rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
-        algoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
+        peraExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenPeraExplorer), for: .touchUpInside)
         showUrlButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetURL), for: .touchUpInside)
 
         assetInformationView.startObserving(event: .performAction) {
@@ -116,9 +116,9 @@ extension WCAssetReconfigurationTransactionView {
         rawTransactionButton.layer.draw(corner: theme.buttonsCorner)
         rawTransactionButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
 
-        algoExplorerButton.customizeAppearance(theme.algoExplorerButtonStyle)
-        algoExplorerButton.layer.draw(corner: theme.buttonsCorner)
-        algoExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+        peraExplorerButton.customizeAppearance(theme.peraExplorerButtonStyle)
+        peraExplorerButton.layer.draw(corner: theme.buttonsCorner)
+        peraExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
 
         showUrlButton.customizeAppearance(theme.showUrlButtonStyle)
         showUrlButton.layer.draw(corner: theme.buttonsCorner)
@@ -139,7 +139,7 @@ extension WCAssetReconfigurationTransactionView {
 
         bottomButtonsContainer.spacing = theme.buttonSpacing
 
-        bottomButtonsContainer.addArrangedSubview(algoExplorerButton)
+        bottomButtonsContainer.addArrangedSubview(peraExplorerButton)
 
         let bottomSpacer = UIView()
         bottomSpacer.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -159,8 +159,8 @@ extension WCAssetReconfigurationTransactionView {
     }
 
     @objc
-    private func notifyDelegateToOpenAlgoExplorer() {
-        delegate?.wcAssetReconfigurationTransactionViewDidOpenAlgoExplorer(self)
+    private func notifyDelegateToOpenPeraExplorer() {
+        delegate?.wcAssetReconfigurationTransactionViewDidOpenPeraExplorer(self)
     }
 }
 
@@ -254,10 +254,10 @@ extension WCAssetReconfigurationTransactionView {
             showUrlButton.hideViewInStack()
         }
 
-        if viewModel.algoExplorerInformationViewModel != nil {
-            algoExplorerButton.showViewInStack()
+        if viewModel.peraExplorerInformationViewModel != nil {
+            peraExplorerButton.showViewInStack()
         } else {
-            algoExplorerButton.hideViewInStack()
+            peraExplorerButton.hideViewInStack()
         }
     }
 
@@ -277,7 +277,7 @@ protocol WCAssetReconfigurationTransactionViewDelegate: AnyObject {
     func wcAssetReconfigurationTransactionViewDidOpenAssetURL(
         _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
     )
-    func wcAssetReconfigurationTransactionViewDidOpenAlgoExplorer(
+    func wcAssetReconfigurationTransactionViewDidOpenPeraExplorer(
         _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
     )
     func wcAssetReconfigurationTransactionViewDidOpenAssetDiscovery(

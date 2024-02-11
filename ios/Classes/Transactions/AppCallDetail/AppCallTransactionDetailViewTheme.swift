@@ -20,8 +20,7 @@ struct AppCallTransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
     let topSeparator: Separator
     let bottomSeparator: Separator
-    let openInAlgoExplorerButton: ButtonStyle
-    let openInGoalSeekerButton: ButtonStyle
+    let openInPeraExplorerButton: ButtonStyle
     let buttonsCorner: Corner
     let senderViewTheme: TransactionTextInformationViewTheme
     let assetViewTheme: AppCallTransactionAssetInformationViewTheme
@@ -30,7 +29,7 @@ struct AppCallTransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let textInformationViewCommonTheme: TransactionTextInformationViewTheme
     let feeViewTheme: TransactionAmountInformationViewTheme
     let buttonEdgeInsets: LayoutPaddings
-    let openInGoalSeekerButtonLeadingPadding: LayoutMetric
+    let openInPeraExplorerButtonLeadingPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let verticalStackViewTopPadding: LayoutMetric
     let bottomPaddingForSeparator: LayoutMetric
@@ -40,18 +39,11 @@ struct AppCallTransactionDetailViewTheme: LayoutSheet, StyleSheet {
 
     init(_ family: LayoutFamily) {
         backgroundColor = Colors.Defaults.background
-        openInAlgoExplorerButton = [
-            .title("transaction-id-open-algoexplorer".localized),
+        openInPeraExplorerButton = [
+            .title("transaction-id-open-peraexplorer".localized),
             .titleColor([.normal(Colors.Button.Secondary.text)]),
             .font(Fonts.DMSans.medium.make(13)),
             .backgroundColor(Colors.Button.Secondary.background)
-        ]
-        openInGoalSeekerButton = [
-            .title("transaction-id-open-goalseeker".localized),
-            .titleColor([.normal(Colors.Button.Secondary.text)]),
-            .font(Fonts.DMSans.medium.make(13)),
-            .backgroundColor(Colors.Button.Secondary.background)
-
         ]
         senderViewTheme = TransactionTextInformationViewTheme().configuredForInteraction()
         textInformationViewCommonTheme = TransactionTextInformationViewTheme().configuredForInteraction()
@@ -64,7 +56,7 @@ struct AppCallTransactionDetailViewTheme: LayoutSheet, StyleSheet {
         separatorPadding = -20
         buttonsCorner = Corner(radius: 18)
         buttonEdgeInsets = (8, 12, 8, 12)
-        openInGoalSeekerButtonLeadingPadding = 16
+        openInPeraExplorerButtonLeadingPadding = 16
         verticalStackViewTopPadding = 40
         bottomPaddingForSeparator = 40
         spacingBetweenPropertiesAndActions = 64

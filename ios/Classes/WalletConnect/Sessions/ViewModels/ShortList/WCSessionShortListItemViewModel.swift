@@ -72,7 +72,7 @@ extension WCSessionShortListItemViewModel {
         let connectedOnDate = wcV1Session.date.toFormat(dateFormat)
         description =
             "wallet-connect-session-connected-on-date"
-                .localized(connectedOnDate)
+                .localized(params: connectedOnDate)
     }
 }
 
@@ -106,6 +106,6 @@ extension WCSessionShortListItemViewModel {
         let validUntilDate = wcV2Session.expiryDate.toFormat(dateFormat)
         description =
             "wallet-connect-v2-session-expires-on-date"
-                .localized(validUntilDate)
+                .localized(params: validUntilDate)
     }
 }

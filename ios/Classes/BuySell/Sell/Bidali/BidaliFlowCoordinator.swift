@@ -99,10 +99,18 @@ extension BidaliFlowCoordinator {
         with account: AccountHandle,
         from screen: UIViewController
     ) {
-        screen.open(
+        let dAppDetail = screen.open(
             .bidaliDappDetail(account: account),
             by: .push
-        )
+        ) as? BidaliDappDetailScreen
+        dAppDetail?.eventHandler = { 
+            [weak dAppDetail] event in
+            switch event {
+            case .goBack:
+                dAppDetail?.dismiss(animated: true)
+            default: break
+            }
+        }
     }
 }
 

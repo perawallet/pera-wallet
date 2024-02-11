@@ -55,7 +55,7 @@ extension WebImportErrorViewModel {
     private mutating func bindUnsupportedVersionBody(_ qrVersion: String) {
         body =
             "web-import-error-unsupported-version-body"
-                .localized(qrVersion)
+                .localized(params: qrVersion)
                 .bodyRegular()
     }
 

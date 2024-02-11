@@ -563,9 +563,6 @@
 "collectible-approve-transaction-to" = "받으시는 분";
 
 /* (No Comment) */
-"collectible-detail-algo-explorer" = "Algoexplorer에서 보기";
-
-/* (No Comment) */
 "collectible-detail-creator-account" = "크리에이터 계정";
 
 /* (No Comment) */
@@ -2255,9 +2252,6 @@
 "swap-success-title" = "%@ 스왑 완료";
 
 /* (No Comment) */
-"swap-success-view-explorer" = "AlgoExplorer에서 트랜잭션 정보 보기";
-
-/* (No Comment) */
 "swap-success-view-summary" = "스왑 요약 보기";
 
 /* (No Comment) */
@@ -2748,12 +2742,6 @@
 
 /* (No Comment) */
 "transaction-filter-try-again" = "다시 시도해 주세요";
-
-/* (No Comment) */
-"transaction-id-open-algoexplorer" = "AlgoExplorer에서 열기";
-
-/* (No Comment) */
-"transaction-id-open-goalseeker" = "GoalSeeker에서 열기";
 
 /* (No Comment) */
 "transaction-item-app-id-title" = "애플리케이션 ID: %d";
@@ -3249,9 +3237,6 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-auth-address" = "인증 주소";
-
-/* (No Comment) */
-"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-metadata" = "자산 메타데이터";

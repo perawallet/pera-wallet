@@ -42,6 +42,7 @@ enum SwapAssetValidationError: Error {
     typealias Balance = UInt64
 
     case amountInNotAvailable
+    case amountOutNotAvailable
     case insufficientAlgoBalance(Balance)
     case insufficientAssetBalance(Balance)
     case unavailablePeraFee(SwapAssetDataController.Error?)

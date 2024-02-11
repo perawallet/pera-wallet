@@ -50,6 +50,7 @@ enum ALGAPIPath: String {
     case status = "/status"
     case supply = "/ledger/supply"
     case swapQuote = "/dex-swap/quotes/"
+    case swapQuoteUpdate = "/dex-swap/quotes/%@"
     case trackTransactions = "/transactions/"
     case transactionParams = "/transactions/params"
     case transactions = "/transactions"

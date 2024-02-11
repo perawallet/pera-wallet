@@ -21,7 +21,7 @@ import MacaroonUIKit
 extension WCAssetAdditionTransactionView {
     struct Theme: LayoutSheet, StyleSheet {
         let rawTransactionButtonStyle: ButtonStyle
-        let algoExplorerButtonStyle: ButtonStyle
+        let peraExplorerButtonStyle: ButtonStyle
         let showUrlButtonStyle: ButtonStyle
         let showMetaDataButtonStyle: ButtonStyle
         let buttonEdgeInsets: LayoutPaddings
@@ -39,7 +39,7 @@ extension WCAssetAdditionTransactionView {
                 .font(Fonts.DMSans.medium.make(13)),
                 .backgroundColor(Colors.Button.Secondary.background)
             ]
-            self.algoExplorerButtonStyle = [
+            self.peraExplorerButtonStyle = [
                 .title("wallet-connect-transaction-detail-explorer".localized),
                 .titleColor([.normal(Colors.Button.Secondary.text)]),
                 .font(Fonts.DMSans.medium.make(13)),

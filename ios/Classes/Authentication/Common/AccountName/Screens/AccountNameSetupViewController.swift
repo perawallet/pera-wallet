@@ -207,7 +207,13 @@ extension AccountNameSetupViewController {
 
     private func openAccountVerifiedTutorial() {
         open(
-            .tutorial(flow: flow, tutorial: .accountVerified(flow: flow)),
+            .tutorial(
+                flow: flow,
+                tutorial: .accountVerified(
+                    flow: flow,
+                    address: accountAddress
+                )
+            ),
             by: .push
         )
     }

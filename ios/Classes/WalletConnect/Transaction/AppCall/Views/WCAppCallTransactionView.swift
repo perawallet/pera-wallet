@@ -42,7 +42,7 @@ final class WCAppCallTransactionView: WCSingleTransactionView {
 
     private lazy var topButtonsContainer = HStackView()
     private lazy var rawTransactionButton = UIButton()
-    private lazy var algoExplorerButton = UIButton()
+    private lazy var peraExplorerButton = UIButton()
 
     override func configureAppearance() {
         super.configureAppearance()
@@ -60,7 +60,7 @@ final class WCAppCallTransactionView: WCSingleTransactionView {
 
     override func setListeners() {
         rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
-        algoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
+        peraExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenPeraExplorer), for: .touchUpInside)
     }
 }
 
@@ -110,16 +110,16 @@ extension WCAppCallTransactionView {
         rawTransactionButton.layer.draw(corner: theme.buttonsCorner)
         rawTransactionButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
 
-        algoExplorerButton.customizeAppearance(theme.algoExplorerButtonStyle)
-        algoExplorerButton.layer.draw(corner: theme.buttonsCorner)
-        algoExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+        peraExplorerButton.customizeAppearance(theme.peraExplorerButtonStyle)
+        peraExplorerButton.layer.draw(corner: theme.buttonsCorner)
+        peraExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
 
         addButton(topButtonsContainer)
 
         topButtonsContainer.spacing = theme.buttonSpacing
 
         topButtonsContainer.addArrangedSubview(rawTransactionButton)
-        topButtonsContainer.addArrangedSubview(algoExplorerButton)
+        topButtonsContainer.addArrangedSubview(peraExplorerButton)
 
         let spacer = UIView()
         spacer.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -134,8 +134,8 @@ extension WCAppCallTransactionView {
     }
 
     @objc
-    private func notifyDelegateToOpenAlgoExplorer() {
-        delegate?.wcAppCallTransactionViewDidOpenAlgoExplorer(self)
+    private func notifyDelegateToOpenPeraExplorer() {
+        delegate?.wcAppCallTransactionViewDidOpenPeraExplorer(self)
     }
 }
 
@@ -235,15 +235,15 @@ extension WCAppCallTransactionView {
             rawTransactionButton.hideViewInStack()
         }
 
-        if viewModel.algoExplorerInformationViewModel != nil {
-            algoExplorerButton.showViewInStack()
+        if viewModel.peraExplorerInformationViewModel != nil {
+            peraExplorerButton.showViewInStack()
         } else {
-            algoExplorerButton.hideViewInStack()
+            peraExplorerButton.hideViewInStack()
         }
     }
 }
 
 protocol WCAppCallTransactionViewDelegate: AnyObject {
     func wcAppCallTransactionViewDidOpenRawTransaction(_ wcAppCallTransactionView: WCAppCallTransactionView)
-    func wcAppCallTransactionViewDidOpenAlgoExplorer(_ wcAppCallTransactionView: WCAppCallTransactionView)
+    func wcAppCallTransactionViewDidOpenPeraExplorer(_ wcAppCallTransactionView: WCAppCallTransactionView)
 }

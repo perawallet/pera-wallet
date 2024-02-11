@@ -77,7 +77,7 @@ extension WCAssetDeletionTransactionViewController: WCAssetDeletionTransactionVi
         displayRawTransaction()
     }
 
-    func wcAssetDeletionTransactionViewDidOpenAlgoExplorer(
+    func wcAssetDeletionTransactionViewDidOpenPeraExplorer(
         _ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView
     ) {
         openInExplorer(asset)

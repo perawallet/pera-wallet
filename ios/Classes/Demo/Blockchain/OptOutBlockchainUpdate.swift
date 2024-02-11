@@ -49,7 +49,7 @@ struct OptOutBlockchainUpdate: BlockchainUpdate {
         } else {
             name = request.assetName ?? request.assetUnitName ?? String(request.assetID)
         }
-        self.notificationMessage = "asset-opt-out-successful-message".localized(name)
+        self.notificationMessage = "asset-opt-out-successful-message".localized(params: name)
     }
 
     init(

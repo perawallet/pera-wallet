@@ -676,7 +676,8 @@ extension ManageAssetListViewController {
 
             var draft = SendTransactionDraft(
                 from: account,
-                transactionMode: .asset(asset)
+                transactionMode: .asset(asset),
+                isOptingOut: true
             )
             draft.amount = asset.amountWithFraction
 

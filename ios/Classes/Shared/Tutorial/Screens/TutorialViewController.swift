@@ -203,16 +203,13 @@ extension TutorialViewController: TutorialViewDelegate {
                 ),
                 by: .push
             )
-        case .accountVerified(let flow):
-            if case .initializeAccount(mode: .watch) = flow {
-                analytics.track(.onboardWatchAccount(type: .verified))
-            } else if case .addNewAccount(mode: .watch) = flow {
-                analytics.track(.onboardWatchAccount(type: .verified))
-            } else {
-                analytics.track(.onboardCreateAccountVerified(type: .start))
-            }
-
-            launchMain()
+        case .accountVerified(let flow, let address):
+            analytics.track(.onboardCreateAccountVerified(type: .buyAlgo))
+           
+            routeBuyAlgo(
+                flow: flow,
+                address: address
+            )
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .failedToImportLedgerAccounts:
@@ -254,9 +251,40 @@ extension TutorialViewController: TutorialViewDelegate {
             screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
             screen?.hidesCloseBarButtonItem = true
         case .ledgerSuccessfullyConnected:
-            uiHandlers.didTapButtonPrimaryActionButton?(self)
+            uiHandlers.didTapSecondaryActionButton?(self)
+        case .accountVerified(let flow, _):
+            if case .initializeAccount(mode: .watch) = flow {
+                analytics.track(.onboardWatchAccount(type: .verified))
+            } else if case .addNewAccount(mode: .watch) = flow {
+                analytics.track(.onboardWatchAccount(type: .verified))
+            } else {
+                analytics.track(.onboardCreateAccountVerified(type: .start))
+            }
+
+            launchMain()
         default:
             break
+        }
+    }
+
+    private func routeBuyAlgo(
+        flow: AccountSetupFlow,
+        address: PublicKey?
+    ) {
+        if case .initializeAccount(mode: .watch) = flow {
+            launchMain()
+            return
+        } else if case .addNewAccount(mode: .watch) = flow {
+            launchMain()
+            return
+        }
+
+        launchMain {
+            [weak self] in
+            guard let self = self else { return }
+            
+            let draft = MeldDraft(address: address)
+            self.launchBuyAlgoWithMeld(draft: draft)
         }
     }
 }
@@ -390,7 +418,7 @@ enum Tutorial: Equatable {
     case localAuthentication
     case biometricAuthenticationEnabled
     case passphraseVerified(account: AccountInformation)
-    case accountVerified(flow: AccountSetupFlow)
+    case accountVerified(flow: AccountSetupFlow, address: String? = nil)
     case recoverWithLedger
     case ledgerSuccessfullyConnected(flow: AccountSetupFlow)
     case failedToImportLedgerAccounts

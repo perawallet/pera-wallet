@@ -12,22 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SardineAccountSelectionListHeaderTheme.swift
+//   MeldDraft.swift
 
 import Foundation
-import MacaroonUIKit
 
-struct SardineAccountSelectionListHeaderTheme:
-    StyleSheet,
-    LayoutSheet {
-    private(set) var context: TextStyle
-    private(set) var contextEdgeInsets: LayoutPaddings
+struct MeldDraft {
+    let address: PublicKey?
 
-    init(_ family: LayoutFamily) {
-        self.context = [
-            .textColor(Colors.Text.gray),
-            .textOverflow(FittingText())
-        ]
-        self.contextEdgeInsets = (0, 24, 0, 24)
+    init(accounts: [Account]) {
+        self.address = accounts.isSingular ? accounts.first?.address : nil
+    }
+
+    init(address: PublicKey?) {
+        self.address = address
     }
 }

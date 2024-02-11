@@ -371,11 +371,10 @@ indirect enum Screen {
         eventHandler: AccountSelectionListScreen<MoonPayAccountSelectionListLocalDataController>.EventHandler
     )
     case moonPayTransaction(moonPayParams: MoonPayParams)
-    case sardineIntroduction
-    case sardineAccountSelection(
-        eventHandler: AccountSelectionListScreen<SardineAccountSelectionListLocalDataController>.EventHandler
+    case meldAccountSelection(
+        eventHandler: AccountSelectionListScreen<MeldAccountSelectionListLocalDataController>.EventHandler
     )
-    case sardineDappDetail(account: AccountHandle)
+    case meldDappDetail(address: PublicKey)
     case transakIntroduction
     case transakAccountSelection(
         eventHandler: AccountSelectionListScreen<TransakAccountSelectionListLocalDataController>.EventHandler

@@ -95,7 +95,7 @@ extension CurrencyFormattingStandaloneContextHandler {
         var rules = CurrencyFormattingContextRules()
         rules.roundingMode = .down
         rules.minimumFractionDigits = 2
-        rules.maximumFractionDigits = Int(Int8.max)
+        rules.maximumFractionDigits = Int(Int64.max)
         return rules
     }
 }

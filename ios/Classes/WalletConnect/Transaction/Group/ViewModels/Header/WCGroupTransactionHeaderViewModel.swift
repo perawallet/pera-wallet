@@ -30,6 +30,6 @@ final class WCGroupTransactionHeaderViewModel {
             return
         }
 
-        self.groupID = "wallet-connect-group-transaction-header-title".localized(groupID)
+        self.groupID = "wallet-connect-group-transaction-header-title".localized(params: groupID)
     }
 }

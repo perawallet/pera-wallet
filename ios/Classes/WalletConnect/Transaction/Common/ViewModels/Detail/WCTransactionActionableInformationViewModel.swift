@@ -32,7 +32,7 @@ final class WCTransactionActionableInformationViewModel {
         switch information {
         case .rawTransaction:
             title = "wallet-connect-transaction-title-raw".localized
-        case .algoExplorer:
+        case .peraExplorer:
             title = "wallet-connect-transaction-title-explorer".localized
         case .assetUrl:
             title = "wallet-connect-transaction-title-asset-url".localized
@@ -45,7 +45,7 @@ final class WCTransactionActionableInformationViewModel {
         switch information {
         case .rawTransaction:
             detail = "wallet-connect-transaction-detail-raw".localized
-        case .algoExplorer:
+        case .peraExplorer:
             detail = "wallet-connect-transaction-detail-explorer".localized
         case .assetUrl:
             detail = "wallet-connect-transaction-detail-asset-url".localized
@@ -62,7 +62,7 @@ final class WCTransactionActionableInformationViewModel {
 extension WCTransactionActionableInformationViewModel {
     enum ActionableInformation {
         case rawTransaction
-        case algoExplorer
+        case peraExplorer
         case assetUrl
         case assetMetadata
     }

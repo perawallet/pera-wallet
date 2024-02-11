@@ -165,7 +165,6 @@ extension Colors {
         String,
         Color {
         case moonPay = "Dapp/moonpay"
-        case sardine = "Dapp/sardine"
         case transak = "Dapp/transak"
         case bidali = "Dapp/bidali"
     }

@@ -17,8 +17,7 @@
 import Foundation
 
 enum AlgoExplorerType {
-    case algoexplorer
-    case goalseeker
+    case peraExplorer
 
     func transactionURL(with id: String, in network: ALGAPI.Network) -> URL? {
         switch network {
@@ -31,19 +30,15 @@ enum AlgoExplorerType {
 
     private func testNetTransactionURL(with id: String) -> URL? {
         switch self {
-        case .algoexplorer:
-            return URL(string: "https://testnet.algoexplorer.io/tx/\(id)")
-        case .goalseeker:
-            return URL(string: "https://goalseeker.purestake.io/algorand/testnet/transaction/\(id)")
+        case .peraExplorer:
+            return URL(string: "https://testnet.explorer.perawallet.app/tx/\(id)/")
         }
     }
 
     private func mainNetTransactionURL(with id: String) -> URL? {
         switch self {
-        case .algoexplorer:
-            return URL(string: "https://algoexplorer.io/tx/\(id)")
-        case .goalseeker:
-            return URL(string: "https://goalseeker.purestake.io/algorand/mainnet/transaction/\(id)")
+        case .peraExplorer:
+            return URL(string: "https://explorer.perawallet.app/tx/\(id)/")
         }
     }
 }

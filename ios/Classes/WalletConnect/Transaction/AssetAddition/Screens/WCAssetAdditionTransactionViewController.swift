@@ -77,7 +77,7 @@ extension WCAssetAdditionTransactionViewController: WCAssetAdditionTransactionVi
         displayRawTransaction()
     }
 
-    func wcAssetAdditionTransactionViewDidOpenAlgoExplorer(
+    func wcAssetAdditionTransactionViewDidOpenPeraExplorer(
         _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
     ) {
         openInExplorer(asset)

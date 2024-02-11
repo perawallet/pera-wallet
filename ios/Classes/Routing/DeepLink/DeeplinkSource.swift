@@ -30,6 +30,7 @@ enum DeeplinkSource {
     case walletConnectArbitraryDataSignRequest(WalletConnectArbitraryDataSignRequestDraft)
     case qrText(QRText)
     case externalInAppBrowser(DiscoverExternalDestination)
+    case buyAlgoWithMeld(MeldDraft)
 
     static func walletConnectSessionRequestForDiscover(_ url: URL) -> DeeplinkSource {
         return .walletConnectSessionRequest(url, prefersConnectionApproval: false)

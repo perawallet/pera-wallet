@@ -17,6 +17,22 @@
 import Foundation
 import MacaroonVendors
 
+struct MeldEvent: ALGAnalyticsEvent {
+    let name: ALGAnalyticsEventName
+    let metadata: ALGAnalyticsMetadata
+
+    fileprivate init() {
+        self.name = .tapBuyAlgoInMeld
+        self.metadata = [:]
+    }
+}
+
+extension AnalyticsEvent where Self == MeldEvent {
+    static func meld() -> Self {
+        return MeldEvent()
+    }
+}
+
 struct MoonPayEvent: ALGAnalyticsEvent {
     let name: ALGAnalyticsEventName
     let metadata: ALGAnalyticsMetadata

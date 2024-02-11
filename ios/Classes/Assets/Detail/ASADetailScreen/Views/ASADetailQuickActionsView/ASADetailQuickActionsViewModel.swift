@@ -33,8 +33,7 @@ struct ASADetailQuickActionsViewModel: ViewModel {
 
 extension ASADetailQuickActionsViewModel {
     mutating func bindBuyActionAvailable(asset: Asset) {
-        /// <note> Buy action disabled temporarily. Date: 18.11.2023
-        isBuyActionAvailable = false
+        isBuyActionAvailable = asset.isAlgo
     }
 
     mutating func bindIsSwapBadgeVisible(isSwapBadgeVisible: Bool) {

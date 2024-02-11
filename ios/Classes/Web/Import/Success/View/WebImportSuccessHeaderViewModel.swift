@@ -42,7 +42,7 @@ extension WebImportSuccessHeaderViewModel {
 
     private mutating func bindBody(for importedAccountCount: Int) {
         let isSingular = importedAccountCount == 1
-        let resultBody = isSingular ? "web-import-success-header-singular-body".localized("\(importedAccountCount)") : "web-import-success-header-body".localized("\(importedAccountCount)")
+        let resultBody = isSingular ? "web-import-success-header-singular-body".localized(params: "\(importedAccountCount)") : "web-import-success-header-body".localized(params: "\(importedAccountCount)")
         body = resultBody.bodyRegular()
     }
 }

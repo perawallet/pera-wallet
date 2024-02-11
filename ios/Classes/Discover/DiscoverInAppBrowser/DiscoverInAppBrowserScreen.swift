@@ -99,6 +99,8 @@ where ScriptMessage: InAppBrowserScriptMessage {
             handleDeviceIDRequest(message)
         case .pushDappViewerScreen:
             handleDappDetailAction(message)
+        case .openSystemBrowser:
+            handleOpenSystemBrowser(message)
         }
     }
 }
@@ -246,6 +248,18 @@ extension DiscoverInAppBrowserScreen {
     }
 }
 
+extension DiscoverInAppBrowserScreen {
+    private func handleOpenSystemBrowser(_ message: WKScriptMessage) {
+        if !isAcceptable(message) { return }
+      
+        guard let jsonString = message.body as? String else { return }
+        guard let jsonData = jsonString.data(using: .utf8) else { return }
+        guard let params = try? DiscoverGenericParameters.decoded(jsonData) else { return }
+
+        openInBrowser(params.url)
+    }
+}
+
 extension UIUserInterfaceStyle {
     var peraRawValue: String {
         switch self {
@@ -263,4 +277,5 @@ enum DiscoverInAppBrowserScriptMessage:
     case pushNewScreen
     case requestDeviceID = "getDeviceId"
     case pushDappViewerScreen
+    case openSystemBrowser
 }

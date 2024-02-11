@@ -341,7 +341,18 @@ extension NotificationsViewController {
     private func openExternalLink(
         destination: DiscoverExternalDestination
     ) {
-        open(.externalInAppBrowser(destination: destination), by: .push)
+        let inAppBrowser = open(
+            .externalInAppBrowser(destination: destination),
+            by: .push
+        ) as? DiscoverExternalInAppBrowserScreen
+        inAppBrowser?.eventHandler = {
+            [weak inAppBrowser] event in
+            switch event {
+            case .goBack:
+                inAppBrowser?.popScreen()
+            default: break
+            }
+        }
     }
 }
 

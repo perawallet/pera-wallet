@@ -87,7 +87,7 @@ extension TutorialViewModel {
             title = "local-authentication-enabled-title".localized
         case .passphraseVerified:
             title = "pass-phrase-verify-pop-up-title".localized
-        case .accountVerified(let flow):
+        case .accountVerified(let flow, _):
             bindAccountSetupFlowTitle(flow)
         case .recoverWithLedger:
             title = "ledger-tutorial-title-text".localized
@@ -118,7 +118,7 @@ extension TutorialViewModel {
             description = "local-authentication-enabled-subtitle".localized
         case .passphraseVerified:
             description = "pass-phrase-verify-pop-up-explanation".localized
-        case .accountVerified(let flow):
+        case .accountVerified(let flow, _):
             bindAccountSetupFlowDescription(flow)
         case .recoverWithLedger:
             description = "tutorial-description-ledger".localized
@@ -149,7 +149,7 @@ extension TutorialViewModel {
             primaryActionButtonTitle = "title-go-to-accounts".localized
         case .passphraseVerified:
             primaryActionButtonTitle = "title-next".localized
-        case .accountVerified(let flow):
+        case .accountVerified(let flow, _):
             bindAccountSetupFlowPrimaryButton(flow)
         case .recoverWithLedger:
             primaryActionButtonTitle = "ledger-tutorial-title-text".localized
@@ -186,6 +186,10 @@ extension TutorialViewModel {
             guard !flow.isBackUpAccount else { return }
 
             secondaryActionButtonTitle = "title-skip-for-now".localized
+        case .accountVerified(let flow, _):
+            bindAccountSetupFlowSecondaryButton(flow)
+        case .ledgerSuccessfullyConnected(let flow):
+            bindAccountSetupFlowSecondaryButton(flow)
         default:
             break
         }
@@ -220,20 +224,30 @@ extension TutorialViewModel {
         } else if case .addNewAccount(mode: .watch) = flow {
             self.primaryActionButtonTitle = "title-continue".localized
         } else {
+            self.primaryActionButtonTitle = "moonpay-buy-button-title".localized
+        }
+    }
+
+    private func bindAccountSetupFlowSecondaryButton(_ flow: AccountSetupFlow) {
+        if case .initializeAccount(mode: .watch) = flow {
+            self.secondaryActionButtonTitle = nil
+        } else if case .addNewAccount(mode: .watch) = flow {
+            self.secondaryActionButtonTitle = nil
+        } else {
             switch flow {
             case .initializeAccount:
-                self.primaryActionButtonTitle = "title-start-using-pera-wallet".localized
+                self.secondaryActionButtonTitle = "title-start-using-pera-wallet".localized
             case .addNewAccount,
                  .backUpAccount,
                  .none:
-                self.primaryActionButtonTitle = "title-continue".localized
+                self.secondaryActionButtonTitle = "title-continue".localized
             }
         }
     }
-    
+
     private func bindButtonsStyle(_ tutorial: Tutorial, theme: TutorialViewTheme) {
         switch tutorial {
-        case .accountVerified(let flow):
+        case .accountVerified(let flow, _):
             bindAccountSetupFlowButtonsTheme(flow, theme: theme)
         case .ledgerSuccessfullyConnected(let flow):
             bindAccountSetupFlowButtonsTheme(flow, theme: theme)
@@ -248,7 +262,7 @@ extension TutorialViewModel {
         } else if case .addNewAccount(mode: .watch) = flow {
             return
         } else {
-            self.primaryActionButtonTheme = theme.mainButtonTheme
+            self.primaryActionButtonTheme = theme.actionButtonTheme
             self.secondaryActionButtonTheme = theme.mainButtonTheme
         }
     }

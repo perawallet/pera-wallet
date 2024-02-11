@@ -82,9 +82,9 @@ extension AccountNameTitleViewModel {
 
         switch draft.transactionMode {
         case .asset(let asset):
-            title = "send-transaction-title".localized(asset.naming.displayNames.primaryName)
+            title = "send-transaction-title".localized(params: asset.naming.displayNames.primaryName)
         case .algo:
-            title = "send-transaction-title".localized("asset-algos-title".localized)
+            title = "send-transaction-title".localized(params: "asset-algos-title".localized)
         }
 
         self.title = title.bodyMedium(

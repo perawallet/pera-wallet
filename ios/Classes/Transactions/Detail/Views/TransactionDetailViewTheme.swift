@@ -20,8 +20,7 @@ import MacaroonUIKit
 struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
     let separator: Separator
-    let openInAlgoExplorerButton: ButtonStyle
-    let openInGoalSeekerButton: ButtonStyle
+    let openInPeraExplorerButton: ButtonStyle
     let buttonsCorner: Corner
 
     let transactionAmountInformationViewTheme: TransactionAmountInformationViewTheme
@@ -33,7 +32,7 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let transactionContactInformationViewTheme: TransactionContactInformationViewTheme
 
     let buttonEdgeInsets: LayoutPaddings
-    let openInGoalSeekerButtonLeadingPadding: LayoutMetric
+    let openInPeraExplorerButtonLeadingPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let verticalStackViewTopPadding: LayoutMetric
     let bottomPaddingForSeparator: LayoutMetric
@@ -44,14 +43,8 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = Colors.Defaults.background
         self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
-        self.openInAlgoExplorerButton = [
-            .title("transaction-id-open-algoexplorer".localized),
-            .titleColor([.normal(Colors.Button.Secondary.text)]),
-            .font(Fonts.DMSans.medium.make(13)),
-            .backgroundColor(Colors.Button.Secondary.background)
-        ]
-        self.openInGoalSeekerButton = [
-            .title("transaction-id-open-goalseeker".localized),
+        self.openInPeraExplorerButton = [
+            .title("transaction-id-open-peraexplorer".localized),
             .titleColor([.normal(Colors.Button.Secondary.text)]),
             .font(Fonts.DMSans.medium.make(13)),
             .backgroundColor(Colors.Button.Secondary.background)
@@ -69,7 +62,7 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
         self.separatorTopPadding = -20
         self.buttonsCorner = Corner(radius: 18)
         self.buttonEdgeInsets = (8, 12, 8, 12)
-        self.openInGoalSeekerButtonLeadingPadding = 16
+        self.openInPeraExplorerButtonLeadingPadding = 16
         self.horizontalPadding = 24
         self.verticalStackViewTopPadding = 40
         self.bottomPaddingForSeparator = 40

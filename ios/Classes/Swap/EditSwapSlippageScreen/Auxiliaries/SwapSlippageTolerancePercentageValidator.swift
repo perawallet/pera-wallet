@@ -72,6 +72,7 @@ struct SwapSlippageTolerancePercentageValidationMessageGenericResolver: SwapSlip
             switch error {
             default:
                 map[error] = "swap-slippage-percentage-validation-error-limitExceeded".localized(
+                    params:
                     (Self.Error.minLimit / 100).toPercentageWith(fractions: 2).someString,
                     (Self.Error.maxLimit / 100).toPercentageWith(fractions: 2).someString
                 )

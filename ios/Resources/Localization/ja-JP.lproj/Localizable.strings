@@ -563,9 +563,6 @@
 "collectible-approve-transaction-to" = "To";
 
 /* (No Comment) */
-"collectible-detail-algo-explorer" = "Show on Algoexplorerで表示する";
-
-/* (No Comment) */
 "collectible-detail-creator-account" = "クリエイターアカウント";
 
 /* (No Comment) */
@@ -2255,9 +2252,6 @@
 "swap-success-title" = "%@のスワップが完了しました";
 
 /* (No Comment) */
-"swap-success-view-explorer" = "トランザクションの詳細をAlgoExplorerで見る";
-
-/* (No Comment) */
 "swap-success-view-summary" = "スワップの概要を表示する";
 
 /* (No Comment) */
@@ -2748,12 +2742,6 @@
 
 /* (No Comment) */
 "transaction-filter-try-again" = "やり直す";
-
-/* (No Comment) */
-"transaction-id-open-algoexplorer" = "AlgoExplorerで開く";
-
-/* (No Comment) */
-"transaction-id-open-goalseeker" = "GoalSeekerで開く";
 
 /* (No Comment) */
 "transaction-item-app-id-title" = "アプリケーションID: %d";
@@ -3249,9 +3237,6 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-auth-address" = "認証アドレス";
-
-/* (No Comment) */
-"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-metadata" = "アセットメタデータ";

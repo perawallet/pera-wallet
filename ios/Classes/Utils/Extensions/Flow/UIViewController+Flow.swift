@@ -34,6 +34,10 @@ extension UIViewController {
     ) {
         AppDelegate.shared?.launchMainAfterAuthorization(presented: viewController)
     }
+
+    func launchBuyAlgoWithMeld(draft: MeldDraft) {
+        AppDelegate.shared?.receive(deeplinkWithSource: .buyAlgoWithMeld(draft))
+    }
 }
 
 extension UIViewController {

@@ -57,7 +57,7 @@ extension WCSessionConnectionProfileViewModel {
 
         let aTitle =
         "wallet-connect-session-connection-description"
-            .localized(dAppName)
+            .localized(params: dAppName)
             .bodyLargeRegular(alignment: .center)
             .addAttributes(
                 to: dAppName,

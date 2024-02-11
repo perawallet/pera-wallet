@@ -38,6 +38,6 @@ extension ErrorScreenViewModel {
         let assetInDisplayName = formatter.getAssetDisplayName(assetIn)
         let assetOutDisplayName = formatter.getAssetDisplayName(assetOut)
         let swapAssets = "\(assetInDisplayName) / \(assetOutDisplayName)"
-        return "swap-error-failed-title".localized(swapAssets)
+        return "swap-error-failed-title".localized(params: swapAssets)
     }
 }

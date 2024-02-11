@@ -33,8 +33,7 @@ final class AppCallTransactionDetailView:
     private lazy var transactionIDView = TransactionTextInformationView()
     private lazy var noteView = TransactionTextInformationView()
 
-    private lazy var openInAlgoExplorerButton = UIButton()
-    private lazy var openInGoalSeekerButton = UIButton()
+    private lazy var openInPeraExplorerButton = UIButton()
 
     private lazy var senderContextMenuInteraction = UIContextMenuInteraction(delegate: self)
     private lazy var applicationIDContextMenuInteraction = UIContextMenuInteraction(delegate: self)
@@ -60,15 +59,10 @@ final class AppCallTransactionDetailView:
         transactionIDView.addInteraction(transactionIDContextMenuInteraction)
         noteView.addInteraction(noteContextMenuInteraction)
 
-        openInAlgoExplorerButton.addTouch(
+        openInPeraExplorerButton.addTouch(
             target: self,
-            action: #selector(notifyDelegateToOpenAlgoExplorer)
+            action: #selector(notifyDelegateToOpenPeraExplorer)
         )
-        openInGoalSeekerButton.addTouch(
-            target: self,
-            action: #selector(notifyDelegateToOpenGoalSeaker)
-        )
-
         innerTransactionView.startObserving(event: .touch) {
             [weak self] in
             guard let self = self else {
@@ -89,8 +83,7 @@ final class AppCallTransactionDetailView:
         addInnerTransactionView(theme)
         addTransactionIDView(theme)
         addNoteView(theme)
-        addOpenInAlgoExplorerButton(theme)
-        addOpenInGoalSeekerButton(theme)
+        addOpenInPeraExplorerButton(theme)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
@@ -202,30 +195,17 @@ extension AppCallTransactionDetailView {
         noteView.addSeparator(theme.bottomSeparator, padding: theme.separatorPadding)
     }
 
-    private func addOpenInAlgoExplorerButton(_ theme: AppCallTransactionDetailViewTheme) {
-        openInAlgoExplorerButton.customizeAppearance(theme.openInAlgoExplorerButton)
-        openInAlgoExplorerButton.layer.draw(corner: theme.buttonsCorner)
+    private func addOpenInPeraExplorerButton(_ theme: AppCallTransactionDetailViewTheme) {
+        openInPeraExplorerButton.customizeAppearance(theme.openInPeraExplorerButton)
+        openInPeraExplorerButton.layer.draw(corner: theme.buttonsCorner)
 
-        addSubview(openInAlgoExplorerButton)
-        openInAlgoExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+        addSubview(openInPeraExplorerButton)
+        openInPeraExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
 
-        openInAlgoExplorerButton.snp.makeConstraints {
+        openInPeraExplorerButton.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
             $0.top.equalTo(verticalStackView.snp.bottom).offset(theme.spacingBetweenPropertiesAndActions)
             $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.bottomInset)
-        }
-    }
-
-    private func addOpenInGoalSeekerButton(_ theme: AppCallTransactionDetailViewTheme) {
-        openInGoalSeekerButton.customizeAppearance(theme.openInGoalSeekerButton)
-        openInGoalSeekerButton.layer.draw(corner: theme.buttonsCorner)
-
-        addSubview(openInGoalSeekerButton)
-        openInGoalSeekerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
-
-        openInGoalSeekerButton.snp.makeConstraints {
-            $0.leading.equalTo(openInAlgoExplorerButton.snp.trailing).offset(theme.openInGoalSeekerButtonLeadingPadding)
-            $0.centerY.equalTo(openInAlgoExplorerButton)
         }
     }
 }
@@ -309,13 +289,8 @@ extension AppCallTransactionDetailView {
 
 extension AppCallTransactionDetailView {
     @objc
-    func notifyDelegateToOpenAlgoExplorer() {
-        delegate?.appCallTransactionDetailView(self, didOpen: .algoexplorer)
-    }
-
-    @objc
-    func notifyDelegateToOpenGoalSeaker() {
-        delegate?.appCallTransactionDetailView(self, didOpen: .goalseeker)
+    func notifyDelegateToOpenPeraExplorer() {
+        delegate?.appCallTransactionDetailView(self, didOpen: .peraExplorer)
     }
 
     @objc

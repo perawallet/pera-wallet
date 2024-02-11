@@ -108,7 +108,7 @@ extension WCSessionConnectionSuccessfulSheet {
         let dAppName = wcV1Session.peerMeta.name
         let aTitle =
             "wallet-connect-session-connection-approved-title"
-                .localized(dAppName)
+                .localized(params: dAppName)
                 .bodyLargeMedium(alignment: .center)
         return aTitle
     }
@@ -117,7 +117,7 @@ extension WCSessionConnectionSuccessfulSheet {
         let dAppName = wcV2Session.peer.name
         let aTitle =
             "wallet-connect-session-connection-approved-title"
-                .localized(dAppName)
+                .localized(params: dAppName)
                 .bodyLargeMedium(alignment: .center)
         return aTitle
     }
@@ -127,7 +127,7 @@ extension WCSessionConnectionSuccessfulSheet {
     private static func makeBodyForWCv1(_ wcV1Session: WCSession) -> UISheetBodyTextProvider {
         let dAppName = wcV1Session.peerMeta.name
         let aBody = "wallet-connect-session-connection-approved-description"
-            .localized(dAppName)
+            .localized(params: dAppName)
             .bodyRegular(alignment: .center)
         return UISheetBodyTextProvider(text: aBody)
     }

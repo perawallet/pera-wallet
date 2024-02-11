@@ -25,10 +25,10 @@ struct SwapAPIErrorViewModel: ErrorScreenViewModel {
 
     init(
         quote: SwapQuote,
-        message: String
+        error: SwapController.Error
     ) {
         bindTitle(quote)
-        bindDetail(message)
+        bindDetail(error)
         bindPrimaryAction()
         bindSecondaryAction()
     }
@@ -43,8 +43,20 @@ extension SwapAPIErrorViewModel {
     }
 
     mutating func bindDetail(
-        _ message: String
+        _ error: SwapController.Error
     ) {
+        let message: String
+        switch error {
+        case .client(_, let apiError):
+            message = apiError?.message ?? apiError.debugDescription
+        case .server(_, let apiError):
+            message = apiError?.message ?? apiError.debugDescription
+        case .connection:
+            message = "title-internet-connection".localized
+        case .unexpected:
+            message = "title-generic-api-error".localized
+        }
+        
         detail = message.bodyRegular(alignment: .center)
     }
 

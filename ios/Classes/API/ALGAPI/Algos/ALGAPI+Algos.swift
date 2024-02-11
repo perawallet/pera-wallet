@@ -25,7 +25,6 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AlgoPriceHistory>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.algoExplorer)
             .path(.algoUSDHistory)
             .method(.get)
             .ignoreResponseWhenEndpointCancelled(false)

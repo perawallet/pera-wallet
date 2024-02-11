@@ -143,7 +143,7 @@ extension TransactionAmountViewModel {
         if showInList {
             let aText = count == 1
             ? "inner-txns-singular-count".localized
-            : "inner-txns-plural-count".localized("\(count)")
+            : "inner-txns-plural-count".localized(params: "\(count)")
 
             amountLabelText = .attributedString(
                 aText.bodyMedium(
@@ -155,7 +155,7 @@ extension TransactionAmountViewModel {
 
         let aText = count == 1
         ?  "transaction-detail-singular-inner-transaction-detail".localized
-        : "transaction-detail-plural-inner-transaction-detail".localized("\(count)")
+        : "transaction-detail-plural-inner-transaction-detail".localized(params: "\(count)")
 
         amountLabelText = .attributedString(
             aText.bodyMedium(

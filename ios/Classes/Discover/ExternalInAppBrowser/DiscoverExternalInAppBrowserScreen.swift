@@ -296,6 +296,14 @@ extension DiscoverExternalInAppBrowserScreen {
     }
 }
 
+extension DiscoverExternalInAppBrowserScreen {
+    enum Event {
+        case goBack
+        case addToFavorites(DiscoverFavouriteDappDetails)
+        case removeFromFavorites(DiscoverFavouriteDappDetails)
+    }
+}
+
 enum DiscoverExternalInAppBrowserScriptMessage:
     String,
     InAppBrowserScriptMessage {

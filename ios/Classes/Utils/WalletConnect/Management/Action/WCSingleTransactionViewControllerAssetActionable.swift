@@ -29,13 +29,13 @@ extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleT
         if let assetId = asset?.id,
            let currentNetwork = api?.network {
             if currentNetwork == .mainnet {
-                if let url = URL(string: "https://algoexplorer.io/asset/\(String(assetId))") {
+                if let url = URL(string: "https://explorer.perawallet.app/asset/\(String(assetId))/") {
                     open(url)
                 }
                 return
             }
 
-            if let url = URL(string: "https://testnet.algoexplorer.io/asset/\(String(assetId))") {
+            if let url = URL(string: "https://testnet.explorer.perawallet.app/asset/\(String(assetId))/") {
                 open(url)
             }
         }

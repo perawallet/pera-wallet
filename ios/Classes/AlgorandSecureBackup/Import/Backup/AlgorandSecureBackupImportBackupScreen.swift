@@ -341,7 +341,7 @@ extension AlgorandSecureBackupImportBackupScreen {
             title = "algorand-secure-backup-import-backup-clipboard-unauthorized-failed-title".localized
             message = ""
         case .keyNotFound(let key):
-            title = "algorand-secure-backup-import-backup-clipboard-key-not-exist".localized(key)
+            title = "algorand-secure-backup-import-backup-clipboard-key-not-exist".localized(params: key)
             message = ""
         }
 

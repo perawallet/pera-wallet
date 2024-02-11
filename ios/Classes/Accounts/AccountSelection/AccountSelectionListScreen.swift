@@ -107,7 +107,7 @@ class AccountSelectionListScreen<DataController: AccountSelectionListDataControl
             case .didUpdate(let snapshot):
                 self.listDataSource.apply(
                     snapshot,
-                    animatingDifferences: false
+                    animatingDifferences: true
                 )
             }
         }

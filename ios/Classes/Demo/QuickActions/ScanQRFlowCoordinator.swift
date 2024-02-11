@@ -165,7 +165,7 @@ extension ScanQRFlowCoordinator {
         using qrBackupParameters: QRBackupParameters
     ) {
         let message = "web-import-error-unsupported-version-body"
-            .localized(qrBackupParameters.version)
+            .localized(params: qrBackupParameters.version)
         controller.bannerController?.presentErrorBanner(title: "Error", message: message)
     }
 }

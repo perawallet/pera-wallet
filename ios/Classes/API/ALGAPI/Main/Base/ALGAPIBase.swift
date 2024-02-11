@@ -41,7 +41,6 @@ extension ALGAPIBase {
         case indexer(ALGAPI.Network)
         case mobileV1(ALGAPI.Network)
         case mobileV2(ALGAPI.Network)
-        case algoExplorer
 
         init?(_ base: String, network: ALGAPI.Network) {
             if base.isAlgodApiBase {
@@ -50,8 +49,6 @@ extension ALGAPIBase {
                 self = .indexer(network)
             } else if base.isMobileApiV1Base {
                 self = .mobileV1(network)
-            } else if base.isAlgoExplorerApiBase {
-                self = .algoExplorer
             } else if base.isMobileApiV2Base {
                 self = .mobileV2(network)
             } else {
@@ -85,8 +82,6 @@ extension ALGAPIBase {
                 } else {
                     return Environment.current.mainNetMobileAPIV2
                 }
-            case .algoExplorer:
-                return Environment.current.algoExplorerApi
             }
         }
     }
@@ -107,10 +102,6 @@ fileprivate extension String {
 
     var isMobileApiV2Base: Bool {
         return self == Environment.current.testNetMobileAPIV2 || self == Environment.current.mainNetMobileAPIV2
-    }
-
-    var isAlgoExplorerApiBase: Bool {
-        return self == Environment.current.algoExplorerApi
     }
 }
 

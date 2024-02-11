@@ -49,7 +49,7 @@ struct OptInBlockchainUpdate: BlockchainUpdate {
         } else {
             name = request.assetName ?? request.assetUnitName ?? String(request.assetID)
         }
-        self.notificationMessage = "asset-opt-in-successful-message".localized(name)
+        self.notificationMessage = "asset-opt-in-successful-message".localized(params: name)
     }
 
     init(

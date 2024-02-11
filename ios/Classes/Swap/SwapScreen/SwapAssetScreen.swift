@@ -444,7 +444,8 @@ extension SwapAssetScreen {
                 self.updateUIWhenDataDidLoad(quote)
 
                 switch error {
-                case .amountInNotAvailable:
+                case .amountInNotAvailable,
+                     .amountOutNotAvailable:
                     self.showError("swap-asset-not-available".localized)
                 case .insufficientAlgoBalance(let minBalance):
                     self.showInsufficientAlgoBalanceErrorForQuoteValidation(minBalance)
@@ -721,7 +722,8 @@ extension SwapAssetScreen {
     ) {
         var balancePercentageValidator = SwapAvailableBalancePercentageValidator(
             account: dataController.account,
-            asset: dataController.userAsset,
+            userAsset: dataController.userAsset,
+            poolAsset: dataController.poolAsset,
             amount: amount,
             api: api!
         )
@@ -741,7 +743,9 @@ extension SwapAssetScreen {
                 self.getSwapQuote(for: availableBalance)
             case .failure(let error):
                 switch error {
-                case .amountInNotAvailable: break
+                case .amountInNotAvailable,
+                     .amountOutNotAvailable:
+                    break
                 case .insufficientAlgoBalance(let minBalance):
                     self.updateUserAssetAmount(
                         with: minBalance,
@@ -945,7 +949,15 @@ extension SwapAssetScreen {
         didChangeTextIn textField: TextField
     ) {
         guard let input = textField.text else { return }
+        getSwapQuoteIfNeeded(for: input)
+    }
 
+    func getSwapQuoteForCurrentInput() {
+        guard let input = userAssetView.currentAmount else { return }
+        getSwapQuoteIfNeeded(for: input)
+    }
+
+    private func getSwapQuoteIfNeeded(for input: String) {
         if swapAssetInputValidator.isTheInputDecimalSeparator(input) {
             return
         }

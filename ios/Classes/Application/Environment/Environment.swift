@@ -69,8 +69,6 @@ class Environment {
             return mainNetAlgodHost
         }
     }()
-
-    lazy var algoExplorerApiHost = "price.algoexplorerapi.io"
     
     lazy var serverApi: String = {
         let api = "\(schema)://\(serverHost)"
@@ -122,8 +120,6 @@ class Environment {
             return "\(mainNetProductionMobileAPI)/v2/"
         }
     }()
-
-    lazy var algoExplorerApi = "https://\(algoExplorerApiHost)"
 
     lazy var discoverBaseUrl: String = {
         switch target {
@@ -188,7 +184,7 @@ enum AlgorandWeb: String {
         }
     }
     
-    enum AlgoExplorer {
+    enum PeraExplorer {
         case address(isMainnet: Bool, param: String)
         case asset(isMainnet: Bool, param: String)
         case group(isMainnet: Bool, param: String)
@@ -197,16 +193,16 @@ enum AlgorandWeb: String {
             switch self {
             case .address(let isMainnet, let param):
                 return isMainnet
-                    ? URL(string: "https://algoexplorer.io/address/\(param)")
-                    : URL(string: "https://testnet.algoexplorer.io/address/\(param)")
+                    ? URL(string: "https://explorer.perawallet.app/address/\(param)/")
+                    : URL(string: "https://testnet.explorer.perawallet.app/address/\(param)/")
             case .asset(let isMainnet, let param):
                 return isMainnet
-                    ? URL(string: "https://algoexplorer.io/asset/\(param)")
-                    : URL(string: "https://testnet.algoexplorer.io/asset/\(param)")
+                    ? URL(string: "https://explorer.perawallet.app/asset/\(param)/")
+                    : URL(string: "https://testnet.explorer.perawallet.app/asset/\(param)/")
             case .group(let isMainnet, let param):
                 return isMainnet
-                    ? URL(string: "https://algoexplorer.io/tx/group/\(param)")
-                    : URL(string: "https://testnet.algoexplorer.io/tx/group/\(param)")
+                    ? URL(string: "https://explorer.perawallet.app/tx-group/\(param)")
+                    : URL(string: "https://testnet.explorer.perawallet.app/tx-group/\(param)")
             }
         }
     }

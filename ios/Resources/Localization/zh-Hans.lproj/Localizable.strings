@@ -2750,12 +2750,6 @@
 "transaction-filter-try-again" = "再次尝试";
 
 /* (No Comment) */
-"transaction-id-open-algoexplorer" = "在AlgoExplorer中打开";
-
-/* (No Comment) */
-"transaction-id-open-goalseeker" = "在GoalSeeker中打开";
-
-/* (No Comment) */
 "transaction-item-app-id-title" = "应用ID：%d";
 
 /* (No Comment) */
@@ -3249,9 +3243,6 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-auth-address" = "授权地址";
-
-/* (No Comment) */
-"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-metadata" = "资产元数据";

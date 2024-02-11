@@ -8,8 +8,6 @@
 	<string>$(PROD_API_KEY)</string>
 	<key>BIDALI_PROD_API_KEY</key>
 	<string>$(BIDALI_PROD_API_KEY)</string>
-	<key>SARDINE_PROD_API_KEY</key>
-	<string>$(SARDINE_PROD_API_KEY)</string>
 	<key>TRANSAK_PROD_API_KEY</key>
 	<string>$(TRANSAK_PROD_API_KEY)</string>
 	<key>WC_V2_PROJECT_ID</key>

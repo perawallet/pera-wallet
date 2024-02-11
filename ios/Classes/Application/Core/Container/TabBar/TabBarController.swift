@@ -74,7 +74,10 @@ final class TabBarController: TabBarContainer {
     private lazy var transactionOptionsView = createTransactionOptions()
 
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
-    private lazy var sardineFlowCoordinator = SardineFlowCoordinator(presentingScreen: self, api: api)
+    private lazy var meldFlowCoordinator = MeldFlowCoordinator(
+        analytics: analytics,
+        presentingScreen: self
+    )
     private lazy var transakFlowCoordinator = TransakFlowCoordinator(
         presentingScreen: self,
         api: api,
@@ -387,11 +390,11 @@ extension TabBarController {
         let eventHandler: BuySellOptionsScreen.EventHandler = {
             [unowned self] event in
             switch event {
-            case .performBuyAlgoWithSardine:
+            case .performBuyWithMeld:
                 self.dismiss(animated: true) {
                     [weak self] in
                     guard let self else { return }
-                    self.openBuyAlgoWithSardine()
+                    self.openBuyWithMeld()
                 }
             case .performBuyWithTransak:
                 self.dismiss(animated: true) {
@@ -414,8 +417,8 @@ extension TabBarController {
         )
     }
 
-    private func openBuyAlgoWithSardine() {
-        sardineFlowCoordinator.launch()
+    private func openBuyWithMeld() {
+        meldFlowCoordinator.launch()
     }
 
     private func openBuyWithTransak() {

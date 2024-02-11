@@ -303,7 +303,7 @@ extension ASAAboutScreen {
             [unowned self] in
 
             if let address = self.asset.creator?.address {
-                let source = AlgoExplorerExternalSource(
+                let source = PeraExplorerExternalSource(
                     address: address,
                     network: self.api!.network
                 )

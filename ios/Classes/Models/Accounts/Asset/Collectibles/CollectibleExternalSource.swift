@@ -23,20 +23,20 @@ protocol CollectibleExternalSource {
     var url: URL? { get }
 }
 
-struct AlgoExplorerExternalSource: CollectibleExternalSource {
-    let image = img("icon-algo-explorer")
+struct PeraExplorerExternalSource: CollectibleExternalSource {
+    let image = img("icon-pera-logo")
     let title = "collectible-detail-algo-explorer".localized
     let url: URL?
 
     init(asset: AssetID, network: ALGAPI.Network) {
-        url = AlgorandWeb.AlgoExplorer.asset(
+        url = AlgorandWeb.PeraExplorer.asset(
             isMainnet: network == .mainnet,
             param: String(asset)
         ).link
     }
     
     init(address: String, network: ALGAPI.Network) {
-        url = AlgorandWeb.AlgoExplorer.address(
+        url = AlgorandWeb.PeraExplorer.address(
             isMainnet: network == .mainnet,
             param: address
         ).link

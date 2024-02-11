@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoWithSardineOptionViewModel.swift
+//   UpdateSwapQuoteDraft.swift
 
-import MacaroonUIKit
+import MagpieCore
 
-struct BuyAlgoWithSardineOptionViewModel: ListItemButtonViewModel {
-    var icon: Image?
-    var title: EditText?
-    var subtitle: EditText?
+struct UpdateSwapQuoteDraft: JSONObjectBody {
+    let id: Int64
+    let exception: String
 
-    init() {
-        self.icon = "icon-sardine-option"
-        self.title = .attributedString("buy-sell-options-buy-algo-with-sardine-option-title".localized.bodyMedium())
-        self.subtitle = .attributedString("buy-sell-options-buy-algo-with-sardine-option-subtitle".localized.footnoteRegular())
+    var bodyParams: [APIBodyParam] {
+        let params: [APIBodyParam] = [
+            .init(.exceptionText, exception)
+        ]
+        return params
     }
 }

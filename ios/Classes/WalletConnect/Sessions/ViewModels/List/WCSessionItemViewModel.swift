@@ -82,7 +82,7 @@ extension WCSessionItemViewModel {
         let connectedOnDate = wcV1Session.date.toFormat(dateFormat)
         description =
             "wallet-connect-session-connected-on-date"
-                .localized(connectedOnDate)
+                .localized(params: connectedOnDate)
                 .footnoteRegular(lineBreakMode: .byWordWrapping)
     }
 }

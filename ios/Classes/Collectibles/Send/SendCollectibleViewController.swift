@@ -318,7 +318,7 @@ extension SendCollectibleViewController {
         let title = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
         let to = draft.toContact?.address ?? draft.toNameService?.name ?? draft.toAccount?.address
 
-        let description = "collectible-recipient-opt-in-description".localized(title, to!)
+        let description = "collectible-recipient-opt-in-description".localized(params: title, to!)
 
         let configuratorDescription =
         BottomWarningViewConfigurator.BottomWarningDescription.custom(
