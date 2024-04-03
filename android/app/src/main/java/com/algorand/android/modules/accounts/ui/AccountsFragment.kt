@@ -98,7 +98,7 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
         }
 
         override fun onBackupBannerActionButtonClick() {
-            navToPassphraseBackupNavigation()
+            navToBackupPassphraseInfoNavigation()
         }
 
         override fun onBannerActionButtonClick(url: String, isGovernance: Boolean) {
@@ -386,9 +386,9 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
         nav(AccountsFragmentDirections.actionGlobalSendAlgoNavigation(null))
     }
 
-    private fun navToPassphraseBackupNavigation() {
+    private fun navToBackupPassphraseInfoNavigation() {
         nav(
-            AccountsFragmentDirections.actionAccountsFragmentToPassphraseBackupNavigation(
+            AccountsFragmentDirections.actionAccountsFragmentToBackupPassphraseInfoNavigation(
                 publicKeysOfAccountsToBackup = accountsViewModel.getNotBackedUpAccounts().toTypedArray()
             )
         )

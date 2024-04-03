@@ -1,8 +1,1 @@
-Sprint-6
-* PERA-213 | Report failed swap responses
-* PERA-303 | Protect High-TPS situations
-* PERA-262 | New JS Interface for opening a new page in native Browser
-* PERA-346 | Ledger Errors on Android (Update all libraries)
-* PERA-182 | Connecting via WC v2 causes an error message
-* PERA-160 | Confirm Transaction Page - Account Icons not correct
-* PERA-115 | Meld Integration
+Fix webview multiple window support issue

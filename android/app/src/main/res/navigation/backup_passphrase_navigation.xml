@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/backupPassphraseNavigation"
+    app:startDestination="@id/backupPassphraseFragment">
+
+    <include app:graph="@navigation/meld_navigation" />
+
+    <include app:graph="@navigation/backup_passphrase_account_name_navigation" />
+
+    <fragment
+        android:id="@+id/backupPassphraseFragment"
+        android:name="com.algorand.android.ui.register.BackupPassphraseFragment"
+        android:label="fragment_backup_passphrase"
+        tools:layout="@layout/fragment_backup_passphrase">
+        <argument
+            android:name="publicKeyOfAccountToBackup"
+            app:argType="string" />
+        <argument
+            android:name="accountCreation"
+            app:argType="com.algorand.android.models.AccountCreation"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_backupPassphraseFragment_to_passphraseValidationFragment"
+            app:destination="@id/passphraseValidationFragment" />
+        <action
+            android:id="@+id/action_backupPassphraseFragment_to_backupPassphraseAccountNameNavigation"
+            app:destination="@id/backupPassphraseAccountNameNavigation">
+            <argument
+                android:name="accountCreation"
+                app:argType="com.algorand.android.models.AccountCreation" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/passphraseValidationFragment"
+        android:name="com.algorand.android.ui.register.PassphraseValidationFragment"
+        android:label="fragment_passphrase_validation"
+        tools:layout="@layout/fragment_passphrase_validation">
+        <argument
+            android:name="publicKeyOfAccountToBackup"
+            app:argType="string" />
+        <argument
+            android:name="accountCreation"
+            app:argType="com.algorand.android.models.AccountCreation"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_passphraseValidationFragment_to_passphraseVerifiedInfoFragment"
+            app:destination="@id/passphraseVerifiedInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/passphraseVerifiedInfoFragment"
+        android:name="com.algorand.android.ui.register.createaccount.passphraseverified.PassphraseVerifiedInfoFragment"
+        android:label="PassphraseVerifiedInfoFragment"
+        tools:layout="@layout/fragment_base_info">
+        <argument
+            android:name="accountCreation"
+            app:argType="com.algorand.android.models.AccountCreation"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_passphraseVerifiedInfoFragment_to_backupPassphraseAccountNameNavigation"
+            app:destination="@id/backupPassphraseAccountNameNavigation">
+            <argument
+                android:name="accountCreation"
+                app:argType="com.algorand.android.models.AccountCreation" />
+        </action>
+        <action
+            android:id="@+id/action_passphraseVerifiedInfoFragment_to_homeNavigation"
+            app:destination="@id/homeNavigation"
+            app:popUpTo="@id/backupInfoFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>

@@ -212,7 +212,7 @@ class AccountDetailFragment :
     }
 
     override fun onBackupNowClick() {
-        navToPassphraseBackupNavigation()
+        navToBackupPassphraseInfoNavigation()
     }
 
     override fun onImageItemClick(nftAssetId: Long) {
@@ -443,10 +443,10 @@ class AccountDetailFragment :
         )
     }
 
-    private fun navToPassphraseBackupNavigation() {
+    private fun navToBackupPassphraseInfoNavigation() {
         nav(
             AccountDetailFragmentDirections
-                .actionAccountDetailFragmentToPassphraseBackupNavigation(
+                .actionAccountDetailFragmentToBackupPassphraseInfoNavigation(
                     publicKeysOfAccountsToBackup = arrayOf(args.publicKey)
                 )
         )

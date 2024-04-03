@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/backupPassphraseInfoNavigation"
+    app:startDestination="@id/backupInfoFragment">
+
+    <include app:graph="@navigation/backup_passphrase_navigation" />
+
+    <include app:graph="@navigation/backup_passphrase_account_name_navigation" />
+
+    <action
+        android:id="@+id/action_to_lockPreferenceNavigation"
+        app:destination="@id/lockPreferenceNavigation"
+        app:popUpTo="@id/loginNavigation"
+        app:popUpToInclusive="true">
+        <argument
+            android:name="shouldNavigateHome"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </action>
+
+    <fragment
+        android:id="@+id/backupInfoFragment"
+        android:name="com.algorand.android.ui.common.warningconfirmation.BackupInfoFragment"
+        android:label="fragment_backup_info"
+        tools:layout="@layout/fragment_base_info">
+        <argument
+            android:name="publicKeysOfAccountsToBackup"
+            app:argType="string[]" />
+        <action
+            android:id="@+id/action_backupInfoFragment_to_backupPassphraseAccountNameNavigation"
+            app:destination="@id/backupPassphraseAccountNameNavigation">
+            <argument
+                android:name="accountCreation"
+                app:argType="com.algorand.android.models.AccountCreation" />
+        </action>
+        <action
+            android:id="@+id/action_backupInfoFragment_to_writeDownInfoFragment"
+            app:destination="@id/writeDownInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/writeDownInfoFragment"
+        android:name="com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragment"
+        android:label="fragment_write_down_info"
+        tools:layout="@layout/fragment_base_info">
+        <argument
+            android:name="publicKeysOfAccountsToBackup"
+            app:argType="string[]" />
+        <argument
+            android:name="accountCreation"
+            app:argType="com.algorand.android.models.AccountCreation"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_writeDownInfoFragment_to_backupPassphraseAccountNameNavigation"
+            app:destination="@id/backupPassphraseAccountNameNavigation">
+            <argument
+                android:name="accountCreation"
+                app:argType="com.algorand.android.models.AccountCreation" />
+        </action>
+        <action
+            android:id="@+id/action_writeDownInfoFragment_to_backupPassphrasesNavigation"
+            app:destination="@id/backupPassphraseNavigation">
+            <argument
+                android:name="publicKeyOfAccountToBackup"
+                app:argType="string" />
+            <argument
+                android:name="accountCreation"
+                app:argType="com.algorand.android.models.AccountCreation"
+                app:nullable="true" />
+        </action>
+        <action
+            android:id="@+id/action_writeDownInfoFragment_to_backupAccountSelectionFragment"
+            app:destination="@id/backupAccountSelectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/backupAccountSelectionFragment"
+        android:name="com.algorand.android.ui.common.warningconfirmation.accountselection.BackupAccountSelectionFragment"
+        android:label="BackupAccountSelectionFragment"
+        tools:layout="@layout/fragment_base_account_selection">
+        <argument
+            android:name="publicKeysOfAccountsToBackup"
+            app:argType="string[]" />
+        <action
+            android:id="@+id/action_backupAccountSelectionFragment_to_backupPassphraseNavigation"
+            app:destination="@id/backupPassphraseNavigation">
+            <argument
+                android:name="publicKeyOfAccountToBackup"
+                app:argType="string" />
+            <argument
+                android:name="accountCreation"
+                app:argType="com.algorand.android.models.AccountCreation"
+                app:nullable="true" />
+        </action>
+    </fragment>
+
+</navigation>

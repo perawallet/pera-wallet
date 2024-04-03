@@ -27,7 +27,7 @@ import com.algorand.android.models.AccountCreation
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
-import com.algorand.android.ui.common.warningconfirmation.BackupInfoFragmentDirections.Companion.actionBackupInfoFragmentToCreateAccountNameRegistrationFragment
+import com.algorand.android.ui.common.warningconfirmation.BackupInfoFragmentDirections.Companion.actionBackupInfoFragmentToBackupPassphraseAccountNameNavigation
 import com.algorand.android.ui.common.warningconfirmation.BackupInfoFragmentDirections.Companion.actionBackupInfoFragmentToWriteDownInfoFragment
 import com.algorand.android.utils.analytics.CreationType
 import com.algorand.android.utils.browser.openRecoveryPassphraseSupportUrl
@@ -80,7 +80,7 @@ class BackupInfoFragment : BaseInfoFragment() {
         if (args.publicKeysOfAccountsToBackup.isEmpty()) {
             val buttonText = R.string.skip_for_now
             materialButton.setText(buttonText)
-            materialButton.setOnClickListener { navToCreateAccountNameRegistrationFragment() }
+            materialButton.setOnClickListener { navToBackupPassphraseAccountNameNavigation() }
             materialButton.show()
         }
     }
@@ -101,10 +101,10 @@ class BackupInfoFragment : BaseInfoFragment() {
         )
     }
 
-    private fun navToCreateAccountNameRegistrationFragment() {
+    private fun navToBackupPassphraseAccountNameNavigation() {
         val accountCreation = getAccountCreation()
         accountCreation?.let {
-            nav(actionBackupInfoFragmentToCreateAccountNameRegistrationFragment(it))
+            nav(actionBackupInfoFragmentToBackupPassphraseAccountNameNavigation(it))
         }
     }
 

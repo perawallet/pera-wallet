@@ -26,7 +26,7 @@
 
     <include app:graph="@navigation/asb_import_navigation" />
 
-    <include app:graph="@navigation/passphrase_backup_navigation" />
+    <include app:graph="@navigation/backup_passphrase_info_navigation" />
 
     <action
         android:id="@+id/action_global_to_homeNavigation"
@@ -69,8 +69,8 @@
             android:id="@+id/action_registerIntroFragment_to_asbImportNavigation"
             app:destination="@id/asbImportNavigation" />
         <action
-            android:id="@+id/action_registerIntroFragment_to_passphraseBackupNavigation"
-            app:destination="@id/passphraseBackupNavigation">
+            android:id="@+id/action_registerIntroFragment_to_backupPassphraseInfoNavigation"
+            app:destination="@id/backupPassphraseInfoNavigation">
             <argument
                 android:name="publicKeysOfAccountsToBackup"
                 app:argType="string[]" />

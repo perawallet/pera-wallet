@@ -96,7 +96,7 @@
 
     <include app:graph="@navigation/in_app_pin_navigation" />
 
-    <include app:graph="@navigation/passphrase_backup_navigation" />
+    <include app:graph="@navigation/backup_passphrase_info_navigation" />
 
     <action
         android:id="@+id/action_global_showQrNavigation"
@@ -469,8 +469,8 @@
             android:id="@+id/action_accountsFragment_to_bannerFragment"
             app:destination="@id/bannerFragment" />
         <action
-            android:id="@+id/action_accountsFragment_to_passphraseBackupNavigation"
-            app:destination="@id/passphraseBackupNavigation">
+            android:id="@+id/action_accountsFragment_to_backupPassphraseInfoNavigation"
+            app:destination="@id/backupPassphraseInfoNavigation">
             <argument
                 android:name="publicKeysOfAccountsToBackup"
                 app:argType="string[]" />
@@ -894,8 +894,8 @@
             android:id="@+id/action_accountDetailFragment_to_haveYouBackedUpAccountConfirmationBottomSheet"
             app:destination="@id/haveYouBackedUpAccountConfirmationBottomSheet" />
         <action
-            android:id="@+id/action_accountDetailFragment_to_passphraseBackupNavigation"
-            app:destination="@id/passphraseBackupNavigation">
+            android:id="@+id/action_accountDetailFragment_to_backupPassphraseInfoNavigation"
+            app:destination="@id/backupPassphraseInfoNavigation">
             <argument
                 android:name="publicKeysOfAccountsToBackup"
                 app:argType="string[]" />

@@ -124,6 +124,10 @@ android {
         }
     }
 
+    kapt {
+        correctErrorTypes = true
+    }
+
     compileOptions {
         coreLibraryDesugaringEnabled true
 

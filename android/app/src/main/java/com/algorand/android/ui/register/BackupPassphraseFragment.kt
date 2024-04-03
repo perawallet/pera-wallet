@@ -24,7 +24,7 @@ import com.algorand.android.databinding.FragmentBackupPassphraseBinding
 import com.algorand.android.models.Account
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.register.BackupPassphraseFragmentDirections.Companion.actionBackupPassphraseFragmentToCreateAccountNameRegistrationFragment
+import com.algorand.android.ui.register.BackupPassphraseFragmentDirections.Companion.actionBackupPassphraseFragmentToBackupPassphraseAccountNameNavigation
 import com.algorand.android.utils.disableScreenCapture
 import com.algorand.android.utils.enableScreenCapture
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -92,7 +92,7 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
     }
 
     private fun onSkipClick() {
-        navToCreateAccountNameRegistrationFragment()
+        navToBackupPassphraseAccountNameNavigation()
     }
 
     private fun navToPassphraseValidaitonFragment() {
@@ -105,10 +105,10 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
         )
     }
 
-    private fun navToCreateAccountNameRegistrationFragment() {
+    private fun navToBackupPassphraseAccountNameNavigation() {
         backupPassphraseViewModel.logOnboardingNextClickEvent()
         args.accountCreation?.let { accountCreation ->
-            nav(actionBackupPassphraseFragmentToCreateAccountNameRegistrationFragment(accountCreation))
+            nav(actionBackupPassphraseFragmentToBackupPassphraseAccountNameNavigation(accountCreation))
         }
     }
 }

@@ -54,7 +54,7 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
 
     private fun initUi() {
         with(binding) {
-            createAccountSelectionItem.setOnClickListener { navToBackupInfoFragment() }
+            createAccountSelectionItem.setOnClickListener { navToBackupPassphraseInfoNavigation() }
             recoveryAccountSelectionItem.setOnClickListener { navToAccountRecoveryTypeSelectionFragment() }
             watchAccountSelectionItem.setOnClickListener { navToWatchAccountInfoFragment() }
         }
@@ -68,10 +68,10 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
         )
     }
 
-    private fun navToBackupInfoFragment() {
+    private fun navToBackupPassphraseInfoNavigation() {
         registerIntroViewModel.logOnboardingWelcomeAccountCreateClickEvent()
         nav(
-            RegisterIntroFragmentDirections.actionRegisterIntroFragmentToPassphraseBackupNavigation(
+            RegisterIntroFragmentDirections.actionRegisterIntroFragmentToBackupPassphraseInfoNavigation(
                 publicKeysOfAccountsToBackup = emptyArray()
             )
         )

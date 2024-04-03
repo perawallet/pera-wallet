@@ -60,7 +60,7 @@ class PassphraseVerifiedInfoFragment : BaseInfoFragment() {
         args.accountCreation?.let { accountCreation ->
             nav(
                 PassphraseVerifiedInfoFragmentDirections
-                    .actionPassphraseVerifiedInfoFragmentToCreateAccountNameRegistrationFragment(
+                    .actionPassphraseVerifiedInfoFragmentToBackupPassphraseAccountNameNavigation(
                         accountCreation.copy(
                             tempAccount = accountCreation.tempAccount.copy(isBackedUp = true)
                         )

@@ -23,8 +23,8 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
 import com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragmentDirections.Companion.actionWriteDownInfoFragmentToBackupAccountSelectionFragment
-import com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragmentDirections.Companion.actionWriteDownInfoFragmentToBackupPassphraseFragment
-import com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragmentDirections.Companion.actionWriteDownInfoFragmentToCreateAccountNameRegistrationFragment
+import com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragmentDirections.Companion.actionWriteDownInfoFragmentToBackupPassphraseAccountNameNavigation
+import com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragmentDirections.Companion.actionWriteDownInfoFragmentToBackupPassphrasesNavigation
 import com.algorand.android.utils.extensions.show
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -94,7 +94,7 @@ class WriteDownInfoFragment : BaseInfoFragment() {
     }
 
     private fun onSecondButtonClicked() {
-        navToCreateAccountNameRegistrationFragment()
+        navToBackupPassphraseAccountNameNavigation()
     }
 
     private fun navToBackupAccountSelectionFragment() {
@@ -103,16 +103,16 @@ class WriteDownInfoFragment : BaseInfoFragment() {
 
     private fun navToBackupPassphraseFragment() {
         nav(
-            actionWriteDownInfoFragmentToBackupPassphraseFragment(
+            actionWriteDownInfoFragmentToBackupPassphrasesNavigation(
                 args.publicKeysOfAccountsToBackup.firstOrNull().orEmpty(),
                 accountCreation = args.accountCreation
             )
         )
     }
 
-    private fun navToCreateAccountNameRegistrationFragment() {
+    private fun navToBackupPassphraseAccountNameNavigation() {
         args.accountCreation?.let { accountCreation ->
-            nav(actionWriteDownInfoFragmentToCreateAccountNameRegistrationFragment(accountCreation))
+            nav(actionWriteDownInfoFragmentToBackupPassphraseAccountNameNavigation(accountCreation))
         }
     }
 }

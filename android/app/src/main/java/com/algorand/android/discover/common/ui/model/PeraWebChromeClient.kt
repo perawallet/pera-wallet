@@ -28,7 +28,6 @@ class PeraWebChromeClient(
             webViewClient = PeraWebViewClient(listener)
             webChromeClient = PeraWebChromeClient(listener)
             settings.javaScriptEnabled = true
-            settings.setSupportMultipleWindows(true)
         }
 
         val transport = resultMsg?.obj as WebView.WebViewTransport

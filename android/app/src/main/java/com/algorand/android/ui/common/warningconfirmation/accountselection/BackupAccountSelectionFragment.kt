@@ -41,7 +41,7 @@ class BackupAccountSelectionFragment : BaseAccountSelectionFragment() {
     override fun onAccountSelected(publicKey: String) {
         nav(
             BackupAccountSelectionFragmentDirections
-                .actionBackupAccountSelectionFragmentToBackupPassphraseFragment(publicKey, accountCreation = null)
+                .actionBackupAccountSelectionFragmentToBackupPassphraseNavigation(publicKey, accountCreation = null)
         )
     }
 
