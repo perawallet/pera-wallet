@@ -21,6 +21,7 @@ import com.algorand.android.modules.accounticon.ui.usecase.CreateAccountIconDraw
 import com.algorand.android.modules.accounts.domain.usecase.AccountDisplayNameUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
+import com.algorand.android.modules.walletconnect.connectionrequest.domain.usecase.WCDomainScammerStateUseCase
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.mapper.BaseWalletConnectConnectionItemMapper
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.mapper.WCSessionRequestResultMapper
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.mapper.WalletConnectConnectionPreviewMapper
@@ -40,10 +41,11 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
     private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
     private val baseWalletConnectConnectionItemMapper: BaseWalletConnectConnectionItemMapper,
     private val walletConnectConnectionPreviewMapper: WalletConnectConnectionPreviewMapper,
-    private val wCSessionRequestResultMapper: WCSessionRequestResultMapper,
+    private val wcSessionRequestResultMapper: WCSessionRequestResultMapper,
     private val getAccountDisplayNameUseCase: AccountDisplayNameUseCase,
     private val walletConnectNetworkItemMapper: WalletConnectNetworkItemMapper,
-    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase
+    private val createAccountIconDrawableUseCase: CreateAccountIconDrawableUseCase,
+    private val wcDomainScammerStateUseCase: WCDomainScammerStateUseCase
 ) {
 
     suspend fun getWalletConnectConnectionPreview(
@@ -174,22 +176,30 @@ class WalletConnectConnectionPreviewUseCase @Inject constructor(
         }
     }
 
-    fun getApprovedWalletConnectSessionResult(
+    suspend fun getApprovedWalletConnectSessionResult(
         preview: WalletConnectConnectionPreview?,
         sessionProposal: WalletConnectSessionProposal
     ): WalletConnectConnectionPreview? {
-        val selectedAccounts = getSelectedAccountFromPreview(preview)
-        val approveRequest = wCSessionRequestResultMapper.mapToApproveRequest(
-            accountAddresses = selectedAccounts,
-            sessionProposal = sessionProposal
-        )
-        return preview?.copy(approveWalletConnectSessionRequest = Event(approveRequest))
+        val isDomainScammer = wcDomainScammerStateUseCase(sessionProposal.peerMeta.url)
+        return if (isDomainScammer.not()) {
+            val selectedAccounts = getSelectedAccountFromPreview(preview)
+            val approveRequest = wcSessionRequestResultMapper.mapToApproveRequest(
+                accountAddresses = selectedAccounts,
+                sessionProposal = sessionProposal
+            )
+            preview?.copy(approveWalletConnectSessionRequest = Event(approveRequest))
+        } else {
+            val rejectedRequest = wcSessionRequestResultMapper.mapToRejectScamRequest(sessionProposal = sessionProposal)
+            preview?.copy(
+                rejectScamWalletConnectSessionRequest = Event(rejectedRequest)
+            )
+        }
     }
 
     fun getRejectedWalletConnectSessionResult(
         sessionProposal: WalletConnectSessionProposal
     ): WCSessionRequestResult.RejectRequest {
-        return wCSessionRequestResultMapper.mapToRejectRequest(sessionProposal = sessionProposal)
+        return wcSessionRequestResultMapper.mapToRejectRequest(sessionProposal = sessionProposal)
     }
 
     private fun getSelectedAccountFromPreview(preview: WalletConnectConnectionPreview?): List<String> {

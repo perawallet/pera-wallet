@@ -30,4 +30,9 @@ sealed class WCSessionRequestResult {
     data class RejectRequest(
         override val sessionProposal: WalletConnectSessionProposal
     ) : WCSessionRequestResult(), Parcelable
+
+    @Parcelize
+    data class RejectScamRequest(
+        override val sessionProposal: WalletConnectSessionProposal
+    ) : WCSessionRequestResult(), Parcelable
 }

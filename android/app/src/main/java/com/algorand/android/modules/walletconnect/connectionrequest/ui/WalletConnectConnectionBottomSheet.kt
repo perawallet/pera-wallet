@@ -75,6 +75,12 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(R.layout.bottom_sheet
             listener?.onSessionRequestResult(this)
         }
     }
+    private val sessionRejectScamCollector: suspend (Event<WCSessionRequestResult.RejectScamRequest>?) -> Unit = {
+        it?.consume()?.run {
+            navBack()
+            listener?.onSessionRequestResult(this)
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -123,6 +129,10 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(R.layout.bottom_sheet
             collectLatestOnLifecycle(
                 map { it?.rejectWalletConnectSessionRequest }.distinctUntilChanged(),
                 sessionCancellationCollector
+            )
+            collectLatestOnLifecycle(
+                map { it?.rejectScamWalletConnectSessionRequest }.distinctUntilChanged(),
+                sessionRejectScamCollector
             )
         }
     }

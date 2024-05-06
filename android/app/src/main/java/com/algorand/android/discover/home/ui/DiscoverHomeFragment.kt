@@ -22,7 +22,6 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.algorand.android.R
-import com.algorand.android.core.BaseActivity
 import com.algorand.android.databinding.FragmentDiscoverHomeBinding
 import com.algorand.android.discover.common.ui.BaseDiscoverFragment
 import com.algorand.android.discover.common.ui.model.DappFavoriteElement
@@ -284,8 +283,7 @@ class DiscoverHomeFragment : BaseDiscoverFragment(R.layout.fragment_discover_hom
         val homeUrl = getDiscoverHomeUrl(
             themePreference = getWebViewThemeFromThemePreference(themePreference),
             currency = discoverViewModel.getPrimaryCurrencyId(),
-            locale = (activity as? BaseActivity)?.getCurrentLanguage()?.language
-                ?: Locale.getDefault().language
+            locale = Locale.getDefault().language
         )
         loadWebViewUrl(homeUrl)
     }
@@ -295,8 +293,7 @@ class DiscoverHomeFragment : BaseDiscoverFragment(R.layout.fragment_discover_hom
             url = url,
             themePreference = getWebViewThemeFromThemePreference(themePreference),
             currency = discoverViewModel.getPrimaryCurrencyId(),
-            locale = (activity as? BaseActivity)?.getCurrentLanguage()?.language
-                ?: Locale.getDefault().language
+            locale = Locale.getDefault().language
         )
         loadWebViewUrl(homeUrl)
     }

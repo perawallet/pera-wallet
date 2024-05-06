@@ -40,7 +40,6 @@
     <string name="enter_your_pin">Enter your PIN</string>
     <string name="wrong_password">Wrong Password</string>
     <string name="node_settings">Node Settings</string>
-    <string name="language">Language</string>
     <string name="enable_face_id_touch_id">Enable Face ID / Touch ID</string>
     <string name="an_error_occured">An Error Occurred</string>
     <string name="warning">Warning</string>
@@ -384,7 +383,7 @@
     <string name="wrong_passphrase">Wrong Passphrase</string>
     <string name="account_not_found_please_try">Account not found. Please try again by entering the correct passphrase.</string>
 
-    <string name="account_is_verified">Account is verified!</string>
+    <string name="account_has_been_added">Account has been added!</string>
     <string name="congratulations_your_account">Congratulations, your account is ready to use.</string>
     <string name="welcome_to_pera_your_account">Welcome to Pera Wallet! Your account is ready to use.</string>
     <string name="start_using_pera">Start Using Pera Wallet</string>
@@ -438,6 +437,8 @@
     <string name="the_registration_window_for">The registration window for Governance Period #2 is Dec 25 to Jan 7, 16:00 UTC</string>
     <string name="connection_failed">Connection failed</string>
     <string name="we_are_sorry_but_the">We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists, please contact the dApp.</string>
+    <string name="malicious_website_blocked">Malicious Website Blocked</string>
+    <string name="you_attempted_to_connect_malicious_website">You attempted to connect to a malicious website. Pera blocked this connection for your security.</string>
     <string name="your_transaction_is_being_processed">Your transaction is being processed</string>
     <string name="the_transaction_has_been_signed">The transaction has been signed and sent to  <annotation replacement="peer_name">peer_name_placeholder</annotation>. Please visit  <annotation replacement="peer_name">peer_name_placeholder</annotation> for the remaining process.</string>
     <string name="select_the_asset_to_send">Select the Asset to Send</string>
@@ -527,7 +528,6 @@
     <string name="algo_holdings">Algo Holdings</string>
     <string name="asset_holdings">Asset Holdings</string>
     <string name="arrange_list">Arrange List</string>
-
 
     <string name="pending_transactions">Pending Transactions</string>
     <string name="your_transactions_will_be_appeared_here">Your transactions will be appeared here.</string>

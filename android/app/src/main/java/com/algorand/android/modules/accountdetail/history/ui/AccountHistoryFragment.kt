@@ -74,7 +74,9 @@ class AccountHistoryFragment : BaseFragment(R.layout.fragment_account_history) {
         }
 
         override fun onNewPendingItemInserted() {
-            binding.accountHistoryRecyclerView.scrollToTop()
+            view?.let {
+                binding.accountHistoryRecyclerView.scrollToTop()
+            }
         }
     }
 

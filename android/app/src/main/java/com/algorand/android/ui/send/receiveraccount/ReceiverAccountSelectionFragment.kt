@@ -207,8 +207,10 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
     }
 
     private fun onTextChangeListener(charSequence: CharSequence?) {
-        receiverAccountSelectionViewModel.onSearchQueryUpdate(charSequence.toString())
-        binding.nextButton.isVisible = charSequence.toString().isValidAddress()
+        view?.let {
+            receiverAccountSelectionViewModel.onSearchQueryUpdate(charSequence.toString())
+            binding.nextButton.isVisible = charSequence.toString().isValidAddress()
+        }
     }
 
     private fun showProgress() {

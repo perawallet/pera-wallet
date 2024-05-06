@@ -16,11 +16,9 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDex
-import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate
 import com.algorand.android.migration.MigrationManager
 import com.algorand.android.modules.autolockmanager.ui.AutoLockManager
 import com.algorand.android.modules.firebase.token.FirebaseTokenManager
@@ -28,7 +26,6 @@ import com.algorand.android.modules.pendingintentkeeper.ui.PendingIntentKeeper
 import com.algorand.android.utils.coremanager.ApplicationStatusObserver
 import com.algorand.android.utils.preference.getSavedThemePreference
 import dagger.hilt.android.HiltAndroidApp
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -58,11 +55,8 @@ open class PeraApp : Application() {
     @Inject
     lateinit var pendingIntentKeeper: PendingIntentKeeper
 
-    private val localizationDelegate = LocalizationApplicationDelegate()
-
     override fun attachBaseContext(base: Context) {
-        localizationDelegate.setDefaultLanguage(base, Locale.getDefault())
-        super.attachBaseContext(localizationDelegate.attachBaseContext(base))
+        super.attachBaseContext(base)
         MultiDex.install(this)
     }
 
@@ -101,14 +95,5 @@ open class PeraApp : Application() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         applicationContext.resources.configuration.uiMode = newConfig.uiMode
         super.onConfigurationChanged(newConfig)
-        localizationDelegate.onConfigurationChanged(this)
-    }
-
-    override fun getApplicationContext(): Context {
-        return localizationDelegate.getApplicationContext(super.getApplicationContext())
-    }
-
-    override fun getResources(): Resources {
-        return localizationDelegate.getResources(baseContext, super.getResources())
     }
 }

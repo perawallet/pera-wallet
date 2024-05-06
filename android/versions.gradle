@@ -37,7 +37,6 @@ ext {
             ble             : '2.7.2',
             lottie          : '6.3.0',
             desugar         : '2.0.4',
-            localization    : '1.2.11',
             hipoexceptions  : '1.0.0',
             mpAndroidChart  : '3.1.0',
             javaWebSocket   : '1.5.5',

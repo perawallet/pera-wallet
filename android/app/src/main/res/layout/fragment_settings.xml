@@ -91,14 +91,6 @@
             android:textAppearance="@style/TextAppearance.Footnote.Description" />
 
         <com.algorand.android.customviews.SettingsListItem
-            android:id="@+id/languageListItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:endViewLayoutResource="@layout/layout_right_arrow"
-            app:settingIcon="@drawable/ic_language"
-            app:settingTitle="@string/language" />
-
-        <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/currencyListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -55,11 +55,13 @@ class WalletConnectConnectionViewModel @Inject constructor(
     }
 
     fun onConnectSessionConnect() {
-        _walletConnectConnectionPreviewFlow.update { preview ->
-            walletConnectConnectionPreviewUseCase.getApprovedWalletConnectSessionResult(
-                preview = preview,
-                sessionProposal = sessionProposal
-            )
+        viewModelScope.launchIO {
+            _walletConnectConnectionPreviewFlow.update { preview ->
+                walletConnectConnectionPreviewUseCase.getApprovedWalletConnectSessionResult(
+                    preview = preview,
+                    sessionProposal = sessionProposal
+                )
+            }
         }
     }
 

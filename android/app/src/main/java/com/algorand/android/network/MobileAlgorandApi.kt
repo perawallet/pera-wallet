@@ -46,6 +46,7 @@ import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteRequestBo
 import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteResultResponse
 import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsRequestBody
 import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsResponse
+import com.algorand.android.modules.walletconnect.connectionrequest.data.model.GetWCDomainScammerStateResponse
 import com.algorand.android.modules.webimport.loading.data.model.ImportBackupResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -214,4 +215,9 @@ interface MobileAlgorandApi {
         @Path("quote_id") quoteId: Long,
         @Body swapQuoteExceptionRequestBody: SwapQuoteExceptionRequestBody
     ): Response<Unit>
+
+    @GET("v1/is-scammer-domain/")
+    suspend fun getWCDomainScammerState(
+        @Query("domain") domain: String
+    ): Response<GetWCDomainScammerStateResponse>
 }

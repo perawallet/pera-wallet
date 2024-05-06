@@ -18,5 +18,6 @@ data class WalletConnectConnectionPreview(
     val baseWalletConnectConnectionItems: List<BaseWalletConnectConnectionItem>,
     val isConfirmationButtonEnabled: Boolean,
     val approveWalletConnectSessionRequest: Event<WCSessionRequestResult.ApproveRequest>?,
-    val rejectWalletConnectSessionRequest: Event<WCSessionRequestResult.RejectRequest>?
+    val rejectWalletConnectSessionRequest: Event<WCSessionRequestResult.RejectRequest>?,
+    val rejectScamWalletConnectSessionRequest: Event<WCSessionRequestResult.RejectScamRequest>?
 )

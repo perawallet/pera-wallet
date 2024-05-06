@@ -592,9 +592,6 @@
             android:id="@+id/action_settingsFragment_to_currencySelectionFragment"
             app:destination="@id/currencySelectionFragment" />
         <action
-            android:id="@+id/action_settingsFragment_to_languageSelectionFragment"
-            app:destination="@id/languageSelectionFragment" />
-        <action
             android:id="@+id/action_settingsFragment_to_themeSelectionFragment"
             app:destination="@+id/themeSelectionFragment" />
         <action
@@ -691,12 +688,6 @@
         android:name="com.algorand.android.modules.currency.ui.CurrencySelectionFragment"
         android:label="CurrencySelectionFragment"
         tools:layout="@layout/fragment_currency_selection" />
-
-    <fragment
-        android:id="@+id/languageSelectionFragment"
-        android:name="com.algorand.android.ui.settings.selection.languageselection.LanguageSelectionFragment"
-        android:label="LanguageSelectionFragment"
-        tools:layout="@layout/fragment_selection_list" />
 
     <fragment
         android:id="@+id/themeSelectionFragment"

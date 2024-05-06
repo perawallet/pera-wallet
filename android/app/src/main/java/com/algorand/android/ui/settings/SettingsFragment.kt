@@ -79,7 +79,6 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings),
             contactsListItem.setOnClickListener { onContactsClick() }
             notificationListItem.setOnClickListener { onNotificationClick() }
             walletConnectListItem.setOnClickListener { onWalletConnectSessionsClick() }
-            languageListItem.setOnClickListener { onLanguageClick() }
             currencyListItem.setOnClickListener { onCurrencyClick() }
             themeListItem.setOnClickListener { onThemeClick() }
             supportCenterListItem.setOnClickListener { onSupportCenterClick() }
@@ -151,10 +150,6 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings),
 
     private fun onCurrencyClick() {
         nav(SettingsFragmentDirections.actionSettingsFragmentToCurrencySelectionFragment())
-    }
-
-    private fun onLanguageClick() {
-        nav(SettingsFragmentDirections.actionSettingsFragmentToLanguageSelectionFragment())
     }
 
     private fun onThemeClick() {

@@ -25,7 +25,7 @@ class RecoverAccountResultInfoUseCase @Inject constructor(
 
     fun getRecoverAccountResultInfoPreview(): RecoverAccountResultInfoPreview {
         val isItFirstAccountThatAdded = accountManager.getAccounts().size == 1
-        val titleTextRes = R.string.account_is_verified
+        val titleTextRes = R.string.account_has_been_added
         val descriptionTextRes = if (isItFirstAccountThatAdded) {
             R.string.welcome_to_pera_your_account
         } else {

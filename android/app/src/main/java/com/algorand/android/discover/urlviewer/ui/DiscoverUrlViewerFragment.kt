@@ -18,7 +18,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.algorand.android.R
-import com.algorand.android.core.BaseActivity
 import com.algorand.android.databinding.FragmentDiscoverUrlViewerBinding
 import com.algorand.android.discover.common.ui.BaseDiscoverFragment
 import com.algorand.android.discover.common.ui.model.DappFavoriteElement
@@ -36,6 +35,7 @@ import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.listenToNavigationResult
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class DiscoverUrlViewerFragment :
@@ -119,6 +119,7 @@ class DiscoverUrlViewerFragment :
                     errorTitleTextView.text = getString(R.string.well_this_is_unexpected)
                     errorDescriptionTextView.text = getString(R.string.we_are_not_able_to_find)
                 }
+
                 WebViewError.NO_CONNECTION -> {
                     errorTitleTextView.text = getString(R.string.no_internet_connection)
                     errorDescriptionTextView.text = getString(R.string.you_dont_seem_to_be_connected)
@@ -154,7 +155,7 @@ class DiscoverUrlViewerFragment :
                 url = preview.url,
                 themePreference = getWebViewThemeFromThemePreference(preview.themePreference),
                 currency = discoverViewModel.getPrimaryCurrencyId(),
-                locale = (activity as BaseActivity).getCurrentLanguage().language
+                locale = Locale.getDefault().language
             )
         )
     }

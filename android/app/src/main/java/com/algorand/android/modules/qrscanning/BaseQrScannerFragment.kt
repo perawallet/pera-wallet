@@ -131,17 +131,21 @@ abstract class BaseQrScannerFragment(
     }
 
     private fun setupBarcodeView() {
-        binding.cameraPreview.apply {
-            decoderFactory = DefaultDecoderFactory(mutableListOf(BarcodeFormat.QR_CODE))
-            decodeContinuous(barcodeCallback)
+        with(binding.cameraPreview) {
+            view?.let {
+                decoderFactory = DefaultDecoderFactory(mutableListOf(BarcodeFormat.QR_CODE))
+                decodeContinuous(barcodeCallback)
+            }
         }
     }
 
     private val barcodeCallback: BarcodeCallback = object : BarcodeCallback {
         override fun barcodeResult(barcodeResult: BarcodeResult?) {
-            binding.cameraPreview.pause()
-            if (barcodeResult != null) qrScannerViewModel.handleDeeplink(barcodeResult.text)
-            resumeCameraIfPossibleOrPause()
+            view?.let {
+                binding.cameraPreview.pause()
+                if (barcodeResult != null) qrScannerViewModel.handleDeeplink(barcodeResult.text)
+                resumeCameraIfPossibleOrPause()
+            }
         }
 
         override fun possibleResultPoints(resultPoints: MutableList<ResultPoint>?) {

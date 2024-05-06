@@ -10,28 +10,13 @@
  * limitations under the License
  */
 
-package com.algorand.android.utils
+def peraGradlePath = 'src/pera/build.gradle'
+def betaGradlePath = 'src/beta/build.gradle'
 
-private const val ENGLISH = "en"
-private const val CHINESE = "zh"
-private const val GERMAN = "de"
-private const val SPANISH = "es"
-private const val KOREAN = "ko"
-private const val PORTUGUESE = "pt"
-private const val TURKISH = "tr"
-private const val ITALIAN = "it"
-private const val FRENCH = "fr"
-private const val JAPANESE = "ja"
+if (project.file(peraGradlePath).exists()) {
+    apply from: peraGradlePath
+}
 
-val supportedLanguages = listOf(
-    ENGLISH,
-    CHINESE,
-    GERMAN,
-    SPANISH,
-    KOREAN,
-    PORTUGUESE,
-    TURKISH,
-    ITALIAN,
-    FRENCH,
-    JAPANESE
-)
+if (project.file(betaGradlePath).exists()) {
+    apply from: betaGradlePath
+}

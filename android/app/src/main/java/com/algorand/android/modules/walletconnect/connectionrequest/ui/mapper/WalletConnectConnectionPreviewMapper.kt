@@ -24,13 +24,15 @@ class WalletConnectConnectionPreviewMapper @Inject constructor() {
         baseWalletConnectConnectionItems: List<BaseWalletConnectConnectionItem>,
         isConfirmationButtonEnabled: Boolean,
         approveWalletConnectSessionRequest: Event<WCSessionRequestResult.ApproveRequest>? = null,
-        rejectWalletConnectSessionRequest: Event<WCSessionRequestResult.RejectRequest>? = null
+        rejectWalletConnectSessionRequest: Event<WCSessionRequestResult.RejectRequest>? = null,
+        rejectScamWalletConnectSessionRequest: Event<WCSessionRequestResult.RejectScamRequest>? = null,
     ): WalletConnectConnectionPreview {
         return WalletConnectConnectionPreview(
             baseWalletConnectConnectionItems = baseWalletConnectConnectionItems,
             isConfirmationButtonEnabled = isConfirmationButtonEnabled,
             approveWalletConnectSessionRequest = approveWalletConnectSessionRequest,
-            rejectWalletConnectSessionRequest = rejectWalletConnectSessionRequest
+            rejectWalletConnectSessionRequest = rejectWalletConnectSessionRequest,
+            rejectScamWalletConnectSessionRequest = rejectScamWalletConnectSessionRequest
         )
     }
 }

@@ -144,12 +144,6 @@ android {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
 
-    bundle {
-        language {
-            enableSplit = false
-        }
-    }
-
     buildFeatures {
         viewBinding true
         buildConfig = true
@@ -217,8 +211,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${libVersions.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${libVersions.retrofit}"
     implementation "com.squareup.okhttp3:logging-interceptor:${libVersions.okhttp}"
-
-    implementation "com.akexorcist:localization:${libVersions.localization}"
 
     implementation "com.hipo.macaron:hipoexceptions:${libVersions.hipoexceptions}"
 

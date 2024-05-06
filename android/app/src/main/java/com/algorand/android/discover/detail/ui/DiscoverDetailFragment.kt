@@ -18,7 +18,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.algorand.android.R
-import com.algorand.android.core.BaseActivity
 import com.algorand.android.databinding.FragmentDiscoverDetailBinding
 import com.algorand.android.discover.common.ui.BaseDiscoverFragment
 import com.algorand.android.discover.common.ui.model.PeraWebChromeClient
@@ -123,8 +122,7 @@ class DiscoverDetailFragment :
                             tokenId = tokenId,
                             poolId = preview.tokenDetail.poolId,
                             currency = discoverViewModel.getPrimaryCurrencyId(),
-                            locale = (activity as? BaseActivity)?.getCurrentLanguage()?.language
-                                ?: Locale.getDefault().language
+                            locale = Locale.getDefault().language
                         ),
                         getDiscoverAuthHeader()
                     )

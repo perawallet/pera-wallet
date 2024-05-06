@@ -553,20 +553,22 @@ class MainActivity :
 
     private fun handlePendingIntent(): Boolean {
         return pendingIntentKeeper.pendingIntent?.run {
-            val canPendingBeHandled = isAssetSetupCompleted && (isAppUnlocked || !mainViewModel.shouldAppLocked())
-            if (canPendingBeHandled) {
+            val canPendingIntentBeHandled = isAssetSetupCompleted && (isAppUnlocked || !mainViewModel.shouldAppLocked())
+            var isPendingIntentHandled = false
+            if (canPendingIntentBeHandled) {
                 if (dataString != null) {
                     handleDeepLink(dataString.orEmpty())
+                    isPendingIntentHandled = true
                 } else {
-                    handlePendingIntentWithExtras(this)
+                   isPendingIntentHandled = handlePendingIntentWithExtras(this)
                 }
                 pendingIntentKeeper.clearPendingIntent()
             }
-            canPendingBeHandled
+            isPendingIntentHandled
         } ?: false
     }
 
-    private fun handlePendingIntentWithExtras(pendingIntent: Intent) {
+    private fun handlePendingIntentWithExtras(pendingIntent: Intent): Boolean {
         with(pendingIntent) {
             // TODO change your architecture for the bug here. https://issuetracker.google.com/issues/37053389
             // This fixes the problem for now. Be careful when adding more than one parcelable.
@@ -577,8 +579,9 @@ class MainActivity :
             } else if (getLongExtra(WC_ARBITRARY_DATA_ID_INTENT_KEY, -1L) != -1L) {
                 nav(HomeNavigationDirections.actionGlobalWalletConnectArbitraryDataRequestNavigation())
             } else {
-                getStringExtra(DEEPLINK_KEY)?.let { handleDeepLink(it) }
+                getStringExtra(DEEPLINK_KEY)?.let { handleDeepLink(it) } ?: return false
             }
+            return true
         }
     }
 
@@ -673,8 +676,14 @@ class MainActivity :
             when (wCSessionRequestResult) {
                 is WCSessionRequestResult.ApproveRequest -> approveSession(wCSessionRequestResult)
                 is WCSessionRequestResult.RejectRequest -> rejectSession(wCSessionRequestResult.sessionProposal)
+                is WCSessionRequestResult.RejectScamRequest -> rejectScamSession(wCSessionRequestResult.sessionProposal)
             }
         }
+    }
+
+    private fun rejectScamSession(sessionProposal: WalletConnectSessionProposal) {
+        walletConnectViewModel.rejectSession(sessionProposal)
+        navToWalletConnectSessionScamDialog()
     }
 
     fun signAddAssetTransaction(assetActionResult: AssetActionResult) {
@@ -733,6 +742,18 @@ class MainActivity :
                 drawableResId = R.drawable.ic_error,
                 drawableTintResId = R.color.error_tint_color,
                 descriptionAnnotatedString = AnnotatedString(R.string.we_are_sorry_but_the),
+            )
+        )
+    }
+
+    private fun navToWalletConnectSessionScamDialog() {
+        hideProgress()
+        nav(
+            MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
+                titleAnnotatedString = AnnotatedString(R.string.malicious_website_blocked),
+                drawableResId = R.drawable.ic_error,
+                drawableTintResId = R.color.error_tint_color,
+                descriptionAnnotatedString = AnnotatedString(R.string.you_attempted_to_connect_malicious_website),
             )
         )
     }

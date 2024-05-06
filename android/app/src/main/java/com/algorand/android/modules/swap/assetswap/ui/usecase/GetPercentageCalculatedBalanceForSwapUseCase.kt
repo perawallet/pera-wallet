@@ -114,30 +114,32 @@ class GetPercentageCalculatedBalanceForSwapUseCase @Inject constructor(
             emit(DataResource.Error.Local<BigDecimal>(InsufficientAlgoBalance()))
         } else {
             val accountAssetData = accountAssetDataUseCase.getAccountOwnedAssetData(accountAddress, includeAlgo = false)
-                .first { it.id == fromAssetId }
+                .firstOrNull { it.id == fromAssetId }
 
-            val assetDecimal = accountAssetData.decimals
+            accountAssetData?.let {
+                val assetDecimal = accountAssetData.decimals
 
-            val percentageCalculatedBalance = accountAssetData.amount
-                .toBigDecimal()
-                .movePointLeft(accountAssetData.decimals)
-                .multiply(percentage)
-                .divide(percentageDivider, assetDecimal, RoundingMode.DOWN)
+                val percentageCalculatedBalance = accountAssetData.amount
+                    .toBigDecimal()
+                    .movePointLeft(accountAssetData.decimals)
+                    .multiply(percentage)
+                    .divide(percentageDivider, assetDecimal, RoundingMode.DOWN)
 
-            if (toAssetId == ALGO_ID) {
-                emit(DataResource.Success(percentageCalculatedBalance))
-            } else {
-                getPeraFeeUseCase.getPeraFee(fromAssetId, percentageCalculatedBalance, assetDecimal).useSuspended(
-                    onSuccess = {
-                        val feeDeductedAmount = calculatedAlgoBalance.minus(it)
-                        if (feeDeductedAmount isLesserThan BigDecimal.ZERO) {
-                            emit(DataResource.Error.Local<BigDecimal>(InsufficientAlgoBalance()))
-                        } else {
-                            emit(DataResource.Success(percentageCalculatedBalance))
-                        }
-                    },
-                    onFailed = { emit(it) }
-                )
+                if (toAssetId == ALGO_ID) {
+                    emit(DataResource.Success(percentageCalculatedBalance))
+                } else {
+                    getPeraFeeUseCase.getPeraFee(fromAssetId, percentageCalculatedBalance, assetDecimal).useSuspended(
+                        onSuccess = {
+                            val feeDeductedAmount = calculatedAlgoBalance.minus(it)
+                            if (feeDeductedAmount isLesserThan BigDecimal.ZERO) {
+                                emit(DataResource.Error.Local<BigDecimal>(InsufficientAlgoBalance()))
+                            } else {
+                                emit(DataResource.Success(percentageCalculatedBalance))
+                            }
+                        },
+                        onFailed = { emit(it) }
+                    )
+                }
             }
         }
     }

@@ -1,1 +1,6 @@
-Fix webview multiple window support issue
+PERA - 494: Scam protection
+PERA - 406: Change account verified text
+PERA - 545: Remove multilang support
+PERA - 224: Check Pin behavior on Android
+PERA - 318: Crash - High - Swap Percentage Calculation
+PERA - 319: Crash - High - Scan QR Permission

@@ -31,4 +31,9 @@ class WCSessionRequestResultMapper @Inject constructor() {
     fun mapToRejectRequest(sessionProposal: WalletConnectSessionProposal): WCSessionRequestResult.RejectRequest {
         return WCSessionRequestResult.RejectRequest(sessionProposal = sessionProposal)
     }
+
+    fun mapToRejectScamRequest(sessionProposal: WalletConnectSessionProposal):
+            WCSessionRequestResult.RejectScamRequest {
+        return WCSessionRequestResult.RejectScamRequest(sessionProposal = sessionProposal)
+    }
 }

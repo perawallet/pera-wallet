@@ -12,10 +12,10 @@
 
 package com.algorand.android.core
 
-import com.akexorcist.localizationactivity.ui.LocalizationActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.algorand.android.customviews.TopToast
 
-abstract class BaseActivity : LocalizationActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     protected val activityTag: String = this::class.simpleName.orEmpty()
 

@@ -148,16 +148,18 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
     }
 
     private fun handleRemainingTime(previousRemainingTime: Long, remainingTime: Long) {
-        val isPenaltyTimeStartedNow = previousRemainingTime == 0L && remainingTime != 0L
+        view?.let {
+            val isPenaltyTimeStartedNow = previousRemainingTime == 0L && remainingTime != 0L
 
-        if (previousRemainingTime != remainingTime) {
-            val (minutes, seconds) = remainingTime.getTimeAsMinSecondPair()
-            binding.remainingTimeTextView.text = getString(R.string.min_seconds_template, minutes, seconds)
-        }
+            if (previousRemainingTime != remainingTime) {
+                val (minutes, seconds) = remainingTime.getTimeAsMinSecondPair()
+                binding.remainingTimeTextView.text = getString(R.string.min_seconds_template, minutes, seconds)
+            }
 
-        val isUserComePenaltyFromBackground = remainingTime != 0L && countDownTimer == null
-        if (isPenaltyTimeStartedNow || isUserComePenaltyFromBackground) {
-            startCountdownTimer(remainingTime)
+            val isUserComePenaltyFromBackground = remainingTime != 0L && countDownTimer == null
+            if (isPenaltyTimeStartedNow || isUserComePenaltyFromBackground) {
+                startCountdownTimer(remainingTime)
+            }
         }
     }
 
