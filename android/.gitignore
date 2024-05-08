@@ -27,8 +27,6 @@ app/mapping.txt
 app/release.keystore
 
 .DS_Store
-/app/offramp-api-key.properties
-/app/src/staging/api-key.properties
 /app/src/beta
 /app/src/betaStaging
 /.github
