@@ -75,6 +75,8 @@ iOS app in Xcode.
 
 ## Android Steps
 
+You can run the project right away without any additional setup. It includes a `google-services.json` file connected to a demo Firebase project. If you want to link your own Firebase project, refer to Step 1. The project already has [Nodely](https://nodely.io/docs/free/start) public API keys and URLs configured for the node and indexer. To set up a different indexer or node, follow the instructions in Steps 2 and 3.
+
 1. **Download the Android Firebase config file:** The Firebase config file for Android is called `google-services.json`.
 See this link for how to obtain the config file: https://support.google.com/firebase/answer/7015592.
 Once you've downloaded it, place it in the location `android/app/google-services.json`.
