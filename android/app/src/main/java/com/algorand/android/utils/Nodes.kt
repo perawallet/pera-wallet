@@ -22,9 +22,9 @@ const val TESTNET_NODE_NAME = "TestNet"
 
 val mainNetNode = Node(
     name = MAINNET_NODE_NAME,
-    algodAddress = "https://node-mainnet.chain.perawallet.app/",
+    algodAddress = "https://mainnet-api.algonode.cloud/",
     algodApiKey = BuildConfig.ALGORAND_API_KEY,
-    indexerAddress = "https://indexer-mainnet.chain.perawallet.app/",
+    indexerAddress = "https://mainnet-idx.algonode.cloud/",
     indexerApiKey = BuildConfig.INDEXER_API_KEY,
     isActive = false,
     isAddedDefault = true,
@@ -34,9 +34,9 @@ val mainNetNode = Node(
 
 val testNetNode = Node(
     name = TESTNET_NODE_NAME,
-    algodAddress = "https://node-testnet.chain.perawallet.app/",
+    algodAddress = "https://testnet-api.algonode.cloud/",
     algodApiKey = BuildConfig.ALGORAND_API_KEY,
-    indexerAddress = "https://indexer-testnet.chain.perawallet.app/",
+    indexerAddress = "https://testnet-idx.algonode.cloud/",
     indexerApiKey = BuildConfig.INDEXER_API_KEY,
     isActive = false,
     isAddedDefault = true,
