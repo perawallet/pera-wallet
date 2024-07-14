@@ -13,7 +13,7 @@
 package com.algorand.android.notification
 
 import androidx.lifecycle.MutableLiveData
-import com.algorand.android.models.NotificationMetadata
+import com.algorand.android.notification.domain.model.NotificationMetadata
 import com.algorand.android.utils.Event
 
 class PeraNotificationManager {

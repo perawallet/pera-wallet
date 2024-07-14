@@ -196,7 +196,7 @@ dependencies {
 
     implementation "com.google.crypto.tink:tink-android:${libVersions.tink}"
 
-    implementation "com.google.android.play:core:${libVersions.playcore}"
+    implementation "com.google.android.play:review-ktx:${libVersions.review}"
 
     implementation "com.google.dagger:hilt-android:$dagger_gradle_version"
     kapt "com.google.dagger:hilt-android-compiler:$dagger_gradle_version"
@@ -231,6 +231,7 @@ dependencies {
         exclude group: 'com.jakewharton.timber', module: 'timber'
     }
     implementation "com.walletconnect:sign"
+    implementation "com.walletconnect:web3wallet"
 
     // ExoPlayer
     implementation "com.google.android.exoplayer:exoplayer:${libVersions.exoPlayer}"

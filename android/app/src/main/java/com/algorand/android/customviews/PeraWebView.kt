@@ -14,7 +14,6 @@ package com.algorand.android.customviews
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import android.webkit.CookieManager
 import android.webkit.WebView
@@ -39,9 +38,7 @@ class PeraWebView : WebView {
         this.settings.javaScriptCanOpenWindowsAutomatically = true
         this.settings.allowFileAccess = false
         this.settings.userAgentString = "$USER_AGENT_PREFIX${BuildConfig.VERSION_NAME} ${settings.userAgentString}"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.setRendererPriorityPolicy(RENDERER_PRIORITY_IMPORTANT, false)
-        }
+        this.setRendererPriorityPolicy(RENDERER_PRIORITY_IMPORTANT, false)
         this.setBackgroundColor(context.getColor(R.color.background))
     }
 

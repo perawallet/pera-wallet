@@ -213,7 +213,7 @@ class WalletConnectClientV2Impl(
     }
 
     override fun isValidSessionUrl(url: String): Boolean {
-        return WalletConnectClientV2Utils.isValidWalletConnectUrl(url)
+        return WalletConnectClientV2Utils.isValidWalletConnectV2Url(url)
     }
 
     override suspend fun killSession(sessionIdentifier: WalletConnect.SessionIdentifier) {

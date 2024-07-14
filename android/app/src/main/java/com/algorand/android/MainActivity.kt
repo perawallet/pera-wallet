@@ -50,7 +50,6 @@ import com.algorand.android.models.AssetActionResult
 import com.algorand.android.models.AssetOperationResult
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.Node
-import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
 import com.algorand.android.models.TransactionManagerResult
@@ -71,6 +70,7 @@ import com.algorand.android.modules.walletconnect.connectionrequest.ui.WalletCon
 import com.algorand.android.modules.walletconnect.connectionrequest.ui.model.WCSessionRequestResult
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionIdentifier
 import com.algorand.android.modules.walletconnect.ui.model.WalletConnectSessionProposal
+import com.algorand.android.notification.domain.model.NotificationMetadata
 import com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment
 import com.algorand.android.ui.lockpreference.AutoLockSuggestionManager
 import com.algorand.android.usecase.IsAccountLimitExceedUseCase.Companion.MAX_NUMBER_OF_ACCOUNTS

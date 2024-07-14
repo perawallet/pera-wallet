@@ -41,7 +41,7 @@ private val placeholderIconResIdList = listOf(
 )
 
 // TODO add more check if possible (bridge and key)
-fun isValidWalletConnectUrl(url: String): Boolean {
+fun isValidWalletConnectV1Url(url: String): Boolean {
     return url.startsWith(WALLET_CONNECT_URL_PREFIX) && createSessionConfigFromUrl(url) != null
 }
 

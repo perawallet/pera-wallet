@@ -25,7 +25,7 @@ import androidx.navigation.NavDirections
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainActivity
 import com.algorand.android.R
-import com.algorand.android.models.NotificationMetadata
+import com.algorand.android.notification.domain.model.NotificationMetadata
 import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.toShortenedAddress
 import com.google.android.material.bottomsheet.BottomSheetBehavior

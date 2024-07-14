@@ -121,7 +121,7 @@ class RecoverWithPassphrasePreviewUseCase @Inject constructor(
         )
     }
 
-    fun validateEnteredMnemonics(preview: RecoverWithPassphrasePreview, isQrRecovery: Boolean) = flow {
+    fun validateEnteredMnemonics(preview: RecoverWithPassphrasePreview) = flow {
         try {
             emit(preview.copy(showLoadingDialogEvent = Event(Unit)))
             val mnemonics = passphraseInputConfigurationUtil.getOrderedInput(preview.passphraseInputGroupConfiguration)
@@ -150,8 +150,7 @@ class RecoverWithPassphrasePreviewUseCase @Inject constructor(
             val recoveredAccount = Account.create(
                 publicKey = accountAddress,
                 detail = Detail.Standard(privateKey),
-                accountName = accountAddress.toShortenedAddress(),
-                isBackedUp = isQrRecovery.not()
+                accountName = accountAddress.toShortenedAddress()
             )
             val accountCreation = AccountCreation(recoveredAccount, RECOVER)
             getRekeyedAccountUseCase.invoke(accountAddress).useSuspended(

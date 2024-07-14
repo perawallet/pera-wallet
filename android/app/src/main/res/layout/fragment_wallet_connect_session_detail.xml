@@ -99,7 +99,6 @@
                 app:layout_constraintTop_toBottomOf="@id/dAppDescriptionTextView"
                 tools:text="@string/this_session_is_using" />
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/sessionDateContainer"
                 android:layout_width="0dp"

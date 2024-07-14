@@ -13,7 +13,7 @@
 package com.algorand.android.customviews.alertview.ui.delegation
 
 import androidx.appcompat.app.AppCompatActivity
-import com.algorand.android.models.NotificationMetadata
+import com.algorand.android.notification.domain.model.NotificationMetadata
 
 interface AlertDialogDelegation {
 

@@ -131,6 +131,10 @@
             android:name="firebase_performance_logcat_enabled"
             android:value="${enableFirebasePerformanceLogcat}" />
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification_small" />
+
         <activity
             android:name=".ui.splash.LauncherActivity"
             android:exported="true"

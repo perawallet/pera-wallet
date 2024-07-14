@@ -40,6 +40,7 @@ object WalletConnectV2UriValidator {
             uri.contains("$WALLET_CONNECT_URI_PREFIX/") -> {
                 uri.replace("$WALLET_CONNECT_URI_PREFIX/", "$WALLET_CONNECT_URI_PREFIX//")
             }
+
             else -> uri.replace(WALLET_CONNECT_URI_PREFIX, "$WALLET_CONNECT_URI_PREFIX//")
         }
 
@@ -66,7 +67,9 @@ object WalletConnectV2UriValidator {
         return WalletConnectUri(
             topic = Topic(pairUri.userInfo),
             relay = RelayProtocolOptions(protocol = relayProtocol, data = relayData),
-            symKey = SymmetricKey(symKey)
+            symKey = SymmetricKey(symKey),
+            expiry = null,
+            methods = null
         )
     }
 }

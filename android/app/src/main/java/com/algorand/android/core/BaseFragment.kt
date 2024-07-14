@@ -23,9 +23,9 @@ import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.algorand.android.customviews.toolbar.CustomToolbar
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.notification.domain.model.NotificationMetadata
 import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.toShortenedAddress

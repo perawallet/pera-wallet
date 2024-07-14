@@ -14,20 +14,25 @@ package com.algorand.android.modules.walletconnect.client.v2.utils
 
 import android.app.Application
 import android.util.Log
+import com.algorand.android.deviceregistration.domain.usecase.FirebasePushTokenUseCase
 import com.algorand.android.modules.walletconnect.client.v2.domain.WalletConnectV2SignClient
 import com.algorand.android.utils.walletconnect.peermeta.WalletConnectPeraPeerMeta
 import com.walletconnect.android.Core
 import com.walletconnect.android.CoreClient
 import com.walletconnect.android.relay.ConnectionType
 import com.walletconnect.sign.client.Sign
+import com.walletconnect.web3.wallet.client.Wallet
+import com.walletconnect.web3.wallet.client.Web3Wallet
 import javax.inject.Inject
 
 class InitializeWalletConnectV2ClientUseCase @Inject constructor(
-    private val signClient: WalletConnectV2SignClient
+    private val signClient: WalletConnectV2SignClient,
+    private val firebasePushTokenUseCase: FirebasePushTokenUseCase
 ) {
 
     operator fun invoke(application: Application) {
         initializeCoreClient(application)
+        registerFirebasePushToken()
         initializeSignClient()
     }
 
@@ -40,6 +45,28 @@ class InitializeWalletConnectV2ClientUseCase @Inject constructor(
         ) { error ->
             logError(CoreClient::class.simpleName, error.throwable)
         }
+    }
+
+    private fun registerFirebasePushToken() {
+        val initParams = Wallet.Params.Init(core = CoreClient)
+
+        Web3Wallet.initialize(initParams) { error ->
+            logError(Web3Wallet::class.simpleName, error.throwable)
+        }
+
+        val firebaseAccessToken = firebasePushTokenUseCase.getPushTokenOrNull()?.data.orEmpty()
+        val enableEncrypted: Boolean = false
+
+        Web3Wallet.registerDeviceToken(
+            firebaseAccessToken = firebaseAccessToken,
+            enableEncrypted = enableEncrypted,
+            onSuccess = {
+                // No need to do anything here
+            },
+            onError = { error: Wallet.Model.Error ->
+                // No need to do anything here
+            }
+        )
     }
 
     private fun initializeSignClient() {

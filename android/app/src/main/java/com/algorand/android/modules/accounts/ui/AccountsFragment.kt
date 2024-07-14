@@ -36,6 +36,7 @@ import com.algorand.android.modules.accounts.ui.adapter.AccountAdapter
 import com.algorand.android.modules.tutorialdialog.util.showCopyAccountAddressTutorialDialog
 import com.algorand.android.modules.tutorialdialog.util.showGiftCardsTutorialDialog
 import com.algorand.android.modules.tutorialdialog.util.showSwapFeatureTutorialDialog
+import com.algorand.android.utils.BannerViewTypesDividerItemDecoration
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.TestnetBadgeDrawable
 import com.algorand.android.utils.delegation.bottomnavfragment.BottomNavBarFragmentDelegation
@@ -265,6 +266,12 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
         binding.accountsRecyclerView.apply {
             adapter = accountAdapter
             itemAnimator = null
+            addItemDecoration(
+                BannerViewTypesDividerItemDecoration(
+                    BaseAccountListItem.bannerItemTypes,
+                    resources.getDimensionPixelSize(R.dimen.spacing_normal)
+                )
+            )
         }
         binding.emptyScreenStateView.apply {
             setOnNeutralButtonClickListener(::onAddAccountClick)

@@ -13,7 +13,7 @@
 package com.algorand.android.customviews.alertview.ui
 
 import com.algorand.android.models.AlertMetadata
-import com.algorand.android.models.NotificationMetadata
+import com.algorand.android.notification.domain.model.NotificationMetadata
 import java.util.ArrayDeque
 import javax.inject.Inject
 import javax.inject.Singleton

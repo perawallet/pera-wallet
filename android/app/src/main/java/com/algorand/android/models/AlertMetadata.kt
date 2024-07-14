@@ -15,6 +15,7 @@ package com.algorand.android.models
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import com.algorand.android.R
+import com.algorand.android.notification.domain.model.NotificationMetadata
 
 sealed class AlertMetadata(
     @DrawableRes open val iconRes: Int? = null,

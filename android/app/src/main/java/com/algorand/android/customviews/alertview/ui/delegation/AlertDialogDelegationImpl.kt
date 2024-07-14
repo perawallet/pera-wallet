@@ -23,7 +23,7 @@ import com.algorand.android.R
 import com.algorand.android.customviews.alertview.ui.AlertDialogQueueManager
 import com.algorand.android.customviews.alertview.ui.CustomAlertDialog
 import com.algorand.android.models.AlertMetadata
-import com.algorand.android.models.NotificationMetadata
+import com.algorand.android.notification.domain.model.NotificationMetadata
 import com.algorand.android.utils.emptyString
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
