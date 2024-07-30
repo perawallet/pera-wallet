@@ -15,6 +15,7 @@
 package com.algorand.android.modules.deeplink
 
 import android.net.Uri
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.RawMnemonicPayload
 import com.algorand.android.models.WebQrCode
 import com.algorand.android.modules.deeplink.domain.model.NotificationGroupType
@@ -64,7 +65,10 @@ class DeepLinkParser @Inject constructor(
     }
 
     private fun getAssetId(parsedUri: Uri): Long? {
-        val assetIdAsString = parseQueryIfExist(ASSET_ID_QUERY_KEY, parsedUri)
+        val assetIdAsString = when {
+            isCoinbaseLink(parsedUri) -> getAssetIdForCoinbase(parsedUri.toString())
+            else -> parseQueryIfExist(ASSET_ID_QUERY_KEY, parsedUri)
+        }
         return assetIdAsString?.toLongOrNull()
     }
 
@@ -81,13 +85,14 @@ class DeepLinkParser @Inject constructor(
     }
 
     private fun getAccountAddress(uri: Uri): String? {
-        return with(uri) {
-            if (isApplink(this)) {
-                path?.split(PATH_SEPARATOR)?.firstOrNull { it.isValidAddress() }
-            } else {
-                parseQueryIfExist(ACCOUNT_ID_QUERY_KEY, this) ?: authority
-            }.takeIf { it.isValidAddress() } ?: uri.toString().takeIf { it.isValidAddress() }
-        }
+        return when {
+            isApplink(uri) -> uri.path
+                ?.split(PATH_SEPARATOR)
+                ?.firstOrNull { it.isValidAddress() }
+
+            isCoinbaseLink(uri) -> getAccountAddressForCoinbase(uri.toString())
+            else -> parseQueryIfExist(ACCOUNT_ID_QUERY_KEY, uri) ?: uri.authority
+        }?.takeIf { it.isValidAddress() } ?: uri.toString().takeIf { it.isValidAddress() }
     }
 
     private fun getWalletConnectUrl(uri: Uri): String? {
@@ -144,12 +149,45 @@ class DeepLinkParser @Inject constructor(
         return removeAuthSeparator(uri.schemeSpecificPart).startsWith(PERAWALLET_APPLINK_AUTH_KEY)
     }
 
+    private fun isCoinbaseLink(uri: Uri): Boolean {
+        return uri.scheme.equals(COINBASE_DEEPLINK_ROOT, ignoreCase = true)
+    }
+
     private fun removeAuthSeparator(uriString: String): String {
         return uriString.removePrefix(AUTH_SEPARATOR)
     }
 
+    fun getAccountAddressForCoinbase(url: String): String? {
+        // algo:31566704/transfer?address=KG2HXWIOQSBOBGJEXSIBNEVNTRD4G4EFIJGRKBG2ZOT7NQ
+        val regexAddress = COINBASE_ACCOUNT_ADDRESS_WITH_ASSET_ID_REGEX.toRegex()
+        val matchResultWithAddress = regexAddress.find(url)
+        if (matchResultWithAddress != null) {
+            return matchResultWithAddress.destructured.component1()
+        }
+
+        // algo:Z7HJOZWPBM76GNERLD56IUMNMA7TNFMERU4KSDDXLUYGFBRLLVVGKGULCE
+        val regexWithoutAssetId = COINBASE_ACCOUNT_ADDRESS_REGEX.toRegex()
+        val matchResultWithoutAssetId = regexWithoutAssetId.find(url)
+        if (matchResultWithoutAssetId != null) {
+            return matchResultWithoutAssetId.destructured.component1()
+        }
+        return null
+    }
+
+    fun getAssetIdForCoinbase(url: String): String? {
+        // algo:31566704/transfer?address=KG2HXWIOQSBOBGJEXSIBNEVNTRD4G4EFIJGRKBG2ZOT7NQ
+        val regexWithAssetId = COINBASE_ASSET_ID_REGEX.toRegex()
+        val matchResultWithAssetId = regexWithAssetId.find(url)
+        if (matchResultWithAssetId != null) {
+            return matchResultWithAssetId.destructured.component1()
+        } else {
+            return ALGO_ID.toString()
+        }
+    }
+
     companion object {
         private const val PERAWALLET_APPLINK_AUTH_KEY = "perawallet.app"
+        private const val COINBASE_DEEPLINK_ROOT = "algo"
 
         private const val PERAWALLET_WC_AUTH_KEY = "perawallet-wc"
         private const val WALLET_CONNECT_AUTH_KEY = "wc"
@@ -164,6 +202,10 @@ class DeepLinkParser @Inject constructor(
         private const val TRANSACTION_STATUS_KEY = "transactionStatus"
         private const val NOTIFICATION_ACTION_ASSET_TRANSACTIONS = "asset/transactions"
         private const val NOTIFICATION_ACTION_ASSET_OPTIN = "asset/opt-in"
+
+        private const val COINBASE_ACCOUNT_ADDRESS_WITH_ASSET_ID_REGEX = """address=([A-Z0-9]+)"""
+        private const val COINBASE_ACCOUNT_ADDRESS_REGEX = """algo:([A-Z0-9]+)"""
+        private const val COINBASE_ASSET_ID_REGEX = """algo:(\d+)"""
 
         private const val AUTH_SEPARATOR = "//"
         private const val PATH_SEPARATOR = "/"

@@ -1,1 +1,1 @@
-PERA - 525: WalletConnectV2 Push Notification Setup
+PERA - 700: Coinbase QR code support
