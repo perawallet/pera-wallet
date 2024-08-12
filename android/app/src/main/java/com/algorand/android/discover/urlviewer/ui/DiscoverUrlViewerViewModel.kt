@@ -122,6 +122,6 @@ class DiscoverUrlViewerViewModel @Inject constructor(
     }
 
     companion object {
-        private const val URL_KEY = "url"
+        private const val URL_KEY = "webUrl"
     }
 }

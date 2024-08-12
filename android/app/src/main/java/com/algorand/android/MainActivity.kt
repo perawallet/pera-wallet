@@ -36,7 +36,7 @@ import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
-import com.algorand.android.HomeNavigationDirections.Companion.actionGlobalDiscoverNavigation
+import com.algorand.android.HomeNavigationDirections.Companion.actionGlobalDiscoverHomeNavigation
 import com.algorand.android.core.TransactionManager
 import com.algorand.android.customviews.CoreActionsTabBarView
 import com.algorand.android.customviews.LedgerLoadingDialog
@@ -297,6 +297,11 @@ class MainActivity :
 
         override fun onUndefinedDeepLink(undefinedDeeplink: BaseDeepLink.UndefinedDeepLink) {
             // TODO show error after discussing with the team
+        }
+
+        override fun onDiscoverBrowserDeepLink(webUrl: String): Boolean {
+            navToDiscoverUrlViewerNavigation(webUrl)
+            return true
         }
 
         override fun onDeepLinkNotHandled(deepLink: BaseDeepLink) {
@@ -560,7 +565,7 @@ class MainActivity :
                     handleDeepLink(dataString.orEmpty())
                     isPendingIntentHandled = true
                 } else {
-                   isPendingIntentHandled = handlePendingIntentWithExtras(this)
+                    isPendingIntentHandled = handlePendingIntentWithExtras(this)
                 }
                 pendingIntentKeeper.clearPendingIntent()
             }
@@ -766,6 +771,10 @@ class MainActivity :
         nav(HomeNavigationDirections.actionGlobalAccountsQrScannerFragment())
     }
 
+    private fun navToDiscoverUrlViewerNavigation(webUrl: String) {
+        nav(HomeNavigationDirections.actionGlobalDiscoverUrlViewerNavigation(webUrl))
+    }
+
     fun showMaxAccountLimitExceededError() {
         showGlobalError(
             title = getString(R.string.too_many_accounts),
@@ -783,8 +792,8 @@ class MainActivity :
     private fun handleBrowseDappsClick() {
         binding.apply {
             coreActionsTabBarView.hideWithAnimation()
-            bottomNavigationView.menu.findItem(R.id.discoverNavigation).isChecked = true
-            navController.navigateSafe(actionGlobalDiscoverNavigation(BuildConfig.DISCOVER_BROWSE_DAPP_URL))
+            bottomNavigationView.menu.findItem(R.id.discoverHomeNavigation).isChecked = true
+            navController.navigateSafe(actionGlobalDiscoverHomeNavigation(BuildConfig.DISCOVER_BROWSE_DAPP_URL))
         }
     }
 

@@ -28,6 +28,7 @@ private const val LABEL_KEY = "label"
 private const val ASSET_ID_KEY = "asset"
 private const val NOTE_KEY = "note"
 private const val XNOTE_KEY = "xnote"
+private const val URL_KEY = "url"
 private const val TRANSACTION_ID_KEY = "transactionId"
 private const val QUERY_START_CHAR = "?"
 private const val QUERY_NEXT_CHAR = "&"
@@ -64,6 +65,7 @@ fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
     var assetId: Long? = null
     var note: String? = null
     var xnote: String? = null
+    var url: String? = null
     val address: String
 
     if (qrContent.startsWith(BuildConfig.DEEPLINK_PREFIX)) {
@@ -82,6 +84,7 @@ fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
                     ASSET_ID_KEY -> assetId = queryValue?.decodeUrl()?.toLongOrNull()
                     NOTE_KEY -> note = queryValue?.decodeUrl()
                     XNOTE_KEY -> xnote = queryValue?.decodeUrl()
+                    URL_KEY -> url = queryValue?.decodeUrl()
                 }
             }
     } else if (qrContent.startsWith(WALLET_CONNECT_URL_PREFIX)) {

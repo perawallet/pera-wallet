@@ -50,6 +50,7 @@ class DeeplinkHandler @Inject constructor(
             is BaseDeepLink.MnemonicDeepLink -> handleMnemonicDeepLink(baseDeeplink)
             is WalletConnectConnectionDeepLink -> handleWalletConnectConnectionDeepLink(baseDeeplink)
             is BaseDeepLink.UndefinedDeepLink -> handleUndefinedDeepLink(baseDeeplink)
+            is BaseDeepLink.DiscoverBrowserDeepLink -> handleDiscoverBrowserDeepLink(baseDeeplink)
             is BaseDeepLink.WebImportQrCodeDeepLink -> handleWebImportQrCodeDeepLink(baseDeeplink)
             is BaseDeepLink.NotificationDeepLink -> handleNotificationDeepLink(baseDeeplink)
         }
@@ -77,6 +78,10 @@ class DeeplinkHandler @Inject constructor(
 
     private fun handleUndefinedDeepLink(undefinedDeeplink: BaseDeepLink.UndefinedDeepLink): Boolean {
         return triggerListener { it.onUndefinedDeepLink(undefinedDeeplink); true }
+    }
+
+    private fun handleDiscoverBrowserDeepLink(discoverBrowserDeepLink: BaseDeepLink.DiscoverBrowserDeepLink): Boolean {
+        return triggerListener { it.onDiscoverBrowserDeepLink(discoverBrowserDeepLink.webUrl); true }
     }
 
     private fun handleWebImportQrCodeDeepLink(webImportQrCodeDeepLink: BaseDeepLink.WebImportQrCodeDeepLink): Boolean {
@@ -141,7 +146,7 @@ class DeeplinkHandler @Inject constructor(
             assetId: Long,
             notificationGroupType: NotificationGroupType
         ): Boolean = false
-
+        fun onDiscoverBrowserDeepLink(webUrl: String): Boolean = false
         fun onUndefinedDeepLink(undefinedDeeplink: BaseDeepLink.UndefinedDeepLink)
         fun onDeepLinkNotHandled(deepLink: BaseDeepLink)
     }

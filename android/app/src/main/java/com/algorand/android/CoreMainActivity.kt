@@ -228,7 +228,7 @@ abstract class CoreMainActivity : BaseActivity() {
 
     private fun handleBottomBarNavigationForChosenNetwork() {
         binding.bottomNavigationView.menu.forEach { menuItem ->
-            if (menuItem.itemId == R.id.discoverNavigation) {
+            if (menuItem.itemId == R.id.discoverHomeNavigation) {
                 menuItem.isEnabled = isConnectedToTestNet.not()
             }
         }

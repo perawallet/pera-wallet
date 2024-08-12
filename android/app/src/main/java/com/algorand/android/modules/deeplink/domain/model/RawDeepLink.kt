@@ -26,6 +26,7 @@ data class RawDeepLink(
     val label: String? = null,
     val transactionStatus: String? = null,
     val transactionId: String? = null,
+    val url: String? = null,
     val webImportQrCode: WebImportQrCode? = null,
     val notificationGroupType: NotificationGroupType? = null
 )

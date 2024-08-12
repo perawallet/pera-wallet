@@ -22,6 +22,7 @@ import com.algorand.android.modules.deeplink.domain.model.NotificationGroupType
 import com.algorand.android.modules.deeplink.domain.model.RawDeepLink
 import com.algorand.android.modules.webimport.common.data.mapper.WebImportQrCodeMapper
 import com.algorand.android.modules.webimport.common.data.model.WebImportQrCode
+import com.algorand.android.utils.extensions.decodeBase64ToString
 import com.algorand.android.utils.fromJson
 import com.algorand.android.utils.isValidAddress
 import com.squareup.moshi.Moshi
@@ -42,6 +43,7 @@ class DeepLinkParser @Inject constructor(
             amount = getAmount(parsedUri),
             note = getNote(parsedUri),
             xnote = getXnote(parsedUri),
+            url = getUrl(parsedUri),
             mnemonic = getMnemonic(parsedUri),
             label = getLabel(parsedUri),
             transactionId = getTransactionId(parsedUri),
@@ -53,6 +55,10 @@ class DeepLinkParser @Inject constructor(
 
     private fun getXnote(parsedUri: Uri): String? {
         return parseQueryIfExist(XNOTE_QUERY_KEY, parsedUri)
+    }
+
+    private fun getUrl(parsedUri: Uri): String? {
+        return parseQueryIfExist(URL_QUERY_KEY, parsedUri)?.decodeBase64ToString()
     }
 
     private fun getNote(parsedUri: Uri): String? {
@@ -197,6 +203,7 @@ class DeepLinkParser @Inject constructor(
         private const val ACCOUNT_ID_QUERY_KEY = "account"
         private const val NOTE_QUERY_KEY = "note"
         private const val XNOTE_QUERY_KEY = "xnote"
+        private const val URL_QUERY_KEY = "url"
         private const val LABEL_QUERY_KEY = "label"
         private const val TRANSACTION_ID_KEY = "transactionId"
         private const val TRANSACTION_STATUS_KEY = "transactionStatus"

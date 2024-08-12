@@ -1,1 +1,1 @@
-PERA - 700: Coinbase QR code support
+PERA - 750: Open a webpage from deeplink

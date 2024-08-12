@@ -60,7 +60,12 @@ class AccountsQrScannerFragment : BaseQrScannerFragment(R.id.accountsQrScannerFr
         }
     }
 
-    @SuppressWarnings("MaxLineLength")
+    override fun onDiscoverBrowserDeepLink(webUrl: String): Boolean {
+        return true.also {
+            nav(AccountsQrScannerFragmentDirections.actionAccountsQrScannerFragmentDiscoverUrlViewerNavigation(webUrl))
+        }
+    }
+
     override fun onImportAccountDeepLink(mnemonic: String): Boolean {
         return true.also {
             if (accountsQrScannerViewModel.isAccountLimitExceed()) {

@@ -135,7 +135,7 @@ class DiscoverHomeFragment : BaseDiscoverFragment(R.layout.fragment_discover_hom
     private val discoverAssetSearchAdapter = DiscoverAssetSearchAdapter(assetSearchAdapterListener)
 
     private val discoverAssetSearchPaginationCollector:
-        suspend (PagingData<DiscoverAssetItem>) -> Unit = { pagingData ->
+            suspend (PagingData<DiscoverAssetItem>) -> Unit = { pagingData ->
         discoverAssetSearchAdapter.submitData(pagingData)
     }
 
@@ -261,6 +261,7 @@ class DiscoverHomeFragment : BaseDiscoverFragment(R.layout.fragment_discover_hom
                     errorTitleTextView.text = getString(R.string.well_this_is_unexpected)
                     errorDescriptionTextView.text = getString(R.string.we_are_not_able_to_find)
                 }
+
                 WebViewError.NO_CONNECTION -> {
                     errorTitleTextView.text = getString(R.string.no_internet_connection)
                     errorDescriptionTextView.text = getString(R.string.you_dont_seem_to_be_connected)
@@ -341,7 +342,7 @@ class DiscoverHomeFragment : BaseDiscoverFragment(R.layout.fragment_discover_hom
         favorites: Array<DappFavoriteElement>
     ) {
         nav(
-            DiscoverHomeFragmentDirections.actionDiscoverHomeFragmentToDiscoverDappFragment(
+            DiscoverHomeFragmentDirections.actionDiscoverHomeFragmentToDiscoverDappNavigation(
                 dappUrl = url,
                 dappTitle = title ?: "",
                 favorites = favorites
@@ -351,8 +352,8 @@ class DiscoverHomeFragment : BaseDiscoverFragment(R.layout.fragment_discover_hom
 
     private fun navigateToSimpleUrlViewer(url: String) {
         nav(
-            DiscoverHomeFragmentDirections.actionDiscoverHomeFragmentToDiscoverUrlViewerFragment(
-                url = url
+            DiscoverHomeFragmentDirections.actionDiscoverHomeFragmentToDiscoverUrlViewerNavigation(
+                webUrl = url
             )
         )
     }

@@ -41,6 +41,7 @@ sealed class BaseDeepLink {
         protected const val DEFAULT_MNEMONIC = ""
         protected const val DEFAULT_TRANSACTION_STATUS = ""
         protected const val DEFAULT_WEBIMPORT_BACKUPID = ""
+        protected const val DEFAULT_DISCOVER_BROWSER_URL = ""
         protected const val DEFAULT_WEBIMPORT_ENCRYPTIONKEY = ""
         protected val DEFAULT_NOTIFICATION_GROUP_TYPE = NotificationGroupType.TRANSACTIONS
 
@@ -85,13 +86,14 @@ sealed class BaseDeepLink {
             override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
                 return with(rawDeepLink) {
                     accountAddress != null &&
-                        walletConnectUrl == null &&
-                        assetId == null &&
-                        amount == null &&
-                        note == null &&
-                        xnote == null &&
-                        webImportQrCode == null &&
-                        notificationGroupType == null
+                            walletConnectUrl == null &&
+                            assetId == null &&
+                            amount == null &&
+                            note == null &&
+                            xnote == null &&
+                            url == null &&
+                            webImportQrCode == null &&
+                            notificationGroupType == null
                 }
             }
         }
@@ -125,13 +127,14 @@ sealed class BaseDeepLink {
                 return with(rawDeepLink) {
                     val doesDeeplinkHaveAssetOptInQueries = assetId != null && BigInteger.ZERO.equals(amount)
                     doesDeeplinkHaveAssetOptInQueries &&
-                        accountAddress == null &&
-                        walletConnectUrl == null &&
-                        note == null &&
-                        xnote == null &&
-                        label == null &&
-                        webImportQrCode == null &&
-                        notificationGroupType == null
+                            accountAddress == null &&
+                            walletConnectUrl == null &&
+                            note == null &&
+                            xnote == null &&
+                            url == null &&
+                            label == null &&
+                            webImportQrCode == null &&
+                            notificationGroupType == null
                 }
             }
         }
@@ -158,12 +161,12 @@ sealed class BaseDeepLink {
 
         override fun equals(other: Any?): Boolean {
             return other is AssetTransferDeepLink &&
-                other.assetId == assetId &&
-                other.receiverAccountAddress == receiverAccountAddress &&
-                other.amount.isEqualTo(amount) &&
-                other.note == note &&
-                other.xnote == xnote &&
-                other.label == label
+                    other.assetId == assetId &&
+                    other.receiverAccountAddress == receiverAccountAddress &&
+                    other.amount.isEqualTo(amount) &&
+                    other.note == note &&
+                    other.xnote == xnote &&
+                    other.label == label
         }
 
         override fun hashCode(): Int {
@@ -195,8 +198,8 @@ sealed class BaseDeepLink {
                 return with(rawDeepLink) {
                     val doesDeeplinkHaveAssetTransferQueries = accountAddress != null && assetId != null
                     doesDeeplinkHaveAssetTransferQueries && walletConnectUrl == null &&
-                        webImportQrCode == null &&
-                        notificationGroupType == null
+                            webImportQrCode == null &&
+                            notificationGroupType == null
                 }
             }
         }
@@ -225,14 +228,15 @@ sealed class BaseDeepLink {
             override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
                 return with(rawDeepLink) {
                     walletConnectUrl != null &&
-                        accountAddress == null &&
-                        assetId == null &&
-                        amount == null &&
-                        note == null &&
-                        xnote == null &&
-                        label == null &&
-                        webImportQrCode == null &&
-                        notificationGroupType == null
+                            accountAddress == null &&
+                            assetId == null &&
+                            amount == null &&
+                            note == null &&
+                            url == null &&
+                            xnote == null &&
+                            label == null &&
+                            webImportQrCode == null &&
+                            notificationGroupType == null
                 }
             }
         }
@@ -261,15 +265,16 @@ sealed class BaseDeepLink {
             override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
                 return with(rawDeepLink) {
                     mnemonic != null &&
-                        accountAddress == null &&
-                        assetId == null &&
-                        amount == null &&
-                        walletConnectUrl == null &&
-                        note == null &&
-                        xnote == null &&
-                        label == null &&
-                        webImportQrCode == null &&
-                        notificationGroupType == null
+                            accountAddress == null &&
+                            assetId == null &&
+                            amount == null &&
+                            walletConnectUrl == null &&
+                            url == null &&
+                            note == null &&
+                            xnote == null &&
+                            label == null &&
+                            webImportQrCode == null &&
+                            notificationGroupType == null
                 }
             }
         }
@@ -292,15 +297,45 @@ sealed class BaseDeepLink {
             override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
                 return with(rawDeepLink) {
                     webImportQrCode != null &&
-                        accountAddress == null &&
-                        assetId == null &&
-                        amount == null &&
-                        walletConnectUrl == null &&
-                        note == null &&
-                        xnote == null &&
-                        label == null &&
-                        notificationGroupType == null &&
-                        mnemonic == null
+                            accountAddress == null &&
+                            assetId == null &&
+                            amount == null &&
+                            walletConnectUrl == null &&
+                            url == null &&
+                            note == null &&
+                            xnote == null &&
+                            label == null &&
+                            notificationGroupType == null &&
+                            mnemonic == null
+                }
+            }
+        }
+    }
+
+    class DiscoverBrowserDeepLink(
+        val webUrl: String
+    ) : BaseDeepLink() {
+
+        companion object : DeepLinkCreator {
+            override fun createDeepLink(rawDeeplink: RawDeepLink): BaseDeepLink {
+                return DiscoverBrowserDeepLink(
+                    webUrl = rawDeeplink.url ?: DEFAULT_DISCOVER_BROWSER_URL
+                )
+            }
+
+            override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
+                return with(rawDeepLink) {
+                    url != null &&
+                            accountAddress == null &&
+                            assetId == null &&
+                            amount == null &&
+                            walletConnectUrl == null &&
+                            note == null &&
+                            xnote == null &&
+                            label == null &&
+                            webImportQrCode == null &&
+                            notificationGroupType == null &&
+                            mnemonic == null
                 }
             }
         }
@@ -314,9 +349,9 @@ sealed class BaseDeepLink {
 
         override fun equals(other: Any?): Boolean {
             return other is NotificationDeepLink &&
-                other.address == address &&
-                other.assetId == assetId &&
-                other.notificationGroupType == notificationGroupType
+                    other.address == address &&
+                    other.assetId == assetId &&
+                    other.notificationGroupType == notificationGroupType
         }
 
         override fun hashCode(): Int {
@@ -341,14 +376,15 @@ sealed class BaseDeepLink {
             override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
                 return with(rawDeepLink) {
                     accountAddress != null &&
-                        assetId != null &&
-                        notificationGroupType != null &&
-                        amount == null &&
-                        walletConnectUrl == null &&
-                        note == null &&
-                        xnote == null &&
-                        label == null &&
-                        webImportQrCode == null
+                            assetId != null &&
+                            notificationGroupType != null &&
+                            amount == null &&
+                            walletConnectUrl == null &&
+                            url == null &&
+                            note == null &&
+                            xnote == null &&
+                            label == null &&
+                            webImportQrCode == null
                 }
             }
         }
