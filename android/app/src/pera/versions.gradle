@@ -1,6 +1,0 @@
-ext {
-    peraApplication = [
-            versionCode: 118    ,
-            versionName: "5.10.13"
-    ]
-}
